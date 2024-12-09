@@ -1,5 +1,5 @@
 {
-  "name": "dp-brukerdialog",
+  "name": "dp-brukerdialog-frontend",
   "private": true,
   "sideEffects": false,
   "type": "module",

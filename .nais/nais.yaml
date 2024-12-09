@@ -1,0 +1,73 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: dp-brukerdialog-frontend
+  namespace: teamdagpenger
+  labels:
+    team: teamdagpenger
+    app: dp-brukerdialog-frontend
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "64M"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+spec:
+  image: {{ image }}
+  port: 3000
+  liveness:
+    path: "{{ base_path }}/api/internal/isalive"
+    initialDelay: 15
+    timeout: 1
+    periodSeconds: 5
+    failureThreshold: 10
+  readiness:
+    path: "{{ base_path }}/api/internal/isready"
+    initialDelay: 15
+    timeout: 1
+  prometheus:
+    path: "{{ base_path }}/api/internal/isready"
+    enabled: true
+  replicas:
+    min: 1
+    max: 2
+    cpuThresholdPercentage: 75
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 512Mi
+  env:
+    - name: BASE_PATH
+      value: {{ base_path }}
+    - name: SELF_URL
+      value: {{ ingress }}
+    - name: DEKORATOR_ENV
+      value: {{ dekorator.env }}
+    - name: APP_ENV
+      value: {{ app_env }}
+    - name: SANITY_DATASET
+      value: {{ sanity_dataset }}
+    - name: UNLEASH_SERVER_API_URL
+      value: {{ unleash.server_api_url }}
+
+  ingresses:
+    {{#each ingresses as |url|}}
+    - {{url}}
+    {{/each}}
+  accessPolicy:
+    outbound:
+      external:
+        - host: rt6o382n.apicdn.sanity.io
+        - host: www.nav.no
+        - host: dekoratoren.dev.nav.no
+        - host: dagpenger-unleash-api.nav.cloud.nais.io
+      rules:
+        - application: nav-dekoratoren
+          namespace: personbruker
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      level: {{ idporten.level }}
+      autoLogin: true
+  tokenx:
+    enabled: true

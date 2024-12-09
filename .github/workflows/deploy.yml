@@ -1,0 +1,93 @@
+name: Build and deploy
+
+on:
+  push:
+    branches-ignore:
+      - "dependabot/**"
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: node_modules
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - uses: actions/setup-node@v4
+        if: steps.node_modules.outputs.cache-hit != 'true'
+        with:
+          node-version: "20.x"
+          cache: "npm"
+          registry-url: "https://npm.pkg.github.com"
+
+      - run: npm ci --ignore-scripts
+        if: steps.node_modules.outputs.cache-hit != 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+  build:
+    needs: [install]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      # Build application
+      - run: npm run build
+
+      # Prune del dependencies from production build
+      - name: prune dev dependencies
+        run: npm prune --production
+
+      # Bygg docker image
+      - name: docker-build-push
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamdagpenger
+          dockerfile: Dockerfile # optional, default Dockerfile
+          salsa: true
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+      - name: Cache static files
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./build
+            ./public
+          key: ${{ github.sha }}
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+
+  deploy-dev:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    environment: dev-gcp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais.yaml
+          VAR: image=${{ needs.build.outputs.image }}
+          VARS: .nais/vars-dev.yaml
+          PRINT_PAYLOAD: true

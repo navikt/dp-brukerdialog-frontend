@@ -1,5 +1,24 @@
 node_modules
 
-/.cache
 /build
+/public/build
+/server/build
+
+.DS_Store
+
+/.cache
+
+/coverage
+
+#intellij
+*.iml
+/.idea
+/.fleet
+
 .env
+
+secure.log
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
