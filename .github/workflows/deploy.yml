@@ -78,7 +78,7 @@ jobs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
   deploy-dev:
-    needs: [build, test]
+    needs: [build]
     runs-on: ubuntu-latest
     environment: dev-gcp
     steps:
