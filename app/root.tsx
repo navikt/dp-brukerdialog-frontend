@@ -6,7 +6,7 @@ import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDecoratorHTML } from "./models/decorator.server";
 import { getEnv } from "./utils/env.utils";
 import navStyles from "@navikt/ds-css/dist/index.css?url";
-import indexStyles from "~/index.css?url";
+import indexStyles from "./index.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: navStyles },

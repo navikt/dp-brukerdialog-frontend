@@ -11,7 +11,7 @@ declare module "@remix-run/node" {
   }
 }
 
-const basePath = "/arbeid/dagpenger/brukerdialog-frontend/";
+const basePath = "/arbeid/dagpenger/brukerdialog/";
 
 export default defineConfig({
   base: basePath,

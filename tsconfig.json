@@ -28,5 +28,8 @@
 
     // Vite takes care of building everything, not tsc.
     "noEmit": true
+  },
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": ["error", { "ts-ignore": "allow-with-description" }]
   }
 }

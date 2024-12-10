@@ -1,7 +1,7 @@
 ingresses:
-  - https://arbeid.intern.dev.nav.no/arbeid/dagpenger/brukerdialog-frontend
-  - https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/brukerdialog-frontend
-base_path: /arbeid/dagpenger/brukerdialog-frontend
+  - https://arbeid.intern.dev.nav.no/arbeid/dagpenger/brukerdialog
+  - https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/brukerdialog
+base_path: /arbeid/dagpenger/brukerdialog
 dekorator:
   env: dev
 loginservice:
