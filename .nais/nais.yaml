@@ -40,6 +40,8 @@ spec:
       value: {{ base_path }}
     - name: SELF_URL
       value: {{ ingress }}
+    - name: DEKORATOR_URL
+      value: {{dekorator.url}}
     - name: DEKORATOR_ENV
       value: {{ dekorator.env }}
     - name: APP_ENV

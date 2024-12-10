@@ -3,6 +3,7 @@ ingresses:
   - https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/brukerdialog
 base_path: /arbeid/dagpenger/brukerdialog
 dekorator:
+  url: https://dekoratoren.dev.nav.no/
   env: dev
 loginservice:
   url: https://loginservice.dev.nav.no/login

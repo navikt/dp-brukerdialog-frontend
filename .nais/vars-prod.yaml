@@ -1,7 +1,8 @@
 ingresses:
-  - https://nav.no/arbeid/dagpenger/brukerdialog
+  - https://www.nav.no/arbeid/dagpenger/brukerdialog
 base_path: /arbeid/dagpenger/brukerdialog
 dekorator:
+  url: https://www.nav.no/dekoratoren
   env: prod
 loginservice:
   url: https://loginservice.nav.no/login
