@@ -85,7 +85,6 @@ jobs:
       id-token: "write"
       packages: write
     steps:
-      - uses: actions/checkout@v4
       - name: Upload static files
         uses: nais/deploy/actions/cdn-upload/v2@master
         with:
@@ -96,7 +95,7 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-dev:
-    needs: [build]
+    needs: [build, upload-cdn]
     runs-on: ubuntu-latest
     environment: dev-gcp
     steps:
@@ -111,7 +110,7 @@ jobs:
           PRINT_PAYLOAD: true
 
   deploy-prod:
-    needs: [build]
+    needs: [build, upload-cdn]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod-gcp
