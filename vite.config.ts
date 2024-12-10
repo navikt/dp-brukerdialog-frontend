@@ -6,9 +6,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 installGlobals();
 
 const basePath = "/arbeid/dagpenger/brukerdialog/";
+const cdnPath = "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/";
 
 export default defineConfig({
-  base: basePath,
+  base: process.env.NODE_ENV === "production" ? cdnPath : basePath,
   plugins: [
     remix({
       basename: basePath,
