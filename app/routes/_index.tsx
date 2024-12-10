@@ -1,9 +1,8 @@
-import { BodyLong, Button, Heading, Radio, RadioGroup, ReadMore, Tag } from "@navikt/ds-react";
+import { BodyLong, Heading } from "@navikt/ds-react";
 import type { MetaFunction } from "@remix-run/node";
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { SoknadHeader } from "~/components/soknad-header/SoknadHeader";
-import { Inntekt } from "~/components/inntekt/Inntekt";
 import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
+import { Inntekt } from "~/components/inntekt/Inntekt";
+import { SoknadHeader } from "~/components/soknad-header/SoknadHeader";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Brukerdialog" }, { name: "description", content: "Brukerdialog" }];
@@ -25,15 +24,6 @@ export default function Index() {
 
         <Inntekt />
         <InntektSkjema />
-
-        <div className="button-container">
-          <Button variant="secondary" icon={<ArrowLeftIcon />}>
-            Tilbake
-          </Button>
-          <Button variant="primary" icon={<ArrowRightIcon />}>
-            Neste
-          </Button>
-        </div>
       </div>
     </main>
   );

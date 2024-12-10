@@ -1,3 +1,7 @@
 .textarea {
   margin-top: var(--a-spacing-4);
 }
+
+.radioGroup {
+  margin-bottom: var(--a-spacing-4);
+}
