@@ -1,0 +1,12 @@
+ingresses:
+  - https://nav.no/arbeid/dagpenger/brukerdialog
+base_path: /arbeid/dagpenger/brukerdialog
+dekorator:
+  env: prod
+loginservice:
+  url: https://loginservice.nav.no/login
+app_env: prod
+sanity_dataset: production
+unleash:
+  server_api_url: https://dagpenger-unleash-api.nav.cloud.nais.io/api
+  environment: production
