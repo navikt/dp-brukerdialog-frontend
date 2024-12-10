@@ -4,7 +4,7 @@ import { z } from "zod";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
-import styles from "./InntektSkjema.module.css";
+import styles from "./inntektSkjema.module.css";
 
 const validator = withZod(
   z.object({
