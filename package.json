@@ -15,7 +15,7 @@
     "@navikt/ds-react": "^7.8.0",
     "@navikt/nav-dekoratoren-moduler": "^3.1.1",
     "@remix-run/node": "^2.15.0",
-    "@remix-run/react": "^2.15.0",
+    "@remix-run/react": "^2.15.1",
     "@remix-run/serve": "^2.15.0",
     "html-react-parser": "^5.2.0",
     "isbot": "^5.1.17",
