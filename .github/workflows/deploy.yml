@@ -77,25 +77,8 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
-  upload-cdn:
-    needs: [build]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: "read"
-      id-token: "write"
-      packages: write
-    steps:
-      - name: Upload static files
-        uses: nais/deploy/actions/cdn-upload/v2@master
-        with:
-          team: teamdagpenger
-          source: ./build/client
-          destination: "/dp-brukerdialog-frontend/"
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-
   deploy-dev:
-    needs: [build, upload-cdn]
+    needs: [build]
     runs-on: ubuntu-latest
     environment: dev-gcp
     steps:
@@ -110,7 +93,7 @@ jobs:
           PRINT_PAYLOAD: true
 
   deploy-prod:
-    needs: [build, upload-cdn]
+    needs: [build]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod-gcp
