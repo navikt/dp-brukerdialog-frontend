@@ -17,10 +17,9 @@ export async function getDecoratorHTML(): Promise<DecoratorElements> {
       redirectToApp: true,
       level: "Level4",
       breadcrumbs: [
-        { title: "Min side", url: "https://www.nav.no/minside" },
         {
-          title: "Mine dagpenger",
-          url: "https://www.nav.no/arbeid/dagpenger/mine-dagpenger",
+          title: "Brukerdialog",
+          url: "https://www.nav.no/arbeid/dagpenger/brukerdialog",
         },
       ],
     },
