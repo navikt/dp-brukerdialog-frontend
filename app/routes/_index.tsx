@@ -2,6 +2,8 @@ import { BodyLong, Button, Heading, Radio, RadioGroup, ReadMore, Tag } from "@na
 import type { MetaFunction } from "@remix-run/node";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { SoknadHeader } from "~/components/soknad-header/SoknadHeader";
+import { Inntekt } from "~/components/inntekt/Inntekt";
+import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Brukerdialog" }, { name: "description", content: "Brukerdialog" }];
@@ -21,45 +23,8 @@ export default function Index() {
           Vi trenger at du sjekker innteksopplysningene vi har hentet om deg.
         </BodyLong>
 
-        <div className="card">
-          <Tag variant="neutral-filled">Hentet fra Skatteetaten</Tag>
-          <Heading size="medium" level={"2"}>
-            Inntekt
-          </Heading>
-          <BodyLong spacing>
-            Inntekt siste 12 måneder fra 1.januar 2023 til 1.januar 2024 <br />
-            <strong>112 972 kroner</strong>
-          </BodyLong>
-          <BodyLong spacing>
-            Inntekt siste 12 måneder fra 1.januar 2023 til 1.januar 2024 <br />
-            <strong>112 972 kroner</strong>.
-          </BodyLong>
-
-          <hr />
-
-          <ReadMore header="Hvilke inntekter gir rett til dagpenger?">
-            Med helsemessige begrensninger mener vi funksjonshemming, sykdom, allergier som hindrer
-            deg i arbeidet eller andre årsaker som må tas hensyn til når du skal finne nytt arbeid.
-            Du må oppgi hva som gjelder for deg, og dokumentere de helsemessige årsakene du viser
-            til.
-          </ReadMore>
-        </div>
-
-        <div className="card">
-          <form>
-            <RadioGroup legend="Stemmer den samlede inntekten?">
-              <Radio value="true">Ja</Radio>
-              <Radio value="false">Nei</Radio>
-            </RadioGroup>
-          </form>
-
-          <ReadMore header="Hva gjør du hvis inntekten din ikke stemmer?">
-            Med helsemessige begrensninger mener vi funksjonshemming, sykdom, allergier som hindrer
-            deg i arbeidet eller andre årsaker som må tas hensyn til når du skal finne nytt arbeid.
-            Du må oppgi hva som gjelder for deg, og dokumentere de helsemessige årsakene du viser
-            til.
-          </ReadMore>
-        </div>
+        <Inntekt />
+        <InntektSkjema />
 
         <div className="button-container">
           <Button variant="secondary" icon={<ArrowLeftIcon />}>

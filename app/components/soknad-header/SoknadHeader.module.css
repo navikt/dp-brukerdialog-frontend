@@ -8,7 +8,7 @@
 }
 
 .headerContent {
-  max-width: var(--app-max-width);
+  max-width: calc(var(--app-max-width) - 80px);
   display: flex;
   align-items: center;
   height: 100%;
