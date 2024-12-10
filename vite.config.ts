@@ -5,12 +5,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 installGlobals();
 
-declare module "@remix-run/node" {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
-
 const basePath = "/arbeid/dagpenger/brukerdialog/";
 
 export default defineConfig({
