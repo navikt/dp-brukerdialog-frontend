@@ -1,21 +1,16 @@
-import navStyles from "@navikt/ds-css/dist/index.css?url";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useRouteLoaderData,
-} from "@remix-run/react";
+import type { LinksFunction } from "@remix-run/node";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import parse from "html-react-parser";
 import { typedjson, useTypedRouteLoaderData } from "remix-typedjson";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDecoratorHTML } from "./models/decorator.server";
 import { getEnv } from "./utils/env.utils";
+import navStyles from "@navikt/ds-css/dist/index.css?url";
+import indexStyles from "~/index.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: navStyles },
+  { rel: "stylesheet", href: indexStyles },
   {
     rel: "icon",
     type: "image/png",

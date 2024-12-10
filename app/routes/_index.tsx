@@ -1,13 +1,15 @@
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "New Remix App" }, { name: "description", content: "Welcome to Remix!" }];
+  return [{ title: "Brukerdialog" }, { name: "description", content: "Brukerdialog" }];
 };
 
 export default function Index() {
   return (
     <main id="maincontent" tabIndex={-1}>
-      <div className="brukerdialog">Brukerdialog</div>
+      <div className="brukerdialog">
+        <h1>Brukerdialog</h1>
+      </div>
     </main>
   );
 }
