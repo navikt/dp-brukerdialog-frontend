@@ -16,12 +16,6 @@ export async function getDecoratorHTML(): Promise<DecoratorElements> {
       chatbot: false,
       redirectToApp: true,
       level: "Level4",
-      breadcrumbs: [
-        {
-          title: "Brukerdialog",
-          url: "https://www.nav.no/arbeid/dagpenger/brukerdialog",
-        },
-      ],
     },
   };
 
