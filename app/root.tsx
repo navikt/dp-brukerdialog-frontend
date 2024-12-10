@@ -35,7 +35,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader() {
   const decoratorFragments = await getDecoratorHTML();
 
   if (!decoratorFragments) {
