@@ -77,7 +77,7 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
-  uplaod-cdn:
+  upload-cdn:
     needs: [build]
     runs-on: ubuntu-latest
     permissions:
