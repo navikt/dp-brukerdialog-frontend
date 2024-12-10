@@ -1,6 +1,6 @@
 import { BodyLong, Heading, ReadMore } from "@navikt/ds-react";
 import { Tag } from "@navikt/ds-react/Tag";
-import styles from "./Inntekt.module.css";
+import styles from "./inntekt.module.css";
 
 export function Inntekt() {
   return (
