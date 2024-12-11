@@ -1,26 +1,38 @@
-import { Button, Radio, RadioGroup, ReadMore, Textarea } from "@navikt/ds-react";
-import { useState } from "react";
-import { z } from "zod";
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { InformationSquareIcon, PaperplaneIcon } from "@navikt/aksel-icons";
+import {
+  BodyLong,
+  Button,
+  ExpansionCard,
+  HStack,
+  Radio,
+  RadioGroup,
+  ReadMore,
+  Textarea,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
+import { useState } from "react";
+import { z } from "zod";
 import styles from "./inntektSkjema.module.css";
 
 const validator = withZod(
   z.object({
-    radio: z.enum(["true", "false"], {
+    inntektStemmer: z.enum(["true", "false"], {
       required_error: "Du må svare på dette spørsmålet",
     }),
-    textarea: z.string().min(1, { message: "Du må svare på dette spørsmålet" }),
+    begrunnelse: z.string().min(1, { message: "Du må svare på dette spørsmålet" }),
+    vilSendeDokumentasjon: z.enum(["true", "false"], {
+      required_error: "Du må svare på dette spørsmålet",
+    }),
   })
 );
 
 export function InntektSkjema() {
-  const [showTextArea, setShowTextArea] = useState(false);
+  const [shouldShow, setShouldShow] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
 
   function handleRadioChange(val: string) {
-    setShowTextArea(val === "false");
+    setShouldShow(val === "false");
   }
 
   function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -36,10 +48,10 @@ export function InntektSkjema() {
       <form {...form.getFormProps()}>
         <div className="card">
           <RadioGroup
-            name="radio"
+            name="inntektStemmer"
             legend="Stemmer den samlede inntekten?"
             onChange={handleRadioChange}
-            error={form.error("radio")}
+            error={form.error("inntektStemmer")}
             className={styles.radioGroup}
           >
             <Radio value="true">Ja</Radio>
@@ -56,33 +68,68 @@ export function InntektSkjema() {
             eksempel være lønnslipper eller årsoppgaven, last det opp her.
           </ReadMore>
 
-          {showTextArea && (
+          {shouldShow && (
             <Textarea
-              name="textarea"
+              name="begrunnelse"
               className={styles.textarea}
               label="Hva er feil med inntekten?"
               description="Beskriv hva som er feil med inntekten din."
               onChange={handleTextAreaChange}
               value={textAreaValue}
-              error={form.error("textarea")}
+              error={form.error("begrunnelse")}
             />
+          )}
+
+          {shouldShow && (
+            <RadioGroup
+              name="vilSendeDokumentasjon"
+              legend="Ønsker du å laste opp dokumentasjon?"
+              onChange={handleRadioChange}
+              error={form.error("vilSendeDokumentasjon")}
+              className={styles.radioGroup}
+            >
+              <Radio value="true">Ja</Radio>
+              <Radio value="false">Nei</Radio>
+            </RadioGroup>
           )}
         </div>
 
-        <div className="button-container">
-          <Button variant="secondary" icon={<ArrowLeftIcon />}>
-            Avbryt
-          </Button>
-          <Button
-            variant="primary"
-            type="submit"
-            icon={<ArrowRightIcon />}
-            loading={form.formState.isSubmitting}
-            iconPosition="right"
-          >
-            Lagre
-          </Button>
-        </div>
+        <ExpansionCard aria-label="Demo med ikon" className={styles.expansionCard}>
+          <ExpansionCard.Header>
+            <HStack wrap={false} gap="4" align="center">
+              <div aria-hidden>
+                <InformationSquareIcon aria-hidden fontSize="3rem" />
+              </div>
+              <div>
+                <ExpansionCard.Title as="h3" size="small">
+                  Krav om inntekt
+                </ExpansionCard.Title>
+                <ExpansionCard.Description>
+                  Dette er ett av flere krav som må være oppfylt for å få dagpenger.
+                </ExpansionCard.Description>
+              </div>
+            </HStack>
+          </ExpansionCard.Header>
+          <ExpansionCard.Content>
+            <BodyLong>
+              For å få dagpenger må du ha hatt en inntekt på minst 186 042 kroner de siste 12
+              månedene, eller minst 372 084 kroner de siste 36 månedene. <br />
+              <br /> Hvis du ikke har tjent nok vil du antagelig få avslag på søknaden din om
+              dagpenger.
+            </BodyLong>
+          </ExpansionCard.Content>
+        </ExpansionCard>
+
+        <Button
+          className="mt-14"
+          variant="primary"
+          type="submit"
+          icon={<PaperplaneIcon />}
+          loading={form.formState.isSubmitting}
+          iconPosition="right"
+        >
+          Send inn
+        </Button>
       </form>
     </>
   );

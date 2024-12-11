@@ -17,8 +17,16 @@
   margin-bottom: var(--a-spacing-8);
 }
 
-.button-container {
-  margin-top: var(--a-spacing-20);
-  display: flex;
-  gap: var(--a-spacing-4);
+.mt-14 {
+  margin-top: var(--a-spacing-14);
+}
+
+.navds-expansioncard__header,
+.navds-expansioncard__content {
+  border: 0;
+}
+
+.expansioncard__header:hover,
+:where(.navds-expansioncard__header):hover + .navds-expansioncard__content {
+  box-shadow: none;
 }

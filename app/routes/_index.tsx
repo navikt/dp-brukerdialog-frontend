@@ -1,4 +1,5 @@
-import { BodyLong, Heading } from "@navikt/ds-react";
+import { PlantIcon } from "@navikt/aksel-icons";
+import { BodyLong, ExpansionCard, Heading, HStack } from "@navikt/ds-react";
 import type { MetaFunction } from "@remix-run/node";
 import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
 import { Inntekt } from "~/components/inntekt/Inntekt";
