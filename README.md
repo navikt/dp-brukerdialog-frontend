@@ -34,3 +34,5 @@ Make sure to deploy the output of `npm run build`
 
 - `build/server`
 - `build/client`
+
+orkestrator token: https://tokenx-token-generator.intern.dev.nav.no/api/obo?aud=dev-gcp:teamdagpenger:dp-soknad-orkestrator

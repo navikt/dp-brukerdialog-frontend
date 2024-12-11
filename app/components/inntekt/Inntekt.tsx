@@ -1,8 +1,27 @@
 import { BodyLong, Heading, ReadMore } from "@navikt/ds-react";
 import { Tag } from "@navikt/ds-react/Tag";
+import { subYears } from "date-fns";
+import { IMinsteInntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
 import styles from "./inntekt.module.css";
 
-export function Inntekt() {
+interface IProps {
+  minsteInntektGrunnlag: IMinsteInntektGrunnlag;
+}
+
+export function Inntekt({ minsteInntektGrunnlag }: IProps) {
+  const now = new Date();
+  const lastYear = subYears(now, 1);
+  const lastThreeYears = subYears(now, 3);
+
+  function formattedDate(date: Date) {
+    const dateOption: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(date).toLocaleDateString("no", dateOption);
+  }
+
   return (
     <div className="card">
       <Tag variant="neutral-filled" className={styles.tag}>
@@ -12,12 +31,12 @@ export function Inntekt() {
         Inntekt
       </Heading>
       <BodyLong spacing>
-        Inntekt siste 12 måneder fra 1.januar 2023 til 1.januar 2024 <br />
-        <strong>112 972 kroner</strong>
+        Inntekt siste 12 måneder fra {formattedDate(lastYear)} til {formattedDate(now)} <br />
+        <strong>{minsteInntektGrunnlag.siste12mnd} kroner</strong>
       </BodyLong>
       <BodyLong spacing>
-        Inntekt siste 12 måneder fra 1.januar 2023 til 1.januar 2024 <br />
-        <strong>112 972 kroner</strong>.
+        Inntekt siste 12 måneder fra {formattedDate(lastThreeYears)} til {formattedDate(now)} <br />
+        <strong>{minsteInntektGrunnlag.siste36mnd} kroner</strong>.
       </BodyLong>
       <div className={styles.verticalLine} aria-hidden />
       <ReadMore header="Hvilke inntekter gir rett til dagpenger?">

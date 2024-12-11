@@ -12,6 +12,8 @@ interface IEnv {
   IS_LOCALHOST: string;
   DEKORATOR_ENV: string;
   SANITY_DATASET: string;
+  DP_SOKNAD_ORKESTRATOR_TOKEN: string;
+  DP_SOKNAD_ORKESTRATOR_URL: string;
 }
 
 export function getEnv(value: keyof IEnv) {
