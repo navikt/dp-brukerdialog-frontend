@@ -78,6 +78,7 @@ export function InntektSkjema() {
             type="submit"
             icon={<ArrowRightIcon />}
             loading={form.formState.isSubmitting}
+            iconPosition="right"
           >
             Lagre
           </Button>
