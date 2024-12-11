@@ -36,8 +36,8 @@
 }
 
 /* Overskriver stilene til ExpansionCard-komponenten */
-.expansioncard__header:hover,
-:where(.navds-expansioncard__header):hover + .navds-expansioncard__content {
+:where(.navds-expansioncard__header):hover + .navds-expansioncard__content,
+.navds-expansioncard__header:hover {
   box-shadow: none;
 }
 
