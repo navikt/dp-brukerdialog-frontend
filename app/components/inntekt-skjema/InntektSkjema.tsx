@@ -30,13 +30,20 @@ const validator = withZod(
 export function InntektSkjema() {
   const [shouldShow, setShouldShow] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
+  const [vilSendeDokumentasjon, setVilSendeDokumentasjon] = useState(true);
+  const [inntektStemmer, setInntektStemmer] = useState(false);
 
-  function handleRadioChange(val: string) {
+  function handleStemmerInntekt(val: string) {
     setShouldShow(val === "false");
+    setInntektStemmer(val === "true");
   }
 
   function handleTextAreaChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setTextAreaValue(e.target.value);
+  }
+
+  function handleVilSendeDokumentasjon(val: string) {
+    setVilSendeDokumentasjon(val === "true");
   }
 
   const form = useForm({
@@ -50,9 +57,8 @@ export function InntektSkjema() {
           <RadioGroup
             name="inntektStemmer"
             legend="Stemmer den samlede inntekten?"
-            onChange={handleRadioChange}
+            onChange={handleStemmerInntekt}
             error={form.error("inntektStemmer")}
-            className={styles.radioGroup}
           >
             <Radio value="true">Ja</Radio>
             <Radio value="false">Nei</Radio>
@@ -71,7 +77,7 @@ export function InntektSkjema() {
           {shouldShow && (
             <Textarea
               name="begrunnelse"
-              className={styles.textarea}
+              className="mt-4"
               label="Hva er feil med inntekten?"
               description="Beskriv hva som er feil med inntekten din."
               onChange={handleTextAreaChange}
@@ -84,9 +90,9 @@ export function InntektSkjema() {
             <RadioGroup
               name="vilSendeDokumentasjon"
               legend="Ønsker du å laste opp dokumentasjon?"
-              onChange={handleRadioChange}
+              onChange={handleVilSendeDokumentasjon}
               error={form.error("vilSendeDokumentasjon")}
-              className={styles.radioGroup}
+              className="mt-4"
             >
               <Radio value="true">Ja</Radio>
               <Radio value="false">Nei</Radio>

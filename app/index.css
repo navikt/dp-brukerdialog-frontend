@@ -1,12 +1,12 @@
 :root {
-  --app-max-width: 900px;
-  --app-min-height: 30vh;
+  --app-max-width: 768px;
+  --app-min-height: 40vh;
 }
 
 #maincontent {
   max-width: var(--app-max-width);
   min-height: var(--app-min-height);
-  padding: var(--a-spacing-8) var(--a-spacing-10);
+  padding: var(--a-spacing-16) var(--a-spacing-4);
   margin: 0 auto;
 }
 
@@ -21,12 +21,28 @@
   margin-top: var(--a-spacing-14);
 }
 
+.mt-4 {
+  margin-top: var(--a-spacing-4);
+}
+
+.mb-4 {
+  margin-bottom: var(--a-spacing-4);
+}
+
+/* Overskriver stilene til ExpansionCard-komponenten */
 .navds-expansioncard__header,
 .navds-expansioncard__content {
   border: 0;
 }
 
+/* Overskriver stilene til ExpansionCard-komponenten */
 .expansioncard__header:hover,
 :where(.navds-expansioncard__header):hover + .navds-expansioncard__content {
   box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  #maincontent {
+    padding: var(--a-spacing-16) var(--a-spacing-4);
+  }
 }
