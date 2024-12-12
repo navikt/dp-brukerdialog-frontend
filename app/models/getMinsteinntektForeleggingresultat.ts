@@ -1,6 +1,7 @@
 import { getEnv } from "~/utils/env.utils";
 import { INetworkResponse } from "./networkResponse";
 import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
+import { logger } from "~/utils/logger.utils";
 
 interface IForeleggingResultat {
   søknadId: string;
@@ -27,11 +28,13 @@ export async function getMinsteinntektForeleggingresultat(
   });
 
   if (!response.ok) {
+    logger.error("Feil ved uthenting av minsteinntekt grunnlag resultat fra soknad-orkestrator");
+
     return {
       status: "error",
       error: {
         statusCode: response.status,
-        statusText: "Feil ved henting av av minste inntekt grunnlag forlegging resultat",
+        statusText: "Feil ved uthenting av minsteinntekt grunnlag resultat fra soknad-orkestrator",
       },
     };
   }

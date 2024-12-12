@@ -50,6 +50,8 @@ spec:
       value: {{ sanity_dataset }}
     - name: UNLEASH_SERVER_API_URL
       value: {{ unleash.server_api_url }}
+    - name: FARO_URL
+      value: {{faro_url}}
 
   ingresses:
     {{#each ingresses as |url|}}

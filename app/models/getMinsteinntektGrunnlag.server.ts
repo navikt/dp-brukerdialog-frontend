@@ -1,6 +1,7 @@
 import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 import { INetworkResponse } from "~/models/networkResponse";
+import { logger } from "~/utils/logger.utils";
 
 export interface IMinsteInntektGrunnlag {
   siste12mnd: string;
@@ -24,11 +25,13 @@ export async function getMinsteinntektGrunnlag(
   });
 
   if (!response.ok) {
+    logger.error("Feil ved uthenting av minsteinntektGrunnlag fra soknad-orkestrator");
+
     return {
       status: "error",
       error: {
         statusCode: response.status,
-        statusText: "Feil ved uthenting av inntekt fra soknad-orkestrator",
+        statusText: "Feil ved uthenting av minsteinntektGrunnlag fra soknad-orkestrator",
       },
     };
   }

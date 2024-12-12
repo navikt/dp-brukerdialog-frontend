@@ -1,6 +1,7 @@
 import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 import { INetworkResponse } from "~/models/networkResponse";
+import { logger } from "~/utils/logger.utils";
 
 export async function postMinsteinntektForeleggingresultat(
   request: Request,
@@ -26,11 +27,13 @@ export async function postMinsteinntektForeleggingresultat(
   });
 
   if (!response.ok) {
+    logger.error("Feil ved lagring av minsteinntekt grunnlag resultat til soknad-orkestrator");
+
     return {
       status: "error",
       error: {
         statusCode: response.status,
-        statusText: "Feil ved lagring av inntekt opplysning til soknad-orkestrator",
+        statusText: "Feil ved lagring av minsteinntekt grunnlag resultat til soknad-orkestrator",
       },
     };
   }
