@@ -27,6 +27,11 @@ export function InntektSkjema() {
   const form = useForm({
     method: "post",
     validator,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onSubmit",
+    },
   });
 
   return (
