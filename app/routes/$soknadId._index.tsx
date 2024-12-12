@@ -36,15 +36,17 @@ export const validator = withZod(
       vilSendeDokumentasjon: z.enum(["true", "false"]).optional(),
     })
     .superRefine((data, ctx) => {
-      const { inntektStemmer } = data;
+      const { inntektStemmer, begrunnelse, vilSendeDokumentasjon } = data;
 
-      if (inntektStemmer === "false") {
+      if (inntektStemmer === "false" && begrunnelse === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Du må svare på dette spørsmålet",
           path: ["begrunnelse"],
         });
+      }
 
+      if (inntektStemmer === "false" && !vilSendeDokumentasjon) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Du må svare på dette spørsmålet",
