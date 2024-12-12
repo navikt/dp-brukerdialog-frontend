@@ -6,7 +6,7 @@ export async function getSoknadOrkestratorOboToken(request: Request) {
     return getEnv("DP_SOKNAD_ORKESTRATOR_TOKEN") || "";
   }
 
-  const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-innsyn`;
+  const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-soknad-orkestrator`;
   return await getOnBehalfOfToken(request, audience);
 }
 
