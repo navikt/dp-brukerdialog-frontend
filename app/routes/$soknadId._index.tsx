@@ -27,15 +27,31 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 export const validator = withZod(
-  z.object({
-    inntektStemmer: z.enum(["true", "false"], {
-      required_error: "Du må svare på dette spørsmålet",
-    }),
-    begrunnelse: z.string().min(1, { message: "Du må svare på dette spørsmålet" }),
-    vilSendeDokumentasjon: z.enum(["true", "false"], {
-      required_error: "Du må svare på dette spørsmålet",
-    }),
-  })
+  z
+    .object({
+      inntektStemmer: z.enum(["true", "false"], {
+        required_error: "Du må svare på dette spørsmålet",
+      }),
+      begrunnelse: z.string().optional(),
+      vilSendeDokumentasjon: z.enum(["true", "false"]).optional(),
+    })
+    .superRefine((data, ctx) => {
+      const { inntektStemmer } = data;
+
+      if (inntektStemmer === "false") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Du må svare på dette spørsmålet",
+          path: ["begrunnelse"],
+        });
+
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Du må svare på dette spørsmålet",
+          path: ["vilSendeDokumentasjon"],
+        });
+      }
+    })
 );
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
@@ -53,7 +69,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     request,
     params.soknadId,
     inntektStemmer === "true",
-    begrunnelse
+    begrunnelse || ""
   );
 
   if (postForeleggingResponse.status === "success") {
