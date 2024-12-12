@@ -7,6 +7,7 @@ import { getDecoratorHTML } from "./models/decorator.server";
 import { getEnv } from "./utils/env.utils";
 import navStyles from "@navikt/ds-css/dist/index.css?url";
 import indexStyles from "./index.css?url";
+import { logger } from "./utils/logger.utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: navStyles },
@@ -17,6 +18,7 @@ export async function loader() {
   const decoratorFragments = await getDecoratorHTML();
 
   if (!decoratorFragments) {
+    logger.error("Kunne ikke hente dekoratør");
     throw typedjson({ error: "Kunne ikke hente dekoratør" }, { status: 500 });
   }
 
