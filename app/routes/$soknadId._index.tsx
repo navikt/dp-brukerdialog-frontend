@@ -1,10 +1,15 @@
 import { BodyLong, Heading } from "@navikt/ds-react";
-import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
+import { useActionData, useLoaderData } from "@remix-run/react";
+import { validationError } from "@rvf/remix";
+import { withZod } from "@rvf/zod";
+import { typedjson, useTypedActionData } from "remix-typedjson";
 import invariant from "tiny-invariant";
+import { z } from "zod";
 import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
 import { Inntekt } from "~/components/inntekt/Inntekt";
 import { getMinsteinntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
+import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat";
 
 export const meta: MetaFunction = () => {
   return [
@@ -21,7 +26,41 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   return { minsteInntektGrunnlag };
 }
 
-export default function DinInntektIndex({}) {
+export const validator = withZod(
+  z.object({
+    inntektStemmer: z.enum(["true", "false"], {
+      required_error: "Du må svare på dette spørsmålet",
+    }),
+    begrunnelse: z.string().min(1, { message: "Du må svare på dette spørsmålet" }),
+    vilSendeDokumentasjon: z.enum(["true", "false"], {
+      required_error: "Du må svare på dette spørsmålet",
+    }),
+  })
+);
+
+export const action = async ({ request, params }: ActionFunctionArgs) => {
+  invariant(params.soknadId, "SøknadId mangler");
+
+  const data = await validator.validate(await request.formData());
+  if (data.error) return validationError(data.error);
+
+  const { inntektStemmer, begrunnelse } = data.data;
+
+  const postForeleggingResponse = await postMinsteinntektForeleggingresultat(
+    request,
+    params.soknadId,
+    inntektStemmer === "true",
+    begrunnelse
+  );
+
+  if (postForeleggingResponse.status === "success") {
+    return redirect(`/${params.soknadId}/kvittering`);
+  }
+
+  return typedjson({ postForeleggingResponse });
+};
+
+export default function DinInntektIndex() {
   const { minsteInntektGrunnlag } = useLoaderData<typeof loader>();
 
   if (minsteInntektGrunnlag.status === "error") {
