@@ -52,6 +52,8 @@ spec:
       value: {{ unleash.server_api_url }}
     - name: FARO_URL
       value: {{faro_url}}
+    - name: DP_SOKNAD_ORKESTRATOR_URL
+      value: {{ dp_soknad_orkestrator_url }}
 
   ingresses:
     {{#each ingresses as |url|}}
