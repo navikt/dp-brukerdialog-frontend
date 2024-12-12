@@ -1,5 +1,6 @@
 import { InformationSquareIcon, PaperplaneIcon } from "@navikt/aksel-icons";
 import {
+  Alert,
   BodyLong,
   Button,
   ExpansionCard,
@@ -9,14 +10,16 @@ import {
   ReadMore,
   Textarea,
 } from "@navikt/ds-react";
+import { useActionData } from "@remix-run/react";
 import { ValidatedForm } from "@rvf/remix";
 import { useState } from "react";
-import { validator } from "~/routes/$soknadId._index";
+import { action, validator } from "~/routes/$soknadId._index";
 import styles from "./inntektSkjema.module.css";
 
 export function InntektSkjema() {
   const [shouldShow, setShouldShow] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
+  const data = useActionData<typeof action>();
 
   function handleStemmerInntekt(val: string) {
     setShouldShow(val === "false");
@@ -101,6 +104,12 @@ export function InntektSkjema() {
               </BodyLong>
             </ExpansionCard.Content>
           </ExpansionCard>
+
+          {data?.postForeleggingResponse?.status === "error" && (
+            <Alert variant="error" className="mt-8">
+              {data.postForeleggingResponse.error?.statusText}
+            </Alert>
+          )}
 
           <Button
             className="mt-14"
