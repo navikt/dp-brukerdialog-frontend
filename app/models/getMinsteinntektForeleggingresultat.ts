@@ -1,28 +1,29 @@
-import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
-import { INetworkResponse } from "~/models/networkResponse";
+import { INetworkResponse } from "./networkResponse";
+import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 
-export async function postMinsteinntektForeleggingresultat(
+interface IForeleggingResultat {
+  søknadId: string;
+  bekreftet: boolean;
+  begrunnelse: string;
+}
+
+export async function getMinsteinntektForeleggingresultat(
   request: Request,
-  soknadId: string,
-  bekreftet: boolean,
-  begrunnelse: string
-): Promise<INetworkResponse<{}>> {
+  soknadId: string
+): Promise<INetworkResponse<IForeleggingResultat>> {
   const url = `${getEnv(
     "DP_SOKNAD_ORKESTRATOR_URL"
   )}/inntekt/${soknadId}/minsteinntektGrunnlag/foreleggingresultat`;
   const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
 
-  const body = JSON.stringify({ søknadId: soknadId, bekreftet, begrunnelse });
-
   const response = await fetch(url, {
-    method: "POST",
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
       Authorization: `Bearer ${onBehalfOfToken}`,
     },
-    body,
   });
 
   if (!response.ok) {
@@ -30,13 +31,15 @@ export async function postMinsteinntektForeleggingresultat(
       status: "error",
       error: {
         statusCode: response.status,
-        statusText: "Feil ved lagring av inntekt opplysning til soknad-orkestrator",
+        statusText: "Feil ved henting av av minste inntekt grunnlag forlegging resultat",
       },
     };
   }
 
+  const data: IForeleggingResultat = await response.json();
+
   return {
     status: "success",
-    data: {},
+    data,
   };
 }

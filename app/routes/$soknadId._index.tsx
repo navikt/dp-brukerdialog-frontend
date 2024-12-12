@@ -1,9 +1,9 @@
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { useActionData, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { validationError } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
-import { typedjson, useTypedActionData } from "remix-typedjson";
+import { typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
@@ -42,7 +42,10 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   invariant(params.soknadId, "SøknadId mangler");
 
   const data = await validator.validate(await request.formData());
-  if (data.error) return validationError(data.error);
+
+  if (data.error) {
+    return validationError(data.error);
+  }
 
   const { inntektStemmer, begrunnelse } = data.data;
 

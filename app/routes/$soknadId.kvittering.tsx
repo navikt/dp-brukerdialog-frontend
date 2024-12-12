@@ -1,6 +1,9 @@
 import { BodyLong, BodyShort, Heading } from "@navikt/ds-react";
-import { MetaFunction } from "@remix-run/node";
+import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 import { ExternalLink } from "~/components/ExternalLink";
+import { getMinsteinntektForeleggingresultat } from "~/models/getMinsteinntektForeleggingresultat";
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,7 +12,26 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function DinInntektIndex() {
+export async function loader({ params, request }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "SøknadId mangler");
+
+  const minsteinntektForeleggingresultat = await getMinsteinntektForeleggingresultat(
+    request,
+    params.soknadId
+  );
+
+  return { minsteinntektForeleggingresultat };
+}
+
+export default function Kvittering() {
+  const { minsteinntektForeleggingresultat } = useLoaderData<typeof loader>();
+
+  if (minsteinntektForeleggingresultat.status === "error") {
+    return <p>Error</p>;
+  }
+
+  const inntektIkkeStemmer = !minsteinntektForeleggingresultat.data.bekreftet ? "ikke" : "";
+
   return (
     <div className="brukerdialog">
       <Heading size="large" level={"1"}>
@@ -26,7 +48,7 @@ export default function DinInntektIndex() {
         Vi har mottatt oppgaven din om inntektsopplysninger.
         <br />
         <br />
-        Du svarte at inntekten din ikke stemmer.
+        Du svarte at inntekten din {inntektIkkeStemmer} stemmer.
         <br />
         <br />
         Du vil få svar på søknaden og beskjed når oppgaven er behandlet hos Nav.
