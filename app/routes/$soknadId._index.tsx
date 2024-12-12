@@ -1,8 +1,9 @@
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { validationError } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
+import { useEffect } from "react";
 import { typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { z } from "zod";
@@ -83,6 +84,20 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function DinInntektIndex() {
   const { minsteInntektGrunnlag } = useLoaderData<typeof loader>();
+  const [searchParams] = useSearchParams();
+  const pdfModus = searchParams.get("pdf") === "true";
+
+  useEffect(() => {
+    if (pdfModus) {
+      const header = document.getElementById("decorator-header");
+      const footer = document.getElementById("decorator-footer");
+
+      if (header && footer) {
+        header.style.display = "none";
+        footer.style.display = "none";
+      }
+    }
+  }, []);
 
   if (minsteInntektGrunnlag.status === "error") {
     return "Det skjedde en feil ved henting av inntekt";
@@ -99,8 +114,8 @@ export default function DinInntektIndex() {
           Vi trenger at du sjekker innteksopplysningene vi har hentet om deg.
         </BodyLong>
 
-        <Inntekt minsteInntektGrunnlag={minsteInntektGrunnlag.data} />
-        <InntektSkjema />
+        <Inntekt minsteInntektGrunnlag={minsteInntektGrunnlag.data} defaultOpen={pdfModus} />
+        <InntektSkjema defaultOpen={pdfModus} />
       </div>
     </div>
   );
