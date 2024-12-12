@@ -64,10 +64,10 @@ spec:
         - host: www.nav.no
         - host: dekoratoren.dev.nav.no
         - host: dagpenger-unleash-api.nav.cloud.nais.io
-        - application: dp-soknad-orkestrator
       rules:
         - application: nav-dekoratoren
           namespace: personbruker
+        - application: dp-soknad-orkestrator
   idporten:
     enabled: true
     sidecar:
