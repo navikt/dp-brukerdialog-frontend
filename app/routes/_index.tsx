@@ -2,7 +2,7 @@ import { redirect, type LoaderFunctionArgs } from "@remix-run/node";
 import { getEnv } from "~/utils/env.utils";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const prod = getEnv("APP_ENV") === "production";
+  const prod = getEnv("APP_ENV") === "prod";
 
   if (prod) {
     return redirect("/prepod");
