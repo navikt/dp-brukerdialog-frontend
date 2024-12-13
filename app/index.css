@@ -10,6 +10,17 @@
   margin: 0 auto;
 }
 
+.preprod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
 .card {
   padding: var(--a-spacing-8);
   background-color: var(--a-gray-100);
