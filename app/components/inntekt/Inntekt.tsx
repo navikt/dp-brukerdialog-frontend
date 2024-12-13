@@ -36,7 +36,7 @@ export function Inntekt({ minsteInntektGrunnlag, defaultOpen }: IProps) {
         <strong>{minsteInntektGrunnlag.siste12mnd} kroner</strong>
       </BodyLong>
       <BodyLong spacing>
-        Inntekt siste 12 måneder fra {formattedDate(lastThreeYears)} til {formattedDate(now)} <br />
+        Inntekt siste 36 måneder fra {formattedDate(lastThreeYears)} til {formattedDate(now)} <br />
         <strong>{minsteInntektGrunnlag.siste36mnd} kroner</strong>.
       </BodyLong>
       <div className={styles.verticalLine} aria-hidden />
