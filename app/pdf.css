@@ -7,3 +7,8 @@ body {
   background-color: var(--a-purple-100);
   border: none;
 }
+
+.readmore--pdf > .navds-read-more__content,
+.expansion-card--pdf > .navds-expansioncard__content {
+  display: block;
+}
