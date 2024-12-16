@@ -6,10 +6,9 @@ import styles from "./inntekt.module.css";
 
 interface IProps {
   minsteInntektGrunnlag: IMinsteInntektGrunnlag;
-  defaultOpen?: boolean;
 }
 
-export function Inntekt({ minsteInntektGrunnlag, defaultOpen }: IProps) {
+export function Inntekt({ minsteInntektGrunnlag }: IProps) {
   const now = new Date();
   const lastYear = subYears(now, 1);
   const lastThreeYears = subYears(now, 3);
@@ -40,7 +39,7 @@ export function Inntekt({ minsteInntektGrunnlag, defaultOpen }: IProps) {
         <strong>{minsteInntektGrunnlag.siste36mnd} kroner</strong>.
       </BodyLong>
       <div className={styles.verticalLine} aria-hidden />
-      <ReadMore header="Hvilke inntekter gir rett til dagpenger?" defaultOpen={defaultOpen}>
+      <ReadMore header="Hvilke inntekter gir rett til dagpenger?">
         <p>
           Vi bruker <strong>disse inntektene</strong> for å finne ut om du har rett til dagpenger:
         </p>

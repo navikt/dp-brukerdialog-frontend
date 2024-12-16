@@ -1,9 +1,9 @@
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { useLoaderData, useSearchParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { validationError } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { z } from "zod";
@@ -12,11 +12,9 @@ import { Inntekt } from "~/components/inntekt/Inntekt";
 import { getMinsteinntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
 import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat";
 
+const pageTitle = "Brukerdialog - Din inntekt";
 export const meta: MetaFunction = () => {
-  return [
-    { title: "Brukerdialog - Din inntekt kvittering" },
-    { name: "description", content: "Brukerdialog - Din inntekt kvittering" },
-  ];
+  return [{ title: pageTitle }, { name: "description", content: pageTitle }];
 };
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -84,39 +82,35 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
 export default function DinInntektIndex() {
   const { minsteInntektGrunnlag } = useLoaderData<typeof loader>();
-  const [searchParams] = useSearchParams();
-  const pdfModus = searchParams.get("pdf") === "true";
-
-  useEffect(() => {
-    if (pdfModus) {
-      const header = document.getElementById("decorator-header");
-      const footer = document.getElementById("decorator-footer");
-
-      if (header && footer) {
-        header.style.display = "none";
-        footer.style.display = "none";
-      }
-    }
-  }, []);
+  const appRef = useRef<HTMLDivElement>(null);
 
   if (minsteInntektGrunnlag.status === "error") {
     return "Det skjedde en feil ved henting av inntekt";
   }
 
+  useEffect(() => {
+    if (appRef.current) {
+      const styling = `body {padding: 4rem; 5rem;} .navds-body-long.navds-typo--spacing { margin-top: 2rem; } .mt-4 { margin-top: 4rem; } .mt-14 { margin-top: 14rem; } .mt-4 { margin-top: 4rem; } .mt-8 { margin-top: 8rem; } .mb-4 { margin-bottom: 4rem; }`;
+      const body = appRef.current.innerHTML;
+      const css = `<link rel="stylesheet" href="https://cdn.nav.no/aksel/@navikt/ds-css/2.9.0/index.min.css">`;
+      const html = `<!DOCTYPE html><html><head><title>${pageTitle}</title>${css}<style>${styling}</style></head><body>${body}</body></html>`;
+
+      console.log(html);
+    }
+  }, []);
+
   return (
-    <div className="brukerdialog">
-      <div className="brukerdialog">
-        <Heading size="large" level={"1"} id="header-icon">
-          Din inntekt
-        </Heading>
+    <div className="brukerdialog" ref={appRef}>
+      <Heading size="large" level={"1"} id="header-icon">
+        Din inntekt
+      </Heading>
 
-        <BodyLong spacing className="mt-4">
-          Vi trenger at du sjekker innteksopplysningene vi har hentet om deg.
-        </BodyLong>
+      <BodyLong spacing className="mt-4">
+        Vi trenger at du sjekker innteksopplysningene vi har hentet om deg.
+      </BodyLong>
 
-        <Inntekt minsteInntektGrunnlag={minsteInntektGrunnlag.data} defaultOpen={pdfModus} />
-        <InntektSkjema defaultOpen={pdfModus} />
-      </div>
+      <Inntekt minsteInntektGrunnlag={minsteInntektGrunnlag.data} />
+      <InntektSkjema />
     </div>
   );
 }

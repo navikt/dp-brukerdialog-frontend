@@ -6,8 +6,11 @@
 #maincontent {
   max-width: var(--app-max-width);
   min-height: var(--app-min-height);
+  margin: var(--a-spacing-4) auto;
+}
+
+.brukerdialog {
   padding: var(--a-spacing-16) var(--a-spacing-4);
-  margin: 0 auto;
 }
 
 .preprod {
@@ -54,10 +57,4 @@
 :where(.navds-expansioncard__header):hover + .navds-expansioncard__content,
 .navds-expansioncard__header:hover {
   box-shadow: none;
-}
-
-@media (min-width: 768px) {
-  #maincontent {
-    padding: var(--a-spacing-16) var(--a-spacing-4);
-  }
 }

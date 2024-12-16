@@ -16,11 +16,9 @@ import { useState } from "react";
 import { action, validator } from "~/routes/$soknadId._index";
 import styles from "./inntektSkjema.module.css";
 
-interface IProps {
-  defaultOpen?: boolean;
-}
+import indexStyles from ".module.css";
 
-export function InntektSkjema({ defaultOpen }: IProps) {
+export function InntektSkjema() {
   const [shouldShow, setShouldShow] = useState(false);
   const data = useActionData<typeof action>();
 
@@ -85,11 +83,7 @@ export function InntektSkjema({ defaultOpen }: IProps) {
           )}
         </div>
 
-        <ExpansionCard
-          aria-label="Demo med ikon"
-          className={styles.expansionCard}
-          defaultOpen={defaultOpen}
-        >
+        <ExpansionCard aria-label="Demo med ikon" className={styles.expansionCard}>
           <ExpansionCard.Header>
             <HStack wrap={false} gap="4" align="center">
               <div aria-hidden>
