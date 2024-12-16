@@ -1,0 +1,9 @@
+body {
+  max-width: 760px;
+  margin: 4rem auto;
+}
+
+.expansion-card--pdf {
+  background-color: var(--a-purple-100);
+  border: none;
+}

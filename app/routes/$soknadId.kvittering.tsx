@@ -3,7 +3,7 @@ import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { ExternalLink } from "~/components/ExternalLink";
-import { getMinsteinntektForeleggingresultat } from "~/models/getMinsteinntektForeleggingresultat";
+import { getMinsteinntektForeleggingresultat } from "~/models/getMinsteinntektForeleggingresultat.server";
 
 export const meta: MetaFunction = () => {
   return [

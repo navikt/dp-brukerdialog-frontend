@@ -8,6 +8,7 @@ import {
   Radio,
   RadioGroup,
   ReadMore,
+  Tag,
   Textarea,
 } from "@navikt/ds-react";
 import { Form, useActionData } from "@remix-run/react";
@@ -15,10 +16,13 @@ import { useForm } from "@rvf/remix";
 import { useState } from "react";
 import { action, validator } from "~/routes/$soknadId._index";
 import styles from "./inntektSkjema.module.css";
+import classNames from "classnames";
 
-import indexStyles from ".module.css";
+interface IProps {
+  htmlPdf: string;
+}
 
-export function InntektSkjema() {
+export function InntektSkjema({ htmlPdf }: IProps) {
   const [shouldShow, setShouldShow] = useState(false);
   const data = useActionData<typeof action>();
 
@@ -50,7 +54,7 @@ export function InntektSkjema() {
             <Radio value="false">Nei</Radio>
           </RadioGroup>
 
-          <ReadMore header="Hva gjør du hvis inntekten din ikke stemmer?">
+          <ReadMore header="Hva gjør du hvis inntekten din ikke stemmer?" className="readmore--pdf">
             Hvis opplysningene om inntekten din ikke stemmer, må du ta kontakt med arbeidsgiveren
             din. Arbeidsgiver sender hver måned opplysninger om inntekten din til Skatteetaten. Det
             er bare arbeidsgiver, som har rapportert inntektsopplysningene, som kan gjøre endringer
@@ -83,7 +87,10 @@ export function InntektSkjema() {
           )}
         </div>
 
-        <ExpansionCard aria-label="Demo med ikon" className={styles.expansionCard}>
+        <ExpansionCard
+          aria-label="Demo med ikon"
+          className={classNames(styles.expansionCard, "expansion-card--pdf")}
+        >
           <ExpansionCard.Header>
             <HStack wrap={false} gap="4" align="center">
               <div aria-hidden>
@@ -109,6 +116,8 @@ export function InntektSkjema() {
           </ExpansionCard.Content>
         </ExpansionCard>
 
+        <input type="hidden" name="pdf" value={htmlPdf} />
+
         {data?.postForeleggingResponse?.status === "error" && (
           <Alert variant="error" className="mt-8">
             {data.postForeleggingResponse.error?.statusText}
@@ -125,6 +134,19 @@ export function InntektSkjema() {
         >
           Send inn
         </Button>
+
+        <div className="iframe--container">
+          <Tag variant="warning" className="iframe--title">
+            PDF preview
+          </Tag>
+          <iframe
+            src="https://www.w3schools.com"
+            title="W3Schools Free Online Web Tutorials"
+            srcDoc={htmlPdf}
+            className="iframe"
+            scrolling="no"
+          />
+        </div>
       </div>
     </Form>
   );

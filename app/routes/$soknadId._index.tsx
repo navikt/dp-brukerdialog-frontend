@@ -3,14 +3,18 @@ import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "
 import { useLoaderData } from "@remix-run/react";
 import { validationError } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
 import { Inntekt } from "~/components/inntekt/Inntekt";
 import { getMinsteinntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
-import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat";
+import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat.server";
+
+import indexCss from "~/index.css?inline";
+import pdfCss from "~/pdf.css?inline";
+import { journalforPdf } from "~/models/journalforPdf.server";
 
 const pageTitle = "Brukerdialog - Din inntekt";
 export const meta: MetaFunction = () => {
@@ -33,6 +37,7 @@ export const validator = withZod(
       }),
       begrunnelse: z.string().optional(),
       vilSendeDokumentasjon: z.enum(["true", "false"]).optional(),
+      pdf: z.string(),
     })
     .superRefine((data, ctx) => {
       const { inntektStemmer, begrunnelse, vilSendeDokumentasjon } = data;
@@ -64,7 +69,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     return validationError(data.error);
   }
 
-  const { inntektStemmer, begrunnelse } = data.data;
+  const { inntektStemmer, begrunnelse, pdf } = data.data;
 
   const postForeleggingResponse = await postMinsteinntektForeleggingresultat(
     request,
@@ -73,7 +78,9 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     begrunnelse || ""
   );
 
-  if (postForeleggingResponse.status === "success") {
+  const pdfResponse = await journalforPdf(request, params.soknadId, pdf);
+
+  if (postForeleggingResponse.status === "success" && pdfResponse.status === "success") {
     return redirect(`/${params.soknadId}/kvittering`);
   }
 
@@ -83,6 +90,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 export default function DinInntektIndex() {
   const { minsteInntektGrunnlag } = useLoaderData<typeof loader>();
   const appRef = useRef<HTMLDivElement>(null);
+  const [htmlPdf, setHtmlPdf] = useState("");
 
   if (minsteInntektGrunnlag.status === "error") {
     return "Det skjedde en feil ved henting av inntekt";
@@ -90,12 +98,10 @@ export default function DinInntektIndex() {
 
   useEffect(() => {
     if (appRef.current) {
-      const styling = `body {padding: 4rem; 5rem;} .navds-body-long.navds-typo--spacing { margin-top: 2rem; } .mt-4 { margin-top: 4rem; } .mt-14 { margin-top: 14rem; } .mt-4 { margin-top: 4rem; } .mt-8 { margin-top: 8rem; } .mb-4 { margin-bottom: 4rem; }`;
       const body = appRef.current.innerHTML;
-      const css = `<link rel="stylesheet" href="https://cdn.nav.no/aksel/@navikt/ds-css/2.9.0/index.min.css">`;
-      const html = `<!DOCTYPE html><html><head><title>${pageTitle}</title>${css}<style>${styling}</style></head><body>${body}</body></html>`;
+      const html = `<!DOCTYPE html><html><head><title>${pageTitle}</title><style>${indexCss} ${pdfCss}</style></head><body>${body}</body></html>`;
 
-      console.log(html);
+      setHtmlPdf(html);
     }
   }, []);
 
@@ -110,7 +116,7 @@ export default function DinInntektIndex() {
       </BodyLong>
 
       <Inntekt minsteInntektGrunnlag={minsteInntektGrunnlag.data} />
-      <InntektSkjema />
+      <InntektSkjema htmlPdf={htmlPdf} />
     </div>
   );
 }

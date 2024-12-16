@@ -39,7 +39,7 @@ export function Inntekt({ minsteInntektGrunnlag }: IProps) {
         <strong>{minsteInntektGrunnlag.siste36mnd} kroner</strong>.
       </BodyLong>
       <div className={styles.verticalLine} aria-hidden />
-      <ReadMore header="Hvilke inntekter gir rett til dagpenger?">
+      <ReadMore header="Hvilke inntekter gir rett til dagpenger?" className="readmore--pdf">
         <p>
           Vi bruker <strong>disse inntektene</strong> for å finne ut om du har rett til dagpenger:
         </p>
