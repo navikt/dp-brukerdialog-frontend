@@ -5,10 +5,15 @@ import { typedjson, useTypedRouteLoaderData } from "remix-typedjson";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDecoratorHTML } from "./models/decorator.server";
 import { getEnv } from "./utils/env.utils";
-import indexStyles from "./index.css?url";
 import { logger } from "./utils/logger.utils";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: indexStyles }];
+import akselStyles from "@navikt/ds-css/dist/index.css?url";
+import indexStyles from "./index.css?url";
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: akselStyles },
+  { rel: "stylesheet", href: indexStyles },
+];
 
 export async function loader() {
   const decoratorFragments = await getDecoratorHTML();

@@ -13,18 +13,17 @@ import {
 } from "@navikt/ds-react";
 import { Form, useActionData } from "@remix-run/react";
 import { useForm } from "@rvf/remix";
+import classNames from "classnames";
 import { useState } from "react";
 import { action, validator } from "~/routes/$soknadId._index";
+import { getJouralforHtml as getJouralforingPdfHtml } from "~/utils/journalfor.utils";
+
 import styles from "./inntektSkjema.module.css";
-import classNames from "classnames";
 
-interface IProps {
-  htmlPdf: string;
-}
-
-export function InntektSkjema({ htmlPdf }: IProps) {
+export function InntektSkjema() {
   const [shouldShow, setShouldShow] = useState(false);
   const data = useActionData<typeof action>();
+  const [pdfHtml, setPdfHtml] = useState<string | undefined>();
 
   function handleStemmerInntekt(val: string) {
     setShouldShow(val === "false");
@@ -39,6 +38,14 @@ export function InntektSkjema({ htmlPdf }: IProps) {
       whenSubmitted: "onSubmit",
     },
   });
+
+  function handleOnClick() {
+    const journalforingPdfHtml = getJouralforingPdfHtml();
+
+    setPdfHtml(journalforingPdfHtml);
+
+    form.submit();
+  }
 
   return (
     <Form {...form.getFormProps()}>
@@ -116,7 +123,7 @@ export function InntektSkjema({ htmlPdf }: IProps) {
           </ExpansionCard.Content>
         </ExpansionCard>
 
-        <input type="hidden" name="pdf" value={htmlPdf} />
+        {pdfHtml && <input type="hidden" name="pdf" value={pdfHtml} />}
 
         {data?.postForeleggingResponse?.status === "error" && (
           <Alert variant="error" className="mt-8">
@@ -127,26 +134,29 @@ export function InntektSkjema({ htmlPdf }: IProps) {
         <Button
           className="mt-14"
           variant="primary"
-          type="submit"
+          type="button"
           icon={<PaperplaneIcon />}
           loading={form.formState.isSubmitting}
           iconPosition="right"
+          onClick={handleOnClick}
         >
           Send inn
         </Button>
 
-        <div className="iframe--container">
-          <Tag variant="warning" className="iframe--title">
-            PDF preview
-          </Tag>
-          <iframe
-            src="https://www.w3schools.com"
-            title="W3Schools Free Online Web Tutorials"
-            srcDoc={htmlPdf}
-            className="iframe"
-            scrolling="no"
-          />
-        </div>
+        {pdfHtml && (
+          <div className="iframe--container">
+            <Tag variant="warning" className="iframe--title">
+              PDF preview
+            </Tag>
+            <iframe
+              src="https://www.w3schools.com"
+              title="W3Schools Free Online Web Tutorials"
+              srcDoc={pdfHtml}
+              className="iframe"
+              scrolling="no"
+            />
+          </div>
+        )}
       </div>
     </Form>
   );

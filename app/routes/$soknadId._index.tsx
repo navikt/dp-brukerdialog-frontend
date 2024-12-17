@@ -3,7 +3,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "
 import { useLoaderData } from "@remix-run/react";
 import { validationError } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { z } from "zod";
@@ -12,13 +12,13 @@ import { Inntekt } from "~/components/inntekt/Inntekt";
 import { getMinsteinntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
 import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat.server";
 
-import indexCss from "~/index.css?inline";
-import pdfCss from "~/pdf.css?inline";
 import { journalforPdf } from "~/models/journalforPdf.server";
 
-const pageTitle = "Brukerdialog - Din inntekt";
 export const meta: MetaFunction = () => {
-  return [{ title: pageTitle }, { name: "description", content: pageTitle }];
+  return [
+    { title: "Brukerdialog - Din inntekt" },
+    { name: "description", content: "Brukerdialog - Din inntekt" },
+  ];
 };
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -90,23 +90,13 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 export default function DinInntektIndex() {
   const { minsteInntektGrunnlag } = useLoaderData<typeof loader>();
   const appRef = useRef<HTMLDivElement>(null);
-  const [htmlPdf, setHtmlPdf] = useState("");
 
   if (minsteInntektGrunnlag.status === "error") {
     return "Det skjedde en feil ved henting av inntekt";
   }
 
-  useEffect(() => {
-    if (appRef.current) {
-      const body = appRef.current.innerHTML;
-      const html = `<!DOCTYPE html><html><head><title>${pageTitle}</title><style>${indexCss} ${pdfCss}</style></head><body>${body}</body></html>`;
-
-      setHtmlPdf(html);
-    }
-  }, []);
-
   return (
-    <div className="brukerdialog" ref={appRef}>
+    <div className="brukerdialog" ref={appRef} id="brukerdialog">
       <Heading size="large" level={"1"} id="header-icon">
         Din inntekt
       </Heading>
@@ -116,7 +106,7 @@ export default function DinInntektIndex() {
       </BodyLong>
 
       <Inntekt minsteInntektGrunnlag={minsteInntektGrunnlag.data} />
-      <InntektSkjema htmlPdf={htmlPdf} />
+      <InntektSkjema />
     </div>
   );
 }
