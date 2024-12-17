@@ -1,8 +1,6 @@
-import indexCss from "~/aksel.css?inline";
-import akselCss from "~/aksel.css?inline";
-import pdfCss from "~/pdf.css?inline";
+import journalforingCss from "~/journalforing.css?inline";
 
-export function getJouralforHtml() {
+export function getJouralforingPdfHtml() {
   const mainContent = document.getElementById("maincontent");
 
   if (mainContent) {
@@ -36,7 +34,7 @@ export function getJouralforHtml() {
     // Get the inner HTML of the cloned #maincontent element
     // Set the inner HTML of the cloned element to the state
     const body = clonedMainContent.innerHTML;
-    const html = `<!DOCTYPE html><html><head><title>Brukerdialog - Din inntekt</title><style>${akselCss} ${indexCss} ${pdfCss}</style></head><body>${body}</body></html>`;
+    const html = `<!DOCTYPE html><html><head><title>Brukerdialog - Din inntekt</title><style>${journalforingCss}</style></head><body>${body}</body></html>`;
 
     return html;
   }

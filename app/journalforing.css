@@ -1,0 +1,93 @@
+:root {
+  --pdf-border-radius-4: 4px;
+  --pdf-border-radius-16: 15px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 760px;
+  margin: 2rem auto;
+}
+
+.mt-4 {
+  margin-top: calc(4rem / 3);
+}
+
+.mt-14 {
+  margin-top: calc(14rem / 3);
+}
+
+.navds-tag {
+  color: white;
+  padding: 0.4rem 0.5rem;
+  background-color: #525962;
+  border-radius: var(--pdf-border-radius-4);
+}
+
+.navds-read-more__button {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #0067c5;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.navds-read-more__content {
+  padding-left: 1rem;
+  border-left: 2px solid #071a3636;
+  margin-bottom: 1rem;
+}
+
+.navds-error-message {
+  display: none;
+}
+
+textarea {
+  resize: none;
+  width: 97.5%;
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.3rem;
+}
+
+.card {
+  padding: 2rem;
+  background-color: #eceef0;
+  margin-bottom: 2rem;
+  border-radius: var(--pdf-border-radius-16);
+}
+
+fieldset {
+  border: 0;
+  padding: 0.5rem 0;
+}
+
+.navds-fieldset__legend {
+  font-weight: bold;
+}
+
+.navds-button--primary {
+  background-color: #0067c5;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 3px;
+  font-size: 1.2rem;
+  font-weight: semibold;
+}
+
+.expansion-card--pdf {
+  background-color: #e0d8e9;
+  border-radius: var(--pdf-border-radius-16);
+  padding: 2rem;
+}
+
+.navds-expansioncard__header-button {
+  display: none;
+}
+
+.iframe--container {
+  display: none;
+}

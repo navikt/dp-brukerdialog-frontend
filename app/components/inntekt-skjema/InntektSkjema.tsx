@@ -16,7 +16,7 @@ import { useForm } from "@rvf/remix";
 import classNames from "classnames";
 import { useState } from "react";
 import { action, validator } from "~/routes/$soknadId._index";
-import { getJouralforHtml as getJouralforingPdfHtml } from "~/utils/journalfor.utils";
+import { getJouralforingPdfHtml } from "~/utils/journalforing.utils";
 
 import styles from "./inntektSkjema.module.css";
 
@@ -43,6 +43,8 @@ export function InntektSkjema() {
     const journalforingPdfHtml = getJouralforingPdfHtml();
 
     setPdfHtml(journalforingPdfHtml);
+
+    console.log(`🔥 journalforingPdfHtml :`, journalforingPdfHtml);
 
     form.submit();
   }
