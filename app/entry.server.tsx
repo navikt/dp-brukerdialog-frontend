@@ -13,8 +13,33 @@ import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { logger } from "./utils/logger.utils";
 import { faro } from "@grafana/faro-web-sdk";
+import { getEnv } from "./utils/env.utils";
 
 const ABORT_DELAY = 5_000;
+
+const csp = {
+  "script-src": ["blob:"],
+  "img-src": [
+    "'self'",
+    "data:",
+    "blob:",
+    "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/",
+  ],
+  "connect-src": [
+    "'self'",
+    "*.nav.no",
+    "rt6o382n.api.sanity.io",
+    "rt6o382n.apicdn.sanity.io",
+    "https://telemetry.ekstern.dev.nav.no/collect",
+    "https://telemetry.nav.no/collect",
+  ],
+};
+let cspString = `connect-src ${csp["connect-src"].join(" ")}; img-src ${csp["img-src"].join(" ")};`;
+
+if (getEnv("IS_LOCALHOST") === "true") {
+  cspString =
+    "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * blob: 'unsafe-inline' 'unsafe-eval'; connect-src * blob: 'unsafe-inline'; img-src * 'self' blob: data:; frame-src * data: blob:; style-src * 'unsafe-inline';";
+}
 
 export default function handleRequest(
   request: Request,
@@ -48,6 +73,7 @@ function handleBotRequest(
           const stream = createReadableStreamFromReadable(body);
 
           responseHeaders.set("Content-Type", "text/html");
+          responseHeaders.set("Content-Security-Policy", cspString);
 
           resolve(
             new Response(stream, {

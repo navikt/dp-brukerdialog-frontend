@@ -51,7 +51,7 @@ spec:
     - name: UNLEASH_SERVER_API_URL
       value: {{ unleash.server_api_url }}
     - name: FARO_URL
-      value: {{faro_url}}
+      value: {{ faro_url }}
     - name: DP_SOKNAD_ORKESTRATOR_URL
       value: {{ dp_soknad_orkestrator_url }}
 

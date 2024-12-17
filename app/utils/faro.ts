@@ -9,7 +9,7 @@ export function initFaro() {
     return;
   }
 
-  return initializeFaro({
+  faro = initializeFaro({
     paused: getEnv("IS_LOCALHOST") === "true",
     url: getEnv("FARO_URL"),
     app: {
@@ -20,14 +20,10 @@ export function initFaro() {
       persistent: true,
     },
     instrumentations: [
-      ...getWebInstrumentations({ captureConsole: true, captureConsoleDisabledLevels: [] }),
-
-      new TracingInstrumentation({
-        instrumentationOptions: {
-          // Requests to these URLs have tracing headers attached.
-          propagateTraceHeaderCorsUrls: [new RegExp(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/*`)],
-        },
+      ...getWebInstrumentations({
+        captureConsole: true,
       }),
+      new TracingInstrumentation(),
     ],
   });
 }

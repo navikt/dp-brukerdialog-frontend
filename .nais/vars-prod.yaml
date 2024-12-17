@@ -11,5 +11,5 @@ sanity_dataset: production
 unleash:
   server_api_url: https://dagpenger-unleash-api.nav.cloud.nais.io/api
   environment: production
-faro_url: "https://telemetry.nav.no/collect"
+faro_url: https://telemetry.nav.no/collect
 dp_soknad_orkestrator_url: https://dp-soknad-orkestrator.intern.dev.nav.no
