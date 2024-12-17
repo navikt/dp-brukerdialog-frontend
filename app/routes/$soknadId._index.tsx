@@ -25,8 +25,6 @@ export const meta: MetaFunction = () => {
 export async function loader({ params, request }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadId mangler");
 
-  logger.error("Test faro and logger Error");
-
   const minsteInntektGrunnlag = await getMinsteinntektGrunnlag(request, params.soknadId);
 
   return { minsteInntektGrunnlag };
