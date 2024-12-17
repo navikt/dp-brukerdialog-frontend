@@ -13,7 +13,9 @@ export function getJouralforingPdfHtml() {
     // Sync values of form inputs to ensure they reflect the current state
     formElements.forEach((input) => {
       if (input instanceof HTMLInputElement) {
-        if (input.type === "hidden") return;
+        if (input.type === "hidden") {
+          input.value = "";
+        }
         // For <input> elements (checkboxes, radio buttons, text inputs)
         if (input.type === "checkbox" || input.type === "radio") {
           // Handle checkboxes and radio buttons
@@ -36,6 +38,7 @@ export function getJouralforingPdfHtml() {
     const body = clonedMainContent.innerHTML;
     const html = `<!DOCTYPE html><html><head><title>Brukerdialog - Din inntekt</title><style>${journalforingCss}</style></head><body>${body}</body></html>`;
 
-    return html;
+    // Remove all &nbsp; from the HTML
+    return html.replace(/&nbsp;/g, " ");
   }
 }
