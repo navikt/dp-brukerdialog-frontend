@@ -3,6 +3,7 @@ import { Tag } from "@navikt/ds-react/Tag";
 import { subYears } from "date-fns";
 import { IMinsteInntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
 import styles from "./inntekt.module.css";
+import classNames from "classnames";
 
 interface IProps {
   minsteInntektGrunnlag: IMinsteInntektGrunnlag;
@@ -24,7 +25,7 @@ export function Inntekt({ minsteInntektGrunnlag }: IProps) {
 
   return (
     <div className="card">
-      <Tag variant="neutral-filled" className={styles.tag}>
+      <Tag variant="neutral-filled" className={classNames(styles.tag, "tag--pdf")}>
         Hentet fra Skatteetaten
       </Tag>
       <Heading size="medium" level={"2"} spacing>

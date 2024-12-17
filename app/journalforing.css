@@ -17,14 +17,14 @@ body {
   margin-top: calc(14rem / 3);
 }
 
-.navds-tag {
+.tag--pdf {
   color: white;
   padding: 0.4rem 0.5rem;
   background-color: #525962;
   border-radius: var(--pdf-border-radius-4);
 }
 
-.navds-read-more__button {
+.readmore--pdf > button {
   border: 0;
   padding: 0;
   background-color: transparent;
@@ -34,7 +34,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.navds-read-more__content {
+.readmore--pdf > div {
   padding-left: 1rem;
   border-left: 2px solid #071a3636;
   margin-bottom: 1rem;
@@ -49,7 +49,10 @@ textarea {
   width: 97.5%;
   display: block;
   margin-top: 0.5rem;
-  padding: 0.3rem;
+  padding: 0.4rem;
+  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-se;
+  border-radius: var(--pdf-border-radius-4);
 }
 
 .card {
@@ -64,18 +67,19 @@ fieldset {
   padding: 0.5rem 0;
 }
 
-.navds-fieldset__legend {
+fieldset > legend,
+.navds-label {
   font-weight: bold;
 }
 
-.navds-button--primary {
+.sendinn-button--pdf {
   background-color: #0067c5;
   color: #ffffff;
   padding: 0.5rem 1rem;
   border: 0;
   border-radius: 3px;
   font-size: 1.2rem;
-  font-weight: semibold;
+  font-weight: bold;
 }
 
 .expansion-card--pdf {
@@ -84,7 +88,7 @@ fieldset {
   padding: 2rem;
 }
 
-.navds-expansioncard__header-button {
+.expansion-card--pdf button {
   display: none;
 }
 

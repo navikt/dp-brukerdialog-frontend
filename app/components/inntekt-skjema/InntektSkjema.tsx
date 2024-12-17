@@ -134,7 +134,7 @@ export function InntektSkjema() {
         )}
 
         <Button
-          className="mt-14"
+          className="mt-14 sendinn-button--pdf"
           variant="primary"
           type="button"
           icon={<PaperplaneIcon />}
