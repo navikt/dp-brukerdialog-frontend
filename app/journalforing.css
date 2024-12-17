@@ -1,8 +1,3 @@
-:root {
-  --pdf-border-radius-4: 4px;
-  --pdf-border-radius-16: 15px;
-}
-
 body {
   font-family: Arial, Helvetica, sans-serif;
   max-width: 760px;
@@ -21,7 +16,7 @@ body {
   color: white;
   padding: 0.4rem 0.5rem;
   background-color: #525962;
-  border-radius: var(--pdf-border-radius-4);
+  border-radius: 4px;
 }
 
 .readmore--pdf > button {
@@ -59,7 +54,7 @@ textarea {
   padding: 2rem;
   background-color: #eceef0;
   margin-bottom: 2rem;
-  border-radius: var(--pdf-border-radius-16);
+  border-radius: 15px;
 }
 
 fieldset {
@@ -84,7 +79,7 @@ fieldset > legend,
 
 .expansion-card--pdf {
   background-color: #e0d8e9;
-  border-radius: var(--pdf-border-radius-16);
+  border-radius: 15px;
   padding: 2rem;
 }
 
