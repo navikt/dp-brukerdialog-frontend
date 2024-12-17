@@ -27,7 +27,7 @@
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "html-react-parser": "^5.2.1",
-    "isbot": "^5.1.17",
+    "isbot": "^5.1.18",
     "pino": "^9.5.0",
     "pino-pretty": "^13.0.0",
     "prom-client": "^15.1.3",
