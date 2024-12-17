@@ -9,8 +9,11 @@ export function initFaro() {
     return;
   }
 
+  if (getEnv("IS_LOCALHOST") === "true") {
+    return;
+  }
+
   faro = initializeFaro({
-    paused: getEnv("IS_LOCALHOST") === "true",
     url: getEnv("FARO_URL"),
     app: {
       name: "dp-brukerdialog-frontend",

@@ -26,9 +26,11 @@ export async function loader() {
   return typedjson({
     decoratorFragments,
     env: {
+      IS_LOCALHOST: getEnv("IS_LOCALHOST"),
       BASE_PATH: getEnv("BASE_PATH"),
       APP_ENV: getEnv("APP_ENV"),
       SANITY_DATASET: getEnv("SANITY_DATASET"),
+      FARO_URL: getEnv("FARO_URL"),
     },
   });
 }

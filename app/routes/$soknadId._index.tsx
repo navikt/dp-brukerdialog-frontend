@@ -13,6 +13,7 @@ import { getMinsteinntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.serv
 import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat.server";
 
 import { journalforPdf } from "~/models/journalforPdf.server";
+import { logger } from "~/utils/logger.utils";
 
 export const meta: MetaFunction = () => {
   return [
@@ -23,6 +24,8 @@ export const meta: MetaFunction = () => {
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadId mangler");
+
+  logger.error("Test faro and logger Error");
 
   const minsteInntektGrunnlag = await getMinsteinntektGrunnlag(request, params.soknadId);
 
