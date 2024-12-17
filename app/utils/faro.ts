@@ -25,8 +25,13 @@ export function initFaro() {
     instrumentations: [
       ...getWebInstrumentations({
         captureConsole: true,
+        captureConsoleDisabledLevels: [],
       }),
-      new TracingInstrumentation(),
+      new TracingInstrumentation({
+        instrumentationOptions: {
+          propagateTraceHeaderCorsUrls: [new RegExp(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/*`)],
+        },
+      }),
     ],
   });
 }
