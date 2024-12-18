@@ -11,9 +11,7 @@ import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
 import { Inntekt } from "~/components/inntekt/Inntekt";
 import { getMinsteinntektGrunnlag } from "~/models/getMinsteinntektGrunnlag.server";
 import { postMinsteinntektForeleggingresultat } from "~/models/postMinsteinntektForeleggingresultat.server";
-
 import { journalforPdf } from "~/models/journalforPdf.server";
-import { logger } from "~/utils/logger.utils";
 
 export const meta: MetaFunction = () => {
   return [
@@ -38,7 +36,7 @@ export const validator = withZod(
       }),
       begrunnelse: z.string().optional(),
       vilSendeDokumentasjon: z.enum(["true", "false"]).optional(),
-      pdf: z.string(),
+      pdfHTML: z.string(),
     })
     .superRefine((data, ctx) => {
       const { inntektStemmer, begrunnelse, vilSendeDokumentasjon } = data;
@@ -70,7 +68,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     return validationError(data.error);
   }
 
-  const { inntektStemmer, begrunnelse, pdf } = data.data;
+  const { inntektStemmer, begrunnelse, pdfHTML } = data.data;
 
   const postForeleggingResponse = await postMinsteinntektForeleggingresultat(
     request,
@@ -79,9 +77,9 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     begrunnelse || ""
   );
 
-  const pdfResponse = await journalforPdf(request, params.soknadId, pdf);
+  const journalforingResponse = await journalforPdf(request, params.soknadId, pdfHTML);
 
-  if (postForeleggingResponse.status === "success" && pdfResponse.status === "success") {
+  if (postForeleggingResponse.status === "success" && journalforingResponse.status === "success") {
     return redirect(`/${params.soknadId}/kvittering`);
   }
 
