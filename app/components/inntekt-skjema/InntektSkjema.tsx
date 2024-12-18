@@ -144,6 +144,21 @@ export function InntektSkjema() {
         >
           Send inn
         </Button>
+
+        {pdfHtml && (
+          <div className="iframe--container">
+            <Tag variant="warning" className="iframe--title">
+              PDF preview
+            </Tag>
+            <iframe
+              src="https://www.w3schools.com"
+              title="W3Schools Free Online Web Tutorials"
+              srcDoc={pdfHtml}
+              className="iframe"
+              scrolling="no"
+            />
+          </div>
+        )}
       </div>
     </Form>
   );
