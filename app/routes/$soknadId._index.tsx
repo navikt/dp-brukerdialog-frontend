@@ -36,7 +36,7 @@ export const validator = withZod(
       }),
       begrunnelse: z.string().optional(),
       vilSendeDokumentasjon: z.enum(["true", "false"]).optional(),
-      pdfHTML: z.string(),
+      pdfHtml: z.string(),
     })
     .superRefine((data, ctx) => {
       const { inntektStemmer, begrunnelse, vilSendeDokumentasjon } = data;
@@ -68,7 +68,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     return validationError(data.error);
   }
 
-  const { inntektStemmer, begrunnelse, pdfHTML } = data.data;
+  const { inntektStemmer, begrunnelse, pdfHtml } = data.data;
 
   const postForeleggingResponse = await postMinsteinntektForeleggingresultat(
     request,
@@ -77,7 +77,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     begrunnelse || ""
   );
 
-  const journalforingResponse = await journalforPdf(request, params.soknadId, pdfHTML);
+  const journalforingResponse = await journalforPdf(request, params.soknadId, pdfHtml);
 
   if (postForeleggingResponse.status === "success" && journalforingResponse.status === "success") {
     return redirect(`/${params.soknadId}/kvittering`);

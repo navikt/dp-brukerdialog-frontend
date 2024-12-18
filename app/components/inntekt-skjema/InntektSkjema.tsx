@@ -125,7 +125,7 @@ export function InntektSkjema() {
           </ExpansionCard.Content>
         </ExpansionCard>
 
-        {pdfHtml && <input type="hidden" name="pdfHTML" value={pdfHtml} />}
+        {pdfHtml && <input type="hidden" name="pdfHtml" value={pdfHtml} />}
 
         {data?.postForeleggingResponse?.status === "error" && (
           <Alert variant="error" className="mt-8">
