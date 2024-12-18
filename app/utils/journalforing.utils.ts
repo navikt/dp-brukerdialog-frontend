@@ -38,7 +38,6 @@ export function getJouralforingPdfHtml() {
     const body = clonedMainContent.innerHTML;
     const html = `<!DOCTYPE html><html><head><title>Brukerdialog - Din inntekt</title><style>${journalforingCss}</style></head><body>${body}</body></html>`;
 
-    // Remove all &nbsp; from the HTML
-    return html.replace(/&nbsp;/g, " ");
+    return html;
   }
 }
