@@ -21,7 +21,7 @@
     "@navikt/oasis": "^3.6.0",
     "@remix-run/node": "^2.15.0",
     "@remix-run/react": "^2.15.1",
-    "@remix-run/serve": "^2.15.0",
+    "@remix-run/serve": "^2.15.2",
     "@rvf/remix": "^6.3.0",
     "@rvf/zod": "^6.0.3",
     "classnames": "^2.5.1",
