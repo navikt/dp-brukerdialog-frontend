@@ -39,12 +39,12 @@ export default function Kvittering() {
       </Heading>
 
       <Heading size="medium" level={"2"} className="mt-4">
-        Oppgave mottatt
+        Svar på oppgave mottatt
       </Heading>
 
       <BodyShort spacing> Søknad innsendt 30.05.2024 - 12:56 </BodyShort>
 
-      <BodyLong spacing>
+      <BodyLong spacing className="mt-14">
         Vi har mottatt oppgaven din om inntektsopplysninger.
         <br />
         <br />
@@ -54,8 +54,8 @@ export default function Kvittering() {
         Du vil få svar på søknaden og beskjed når oppgaven er behandlet hos Nav.
       </BodyLong>
 
-      <ExternalLink to="ettersending" asButtonVariant="primary">
-        Send dokumentasjon
+      <ExternalLink to="ettersending" asButtonVariant="primary" className="mt-14">
+        Gå til mine dagpenger
       </ExternalLink>
     </div>
   );

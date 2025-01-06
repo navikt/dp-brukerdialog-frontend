@@ -29,7 +29,7 @@ export function Inntekt({ minsteInntektGrunnlag }: IProps) {
         Hentet fra Skatteetaten
       </Tag>
       <Heading size="medium" level={"2"} spacing>
-        Inntekt
+        Inntekter relevante for dine dagpenger
       </Heading>
       <BodyLong spacing>
         Inntekt siste 12 måneder fra {formattedDate(lastYear)} til {formattedDate(now)} <br />

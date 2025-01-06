@@ -8,7 +8,6 @@ import {
   Radio,
   RadioGroup,
   ReadMore,
-  Tag,
   Textarea,
 } from "@navikt/ds-react";
 import { Form, useActionData } from "@remix-run/react";
@@ -23,7 +22,6 @@ import styles from "./inntektSkjema.module.css";
 export function InntektSkjema() {
   const [shouldShow, setShouldShow] = useState(false);
   const data = useActionData<typeof action>();
-  const [pdfHtml, setPdfHtml] = useState<string | undefined>();
 
   function handleStemmerInntekt(val: string) {
     setShouldShow(val === "false");
@@ -42,9 +40,11 @@ export function InntektSkjema() {
   function handleOnClick() {
     const journalforingPdfHtml = getJouralforingPdfHtml();
 
-    setPdfHtml(journalforingPdfHtml);
+    const hiddenInput = document.querySelector('input[name="pdfHtml"]') as HTMLInputElement | null;
 
-    console.log(`🔥 journalforingPdfHtml :`, journalforingPdfHtml);
+    if (hiddenInput) {
+      hiddenInput.value = journalforingPdfHtml ?? "";
+    }
 
     form.submit();
   }
@@ -83,21 +83,10 @@ export function InntektSkjema() {
             />
           )}
 
-          {shouldShow && (
-            <RadioGroup
-              name="vilSendeDokumentasjon"
-              legend="Ønsker du å laste opp dokumentasjon?"
-              error={form.error("vilSendeDokumentasjon")}
-              className="mt-4"
-            >
-              <Radio value="true">Ja</Radio>
-              <Radio value="false">Nei</Radio>
-            </RadioGroup>
-          )}
         </div>
 
         <ExpansionCard
-          aria-label="Demo med ikon"
+          aria-label="Krav om inntekt expansion kort"
           className={classNames(styles.expansionCard, "expansion-card--pdf")}
         >
           <ExpansionCard.Header>
@@ -117,15 +106,15 @@ export function InntektSkjema() {
           </ExpansionCard.Header>
           <ExpansionCard.Content>
             <BodyLong>
-              For å få dagpenger må du ha hatt en inntekt på minst 186 042 kroner de siste 12
-              månedene, eller minst 372 084 kroner de siste 36 månedene. <br />
+              For å få dagpenger må du ha hatt en inntekt på minst 186 042 kroner de siste 12
+              månedene, eller minst372 084kroner de siste 36 månedene. <br />
               <br /> Hvis du ikke har tjent nok vil du antagelig få avslag på søknaden din om
               dagpenger.
             </BodyLong>
           </ExpansionCard.Content>
         </ExpansionCard>
 
-        {pdfHtml && <input type="hidden" name="pdfHtml" value={pdfHtml} />}
+        <input type="hidden" name="pdfHtml" />
 
         {data?.postForeleggingResponse?.status === "error" && (
           <Alert variant="error" className="mt-8">
@@ -144,21 +133,6 @@ export function InntektSkjema() {
         >
           Send inn
         </Button>
-
-        {pdfHtml && (
-          <div className="iframe--container">
-            <Tag variant="warning" className="iframe--title">
-              PDF preview
-            </Tag>
-            <iframe
-              src="https://www.w3schools.com"
-              title="W3Schools Free Online Web Tutorials"
-              srcDoc={pdfHtml}
-              className="iframe"
-              scrolling="no"
-            />
-          </div>
-        )}
       </div>
     </Form>
   );

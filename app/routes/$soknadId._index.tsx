@@ -35,25 +35,16 @@ export const validator = withZod(
         required_error: "Du må svare på dette spørsmålet",
       }),
       begrunnelse: z.string().optional(),
-      vilSendeDokumentasjon: z.enum(["true", "false"]).optional(),
       pdfHtml: z.string(),
     })
     .superRefine((data, ctx) => {
-      const { inntektStemmer, begrunnelse, vilSendeDokumentasjon } = data;
+      const { inntektStemmer, begrunnelse } = data;
 
       if (inntektStemmer === "false" && begrunnelse === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Du må svare på dette spørsmålet",
           path: ["begrunnelse"],
-        });
-      }
-
-      if (inntektStemmer === "false" && !vilSendeDokumentasjon) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Du må svare på dette spørsmålet",
-          path: ["vilSendeDokumentasjon"],
         });
       }
     })
@@ -97,7 +88,7 @@ export default function DinInntektIndex() {
   return (
     <div className="brukerdialog" ref={appRef} id="brukerdialog">
       <Heading size="large" level={"1"} id="header-icon">
-        Din inntekt
+        Inntekt
       </Heading>
 
       <BodyLong spacing className="mt-4">
