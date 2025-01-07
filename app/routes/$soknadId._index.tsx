@@ -31,7 +31,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export const validator = withZod(
   z
     .object({
-      inntektStemmer: z.enum(["true", "false"], {
+      inntektStemmer: z.enum([ "true", "false" ], {
         required_error: "Du må svare på dette spørsmålet",
       }),
       begrunnelse: z.string().optional(),
@@ -44,7 +44,7 @@ export const validator = withZod(
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "Du må svare på dette spørsmålet",
-          path: ["begrunnelse"],
+          path: [ "begrunnelse" ],
         });
       }
     })

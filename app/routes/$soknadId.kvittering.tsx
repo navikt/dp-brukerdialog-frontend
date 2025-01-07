@@ -8,12 +8,12 @@ import { typedjson } from "remix-typedjson";
 
 export const meta: MetaFunction = () => {
   return [
-    {title: "Brukerdialog - Din inntekt kvittering"},
-    {name: "description", content: "Brukerdialog - Din inntekt kvittering"},
+    { title: "Brukerdialog - Din inntekt kvittering" },
+    { name: "description", content: "Brukerdialog - Din inntekt kvittering" },
   ];
 };
 
-export async function loader({params, request}: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadId mangler");
 
   const minsteinntektForeleggingresultat = await getMinsteinntektForeleggingresultat(
@@ -21,11 +21,11 @@ export async function loader({params, request}: LoaderFunctionArgs) {
     params.soknadId
   );
 
-  return typedjson({minsteinntektForeleggingresultat});
+  return typedjson({ minsteinntektForeleggingresultat });
 }
 
 export default function Kvittering() {
-  const {minsteinntektForeleggingresultat} = useLoaderData<typeof loader>();
+  const { minsteinntektForeleggingresultat } = useLoaderData<typeof loader>();
 
   const inntektStemmer = minsteinntektForeleggingresultat.data.bekreftet;
 
