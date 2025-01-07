@@ -75,25 +75,25 @@ export default function Kvittering() {
 
   return (
     <div className="brukerdialog">
-      <Heading size="large" level={"1"}>
-        Svar om inntekt mottatt
-      </Heading>
+    <Heading size="large" level={"1"}>
+    Svar om inntekt mottatt
+    </Heading>
 
-      <BodyShort spacing>Svar på oppgave innsendt 20.05.2024 - 12:35</BodyShort>
+    <BodyShort spacing>Svar på oppgave innsendt 20.05.2024 - 12:35</BodyShort>
 
 
-        {inntektStemmer && InntektStemmer()}
-        {!inntektStemmer && InntektIkkeStemmer()}
+    {inntektStemmer && InntektStemmer()}
+    {!inntektStemmer && InntektIkkeStemmer()}
 
-      <ExternalLink to="ettersending" asButtonVariant={inntektStemmer ? "primary": "secondary"} className="mt-14">
-        Gå til mine dagpenger
-      </ExternalLink>
+    <ExternalLink to="https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/mine-dagpenger-frontend" asButtonVariant={inntektStemmer ? "primary": "secondary"} className="mt-14">
+    Gå til mine dagpenger
+    </ExternalLink>
 
-        {!inntektStemmer  && (
-            <ExternalLink to="ettersending" asButtonVariant="primary" className="mt-14 ml-4">
-            Last opp dokumentasjon
-            </ExternalLink>
-        )}
+    {!inntektStemmer  && (
+        <ExternalLink to="https://arbeid.ansatt.dev.nav.no/dagpenger/dialog/generell-innsending" asButtonVariant="primary" className="mt-14 ml-4">
+        Last opp dokumentasjon
+        </ExternalLink>
+    )}
     </div>
   );
 }
