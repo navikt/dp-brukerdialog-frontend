@@ -50,10 +50,10 @@ export default function Kvittering() {
   function InntektIkkeStemmer() {
     return (
       <BodyLong spacing className="mt-8">
-        Vi har mottatt oppgaven din om inntektsopplysninger.
+        Vi har mottatt oppgaven din om inntektsopplysninger. Du har svart at inntekten din <strong>ikke stemmer</strong>.
         <br/>
         <br/>
-        Vi har fått svaret ditt om at inntekten din ikke stemmer. Ta kontakt med arbeidsgiveren din for å rette
+        Ta kontakt med arbeidsgiveren din for å rette
         opplysningene om inntekten.
         <br/>
         <br/>
