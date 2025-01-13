@@ -14,8 +14,6 @@ export async function postMinsteinntektForeleggingresultat(
   )}/inntekt/${soknadId}/minsteinntektGrunnlag/foreleggingresultat`;
   const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
 
-  console.log("hit")
-
   const body = JSON.stringify({ søknadId: soknadId, bekreftet, begrunnelse });
 
   const response = await fetch(url, {
