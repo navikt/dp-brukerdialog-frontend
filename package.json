@@ -19,7 +19,7 @@
     "@navikt/ds-react": "^7.9.1",
     "@navikt/nav-dekoratoren-moduler": "^3.1.3",
     "@navikt/oasis": "^3.6.0",
-    "@remix-run/node": "^2.15.2",
+    "@remix-run/node": "^2.15.3",
     "@remix-run/react": "^2.15.2",
     "@remix-run/serve": "^2.15.2",
     "@rvf/remix": "^6.3.0",
