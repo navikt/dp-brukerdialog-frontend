@@ -23,7 +23,7 @@
     "@remix-run/react": "^2.16.2",
     "@remix-run/serve": "^2.16.3",
     "@rvf/remix": "^6.3.0",
-    "@rvf/zod": "^6.0.3",
+    "@rvf/zod": "^7.0.2",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "html-react-parser": "^5.2.2",
