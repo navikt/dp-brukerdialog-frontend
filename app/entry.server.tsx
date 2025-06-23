@@ -41,6 +41,13 @@ if (getEnv("IS_LOCALHOST") === "true") {
     "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * blob: 'unsafe-inline' 'unsafe-eval'; connect-src * blob: 'unsafe-inline'; img-src * 'self' blob: data:; frame-src * data: blob:; style-src * 'unsafe-inline';";
 }
 
+if (getEnv("USE_MSW") === "true") {
+  import("~/mocks/mock-server").then(({ server, startMockServer }) => {
+    startMockServer(server);
+  });
+}
+
+
 export default function handleRequest(
   request: Request,
   responseStatusCode: number,
