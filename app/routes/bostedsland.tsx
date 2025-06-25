@@ -32,87 +32,90 @@ export default function Bostedsland() {
     });
 
     return (
-        <Page className="brukerdialog">
-            <VStack gap="10">
+        <main id="maincontent" tabIndex={-1}>
 
-                <Select
-                    label="Hvilket land bor du i?"
-                    description="Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge."
-                    value={skjema.bostedsland}
-                    onChange={(value) => {
-                        setSkjema({...skjema, bostedsland: value.target.value})
-                    }}
-                >
-                    <option value="">- Velg land -</option>
-                    <option value="norge">Norge</option>
-                    <option value="sverige">Sverige</option>
-                    <option value="danmark">Danmark</option>
-                </Select>
+            <Page className="brukerdialog">
+                <VStack gap="6">
 
-                {(!!skjema.bostedsland && skjema.bostedsland !== "norge") && (
-                    <VStack>
-                        <JaNeiFaktum
-                            ledetekst="Har du reist tilbake til bostedslandet ditt etter at du ble arbeidsledig eller permittert?"
-                            verdi={skjema.reistTilbake}
-                            vedEndring={(value: boolean) => {
-                                setSkjema({...skjema, reistTilbake: value})
-                            }}
-                            aktiv={true}
-                        />
+                    <Select
+                        label="Hvilket land bor du i?"
+                        description="Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge."
+                        value={skjema.bostedsland}
+                        onChange={(value) => {
+                            setSkjema({...skjema, bostedsland: value.target.value})
+                        }}
+                    >
+                        <option value="">- Velg land -</option>
+                        <option value="norge">Norge</option>
+                        <option value="sverige">Sverige</option>
+                        <option value="danmark">Danmark</option>
+                    </Select>
 
-                        {
-                            skjema.reistTilbake === true && (
-                                <VStack>
-                                    <div className="min-h-96">
-                                        <DatePicker {...fraDato.datepickerProps}>
-                                            <DatePicker.Input {...fraDato.inputProps} label="Velg dato"/>
-                                        </DatePicker>
-                                    </div>
-                                    <div className="min-h-96">
-                                        <DatePicker {...tilDato.datepickerProps}>
-                                            <DatePicker.Input {...tilDato.inputProps} label="Velg dato"/>
-                                        </DatePicker>
-                                    </div>
-                                    <TextField label={"Hvorfor reiste du fra Norge"}
-                                               value={skjema.reisteFraBegrunnelse}
-                                               onChange={(textbox) => setSkjema({
-                                                   ...skjema,
-                                                   reisteFraBegrunnelse: textbox.target.value
-                                               })}/>
-
-                                </VStack>
-                            )
-                        }
-
-                        {
+                    {(!!skjema.bostedsland && skjema.bostedsland !== "norge") && (
+                        <VStack gap="6">
                             <JaNeiFaktum
-                                ledetekst="Reiste du hjem til landet du bor i en gang i uken eller mer, mens du jobbet i Norge?"
-                                verdi={skjema.reistHjemMinstEnGangIUken}
+                                ledetekst="Har du reist tilbake til bostedslandet ditt etter at du ble arbeidsledig eller permittert?"
+                                verdi={skjema.reistTilbake}
                                 vedEndring={(value: boolean) => {
-                                    setSkjema({...skjema, reistHjemMinstEnGangIUken: value})
+                                    setSkjema({...skjema, reistTilbake: value})
                                 }}
-                                aktiv={skjema.reistTilbake === false || (
-                                    skjema.reistTilbake === true &&
-                                    skjema.avreiseFraDato !== undefined &&
-                                    skjema.avreiseTilDato !== undefined &&
-                                    skjema.reisteFraBegrunnelse !== undefined && skjema.reisteFraBegrunnelse !== "")}
+                                aktiv={true}
                             />
-                        }
 
-                        {
-                            <JaNeiFaktum
-                                ledetekst="Reiste du i takt med rotasjon?"
-                                verdi={skjema.reistHjemRotasjon}
-                                vedEndring={(value: boolean) => {
-                                    setSkjema({...skjema, reistHjemRotasjon: value})
-                                }}
-                                aktiv={skjema.reistHjemMinstEnGangIUken === false}
-                            />
-                        }
+                            {
+                                skjema.reistTilbake === true && (
+                                    <VStack gap="6">
+                                        <div className="min-h-96">
+                                            <DatePicker {...fraDato.datepickerProps}>
+                                                <DatePicker.Input {...fraDato.inputProps} label="Velg dato"/>
+                                            </DatePicker>
+                                        </div>
+                                        <div className="min-h-96">
+                                            <DatePicker {...tilDato.datepickerProps}>
+                                                <DatePicker.Input {...tilDato.inputProps} label="Velg dato"/>
+                                            </DatePicker>
+                                        </div>
+                                        <TextField label={"Hvorfor reiste du fra Norge"}
+                                                   value={skjema.reisteFraBegrunnelse}
+                                                   onChange={(textbox) => setSkjema({
+                                                       ...skjema,
+                                                       reisteFraBegrunnelse: textbox.target.value
+                                                   })}/>
 
-                    </VStack>
-                )}
-            </VStack>
-        </Page>
+                                    </VStack>
+                                )
+                            }
+
+                            {
+                                <JaNeiFaktum
+                                    ledetekst="Reiste du hjem til landet du bor i en gang i uken eller mer, mens du jobbet i Norge?"
+                                    verdi={skjema.reistHjemMinstEnGangIUken}
+                                    vedEndring={(value: boolean) => {
+                                        setSkjema({...skjema, reistHjemMinstEnGangIUken: value})
+                                    }}
+                                    aktiv={skjema.reistTilbake === false || (
+                                        skjema.reistTilbake === true &&
+                                        skjema.avreiseFraDato !== undefined &&
+                                        skjema.avreiseTilDato !== undefined &&
+                                        skjema.reisteFraBegrunnelse !== undefined && skjema.reisteFraBegrunnelse !== "")}
+                                />
+                            }
+
+                            {
+                                <JaNeiFaktum
+                                    ledetekst="Reiste du i takt med rotasjon?"
+                                    verdi={skjema.reistHjemRotasjon}
+                                    vedEndring={(value: boolean) => {
+                                        setSkjema({...skjema, reistHjemRotasjon: value})
+                                    }}
+                                    aktiv={skjema.reistHjemMinstEnGangIUken === false}
+                                />
+                            }
+
+                        </VStack>
+                    )}
+                </VStack>
+            </Page>
+        </main>
     );
 }

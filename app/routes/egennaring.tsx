@@ -1,6 +1,6 @@
-import { Page, VStack} from "@navikt/ds-react";
+import {Page, VStack} from "@navikt/ds-react";
 import {useState} from "react";
-import {IEgenNæring, } from "~/models/egennaring.types";
+import {IEgenNæring,} from "~/models/egennaring.types";
 import Gardsbruk from "~/components/soknad/egennæring/Gardsbruk";
 import Næringsvirksomhet from "~/components/soknad/egennæring/Næringsvirksomhet";
 
@@ -15,11 +15,13 @@ export default function EgenNæring() {
     });
 
     return (
-        <Page className="brukerdialog">
-            <VStack gap="10">
-                <Næringsvirksomhet skjema={skjema} setSkjema={setSkjema} />
-                <Gardsbruk skjema={skjema} setSkjema={setSkjema}/>
-            </VStack>
-        </Page>
+        <main id="maincontent" tabIndex={-1}>
+            <Page className="brukerdialog">
+                <VStack gap="10">
+                    <Næringsvirksomhet skjema={skjema} setSkjema={setSkjema}/>
+                    <Gardsbruk skjema={skjema} setSkjema={setSkjema}/>
+                </VStack>
+            </Page>
+        </main>
     );
 }

@@ -1,7 +1,8 @@
 import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
-import {Alert, Button, Modal, TextField} from "@navikt/ds-react";
+import {Alert, Button, Modal, TextField, VStack} from "@navikt/ds-react";
 import {useRef, useState} from "react";
 import {IEgenNæring, INæringsvirksomhet} from "~/models/egennaring.types";
+import NæringsvirksomhetOppsummering from "~/components/soknad/egennæring/NæringsvirksomhetOppsummering";
 
 
 interface NæringsvirksomhetProps {
@@ -36,7 +37,7 @@ export default function Næringsvirksomhet({skjema, setSkjema}: Næringsvirksomh
     }
 
     return (
-        <div>
+        <VStack gap="5">
             <JaNeiFaktum
                 ledetekst={"Driver du egen næringsvirksomhet?"}
                 vedEndring={(value) => {
@@ -51,8 +52,8 @@ export default function Næringsvirksomhet({skjema, setSkjema}: Næringsvirksomh
                     <Alert contentMaxWidth={false} variant="info">Selv om du driver egen næring må du være villig til å
                         ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</Alert>
                     {
-                        skjema.egneNæringsvirksomheter.map(value => <div
-                            key={value.organisasjonummer}>{value.organisasjonummer}</div>)
+                        // eslint-disable-next-line react/jsx-key
+                        skjema.egneNæringsvirksomheter.map(value => <NæringsvirksomhetOppsummering virksomhet={value}/>)
                     }
                     <Button variant={"secondary"} onClick={() => egenNæringsvirksomhetRef.current?.showModal()}>+ Legg
                         til næringsvirksomhet</Button>
@@ -112,6 +113,6 @@ export default function Næringsvirksomhet({skjema, setSkjema}: Næringsvirksomh
                     <Button form="egenNæringsvirksomhet">Lagre og lukk</Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </VStack>
     );
 }
