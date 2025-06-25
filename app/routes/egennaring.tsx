@@ -5,13 +5,13 @@ import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
 interface EgenNæring {
     driverEgenNæringsvirksomhet?: boolean;
     driverEgetGårdsbruk?: boolean;
-    egneNæringsvirksomheter?: Næringsvirksomhet[];
+    egneNæringsvirksomheter: Næringsvirksomhet[];
 }
 
 interface Næringsvirksomhet {
     organisasjonummer?: string
-    antallTimerJobbetPerUkeFør?: number
-    antallTimerJobbetPerUkeNå?: number
+    antallTimerJobbetPerUkeFør?: string
+    antallTimerJobbetPerUkeNå?: string
 }
 
 export default function EgenNæring() {
@@ -20,6 +20,7 @@ export default function EgenNæring() {
     const [skjema, setSkjema] = useState<EgenNæring>({
         driverEgenNæringsvirksomhet: undefined,
         driverEgetGårdsbruk: undefined,
+        egneNæringsvirksomheter: []
     });
 
     const [næringsvirksomhet, setNæringsvirksomhet] = useState<Næringsvirksomhet>({
@@ -51,25 +52,24 @@ export default function EgenNæring() {
                     aktiv={true}
                 />
 
+                {
+                    skjema.driverEgenNæringsvirksomhet === true &&
+                    <>
+                        <Alert contentMaxWidth={false} variant="info">Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</Alert>
+                        {
+                            skjema.egneNæringsvirksomheter.map(value => <p key={value.organisasjonummer}>{value.organisasjonummer}</p>)
+                        }
+                        <Button variant={"secondary"} onClick={() => egenNæringsvirksomhetRef.current?.showModal()}>+ Legg til næringsvirksomhet</Button>
+                    </>
+                }
+
                 <JaNeiFaktum
                     ledetekst={"Driver du eget gårdsbruk?"}
                     vedEndring={(value) => {
                         setSkjema({...skjema, driverEgetGårdsbruk: value})
                     }}
-                    aktiv={skjema.driverEgenNæringsvirksomhet === false}
+                    aktiv={skjema.driverEgenNæringsvirksomhet != undefined}
                 />
-
-                {
-                    skjema.driverEgenNæringsvirksomhet === true &&
-                    <>
-                        <Alert contentMaxWidth={false} variant="info">Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</Alert>
-                        <Button variant={"secondary"} onClick={() => egenNæringsvirksomhetRef.current?.showModal()}>+ Legg til næringsvirksomhet</Button>
-                    </>
-                }
-
-                {
-                    // List næringsvirksomheter
-                }
 
                 <Modal ref={egenNæringsvirksomhetRef} header={{heading: "Legg til næringsvirksomhet"}} width={600}>
                     <Modal.Body>
@@ -94,7 +94,7 @@ export default function EgenNæring() {
                                     onChange={(value) => {
                                         setNæringsvirksomhet({
                                             ...næringsvirksomhet,
-                                            antallTimerJobbetPerUkeFør: +value.target.value
+                                            antallTimerJobbetPerUkeFør: value.target.value
                                         })
                                     }}
                                 />
@@ -110,7 +110,7 @@ export default function EgenNæring() {
                                     onChange={(value) => {
                                         setNæringsvirksomhet({
                                             ...næringsvirksomhet,
-                                            antallTimerJobbetPerUkeNå: +value.target.value
+                                            antallTimerJobbetPerUkeNå: value.target.value
                                         })
                                     }}
                                 />
