@@ -1,4 +1,15 @@
-import {Button, Modal, Page, TextField, VStack} from "@navikt/ds-react";
+import {
+    Button,
+    DatePicker,
+    FileObject,
+    FileUpload,
+    Modal,
+    Page, Radio, RadioGroup,
+    Select,
+    TextField,
+    useDatepicker,
+    VStack
+} from "@navikt/ds-react";
 import {useRef, useState} from "react";
 import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
 import {FloppydiskIcon, PersonPlusIcon} from "@navikt/aksel-icons";
@@ -12,8 +23,9 @@ interface IBarn {
     fornavnOgMellomnavn?: string
     etternavn?: string
     fødselsdato?: Date
-    land?: string
+    bostedsland?: string
     forsørgerDuBarnet?: boolean
+    dokumentereForsørgerNå?: boolean
     hentetFraPdl?: boolean
 }
 
@@ -29,10 +41,40 @@ export default function Barntillegg() {
         fornavnOgMellomnavn: undefined,
         etternavn: undefined,
         fødselsdato: undefined,
-        land: undefined,
+        bostedsland: undefined,
         forsørgerDuBarnet: undefined,
-        hentetFraPdl: undefined
+        hentetFraPdl: undefined,
+        dokumentereForsørgerNå: undefined,
     });
+
+    const fødselsdato = useDatepicker({
+        onDateChange: (date) => setBarn({...barn, fødselsdato: date})
+    });
+
+    const [files, setFiles] = useState<FileObject[]>([]);
+
+    function leggTilBarn() {
+        console.info("hello")
+        const registrerteBarn = barnetillegg.barn;
+        registrerteBarn?.push({
+            fornavnOgMellomnavn: barn.fornavnOgMellomnavn,
+            etternavn: barn.etternavn,
+            fødselsdato: barn.fødselsdato,
+            bostedsland: barn.bostedsland,
+            forsørgerDuBarnet: barn.forsørgerDuBarnet,
+            hentetFraPdl: false,
+            dokumentereForsørgerNå: barn.dokumentereForsørgerNå,
+        })
+        setBarnetillegg({...barnetillegg, barn: registrerteBarn})
+        setBarn({
+            fornavnOgMellomnavn: "",
+            etternavn: "",
+            fødselsdato: undefined,
+            bostedsland: "",
+            forsørgerDuBarnet: undefined,
+            dokumentereForsørgerNå: undefined,
+        });
+    }
 
     return (
         <main id="maincontent" tabIndex={-1}>
@@ -67,24 +109,90 @@ export default function Barntillegg() {
                     <Modal ref={barnModalRef} header={{heading: "Legg til barn", icon: <PersonPlusIcon aria-hidden/>}}
                            width={600}>
                         <Modal.Body>
-                            <form method="dialog" id="barn" onSubmit={(value) => {
-                                console.info(value)
+                            <form method="dialog" id="barn" onSubmit={() => {
+                                leggTilBarn()
                             }}>
-                                <TextField
-                                    value={barn.fornavnOgMellomnavn}
-                                    label="Fornavn og mellomnavn"
-                                    onChange={(value) => {
-                                        setBarn({
-                                            ...barn,
-                                            fornavnOgMellomnavn: value.target.value
-                                        })
-                                    }}/>
+                                <VStack gap="5">
+                                    <TextField
+                                        value={barn.fornavnOgMellomnavn}
+                                        label="Fornavn og mellomnavn"
+                                        onChange={(value) => {
+                                            setBarn({
+                                                ...barn,
+                                                fornavnOgMellomnavn: value.target.value
+                                            })
+                                        }}/>
+                                    <TextField
+                                        value={barn.etternavn}
+                                        label="Etternavn"
+                                        onChange={(value) => {
+                                            setBarn({
+                                                ...barn,
+                                                etternavn: value.target.value
+                                            })
+                                        }}/>
+                                    <DatePicker {...fødselsdato.datepickerProps}>
+                                        <DatePicker.Input {...fødselsdato.inputProps} placeholder="DD.MM.ÅÅÅÅ" label="Velg dato" value={barn.fødselsdato !== undefined ? barn.fødselsdato.toLocaleDateString() : undefined} />
+                                    </DatePicker>
+                                    <Select
+                                        label="Hvilket land bor barnet i?"
+                                        value={barn.bostedsland}
+                                        onChange={(value) => {
+                                            setBarn({...barn, bostedsland: value.target.value})
+                                        }}
+                                    >
+                                        <option value="">- Velg land -</option>
+                                        <option value="norge">Norge</option>
+                                        <option value="sverige">Sverige</option>
+                                        <option value="danmark">Danmark</option>
+                                        <option value="todo">TODO: Gjør listen uttømmende</option>
+                                    </Select>
+                                    <JaNeiFaktum
+                                        ledetekst="Forsørger du barnet?"
+                                        verdi={barn.forsørgerDuBarnet}
+                                        vedEndring={(value: boolean) => {
+                                            setBarn({...barn, forsørgerDuBarnet: value})
+                                        }}
+                                        aktiv={true}
+                                    />
+                                    { barn.forsørgerDuBarnet === true &&
+                                        <RadioGroup
+                                            legend="Ønsker du å dokumentere dette nå?"
+                                            value={barn.dokumentereForsørgerNå}
+                                            onChange={(value: boolean) => {
+                                                setBarn({...barn, dokumentereForsørgerNå: value})
+                                            }}
+                                        >
+                                            <Radio value={true}>Ja</Radio>
+                                            <Radio value={false}>Nei, jeg ønsker å sende inn dette i etterkant</Radio>
+                                        </RadioGroup>
+                                    }
+                                    { barn.forsørgerDuBarnet === true && barn.dokumentereForsørgerNå === true &&
+                                        <VStack gap="6">
+                                            <FileUpload.Dropzone
+                                                label="Last opp fødselsattest"
+                                                fileLimit={{ max: 1, current: files.length }}
+                                                multiple={false}
+                                                onSelect={setFiles}
+                                            />
+                                            {files.map((file) => (
+                                                <FileUpload.Item
+                                                    key={file.file.name}
+                                                    file={file.file}
+                                                    button={{
+                                                        action: "delete",
+                                                        onClick: () => setFiles([]),
+                                                    }}
+                                                />
+                                            ))}
+                                        </VStack>
+                                    }
+                                </VStack>
                             </form>
 
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button type="button" icon={<FloppydiskIcon aria-hidden/>}
-                                    onClick={() => barnModalRef.current?.close()}>
+                            <Button form="barn" icon={<FloppydiskIcon aria-hidden/>}>
                                 Lagre og lukk
                             </Button>
                         </Modal.Footer>
