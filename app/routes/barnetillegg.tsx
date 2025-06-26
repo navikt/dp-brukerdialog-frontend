@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     DatePicker,
     FileObject,
@@ -12,7 +13,7 @@ import {
 } from "@navikt/ds-react";
 import {useRef, useState} from "react";
 import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
-import {FloppydiskIcon, PersonPlusIcon} from "@navikt/aksel-icons";
+import {FloppydiskIcon, PencilIcon, PersonPlusIcon, TrashIcon} from "@navikt/aksel-icons";
 
 interface IBarnetillegg {
     barn?: IBarn[]
@@ -79,7 +80,7 @@ export default function Barntillegg() {
     return (
         <main id="maincontent" tabIndex={-1}>
             <Page className="brukerdialog">
-                <VStack>
+                <VStack gap="6">
                     <h2>Barnetillegg</h2>
                     <div>
                         <p>Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig
@@ -197,6 +198,26 @@ export default function Barntillegg() {
                             </Button>
                         </Modal.Footer>
                     </Modal>
+                    <VStack gap={"2"}>
+                    {
+                        barnetillegg.barn?.map((barn, index) => (
+                            <Box
+                                key={index}
+                                background="surface-alt-3-subtle"
+                                padding="4"
+                                shadow="medium"
+                                borderRadius="xlarge" >
+                                <h2 style={{marginBottom: "10px"}}>{barn.fornavnOgMellomnavn} {barn.etternavn}</h2>
+                                <h5 style={{margin: "5px auto"}}>Født {barn.fødselsdato?.getDate()}</h5>
+                                <p style={{margin: "5px auto"}}>Bor i {barn.bostedsland}</p>
+                                <div>
+                                    <Button icon={<PencilIcon/>} variant="secondary" size="small">Endre svar</Button>
+                                    <Button icon={<TrashIcon/>} variant="tertiary" size="small">Slett</Button>
+                                </div>
+                            </Box>
+                        ))
+                    }
+                    </VStack>
 
                 </VStack>
             </Page>
