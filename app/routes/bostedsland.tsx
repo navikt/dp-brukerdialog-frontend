@@ -33,10 +33,9 @@ export default function Bostedsland() {
 
     return (
         <main id="maincontent" tabIndex={-1}>
-
             <Page className="brukerdialog">
                 <VStack gap="6">
-
+                    <h2>Bostedsland</h2>
                     <Select
                         label="Hvilket land bor du i?"
                         description="Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge."
