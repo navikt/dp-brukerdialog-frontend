@@ -1,11 +1,14 @@
 import {
+    Alert,
     Box,
     Button,
     DatePicker,
     FileObject,
     FileUpload,
     Modal,
-    Page, Radio, RadioGroup,
+    Page,
+    Radio,
+    RadioGroup,
     Select,
     TextField,
     useDatepicker,
@@ -26,7 +29,8 @@ interface IBarn {
     fødselsdato?: Date
     bostedsland?: string
     forsørgerDuBarnet?: boolean
-    dokumentereForsørgerNå?: boolean
+    dokumentereForsørgerNå?: string
+    dokumententasjonGrunn?: string
     hentetFraPdl?: boolean
 }
 
@@ -46,6 +50,7 @@ export default function Barntillegg() {
         forsørgerDuBarnet: undefined,
         hentetFraPdl: undefined,
         dokumentereForsørgerNå: undefined,
+        dokumententasjonGrunn: undefined
     });
 
     const fødselsdato = useDatepicker({
@@ -65,6 +70,7 @@ export default function Barntillegg() {
             forsørgerDuBarnet: barn.forsørgerDuBarnet,
             hentetFraPdl: false,
             dokumentereForsørgerNå: barn.dokumentereForsørgerNå,
+            dokumententasjonGrunn: barn.dokumententasjonGrunn
         })
         setBarnetillegg({...barnetillegg, barn: registrerteBarn})
         setBarn({
@@ -73,7 +79,8 @@ export default function Barntillegg() {
             fødselsdato: undefined,
             bostedsland: "",
             forsørgerDuBarnet: undefined,
-            dokumentereForsørgerNå: undefined,
+            dokumentereForsørgerNå: "",
+            dokumententasjonGrunn: ""
         });
     }
 
@@ -133,7 +140,9 @@ export default function Barntillegg() {
                                             })
                                         }}/>
                                     <DatePicker {...fødselsdato.datepickerProps}>
-                                        <DatePicker.Input {...fødselsdato.inputProps} placeholder="DD.MM.ÅÅÅÅ" label="Velg dato" value={barn.fødselsdato !== undefined ? barn.fødselsdato.toLocaleDateString() : undefined} />
+                                        <DatePicker.Input {...fødselsdato.inputProps} placeholder="DD.MM.ÅÅÅÅ"
+                                                          label="Velg dato"
+                                                          value={barn.fødselsdato !== undefined ? barn.fødselsdato.toLocaleDateString() : undefined}/>
                                     </DatePicker>
                                     <Select
                                         label="Hvilket land bor barnet i?"
@@ -156,36 +165,93 @@ export default function Barntillegg() {
                                         }}
                                         aktiv={true}
                                     />
-                                    { barn.forsørgerDuBarnet === true &&
-                                        <RadioGroup
-                                            legend="Ønsker du å dokumentere dette nå?"
-                                            value={barn.dokumentereForsørgerNå}
-                                            onChange={(value: boolean) => {
-                                                setBarn({...barn, dokumentereForsørgerNå: value})
-                                            }}
-                                        >
-                                            <Radio value={true}>Ja</Radio>
-                                            <Radio value={false}>Nei, jeg ønsker å sende inn dette i etterkant</Radio>
-                                        </RadioGroup>
-                                    }
-                                    { barn.forsørgerDuBarnet === true && barn.dokumentereForsørgerNå === true &&
-                                        <VStack gap="6">
-                                            <FileUpload.Dropzone
-                                                label="Last opp fødselsattest"
-                                                fileLimit={{ max: 1, current: files.length }}
-                                                multiple={false}
-                                                onSelect={setFiles}
-                                            />
-                                            {files.map((file) => (
-                                                <FileUpload.Item
-                                                    key={file.file.name}
-                                                    file={file.file}
-                                                    button={{
-                                                        action: "delete",
-                                                        onClick: () => setFiles([]),
-                                                    }}
-                                                />
-                                            ))}
+                                    {barn.forsørgerDuBarnet === true &&
+                                        <VStack>
+                                            <RadioGroup
+                                                legend="Ønsker du å dokumentere dette nå?"
+                                                description="Du kan laste opp fødselsattest eller annen dokumentasjon som viser at du forsørger barnet."
+                                                value={barn.dokumentereForsørgerNå}
+                                                onChange={(value: string) => {
+                                                    setBarn({...barn, dokumentereForsørgerNå: value})
+                                                }}
+                                            >
+                                                <Radio value={"lastOppNaa"}>Ja, jeg vil laste opp nå</Radio>
+                                                <Radio value={"lastOppEtterkant"}>Nei, jeg ønsker å sende inn dette i
+                                                    etterkant</Radio>
+                                                <Radio value={"lastetOppTidligere"}>Jeg har sendt dette i en tidligere
+                                                    søknad om dagpenger</Radio>
+                                                <Radio value={"nei"}>Jeg sender det ikke</Radio>
+                                            </RadioGroup>
+
+                                            {barn.dokumentereForsørgerNå === "lastOppNaa" &&
+                                                <VStack gap="6">
+                                                    <FileUpload.Dropzone
+                                                        label="Last opp fødselsattest"
+                                                        fileLimit={{max: 1, current: files.length}}
+                                                        multiple={false}
+                                                        onSelect={setFiles}
+                                                    />
+                                                    {files.map((file) => (
+                                                        <FileUpload.Item
+                                                            key={file.file.name}
+                                                            file={file.file}
+                                                            button={{
+                                                                action: "delete",
+                                                                onClick: () => setFiles([]),
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </VStack>
+                                            }
+
+                                            {
+                                                barn.dokumentereForsørgerNå === "lastOppEtterkant" &&
+                                                <TextField
+                                                    value={barn.dokumententasjonGrunn}
+                                                    label="Hva er grunnen til at du sender dokumentasjonen senere?"
+                                                    onChange={(value) => {
+                                                        setBarn({
+                                                            ...barn,
+                                                            dokumententasjonGrunn: value.target.value
+                                                        })
+                                                    }}/>
+                                            }
+                                            {
+                                                barn.dokumentereForsørgerNå === "lastetOppTidligere" &&
+                                                <TextField
+                                                    value={barn.dokumententasjonGrunn}
+                                                    label="Når sendte du dokumentet?"
+                                                    description="Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt."
+                                                    onChange={(value) => {
+                                                        setBarn({
+                                                            ...barn,
+                                                            dokumententasjonGrunn: value.target.value
+                                                        })
+                                                    }}/>
+                                            }
+
+                                            {
+                                                barn.dokumentereForsørgerNå === "nei" && (
+                                                    <VStack gap="4">
+                                                        <Alert variant="warning">
+                                                            Du vil mest sannsynlig få avslag på søknaden din hvis du ikke
+                                                            sender inn dokumentene vi trenger for å behandle saken din. Ta
+                                                            kontakt med NAV hvis du ikke får tak i dokumentet
+                                                        </Alert>
+                                                        <TextField
+                                                            value={barn.dokumententasjonGrunn}
+                                                            label="Hva er grunnen til at du ikke sender inn dokumentet?"
+                                                            description="Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med NAV hvis du ikke får tak i dokumentet."
+                                                            onChange={(value) => {
+                                                                setBarn({
+                                                                    ...barn,
+                                                                    dokumententasjonGrunn: value.target.value
+                                                                })
+                                                            }}/>
+                                                    </VStack>
+
+                                                )
+                                            }
                                         </VStack>
                                     }
                                 </VStack>
@@ -199,24 +265,25 @@ export default function Barntillegg() {
                         </Modal.Footer>
                     </Modal>
                     <VStack gap={"2"}>
-                    {
-                        barnetillegg.barn?.map((barn, index) => (
-                            <Box
-                                key={index}
-                                background="surface-alt-3-subtle"
-                                padding="4"
-                                shadow="medium"
-                                borderRadius="xlarge" >
-                                <h2 style={{marginBottom: "10px"}}>{barn.fornavnOgMellomnavn} {barn.etternavn}</h2>
-                                <h5 style={{margin: "5px auto"}}>Født {barn.fødselsdato?.getDate()}</h5>
-                                <p style={{margin: "5px auto"}}>Bor i {barn.bostedsland}</p>
-                                <div>
-                                    <Button icon={<PencilIcon/>} variant="secondary" size="small">Endre svar</Button>
-                                    <Button icon={<TrashIcon/>} variant="tertiary" size="small">Slett</Button>
-                                </div>
-                            </Box>
-                        ))
-                    }
+                        {
+                            barnetillegg.barn?.map((barn, index) => (
+                                <Box
+                                    key={index}
+                                    background="surface-alt-3-subtle"
+                                    padding="4"
+                                    shadow="medium"
+                                    borderRadius="xlarge">
+                                    <h2 style={{marginBottom: "10px"}}>{barn.fornavnOgMellomnavn} {barn.etternavn}</h2>
+                                    <h5 style={{margin: "5px auto"}}>Født {barn.fødselsdato?.getDate()}</h5>
+                                    <p style={{margin: "5px auto"}}>Bor i {barn.bostedsland}</p>
+                                    <div>
+                                        <Button icon={<PencilIcon/>} variant="secondary" size="small">Endre
+                                            svar</Button>
+                                        <Button icon={<TrashIcon/>} variant="tertiary" size="small">Slett</Button>
+                                    </div>
+                                </Box>
+                            ))
+                        }
                     </VStack>
 
                 </VStack>
