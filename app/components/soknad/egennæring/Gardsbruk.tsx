@@ -49,7 +49,7 @@ export default function Gardsbruk({skjema, setSkjema}: GardsbrukProps) {
     }
 
     return (
-        <div>
+        <VStack gap="5">
             <JaNeiFaktum
                 ledetekst={"Driver du eget gårdsbruk?"}
                 vedEndring={(value) => {
@@ -129,6 +129,6 @@ export default function Gardsbruk({skjema, setSkjema}: GardsbrukProps) {
 
                 </>
             }
-        </div>
+        </VStack>
     );
 }

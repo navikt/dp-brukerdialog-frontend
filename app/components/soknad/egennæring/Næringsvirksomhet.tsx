@@ -49,8 +49,10 @@ export default function Næringsvirksomhet({skjema, setSkjema}: Næringsvirksomh
             {
                 skjema.driverEgenNæringsvirksomhet === true &&
                 <>
-                    <Alert contentMaxWidth={false} variant="info">Selv om du driver egen næring må du være villig til å
-                        ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</Alert>
+                    <Alert contentMaxWidth={false} variant="info">
+                        Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til
+                        organisasjonsnummer for egen næring.
+                    </Alert>
                     {
                         // eslint-disable-next-line react/jsx-key
                         skjema.egneNæringsvirksomheter.map(value => <NæringsvirksomhetOppsummering virksomhet={value}/>)
@@ -76,37 +78,30 @@ export default function Næringsvirksomhet({skjema, setSkjema}: Næringsvirksomh
                                 })
                             }}/>
 
-                        {
-                            næringsvirksomhet.organisasjonummer &&
-                            <TextField
-                                name="antallTimerJobbetPerUkeFør"
-                                value={næringsvirksomhet.antallTimerJobbetPerUkeFør}
-                                label="Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert"
-                                onChange={(value) => {
-                                    setNæringsvirksomhet({
-                                        ...næringsvirksomhet,
-                                        antallTimerJobbetPerUkeFør: value.target.value
-                                    })
-                                }}
-                            />
-                        }
+                        <TextField
+                            name="antallTimerJobbetPerUkeFør"
+                            value={næringsvirksomhet.antallTimerJobbetPerUkeFør}
+                            label="Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert"
+                            onChange={(value) => {
+                                setNæringsvirksomhet({
+                                    ...næringsvirksomhet,
+                                    antallTimerJobbetPerUkeFør: value.target.value
+                                })
+                            }}
+                        />
 
-                        {
-                            næringsvirksomhet.antallTimerJobbetPerUkeFør &&
-                            <TextField
-                                name="antallTimerJobbetPerUkeFørNå"
-                                value={næringsvirksomhet.antallTimerJobbetPerUkeNå}
-                                label="Skriv inn hvor mange timer du jobber per uke i egen næring nå"
-                                description="For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger. Hvis arbeidstiden din i egen næring ikke er redusert, kan du skrive inn samme antall timer som i spørsmålet over."
-                                onChange={(value) => {
-                                    setNæringsvirksomhet({
-                                        ...næringsvirksomhet,
-                                        antallTimerJobbetPerUkeNå: value.target.value
-                                    })
-                                }}
-                            />
-                        }
-
+                        <TextField
+                            name="antallTimerJobbetPerUkeFørNå"
+                            value={næringsvirksomhet.antallTimerJobbetPerUkeNå}
+                            label="Skriv inn hvor mange timer du jobber per uke i egen næring nå"
+                            description="For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger. Hvis arbeidstiden din i egen næring ikke er redusert, kan du skrive inn samme antall timer som i spørsmålet over."
+                            onChange={(value) => {
+                                setNæringsvirksomhet({
+                                    ...næringsvirksomhet,
+                                    antallTimerJobbetPerUkeNå: value.target.value
+                                })
+                            }}
+                        />
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
