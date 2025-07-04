@@ -11,15 +11,14 @@ export async function lagreSeksjon(
     const url = `${getEnv(
         "DP_SOKNAD_ORKESTRATOR_URL"
     )}/seksjon/${soknadId}/${seksjonId}`;
-    const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
-
+    //const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
 
     const response = await fetch(url, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: `Bearer ${onBehalfOfToken}`,
+            //Authorization: `Bearer ${onBehalfOfToken}`,
         },
         body,
     });
