@@ -74,7 +74,7 @@ spec:
     enabled: true
     sidecar:
       enabled: true
-      level: "{{ idporten.level }}"
       autoLogin: true
+      level: idporten-loa-high
   tokenx:
     enabled: true
