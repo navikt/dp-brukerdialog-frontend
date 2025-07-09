@@ -49,6 +49,8 @@ export default function DinSituasjon() {
   });
 
   const form = useForm({
+    method: "post",
+    submitSource: "state",
     schema: z.object({
       mottatt: z.enum(["ja", "nei", "vetikke"], {
         required_error: "Du må svare på dette spørsmålet",
@@ -56,13 +58,11 @@ export default function DinSituasjon() {
       årsak: z.string().max(500, "Maks 500 tegn").optional(),
       dato: z.date().optional(),
     }),
-    submitSource: "state",
     validationBehaviorConfig: {
       initial: "onChange",
       whenTouched: "onChange",
       whenSubmitted: "onChange",
     },
-    method: "post",
     defaultValues: {
       mottatt: "ja",
       årsak: undefined,
