@@ -22,3 +22,5 @@ secure.log
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+.react-router/

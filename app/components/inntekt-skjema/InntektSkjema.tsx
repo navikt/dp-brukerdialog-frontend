@@ -1,6 +1,5 @@
 import { InformationSquareIcon, PaperplaneIcon } from "@navikt/aksel-icons";
 import {
-  Alert,
   BodyLong,
   Button,
   ExpansionCard,
@@ -10,18 +9,17 @@ import {
   ReadMore,
   Textarea,
 } from "@navikt/ds-react";
-import { Form, useActionData } from "@remix-run/react";
-import { useForm } from "@rvf/remix";
+import { Form } from "react-router";
+import { useForm } from "@rvf/react-router";
 import classNames from "classnames";
 import { useState } from "react";
-import { action, validator } from "~/routes/$soknadId._index";
+import { validator } from "~/routes/$soknadId._index";
 import { getJouralforingPdfHtml } from "~/utils/journalforing.utils";
 
 import styles from "./inntektSkjema.module.css";
 
 export function InntektSkjema() {
   const [shouldShow, setShouldShow] = useState(false);
-  const data = useActionData<typeof action>();
 
   function handleStemmerInntekt(val: string) {
     setShouldShow(val === "false");
@@ -115,12 +113,6 @@ export function InntektSkjema() {
         </ExpansionCard>
 
         <input type="hidden" name="pdfHtml" />
-
-        {data?.postForeleggingResponse?.status === "error" && (
-          <Alert variant="error" className="mt-8">
-            {data.postForeleggingResponse.error?.statusText}
-          </Alert>
-        )}
 
         <Button
           className="mt-14 sendinn-button--pdf"

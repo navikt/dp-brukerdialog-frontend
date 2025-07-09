@@ -13,17 +13,17 @@ spec:
   image: "{{ image }}"
   port: 3000
   liveness:
-    path: "{{ base_path }}/api/internal/isalive"
+    path: "/api/internal/isalive"
     initialDelay: 15
     timeout: 1
     periodSeconds: 5
     failureThreshold: 10
   readiness:
-    path: "{{ base_path }}/api/internal/isready"
+    path: "/api/internal/isready"
     initialDelay: 15
     timeout: 1
   prometheus:
-    path: "{{ base_path }}/api/internal/isready"
+    path: "/api/internal/isready"
     enabled: true
   replicas:
     min: 1
@@ -36,8 +36,6 @@ spec:
       cpu: 200m
       memory: 512Mi
   env:
-    - name: BASE_PATH
-      value: "{{ base_path }}"
     - name: SELF_URL
       value: "{{ ingress }}"
     - name: DEKORATOR_URL

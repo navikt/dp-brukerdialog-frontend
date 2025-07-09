@@ -37,45 +37,38 @@ jobs:
       contents: "read"
       id-token: "write"
       packages: write
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: modules-${{ hashFiles('package-lock.json') }}
-
-      # Build application
-      - run: npm run build
-
-      # Prune del dependencies from production build
-      - name: prune dev dependencies
-        run: npm prune --production
-
-      # Bygg docker image
+          node-version: "22.x"
       - name: docker-build-push
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
           team: teamdagpenger
-          dockerfile: Dockerfile # optional, default Dockerfile
-          salsa: true
+          push_image: true
+          dockerfile: Dockerfile
+          docker_context: .
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-
-      - name: Cache static files
-        uses: actions/cache@v4
+          build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
+      - name: Build static files
+        uses: docker/build-push-action@v6
         with:
-          path: |
-            ./build
-            ./public
-          key: ${{ github.sha }}
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
+          target: export
+          outputs: type=local,dest=build
+          secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
+      - name: Upload static files
+        uses: nais/deploy/actions/cdn-upload/v2@master
+        with:
+          team: teamdagpenger
+          source: ./build/client
+          destination: "/dp-brukerdialog-frontend/"
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   deploy-dev:
     needs: [build]
@@ -92,18 +85,18 @@ jobs:
           VARS: .nais/vars-dev.yaml
           PRINT_PAYLOAD: true
 
-  deploy-prod:
-    needs: [build]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: prod-gcp
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/nais.yaml
-          VAR: image=${{ needs.build.outputs.image }}
-          VARS: .nais/vars-prod.yaml
-          PRINT_PAYLOAD: true
+  # deploy-prod:
+  #   needs: [build]
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   environment: prod-gcp
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: nais/deploy/actions/deploy@v2
+  #       env:
+  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+  #         CLUSTER: prod-gcp
+  #         RESOURCE: .nais/nais.yaml
+  #         VAR: image=${{ needs.build.outputs.image }}
+  #         VARS: .nais/vars-prod.yaml
+  #         PRINT_PAYLOAD: true
