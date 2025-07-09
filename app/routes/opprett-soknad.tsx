@@ -5,8 +5,8 @@ import { useNavigate } from "react-router";
 export default function OpprettSoknad() {
   const navigate = useNavigate();
 
-  async function startSøknad() {
-    const response = await fetch("/fetch-soknad", {
+  async function startSoknad() {
+    const response = await fetch("/api/hent-soknadId", {
       method: "GET",
     });
 
@@ -27,7 +27,7 @@ export default function OpprettSoknad() {
         <Box padding="4" background="surface-warning-subtle" borderRadius={"medium"}>
           <Checkbox value="enig">Jeg bekrefter at jeg vil svare så riktig som jeg kan</Checkbox>
         </Box>
-        <Button iconPosition="right" icon={<ArrowRightIcon aria-hidden />} onClick={startSøknad}>
+        <Button iconPosition="right" icon={<ArrowRightIcon aria-hidden />} onClick={startSoknad}>
           Start søknad
         </Button>
       </VStack>
