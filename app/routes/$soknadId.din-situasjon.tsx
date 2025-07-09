@@ -12,7 +12,7 @@ import {
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useState } from "react";
-import { ActionFunctionArgs, Form, redirect, useNavigate, useParams } from "react-router";
+import { ActionFunctionArgs, Form, redirect, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -69,16 +69,10 @@ export default function DinSituasjon() {
       dato: undefined,
     },
   });
-  const navigate = useNavigate();
 
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date) => setSeksjon({ ...seksjon, dato: date }),
   });
-
-  async function handleSubmit() {
-    await form.submit();
-    navigate("/barnetillegg");
-  }
 
   return (
     <Page className="brukerdialog">
@@ -132,12 +126,7 @@ export default function DinSituasjon() {
               </DatePicker>
             )}
 
-            <Button
-              variant="primary"
-              onClick={handleSubmit}
-              iconPosition="right"
-              icon={<ArrowRightIcon />}
-            >
+            <Button variant="primary" type="submit" iconPosition="right" icon={<ArrowRightIcon />}>
               Neste steg
             </Button>
           </Form>
