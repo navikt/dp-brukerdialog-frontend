@@ -31,11 +31,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
   build:
-    needs: [ install ]
+    needs: [install]
     runs-on: ubuntu-latest
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: "read"
+      id-token: "write"
       packages: write
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: "22.x"
       - name: docker-build-push
         uses: nais/docker-build-push@v0
         id: docker-build-push
@@ -66,7 +66,7 @@ jobs:
         with:
           team: teamdagpenger
           source: ./build/client
-          destination: '/dp-brukerdialog-frontend/'
+          destination: "/dp-brukerdialog-frontend/"
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
@@ -85,18 +85,18 @@ jobs:
           VARS: .nais/vars-dev.yaml
           PRINT_PAYLOAD: true
 
-  deploy-prod:
-    needs: [build]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment: prod-gcp
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/nais.yaml
-          VAR: image=${{ needs.build.outputs.image }}
-          VARS: .nais/vars-prod.yaml
-          PRINT_PAYLOAD: true
+  # deploy-prod:
+  #   needs: [build]
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   environment: prod-gcp
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: nais/deploy/actions/deploy@v2
+  #       env:
+  #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+  #         CLUSTER: prod-gcp
+  #         RESOURCE: .nais/nais.yaml
+  #         VAR: image=${{ needs.build.outputs.image }}
+  #         VARS: .nais/vars-prod.yaml
+  #         PRINT_PAYLOAD: true

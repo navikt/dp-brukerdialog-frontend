@@ -1,17 +1,5 @@
-import { redirect, type LoaderFunctionArgs } from "react-router";
-import { getEnv } from "~/utils/env.utils";
+import { redirect } from "react-router";
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const prod = getEnv("APP_ENV") === "prod";
-
-  if (prod) {
-    return redirect("/prepod");
-  }
-
+export async function loader() {
   return redirect(`/opprett-soknad`);
-  // if (!params.soknadId) {
-  //   return redirect("/error");
-  // }
-
-  // return {};
 }

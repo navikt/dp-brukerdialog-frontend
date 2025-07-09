@@ -1,4 +1,13 @@
-import {data, LinksFunction, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData} from "react-router";
+import {
+  data,
+  LinksFunction,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from "react-router";
 import parse from "html-react-parser";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDecoratorHTML } from "./models/decorator.server";
@@ -24,7 +33,6 @@ export async function loader() {
     decoratorFragments,
     env: {
       IS_LOCALHOST: getEnv("IS_LOCALHOST"),
-      BASE_PATH: getEnv("BASE_PATH"),
       APP_ENV: getEnv("APP_ENV"),
       SANITY_DATASET: getEnv("SANITY_DATASET"),
       DP_SOKNAD_ORKESTRATOR_URL: getEnv("DP_SOKNAD_ORKESTRATOR_URL"),
