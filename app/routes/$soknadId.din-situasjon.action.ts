@@ -1,4 +1,4 @@
-import {ActionFunctionArgs} from "@remix-run/node";
+import { ActionFunctionArgs } from "react-router";
 import {lagreSeksjon} from "~/models/lagreSeksjon.server";
 
 export const action = async ({request, params}: ActionFunctionArgs) => {

@@ -1,4 +1,4 @@
-import { redirect, type LoaderFunctionArgs } from "@remix-run/node";
+import { redirect, type LoaderFunctionArgs } from "react-router";
 import { getEnv } from "~/utils/env.utils";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -8,7 +8,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     return redirect("/prepod");
   }
 
-  return redirect(`/13eaa299-ad5c-432c-a207-2c796274d309`);
+  return redirect(`/opprett-soknad`);
   // if (!params.soknadId) {
   //   return redirect("/error");
   // }

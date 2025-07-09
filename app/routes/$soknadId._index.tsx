@@ -1,10 +1,8 @@
 import { BodyLong, Heading } from "@navikt/ds-react";
-import { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { validationError } from "@rvf/remix";
+import { ActionFunctionArgs, data,  LoaderFunctionArgs, MetaFunction, redirect , useLoaderData } from "react-router";
+import { validationError } from "@rvf/react-router";
 import { withZod } from "@rvf/zod";
 import { useRef } from "react";
-import { typedjson } from "remix-typedjson";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { InntektSkjema } from "~/components/inntekt-skjema/InntektSkjema";
@@ -50,32 +48,6 @@ export const validator = withZod(
     })
 );
 
-export const action = async ({ request, params }: ActionFunctionArgs) => {
-  invariant(params.soknadId, "SøknadId mangler");
-
-  const data = await validator.validate(await request.formData());
-
-  if (data.error) {
-    return validationError(data.error);
-  }
-
-  const { inntektStemmer, begrunnelse, pdfHtml } = data.data;
-
-  const postForeleggingResponse = await postMinsteinntektForeleggingresultat(
-    request,
-    params.soknadId,
-    inntektStemmer === "true",
-    begrunnelse || ""
-  );
-
-  const journalforingResponse = await journalforPdf(request, params.soknadId, pdfHtml);
-
-  if (postForeleggingResponse.status === "success" && journalforingResponse.status === "success") {
-    return redirect(`/${params.soknadId}/kvittering`);
-  }
-
-  return typedjson({ postForeleggingResponse });
-};
 
 export default function DinInntektIndex() {
   const { minsteInntektGrunnlag } = useLoaderData<typeof loader>();

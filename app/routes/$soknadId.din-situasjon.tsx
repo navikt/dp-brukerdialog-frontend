@@ -1,11 +1,10 @@
 import {Button, DatePicker, HStack, Page, Radio, RadioGroup, Textarea, useDatepicker, VStack} from "@navikt/ds-react";
-import {useNavigate, useParams} from "react-router";
+import {useNavigate, useParams, Form } from "react-router";
 import invariant from "tiny-invariant";
-import {Form} from "@remix-run/react";
 import {z} from "zod";
 import {useState} from "react";
 import {ArrowRightIcon} from "@navikt/aksel-icons";
-import {useForm} from "@rvf/remix";
+import {useForm} from "@rvf/react-router";
 
 interface Seksjon {
     mottatt: string | undefined;
