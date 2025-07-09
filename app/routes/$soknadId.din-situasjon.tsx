@@ -32,7 +32,7 @@ export default function DinSituasjon() {
                 dato: z.date().optional()
             }),
             submitSource: "state",
-            action: "/" + params.soknadId + "/din-situasjon/action",
+            action: "/$soknadId/din-situasjon/action",
             validationBehaviorConfig: {
                 initial: "onChange",
                 whenTouched: "onChange",
@@ -54,7 +54,6 @@ export default function DinSituasjon() {
 
     async function handleSubmit() {
         await form.submit()
-        console.log("asdsadasdsadasd")
         navigate("/barnetillegg")
     }
 
