@@ -16,12 +16,6 @@ export async function action() {
   return redirect(`/${soknadId}/din-situasjon`);
 }
 
-export const schema = z.object({
-  checkbox: z.boolean().refine((val) => val, {
-    message: "Du må godta vilkårene",
-  }),
-});
-
 export default function OpprettSoknad() {
   const form = useForm({
     method: "post",
@@ -31,7 +25,11 @@ export default function OpprettSoknad() {
       whenTouched: "onChange",
       whenSubmitted: "onChange",
     },
-    schema,
+    schema: z.object({
+      checkbox: z.boolean().refine((val) => val, {
+        message: "Du må godta vilkårene",
+      }),
+    }),
     defaultValues: {
       checkbox: false,
     },
