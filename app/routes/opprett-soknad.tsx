@@ -1,19 +1,41 @@
-import { Box, Button, Checkbox, VStack } from "@navikt/ds-react";
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { useNavigate } from "react-router";
+import { Alert, Box, Button, Checkbox, VStack } from "@navikt/ds-react";
+import { useForm } from "@rvf/react-router";
+import { Form, redirect } from "react-router";
+import { z } from "zod";
+import { opprettSoknad } from "~/models/opprett-soknad";
+
+export async function action() {
+  const response = await opprettSoknad();
+
+  if (!response.ok) {
+    console.log("Feil ved opprettelse av søknad");
+  }
+
+  const soknadId = await response.text();
+  return redirect(`/${soknadId}/din-situasjon`);
+}
+
+export const schema = z.object({
+  checkbox: z.boolean().refine((val) => val, {
+    message: "Du må godta vilkårene",
+  }),
+});
 
 export default function OpprettSoknad() {
-  const navigate = useNavigate();
-
-  async function startSoknad() {
-    const response = await fetch("/api/hent-soknadId", {
-      method: "GET",
-    });
-
-    const soknadId = await response.text();
-
-    return navigate(`/${soknadId}/din-situasjon`);
-  }
+  const form = useForm({
+    method: "post",
+    submitSource: "state",
+    validationBehaviorConfig: {
+      initial: "onChange",
+      whenTouched: "onChange",
+      whenSubmitted: "onChange",
+    },
+    schema,
+    defaultValues: {
+      checkbox: false,
+    },
+  });
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -24,12 +46,26 @@ export default function OpprettSoknad() {
       </p>
       <h3>Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger</h3>
       <VStack gap="4">
-        <Box padding="4" background="surface-warning-subtle" borderRadius={"medium"}>
-          <Checkbox value="enig">Jeg bekrefter at jeg vil svare så riktig som jeg kan</Checkbox>
-        </Box>
-        <Button iconPosition="right" icon={<ArrowRightIcon aria-hidden />} onClick={startSoknad}>
-          Start søknad
-        </Button>
+        <Form {...form.getFormProps()}>
+          <Box padding="4" background="surface-warning-subtle" borderRadius={"medium"}>
+            <Checkbox name="checkbox" error={!!form.error("checkbox")}>
+              Jeg bekrefter at jeg vil svare så riktig som jeg kan
+            </Checkbox>
+          </Box>
+          {form.error("checkbox") && (
+            <Alert variant="error" className="mt-4">
+              {form.error("checkbox")}
+            </Alert>
+          )}
+          <Button
+            iconPosition="right"
+            className="mt-4"
+            icon={<ArrowRightIcon aria-hidden />}
+            type="submit"
+          >
+            Start søknad
+          </Button>
+        </Form>
       </VStack>
     </main>
   );
