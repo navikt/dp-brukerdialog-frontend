@@ -1,15 +1,17 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Box, Button, Checkbox, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, redirect } from "react-router";
+import { Form, redirect, useActionData } from "react-router";
 import { z } from "zod";
-import { opprettSoknad } from "~/models/opprett-soknad";
+import { opprettSoknad } from "~/models/opprett-soknad.server";
 
 export async function action() {
   const response = await opprettSoknad();
 
   if (!response.ok) {
-    console.log("Feil ved opprettelse av søknad");
+    return {
+      error: "Feil ved opprettelse av søknad",
+    };
   }
 
   const soknadId = await response.text();
@@ -17,6 +19,8 @@ export async function action() {
 }
 
 export default function OpprettSoknad() {
+  const actionData = useActionData<typeof action>();
+
   const form = useForm({
     method: "post",
     submitSource: "state",
@@ -55,6 +59,13 @@ export default function OpprettSoknad() {
               {form.error("checkbox")}
             </Alert>
           )}
+
+          {actionData && actionData.error && (
+            <Alert variant="error" className="mt-4">
+              {actionData.error}
+            </Alert>
+          )}
+
           <Button
             iconPosition="right"
             className="mt-4"
