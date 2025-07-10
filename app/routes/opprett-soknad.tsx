@@ -45,7 +45,7 @@ export default function OpprettSoknad() {
       <h3>Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger</h3>
       <VStack gap="4">
         <Form {...form.getFormProps()}>
-          <Box padding="4" background="surface-warning-subtle" borderRadius={"medium"}>
+          <Box padding="4" background="surface-warning-subtle" borderRadius="medium">
             <Checkbox name="checkbox" error={!!form.error("checkbox")}>
               Jeg bekrefter at jeg vil svare så riktig som jeg kan
             </Checkbox>

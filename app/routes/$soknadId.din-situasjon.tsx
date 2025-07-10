@@ -118,7 +118,7 @@ export default function DinSituasjon() {
               >
                 <DatePicker.Input
                   {...inputProps}
-                  placeholder={"DD.MM.ÅÅÅÅ"}
+                  placeholder="DD.MM.ÅÅÅÅ"
                   label="Hvilken dato søker du dagpenger fra?"
                   name="dato"
                   description="Du kan få dagpenger fra første dag du er helt eller delvis arbeidsledig eller permittert og tidligst fra den dagen du sender inn søknaden. Datoen du søker om dagpenger fra har betydning for beregning av dagpengene dine."

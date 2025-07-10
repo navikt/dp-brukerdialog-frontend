@@ -14,7 +14,7 @@ export default function DinInntektIndex() {
 
   return (
     <div className="brukerdialog" ref={appRef} id="brukerdialog">
-      <Heading size="large" level={"1"} id="header-icon">
+      <Heading size="large" level="1" id="header-icon">
         Brukerdialog
       </Heading>
     </div>
