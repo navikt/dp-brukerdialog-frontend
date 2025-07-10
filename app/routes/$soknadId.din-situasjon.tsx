@@ -55,7 +55,7 @@ export default function DinSituasjon() {
           required_error: "Du må svare på dette spørsmålet",
         })
         .max(500, "Maks 500 tegn"),
-      dato: z.date({ required_error: "Du må velge en dato" }),
+      dato: z.date({ required_error: "Du må velge en dato" }).optional(),
     }),
     validationBehaviorConfig: {
       initial: "onChange",

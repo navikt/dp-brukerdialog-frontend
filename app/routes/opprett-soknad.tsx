@@ -1,9 +1,10 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Box, Button, Checkbox, VStack } from "@navikt/ds-react";
-import { useForm } from "@rvf/react-router";
-import { Form, redirect, useActionData } from "react-router";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { Form, redirect, useActionData, useFetcher } from "react-router";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
+import { OpprettSoknadFormValuesType, opprettSoknadSchema } from "~/schemas/opprett-soknad.schema";
 
 export async function action() {
   const response = await opprettSoknad();
@@ -20,24 +21,25 @@ export async function action() {
 
 export default function OpprettSoknad() {
   const actionData = useActionData<typeof action>();
+  const fetcher = useFetcher();
 
-  const form = useForm({
-    method: "post",
-    submitSource: "state",
-    validationBehaviorConfig: {
-      initial: "onChange",
-      whenTouched: "onChange",
-      whenSubmitted: "onChange",
-    },
-    schema: z.object({
-      checkbox: z.boolean().refine((val) => val, {
-        message: "Du må godta vilkårene",
-      }),
-    }),
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<OpprettSoknadFormValuesType>({
+    resolver: yupResolver(opprettSoknadSchema),
     defaultValues: {
       checkbox: false,
     },
   });
+
+  function onSubmit(data: OpprettSoknadFormValuesType) {
+    fetcher.submit(data, {
+      method: "POST",
+      action: "/opprett-soknad",
+    });
+  }
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -48,15 +50,16 @@ export default function OpprettSoknad() {
       </p>
       <h3>Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger</h3>
       <VStack gap="4">
-        <Form {...form.getFormProps()}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Box padding="4" background="surface-warning-subtle" borderRadius="medium">
-            <Checkbox name="checkbox" error={!!form.error("checkbox")}>
+            <Checkbox {...register("checkbox")}>
               Jeg bekrefter at jeg vil svare så riktig som jeg kan
             </Checkbox>
           </Box>
-          {form.error("checkbox") && (
+
+          {errors.checkbox?.message && (
             <Alert variant="error" className="mt-4">
-              {form.error("checkbox")}
+              {errors.checkbox?.message}
             </Alert>
           )}
 
@@ -67,10 +70,10 @@ export default function OpprettSoknad() {
           )}
 
           <Button
+            type="submit"
             iconPosition="right"
             className="mt-4"
             icon={<ArrowRightIcon aria-hidden />}
-            type="submit"
           >
             Start søknad
           </Button>
