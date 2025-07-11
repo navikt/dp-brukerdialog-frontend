@@ -1,6 +1,8 @@
 import * as yup from "yup";
+import { opprettSoknadSchema } from "~/schemas/opprett-soknad.schema";
 
 // Utility to traverse a Yup schema and output a Mermaid graph
+// Verktøy for å traversere et Yup-skjema og generere en Mermaid-graf
 export function yupSchemaToMermaid(name: string, schema: yup.AnyObjectSchema) {
   let nodes: any = [];
   let edges: any = [];
@@ -20,14 +22,6 @@ export function yupSchemaToMermaid(name: string, schema: yup.AnyObjectSchema) {
   traverse(schema, name);
   return `graph TD\n${nodes.join("\n")}\n${edges.join("\n")}`;
 }
-
-// Form verdier type
-export type OpprettSoknadFormValuesType = yup.InferType<typeof opprettSoknadSchema>;
-
-// Yup-skjema for validering
-export const opprettSoknadSchema = yup.object().shape({
-  checkbox: yup.boolean().oneOf([true], "Du må godta vilkårene").required("Du må godta vilkårene"),
-});
 
 // Example usage:
 console.log(yupSchemaToMermaid("opprettSoknadSchema", opprettSoknadSchema));
