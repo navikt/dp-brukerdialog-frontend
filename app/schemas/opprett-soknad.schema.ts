@@ -1,26 +1,5 @@
 import * as yup from "yup";
 
-// Utility to traverse a Yup schema and output a Mermaid graph
-export function yupSchemaToMermaid(name: string, schema: yup.AnyObjectSchema) {
-  let nodes: any = [];
-  let edges: any = [];
-
-  function traverse(s: any, parent: string) {
-    if (s.fields) {
-      Object.entries(s.fields).forEach(([key, value]) => {
-        const nodeId = `${parent}_${key}`;
-        nodes.push(`${nodeId}[${key}: ${(value as yup.AnySchema).type}]`);
-        edges.push(`${parent} --> ${nodeId}`);
-        traverse(value, nodeId);
-      });
-    }
-  }
-
-  nodes.push(`${name}[${name}]`);
-  traverse(schema, name);
-  return `graph TD\n${nodes.join("\n")}\n${edges.join("\n")}`;
-}
-
 // Form verdier type
 export type OpprettSoknadFormValuesType = yup.InferType<typeof opprettSoknadSchema>;
 
@@ -28,6 +7,3 @@ export type OpprettSoknadFormValuesType = yup.InferType<typeof opprettSoknadSche
 export const opprettSoknadSchema = yup.object().shape({
   checkbox: yup.boolean().oneOf([true], "Du må godta vilkårene").required("Du må godta vilkårene"),
 });
-
-// Example usage:
-console.log(yupSchemaToMermaid("opprettSoknadSchema", opprettSoknadSchema));
