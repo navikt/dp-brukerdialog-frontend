@@ -12,6 +12,8 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { formatISO } from "date-fns";
+import { useEffect, useState } from "react";
 import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
@@ -37,8 +39,46 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  console.log(`🔥 formData :`, formData);
+
+  // return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
+
+const schema = z
+  .object({
+    mottatt: z
+      .enum(["ja", "nei", "vetikke"], {
+        required_error: "Du må svare på dette spørsmålet",
+      })
+      .optional(),
+    arsak: z.string().max(500, "Maks 500 tegn").optional(),
+    dato: z.string({ required_error: "Du må velge en dato" }).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (!data.mottatt) {
+      ctx.addIssue({
+        path: ["mottatt"],
+        code: z.ZodIssueCode.custom,
+        message: "Du må svare på dette spørsmålet",
+      });
+    }
+
+    if (data.mottatt === "ja" && !data.arsak) {
+      ctx.addIssue({
+        path: ["arsak"],
+        code: z.ZodIssueCode.custom,
+        message: "Du må svare på dette spørsmålet",
+      });
+    }
+
+    if ((data.mottatt === "nei" || data.mottatt === "vetikke") && !data.dato) {
+      ctx.addIssue({
+        path: ["dato"],
+        code: z.ZodIssueCode.custom,
+        message: "Du må velge en dato",
+      });
+    }
+  });
 
 export default function DinSituasjon() {
   const actionData = useActionData<typeof action>();
@@ -46,31 +86,23 @@ export default function DinSituasjon() {
   const form = useForm({
     method: "post",
     submitSource: "state",
-    schema: z.object({
-      mottatt: z.enum(["ja", "nei", "vetikke"], {
-        required_error: "Du må svare på dette spørsmålet",
-      }),
-      arsak: z
-        .string({
-          required_error: "Du må svare på dette spørsmålet",
-        })
-        .max(500, "Maks 500 tegn"),
-      dato: z.date({ required_error: "Du må velge en dato" }),
-    }),
+    schema: schema,
     validationBehaviorConfig: {
-      initial: "onChange",
-      whenTouched: "onChange",
-      whenSubmitted: "onChange",
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
     },
-    defaultValues: {
-      mottatt: undefined as any, // finn bedre måte å håndtere dette på
-      arsak: undefined as any, // finn bedre måte å håndtere dette på
-      dato: undefined as any, // finn bedre måte å håndtere dette på
-    },
+    defaultValues: {},
   });
 
   const { datepickerProps, inputProps } = useDatepicker({
-    onDateChange: (date) => console.log(date),
+    onDateChange: (date) => {
+      form.setValue("dato", date ? formatISO(date, { representation: "date" }) : "");
+
+      // Dette er en workaround
+      // Feilmelding sitter igjen etter at dato er valgt, må tvinge en ny validering
+      form.validate();
+    },
   });
 
   return (
@@ -108,10 +140,10 @@ export default function DinSituasjon() {
                 >
                   <DatePicker.Input
                     {...inputProps}
+                    name="dato" // name må settes manuelt fordi datepicker er controlled field
+                    error={form.error("dato")} // error må settes manuelt fordi datepicker er controlled field
                     placeholder="DD.MM.ÅÅÅÅ"
                     label="Hvilken dato søker du dagpenger fra?"
-                    name="dato"
-                    error={form.error("dato")}
                     description="Du kan få dagpenger fra første dag du er helt eller delvis arbeidsledig eller permittert og tidligst fra den dagen du sender inn søknaden. Datoen du søker om dagpenger fra har betydning for beregning av dagpengene dine."
                   />
                 </DatePicker>
