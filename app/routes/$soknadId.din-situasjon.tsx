@@ -41,11 +41,11 @@ const schema = z
   .object({
     mottatt: z
       .enum(["ja", "nei", "vetikke"], {
-        required_error: "Du må svare på dette spørsmålet",
+        error: "Du må svare på dette spørsmålet",
       })
       .optional(),
     arsak: z.string().max(500, "Maks 500 tegn").optional(),
-    dato: z.string({ required_error: "Du må velge en dato" }).optional(),
+    dato: z.string({ error: "Du må velge en dato" }).optional(),
   })
   .superRefine((data, ctx) => {
     if (!data.mottatt) {

@@ -8,9 +8,6 @@ export async function lagreSeksjon(
   seksjonsData: string
 ) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}/${seksjonId}`;
-  console.log(`🔥 seksjonsData :`, seksjonsData);
-
-  console.log(`🔥 url :`, url);
   const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
 
   return await fetch(url, {
