@@ -13,7 +13,6 @@ import {
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { formatISO } from "date-fns";
-import { useEffect, useState } from "react";
 import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
@@ -25,13 +24,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "tilleggsopplysninger";
+  const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
-  const response = await lagreSeksjon(
-    request,
-    params.soknadId,
-    seksjonId,
-    JSON.stringify(formData)
-  );
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
     return {
@@ -39,7 +34,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  // return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
 const schema = z
@@ -82,7 +77,7 @@ export default function DinSituasjon() {
   const actionData = useActionData<typeof action>();
 
   const form = useForm({
-    method: "post",
+    method: "PUT",
     submitSource: "state",
     schema: schema,
     validationBehaviorConfig: {
@@ -96,7 +91,6 @@ export default function DinSituasjon() {
   const { datepickerProps, inputProps } = useDatepicker({
     onDateChange: (date) => {
       form.setValue("dato", date ? formatISO(date, { representation: "date" }) : "");
-
       // Dette er en workaround
       // Feilmelding sitter igjen etter at dato er valgt, må tvinge en ny validering
       form.validate();

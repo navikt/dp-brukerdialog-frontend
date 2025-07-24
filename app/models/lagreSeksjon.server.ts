@@ -1,21 +1,26 @@
+import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 
 export async function lagreSeksjon(
   request: Request,
   soknadId: string,
   seksjonId: string,
-  body: string
+  seksjonsData: string
 ) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}/${seksjonId}`;
-  //const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
+  console.log(`🔥 seksjonsData :`, seksjonsData);
+
+  console.log(`🔥 url :`, url);
+  const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
 
   return await fetch(url, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
       Accept: "application/json",
-      //Authorization: `Bearer ${onBehalfOfToken}`,
+      Authorization: `Bearer ${onBehalfOfToken}`,
+      connection: "keep-alive",
+      "Content-Type": "application/json",
     },
-    body,
+    body: seksjonsData,
   });
 }

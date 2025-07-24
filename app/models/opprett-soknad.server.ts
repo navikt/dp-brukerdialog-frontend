@@ -9,7 +9,7 @@ export async function opprettSoknad(request: Request) {
   return await fetch(url, {
     method: "POST",
     headers: {
-      authorization: `Bearer ${onBehalfOfToken}`,
+      Authorization: `Bearer ${onBehalfOfToken}`,
     },
   });
 }
