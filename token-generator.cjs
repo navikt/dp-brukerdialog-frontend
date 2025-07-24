@@ -41,8 +41,6 @@ async function getToken(ident) {
   formData.append("pid", ident);
   formData.append("aud", envConfig.aud);
 
-  console.info("🔑 Henter token fra TokenX");
-
   try {
     const response = await fetch(tokenXUrl, {
       method: "POST",
@@ -74,4 +72,6 @@ function setEnvValue(key, value) {
   }
 
   fs.writeFileSync(envPath, envText, "utf-8");
+
+  console.info(`✅ ${key}`);
 }
