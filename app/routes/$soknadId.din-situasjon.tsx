@@ -39,8 +39,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  console.log(`🔥 formData :`, formData);
-
   // return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 

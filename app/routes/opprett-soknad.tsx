@@ -4,9 +4,10 @@ import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData } from "react-router";
 import { z } from "zod";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
+import { Route } from "./+types/opprett-soknad";
 
-export async function action() {
-  const response = await opprettSoknad();
+export async function action({ request }: Route.ActionArgs) {
+  const response = await opprettSoknad(request);
 
   if (!response.ok) {
     return {
@@ -15,6 +16,7 @@ export async function action() {
   }
 
   const soknadId = await response.text();
+
   return redirect(`/${soknadId}/din-situasjon`);
 }
 
