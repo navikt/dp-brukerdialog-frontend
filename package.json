@@ -20,7 +20,7 @@
     "@navikt/ds-react": "^7.25.1",
     "@navikt/nav-dekoratoren-moduler": "^3.4.0",
     "@navikt/oasis": "^3.8.0",
-    "@react-router/fs-routes": "^7.7.0",
+    "@react-router/fs-routes": "^7.7.1",
     "@react-router/node": "^7.7.0",
     "@react-router/serve": "^7.7.0",
     "@rvf/react-router": "^7.1.5",
