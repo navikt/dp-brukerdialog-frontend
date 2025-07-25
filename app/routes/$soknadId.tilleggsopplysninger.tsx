@@ -1,16 +1,14 @@
 import invariant from "tiny-invariant";
-import { Button, Page, Textarea } from "@navikt/ds-react";
+import { Button, HStack, Page, Textarea } from "@navikt/ds-react";
 import { useState } from "react";
 import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
-import { ArrowRightIcon } from "@navikt/aksel-icons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { useForm } from "@rvf/react-router";
 import { ActionFunctionArgs, Form, useParams } from "react-router";
 import { z } from "zod";
 
 export async function action({ request, params }: ActionFunctionArgs) {
-  console.log("Inside action function");
   const form = await request.formData();
-  console.log("Form data received:", form);
   console.log("For param: ", params.soknadId);
 }
 
@@ -61,9 +59,14 @@ export default function Tilleggsopplysninger() {
           />
         )}
 
-        <Button variant="primary" type="submit" iconPosition="right" icon={<ArrowRightIcon />}>
-          Neste steg
-        </Button>
+        <HStack gap="4" className="mt-8">
+          <Button variant="secondary" icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}>
+            Forrige steg
+          </Button>
+          <Button variant="primary" type="submit" iconPosition="right" icon={<ArrowRightIcon />}>
+            Neste steg
+          </Button>
+        </HStack>
       </Form>
     </Page>
   );

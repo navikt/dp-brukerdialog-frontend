@@ -51,7 +51,7 @@ const schema = z
     if (!data.mottatt) {
       ctx.addIssue({
         path: ["mottatt"],
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du må svare på dette spørsmålet",
       });
     }
@@ -59,7 +59,7 @@ const schema = z
     if (data.mottatt === "ja" && !data.arsak) {
       ctx.addIssue({
         path: ["arsak"],
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du må svare på dette spørsmålet",
       });
     }
@@ -67,7 +67,7 @@ const schema = z
     if ((data.mottatt === "nei" || data.mottatt === "vetikke") && !data.dato) {
       ctx.addIssue({
         path: ["dato"],
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         message: "Du må velge en dato",
       });
     }
