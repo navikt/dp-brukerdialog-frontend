@@ -16,6 +16,7 @@ import { formatISO } from "date-fns";
 import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
+import { useSanity } from "~/hooks/useSanity";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -75,6 +76,7 @@ const schema = z
 
 export default function DinSituasjon() {
   const actionData = useActionData<typeof action>();
+  const { getAppText } = useSanity();
 
   const form = useForm({
     method: "PUT",
@@ -164,6 +166,8 @@ export default function DinSituasjon() {
                 Neste steg
               </Button>
             </HStack>
+
+            <h3>Test språkvelger: {getAppText("paabegynt-soknad.paabegynt-status")}</h3>
           </Form>
         </VStack>
       </VStack>
