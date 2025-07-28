@@ -39,7 +39,7 @@ export async function getDekoratorHTML(): Promise<DecoratorElements> {
       chatbot: false,
       redirectToApp: true,
       level: "Level4",
-      availableLanguages: availableLanguages,
+      // availableLanguages: availableLanguages,
     },
   };
 
