@@ -28,6 +28,11 @@
   justify-content: center;
 }
 
+.left-border {
+  border-left: 4px solid var(--a-deepblue-600);
+  padding-left: var(--a-spacing-4);
+}
+
 .expansion-card--pdf {
   background-color: var(--a-purple-100);
   border: none;

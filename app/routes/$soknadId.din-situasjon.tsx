@@ -16,7 +16,6 @@ import { formatISO } from "date-fns";
 import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { useSanity } from "~/hooks/useSanity";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -24,7 +23,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
-  const nesteSeksjonId = "tilleggsopplysninger";
+  const nesteSeksjonId = "bodstedsland";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
@@ -40,13 +39,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 const schema = z
   .object({
-    mottatt: z
-      .enum(["ja", "nei", "vetikke"], {
-        error: "Du må svare på dette spørsmålet",
-      })
-      .optional(),
+    mottatt: z.enum(["ja", "nei", "vetikke"]).optional(),
     arsak: z.string().max(500, "Maks 500 tegn").optional(),
-    dato: z.string({ error: "Du må velge en dato" }).optional(),
+    dato: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (!data.mottatt) {
@@ -57,26 +52,27 @@ const schema = z
       });
     }
 
-    if (data.mottatt === "ja" && !data.arsak) {
-      ctx.addIssue({
-        path: ["arsak"],
-        code: "custom",
-        message: "Du må svare på dette spørsmålet",
-      });
-    }
+    if (data.mottatt) {
+      if (data.mottatt === "ja" && !data.arsak) {
+        ctx.addIssue({
+          path: ["arsak"],
+          code: "custom",
+          message: "Du må svare på dette spørsmålet",
+        });
+      }
 
-    if ((data.mottatt === "nei" || data.mottatt === "vetikke") && !data.dato) {
-      ctx.addIssue({
-        path: ["dato"],
-        code: "custom",
-        message: "Du må velge en dato",
-      });
+      if ((data.mottatt === "nei" || data.mottatt === "vetikke") && !data.dato) {
+        ctx.addIssue({
+          path: ["dato"],
+          code: "custom",
+          message: "Du må velge en dato",
+        });
+      }
     }
   });
 
 export default function DinSituasjon() {
   const actionData = useActionData<typeof action>();
-  const { getAppText } = useSanity();
 
   const form = useForm({
     method: "PUT",
@@ -166,8 +162,6 @@ export default function DinSituasjon() {
                 Neste steg
               </Button>
             </HStack>
-
-            <h3>Test språkvelger: {getAppText("paabegynt-soknad.paabegynt-status")}</h3>
           </Form>
         </VStack>
       </VStack>
