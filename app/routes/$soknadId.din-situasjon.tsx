@@ -17,6 +17,7 @@ import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router"
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { requireField } from "~/utils/validering.utils";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -44,30 +45,17 @@ const schema = z
     dato: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data.mottatt) {
-      ctx.addIssue({
-        path: ["mottatt"],
-        code: "custom",
-        message: "Du må svare på dette spørsmålet",
-      });
+    if (!requireField(data, ctx, "mottatt", "Du må svare på dette spørsmålet")) {
+      return;
     }
 
-    if (data.mottatt) {
-      if (data.mottatt === "ja" && !data.arsak) {
-        ctx.addIssue({
-          path: ["arsak"],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+    if (data.mottatt === "ja") {
+      requireField(data, ctx, "arsak", "Du må svare på dette spørsmålet");
+      return;
+    }
 
-      if ((data.mottatt === "nei" || data.mottatt === "vetikke") && !data.dato) {
-        ctx.addIssue({
-          path: ["dato"],
-          code: "custom",
-          message: "Du må velge en dato",
-        });
-      }
+    if (data.mottatt === "nei" || data.mottatt === "vetikke") {
+      requireField(data, ctx, "dato", "Du må velge en dato");
     }
   });
 

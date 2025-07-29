@@ -10,7 +10,6 @@ import {
   RadioGroup,
   ReadMore,
   Select,
-  Textarea,
   useDatepicker,
   VStack,
 } from "@navikt/ds-react";
@@ -21,6 +20,7 @@ import invariant from "tiny-invariant";
 import { z } from "zod";
 import { LANDLISTE } from "~/constants";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { requireField } from "~/utils/validering.utils";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -41,85 +41,63 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
+const bodstedsland = "bodstedsland";
+const requiredErrorText = "Du må svare på dette spørsmålet";
+const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
+const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
+const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
+const avreiseDatoFra = "avreise-dato-fra";
+const avreiseDatoTil = "avreise-dato-til";
+
 const schema = z
   .object({
-    bodstedsland: z.string().optional(),
-    "reist-tilbake-til-bostedslandet": z.enum(["ja", "nei"]).optional(),
-    "reiste-du-hjem-til-landet-du-bor-i": z.enum(["ja", "nei"]).optional(),
-    "reiste-du-i-takt-med-rotasjon": z.enum(["ja", "nei"]).optional(),
-    "avreise-dato-fra": z.string({ error: "Du må velge en dato" }).optional(),
-    "avreise-dato-til": z.string({ error: "Du må velge en dato" }).optional(),
+    [bodstedsland]: z.string().optional(),
+    [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
+    [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
+    [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
+    [avreiseDatoFra]: z.string({ error: "Du må velge en dato" }).optional(),
+    [avreiseDatoTil]: z.string({ error: "Du må velge en dato" }).optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data.bodstedsland) {
-      ctx.addIssue({
-        path: ["bodstedsland"],
-        code: "custom",
-        message: "Du må svare på dette spørsmålet",
-      });
+    if (!data[bodstedsland] || data[bodstedsland].length < 2) {
+      requireField(data, ctx, bodstedsland, requiredErrorText);
+      return;
     }
 
-    if (data.bodstedsland) {
-      if (data.bodstedsland.length < 2) {
-        ctx.addIssue({
-          path: ["bodstedsland"],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
-
+    if (data[bodstedsland]) {
       if (data.bodstedsland === "NO") {
         return;
       }
 
-      if (!data["reist-tilbake-til-bostedslandet"]) {
-        ctx.addIssue({
-          path: ["reist-tilbake-til-bostedslandet"],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
+      if (!data[reistTilbakeTilBostedslandet]) {
+        requireField(data, ctx, reistTilbakeTilBostedslandet, requiredErrorText);
+        return;
       }
 
-      if (data["reist-tilbake-til-bostedslandet"] === "ja") {
-        if (!data["avreise-dato-fra"]) {
-          ctx.addIssue({
-            path: ["avreise-dato-fra"],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-
-        if (!data["avreise-dato-til"]) {
-          ctx.addIssue({
-            path: ["avreise-dato-til"],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-      }
-
-      if (data["reist-tilbake-til-bostedslandet"] === "nei") {
-        if (!data["reiste-du-hjem-til-landet-du-bor-i"]) {
-          ctx.addIssue({
-            path: ["reiste-du-hjem-til-landet-du-bor-i"],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-
-        if (data["reiste-du-hjem-til-landet-du-bor-i"] === "ja") {
+      if (data[reistTilbakeTilBostedslandet] === "ja") {
+        if (!data[avreiseDatoFra]) {
+          requireField(data, ctx, avreiseDatoFra, requiredErrorText);
           return;
         }
 
-        if (
-          data["reist-tilbake-til-bostedslandet"] === "nei" &&
-          !data["reiste-du-i-takt-med-rotasjon"]
-        ) {
-          ctx.addIssue({
-            path: ["reiste-du-i-takt-med-rotasjon"],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
+        if (!data[avreiseDatoTil]) {
+          requireField(data, ctx, avreiseDatoTil, requiredErrorText);
+          return;
+        }
+      }
+
+      if (data[reistTilbakeTilBostedslandet] === "nei") {
+        if (!data[reisteDuHjemTilLandetDuBorI]) {
+          requireField(data, ctx, reisteDuHjemTilLandetDuBorI, requiredErrorText);
+          return;
+        }
+
+        if (data[reisteDuHjemTilLandetDuBorI] === "ja") {
+          return;
+        }
+
+        if (data[reistTilbakeTilBostedslandet] === "nei" && !data[reisteDuITaktMedRotasjon]) {
+          requireField(data, ctx, reisteDuITaktMedRotasjon, requiredErrorText);
         }
       }
     }
@@ -143,7 +121,7 @@ export default function DinSituasjon() {
   const { datepickerProps: avreiseDatoFraProps, inputProps: avreiseDatoFraInputProps } =
     useDatepicker({
       onDateChange: (date) => {
-        form.setValue("avreise-dato-fra", date ? formatISO(date, { representation: "date" }) : "");
+        form.setValue(avreiseDatoFra, date ? formatISO(date, { representation: "date" }) : "");
         form.validate();
       },
     });
@@ -153,7 +131,7 @@ export default function DinSituasjon() {
     inputProps: { ...avreiseDatoTilInputProps },
   } = useDatepicker({
     onDateChange: (date) => {
-      form.setValue("avreise-dato-til", date ? formatISO(date, { representation: "date" }) : "");
+      form.setValue(avreiseDatoTil, date ? formatISO(date, { representation: "date" }) : "");
       form.validate();
     },
   });
@@ -165,11 +143,7 @@ export default function DinSituasjon() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              <Select
-                label="Velg bostedsland"
-                name="bodstedsland"
-                error={form.error("bodstedsland")}
-              >
+              <Select label="Velg bostedsland" name={bodstedsland} error={form.error(bodstedsland)}>
                 <option value="">Velg et land</option>
                 {LANDLISTE.map((land) => (
                   <option key={land.value} value={land.value}>
@@ -197,18 +171,18 @@ export default function DinSituasjon() {
                 <Link to="/eksempel">mer om hvor du skal søke penger fra.</Link>
               </ReadMore>
 
-              {form.value("bodstedsland") && form.value("bodstedsland") !== "NO" && (
+              {form.value(bodstedsland) && form.value(bodstedsland) !== "NO" && (
                 <RadioGroup
-                  name="reist-tilbake-til-bostedslandet"
+                  name={reistTilbakeTilBostedslandet}
                   legend="Har du reist tilbake til bostedslandet ditt etter at du ble arbeidsledig eller permittert?"
-                  error={form.error("reist-tilbake-til-bostedslandet")}
+                  error={form.error(reistTilbakeTilBostedslandet)}
                 >
                   <Radio value="ja">Ja</Radio>
                   <Radio value="nei">Nei</Radio>
                 </RadioGroup>
               )}
 
-              {form.value("reist-tilbake-til-bostedslandet") === "ja" && (
+              {form.value(reistTilbakeTilBostedslandet) === "ja" && (
                 <VStack gap="4">
                   <BodyShort weight="semibold">Dato for avreise</BodyShort>
                   <VStack className="left-border" gap="4">
@@ -220,7 +194,7 @@ export default function DinSituasjon() {
                       <DatePicker.Input
                         {...avreiseDatoFraInputProps}
                         name="dato"
-                        error={form.error("avreise-dato-fra")}
+                        error={form.error(avreiseDatoFra)}
                         placeholder="DD.MM.ÅÅÅÅ"
                         label="Fra dato"
                       />
@@ -233,7 +207,7 @@ export default function DinSituasjon() {
                       <DatePicker.Input
                         {...avreiseDatoTilInputProps}
                         name="dato"
-                        error={form.error("avreise-dato-til")}
+                        error={form.error(avreiseDatoTil)}
                         placeholder="DD.MM.ÅÅÅÅ"
                         label="Til dato"
                       />
@@ -242,23 +216,23 @@ export default function DinSituasjon() {
                 </VStack>
               )}
 
-              {form.value("reist-tilbake-til-bostedslandet") === "nei" && (
+              {form.value(reistTilbakeTilBostedslandet) === "nei" && (
                 <RadioGroup
-                  name="reiste-du-hjem-til-landet-du-bor-i"
+                  name={reisteDuHjemTilLandetDuBorI}
                   legend="Reiste du hjem til landet du bor i en gang i uken eller mer, mens du jobbet i Norge?"
-                  error={form.error("reiste-du-hjem-til-landet-du-bor-i")}
+                  error={form.error(reisteDuHjemTilLandetDuBorI)}
                 >
                   <Radio value="ja">Ja</Radio>
                   <Radio value="nei">Nei</Radio>
                 </RadioGroup>
               )}
 
-              {form.value("reiste-du-hjem-til-landet-du-bor-i") &&
-                form.value("reiste-du-hjem-til-landet-du-bor-i") === "nei" && (
+              {form.value(reisteDuHjemTilLandetDuBorI) &&
+                form.value(reisteDuHjemTilLandetDuBorI) === "nei" && (
                   <RadioGroup
-                    name="reiste-du-i-takt-med-rotasjon"
+                    name={reisteDuITaktMedRotasjon}
                     legend="Reiste du i takt med rotasjon?"
-                    error={form.error("reiste-du-i-takt-med-rotasjon")}
+                    error={form.error(reisteDuITaktMedRotasjon)}
                   >
                     <Radio value="ja">Ja</Radio>
                     <Radio value="nei">Nei</Radio>
