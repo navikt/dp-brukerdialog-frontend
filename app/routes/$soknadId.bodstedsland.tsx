@@ -55,8 +55,8 @@ const schema = z
     [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
     [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
     [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
-    [avreiseDatoFra]: z.string({ error: "Du må velge en dato" }).optional(),
-    [avreiseDatoTil]: z.string({ error: "Du må velge en dato" }).optional(),
+    [avreiseDatoFra]: z.string().optional(),
+    [avreiseDatoTil]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (!data[bodstedsland] || data[bodstedsland].length < 2) {

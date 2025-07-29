@@ -45,7 +45,8 @@ const schema = z
     dato: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    if (!requireField(data, ctx, "mottatt", "Du må svare på dette spørsmålet")) {
+    if (!data.mottatt) {
+      requireField(data, ctx, "mottatt", "Du må svare på dette spørsmålet");
       return;
     }
 
@@ -56,6 +57,7 @@ const schema = z
 
     if (data.mottatt === "nei" || data.mottatt === "vetikke") {
       requireField(data, ctx, "dato", "Du må velge en dato");
+      return;
     }
   });
 
