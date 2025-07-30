@@ -16,7 +16,7 @@ import { formatISO } from "date-fns";
 import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { dinSituasjonSporsmal } from "~/components/seksjon-sporsmal/din-situasjon";
+import { dinSituasjonSporsmal } from "~/components/seksjon/din-situasjon";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
 export async function action({ request, params }: ActionFunctionArgs) {
