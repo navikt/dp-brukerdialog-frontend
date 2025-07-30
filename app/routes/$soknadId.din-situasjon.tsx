@@ -113,11 +113,7 @@ export default function DinSituasjon() {
               )}
 
               {(form.value("mottatt") === "nei" || form.value("mottatt") === "vetikke") && (
-                <DatePicker
-                  {...datepickerProps}
-                  fromDate={new Date()}
-                  toDate={new Date("31 Dec 2025")}
-                >
+                <DatePicker {...datepickerProps} fromDate={new Date()}>
                   <DatePicker.Input
                     {...inputProps}
                     name="dato" // name må settes manuelt fordi datepicker er controlled field

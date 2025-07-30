@@ -10,6 +10,7 @@ import {
   RadioGroup,
   ReadMore,
   Select,
+  TextField,
   useDatepicker,
   VStack,
 } from "@navikt/ds-react";
@@ -48,6 +49,7 @@ const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
 const avreiseDatoFra = "avreise-dato-fra";
 const avreiseDatoTil = "avreise-dato-til";
+const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
   .object({
@@ -57,6 +59,7 @@ const schema = z
     [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
     [avreiseDatoFra]: z.string().optional(),
     [avreiseDatoTil]: z.string().optional(),
+    [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (!data[bodstedsland] || data[bodstedsland].length < 2) {
@@ -82,6 +85,11 @@ const schema = z
 
         if (!data[avreiseDatoTil]) {
           requireField(data, ctx, avreiseDatoTil, requiredErrorText);
+          return;
+        }
+
+        if (data[hvorforReistDuFraNorge]?.length === 0) {
+          requireField(data, ctx, hvorforReistDuFraNorge, requiredErrorText);
           return;
         }
       }
@@ -214,6 +222,14 @@ export default function DinSituasjon() {
                     </DatePicker>
                   </VStack>
                 </VStack>
+              )}
+
+              {form.value(avreiseDatoFra) && form.value(avreiseDatoTil) && (
+                <TextField
+                  {...form.getInputProps(hvorforReistDuFraNorge)}
+                  label="Hvorfor reist du fra Norge?"
+                  error={form.error(hvorforReistDuFraNorge)}
+                />
               )}
 
               {form.value(reistTilbakeTilBostedslandet) === "nei" && (
