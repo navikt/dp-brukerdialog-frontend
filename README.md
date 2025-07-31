@@ -1,4 +1,4 @@
-# Welcome to Remix!
+# dp-brukerdialog-frontend
 
 - 📖 [Remix docs](https://remix.run/docs)
 
