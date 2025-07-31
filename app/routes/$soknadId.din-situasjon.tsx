@@ -6,7 +6,7 @@ import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/seksjon/din-situasjon";
-import { Sporsmal } from "~/components/sporsmal/sporsmal";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
 export async function action({ request, params }: ActionFunctionArgs) {
