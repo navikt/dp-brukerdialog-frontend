@@ -1,27 +1,23 @@
-/**
- * Grunnleggende spørsmålstype for et svar-objekt S
- * key: navnet på feltet i svar-objektet
- * showIf: funksjon for betinget visning
- */
-export type BaseSporsmal<S> = {
-  key: keyof S;
+export type BaseSporsmal = {
+  id: string;
   label: string;
   description?: string;
-  visHvis?: (svar: S) => boolean;
+  visHvis?: (svar: Record<string, any>) => boolean;
+  avhengigAv?: {};
 };
 
-export type RadioSporsmal<S> = BaseSporsmal<S> & {
-  type: "radio";
+export type EnvalgSporsmal = BaseSporsmal & {
+  type: "envalg";
   options: { value: string; label: string }[];
 };
 
-export type TextareaSporsmal<S> = BaseSporsmal<S> & {
-  type: "textarea";
+export type LangTekstSporsmal = BaseSporsmal & {
+  type: "langtekst";
   maxLength?: number;
 };
 
-export type DatepickerSporsmal<S> = BaseSporsmal<S> & {
-  type: "datepicker";
+export type DatoSporsmal = BaseSporsmal & {
+  type: "dato";
 };
 
-export type Sporsmal<S> = RadioSporsmal<S> | TextareaSporsmal<S> | DatepickerSporsmal<S>;
+export type Sporsmal = EnvalgSporsmal | LangTekstSporsmal | DatoSporsmal;

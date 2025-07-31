@@ -16,8 +16,11 @@ import { formatISO } from "date-fns";
 import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { dinSituasjonSporsmal } from "~/components/seksjon/din-situasjon";
+import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/seksjon/din-situasjon";
+import { useEffect } from "react";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { Envalg } from "~/components/faktum/Envalg";
+import { LangTekst } from "~/components/faktum/LangTekst";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -44,11 +47,13 @@ const schema = z
     dato: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    dinSituasjonSporsmal.forEach((q) => {
-      const visible = !q.visHvis || q.visHvis(data);
-      if (visible && !data[q.key]) {
+    dinSituasjonSporsmal.forEach((sporsmal) => {
+      const visible = !sporsmal.visHvis || sporsmal.visHvis(data);
+      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+
+      if (visible && !data[sporsmalId]) {
         ctx.addIssue({
-          path: [q.key],
+          path: [sporsmal.id],
           code: "custom",
           message: "Du må svare på dette spørsmålet",
         });
@@ -79,6 +84,19 @@ export default function DinSituasjon() {
     },
   });
 
+  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
+  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
+  // Kalles automatisk hver gang formverdier endres.
+  useEffect(() => {
+    const values = form.value();
+    dinSituasjonSporsmal.forEach((sporsmal) => {
+      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
+        form.setValue(sporsmalId, undefined);
+      }
+    });
+  }, [form.value()]);
+
   return (
     <Page className="brukerdialog">
       <h2>Din situasjon</h2>
@@ -88,44 +106,30 @@ export default function DinSituasjon() {
             <VStack gap="8">
               {dinSituasjonSporsmal.map((sporsmal) => {
                 // Skip rendering if the question should not be shown based on current answers
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) return null;
+                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                  return null;
+                }
+
+                const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+                const formScope = form.scope(sporsmal.id);
 
                 if (sporsmal.type === "radio") {
-                  return (
-                    <RadioGroup
-                      {...form.getInputProps(sporsmal.key)}
-                      legend={sporsmal.label}
-                      key={sporsmal.key}
-                      error={form.error(sporsmal.key)}
-                    >
-                      {sporsmal.options?.map((opt) => (
-                        <Radio key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </Radio>
-                      ))}
-                    </RadioGroup>
-                  );
+                  return <Envalg sporsmal={sporsmal} formScope={formScope} />;
                 }
+
                 if (sporsmal.type === "textarea") {
-                  return (
-                    <Textarea
-                      {...form.getInputProps(sporsmal.key)}
-                      label={sporsmal.label}
-                      key={sporsmal.key}
-                      maxLength={sporsmal.maxLength}
-                      error={form.error(sporsmal.key)}
-                    />
-                  );
+                  return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
                 }
+
                 if (sporsmal.type === "datepicker") {
                   return (
                     <DatePicker {...datepickerProps}>
                       <DatePicker.Input
                         {...inputProps}
-                        name={sporsmal.key}
-                        key={sporsmal.key}
+                        name={sporsmal.id}
+                        key={sporsmal.id}
                         placeholder="DD.MM.ÅÅÅÅ"
-                        error={form.error(sporsmal.key)}
+                        error={form.error(sporsmalId)}
                         description={sporsmal.description}
                         label={sporsmal.label}
                       />
@@ -133,7 +137,6 @@ export default function DinSituasjon() {
                   );
                 }
 
-                // If the question type is not recognized, return null
                 console.warn(`Ukjent spørsmålstype: ${sporsmal}`);
                 return null;
               })}

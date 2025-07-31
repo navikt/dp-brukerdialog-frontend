@@ -1,3 +1,4 @@
+import { id } from "date-fns/locale";
 import { Sporsmal } from "./seksjon.types";
 
 export type DinSituasjonSvar = {
@@ -8,7 +9,7 @@ export type DinSituasjonSvar = {
 
 export const dinSituasjonSporsmal: Sporsmal<DinSituasjonSvar>[] = [
   {
-    key: "mottatt",
+    id: "mottatt",
     type: "radio",
     label: "Har du mottatt dagpenger fra NAV i løpet av de siste 52 ukene?",
     options: [
@@ -18,14 +19,14 @@ export const dinSituasjonSporsmal: Sporsmal<DinSituasjonSvar>[] = [
     ],
   },
   {
-    key: "arsak",
+    id: "arsak",
     type: "textarea",
     label: "Skriv årsaken til at dagpengene ble stanset (Maks 500 tegn)",
     maxLength: 500,
     visHvis: (svar: DinSituasjonSvar) => svar.mottatt === "ja",
   },
   {
-    key: "dato",
+    id: "dato",
     type: "datepicker",
     label: "Hvilken dato søker du dagpenger fra?",
     description:
