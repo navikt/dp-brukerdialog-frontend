@@ -10,6 +10,7 @@ import {
   RadioGroup,
   ReadMore,
   Select,
+  TextField,
   useDatepicker,
   VStack,
 } from "@navikt/ds-react";
@@ -26,7 +27,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const seksjonId = "din-situasjon";
+  const seksjonId = "bostedsland";
   const nesteSeksjonId = "tilleggsopplysninger";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
@@ -48,6 +49,7 @@ const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
 const avreiseDatoFra = "avreise-dato-fra";
 const avreiseDatoTil = "avreise-dato-til";
+const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
   .object({
@@ -57,6 +59,7 @@ const schema = z
     [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
     [avreiseDatoFra]: z.string().optional(),
     [avreiseDatoTil]: z.string().optional(),
+    [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (!data[bodstedsland] || data[bodstedsland].length < 2) {
@@ -82,6 +85,11 @@ const schema = z
 
         if (!data[avreiseDatoTil]) {
           requireField(data, ctx, avreiseDatoTil, requiredErrorText);
+          return;
+        }
+
+        if (data[hvorforReistDuFraNorge]?.length === 0) {
+          requireField(data, ctx, hvorforReistDuFraNorge, requiredErrorText);
           return;
         }
       }
@@ -137,6 +145,8 @@ export default function DinSituasjon() {
     },
   });
 
+  const ikkeNorge = form.value(bodstedsland) && form.value(bodstedsland) !== "NO";
+
   return (
     <Page className="brukerdialog">
       <h2>Bodstedsland</h2>
@@ -161,7 +171,7 @@ export default function DinSituasjon() {
                 Hvilket land du skal søke om penger fra avhenger av
                 <ul>
                   <li>hvilket land du sist jobbet i</li>
-                  <li>hvilket land du bor i </li>
+                  <li>hvilket land du bor i</li>
                   <li>
                     om du er permittert eller delvis arbeidsledig, eller om du er helt arbeidsledig
                     Er du usikker på hva du skal svare, kan du lese mer om hvor du skal søke penger
@@ -171,8 +181,7 @@ export default function DinSituasjon() {
                 Er du usikker på hva du skal svare, kan du lese{" "}
                 <Link to="/eksempel">mer om hvor du skal søke penger fra.</Link>
               </ReadMore>
-
-              {form.value(bodstedsland) && form.value(bodstedsland) !== "NO" && (
+              {ikkeNorge && (
                 <RadioGroup
                   name={reistTilbakeTilBostedslandet}
                   legend="Har du reist tilbake til bostedslandet ditt etter at du ble arbeidsledig eller permittert?"
@@ -182,7 +191,6 @@ export default function DinSituasjon() {
                   <Radio value="nei">Nei</Radio>
                 </RadioGroup>
               )}
-
               {form.value(reistTilbakeTilBostedslandet) === "ja" && (
                 <VStack gap="4">
                   <BodyShort weight="semibold">Dato for avreise</BodyShort>
@@ -217,28 +225,37 @@ export default function DinSituasjon() {
                 </VStack>
               )}
 
-              {form.value(reistTilbakeTilBostedslandet) === "nei" && (
-                <RadioGroup
-                  name={reisteDuHjemTilLandetDuBorI}
-                  legend="Reiste du hjem til landet du bor i en gang i uken eller mer, mens du jobbet i Norge?"
-                  error={form.error(reisteDuHjemTilLandetDuBorI)}
-                >
-                  <Radio value="ja">Ja</Radio>
-                  <Radio value="nei">Nei</Radio>
-                </RadioGroup>
+              {form.value(reistTilbakeTilBostedslandet) === "ja" && (
+                <TextField
+                  {...form.getInputProps(hvorforReistDuFraNorge)}
+                  label="Hvorfor reist du fra Norge?"
+                  error={form.error(hvorforReistDuFraNorge)}
+                />
               )}
 
-              {form.value(reisteDuHjemTilLandetDuBorI) &&
-                form.value(reisteDuHjemTilLandetDuBorI) === "nei" && (
+              {ikkeNorge && (
+                <>
                   <RadioGroup
-                    name={reisteDuITaktMedRotasjon}
-                    legend="Reiste du i takt med rotasjon?"
-                    error={form.error(reisteDuITaktMedRotasjon)}
+                    name={reisteDuHjemTilLandetDuBorI}
+                    legend="Reiste du hjem til landet du bor i en gang i uken eller mer, mens du jobbet i Norge?"
+                    error={form.error(reisteDuHjemTilLandetDuBorI)}
                   >
                     <Radio value="ja">Ja</Radio>
                     <Radio value="nei">Nei</Radio>
                   </RadioGroup>
-                )}
+
+                  {form.value(reisteDuHjemTilLandetDuBorI) === "nei" && (
+                    <RadioGroup
+                      name={reisteDuITaktMedRotasjon}
+                      legend="Reiste du i takt med rotasjon?"
+                      error={form.error(reisteDuITaktMedRotasjon)}
+                    >
+                      <Radio value="ja">Ja</Radio>
+                      <Radio value="nei">Nei</Radio>
+                    </RadioGroup>
+                  )}
+                </>
+              )}
 
               {actionData && (
                 <Alert variant="error" className="mt-4">

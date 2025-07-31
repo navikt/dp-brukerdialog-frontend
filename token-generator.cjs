@@ -13,6 +13,7 @@ const IDENT_LIST = [
   { name: "Top Sure: 21857998666", value: "21857998666" },
   { name: "Hes Påske: 17477146473", value: "17477146473" },
   { name: "Komplett Sol: 07447534341", value: "07447534341" },
+  { name: "Dynamisk Røyskatt: 07430195322", value: "07430195322" },
 ];
 
 init();

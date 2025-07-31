@@ -27,7 +27,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
-  const nesteSeksjonId = "bodstedsland";
+  const nesteSeksjonId = "personalia";
 
   // Filter out undefined and empty values from form data
   const raw = Object.fromEntries(formData.entries());

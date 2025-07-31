@@ -1,38 +1,31 @@
-# Welcome to Remix!
+# dp-brukerdialog-frontend
 
-- 📖 [Remix docs](https://remix.run/docs)
+Brukerdialog er et frontend-applikasjon for dagpengersøknad.
 
-## Development
+## Kom i gang
 
-Run the dev server:
+1. Kjør `npm install` for å installere avhengigheter.
+2. Kjør `npm run copy-env` for å kopiere `.env.example` til `.env`.
 
-```shellscript
-npm run dev
-```
+## Starte dev server:
 
-## Deployment
+For å starte utviklingsserveren, kjør `npm run dev`
 
-First, build your app for production:
+## Kjøre localhost med dev-backend
 
-```sh
-npm run build
-```
+1. På `.env`, sett `USE_MSW` til false
+2. Kjør `npm run token` for å generere en token
+3. Kjør `npm run dev` for å starte appen
 
-Then run the app in production mode:
+## IntelliJ Prettier and Eslint configuration
 
-```sh
-npm start
-```
+1. Set Prettier as the default formatter:
+    1. Preferences > Settings > Languages & Frameworks > JavaScript / TypeScript > Prettier
+    2. Select Run on save
+2. Enable “On Save” Formatting:
+    1. Go to: Preferences / Settings > Tools > Actions on Save
+    2. Enable: Run Prettier, Reformat code and Optimize imports
+3. In Settings > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint
+    1. Use Automatic ESLint Configuration or manually point to your config
+    2. Select Run eslint --fix on save
 
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
-
-orkestrator token: https://tokenx-token-generator.intern.dev.nav.no/api/obo?aud=dev-gcp:teamdagpenger:dp-soknad-orkestrator
