@@ -27,13 +27,13 @@ npm start
 ### IntelliJ Prettier and Eslint configuration
 
 1. Set Prettier as the default formatter:
-   • Preferences / Settings → Languages & Frameworks → JavaScript / TypeScript → Prettier
+    1. Preferences / Settings → Languages & Frameworks → JavaScript / TypeScript → Prettier
 2. Enable “On Save” Formatting:
-   • Go to: Preferences / Settings → Tools → Actions on Save
-   • Enable: “Run Prettier”, "Reformat code” and “Optimize imports”
+    1. Go to: Preferences / Settings → Tools → Actions on Save
+    2. Enable: “Run Prettier”, "Reformat code” and “Optimize imports”
 3. In Settings > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint
-   • Use Automatic ESLint Configuration or manually point to your config
-   • Select Run eslint --fix on save
+    1. Use Automatic ESLint Configuration or manually point to your config
+    2. Select Run eslint --fix on save
 
 prettier
 
