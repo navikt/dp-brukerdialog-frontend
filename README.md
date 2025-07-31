@@ -28,6 +28,7 @@ npm start
 
 1. Set Prettier as the default formatter:
     1. Preferences / Settings → Languages & Frameworks → JavaScript / TypeScript → Prettier
+    2. Select Run on save
 2. Enable “On Save” Formatting:
     1. Go to: Preferences / Settings → Tools → Actions on Save
     2. Enable: “Run Prettier”, "Reformat code” and “Optimize imports”
