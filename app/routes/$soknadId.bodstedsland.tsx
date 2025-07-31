@@ -27,7 +27,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const seksjonId = "din-situasjon";
+  const seksjonId = "bostedsland";
   const nesteSeksjonId = "tilleggsopplysninger";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
