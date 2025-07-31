@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useState } from "react";
-import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
+import JaNeiFaktum from "~/components/sporsmal/jaNeiFaktum";
 
 interface Utdanning {
   tarUtdanningEllerOpplæring?: boolean;

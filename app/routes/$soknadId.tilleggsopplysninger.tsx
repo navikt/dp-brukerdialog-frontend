@@ -1,7 +1,7 @@
 import invariant from "tiny-invariant";
 import { Button, HStack, Page, Textarea } from "@navikt/ds-react";
 import { useState } from "react";
-import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
+import JaNeiFaktum from "~/components/sporsmal/jaNeiFaktum";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { useForm } from "@rvf/react-router";
 import { ActionFunctionArgs, Form, useParams } from "react-router";

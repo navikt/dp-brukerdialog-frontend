@@ -4,7 +4,7 @@ import { LangTekstSporsmal } from "../seksjon/seksjon.types";
 
 interface IProps {
   sporsmal: LangTekstSporsmal;
-  formScope: FormScope<string>;
+  formScope: FormScope<string | undefined>;
 }
 
 export function LangTekst({ sporsmal, formScope }: IProps) {

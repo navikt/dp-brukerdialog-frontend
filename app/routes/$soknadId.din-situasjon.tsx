@@ -1,26 +1,13 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import {
-  Alert,
-  Button,
-  DatePicker,
-  HStack,
-  Page,
-  Radio,
-  RadioGroup,
-  Textarea,
-  useDatepicker,
-  VStack,
-} from "@navikt/ds-react";
+import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { formatISO } from "date-fns";
+import { useEffect } from "react";
 import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/seksjon/din-situasjon";
-import { useEffect } from "react";
+import { Sporsmal } from "~/components/sporsmal/sporsmal";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { Envalg } from "~/components/faktum/Envalg";
-import { LangTekst } from "~/components/faktum/LangTekst";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -84,18 +71,12 @@ export default function DinSituasjon() {
     defaultValues: {},
   });
 
-  const { datepickerProps, inputProps } = useDatepicker({
-    onDateChange: (date) => {
-      form.setValue("dato", date ? formatISO(date, { representation: "date" }) : "");
-      form.validate();
-    },
-  });
-
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
   // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
   // Kalles automatisk hver gang formverdier endres.
   useEffect(() => {
     const values = form.value();
+
     dinSituasjonSporsmal.forEach((sporsmal) => {
       const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
       if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
@@ -117,35 +98,13 @@ export default function DinSituasjon() {
                   return null;
                 }
 
-                const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
-                const formScope = form.scope(sporsmal.id);
-
-                if (sporsmal.type === "radio") {
-                  return <Envalg sporsmal={sporsmal} formScope={formScope} />;
-                }
-
-                if (sporsmal.type === "textarea") {
-                  return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
-                }
-
-                if (sporsmal.type === "datepicker") {
-                  return (
-                    <DatePicker {...datepickerProps}>
-                      <DatePicker.Input
-                        {...inputProps}
-                        name={sporsmal.id}
-                        key={sporsmal.id}
-                        placeholder="DD.MM.ÅÅÅÅ"
-                        error={form.error(sporsmalId)}
-                        description={sporsmal.description}
-                        label={sporsmal.label}
-                      />
-                    </DatePicker>
-                  );
-                }
-
-                console.warn(`Ukjent spørsmålstype: ${sporsmal}`);
-                return null;
+                return (
+                  <Sporsmal
+                    key={sporsmal.id}
+                    sporsmal={sporsmal}
+                    formScope={form.scope(sporsmal.id as keyof DinSituasjonSvar)}
+                  />
+                );
               })}
 
               {actionData && (

@@ -15,7 +15,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useRef, useState } from "react";
-import JaNeiFaktum from "~/components/faktum/jaNeiFaktum";
+import JaNeiFaktum from "~/components/sporsmal/jaNeiFaktum";
 import { FloppydiskIcon, PencilIcon, PersonPlusIcon, TrashIcon } from "@navikt/aksel-icons";
 
 interface IBarnetillegg {
