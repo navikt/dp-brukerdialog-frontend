@@ -1,4 +1,4 @@
-# Brukerdialog
+# dp-brukerdialog-frontend
 
 Brukerdialog er et frontend-applikasjon for dagpengersøknad.
 
