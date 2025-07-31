@@ -168,7 +168,7 @@ export default function DinSituasjon() {
                 Hvilket land du skal søke om penger fra avhenger av
                 <ul>
                   <li>hvilket land du sist jobbet i</li>
-                  <li>hvilket land du bor i </li>
+                  <li>hvilket land du bor i</li>
                   <li>
                     om du er permittert eller delvis arbeidsledig, eller om du er helt arbeidsledig
                     Er du usikker på hva du skal svare, kan du lese mer om hvor du skal søke penger

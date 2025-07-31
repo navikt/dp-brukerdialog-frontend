@@ -24,6 +24,19 @@ Then run the app in production mode:
 npm start
 ```
 
+### IntelliJ Prettier and Eslint configuration
+
+1. Set Prettier as the default formatter:
+   • Preferences / Settings → Languages & Frameworks → JavaScript / TypeScript → Prettier
+2. Enable “On Save” Formatting:
+   • Go to: Preferences / Settings → Tools → Actions on Save
+   • Enable: “Run Prettier”, "Reformat code” and “Optimize imports”
+3. In Settings > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint
+   • Use Automatic ESLint Configuration or manually point to your config
+   • Select Run eslint --fix on save
+
+prettier
+
 Now you'll need to pick a host to deploy it to.
 
 ### DIY
@@ -35,4 +48,7 @@ Make sure to deploy the output of `npm run build`
 - `build/server`
 - `build/client`
 
-orkestrator token: https://tokenx-token-generator.intern.dev.nav.no/api/obo?aud=dev-gcp:teamdagpenger:dp-soknad-orkestrator
+orkestrator
+token: https://tokenx-token-generator.intern.dev.nav.no/api/obo?aud=dev-gcp:teamdagpenger:dp-soknad-orkestrator
+
+
