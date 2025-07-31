@@ -1,9 +1,11 @@
+type baseType = "envalg" | "langTekst" | "dato";
+
 export type BaseSporsmal = {
   id: string;
   label: string;
+  type: baseType;
   description?: string;
   visHvis?: (svar: Record<string, any>) => boolean;
-  avhengigAv?: {};
 };
 
 export type EnvalgSporsmal = BaseSporsmal & {
@@ -12,7 +14,7 @@ export type EnvalgSporsmal = BaseSporsmal & {
 };
 
 export type LangTekstSporsmal = BaseSporsmal & {
-  type: "langtekst";
+  type: "langTekst";
   maxLength?: number;
 };
 

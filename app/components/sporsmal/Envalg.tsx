@@ -4,7 +4,7 @@ import { FormScope, useField } from "@rvf/react-router";
 
 interface IProps {
   sporsmal: EnvalgSporsmal;
-  formScope: FormScope<string>;
+  formScope: FormScope<string | undefined>;
 }
 
 export function Envalg({ sporsmal, formScope }: IProps) {
