@@ -1,22 +1,25 @@
 import { FormScope } from "@rvf/react-router";
-import { DatoSporsmal, EnvalgSporsmal, LangTekstSporsmal } from "../seksjon/seksjon.types";
+import { Sporsmal } from "./sporsmal.types";
 import { Dato } from "./Dato";
 import { Envalg } from "./Envalg";
 import { LangTekst } from "./LangTekst";
 
 interface IProps {
-  sporsmal: DatoSporsmal | EnvalgSporsmal | LangTekstSporsmal;
+  sporsmal: Sporsmal;
   formScope: FormScope<string | undefined>;
 }
 
 export function Sporsmal({ sporsmal, formScope }: IProps) {
   switch (sporsmal.type) {
     case "dato":
-      return <Dato sporsmal={sporsmal as DatoSporsmal} formScope={formScope} />;
+      return <Dato sporsmal={sporsmal} formScope={formScope} />;
+
     case "envalg":
-      return <Envalg sporsmal={sporsmal as EnvalgSporsmal} formScope={formScope} />;
+      return <Envalg sporsmal={sporsmal} formScope={formScope} />;
+
     case "langTekst":
-      return <LangTekst sporsmal={sporsmal as LangTekstSporsmal} formScope={formScope} />;
+      return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
+
     default:
       console.warn(`Ukjent spørsmålstype: ${sporsmal}`);
       return null;

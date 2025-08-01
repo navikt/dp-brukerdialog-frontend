@@ -1,25 +1,25 @@
-import { Sporsmal } from "~/components/seksjon/seksjon.types";
+import { Sporsmal } from "~/components/sporsmal/sporsmal.types";
 
 // verktøy for å lage mermaid-diagrammer
-export function generateMermaidFlow<S>(sporsmal: Sporsmal<S>[]): string {
+export function generateMermaidFlow(sporsmal: Sporsmal[]): string {
   let lines: string[] = ["flowchart TD"];
   const main = sporsmal[0];
   if (!main) return "";
 
   // Forutsetter at første spørsmål er start
-  lines.push(`  ${main.key as any}["${main.label}"]`);
+  lines.push(`  ${main.id as any}["${main.label}"]`);
 
   sporsmal.forEach((q) => {
-    if (q.type === "radio" && q.options) {
+    if (q.type === "envalg" && q.options) {
       q.options.forEach((opt) => {
         // Finn spørsmål som vises hvis denne verdien er valgt
         sporsmal.forEach((next) => {
           if (
             next.visHvis &&
             // Syntetisk svar-objekt for å sjekke visHvis
-            next.visHvis({ [q.key]: opt.value } as S)
+            next.visHvis({ [q.id]: opt.value })
           ) {
-            lines.push(`  ${q.key as any} -- ${opt.label} --> ${next.key as any}["${next.label}"]`);
+            lines.push(`  ${q.id as any} -- ${opt.label} --> ${next.id as any}["${next.label}"]`);
           }
         });
       });

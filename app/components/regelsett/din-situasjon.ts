@@ -1,4 +1,4 @@
-import { Sporsmal } from "./seksjon.types";
+import { Sporsmal } from "../sporsmal/sporsmal.types";
 
 export type DinSituasjonSvar = {
   mottatt?: "ja" | "nei" | "vetikke";

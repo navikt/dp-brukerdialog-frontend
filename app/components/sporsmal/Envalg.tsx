@@ -1,5 +1,5 @@
 import { Radio, RadioGroup } from "@navikt/ds-react";
-import { EnvalgSporsmal } from "../seksjon/seksjon.types";
+import { EnvalgSporsmal } from "./sporsmal.types";
 import { FormScope, useField } from "@rvf/react-router";
 
 interface IProps {

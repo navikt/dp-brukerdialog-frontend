@@ -1,6 +1,6 @@
 import { Textarea } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { LangTekstSporsmal } from "../seksjon/seksjon.types";
+import { LangTekstSporsmal } from "./sporsmal.types";
 
 interface IProps {
   sporsmal: LangTekstSporsmal;
