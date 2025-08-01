@@ -1,6 +1,6 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { formatISO } from "date-fns";
-import { DatoSporsmal } from "../seksjon/seksjon.types";
+import { DatoSporsmal } from "./sporsmal.types";
 import { FormScope, useField } from "@rvf/react-router";
 
 interface IProps {

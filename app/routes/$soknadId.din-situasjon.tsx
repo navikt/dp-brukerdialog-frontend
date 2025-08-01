@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/seksjon/din-situasjon";
+import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/regelsett/din-situasjon";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
