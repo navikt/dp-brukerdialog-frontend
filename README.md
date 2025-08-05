@@ -21,10 +21,11 @@ For å starte utviklingsserveren, kjør `npm run dev`
 
 1. Set Prettier as the default formatter:
    1. Preferences > Settings > Languages & Frameworks > JavaScript / TypeScript > Prettier
-   2. Select Run on save
+   2. Select Automatic ESLint Configuration
+   3. Select Run on save
 2. Enable “On Save” Formatting:
    1. Go to: Preferences / Settings > Tools > Actions on Save
    2. Enable: Run Prettier, Reformat code and Optimize imports
 3. In Settings > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint
-   1. Use Automatic ESLint Configuration or manually point to your config
+   1. Select Automatic ESLint Configuration
    2. Select Run eslint --fix on save
