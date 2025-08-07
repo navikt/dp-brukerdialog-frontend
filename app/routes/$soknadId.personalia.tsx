@@ -123,7 +123,7 @@ export default function Personalia() {
               <BodyShort>
                 {formattertKontonummer || (
                   <span>
-                    Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på{" "}
+                    Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på
                     <a href="https://www.nav.no/">Min side</a>.
                   </span>
                 )}
