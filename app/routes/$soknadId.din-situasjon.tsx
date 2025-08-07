@@ -35,10 +35,11 @@ const schema = z
   })
   .superRefine((data, ctx) => {
     dinSituasjonSporsmal.forEach((sporsmal) => {
-      const visible = !sporsmal.visHvis || sporsmal.visHvis(data);
+      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
       const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      const svar = data[sporsmalId];
 
-      if (visible && !data[sporsmalId]) {
+      if (synlig && !svar) {
         ctx.addIssue({
           path: [sporsmal.id],
           code: "custom",

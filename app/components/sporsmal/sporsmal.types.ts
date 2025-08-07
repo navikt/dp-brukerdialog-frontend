@@ -20,6 +20,8 @@ export type LangTekstSporsmal = BaseSporsmal & {
 
 export type DatoSporsmal = BaseSporsmal & {
   type: "dato";
+  fom?: Date;
+  tom?: Date;
 };
 
 export type Sporsmal = EnvalgSporsmal | LangTekstSporsmal | DatoSporsmal;

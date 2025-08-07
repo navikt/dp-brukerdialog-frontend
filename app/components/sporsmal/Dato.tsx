@@ -12,6 +12,8 @@ export function Dato({ sporsmal, formScope }: IProps) {
   const field = useField(formScope);
 
   const { datepickerProps, inputProps } = useDatepicker({
+    fromDate: sporsmal.fom || undefined,
+    toDate: sporsmal.tom || undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : "");
       field.validate();
