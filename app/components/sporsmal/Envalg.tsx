@@ -15,6 +15,7 @@ export function Envalg({ sporsmal, formScope }: IProps) {
       {...field.getInputProps()}
       legend={sporsmal.label}
       key={sporsmal.id}
+      description={sporsmal.description || ""}
       error={field.error()}
     >
       {sporsmal.options?.map((opt) => (

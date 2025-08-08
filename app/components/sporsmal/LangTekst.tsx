@@ -15,6 +15,7 @@ export function LangTekst({ sporsmal, formScope }: IProps) {
       {...field.getInputProps()}
       label={sporsmal.label}
       key={sporsmal.id}
+      size={sporsmal.maxLength === 100 ? "small" : "medium"}
       maxLength={sporsmal.maxLength}
       error={field.error()}
     />
