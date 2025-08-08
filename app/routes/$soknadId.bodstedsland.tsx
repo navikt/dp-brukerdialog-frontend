@@ -16,7 +16,7 @@ import {
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { formatISO } from "date-fns";
-import { ActionFunctionArgs, Form, Link, redirect, useActionData } from "react-router";
+import { ActionFunctionArgs, Form, Link, redirect, useActionData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { LANDLISTE } from "~/constants";
@@ -113,6 +113,7 @@ const schema = z
 
 export default function DinSituasjon() {
   const actionData = useActionData<typeof action>();
+  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -267,6 +268,7 @@ export default function DinSituasjon() {
               <Button
                 variant="secondary"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+                onClick={() => navigate(-1)}
               >
                 Forrige steg
               </Button>

@@ -1,23 +1,13 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import {
-  Alert,
-  Button,
-  DatePicker,
-  HStack,
-  Page,
-  Radio,
-  RadioGroup,
-  Textarea,
-  useDatepicker,
-  VStack,
-} from "@navikt/ds-react";
+import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { formatISO } from "date-fns";
-import { ActionFunctionArgs, Form, redirect, useActionData } from "react-router";
+import { useEffect } from "react";
+import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
+import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/regelsett/din-situasjon";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { requireField } from "~/utils/validering.utils";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -26,7 +16,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "personalia";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
-
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
@@ -45,24 +34,24 @@ const schema = z
     dato: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data.mottatt) {
-      requireField(data, ctx, "mottatt", "Du må svare på dette spørsmålet");
-      return;
-    }
+    dinSituasjonSporsmal.forEach((sporsmal) => {
+      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
+      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      const svar = data[sporsmalId];
 
-    if (data.mottatt === "ja") {
-      requireField(data, ctx, "arsak", "Du må svare på dette spørsmålet");
-      return;
-    }
-
-    if (data.mottatt === "nei" || data.mottatt === "vetikke") {
-      requireField(data, ctx, "dato", "Du må velge en dato");
-      return;
-    }
+      if (synlig && !svar) {
+        ctx.addIssue({
+          path: [sporsmal.id],
+          code: "custom",
+          message: "Du må svare på dette spørsmålet",
+        });
+      }
+    });
   });
 
 export default function DinSituasjon() {
   const actionData = useActionData<typeof action>();
+  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -76,14 +65,19 @@ export default function DinSituasjon() {
     defaultValues: {},
   });
 
-  const { datepickerProps, inputProps } = useDatepicker({
-    onDateChange: (date) => {
-      form.setValue("dato", date ? formatISO(date, { representation: "date" }) : "");
-      // Dette er en workaround
-      // Feilmelding sitter igjen etter at dato er valgt, må tvinge en ny validering
-      form.validate();
-    },
-  });
+  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
+  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
+  // Kalles automatisk hver gang formverdier endres.
+  useEffect(() => {
+    const values = form.value();
+
+    dinSituasjonSporsmal.forEach((sporsmal) => {
+      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
+        form.setValue(sporsmalId, undefined);
+      }
+    });
+  }, [form.value()]);
 
   return (
     <Page className="brukerdialog">
@@ -92,38 +86,20 @@ export default function DinSituasjon() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              <RadioGroup
-                {...form.getInputProps("mottatt")}
-                legend="Har du mottatt dagpenger fra NAV i løpet av de siste 52 ukene?"
-                error={form.error("mottatt")}
-              >
-                <Radio value="ja">Ja</Radio>
-                <Radio value="nei">Nei</Radio>
-                <Radio value="vetikke">Vet ikke</Radio>
-              </RadioGroup>
+              {dinSituasjonSporsmal.map((sporsmal) => {
+                // Skip rendering if the question should not be shown based on current answers
+                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                  return null;
+                }
 
-              {form.value("mottatt") === "ja" && (
-                <Textarea
-                  {...form.getInputProps("arsak")}
-                  label="Skriv årsaken til at dagpengene ble stanset (Maks 500 tegn)"
-                  description="For eksempel om du har vært syk, på ferie, glemt å sende meldekort, vært i utdanning eller hatt foreldrepermisjon."
-                  maxLength={500}
-                  error={form.error("arsak")}
-                />
-              )}
-
-              {(form.value("mottatt") === "nei" || form.value("mottatt") === "vetikke") && (
-                <DatePicker {...datepickerProps} fromDate={new Date()}>
-                  <DatePicker.Input
-                    {...inputProps}
-                    name="dato" // name må settes manuelt fordi datepicker er controlled field
-                    error={form.error("dato")} // error må settes manuelt fordi datepicker er controlled field
-                    placeholder="DD.MM.ÅÅÅÅ"
-                    label="Hvilken dato søker du dagpenger fra?"
-                    description="Du kan få dagpenger fra første dag du er helt eller delvis arbeidsledig eller permittert og tidligst fra den dagen du sender inn søknaden. Datoen du søker om dagpenger fra har betydning for beregning av dagpengene dine."
+                return (
+                  <Sporsmal
+                    key={sporsmal.id}
+                    sporsmal={sporsmal}
+                    formScope={form.scope(sporsmal.id as keyof DinSituasjonSvar)}
                   />
-                </DatePicker>
-              )}
+                );
+              })}
 
               {actionData && (
                 <Alert variant="error" className="mt-4">
@@ -136,6 +112,7 @@ export default function DinSituasjon() {
               <Button
                 variant="secondary"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+                onClick={() => navigate(-1)}
               >
                 Forrige steg
               </Button>
