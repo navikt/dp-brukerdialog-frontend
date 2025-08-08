@@ -1,4 +1,4 @@
-type baseType = "envalg" | "langTekst" | "dato";
+type baseType = "envalg" | "langTekst" | "dato" | "land";
 
 export type BaseSporsmal = {
   id: string;
@@ -24,4 +24,8 @@ export type DatoSporsmal = BaseSporsmal & {
   tom?: Date;
 };
 
-export type Sporsmal = EnvalgSporsmal | LangTekstSporsmal | DatoSporsmal;
+export type LandSporsmal = BaseSporsmal & {
+  type: "land";
+};
+
+export type Sporsmal = EnvalgSporsmal | LangTekstSporsmal | DatoSporsmal | LandSporsmal;

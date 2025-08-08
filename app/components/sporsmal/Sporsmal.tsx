@@ -3,6 +3,7 @@ import { Sporsmal } from "./sporsmal.types";
 import { Dato } from "./Dato";
 import { Envalg } from "./Envalg";
 import { LangTekst } from "./LangTekst";
+import { Land } from "./Land";
 
 interface IProps {
   sporsmal: Sporsmal;
@@ -19,6 +20,9 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
 
     case "langTekst":
       return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
+
+    case "land":
+      return <Land sporsmal={sporsmal} formScope={formScope} />;
 
     default:
       console.warn(`Ukjent spørsmålstype: ${sporsmal}`);

@@ -16,9 +16,12 @@ import {
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { formatISO } from "date-fns";
+import { useEffect } from "react";
 import { ActionFunctionArgs, Form, Link, redirect, useActionData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
+import { bostedslandSporsmal, BostedslandSvar } from "~/components/regelsett/bostedsland";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { LANDLISTE } from "~/constants";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { requireField } from "~/utils/validering.utils";
@@ -42,8 +45,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-const bodstedsland = "bodstedsland";
-const requiredErrorText = "Du må svare på dette spørsmålet";
+const bostedsland = "bostedsland";
 const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
 const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
@@ -53,62 +55,23 @@ const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
   .object({
-    [bodstedsland]: z.string().optional(),
+    [bostedsland]: z.string().optional(),
     [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
-    [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
-    [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
-    [avreiseDatoFra]: z.string().optional(),
-    [avreiseDatoTil]: z.string().optional(),
-    [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data[bodstedsland] || data[bodstedsland].length < 2) {
-      requireField(data, ctx, bodstedsland, requiredErrorText);
-      return;
-    }
+    bostedslandSporsmal.forEach((sporsmal) => {
+      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
+      const sporsmalId = sporsmal.id as keyof BostedslandSvar;
+      const svar = data[sporsmalId];
 
-    if (data[bodstedsland]) {
-      if (data.bodstedsland === "NO") {
-        return;
+      if (synlig && !svar) {
+        ctx.addIssue({
+          path: [sporsmal.id],
+          code: "custom",
+          message: "Du må svare på dette spørsmålet",
+        });
       }
-
-      if (!data[reistTilbakeTilBostedslandet]) {
-        requireField(data, ctx, reistTilbakeTilBostedslandet, requiredErrorText);
-        return;
-      }
-
-      if (data[reistTilbakeTilBostedslandet] === "ja") {
-        if (!data[avreiseDatoFra]) {
-          requireField(data, ctx, avreiseDatoFra, requiredErrorText);
-          return;
-        }
-
-        if (!data[avreiseDatoTil]) {
-          requireField(data, ctx, avreiseDatoTil, requiredErrorText);
-          return;
-        }
-
-        if (data[hvorforReistDuFraNorge]?.length === 0) {
-          requireField(data, ctx, hvorforReistDuFraNorge, requiredErrorText);
-          return;
-        }
-      }
-
-      if (data[reistTilbakeTilBostedslandet] === "nei") {
-        if (!data[reisteDuHjemTilLandetDuBorI]) {
-          requireField(data, ctx, reisteDuHjemTilLandetDuBorI, requiredErrorText);
-          return;
-        }
-
-        if (data[reisteDuHjemTilLandetDuBorI] === "ja") {
-          return;
-        }
-
-        if (data[reistTilbakeTilBostedslandet] === "nei" && !data[reisteDuITaktMedRotasjon]) {
-          requireField(data, ctx, reisteDuITaktMedRotasjon, requiredErrorText);
-        }
-      }
-    }
+    });
   });
 
 export default function DinSituasjon() {
@@ -127,25 +90,19 @@ export default function DinSituasjon() {
     defaultValues: {},
   });
 
-  const { datepickerProps: avreiseDatoFraProps, inputProps: avreiseDatoFraInputProps } =
-    useDatepicker({
-      onDateChange: (date) => {
-        form.setValue(avreiseDatoFra, date ? formatISO(date, { representation: "date" }) : "");
-        form.validate();
-      },
+  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
+  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
+  // Kalles automatisk hver gang formverdier endres.
+  useEffect(() => {
+    const values = form.value();
+
+    bostedslandSporsmal.forEach((sporsmal) => {
+      const sporsmalId = sporsmal.id as keyof BostedslandSvar;
+      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
+        form.setValue(sporsmalId, undefined);
+      }
     });
-
-  const {
-    datepickerProps: avreiseDatoTilProps,
-    inputProps: { ...avreiseDatoTilInputProps },
-  } = useDatepicker({
-    onDateChange: (date) => {
-      form.setValue(avreiseDatoTil, date ? formatISO(date, { representation: "date" }) : "");
-      form.validate();
-    },
-  });
-
-  const ikkeNorge = form.value(bodstedsland) && form.value(bodstedsland) !== "NO";
+  }, [form.value()]);
 
   return (
     <Page className="brukerdialog">
@@ -154,7 +111,7 @@ export default function DinSituasjon() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              <Select label="Velg bostedsland" name={bodstedsland} error={form.error(bodstedsland)}>
+              {/* <Select label="Velg bostedsland" name={bodstedsland} error={form.error(bodstedsland)}>
                 <option value="">Velg et land</option>
                 {LANDLISTE.map((land) => (
                   <option key={land.value} value={land.value}>
@@ -255,7 +212,22 @@ export default function DinSituasjon() {
                     </RadioGroup>
                   )}
                 </>
-              )}
+              )} */}
+
+              {bostedslandSporsmal.map((sporsmal) => {
+                // Skip rendering if the question should not be shown based on current answers
+                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                  return null;
+                }
+
+                return (
+                  <Sporsmal
+                    key={sporsmal.id}
+                    sporsmal={sporsmal}
+                    formScope={form.scope(sporsmal.id as keyof BostedslandSvar)}
+                  />
+                );
+              })}
 
               {actionData && (
                 <Alert variant="error" className="mt-4">
