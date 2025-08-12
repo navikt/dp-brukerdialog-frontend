@@ -1,0 +1,21 @@
+import { KortTekstSporsmal, LangTekstSporsmal } from "~/components/sporsmal/sporsmal.types";
+import { FormScope, useField } from "@rvf/react-router";
+import { TextField } from "@navikt/ds-react";
+
+interface IProps {
+  sporsmal: KortTekstSporsmal;
+  formScope: FormScope<string | undefined>;
+}
+
+export default function KortTekst({ sporsmal, formScope }: IProps) {
+  const field = useField(formScope);
+
+  return (
+    <TextField
+      {...field.getInputProps()}
+      label={sporsmal.label}
+      key={sporsmal.id}
+      error={field.error()}
+    />
+  );
+}
