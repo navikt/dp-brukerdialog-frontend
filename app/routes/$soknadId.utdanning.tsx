@@ -1,13 +1,6 @@
-import {
-  Alert,
-  FileObject,
-  FileRejected,
-  FileRejectionReason,
-  Page,
-  VStack,
-} from "@navikt/ds-react";
-import { useEffect, useState } from "react";
-import { Form, LoaderFunctionArgs, redirect, useLoaderData, useNavigate } from "react-router";
+import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { useEffect } from "react";
+import { data, Form, LoaderFunctionArgs, redirect, useLoaderData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { Route } from "../../.react-router/types/app/routes/+types/_index";
@@ -17,6 +10,7 @@ import { useForm } from "@rvf/react-router";
 import { utdanningSporsmal, UtdanningSvar } from "~/components/regelsett/utdanning";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { ExternalLink } from "~/components/ExternalLink";
+import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 
 export async function action({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -39,11 +33,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const response = await hentSeksjon(request, params.soknadId, "utdanning");
   if (response.status === 200) {
-    console.log("response 200: ", response);
     return await response.json();
   }
 
-  return {
+  return data({
     tarUtdanningEllerOpplæring: undefined,
     avsluttetUtdanningSiste6Måneder: undefined,
     dokumenterAvsluttetUtdanningSiste6MånederNå: undefined,
@@ -51,7 +44,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     naarSendtDokumentasjonTidligere: undefined,
     senderIkkeDokumentasjonBegrunnelse: undefined,
     planleggerÅStarteEllerFullføreStudierSamtidig: undefined,
-  };
+  });
 }
 
 const schema = z
@@ -82,6 +75,7 @@ const schema = z
 
 export default function Utdanning({ loaderData }: Route.ComponentProps) {
   const utdanning = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -92,10 +86,8 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: utdanning,
+    defaultValues: JSON.parse(utdanning),
   });
-
-  console.log("Utdanning: ", utdanning);
 
   useEffect(() => {
     const values = form.value();
@@ -107,25 +99,6 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
       }
     });
   }, [form.value()]);
-
-  const [avsluttetUtdanningSiste6MånederFiles, setAvsluttetUtdanningSiste6MånederFiles] = useState<
-    FileObject[]
-  >([]);
-
-  function removeFile(fileToRemove: FileObject) {
-    setAvsluttetUtdanningSiste6MånederFiles(
-      avsluttetUtdanningSiste6MånederFiles.filter((file) => file !== fileToRemove)
-    );
-  }
-  const acceptedFiles = avsluttetUtdanningSiste6MånederFiles.filter((file) => !file.error);
-  const rejectedFiles = avsluttetUtdanningSiste6MånederFiles.filter(
-    (f): f is FileRejected => f.error
-  );
-
-  const errors: Record<FileRejectionReason, string> = {
-    fileType: "Filformatet støttes ikke",
-    fileSize: `Filen er større enn 1 MB`,
-  };
 
   return (
     <Page className="brukerdialog">
@@ -176,6 +149,24 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
                 );
               })}
             </VStack>
+
+            <HStack gap="4" className="mt-8">
+              <Button
+                variant="secondary"
+                icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+                onClick={() => navigate(-1)}
+              >
+                Forrige steg
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                iconPosition="right"
+                icon={<ArrowRightIcon />}
+              >
+                Neste steg
+              </Button>
+            </HStack>
           </Form>
         </VStack>
       </VStack>

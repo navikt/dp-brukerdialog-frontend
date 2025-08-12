@@ -16,7 +16,7 @@ export async function lagreSeksjon(
       Accept: "application/json",
       Authorization: `Bearer ${onBehalfOfToken}`,
       connection: "keep-alive",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
     },
     body: seksjonsData,
   });
