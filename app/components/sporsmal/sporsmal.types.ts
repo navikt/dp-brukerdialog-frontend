@@ -1,4 +1,12 @@
-type baseType = "envalg" | "langTekst" | "dato" | "land";
+export type Sporsmal =
+  | EnvalgSporsmal
+  | LangTekstSporsmal
+  | KortTekstSporsmal
+  | DatoSporsmal
+  | LandSporsmal
+  | PeriodeSporsmal;
+
+type baseType = "envalg" | "langTekst" | "kortTekst" | "dato" | "periode" | "land";
 
 export type BaseSporsmal = {
   id: string;
@@ -18,14 +26,29 @@ export type LangTekstSporsmal = BaseSporsmal & {
   maxLength?: number;
 };
 
+export type KortTekstSporsmal = BaseSporsmal & {
+  type: "kortTekst";
+};
+
 export type DatoSporsmal = BaseSporsmal & {
   type: "dato";
   fom?: Date;
   tom?: Date;
 };
 
+export type PeriodeSporsmal = BaseSporsmal & {
+  type: "periode";
+  fra?: {
+    fom?: Date;
+    tom?: Date;
+  };
+  til?: {
+    fom?: Date;
+    tom?: Date;
+    optional?: boolean;
+  };
+};
+
 export type LandSporsmal = BaseSporsmal & {
   type: "land";
 };
-
-export type Sporsmal = EnvalgSporsmal | LangTekstSporsmal | DatoSporsmal | LandSporsmal;

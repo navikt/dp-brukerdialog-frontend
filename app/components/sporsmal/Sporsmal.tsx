@@ -4,6 +4,8 @@ import { Dato } from "./Dato";
 import { Envalg } from "./Envalg";
 import { LangTekst } from "./LangTekst";
 import { Land } from "./Land";
+import { KortTekst } from "./KortTekst";
+import { Periode } from "./Periode";
 
 interface IProps {
   sporsmal: Sporsmal;
@@ -15,8 +17,14 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
     case "dato":
       return <Dato sporsmal={sporsmal} formScope={formScope} />;
 
+    case "periode":
+      return <Periode sporsmal={sporsmal} formScope={formScope} />;
+
     case "envalg":
       return <Envalg sporsmal={sporsmal} formScope={formScope} />;
+
+    case "kortTekst":
+      return <KortTekst sporsmal={sporsmal} formScope={formScope} />;
 
     case "langTekst":
       return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
