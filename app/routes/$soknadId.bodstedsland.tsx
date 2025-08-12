@@ -28,25 +28,31 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
+type PeriodeType = {
+  fom?: string;
+  tom?: string;
+};
+
 const bostedsland = "bostedsland";
 const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
 const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
-const avreiseDatoFra = "avreise-dato-fra";
 const avreiseDato = "avreise-dato";
-const avreiseDatoTil = "avreise-dato-til";
 const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
   .object({
-    // [bostedsland]: z.string().optional(),
-    // [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
-    // [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
-    // [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
-    [avreiseDatoFra]: z.string().optional(),
-    [avreiseDatoTil]: z.string().optional(),
-    [avreiseDato]: z.string().optional(),
-    // [hvorforReistDuFraNorge]: z.string().optional(),
+    [bostedsland]: z.string().optional(),
+    [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
+    [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
+    [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
+    [avreiseDato]: z
+      .object({
+        fom: z.string().optional(),
+        tom: z.string().optional(),
+      })
+      .optional(),
+    [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     bostedslandSporsmal.forEach((sporsmal) => {
@@ -55,11 +61,23 @@ const schema = z
       const svar = data[sporsmalId];
 
       if (sporsmal.type === "periode") {
-        ctx.addIssue({
-          path: ["avreise-dato.fra"],
-          code: "custom",
-          message: "Begge datoer må være fylt ut",
-        });
+        const periodeSvar = svar as PeriodeType | undefined;
+
+        if (!periodeSvar?.fom) {
+          ctx.addIssue({
+            path: [`${sporsmal.id}.fom`],
+            code: "custom",
+            message: "Du må svare på dette spørsmålet",
+          });
+        }
+
+        if (!sporsmal.tom.optional && !periodeSvar?.tom) {
+          ctx.addIssue({
+            path: [`${sporsmal.id}.tom`],
+            code: "custom",
+            message: "Du må svare på dette spørsmålet",
+          });
+        }
       }
 
       if (synlig && !svar) {
@@ -119,6 +137,7 @@ export default function DinSituasjon() {
                   <Sporsmal
                     key={sporsmal.id}
                     sporsmal={sporsmal}
+                    // @ts-ignore
                     formScope={form.scope(sporsmal.id as keyof BostedslandSvar)}
                   />
                 );

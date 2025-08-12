@@ -11,13 +11,11 @@ interface IProps {
 export function Dato({ sporsmal, formScope }: IProps) {
   const field = useField(formScope);
 
-  console.log(`🔥 field :`, field.name());
-
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: sporsmal.fom || undefined,
     toDate: sporsmal.tom || undefined,
     onDateChange: (date) => {
-      field.setValue(date ? formatISO(date, { representation: "date" }) : "");
+      field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
       field.validate();
     },
   });
@@ -26,10 +24,10 @@ export function Dato({ sporsmal, formScope }: IProps) {
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
         {...inputProps}
-        name="avreise-dato.fra"
+        name={`${sporsmal.id}.fra`}
         placeholder="DD.MM.ÅÅÅÅ"
         error={field.error()}
-        label={sporsmal.label}
+        label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
       />
     </DatePicker>
   );
