@@ -3,7 +3,6 @@ import {
   FileObject,
   FileRejected,
   FileRejectionReason,
-  Link,
   Page,
   VStack,
 } from "@navikt/ds-react";
@@ -83,7 +82,6 @@ const schema = z
 
 export default function Utdanning({ loaderData }: Route.ComponentProps) {
   const utdanning = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -96,6 +94,8 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
     },
     defaultValues: utdanning,
   });
+
+  console.log("Utdanning: ", utdanning);
 
   useEffect(() => {
     const values = form.value();

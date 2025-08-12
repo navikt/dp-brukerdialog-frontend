@@ -50,29 +50,26 @@ export const utdanningSporsmal: Sporsmal[] = [
   },
   {
     id: "lasteOppSenereBegrunnelse",
-    type: "langTekst",
+    type: "kortTekst",
     label: "Hva er grunnen til at du sender dokumenetet senere?",
-    maxLength: 100,
     visHvis: (svar: UtdanningSvar) =>
       svar.dokumenterAvsluttetUtdanningSiste6MånederNå === "etterkant",
   },
   {
     id: "naarSendtDokumentasjonTidligere",
-    type: "langTekst",
+    type: "kortTekst",
     label: "Når sendte du dokumentasjon?",
     description:
       "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt.",
-    maxLength: 100,
     visHvis: (svar: UtdanningSvar) =>
       svar.dokumenterAvsluttetUtdanningSiste6MånederNå === "tidligere",
   },
   {
     id: "senderIkkeDokumentasjonBegrunnelse",
-    type: "langTekst",
+    type: "kortTekst",
     label: "Hva er grunnen til at du ikke sender inn dokumentet?",
     description:
       "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med NAV hvis du ikke får tak i dokumentet.",
-    maxLength: 100,
     visHvis: (svar: UtdanningSvar) => svar.dokumenterAvsluttetUtdanningSiste6MånederNå === "nei",
   },
   {
