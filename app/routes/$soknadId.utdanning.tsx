@@ -17,6 +17,7 @@ import { z } from "zod";
 import { useForm } from "@rvf/react-router";
 import { utdanningSporsmal, UtdanningSvar } from "~/components/regelsett/utdanning";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { ExternalLink } from "~/components/ExternalLink";
 
 export async function action({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -151,13 +152,15 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
                       <Alert variant="warning">
                         For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du
                         sende inn{" "}
-                        <Link href="https://www.nav.no/fyllut/nav040605">
+                        <ExternalLink to="https://www.nav.no/fyllut/nav040605" className="inline">
                           Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - NAV
                           04-06.05
-                        </Link>
-                        , i tillegg til å sende inn denne søknaden om dagpenger. Hvis du ikke sender
-                        søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan
-                        vi avslå søknaden din om dagpenger.
+                        </ExternalLink>
+                        , i tillegg til å sende inn denne søknaden om dagpenger.
+                        <br />
+                        <br />
+                        Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning
+                        eller opplæring, kan vi avslå søknaden din om dagpenger.
                       </Alert>
                     )}
 
