@@ -11,6 +11,8 @@ interface IProps {
 export function Dato({ sporsmal, formScope }: IProps) {
   const field = useField(formScope);
 
+  console.log(`🔥 field :`, field.name());
+
   const { datepickerProps, inputProps } = useDatepicker({
     fromDate: sporsmal.fom || undefined,
     toDate: sporsmal.tom || undefined,
@@ -24,7 +26,7 @@ export function Dato({ sporsmal, formScope }: IProps) {
     <DatePicker {...datepickerProps}>
       <DatePicker.Input
         {...inputProps}
-        key={sporsmal.id}
+        name="avreise-dato.fra"
         placeholder="DD.MM.ÅÅÅÅ"
         error={field.error()}
         label={sporsmal.label}

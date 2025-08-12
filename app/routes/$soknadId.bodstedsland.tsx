@@ -33,24 +33,34 @@ const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
 const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
 const avreiseDatoFra = "avreise-dato-fra";
+const avreiseDato = "avreise-dato";
 const avreiseDatoTil = "avreise-dato-til";
 const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
   .object({
-    [bostedsland]: z.string().optional(),
-    [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
-    [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
-    [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
+    // [bostedsland]: z.string().optional(),
+    // [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
+    // [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
+    // [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
     [avreiseDatoFra]: z.string().optional(),
     [avreiseDatoTil]: z.string().optional(),
-    [hvorforReistDuFraNorge]: z.string().optional(),
+    [avreiseDato]: z.string().optional(),
+    // [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     bostedslandSporsmal.forEach((sporsmal) => {
       const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
       const sporsmalId = sporsmal.id as keyof BostedslandSvar;
       const svar = data[sporsmalId];
+
+      if (sporsmal.type === "periode") {
+        ctx.addIssue({
+          path: ["avreise-dato.fra"],
+          code: "custom",
+          message: "Begge datoer må være fylt ut",
+        });
+      }
 
       if (synlig && !svar) {
         ctx.addIssue({

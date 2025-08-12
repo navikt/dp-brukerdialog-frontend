@@ -34,19 +34,13 @@ export type DatoSporsmal = BaseSporsmal & {
   type: "dato";
   fom?: Date;
   tom?: Date;
+  optional?: boolean;
 };
 
 export type PeriodeSporsmal = BaseSporsmal & {
   type: "periode";
-  fra?: {
-    fom?: Date;
-    tom?: Date;
-  };
-  til?: {
-    fom?: Date;
-    tom?: Date;
-    optional?: boolean;
-  };
+  fom: DatoSporsmal;
+  tom: DatoSporsmal;
 };
 
 export type LandSporsmal = BaseSporsmal & {
