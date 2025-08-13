@@ -102,3 +102,7 @@
   top: -1rem;
   right: 1rem;
 }
+
+.inline {
+  display: inline;
+}

@@ -6,7 +6,7 @@ export type Sporsmal =
   | LandSporsmal
   | PeriodeSporsmal;
 
-type baseType = "envalg" | "langTekst" | "kortTekst" | "dato" | "periode" | "land";
+type baseType = "envalg" | "langTekst" | "kortTekst" | "dato" | "periode" | "land" | "kortTekst";
 
 export type BaseSporsmal = {
   id: string;
@@ -46,3 +46,14 @@ export type PeriodeSporsmal = BaseSporsmal & {
 export type LandSporsmal = BaseSporsmal & {
   type: "land";
 };
+
+export type KortTekstSporsmal = BaseSporsmal & {
+  type: "kortTekst";
+};
+
+export type Sporsmal =
+  | EnvalgSporsmal
+  | LangTekstSporsmal
+  | DatoSporsmal
+  | LandSporsmal
+  | KortTekstSporsmal;

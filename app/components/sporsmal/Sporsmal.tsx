@@ -6,6 +6,7 @@ import { LangTekst } from "./LangTekst";
 import { Land } from "./Land";
 import { KortTekst } from "./KortTekst";
 import { Periode } from "./Periode";
+import KortTekst from "~/components/sporsmal/KortTekst";
 
 interface IProps {
   sporsmal: Sporsmal;
@@ -28,6 +29,9 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
 
     case "langTekst":
       return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
+
+    case "kortTekst":
+      return <KortTekst sporsmal={sporsmal} formScope={formScope} />;
 
     case "land":
       return <Land sporsmal={sporsmal} formScope={formScope} />;
