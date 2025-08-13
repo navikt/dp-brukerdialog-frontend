@@ -7,7 +7,7 @@ interface IProps {
   formScope: FormScope<string | undefined>;
 }
 
-export default function KortTekst({ sporsmal, formScope }: IProps) {
+export function KortTekst({ sporsmal, formScope }: IProps) {
   const field = useField(formScope);
 
   return (

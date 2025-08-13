@@ -1,7 +1,7 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
+import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
 import { DatoSporsmal } from "./sporsmal.types";
-import { FormScope, useField } from "@rvf/react-router";
 
 interface IProps {
   sporsmal: DatoSporsmal;
@@ -12,6 +12,7 @@ export function Dato({ sporsmal, formScope }: IProps) {
   const field = useField(formScope);
 
   const { datepickerProps, inputProps } = useDatepicker({
+    defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
     fromDate: sporsmal.fom || undefined,
     toDate: sporsmal.tom || undefined,
     onDateChange: (date) => {
@@ -21,7 +22,7 @@ export function Dato({ sporsmal, formScope }: IProps) {
   });
 
   return (
-    <DatePicker {...datepickerProps}>
+    <DatePicker {...datepickerProps} key={sporsmal.id}>
       <DatePicker.Input
         {...inputProps}
         name={`${sporsmal.id}.fra`}

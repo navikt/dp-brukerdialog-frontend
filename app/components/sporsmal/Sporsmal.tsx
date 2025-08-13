@@ -1,12 +1,11 @@
 import { FormScope } from "@rvf/react-router";
-import { Sporsmal } from "./sporsmal.types";
 import { Dato } from "./Dato";
 import { Envalg } from "./Envalg";
-import { LangTekst } from "./LangTekst";
-import { Land } from "./Land";
 import { KortTekst } from "./KortTekst";
+import { Land } from "./Land";
+import { LangTekst } from "./LangTekst";
 import { Periode } from "./Periode";
-import KortTekst from "~/components/sporsmal/KortTekst";
+import { Sporsmal } from "./sporsmal.types";
 
 interface IProps {
   sporsmal: Sporsmal;
@@ -23,9 +22,6 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
 
     case "envalg":
       return <Envalg sporsmal={sporsmal} formScope={formScope} />;
-
-    case "kortTekst":
-      return <KortTekst sporsmal={sporsmal} formScope={formScope} />;
 
     case "langTekst":
       return <LangTekst sporsmal={sporsmal} formScope={formScope} />;

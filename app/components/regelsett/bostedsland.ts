@@ -4,8 +4,6 @@ const bostedsland = "bostedsland";
 const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
 const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
-const avreiseDatoFra = "avreise-dato-fra";
-const avreiseDatoTil = "avreise-dato-til";
 const avreiseDato = "avreise-dato";
 const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 

@@ -2,12 +2,36 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
-import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
+import {
+  ActionFunctionArgs,
+  data,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
 import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/regelsett/din-situasjon";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
+
+  if (!response.ok) {
+    return data(undefined);
+  }
+
+  const loaderData = await response.json();
+
+  return data(loaderData);
+}
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -50,6 +74,7 @@ const schema = z
   });
 
 export default function DinSituasjon() {
+  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
@@ -62,7 +87,7 @@ export default function DinSituasjon() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: {},
+    defaultValues: loaderData,
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).

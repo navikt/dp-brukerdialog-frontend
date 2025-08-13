@@ -12,6 +12,20 @@ import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { ExternalLink } from "~/components/ExternalLink";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const response = await hentSeksjon(request, params.soknadId, "utdanning");
+
+  if (response.status === 200) {
+    return await response.json();
+  }
+
+  const loaderData = await response.json();
+
+  return data(loaderData);
+}
+
 export async function action({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
@@ -26,25 +40,6 @@ export async function action({ request, params }: LoaderFunctionArgs) {
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonsId}`);
-}
-
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  invariant(params.soknadId, "Søknad ID er påkrevd");
-
-  const response = await hentSeksjon(request, params.soknadId, "utdanning");
-  if (response.status === 200) {
-    return await response.json();
-  }
-
-  return data({
-    tarUtdanningEllerOpplæring: undefined,
-    avsluttetUtdanningSiste6Måneder: undefined,
-    dokumenterAvsluttetUtdanningSiste6MånederNå: undefined,
-    lasteOppSenereBegrunnelse: undefined,
-    naarSendtDokumentasjonTidligere: undefined,
-    senderIkkeDokumentasjonBegrunnelse: undefined,
-    planleggerÅStarteEllerFullføreStudierSamtidig: undefined,
-  });
 }
 
 const schema = z
@@ -73,8 +68,8 @@ const schema = z
     });
   });
 
-export default function Utdanning({ loaderData }: Route.ComponentProps) {
-  const utdanning = useLoaderData<typeof loader>();
+export default function Utdanning() {
+  const loaderData = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   const form = useForm({
@@ -86,7 +81,7 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: JSON.parse(utdanning),
+    defaultValues: loaderData,
   });
 
   useEffect(() => {
@@ -114,7 +109,6 @@ export default function Utdanning({ loaderData }: Route.ComponentProps) {
                 return (
                   <>
                     <Sporsmal
-                      key={sporsmal.id}
                       sporsmal={sporsmal}
                       formScope={form.scope(sporsmal.id as keyof UtdanningSvar)}
                     />
