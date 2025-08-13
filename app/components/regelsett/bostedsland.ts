@@ -4,7 +4,8 @@ const bostedsland = "bostedsland";
 const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
 const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
-const avreiseDato = "avreise-dato";
+const avreiseDatoFra = "avreise-dato-fra";
+const avreiseDatoTil = "avreise-dato-til";
 const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 export type BostedslandSvar = {
@@ -12,10 +13,8 @@ export type BostedslandSvar = {
   [reistTilbakeTilBostedslandet]?: "ja" | "nei";
   [reisteDuHjemTilLandetDuBorI]?: "ja" | "nei";
   [reisteDuITaktMedRotasjon]?: "ja" | "nei";
-  [avreiseDato]?: {
-    fom?: string;
-    tom?: string;
-  };
+  [avreiseDatoFra]?: string;
+  [avreiseDatoTil]?: string;
   [hvorforReistDuFraNorge]?: string;
 };
 
@@ -37,19 +36,16 @@ export const bostedslandSporsmal: Sporsmal[] = [
     visHvis: (svar: BostedslandSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NO",
   },
   {
-    id: "avreise-dato",
-    type: "periode",
-    label: "Dato for avreise",
-    fom: {
-      id: "fra",
-      type: "dato",
-      label: "Fra dato",
-    },
-    tom: {
-      id: "til",
-      type: "dato",
-      label: "Til dato",
-    },
+    id: "avreise-dato-fra",
+    type: "periodeFra",
+    label: "Fra dato",
+    periodeLabel: "Avreise dato",
+    visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
+  },
+  {
+    id: "avreise-dato-til",
+    type: "periodeTil",
+    label: "Til dato",
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
@@ -58,7 +54,6 @@ export const bostedslandSporsmal: Sporsmal[] = [
     label: "Hvorfor reiste du fra Norge?",
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
-
   {
     id: reisteDuHjemTilLandetDuBorI,
     type: "envalg",

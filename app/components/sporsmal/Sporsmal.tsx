@@ -17,7 +17,8 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
     case "dato":
       return <Dato sporsmal={sporsmal} formScope={formScope} />;
 
-    case "periode":
+    case "periodeFra":
+    case "periodeTil":
       return <Periode sporsmal={sporsmal} formScope={formScope} />;
 
     case "envalg":

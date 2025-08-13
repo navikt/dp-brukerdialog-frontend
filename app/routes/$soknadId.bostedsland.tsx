@@ -25,7 +25,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "bostedsland");
 
   if (!response.ok) {
-    console.log("Error");
+    return data(undefined);
   }
 
   const loaderData = await response.json();
@@ -51,16 +51,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-type PeriodeType = {
-  fom?: string;
-  tom?: string;
-};
-
 const bostedsland = "bostedsland";
 const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
 const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
 const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
-const avreiseDato = "avreise-dato";
+const avreiseDatoFra = "avreise-dato-fra";
+const avreiseDatoTil = "avreise-dato-til";
 const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
@@ -69,12 +65,8 @@ const schema = z
     [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
     [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
     [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
-    [avreiseDato]: z
-      .object({
-        fom: z.string().optional(),
-        tom: z.string().optional(),
-      })
-      .optional(),
+    [avreiseDatoFra]: z.string().optional(),
+    [avreiseDatoTil]: z.string().optional(),
     [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
@@ -83,27 +75,7 @@ const schema = z
       const sporsmalId = sporsmal.id as keyof BostedslandSvar;
       const svar = data[sporsmalId];
 
-      if (sporsmal.type === "periode") {
-        const periodeSvar = svar as PeriodeType | undefined;
-
-        if (!periodeSvar?.fom) {
-          ctx.addIssue({
-            path: [`${sporsmal.id}.fom`],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-
-        if (!sporsmal.tom.optional && !periodeSvar?.tom) {
-          ctx.addIssue({
-            path: [`${sporsmal.id}.tom`],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-      }
-
-      if (synlig && !svar) {
+      if (synlig && !svar && !sporsmal.optional) {
         ctx.addIssue({
           path: [sporsmal.id],
           code: "custom",
@@ -118,14 +90,6 @@ export default function Bostedsland() {
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
-  const defaultValues = {
-    ...loaderData,
-    "avreise-dato": {
-      fom: loaderData["avreise-dato.fom"] ?? "",
-      tom: loaderData["avreise-dato.tom"] ?? "",
-    },
-  };
-
   const form = useForm({
     method: "PUT",
     submitSource: "state",
@@ -135,7 +99,7 @@ export default function Bostedsland() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues,
+    defaultValues: loaderData,
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).

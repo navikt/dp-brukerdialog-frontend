@@ -6,12 +6,21 @@ export type Sporsmal =
   | LandSporsmal
   | PeriodeSporsmal;
 
-type baseType = "envalg" | "langTekst" | "kortTekst" | "dato" | "periode" | "land" | "kortTekst";
+type baseType =
+  | "envalg"
+  | "langTekst"
+  | "kortTekst"
+  | "dato"
+  | "periodeFra"
+  | "periodeTil"
+  | "land"
+  | "kortTekst";
 
 export type BaseSporsmal = {
   id: string;
   label: string;
   type: baseType;
+  optional?: boolean;
   description?: string;
   visHvis?: (svar: Record<string, any>) => boolean;
 };
@@ -32,15 +41,16 @@ export type KortTekstSporsmal = BaseSporsmal & {
 
 export type DatoSporsmal = BaseSporsmal & {
   type: "dato";
-  fom?: Date;
-  tom?: Date;
+  fra?: Date;
+  til?: Date;
   optional?: boolean;
 };
 
 export type PeriodeSporsmal = BaseSporsmal & {
-  type: "periode";
-  fom: DatoSporsmal;
-  tom: DatoSporsmal;
+  type: "periodeFra" | "periodeTil";
+  fra?: DatoSporsmal;
+  til?: DatoSporsmal;
+  periodeLabel?: string;
 };
 
 export type LandSporsmal = BaseSporsmal & {

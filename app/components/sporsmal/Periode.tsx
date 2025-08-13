@@ -1,8 +1,10 @@
 import { BodyShort, DatePicker, useDatepicker, VStack } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { Dato } from "./Dato";
-import { PeriodeSporsmal } from "./sporsmal.types";
+import classNames from "classnames";
 import { formatISO } from "date-fns";
+import { PeriodeSporsmal } from "./sporsmal.types";
+
+import styles from "./sporsmal.module.css";
 
 interface IProps {
   sporsmal: PeriodeSporsmal;
@@ -10,32 +12,48 @@ interface IProps {
 }
 
 export function Periode({ sporsmal, formScope }: IProps) {
-  const fomField = useField(formScope.scope("fom" as never));
-  const tomField = useField(formScope.scope("tom" as never));
+  const field = useField(formScope);
 
   const { datepickerProps, inputProps } = useDatepicker({
-    fromDate: undefined,
-    toDate: undefined,
+    defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
+    fromDate: sporsmal.fra ? new Date(sporsmal.fra.toString()) : undefined,
+    toDate: sporsmal.til ? new Date(sporsmal.til.toString()) : undefined,
     onDateChange: (date) => {
-      // fomField.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
-      fomField.validate();
+      field.setValue(date ? formatISO(date, { representation: "date" }) : "");
+      field.validate();
     },
   });
 
+  const periodeFraSpørsmal = sporsmal.type === "periodeFra";
+  const periodeTilSpørsmal = sporsmal.type === "periodeTil";
+
   return (
     <VStack gap="4">
-      <BodyShort weight="semibold">{sporsmal.label}</BodyShort>
-      <VStack gap="4" className="left-border">
+      {sporsmal.type === "periodeFra" && (
+        <BodyShort weight="semibold">{sporsmal.periodeLabel}</BodyShort>
+      )}
+      {sporsmal.type === "periodeFra" && sporsmal.description && (
+        <BodyShort>{sporsmal.description}</BodyShort>
+      )}
+      <VStack
+        className={classNames(styles.periodeVenstreBorder, {
+          [styles.periodeVenstreBorderfra]: periodeFraSpørsmal,
+          [styles.periodeVenstreBordertil]: periodeTilSpørsmal,
+        })}
+      >
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
             {...inputProps}
-            name={`${sporsmal.id}.fra`}
+            key={sporsmal.id}
             placeholder="DD.MM.ÅÅÅÅ"
-            error={fomField.error()}
-            label={sporsmal.label}
+            error={field.error()}
+            label={
+              periodeTilSpørsmal && sporsmal.optional
+                ? `${sporsmal.label} (valgfritt)`
+                : sporsmal.label
+            }
           />
         </DatePicker>
-        {/* <Dato sporsmal={sporsmal.tom} formScope={tomScope} /> */}
       </VStack>
     </VStack>
   );
