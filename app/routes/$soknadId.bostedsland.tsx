@@ -14,7 +14,17 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { bostedslandSporsmal, BostedslandSvar } from "~/components/regelsett/bostedsland";
+import {
+  avreiseDatoFra,
+  avreiseDatoTil,
+  bostedsland,
+  bostedslandSporsmal,
+  BostedslandSvar,
+  hvorforReistDuFraNorge,
+  reisteDuHjemTilLandetDuBorI,
+  reisteDuITaktMedRotasjon,
+  reistTilbakeTilBostedslandet,
+} from "~/regelsett/bostedsland";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -28,8 +38,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return data(undefined);
   }
 
-  const loaderData = await response.json();
-  return data(loaderData);
+  const loaderData: BostedslandSvar = await response.json();
+
+  return data({ ...loaderData });
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -39,7 +50,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "bostedsland";
   const nesteSeksjonId = "tilleggsopplysninger";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
-
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
@@ -50,14 +60,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
-
-const bostedsland = "bostedsland";
-const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
-const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
-const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
-const avreiseDatoFra = "avreise-dato-fra";
-const avreiseDatoTil = "avreise-dato-til";
-const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 const schema = z
   .object({
@@ -99,7 +101,7 @@ export default function Bostedsland() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData,
+    defaultValues: loaderData ? JSON.parse(JSON.stringify(loaderData)) : {},
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
@@ -124,16 +126,13 @@ export default function Bostedsland() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               {bostedslandSporsmal.map((sporsmal) => {
-                // Skip rendering if the question should not be shown based on current answers
                 if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
                   return null;
                 }
-
                 return (
                   <Sporsmal
                     key={sporsmal.id}
                     sporsmal={sporsmal}
-                    // @ts-ignore
                     formScope={form.scope(sporsmal.id as keyof BostedslandSvar)}
                   />
                 );

@@ -16,7 +16,7 @@ import {
   tilleggsopplysninger,
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/components/regelsett/tilleggsopplysninger";
+} from "~/regelsett/tilleggsopplysninger";
 import { useEffect } from "react";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";

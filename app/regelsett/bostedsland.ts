@@ -1,12 +1,12 @@
-import { Sporsmal } from "../sporsmal/sporsmal.types";
+import { Sporsmal } from "../components/sporsmal/sporsmal.types";
 
-const bostedsland = "bostedsland";
-const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
-const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
-const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
-const avreiseDatoFra = "avreise-dato-fra";
-const avreiseDatoTil = "avreise-dato-til";
-const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
+export const bostedsland = "bostedsland";
+export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
+export const reisteDuHjemTilLandetDuBorI = "reiste-du-hjem-til-landet-du-bor-i";
+export const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
+export const avreiseDatoFra = "avreise-dato-fra";
+export const avreiseDatoTil = "avreise-dato-til";
+export const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 
 export type BostedslandSvar = {
   [bostedsland]?: string;

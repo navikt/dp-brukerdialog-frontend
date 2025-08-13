@@ -7,7 +7,7 @@ import { Route } from "../../.react-router/types/app/routes/+types/_index";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { z } from "zod";
 import { useForm } from "@rvf/react-router";
-import { utdanningSporsmal, UtdanningSvar } from "~/components/regelsett/utdanning";
+import { utdanningSporsmal, UtdanningSvar } from "~/regelsett/utdanning";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { ExternalLink } from "~/components/ExternalLink";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";

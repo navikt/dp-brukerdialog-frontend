@@ -14,7 +14,13 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import { dinSituasjonSporsmal, DinSituasjonSvar } from "~/components/regelsett/din-situasjon";
+import {
+  arsak,
+  dato,
+  dinSituasjonSporsmal,
+  DinSituasjonSvar,
+  mottatt,
+} from "~/regelsett/din-situasjon";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -28,9 +34,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return data(undefined);
   }
 
-  const loaderData = await response.json();
+  const loaderData: DinSituasjonSvar = await response.json();
 
-  return data(loaderData);
+  return data({ ...loaderData });
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -53,9 +59,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 const schema = z
   .object({
-    mottatt: z.enum(["ja", "nei", "vetikke"]).optional(),
-    arsak: z.string().max(500, "Maks 500 tegn").optional(),
-    dato: z.string().optional(),
+    [mottatt]: z.enum(["ja", "nei", "vetikke"]).optional(),
+    [arsak]: z.string().max(500, "Maks 500 tegn").optional(),
+    [dato]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     dinSituasjonSporsmal.forEach((sporsmal) => {
@@ -87,7 +93,7 @@ export default function DinSituasjon() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData,
+    defaultValues: loaderData ? JSON.parse(JSON.stringify(loaderData)) : {},
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
