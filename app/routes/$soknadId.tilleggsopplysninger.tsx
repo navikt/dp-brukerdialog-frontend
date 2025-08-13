@@ -1,33 +1,49 @@
-import invariant from "tiny-invariant";
-import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect } from "react";
 import {
   ActionFunctionArgs,
+  data,
   Form,
+  LoaderFunctionArgs,
   redirect,
   useActionData,
+  useLoaderData,
   useNavigate,
-  useParams,
 } from "react-router";
+import invariant from "tiny-invariant";
 import { z } from "zod";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import {
   harTilleggsopplysninger,
   tilleggsopplysninger,
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "~/regelsett/tilleggsopplysninger";
-import { useEffect } from "react";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
+
+  if (!response.ok) {
+    return data(undefined);
+  }
+
+  const loaderData: TilleggsopplysningerSvar = await response.json();
+
+  return data({ ...loaderData });
+}
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
-  console.info("oiwejfioewjf");
 
   const formData = await request.formData();
   const seksjonId = "tilleggsopplysninger";
-  const nesteSeksjonId = "sammendrag";
+  const nesteSeksjonId = "bostedsland";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
@@ -42,6 +58,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Tilleggsopplysninger() {
+  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
@@ -75,7 +92,7 @@ export default function Tilleggsopplysninger() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: {},
+    defaultValues: loaderData ? JSON.parse(JSON.stringify(loaderData)) : {},
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
