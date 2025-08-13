@@ -1,15 +1,21 @@
-type baseType = "envalg" | "langTekst" | "dato" | "land" | "kortTekst";
+type baseType = "envalg" | "flervalg" | "langTekst" | "dato" | "land" | "kortTekst";
 
 export type BaseSporsmal = {
   id: string;
   label: string;
   type: baseType;
   description?: string;
+  grunnenTilAtViSpør?: string;
   visHvis?: (svar: Record<string, any>) => boolean;
 };
 
 export type EnvalgSporsmal = BaseSporsmal & {
   type: "envalg";
+  options: { value: string; label: string }[];
+};
+
+  export type FlervalgSpørsmål = BaseSporsmal & {
+  type: "flervalg";
   options: { value: string; label: string }[];
 };
 
@@ -34,6 +40,7 @@ export type KortTekstSporsmal = BaseSporsmal & {
 
 export type Sporsmal =
   | EnvalgSporsmal
+  | FlervalgSpørsmål
   | LangTekstSporsmal
   | DatoSporsmal
   | LandSporsmal

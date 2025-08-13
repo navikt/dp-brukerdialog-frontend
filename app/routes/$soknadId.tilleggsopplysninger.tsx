@@ -2,14 +2,7 @@ import invariant from "tiny-invariant";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { useForm } from "@rvf/react-router";
-import {
-  ActionFunctionArgs,
-  Form,
-  redirect,
-  useActionData,
-  useNavigate,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
 import { z } from "zod";
 import {
   harTilleggsopplysninger,
@@ -41,6 +34,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
+// noinspection JSUnusedGlobalSymbols
 export default function Tilleggsopplysninger() {
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
