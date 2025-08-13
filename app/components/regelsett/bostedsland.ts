@@ -41,7 +41,7 @@ export const bostedslandSporsmal: Sporsmal[] = [
   {
     id: "avreise-dato",
     type: "periode",
-    label: "Avreise dato",
+    label: "Dato for avreise",
     fom: {
       id: "fra",
       type: "dato",
@@ -51,20 +51,7 @@ export const bostedslandSporsmal: Sporsmal[] = [
       id: "til",
       type: "dato",
       label: "Til dato",
-      optional: true,
     },
-    visHvis: (svar: BostedslandSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NO",
-  },
-  {
-    id: avreiseDatoFra,
-    type: "dato",
-    label: "Fra dato",
-    visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
-  },
-  {
-    id: avreiseDatoTil,
-    type: "dato",
-    label: "Til dato",
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
@@ -73,6 +60,7 @@ export const bostedslandSporsmal: Sporsmal[] = [
     label: "Hvorfor reiste du fra Norge?",
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
+
   {
     id: reisteDuHjemTilLandetDuBorI,
     type: "envalg",
