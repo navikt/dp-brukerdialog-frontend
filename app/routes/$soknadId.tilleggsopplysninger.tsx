@@ -43,7 +43,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "tilleggsopplysninger";
-  const nesteSeksjonId = "bostedsland";
+  const nesteSeksjonId = "sammendrag";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);

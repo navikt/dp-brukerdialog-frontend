@@ -43,7 +43,6 @@ export type DatoSporsmal = BaseSporsmal & {
   type: "dato";
   fra?: Date;
   til?: Date;
-  optional?: boolean;
 };
 
 export type PeriodeSporsmal = BaseSporsmal & {
