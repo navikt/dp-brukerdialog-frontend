@@ -68,9 +68,9 @@ export default function DinSituasjon() {
     submitSource: "state",
     schema: dinSituasjonSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onSubmit",
     },
     defaultValues: hentDefaultValues<DinSituasjonSvar>(loaderData),
   });

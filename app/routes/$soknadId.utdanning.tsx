@@ -51,9 +51,9 @@ export default function Utdanning() {
     submitSource: "state",
     schema: utdanningSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onSubmit",
     },
     defaultValues: hentDefaultValues<UtdanningSvar>(loaderData),
   });
