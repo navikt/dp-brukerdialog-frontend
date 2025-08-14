@@ -22,7 +22,7 @@ import {
   tilleggsopplysninger,
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/regelsett/tilleggsopplysninger";
+} from "~/routes-oppsett/tilleggsopplysninger";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
