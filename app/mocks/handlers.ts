@@ -58,4 +58,31 @@ export const handlers = [
       );
     }
   ),
+  http.get(
+    `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/b1778783-3ec1-4cd1-8eae-b496c10a6122/barnetillegg`,
+    () => {
+      return HttpResponse.json(
+        {
+          forsørgerBarnSomIkkeVises: "ja",
+          barnFraPdl: [
+            {
+              fornavnOgEtternavn: "FIOLETT ",
+              etternavn: "GREVLING",
+              fodselsnummer: "12345678901",
+              hvilketLandBarnetBorI: "Norge",
+            },
+          ],
+          barnLagtManuelt: [
+            {
+              fornavnOgEtternavn: "SNURRE",
+              etternavn: "SPRETT",
+              fodselsnummer: "10987654321",
+              hvilketLandBarnetBorI: "Norge",
+            },
+          ],
+        },
+        { status: 200 }
+      );
+    }
+  ),
 ];

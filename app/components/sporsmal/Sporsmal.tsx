@@ -28,6 +28,9 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
     case "land":
       return <Land sporsmal={sporsmal} formScope={formScope} />;
 
+    case "barnelist":
+      return sporsmal.children.map((barn) => <Sporsmal sporsmal={barn} formScope={formScope} />);
+
     default:
       console.warn(`Ukjent spørsmålstype: ${sporsmal}`);
       return null;

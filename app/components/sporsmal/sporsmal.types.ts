@@ -1,4 +1,4 @@
-type baseType = "envalg" | "langTekst" | "dato" | "land" | "kortTekst";
+type baseType = "envalg" | "langTekst" | "dato" | "land" | "kortTekst" | "barnelist";
 
 export type BaseSporsmal = {
   id: string;
@@ -32,9 +32,15 @@ export type KortTekstSporsmal = BaseSporsmal & {
   type: "kortTekst";
 };
 
+export type BarnelisteSporsmal = BaseSporsmal & {
+  type: "barnelist";
+  children: Sporsmal[];
+};
+
 export type Sporsmal =
   | EnvalgSporsmal
   | LangTekstSporsmal
   | DatoSporsmal
   | LandSporsmal
-  | KortTekstSporsmal;
+  | KortTekstSporsmal
+  | BarnelisteSporsmal;
