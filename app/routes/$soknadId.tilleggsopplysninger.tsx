@@ -29,7 +29,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
 
-  if (!response.ok) {
+  if (response.status !== 200) {
     return data(undefined);
   }
 

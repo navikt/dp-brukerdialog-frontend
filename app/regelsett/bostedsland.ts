@@ -42,14 +42,14 @@ export const bostedslandSporsmal: Sporsmal[] = [
     visHvis: (svar: BostedslandSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NO",
   },
   {
-    id: "avreise-dato-fra",
+    id: avreiseDatoFra,
     type: "periodeFra",
     label: "Fra dato",
     periodeLabel: "Avreise dato",
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
-    id: "avreise-dato-til",
+    id: avreiseDatoTil,
     type: "periodeTil",
     label: "Til dato",
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",

@@ -16,8 +16,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const response = await hentSeksjon(request, params.soknadId, "utdanning");
 
-  if (response.status === 200) {
-    return await response.json();
+  if (response.status !== 200) {
+    return data(undefined);
   }
 
   const loaderData = await response.json();

@@ -1,7 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { B } from "node_modules/react-router/dist/development/route-data-CqEmXQub.mjs";
 import { useEffect } from "react";
 import {
   ActionFunctionArgs,
@@ -24,7 +23,6 @@ import {
   bostedsland,
   bostedslandSporsmal,
   BostedslandSvar,
-  hentDefaultBostedslandSvar,
   hvorforReistDuFraNorge,
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,

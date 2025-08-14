@@ -4,7 +4,8 @@ import {
   Button,
   DatePicker,
   FileObject,
-  FileUpload, HStack,
+  FileUpload,
+  HStack,
   Modal,
   Page,
   Radio,
@@ -97,7 +98,7 @@ export default function Barntillegg({ loaderData }: Route.ComponentProps) {
       forsørgerDuBarnet: undefined,
       dokumentereForsørgerNå: "",
       dokumententasjonGrunn: "",
-      hentetFraPdl: false
+      hentetFraPdl: false,
     });
   }
 
@@ -138,7 +139,7 @@ export default function Barntillegg({ loaderData }: Route.ComponentProps) {
                   <p style={{ margin: "5px auto", textTransform: "uppercase" }}>
                     Bor i {barn.bostedsland} (TODO: MAP TIL LAND)
                   </p>
-                  <p style={{ marginBottom: "0"}}>
+                  <p style={{ marginBottom: "0" }}>
                     <RadioGroup legend="Forsørger du barnet?" value={barn.forsørgerDuBarnet}>
                       <Stack gap="0 6" direction={{ xs: "column", sm: "row" }} wrap={false}>
                         <Radio value="1">Ja</Radio>

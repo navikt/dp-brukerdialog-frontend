@@ -30,7 +30,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
 
-  if (!response.ok) {
+  if (response.status !== 200) {
     return data(undefined);
   }
 
