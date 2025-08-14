@@ -20,8 +20,12 @@ import { tilleggsopplysningerSchema } from "~/routes-oppsett/tilleggsopplysninge
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
+<<<<<<< HEAD
 } from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
 import { hentDefaultValues } from "~/utils/seksjon.util";
+=======
+} from "~/routes-oppsett/tilleggsopplysninger";
+>>>>>>> 74c58fc (Legg til .util for alle util funksjoner, Legge til nullstillSkjulteFelter hook, Sette opp mappe for å samle route oppsett)
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
