@@ -16,12 +16,13 @@ import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+
+import { tilleggsopplysningerSchema } from "~/seksjon-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/regelsett/tilleggsopplysninger";
-import { tilleggsopplysningerSchema } from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
-import { hentDefaultValues } from "~/utils/seksjon.util";
+} from "~/seksjon-oppsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
+import { hentDefaultValues } from "~/utils/seksjon.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
