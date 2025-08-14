@@ -21,6 +21,7 @@ import {
   TilleggsopplysningerSvar,
 } from "~/routes-oppsett/tilleggsopplysninger";
 import { tilleggsopplysningerSchema } from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
+import { hentDefaultValues } from "~/utils/seksjon.util";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
