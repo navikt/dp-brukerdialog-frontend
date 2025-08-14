@@ -108,6 +108,7 @@ export default function Utdanning() {
                 return (
                   <>
                     <Sporsmal
+                      key={sporsmal.id}
                       sporsmal={sporsmal}
                       formScope={form.scope(sporsmal.id as keyof UtdanningSvar)}
                     />
