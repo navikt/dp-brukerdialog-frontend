@@ -42,7 +42,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "bostedsland";
   const nesteSeksjonId = "tilleggsopplysninger";
-  const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
+  const filtrertEntries = Array.from(formData.entries()).filter(
+    ([_, value]) => value !== undefined && value !== "undefined"
+  );
+  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
