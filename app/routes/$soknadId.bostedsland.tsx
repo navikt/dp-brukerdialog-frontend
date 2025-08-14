@@ -14,27 +14,31 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
-import {
-  arsak,
-  dato,
-  dinSituasjonSporsmal,
-  DinSituasjonSvar,
-  mottatt,
-} from "~/regelsett/din-situasjon";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import {
+  avreiseDatoFra,
+  avreiseDatoTil,
+  bostedsland,
+  bostedslandSporsmal,
+  BostedslandSvar,
+  hvorforReistDuFraNorge,
+  reisteDuHjemTilLandetDuBorI,
+  reisteDuITaktMedRotasjon,
+  reistTilbakeTilBostedslandet,
+} from "~/regelsett/bostedsland";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
+  const response = await hentSeksjon(request, params.soknadId, "bostedsland");
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     return data(undefined);
   }
 
-  const loaderData: DinSituasjonSvar = await response.json();
+  const loaderData = await response.json();
 
   return data({ ...loaderData });
 }
@@ -43,8 +47,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const seksjonId = "din-situasjon";
-  const nesteSeksjonId = "personalia";
+  const seksjonId = "bostedsland";
+  const nesteSeksjonId = "tilleggsopplysninger";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
@@ -59,17 +63,21 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 const schema = z
   .object({
-    [mottatt]: z.enum(["ja", "nei", "vetikke"]).optional(),
-    [arsak]: z.string().max(500, "Maks 500 tegn").optional(),
-    [dato]: z.string().optional(),
+    [bostedsland]: z.string().optional(),
+    [reistTilbakeTilBostedslandet]: z.enum(["ja", "nei"]).optional(),
+    [reisteDuHjemTilLandetDuBorI]: z.enum(["ja", "nei"]).optional(),
+    [reisteDuITaktMedRotasjon]: z.enum(["ja", "nei"]).optional(),
+    [avreiseDatoFra]: z.string().optional(),
+    [avreiseDatoTil]: z.string().optional(),
+    [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    dinSituasjonSporsmal.forEach((sporsmal) => {
+    bostedslandSporsmal.forEach((sporsmal) => {
       const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      const sporsmalId = sporsmal.id as keyof BostedslandSvar;
       const svar = data[sporsmalId];
 
-      if (synlig && !svar) {
+      if (synlig && !svar && !sporsmal.optional) {
         ctx.addIssue({
           path: [sporsmal.id],
           code: "custom",
@@ -79,7 +87,7 @@ const schema = z
     });
   });
 
-export default function DinSituasjon() {
+export default function Bostedsland() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -102,8 +110,8 @@ export default function DinSituasjon() {
   useEffect(() => {
     const values = form.value();
 
-    dinSituasjonSporsmal.forEach((sporsmal) => {
-      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+    bostedslandSporsmal.forEach((sporsmal) => {
+      const sporsmalId = sporsmal.id as keyof BostedslandSvar;
       if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
         form.setValue(sporsmalId, undefined);
       }
@@ -112,22 +120,20 @@ export default function DinSituasjon() {
 
   return (
     <Page className="brukerdialog">
-      <h2>Din situasjon</h2>
+      <h2>Bostedsland</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {dinSituasjonSporsmal.map((sporsmal) => {
-                // Skip rendering if the question should not be shown based on current answers
+              {bostedslandSporsmal.map((sporsmal) => {
                 if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
                   return null;
                 }
-
                 return (
                   <Sporsmal
                     key={sporsmal.id}
                     sporsmal={sporsmal}
-                    formScope={form.scope(sporsmal.id as keyof DinSituasjonSvar)}
+                    formScope={form.scope(sporsmal.id as keyof BostedslandSvar)}
                   />
                 );
               })}
