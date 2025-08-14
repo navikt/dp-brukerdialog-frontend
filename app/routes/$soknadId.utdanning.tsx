@@ -7,10 +7,10 @@ import { ExternalLink } from "~/components/ExternalLink";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { hentDefaultValues } from "~/utils/seksjon.util";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { utdanningSchema } from "~/routes-oppsett/utdanning/utdanning.schema";
 import { utdanningSporsmal, UtdanningSvar } from "~/routes-oppsett/utdanning/utdanning.sporsmal";
-import { hentDefaultValues } from "~/utils/seksjon.util";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");

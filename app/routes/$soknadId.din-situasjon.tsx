@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect } from "react";
 import {
   ActionFunctionArgs,
   data,
@@ -12,16 +13,17 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { dinSituasjonSchema } from "~/routes-oppsett/din-situasjon/din-situasjon.schema";
+import { z } from "zod";
 import {
+  arsak,
+  dato,
   dinSituasjonSporsmal,
   DinSituasjonSvar,
-} from "~/routes-oppsett/din-situasjon/din-situasjon.sporsmal";
-import { hentDefaultValues } from "~/utils/seksjon.util";
+  mottatt,
+} from "~/regelsett/din-situasjon";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -33,7 +35,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   const loaderData: DinSituasjonSvar = await response.json();
-  return data(loaderData);
+
+  return data({ ...loaderData });
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -42,11 +45,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "personalia";
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
-  );
-  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
-
+  const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
@@ -58,6 +57,28 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
+const schema = z
+  .object({
+    [mottatt]: z.enum(["ja", "nei", "vetikke"]).optional(),
+    [arsak]: z.string().max(500, "Maks 500 tegn").optional(),
+    [dato]: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    dinSituasjonSporsmal.forEach((sporsmal) => {
+      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
+      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      const svar = data[sporsmalId];
+
+      if (synlig && !svar) {
+        ctx.addIssue({
+          path: [sporsmal.id],
+          code: "custom",
+          message: "Du må svare på dette spørsmålet",
+        });
+      }
+    });
+  });
+
 export default function DinSituasjon() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -66,16 +87,28 @@ export default function DinSituasjon() {
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: dinSituasjonSchema,
+    schema: schema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentDefaultValues<DinSituasjonSvar>(loaderData),
+    defaultValues: loaderData || {},
   });
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSporsmal);
+  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
+  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
+  // Kalles automatisk hver gang formverdier endres.
+  useEffect(() => {
+    const values = form.value();
+
+    dinSituasjonSporsmal.forEach((sporsmal) => {
+      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
+      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
+        form.setValue(sporsmalId, undefined);
+      }
+    });
+  }, [form.value()]);
 
   return (
     <Page className="brukerdialog">

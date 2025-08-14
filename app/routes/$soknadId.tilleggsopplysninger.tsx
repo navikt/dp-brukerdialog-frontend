@@ -19,7 +19,7 @@ import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/routes-oppsett/tilleggsopplysninger";
+} from "~/regelsett/tilleggsopplysninger";
 import { tilleggsopplysningerSchema } from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
 import { hentDefaultValues } from "~/utils/seksjon.util";
 
