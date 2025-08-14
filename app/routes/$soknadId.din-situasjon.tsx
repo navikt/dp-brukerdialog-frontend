@@ -93,7 +93,7 @@ export default function DinSituasjon() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ? JSON.parse(JSON.stringify(loaderData)) : {},
+    defaultValues: loaderData || {},
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).

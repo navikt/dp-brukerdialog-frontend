@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { B } from "node_modules/react-router/dist/development/route-data-CqEmXQub.mjs";
 import { useEffect } from "react";
 import {
   ActionFunctionArgs,
@@ -14,20 +15,21 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { z } from "zod";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import {
   avreiseDatoFra,
   avreiseDatoTil,
   bostedsland,
   bostedslandSporsmal,
   BostedslandSvar,
+  hentDefaultBostedslandSvar,
   hvorforReistDuFraNorge,
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
 } from "~/regelsett/bostedsland";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -38,7 +40,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return data(undefined);
   }
 
-  const loaderData: BostedslandSvar = await response.json();
+  const loaderData = await response.json();
 
   return data({ ...loaderData });
 }
@@ -101,7 +103,7 @@ export default function Bostedsland() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ? JSON.parse(JSON.stringify(loaderData)) : {},
+    defaultValues: loaderData || {},
   });
 
   // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).

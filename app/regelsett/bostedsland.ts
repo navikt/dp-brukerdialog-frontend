@@ -18,6 +18,12 @@ export type BostedslandSvar = {
   [hvorforReistDuFraNorge]?: string;
 };
 
+export function hentDefaultBostedslandSvar(): BostedslandSvar {
+  return Object.fromEntries(
+    bostedslandSporsmal.map((spm) => [spm.id, undefined])
+  ) as BostedslandSvar;
+}
+
 export const bostedslandSporsmal: Sporsmal[] = [
   {
     id: bostedsland,
