@@ -16,16 +16,11 @@ import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { tilleggsopplysningerSchema } from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-<<<<<<< HEAD
-} from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
-import { hentDefaultValues } from "~/utils/seksjon.util";
-=======
 } from "~/routes-oppsett/tilleggsopplysninger";
->>>>>>> 74c58fc (Legg til .util for alle util funksjoner, Legge til nullstillSkjulteFelter hook, Sette opp mappe for å samle route oppsett)
+import { tilleggsopplysningerSchema } from "~/routes-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
