@@ -9,7 +9,7 @@ import { ExternalLink } from "~/components/ExternalLink";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { utdanningSporsmal, UtdanningSvar } from "~/routes-oppsett/utdanning";
+import { utdanningSporsmal, UtdanningSvar } from "~/regelsett/utdanning";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");

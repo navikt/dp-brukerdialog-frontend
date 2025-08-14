@@ -1,4 +1,4 @@
-import { Sporsmal } from "../../components/sporsmal/sporsmal.types";
+import { Sporsmal } from "../components/sporsmal/sporsmal.types";
 
 export const bostedsland = "bostedsland";
 export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";

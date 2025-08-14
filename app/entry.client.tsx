@@ -7,7 +7,7 @@
 import { HydratedRouter } from "react-router/dom";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
-import { initFaro } from "./utils/faro.util";
+import { initFaro } from "./utils/faro";
 
 try {
   initFaro();
