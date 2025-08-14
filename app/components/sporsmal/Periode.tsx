@@ -16,8 +16,8 @@ export function Periode({ sporsmal, formScope }: IProps) {
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
-    fromDate: sporsmal.fra ? new Date(sporsmal.fra.toString()) : undefined,
-    toDate: sporsmal.til ? new Date(sporsmal.til.toString()) : undefined,
+    fromDate: sporsmal.fraOgMed ? new Date(sporsmal.fraOgMed.toString()) : undefined,
+    toDate: sporsmal.tilOgMed ? new Date(sporsmal.tilOgMed.toString()) : undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : "");
       field.validate();

@@ -13,8 +13,7 @@ type baseType =
   | "dato"
   | "periodeFra"
   | "periodeTil"
-  | "land"
-  | "kortTekst";
+  | "land";
 
 export type BaseSporsmal = {
   id: string;
@@ -41,14 +40,14 @@ export type KortTekstSporsmal = BaseSporsmal & {
 
 export type DatoSporsmal = BaseSporsmal & {
   type: "dato";
-  fra?: Date;
-  til?: Date;
+  fraOgMed?: Date;
+  tilOgMed?: Date;
 };
 
 export type PeriodeSporsmal = BaseSporsmal & {
   type: "periodeFra" | "periodeTil";
-  fra?: DatoSporsmal;
-  til?: DatoSporsmal;
+  fraOgMed?: DatoSporsmal;
+  tilOgMed?: DatoSporsmal;
   periodeLabel?: string;
 };
 

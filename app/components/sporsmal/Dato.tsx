@@ -13,8 +13,8 @@ export function Dato({ sporsmal, formScope }: IProps) {
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
-    fromDate: sporsmal.fra || undefined,
-    toDate: sporsmal.til || undefined,
+    fromDate: sporsmal.fraOgMed || undefined,
+    toDate: sporsmal.tilOgMed || undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
       field.validate();
@@ -25,7 +25,6 @@ export function Dato({ sporsmal, formScope }: IProps) {
     <DatePicker {...datepickerProps} key={sporsmal.id}>
       <DatePicker.Input
         {...inputProps}
-        name={`${sporsmal.id}.fra`}
         placeholder="DD.MM.ÅÅÅÅ"
         error={field.error()}
         label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
