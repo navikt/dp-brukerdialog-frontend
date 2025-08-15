@@ -1,15 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect } from "react";
 import { data, Form, LoaderFunctionArgs, redirect, useLoaderData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
-import { z } from "zod";
 import { ExternalLink } from "~/components/ExternalLink";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { utdanningSporsmal, UtdanningSvar } from "~/regelsett/utdanning";
+import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
+import { utdanningSporsmal, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.sporsmal";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -20,9 +21,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return data(undefined);
   }
 
-  const loaderData = await response.json();
+  const loaderData: UtdanningSvar = await response.json();
 
-  return data({ ...loaderData });
+  return data(loaderData);
 }
 
 export async function action({ request, params }: LoaderFunctionArgs) {
@@ -41,32 +42,6 @@ export async function action({ request, params }: LoaderFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-const schema = z
-  .object({
-    tarUtdanningEllerOpplæring: z.enum(["ja", "nei"]).optional(),
-    avsluttetUtdanningSiste6Måneder: z.enum(["ja", "nei"]).optional(),
-    dokumenterAvsluttetUtdanningSiste6MånederNå: z.string().optional(),
-    lasteOppSenereBegrunnelse: z.string().optional(),
-    naarSendtDokumentasjonTidligere: z.string().optional(),
-    senderIkkeDokumentasjonBegrunnelse: z.string().optional(),
-    planleggerÅStarteEllerFullføreStudierSamtidig: z.enum(["ja", "nei"]).optional(),
-  })
-  .superRefine((data, ctx) => {
-    utdanningSporsmal.forEach((sporsmal) => {
-      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-      const sporsmalId = sporsmal.id as keyof UtdanningSvar;
-      const svar = data[sporsmalId];
-
-      if (synlig && !svar) {
-        ctx.addIssue({
-          path: [sporsmal.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
-    });
-  });
-
 export default function Utdanning() {
   const loaderData = useLoaderData<typeof loader>();
   const navigate = useNavigate();
@@ -74,25 +49,16 @@ export default function Utdanning() {
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: schema,
+    schema: utdanningSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData || {},
+    defaultValues: hentFormDefaultValues<UtdanningSvar>(loaderData),
   });
 
-  useEffect(() => {
-    const values = form.value();
-
-    utdanningSporsmal.forEach((sporsmal) => {
-      const sporsmalId = sporsmal.id as keyof UtdanningSvar;
-      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
-        form.setValue(sporsmalId, undefined);
-      }
-    });
-  }, [form.value()]);
+  useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSporsmal);
 
   return (
     <Page className="brukerdialog">

@@ -1,18 +1,28 @@
 import { Sporsmal } from "~/components/sporsmal/sporsmal.types";
 
+export const tarUtdanningEllerOpplæring = "tarUtdanningEllerOpplæring";
+export const avsluttetUtdanningSiste6Måneder = "avsluttetUtdanningSiste6Måneder";
+export const dokumenterAvsluttetUtdanningSiste6MånederNå =
+  "dokumenterAvsluttetUtdanningSiste6MånederNå";
+export const lasteOppSenereBegrunnelse = "lasteOppSenereBegrunnelse";
+export const naarSendtDokumentasjonTidligere = "naarSendtDokumentasjonTidligere";
+export const senderIkkeDokumentasjonBegrunnelse = "senderIkkeDokumentasjonBegrunnelse";
+export const planleggerÅStarteEllerFullføreStudierSamtidig =
+  "planleggerÅStarteEllerFullføreStudierSamtidig";
+
 export type UtdanningSvar = {
-  tarUtdanningEllerOpplæring?: "ja" | "nei";
-  avsluttetUtdanningSiste6Måneder?: "ja" | "nei";
-  dokumenterAvsluttetUtdanningSiste6MånederNå?: String;
-  lasteOppSenereBegrunnelse?: String;
-  naarSendtDokumentasjonTidligere?: String;
-  senderIkkeDokumentasjonBegrunnelse?: String;
-  planleggerÅStarteEllerFullføreStudierSamtidig?: "ja" | "nei";
+  [tarUtdanningEllerOpplæring]?: "ja" | "nei";
+  [avsluttetUtdanningSiste6Måneder]?: "ja" | "nei";
+  [dokumenterAvsluttetUtdanningSiste6MånederNå]?: string;
+  [lasteOppSenereBegrunnelse]?: string;
+  [naarSendtDokumentasjonTidligere]?: string;
+  [senderIkkeDokumentasjonBegrunnelse]?: string;
+  [planleggerÅStarteEllerFullføreStudierSamtidig]?: "ja" | "nei";
 };
 
 export const utdanningSporsmal: Sporsmal[] = [
   {
-    id: "tarUtdanningEllerOpplæring",
+    id: tarUtdanningEllerOpplæring,
     type: "envalg",
     label: "Tar du utdanning eller opplæring?",
     description:
@@ -23,7 +33,7 @@ export const utdanningSporsmal: Sporsmal[] = [
     ],
   },
   {
-    id: "avsluttetUtdanningSiste6Måneder",
+    id: avsluttetUtdanningSiste6Måneder,
     type: "envalg",
     label: "Avsluttet du utdanning i løpet av de siste 6 månedene?",
     options: [
@@ -33,7 +43,7 @@ export const utdanningSporsmal: Sporsmal[] = [
     visHvis: (svar: UtdanningSvar) => svar.tarUtdanningEllerOpplæring === "nei",
   },
   {
-    id: "dokumenterAvsluttetUtdanningSiste6MånederNå",
+    id: dokumenterAvsluttetUtdanningSiste6MånederNå,
     type: "envalg",
     label: "Ønsker du å dokumentere dette nå?",
     description:
@@ -49,14 +59,14 @@ export const utdanningSporsmal: Sporsmal[] = [
     visHvis: (svar: UtdanningSvar) => svar.avsluttetUtdanningSiste6Måneder === "ja",
   },
   {
-    id: "lasteOppSenereBegrunnelse",
+    id: lasteOppSenereBegrunnelse,
     type: "kortTekst",
     label: "Hva er grunnen til at du sender dokumenetet senere?",
     visHvis: (svar: UtdanningSvar) =>
       svar.dokumenterAvsluttetUtdanningSiste6MånederNå === "etterkant",
   },
   {
-    id: "naarSendtDokumentasjonTidligere",
+    id: naarSendtDokumentasjonTidligere,
     type: "kortTekst",
     label: "Når sendte du dokumentasjon?",
     description:
@@ -65,7 +75,7 @@ export const utdanningSporsmal: Sporsmal[] = [
       svar.dokumenterAvsluttetUtdanningSiste6MånederNå === "tidligere",
   },
   {
-    id: "senderIkkeDokumentasjonBegrunnelse",
+    id: senderIkkeDokumentasjonBegrunnelse,
     type: "kortTekst",
     label: "Hva er grunnen til at du ikke sender inn dokumentet?",
     description:
