@@ -2,13 +2,14 @@ import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
 import { DatoSporsmal } from "./sporsmal.types";
+import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
 
 interface IProps {
   sporsmal: DatoSporsmal;
-  formScope: FormScope<string | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Dato({ sporsmal, formScope }: IProps) {
+export function Dato({ sporsmal, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   const { datepickerProps, inputProps } = useDatepicker({
@@ -23,12 +24,16 @@ export function Dato({ sporsmal, formScope }: IProps) {
 
   return (
     <DatePicker {...datepickerProps} key={sporsmal.id}>
-      <DatePicker.Input
-        {...inputProps}
-        placeholder="DD.MM.ÅÅÅÅ"
-        error={field.error()}
-        label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
-      />
+      <>
+        <DatePicker.Input
+          {...inputProps}
+          placeholder="DD.MM.ÅÅÅÅ"
+          error={field.error()}
+          label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
+          description={sporsmal.description}
+        />
+        <GrunnenTilAtViSpør spørsmål={sporsmal} />
+      </>
     </DatePicker>
   );
 }
