@@ -30,7 +30,7 @@ export const hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForFraOgMed =
 export const hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForTilOgMed =
   "hvilken-periode-gjelder-annen-pengestøtte-fra-andre-enn-nav-for-til-og-med";
 export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver =
-  "får-eller-kommer-til-åfå-lønn-eller-andre-goder-fra-tidligere-arbeidsgiver";
+  "får-eller-kommer-til-å-få-lønn-eller-andre-goder-fra-tidligere-arbeidsgiver";
 export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
   "skriv-inn-hva-du-får-beholde-fra-tidligere-arbeidsgiver";
 

@@ -49,6 +49,7 @@ import {
   LandSporsmal,
   LangTekstSporsmal,
   PeriodeSporsmal,
+  VarselmeldingKomponent,
 } from "~/components/sporsmal/sporsmal.types";
 import styles from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
 
@@ -197,6 +198,7 @@ export default function AnnenPengestøtte() {
       | PeriodeSporsmal
       | LandSporsmal
       | KortTekstSporsmal
+      | VarselmeldingKomponent
   ) => {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
       return null;

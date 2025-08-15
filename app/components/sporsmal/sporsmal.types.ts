@@ -5,7 +5,8 @@ export type Sporsmal =
   | KortTekstSporsmal
   | DatoSporsmal
   | LandSporsmal
-  | PeriodeSporsmal;
+  | PeriodeSporsmal
+  | VarselmeldingKomponent;
 
 type baseType =
   | "envalg"
@@ -15,7 +16,8 @@ type baseType =
   | "dato"
   | "periodeFra"
   | "periodeTil"
-  | "land";
+  | "land"
+  | "varselmelding";
 
 export type BaseSporsmal = {
   id: string;
@@ -23,7 +25,8 @@ export type BaseSporsmal = {
   type: baseType;
   optional?: boolean;
   description?: string;
-  grunnenTilAtViSpør?: string;
+  lesMerLabel?: string;
+  lesMerDescription?: string;
   visHvis?: (svar: Record<string, any>) => boolean;
 };
 
@@ -61,4 +64,10 @@ export type PeriodeSporsmal = BaseSporsmal & {
 
 export type LandSporsmal = BaseSporsmal & {
   type: "land";
+};
+
+export type VarselmeldingKomponent = BaseSporsmal & {
+  type: "varselmelding";
+  varselvariant: "error" | "warning" | "info" | "success"
+  varselmelding: string;
 };

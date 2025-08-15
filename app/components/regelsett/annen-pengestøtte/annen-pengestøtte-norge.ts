@@ -29,7 +29,7 @@ export const pengestøtteFraNorgeSpørsmål: Sporsmal[] = [
     label: "Mottar du eller har du søkt om ytelser fra andre enn Nav?",
     description:
       "<ul><li>Pensjon fra andre enn NAV</li><li>Etterlønn</li><li>Garantilott for fiskere</li><li>Stønad under arbeidsløshet fra Garantikassen for fiskere</li><li>Annen ytelse</li><li>TODO: Rendre med Aksel sin LIST i stedet?</li></ul>",
-    grunnenTilAtViSpør:
+    lesMerDescription:
       "På grunnlag av en sømløs tidshorisont tas det høyde for relasjonene i tillegg til forholdene.",
     options: [
       { value: "ja", label: "Ja" },
@@ -214,7 +214,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       "Får du eller kommer du til å få lønn eller andre økonomiske goder fra tidligere arbeidsgiver?",
     description:
       "Du må gi oss beskjed hvis du får lønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om feriepenger.",
-    grunnenTilAtViSpør:
+    lesMerDescription:
       "Under forutsetning av en inkluderende overveielse realiseres incitamentet for så vidt gjelder ressurssituasjonen.",
     options: [
       { value: "ja", label: "Ja" },
@@ -225,7 +225,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
     id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
     type: "kortTekst",
     label: "Skriv inn hva du får beholde",
-    grunnenTilAtViSpør:
+    lesMerDescription:
       "Sammenholdt med en tverrfaglig agenda iverksettes økningen på linje med satsingsområdet.",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",

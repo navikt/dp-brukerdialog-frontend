@@ -2,11 +2,12 @@ import { FormScope } from "@rvf/react-router";
 import { Sporsmal } from "./sporsmal.types";
 import { Dato } from "./Dato";
 import { Envalg } from "./Envalg";
-import { Flervalg } from "~/components/sporsmal/Flervalg";
+import { Flervalg } from "./Flervalg";
 import { KortTekst } from "./KortTekst";
 import { LangTekst } from "./LangTekst";
 import { Land } from "./Land";
 import { Periode } from "./Periode";
+import { Varselmelding } from "./Varselmelding";
 
 interface IProps {
   sporsmal: Sporsmal;
@@ -36,6 +37,9 @@ export function Sporsmal({ sporsmal, formScope }: Readonly<IProps>) {
 
     case "land":
       return <Land sporsmal={sporsmal} formScope={formScope} />;
+
+    case "varselmelding":
+      return <Varselmelding sporsmal={sporsmal} formScope={formScope} />;
 
     default:
       console.warn(`Ukjent spørsmålstype: ${sporsmal}`);

@@ -13,7 +13,7 @@ export const pengestøtteFraAndreEøsLand: Sporsmal[] = [
       "Har du de siste 36 måneder motatt trygdeytelser fra EØS-land, Sveits eller Storbritania som ligner på",
     description:
       "<ul><li>Sykepenger</li><li>Foreldrepenger eller svangerskapspenger</li><li>Dagpenger / arbeidsledighetstrygd</li><li>Pleiepenger, omsorgspenger eller opplæringspenger</li><li>TODO: Rendre med Aksel sin LIST i stedet?</li></ul>",
-    grunnenTilAtViSpør:
+    lesMerDescription:
       "Med utgangspunkt i en vedvarende agenda dokumenteres oppfølgingen som en følge av resultatoppnåelsen.",
     options: [
       { value: "ja", label: "Ja" },
