@@ -31,7 +31,7 @@ export async function action({ request, params }: LoaderFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "utdanning";
-  const nesteSeksjonsId = "barnetillegg";
+  const nesteSeksjonId = "barnetillegg";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
@@ -39,7 +39,7 @@ export async function action({ request, params }: LoaderFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av utdanning" };
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonsId}`);
+  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
 export default function Utdanning() {
