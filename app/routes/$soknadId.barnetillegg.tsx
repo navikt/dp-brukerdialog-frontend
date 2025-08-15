@@ -1,7 +1,11 @@
 import { z } from "zod";
-import { Barn, barnetilleggSporsmal, BarnetilleggSvar } from "~/components/regelsett/barnetillegg";
+import {
+  BarneSvar,
+  barnetilleggSporsmal,
+  BarnetilleggSvar,
+} from "~/components/regelsett/barnetillegg";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import { Box, Button, HStack, Page, Radio, RadioGroup, VStack } from "@navikt/ds-react";
 import { data, Form, LoaderFunctionArgs, useLoaderData } from "react-router";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
@@ -9,6 +13,7 @@ import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { formaterNorskDato } from "~/utils/formattering.util";
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
+import BarneTilleggModal from "~/components/soknad/barnetillegg/BarneTilleggModal";
 
 const barneSchema = z.object({
   fornavnOgEtternavn: z.string().max(100, "Maks 100 tegn"),
@@ -20,8 +25,8 @@ const barneSchema = z.object({
 const schema = z
   .object({
     forsørgerBarnSomIkkeVises: z.enum(["ja", "nei"]).optional(),
-    barnFraPdl: z.array(z.object(barneSchema)).optional(),
-    barnLagtManuelt: z.array(z.object(barneSchema)),
+    barnFraPdl: z.array(barneSchema).optional(),
+    barnLagtManuelt: z.array(barneSchema).optional(),
   })
   .superRefine((data, ctx) => {
     barnetilleggSporsmal.forEach((sporsmal) => {
@@ -56,8 +61,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export default function BarneTillegg() {
   const barnetillegg = useLoaderData<typeof loader>();
-
-  console.log("Barnetillegg: ", barnetillegg);
+  const ref = useRef<HTMLDialogElement>(null);
+  const [modalBarn, setModalBarn] = useState<BarneSvar>({});
 
   const form = useForm({
     method: "PUT",
@@ -71,19 +76,23 @@ export default function BarneTillegg() {
     defaultValues: barnetillegg,
   });
 
-  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
-  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
-  // Kalles automatisk hver gang formverdier endres.
-  useEffect(() => {
-    const values = form.value();
+  function leggTilBarnManuelt(barn: BarneSvar) {
+    console.log("Legger til barn manuelt:", barn);
+    form.setValue("barnLagtManuelt", [
+      ...(form.value("barnLagtManuelt") ?? []),
+      {
+        fornavnOgEtternavn: barn.fornavnOgEtternavn!!,
+        etternavn: barn.etternavn!!,
+        fodselsnummer: barn.fodselsnummer!!,
+        hvilketLandBarnetBorI: barn.hvilketLandBarnetBorI,
+      },
+    ]);
+  }
 
-    barnetilleggSporsmal.forEach((sporsmal) => {
-      const sporsmalId = sporsmal.id as keyof BarnetilleggSvar;
-      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
-        form.setValue(sporsmalId, undefined);
-      }
-    });
-  }, [form.value()]);
+  function åpneModal(barn: BarneSvar) {
+    setModalBarn(barn);
+    ref.current?.showModal();
+  }
 
   return (
     <Page className="brukerdialog">
@@ -92,13 +101,14 @@ export default function BarneTillegg() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {barnetilleggSporsmal.map((sporsmal) => {
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
-                  console.log("Spørsmålet er ikke synlig:", sporsmal.id);
-                  return null;
-                }
-                if (sporsmal.id === "barnFraPdl") {
-                  const pdlBarn = form.value("barnFraPdl") as Barn[];
+              {barnetilleggSporsmal
+                .filter((sporsmal) => sporsmal.id === "barnFraPdl")
+                .map((sporsmal) => {
+                  if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                    console.log("Spørsmålet er ikke synlig:", sporsmal.id);
+                    return null;
+                  }
+                  const pdlBarn = form.value("barnFraPdl") as BarneSvar[];
                   if (!pdlBarn || pdlBarn.length === 0) {
                     return;
                   } else {
@@ -132,15 +142,14 @@ export default function BarneTillegg() {
                       </Box>
                     ));
                   }
-                }
-              })}
-              {barnetilleggSporsmal.map((sporsmal) => {
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
-                  console.log("Spørsmålet er ikke synlig:", sporsmal.id);
-                  return null;
-                }
+                })}
+              {barnetilleggSporsmal
+                .filter((sporsmal) => sporsmal.id === "forsørgerBarnSomIkkeVises")
+                .map((sporsmal) => {
+                  if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                    return null;
+                  }
 
-                if (sporsmal.id === "forsørgerBarnSomIkkeVises") {
                   return (
                     <Sporsmal
                       key={sporsmal.id}
@@ -148,15 +157,15 @@ export default function BarneTillegg() {
                       formScope={form.scope(sporsmal.id as keyof BarnetilleggSvar)}
                     />
                   );
-                }
-              })}
-              {barnetilleggSporsmal.map((sporsmal) => {
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
-                  return null;
-                }
+                })}
+              {barnetilleggSporsmal
+                .filter((sporsmal) => sporsmal.id === "barnLagtManuelt")
+                .map((sporsmal) => {
+                  if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                    return null;
+                  }
 
-                if (sporsmal.id === "barnLagtManuelt") {
-                  const barnSvar = form.value("barnLagtManuelt") as Barn[];
+                  const barnSvar = form.value("barnLagtManuelt") as BarneSvar[];
                   if (!barnSvar || barnSvar.length === 0) {
                     return;
                   } else {
@@ -177,9 +186,15 @@ export default function BarneTillegg() {
                         </p>
 
                         <div>
-                          <Button icon={<PencilIcon />} variant="secondary" size="small">
+                          <Button
+                            icon={<PencilIcon />}
+                            variant="secondary"
+                            size="small"
+                            onClick={() => åpneModal(barn)}
+                          >
                             Endre svar
                           </Button>
+
                           <Button icon={<TrashIcon />} variant="tertiary" size="small">
                             Slett
                           </Button>
@@ -187,10 +202,23 @@ export default function BarneTillegg() {
                       </Box>
                     ));
                   }
-                }
-              })}
+                })}
             </VStack>
           </Form>
+          <Button
+            icon={<PencilIcon />}
+            variant="secondary"
+            size="small"
+            onClick={() => åpneModal({})}
+          >
+            Legg til barn manuelt
+          </Button>
+          <BarneTilleggModal
+            barn={modalBarn}
+            ref={ref}
+            barneSchema={barneSchema}
+            leggTil={leggTilBarnManuelt}
+          />
         </VStack>
       </VStack>
     </Page>

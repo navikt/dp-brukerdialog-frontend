@@ -1,6 +1,6 @@
 import { Sporsmal } from "~/components/sporsmal/sporsmal.types";
 
-export type Barn = {
+export type BarneSvar = {
   fornavnOgEtternavn?: string;
   etternavn?: string;
   fodselsnummer?: string;
@@ -10,7 +10,7 @@ export type Barn = {
 
 export type BarnetilleggSvar = {
   forsørgerBarnSomIkkeVises?: "ja" | "nei";
-  barnFraPdl?: Barn[];
+  barnFraPdl?: BarneSvar[];
   barnLagtManuelt?: {
     fornavnOgEtternavn?: string;
     etternavn?: string;
@@ -18,6 +18,29 @@ export type BarnetilleggSvar = {
     hvilketLandBarnetBorI?: string;
   };
 };
+
+export const leggTilBarnSporsmal: Sporsmal[] = [
+  {
+    id: "fornavnOgEtternavn",
+    label: "Fornavn og etternavn",
+    type: "kortTekst",
+  },
+  {
+    id: "etternavn",
+    label: "Etternavn",
+    type: "kortTekst",
+  },
+  {
+    id: "fodselsnummer",
+    label: "Fødselsnummer",
+    type: "kortTekst",
+  },
+  {
+    id: "hvilketLandBarnetBorI",
+    label: "Hvilket land bor barnet i?",
+    type: "kortTekst",
+  },
+];
 
 export const barnetilleggSporsmal: Sporsmal[] = [
   {
@@ -35,23 +58,13 @@ export const barnetilleggSporsmal: Sporsmal[] = [
     id: "barnFraPdl",
     type: "barnelist",
     label: "",
-    children: [
-      { id: "fornavnOgEtternavn", label: "Fornavn og etternavn", type: "kortTekst" },
-      { id: "etternavn", label: "Etternavn", type: "kortTekst" },
-      { id: "fodselsnummer", label: "Fødselsnummer", type: "kortTekst" },
-      { id: "hvilketLandBarnetBorI", label: "Hvilket land bor barnet i?", type: "kortTekst" },
-    ],
+    children: leggTilBarnSporsmal,
   },
   {
     id: "barnLagtManuelt",
     type: "barnelist",
     label: "",
     visHvis: (svar: BarnetilleggSvar) => svar.forsørgerBarnSomIkkeVises === "ja",
-    children: [
-      { id: "fornavnOgEtternavn", label: "Fornavn og etternavn", type: "kortTekst" },
-      { id: "etternavn", label: "Etternavn", type: "kortTekst" },
-      { id: "fodselsnummer", label: "Fødselsnummer", type: "kortTekst" },
-      { id: "hvilketLandBarnetBorI", label: "Hvilket land bor barnet i?", type: "kortTekst" },
-    ],
+    children: leggTilBarnSporsmal,
   },
 ];
