@@ -36,7 +36,7 @@ export const dinSituasjonSporsmal: Sporsmal[] = [
     description:
       "Du kan få dagpenger fra første dag du er helt eller delvis arbeidsledig eller permittert og tidligst fra den dagen du sender inn søknaden. Datoen du søker om dagpenger fra har betydning for beregning av dagpengene dine.",
     visHvis: (svar: DinSituasjonSvar) => svar.mottatt === "nei" || svar.mottatt === "vetikke",
-    fra: startOfDay(subMonths(new Date(), 6)),
-    til: endOfDay(addMonths(new Date(), 3)),
+    fraOgMed: startOfDay(subMonths(new Date(), 6)),
+    tilOgMed: endOfDay(addMonths(new Date(), 3)),
   },
 ];
