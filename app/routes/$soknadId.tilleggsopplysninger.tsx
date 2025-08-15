@@ -22,7 +22,7 @@ import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
-import { hentDefaultValues } from "~/utils/seksjon.utils";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -74,7 +74,7 @@ export default function Tilleggsopplysninger() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentDefaultValues<TilleggsopplysningerSvar>(loaderData),
+    defaultValues: hentFormDefaultValues<TilleggsopplysningerSvar>(loaderData),
   });
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);

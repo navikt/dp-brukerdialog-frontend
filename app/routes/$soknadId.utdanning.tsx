@@ -7,7 +7,7 @@ import { ExternalLink } from "~/components/ExternalLink";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { hentDefaultValues } from "~/utils/seksjon.utils";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
 import { utdanningSporsmal, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.sporsmal";
@@ -55,7 +55,7 @@ export default function Utdanning() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentDefaultValues<UtdanningSvar>(loaderData),
+    defaultValues: hentFormDefaultValues<UtdanningSvar>(loaderData),
   });
 
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSporsmal);

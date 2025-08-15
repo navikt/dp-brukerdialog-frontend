@@ -21,7 +21,7 @@ import {
   dinSituasjonSporsmal,
   DinSituasjonSvar,
 } from "~/seksjon-regelsett/din-situasjon/din-situasjon.sporsmal";
-import { hentDefaultValues } from "~/utils/seksjon.utils";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -72,7 +72,7 @@ export default function DinSituasjon() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentDefaultValues<DinSituasjonSvar>(loaderData),
+    defaultValues: hentFormDefaultValues<DinSituasjonSvar>(loaderData),
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSporsmal);

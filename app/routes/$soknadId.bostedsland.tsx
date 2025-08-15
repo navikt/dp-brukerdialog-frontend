@@ -12,7 +12,7 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentDefaultValues } from "~/utils/seksjon.utils";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
@@ -72,7 +72,7 @@ export default function Bostedsland() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentDefaultValues<BostedslandSvar>(loaderData),
+    defaultValues: hentFormDefaultValues<BostedslandSvar>(loaderData),
   });
 
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSporsmal);

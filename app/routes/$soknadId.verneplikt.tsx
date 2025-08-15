@@ -20,7 +20,7 @@ import {
   vernepliktSporsmal,
   VernepliktSvar,
 } from "~/seksjon-regelsett/verneplikt/verneplikt.sporsmal";
-import { hentDefaultValues } from "~/utils/seksjon.utils";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
@@ -64,7 +64,7 @@ export default function Verneplikt() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentDefaultValues<VernepliktSvar>(loaderData),
+    defaultValues: hentFormDefaultValues<VernepliktSvar>(loaderData),
   });
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSporsmal);
