@@ -17,11 +17,11 @@ import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { bostedslandSchema } from "~/seksjon-oppsett/bostedsland/bostedsland.schema";
+import { bostedslandSchema } from "~/seksjon-regelsett/bostedsland/bostedsland.schema";
 import {
   bostedslandSporsmal,
   BostedslandSvar,
-} from "~/seksjon-oppsett/bostedsland/bostedsland.sporsmal";
+} from "~/seksjon-regelsett/bostedsland/bostedsland.sporsmal";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -68,9 +68,9 @@ export default function Bostedsland() {
     submitSource: "state",
     schema: bostedslandSchema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
     },
     defaultValues: hentDefaultValues<BostedslandSvar>(loaderData),
   });

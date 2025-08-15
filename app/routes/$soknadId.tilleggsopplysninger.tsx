@@ -17,11 +17,11 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 
-import { tilleggsopplysningerSchema } from "~/seksjon-oppsett/tilleggsopplysninger/tilleggsopplysninger.schema";
+import { tilleggsopplysningerSchema } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.schema";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/seksjon-oppsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
+} from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
 import { hentDefaultValues } from "~/utils/seksjon.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

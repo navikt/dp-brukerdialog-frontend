@@ -9,8 +9,8 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { hentDefaultValues } from "~/utils/seksjon.utils";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { utdanningSchema } from "~/seksjon-oppsett/utdanning/utdanning.schema";
-import { utdanningSporsmal, UtdanningSvar } from "~/seksjon-oppsett/utdanning/utdanning.sporsmal";
+import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
+import { utdanningSporsmal, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.sporsmal";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -51,9 +51,9 @@ export default function Utdanning() {
     submitSource: "state",
     schema: utdanningSchema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
     },
     defaultValues: hentDefaultValues<UtdanningSvar>(loaderData),
   });

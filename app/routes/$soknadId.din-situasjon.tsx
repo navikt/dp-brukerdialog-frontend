@@ -16,11 +16,11 @@ import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { dinSituasjonSchema } from "~/seksjon-oppsett/din-situasjon/din-situasjon.schema";
+import { dinSituasjonSchema } from "~/seksjon-regelsett/din-situasjon/din-situasjon.schema";
 import {
   dinSituasjonSporsmal,
   DinSituasjonSvar,
-} from "~/seksjon-oppsett/din-situasjon/din-situasjon.sporsmal";
+} from "~/seksjon-regelsett/din-situasjon/din-situasjon.sporsmal";
 import { hentDefaultValues } from "~/utils/seksjon.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -68,9 +68,9 @@ export default function DinSituasjon() {
     submitSource: "state",
     schema: dinSituasjonSchema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
     },
     defaultValues: hentDefaultValues<DinSituasjonSvar>(loaderData),
   });
