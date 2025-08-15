@@ -68,9 +68,9 @@ export default function Verneplikt() {
     submitSource: "state",
     schema: schema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
     },
     defaultValues: {},
   });
