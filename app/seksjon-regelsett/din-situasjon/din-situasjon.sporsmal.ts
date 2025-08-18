@@ -1,5 +1,5 @@
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
-import { Sporsmal } from "../components/sporsmal/sporsmal.types";
+import { Sporsmal } from "../../components/sporsmal/sporsmal.types";
 
 export const mottatt = "mottatt";
 export const arsak = "arsak";

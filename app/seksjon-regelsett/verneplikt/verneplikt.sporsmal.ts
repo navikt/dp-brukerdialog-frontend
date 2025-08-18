@@ -1,16 +1,22 @@
 import { Sporsmal } from "~/components/sporsmal/sporsmal.types";
 
+export const avtjentVerneplikt = "avtjentVerneplikt";
+export const dokumenterAvtjentVernepliktNå = "dokumenterAvtjentVernepliktNå";
+export const lasteOppSenereBegrunnelse = "lasteOppSenereBegrunnelse";
+export const naarSendtDokumentasjonTidligere = "naarSendtDokumentasjonTidligere";
+export const senderIkkeDokumentasjonBegrunnelse = "senderIkkeDokumentasjonBegrunnelse";
+
 export type VernepliktSvar = {
-  avtjentVerneplikt?: "ja" | "nei";
-  dokumenterAvtjentVernepliktNå?: String;
-  lasteOppSenereBegrunnelse?: String;
-  naarSendtDokumentasjonTidligere?: String;
-  senderIkkeDokumentasjonBegrunnelse?: String;
+  [avtjentVerneplikt]?: "ja" | "nei";
+  [dokumenterAvtjentVernepliktNå]?: "ja" | "lastOppIEtterkant" | "lastetOppTidligere" | "nei";
+  [lasteOppSenereBegrunnelse]?: string;
+  [naarSendtDokumentasjonTidligere]?: string;
+  [senderIkkeDokumentasjonBegrunnelse]?: string;
 };
 
 export const vernepliktSporsmal: Sporsmal[] = [
   {
-    id: "avtjentVerneplikt",
+    id: avtjentVerneplikt,
     type: "envalg",
     label: "Har du avtjent verneplikt i minst tre måneder de siste tolv månedene?",
     description:
@@ -21,7 +27,7 @@ export const vernepliktSporsmal: Sporsmal[] = [
     ],
   },
   {
-    id: "dokumenterAvtjentVernepliktNå",
+    id: dokumenterAvtjentVernepliktNå,
     type: "envalg",
     label: "Ønsker du å dokumentere dette nå?",
     description:
@@ -36,21 +42,21 @@ export const vernepliktSporsmal: Sporsmal[] = [
     visHvis: (svar: VernepliktSvar) => svar.avtjentVerneplikt === "ja",
   },
   {
-    id: "lasteOppSenereBegrunnelse",
+    id: lasteOppSenereBegrunnelse,
     type: "kortTekst",
     label: "Hva er grunnen til at du sender dokumenetet senere?",
-    visHvis: (svar: VernepliktSvar) => svar.dokumenterAvtjentVernepliktNå === "etterkant",
+    visHvis: (svar: VernepliktSvar) => svar.dokumenterAvtjentVernepliktNå === "lastOppIEtterkant",
   },
   {
-    id: "naarSendtDokumentasjonTidligere",
+    id: naarSendtDokumentasjonTidligere,
     type: "kortTekst",
     label: "Når sendte du dokumentasjon?",
     description:
       "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt.",
-    visHvis: (svar: VernepliktSvar) => svar.dokumenterAvtjentVernepliktNå === "tidligere",
+    visHvis: (svar: VernepliktSvar) => svar.dokumenterAvtjentVernepliktNå === "lastetOppTidligere",
   },
   {
-    id: "senderIkkeDokumentasjonBegrunnelse",
+    id: senderIkkeDokumentasjonBegrunnelse,
     type: "kortTekst",
     label: "Hva er grunnen til at du ikke sender inn dokumentet?",
     description:
