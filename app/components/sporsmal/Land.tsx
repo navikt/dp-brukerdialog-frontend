@@ -2,7 +2,7 @@ import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { LANDLISTE } from "~/constants";
 import { LandSporsmal } from "./sporsmal.types";
-import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
+import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
   sporsmal: LandSporsmal;
@@ -27,7 +27,7 @@ export function Land({ sporsmal, formScope }: Readonly<IProps>) {
           </option>
         ))}
       </Select>
-      <GrunnenTilAtViSpør spørsmål={sporsmal} />
+      <LesMer spørsmål={sporsmal} />
     </>
   );
 }

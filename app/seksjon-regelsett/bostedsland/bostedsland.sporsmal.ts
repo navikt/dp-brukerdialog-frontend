@@ -1,4 +1,4 @@
-import { Sporsmal } from "../../components/sporsmal/sporsmal.types";
+import { Komponent } from "../components/sporsmal/sporsmal.types";
 
 export const bostedsland = "bostedsland";
 export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
@@ -24,7 +24,7 @@ export function hentDefaultBostedslandSvar(): BostedslandSvar {
   ) as BostedslandSvar;
 }
 
-export const bostedslandSporsmal: Sporsmal[] = [
+export const bostedslandSporsmal: Komponent[] = [
   {
     id: bostedsland,
     type: "land",

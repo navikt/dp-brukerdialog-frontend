@@ -1,4 +1,4 @@
-import { Sporsmal } from "../../components/sporsmal/sporsmal.types";
+import { Komponent } from "../components/sporsmal/sporsmal.types";
 
 export const harTilleggsopplysninger = "harTilleggsopplysninger";
 export const tilleggsopplysninger = "tilleggsopplysninger";
@@ -8,7 +8,7 @@ export type TilleggsopplysningerSvar = {
   [tilleggsopplysninger]?: string;
 };
 
-export const tilleggsopplysningerSpørsmål: Sporsmal[] = [
+export const tilleggsopplysningerSpørsmål: Komponent[] = [
   {
     id: harTilleggsopplysninger,
     type: "envalg",

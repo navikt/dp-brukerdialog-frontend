@@ -1,4 +1,4 @@
-import { Sporsmal } from "../../sporsmal/sporsmal.types";
+import { Komponent } from "../../sporsmal/sporsmal.types";
 import {
   AnnenPengestøtteSvar,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
@@ -22,14 +22,14 @@ import {
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-svar";
 
-export const pengestøtteFraNorgeSpørsmål: Sporsmal[] = [
+export const pengestøtteFraNorgeSpørsmål: Komponent[] = [
   {
     id: mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
     type: "envalg",
     label: "Mottar du eller har du søkt om ytelser fra andre enn Nav?",
     description:
       "<ul><li>Pensjon fra andre enn NAV</li><li>Etterlønn</li><li>Garantilott for fiskere</li><li>Stønad under arbeidsløshet fra Garantikassen for fiskere</li><li>Annen ytelse</li><li>TODO: Rendre med Aksel sin LIST i stedet?</li></ul>",
-    grunnenTilAtViSpør:
+    lesMerTekst:
       "På grunnlag av en sømløs tidshorisont tas det høyde for relasjonene i tillegg til forholdene.",
     options: [
       { value: "ja", label: "Ja" },
@@ -55,7 +55,7 @@ export const pengestøtteFraNorgeSpørsmål: Sporsmal[] = [
   },
 ];
 
-export const pensjonFraAndreEnnNavSpørsmål: Sporsmal[] = [
+export const pensjonFraAndreEnnNavSpørsmål: Komponent[] = [
   {
     id: hvemUtbetalerPensjonen,
     type: "kortTekst",
@@ -86,7 +86,7 @@ export const pensjonFraAndreEnnNavSpørsmål: Sporsmal[] = [
   },
 ];
 
-export const utbetalingFraGarantikassenForFiskere: Sporsmal[] = [
+export const utbetalingFraGarantikassenForFiskere: Komponent[] = [
   {
     id: hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForFraOgMed,
     type: "dato",
@@ -109,7 +109,7 @@ export const utbetalingFraGarantikassenForFiskere: Sporsmal[] = [
   },
 ];
 
-export const etterlønnFraArbeidsgiverSpørsmål: Sporsmal[] = [
+export const etterlønnFraArbeidsgiverSpørsmål: Komponent[] = [
   {
     id: hvemUtbetalerEtterlønnen,
     type: "kortTekst",
@@ -137,7 +137,7 @@ export const etterlønnFraArbeidsgiverSpørsmål: Sporsmal[] = [
   },
 ];
 
-export const dagpengerFraEtAnnetEøsLandSpørsmål: Sporsmal[] = [
+export const dagpengerFraEtAnnetEøsLandSpørsmål: Komponent[] = [
   {
     id: hvilketEøsLandUtbetalerDagpengene,
     type: "land",
@@ -171,7 +171,7 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: Sporsmal[] = [
   },
 ];
 
-export const annenPengestøtteFraAndreEnnNav: Sporsmal[] = [
+export const annenPengestøtteFraAndreEnnNav: Komponent[] = [
   {
     id: hvilkenAnnenPengestøtteMottas,
     type: "kortTekst",
@@ -206,7 +206,7 @@ export const annenPengestøtteFraAndreEnnNav: Sporsmal[] = [
   },
 ];
 
-export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål: Sporsmal[] = [
+export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål: Komponent[] = [
   {
     id: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
     type: "envalg",
@@ -214,7 +214,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       "Får du eller kommer du til å få lønn eller andre økonomiske goder fra tidligere arbeidsgiver?",
     description:
       "Du må gi oss beskjed hvis du får lønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om feriepenger.",
-    grunnenTilAtViSpør:
+    lesMerTekst:
       "Under forutsetning av en inkluderende overveielse realiseres incitamentet for så vidt gjelder ressurssituasjonen.",
     options: [
       { value: "ja", label: "Ja" },
@@ -225,7 +225,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
     id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
     type: "kortTekst",
     label: "Skriv inn hva du får beholde",
-    grunnenTilAtViSpør:
+    lesMerTekst:
       "Sammenholdt med en tverrfaglig agenda iverksettes økningen på linje med satsingsområdet.",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",

@@ -1,7 +1,7 @@
 import { KortTekstSporsmal } from "~/components/sporsmal/sporsmal.types";
 import { FormScope, useField } from "@rvf/react-router";
 import { TextField } from "@navikt/ds-react";
-import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
+import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
   sporsmal: KortTekstSporsmal;
@@ -16,10 +16,11 @@ export function KortTekst({ sporsmal, formScope }: Readonly<IProps>) {
       <TextField
         {...field.getInputProps()}
         label={sporsmal.label}
+        description={sporsmal.description}
         key={sporsmal.id}
         error={field.error()}
       />
-      <GrunnenTilAtViSpør spørsmål={sporsmal} />
+      <LesMer spørsmål={sporsmal} />
     </>
   );
 }

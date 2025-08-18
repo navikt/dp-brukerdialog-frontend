@@ -1,7 +1,7 @@
 import { Textarea } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { LangTekstSporsmal } from "./sporsmal.types";
-import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
+import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
   sporsmal: LangTekstSporsmal;
@@ -21,7 +21,7 @@ export function LangTekst({ sporsmal, formScope }: Readonly<IProps>) {
         maxLength={sporsmal.maxLength}
         error={field.error()}
       />
-      <GrunnenTilAtViSpør spørsmål={sporsmal} />
+      <LesMer spørsmål={sporsmal} />
     </>
   );
 }

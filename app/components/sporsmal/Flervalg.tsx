@@ -1,7 +1,7 @@
 import { Checkbox, CheckboxGroup } from "@navikt/ds-react";
 import { FlervalgSpørsmål } from "./sporsmal.types";
 import { FormScope, useField } from "@rvf/react-router";
-import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
+import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
   spørsmål: FlervalgSpørsmål;
@@ -26,7 +26,7 @@ export function Flervalg({ spørsmål, formScope }: Readonly<IProps>) {
           </Checkbox>
         ))}
       </CheckboxGroup>
-      <GrunnenTilAtViSpør spørsmål={spørsmål} />
+      <LesMer spørsmål={spørsmål} />
     </>
   );
 }
