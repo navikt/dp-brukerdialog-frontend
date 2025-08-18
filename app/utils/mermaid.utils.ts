@@ -1,7 +1,7 @@
-import { Sporsmal } from "~/components/sporsmal/sporsmal.types";
+import { Komponent } from "~/components/sporsmal/sporsmal.types";
 
 // verktøy for å lage mermaid-diagrammer
-export function generateMermaidFlow(sporsmal: Sporsmal[]): string {
+export function generateMermaidFlow(sporsmal: Komponent[]): string {
   let lines: string[] = ["flowchart TD"];
   const main = sporsmal[0];
   if (!main) return "";

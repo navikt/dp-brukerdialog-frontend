@@ -2,7 +2,7 @@ import { Radio, RadioGroup } from "@navikt/ds-react";
 import { EnvalgSporsmal } from "./sporsmal.types";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
-import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
+import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
   sporsmal: EnvalgSporsmal;
@@ -27,7 +27,7 @@ export function Envalg({ sporsmal, formScope }: Readonly<IProps>) {
           </Radio>
         ))}
       </RadioGroup>
-      <GrunnenTilAtViSpør spørsmål={sporsmal} />
+      <LesMer spørsmål={sporsmal} />
     </>
   );
 }

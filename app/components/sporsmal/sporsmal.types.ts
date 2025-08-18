@@ -1,13 +1,14 @@
-export type Sporsmal =
+export type Komponent =
   | EnvalgSporsmal
   | FlervalgSpørsmål
   | LangTekstSporsmal
   | KortTekstSporsmal
   | DatoSporsmal
   | LandSporsmal
-  | PeriodeSporsmal;
+  | PeriodeSporsmal
+  | VarselmeldingKomponent;
 
-type baseType =
+type baseKomponentType =
   | "envalg"
   | "flervalg"
   | "langTekst"
@@ -15,16 +16,21 @@ type baseType =
   | "dato"
   | "periodeFra"
   | "periodeTil"
-  | "land";
+  | "land"
+  | "varselmelding";
 
-export type BaseSporsmal = {
+export type BaseKomponent = {
   id: string;
+  type: baseKomponentType;
+  visHvis?: (svar: Record<string, any>) => boolean;
+}
+
+export type BaseSporsmal = BaseKomponent & {
   label: string;
-  type: baseType;
   optional?: boolean;
   description?: string;
-  grunnenTilAtViSpør?: string;
-  visHvis?: (svar: Record<string, any>) => boolean;
+  lesMerLedetekst?: string;
+  lesMerTekst?: string;
 };
 
 export type EnvalgSporsmal = BaseSporsmal & {
@@ -61,4 +67,10 @@ export type PeriodeSporsmal = BaseSporsmal & {
 
 export type LandSporsmal = BaseSporsmal & {
   type: "land";
+};
+
+export type VarselmeldingKomponent = BaseKomponent & {
+  type: "varselmelding";
+  varselvariant: "error" | "warning" | "info" | "success"
+  varselmelding: string;
 };

@@ -2,7 +2,7 @@ import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
 import { DatoSporsmal } from "./sporsmal.types";
-import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
+import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
   sporsmal: DatoSporsmal;
@@ -24,16 +24,14 @@ export function Dato({ sporsmal, formScope }: Readonly<IProps>) {
 
   return (
     <DatePicker {...datepickerProps} key={sporsmal.id}>
-      <>
-        <DatePicker.Input
-          {...inputProps}
-          placeholder="DD.MM.ÅÅÅÅ"
-          error={field.error()}
-          label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
-          description={sporsmal.description}
-        />
-        <GrunnenTilAtViSpør spørsmål={sporsmal} />
-      </>
+      <DatePicker.Input
+        {...inputProps}
+        placeholder="DD.MM.ÅÅÅÅ"
+        error={field.error()}
+        label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
+        description={sporsmal.description}
+      />
+      <LesMer spørsmål={sporsmal} />
     </DatePicker>
   );
 }
