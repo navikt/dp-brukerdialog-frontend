@@ -5,10 +5,11 @@ import { formatISO } from "date-fns";
 import { PeriodeSporsmal } from "./sporsmal.types";
 
 import styles from "./sporsmal.module.css";
+import { GrunnenTilAtViSpør } from "~/components/sporsmal/GrunnenTilAtViSpør";
 
 interface IProps {
   sporsmal: PeriodeSporsmal;
-  formScope: FormScope<string | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
 }
 
 export function Periode({ sporsmal, formScope }: IProps) {
@@ -55,6 +56,7 @@ export function Periode({ sporsmal, formScope }: IProps) {
           />
         </DatePicker>
       </VStack>
+      <GrunnenTilAtViSpør spørsmål={sporsmal} />
     </VStack>
   );
 }

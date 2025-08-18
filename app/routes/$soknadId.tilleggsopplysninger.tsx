@@ -11,18 +11,18 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router";
-import invariant from "tiny-invariant";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-
 import { tilleggsopplysningerSchema } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.schema";
+
+import invariant from "tiny-invariant";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
-import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -60,6 +60,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
+// noinspection JSUnusedGlobalSymbols
 export default function Tilleggsopplysninger() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
