@@ -1,35 +1,22 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
+import {
+  ActionFunctionArgs,
+  data,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+} from "react-router";
 import invariant from "tiny-invariant";
-import { z } from "zod";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { useEffect } from "react";
 import {
   AnnenPengestøtteSpørsmål,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  harMottattPengestøtteFraAndreEØSLand,
-  hvemUtbetalerEtterlønnen,
-  hvemUtbetalerPengestøtten,
-  hvemUtbetalerPensjonen,
-  hvilkenAnnenPengestøtteMottas,
-  hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForFraOgMed,
-  hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForTilOgMed,
-  hvilkenPeriodeGjelderDagpengeneFraAnnetEøsLandForFraOgMed,
-  hvilkenPeriodeGjelderDagpengeneFraAnnetEøsLandForTilOgMed,
-  hvilkenPeriodeGjelderEtterlønnenForFraOgMed,
-  hvilkenPeriodeGjelderEtterlønnenForTilOgMed,
-  hvilkenPeriodeGjelderPensjonenForFraOgMed,
-  hvilkenPeriodeGjelderPensjonenForTilOgMed,
-  hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForFraOgMed,
-  hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForTilOgMed,
-  hvilketEøsLandUtbetalerDagpengene,
-  hvilkeUtenlandskeYtelserHarDuMottatt,
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
-  mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
-  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-spørsmål";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 import { pengestøtteFraAndreEøsLand } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
   annenPengestøtteFraAndreEnnNav,
@@ -43,6 +30,24 @@ import {
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import styles from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
+import { annenPengestøtteSchema } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.schema";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { hentFormDefaultValues } from "~/utils/form.utils";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const response = await hentSeksjon(request, params.soknadId, "annen-pengestøtte");
+
+  if (!response.ok) {
+    return data(undefined);
+  }
+
+  const loaderData: AnnenPengestøtteSpørsmål = await response.json();
+
+  return data(loaderData);
+}
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -63,122 +68,35 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
+export const annenPengestøtteAlleSpørsmål = pengestøtteFraAndreEøsLand
+  .concat(pengestøtteFraNorgeSpørsmål)
+  .concat(pensjonFraAndreEnnNavSpørsmål)
+  .concat(utbetalingFraGarantikassenForFiskere)
+  .concat(etterlønnFraArbeidsgiverSpørsmål)
+  .concat(dagpengerFraEtAnnetEøsLandSpørsmål)
+  .concat(annenPengestøtteFraAndreEnnNav)
+  .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål);
+
 // noinspection JSUnusedGlobalSymbols
 export default function AnnenPengestøtte() {
-  const kortTekstMaksLengde = 200;
-
+  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+
   const navigate = useNavigate();
-
-  const komplettSchema = pengestøtteFraAndreEøsLand
-    .concat(pengestøtteFraNorgeSpørsmål)
-    .concat(pensjonFraAndreEnnNavSpørsmål)
-    .concat(utbetalingFraGarantikassenForFiskere)
-    .concat(etterlønnFraArbeidsgiverSpørsmål)
-    .concat(dagpengerFraEtAnnetEøsLandSpørsmål)
-    .concat(annenPengestøtteFraAndreEnnNav)
-    .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål);
-
-  const schema = z
-    .object({
-      [harMottattPengestøtteFraAndreEØSLand]: z.enum(["ja", "nei"]).optional(),
-      [hvilkeUtenlandskeYtelserHarDuMottatt]: z
-        .array(
-          z.enum([
-            "sykepenger",
-            "foreldrepengerEllerSvangerskapspenger",
-            "dagpengerEllerArbeidsledighetstrygd",
-            "pleiepengerOmsorgspengerEllerOpplæringspenger",
-          ])
-        )
-        .optional(),
-      [mottarEllerHarSøktOmPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),
-      [hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]: z
-        .array(
-          z.enum([
-            "pensjonFraAndreEnnNav",
-            "etterlønnFraArbeidsgiver",
-            "garantiLottForFiskere",
-            "dagpengerFraAnnetEøsLand",
-            "annenYtelse",
-          ])
-        )
-        .optional(),
-      [hvemUtbetalerPensjonen]: z
-        .string()
-        .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
-        .optional(),
-      [hvilkenPeriodeGjelderPensjonenForFraOgMed]: z.string().optional(),
-      [hvilkenPeriodeGjelderPensjonenForTilOgMed]: z.string().optional(),
-      [hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForFraOgMed]: z.string().optional(),
-      [hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForTilOgMed]: z.string().optional(),
-      [hvemUtbetalerEtterlønnen]: z
-        .string()
-        .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
-        .optional(),
-      [hvilkenPeriodeGjelderEtterlønnenForFraOgMed]: z.string().optional(),
-      [hvilkenPeriodeGjelderEtterlønnenForTilOgMed]: z.string().optional(),
-      [hvilketEøsLandUtbetalerDagpengene]: z.string().optional(),
-      [hvilkenPeriodeGjelderDagpengeneFraAnnetEøsLandForFraOgMed]: z.string().optional(),
-      [hvilkenPeriodeGjelderDagpengeneFraAnnetEøsLandForTilOgMed]: z.string().optional(),
-      [hvilkenAnnenPengestøtteMottas]: z
-        .string()
-        .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
-        .optional(),
-      [hvemUtbetalerPengestøtten]: z
-        .string()
-        .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
-        .optional(),
-      [hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForFraOgMed]: z.string().optional(),
-      [hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForTilOgMed]: z.string().optional(),
-      [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: z
-        .enum(["ja", "nei"])
-        .optional(),
-      [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: z
-        .string()
-        .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
-        .optional(),
-    })
-    .superRefine((data, ctx) => {
-      komplettSchema.forEach((spørsmål) => {
-        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSpørsmål;
-        const svar = data[spørsmålId];
-
-        if (synlig && (!svar || svar?.length === 0)) {
-          ctx.addIssue({
-            path: [spørsmål.id],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-      });
-    });
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: schema,
+    schema: annenPengestøtteSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: {},
+    defaultValues: hentFormDefaultValues<AnnenPengestøtteSpørsmål>(loaderData),
   });
 
-  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
-  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
-  // Kalles automatisk hver gang formverdier endres.
-  useEffect(() => {
-    const values = form.value();
-    komplettSchema.forEach((spørsmål) => {
-      const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSpørsmål;
-      if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
-        form.setValue(spørsmålId, undefined);
-      }
-    });
-  }, [form.value()]);
+  useNullstillSkjulteFelter<AnnenPengestøtteSpørsmål>(form, annenPengestøtteAlleSpørsmål);
 
   const render = (spørsmål: KomponentType) => {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

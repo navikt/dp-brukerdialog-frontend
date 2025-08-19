@@ -3,7 +3,7 @@ import {
   AnnenPengestøtteSpørsmål,
   harMottattPengestøtteFraAndreEØSLand,
   hvilkeUtenlandskeYtelserHarDuMottatt,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-spørsmål";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
 export const pengestøtteFraAndreEøsLand: KomponentType[] = [
   {
