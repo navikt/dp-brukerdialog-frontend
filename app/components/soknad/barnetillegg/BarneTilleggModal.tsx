@@ -1,12 +1,15 @@
-import { BarneSvar, leggTilBarnSporsmal } from "~/components/regelsett/barnetillegg";
-import { Button, Modal, Page, VStack } from "@navikt/ds-react";
+import { Button, Modal, VStack } from "@navikt/ds-react";
 import { Form } from "react-router";
-import { z, ZodObject } from "zod";
+import { ZodObject } from "zod";
 import { useForm } from "@rvf/react-router";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import {
+  BarneSvar,
+  leggTilBarnSporsmal,
+} from "~/seksjon-regelsett/barnetillegg/barnetillegg.sporsmal";
 
 type BarneTilleggModalProps = {
-  barn: BarneSvar;
+  barn: BarneSvar | undefined;
   barneSchema: ZodObject;
   ref: React.RefObject<HTMLDialogElement | null>;
   leggTil: (barn: BarneSvar) => void;
@@ -25,11 +28,11 @@ export default function BarneTilleggModal({
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: barn,
+    defaultValues: barn ? barn : {},
   });
 
   //console.log("Form Barn: ", form.value());
-  console.log("Barn: ", barn.fornavnOgEtternavn);
+  console.log("Barn: ", barn?.fornavnOgEtternavn);
 
   return (
     <Modal ref={ref} header={{ heading: "Legg til barn" }}>
@@ -40,7 +43,7 @@ export default function BarneTilleggModal({
               {...form.getFormProps()}
               onSubmit={(e) => {
                 e.preventDefault();
-                leggTil(form.value());
+                leggTil(form.value() as BarneSvar);
                 ref.current?.close();
               }}
             >
@@ -58,12 +61,7 @@ export default function BarneTilleggModal({
                     />
                   );
                 })}
-                <Button
-                  variant="primary"
-                  onSubmit={() => {
-                    leggTil(form.value());
-                  }}
-                >
+                <Button variant="primary" type="submit">
                   Legg til barn
                 </Button>
               </VStack>
@@ -71,6 +69,11 @@ export default function BarneTilleggModal({
           </VStack>
         </VStack>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" type="submit">
+          Legg til barn
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 }

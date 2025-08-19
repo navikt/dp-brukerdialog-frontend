@@ -1,25 +1,32 @@
-import { Sporsmal } from "~/components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/sporsmal/sporsmal.types";
+
+export const fornavnOgEtternavn = "fornavnOgEtternavn";
+export const etternavn = "etternavn";
+export const fodselsnummer = "fodselsnummer";
+export const hvilketLandBarnetBorI = "hvilketLandBarnetBorI";
+
+export const forsørgerBarnSomIkkeVises = "forsørgerBarnSomIkkeVises";
+export const barnFraPdl = "barnFraPdl";
+export const barnLagtManuelt = "barnLagtManuelt";
 
 export type BarneSvar = {
-  fornavnOgEtternavn?: string;
-  etternavn?: string;
-  fodselsnummer?: string;
-  hvilketLandBarnetBorI?: string;
-  forsørgerDuBarnet?: string;
+  [fornavnOgEtternavn]: string;
+  [etternavn]: string;
+  [fodselsnummer]: string;
+  [hvilketLandBarnetBorI]?: string;
 };
 
 export type BarnetilleggSvar = {
-  forsørgerBarnSomIkkeVises?: "ja" | "nei";
-  barnFraPdl?: BarneSvar[];
-  barnLagtManuelt?: {
-    fornavnOgEtternavn?: string;
-    etternavn?: string;
-    fodselsnummer?: string;
-    hvilketLandBarnetBorI?: string;
-  };
+  [forsørgerBarnSomIkkeVises]?: "ja" | "nei";
+  [barnFraPdl]?: BarneSvar[];
+  [barnLagtManuelt]?: BarneSvar[];
 };
 
-export const leggTilBarnSporsmal: Sporsmal[] = [
+export function hentDefaultBarnetilleggSvar(): BarnetilleggSvar {
+  return Object.fromEntries(barnetilleggSporsmal.map((spm) => [spm.id, undefined]));
+}
+
+export const leggTilBarnSporsmal: KomponentType[] = [
   {
     id: "fornavnOgEtternavn",
     label: "Fornavn og etternavn",
@@ -42,7 +49,7 @@ export const leggTilBarnSporsmal: Sporsmal[] = [
   },
 ];
 
-export const barnetilleggSporsmal: Sporsmal[] = [
+export const barnetilleggSporsmal: KomponentType[] = [
   {
     id: "forsørgerBarnSomIkkeVises",
     type: "envalg",
