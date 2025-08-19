@@ -5,7 +5,7 @@ import { useForm } from "@rvf/react-router";
 import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
 import { z } from "zod";
 import { useEffect } from "react";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ListItem } from "@navikt/ds-react/List";
 import {
@@ -77,14 +77,14 @@ export default function ReellArbeidssøker() {
       [kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen]: z.string().max(500).optional(),
     })
     .superRefine((data, ctx) => {
-      reellArbeidssøkerSpørsmål.forEach((sporsmal) => {
-        const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-        const sporsmalId = sporsmal.id as keyof ReellArbeidssøkerSvar;
-        const svar = data[sporsmalId];
+      reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
+        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+        const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
+        const svar = data[spørsmålId];
 
         if (synlig && (!svar || svar?.length === 0)) {
           ctx.addIssue({
-            path: [sporsmal.id],
+            path: [spørsmål.id],
             code: "custom",
             message: "Du må svare på dette spørsmålet",
           });
@@ -110,10 +110,10 @@ export default function ReellArbeidssøker() {
   useEffect(() => {
     const values = form.value();
 
-    reellArbeidssøkerSpørsmål.forEach((sporsmal) => {
-      const sporsmalId = sporsmal.id as keyof ReellArbeidssøkerSvar;
-      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
-        form.setValue(sporsmalId, undefined);
+    reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
+      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
+      if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
+        form.setValue(spørsmålId, undefined);
       }
     });
   }, [form.value()]);
@@ -134,17 +134,17 @@ export default function ReellArbeidssøker() {
                 <ListItem>kan ta ethvert arbeid hvor som helst i Norge</ListItem>
               </List>
             </VStack>
-            {reellArbeidssøkerSpørsmål.map((sporsmal) => {
+            {reellArbeidssøkerSpørsmål.map((spørsmål) => {
               // Skip rendering if the question should not be shown based on current answers
-              if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Sporsmal
-                  key={sporsmal.id}
-                  sporsmal={sporsmal}
-                  formScope={form.scope(sporsmal.id as keyof ReellArbeidssøkerSvar)}
+                <Spørsmål
+                  key={spørsmål.id}
+                  spørsmål={spørsmål}
+                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSvar)}
                 />
               );
             })}

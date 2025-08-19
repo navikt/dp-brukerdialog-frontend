@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const bostedsland = "bostedsland";
 export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
@@ -20,11 +20,11 @@ export type BostedslandSvar = {
 
 export function hentDefaultBostedslandSvar(): BostedslandSvar {
   return Object.fromEntries(
-    bostedslandSporsmal.map((spm) => [spm.id, undefined])
+    bostedslandSpørsmål.map((spm) => [spm.id, undefined])
   ) as BostedslandSvar;
 }
 
-export const bostedslandSporsmal: KomponentType[] = [
+export const bostedslandSpørsmål: KomponentType[] = [
   {
     id: bostedsland,
     type: "land",

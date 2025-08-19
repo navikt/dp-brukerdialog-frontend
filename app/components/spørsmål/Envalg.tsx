@@ -1,25 +1,25 @@
 import { Radio, RadioGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
-import { EnvalgSpørsmål } from "./sporsmal.types";
+import { EnvalgSpørsmål } from "./spørsmål.types";
 
 interface IProps {
-  sporsmal: EnvalgSpørsmål;
+  spørsmål: EnvalgSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Envalg({ sporsmal, formScope }: Readonly<IProps>) {
+export function Envalg({ spørsmål, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   return (
     <RadioGroup
       {...field.getInputProps()}
-      legend={sporsmal.label}
-      key={sporsmal.id}
-      description={parse(sporsmal?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      legend={spørsmål.label}
+      key={spørsmål.id}
+      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
     >
-      {sporsmal.options?.map((opt) => (
+      {spørsmål.options?.map((opt) => (
         <Radio key={opt.value} value={opt.value}>
           {opt.label}
         </Radio>

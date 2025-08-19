@@ -2,10 +2,10 @@ import { z } from "zod";
 import {
   arsak,
   dato,
-  dinSituasjonSporsmal,
+  dinSituasjonSpørsmål,
   DinSituasjonSvar,
   mottatt,
-} from "./din-situasjon.sporsmal";
+} from "./din-situasjon.spørsmål";
 
 export const dinSituasjonSchema = z
   .object({
@@ -14,14 +14,14 @@ export const dinSituasjonSchema = z
     [dato]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    dinSituasjonSporsmal.forEach((sporsmal) => {
-      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-      const sporsmalId = sporsmal.id as keyof DinSituasjonSvar;
-      const svar = data[sporsmalId];
+    dinSituasjonSpørsmål.forEach((spørsmål) => {
+      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+      const spørsmålId = spørsmål.id as keyof DinSituasjonSvar;
+      const svar = data[spørsmålId];
 
       if (synlig && !svar) {
         ctx.addIssue({
-          path: [sporsmal.id],
+          path: [spørsmål.id],
           code: "custom",
           message: "Du må svare på dette spørsmålet",
         });

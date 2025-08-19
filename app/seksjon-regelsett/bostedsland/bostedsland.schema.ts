@@ -3,15 +3,13 @@ import {
   avreiseDatoFra,
   avreiseDatoTil,
   bostedsland,
-  bostedslandSporsmal,
+  bostedslandSpørsmål,
   BostedslandSvar,
   hvorforReistDuFraNorge,
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
-} from "./bostedsland.sporsmal";
-
-import { KomponentType, SpørsmalBase, SpørsmalType } from "~/components/sporsmal/sporsmal.types";
+} from "./bostedslandSpørsmål";
 
 export const bostedslandSchema = z
   .object({
@@ -24,16 +22,16 @@ export const bostedslandSchema = z
     [hvorforReistDuFraNorge]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    bostedslandSporsmal.forEach((sporsmal) => {
-      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-      const sporsmalId = sporsmal.id as keyof BostedslandSvar;
-      const svar = data[sporsmalId];
+    bostedslandSpørsmål.forEach((spørsmål) => {
+      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+      const spørsmålId = spørsmål.id as keyof BostedslandSvar;
+      const svar = data[spørsmålId];
 
-      const isSpørsmål = sporsmal.type !== "lesMer" && sporsmal.type !== "varselmelding";
+      const isSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
 
-      if (synlig && !svar && isSpørsmål && !sporsmal.optional) {
+      if (synlig && !svar && isSpørsmål && !spørsmål.optional) {
         ctx.addIssue({
-          path: [sporsmal.id],
+          path: [spørsmål.id],
           code: "custom",
           message: "Du må svare på dette spørsmålet",
         });

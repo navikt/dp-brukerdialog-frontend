@@ -22,7 +22,7 @@ import {
   situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
   situasjonsbeskrivelseRedusertHelse,
 } from "~/components/regelsett/reell-arbeidssøker/reell-arbeidssøker-svar";
-import { KomponentType } from "~/components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const reellArbeidssøkerSpørsmål: KomponentType[] = [
   {

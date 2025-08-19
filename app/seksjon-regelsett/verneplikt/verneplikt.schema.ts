@@ -5,9 +5,9 @@ import {
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
   senderIkkeDokumentasjonBegrunnelse,
-  vernepliktSporsmal,
+  vernepliktSpørsmål,
   VernepliktSvar,
-} from "./verneplikt.sporsmal";
+} from "./vernepliktSpørsmål";
 
 export const vernepliktSchema = z
   .object({
@@ -20,14 +20,14 @@ export const vernepliktSchema = z
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
-    vernepliktSporsmal.forEach((sporsmal) => {
-      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-      const sporsmalId = sporsmal.id as keyof VernepliktSvar;
-      const svar = data[sporsmalId];
+    vernepliktSpørsmål.forEach((spørsmål) => {
+      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+      const spørsmålId = spørsmål.id as keyof VernepliktSvar;
+      const svar = data[spørsmålId];
 
       if (synlig && !svar) {
         ctx.addIssue({
-          path: [sporsmal.id],
+          path: [spørsmål.id],
           code: "custom",
           message: "Du må svare på dette spørsmålet",
         });

@@ -4,13 +4,13 @@ import { useForm } from "@rvf/react-router";
 import { data, Form, LoaderFunctionArgs, redirect, useLoaderData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
 import { ExternalLink } from "~/components/ExternalLink";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { hentFormDefaultValues } from "~/utils/form.utils";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
-import { utdanningSporsmal, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.sporsmal";
+import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanningSpørsmål";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -58,7 +58,7 @@ export default function Utdanning() {
     defaultValues: hentFormDefaultValues<UtdanningSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSporsmal);
+  useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSpørsmål);
 
   return (
     <Page className="brukerdialog">
@@ -67,20 +67,20 @@ export default function Utdanning() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {utdanningSporsmal.map((sporsmal) => {
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+              {utdanningSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
                 return (
                   <>
-                    <Sporsmal
-                      key={sporsmal.id}
-                      sporsmal={sporsmal}
-                      formScope={form.scope(sporsmal.id as keyof UtdanningSvar)}
+                    <Spørsmål
+                      key={spørsmål.id}
+                      spørsmål={spørsmål}
+                      formScope={form.scope(spørsmål.id as keyof UtdanningSvar)}
                     />
-                    {((sporsmal.id === "tarUtdanningEllerOpplæring" &&
+                    {((spørsmål.id === "tarUtdanningEllerOpplæring" &&
                       form.value("tarUtdanningEllerOpplæring") === "ja") ||
-                      (sporsmal.id === "planleggerÅStarteEllerFullføreStudierSamtidig" &&
+                      (spørsmål.id === "planleggerÅStarteEllerFullføreStudierSamtidig" &&
                         form.value("planleggerÅStarteEllerFullføreStudierSamtidig") === "ja")) && (
                       <Alert variant="warning">
                         For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du
@@ -97,7 +97,7 @@ export default function Utdanning() {
                       </Alert>
                     )}
 
-                    {sporsmal.id === "dokumenterAvsluttetUtdanningSiste6MånederNå" &&
+                    {spørsmål.id === "dokumenterAvsluttetUtdanningSiste6MånederNå" &&
                       form.value("dokumenterAvsluttetUtdanningSiste6MånederNå") === "nei" && (
                         <Alert variant="warning">
                           Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn

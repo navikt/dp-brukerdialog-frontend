@@ -1,6 +1,6 @@
 import { Checkbox, CheckboxGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { FlervalgSpørsmål } from "./sporsmal.types";
+import { FlervalgSpørsmål } from "./spørsmål.types";
 
 interface IProps {
   spørsmål: FlervalgSpørsmål;

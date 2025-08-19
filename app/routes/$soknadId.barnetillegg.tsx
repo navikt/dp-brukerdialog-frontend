@@ -29,7 +29,7 @@ import { Route } from "../../.react-router/types/app/routes/+types/_index";
 import { hentBarn } from "~/models/hent-barn.server";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { LoaderFunctionArgs } from "react-router";
-import JaNeiFaktum from "~/components/sporsmal/jaNeiFaktum";
+import JaNeiFaktum from "~/components/spørsmål/jaNeiFaktum";
 
 interface IBarnetillegg {
   barn?: IBarn[];

@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const avtjentVerneplikt = "avtjentVerneplikt";
 export const dokumenterAvtjentVernepliktNå = "dokumenterAvtjentVernepliktNå";
@@ -14,7 +14,7 @@ export type VernepliktSvar = {
   [senderIkkeDokumentasjonBegrunnelse]?: string;
 };
 
-export const vernepliktSporsmal: KomponentType[] = [
+export const vernepliktSpørsmål: KomponentType[] = [
   {
     id: avtjentVerneplikt,
     type: "envalg",

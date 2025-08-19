@@ -11,15 +11,15 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { vernepliktSchema } from "~/seksjon-regelsett/verneplikt/verneplikt.schema";
 import {
-  vernepliktSporsmal,
+  vernepliktSpørsmål,
   VernepliktSvar,
-} from "~/seksjon-regelsett/verneplikt/verneplikt.sporsmal";
+} from "~/seksjon-regelsett/verneplikt/vernepliktSpørsmål";
 import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -67,7 +67,7 @@ export default function Verneplikt() {
     defaultValues: hentFormDefaultValues<VernepliktSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSporsmal);
+  useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
 
   return (
     <Page className="brukerdialog">
@@ -76,20 +76,20 @@ export default function Verneplikt() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {vernepliktSporsmal.map((sporsmal) => {
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+              {vernepliktSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
                   <>
-                    <Sporsmal
-                      key={sporsmal.id}
-                      sporsmal={sporsmal}
-                      formScope={form.scope(sporsmal.id as keyof VernepliktSvar)}
+                    <Spørsmål
+                      key={spørsmål.id}
+                      spørsmål={spørsmål}
+                      formScope={form.scope(spørsmål.id as keyof VernepliktSvar)}
                     />
 
-                    {sporsmal.id === "dokumenterAvtjentVernepliktNå" &&
+                    {spørsmål.id === "dokumenterAvtjentVernepliktNå" &&
                       form.value("dokumenterAvtjentVernepliktNå") === "nei" && (
                         <Alert variant="warning">
                           Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn

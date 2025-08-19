@@ -1,5 +1,5 @@
 import { ReadMore } from "@navikt/ds-react";
-import { KomponentBase } from "~/components/sporsmal/sporsmal.types";
+import { KomponentBase } from "~/components/spørsmål/spørsmål.types";
 
 interface IProps {
   spørsmål: KomponentBase;

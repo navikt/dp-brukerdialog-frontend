@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const harTilleggsopplysninger = "harTilleggsopplysninger";
 export const tilleggsopplysninger = "tilleggsopplysninger";
