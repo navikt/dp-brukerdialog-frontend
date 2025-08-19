@@ -20,7 +20,7 @@ import {
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
   mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-spørsmål";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
 export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
   {

@@ -36,18 +36,18 @@ export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
 
 export type AnnenPengestøtteSpørsmål = {
   [harMottattPengestøtteFraAndreEØSLand]?: "ja" | "nei";
-  [hvilkeUtenlandskeYtelserHarDuMottatt]?:
+  [hvilkeUtenlandskeYtelserHarDuMottatt]?: Array<
     | "sykepenger"
     | "foreldrepengerEllerSvangerskapspenger"
     | "dagpengerEllerArbeidsledighetstrygd"
-    | "pleiepengerOmsorgspengerEllerOpplæringspenger";
+    | "pleiepengerOmsorgspengerEllerOpplæringspenger">;
   [mottarEllerHarSøktOmPengestøtteFraAndreEnnNav]?: "ja" | "nei";
-  [hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?:
+  [hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?: Array<
     | "pensjonFraAndreEnnNav"
     | "etterlønnFraArbeidsgiver"
     | "garantiLottForFiskere"
     | "dagpengerFraAnnetEøsLand"
-    | "annenYtelse";
+    | "annenYtelse">;
   [hvemUtbetalerPensjonen]?: string;
   [hvilkenPeriodeGjelderPensjonenForFraOgMed]?: string;
   [hvilkenPeriodeGjelderPensjonenForTilOgMed]?: string;
