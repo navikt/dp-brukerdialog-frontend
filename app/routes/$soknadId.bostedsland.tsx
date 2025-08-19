@@ -11,29 +11,28 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router";
+import invariant from "tiny-invariant";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { tilleggsopplysningerSchema } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.schema";
-
-import invariant from "tiny-invariant";
-import { hentFormDefaultValues } from "~/utils/form.utils";
+import { bostedslandSchema } from "~/seksjon-regelsett/bostedsland/bostedsland.schema";
 import {
-  tilleggsopplysningerSpørsmål,
-  TilleggsopplysningerSvar,
-} from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
+  bostedslandSporsmal,
+  BostedslandSvar,
+} from "~/seksjon-regelsett/bostedsland/bostedsland.sporsmal";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
+  const response = await hentSeksjon(request, params.soknadId, "bostedsland");
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     return data(undefined);
   }
 
-  const loaderData: TilleggsopplysningerSvar = await response.json();
+  const loaderData: BostedslandSvar = await response.json();
 
   return data(loaderData);
 }
@@ -42,13 +41,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const seksjonId = "tilleggsopplysninger";
+  const seksjonId = "bostedsland";
   const nesteSeksjonId = "tilleggsopplysninger";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
   const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
-
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
@@ -60,8 +58,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-// noinspection JSUnusedGlobalSymbols
-export default function Tilleggsopplysninger() {
+export default function Bostedsland() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -69,42 +66,43 @@ export default function Tilleggsopplysninger() {
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: tilleggsopplysningerSchema,
+    schema: bostedslandSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<TilleggsopplysningerSvar>(loaderData),
+    defaultValues: hentFormDefaultValues<BostedslandSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);
+  useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSporsmal);
 
   return (
     <Page className="brukerdialog">
-      <h2>Tilleggsopplysninger</h2>
+      <h2>Bostedsland</h2>
       <VStack gap="20">
-        <Form {...form.getFormProps()}>
-          <VStack gap="8">
-            {tilleggsopplysningerSpørsmål.map((sporsmal) => {
-              if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
-                return null;
-              }
+        <VStack gap="6">
+          <Form {...form.getFormProps()}>
+            <VStack gap="8">
+              {bostedslandSporsmal.map((sporsmal) => {
+                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                  return null;
+                }
+                return (
+                  <Sporsmal
+                    key={sporsmal.id}
+                    sporsmal={sporsmal}
+                    formScope={form.scope(sporsmal.id as keyof BostedslandSvar)}
+                  />
+                );
+              })}
 
-              return (
-                <Sporsmal
-                  key={sporsmal.id}
-                  sporsmal={sporsmal}
-                  formScope={form.scope(sporsmal.id as keyof TilleggsopplysningerSvar)}
-                />
-              );
-            })}
-
-            {actionData && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
+              {actionData && (
+                <Alert variant="error" className="mt-4">
+                  {actionData.error}
+                </Alert>
+              )}
+            </VStack>
 
             <HStack gap="4" className="mt-8">
               <Button
@@ -123,8 +121,8 @@ export default function Tilleggsopplysninger() {
                 Neste steg
               </Button>
             </HStack>
-          </VStack>
-        </Form>
+          </Form>
+        </VStack>
       </VStack>
     </Page>
   );

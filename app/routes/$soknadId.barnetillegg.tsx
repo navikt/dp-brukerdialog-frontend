@@ -27,7 +27,7 @@ import {
 } from "@navikt/aksel-icons";
 import { Route } from "../../.react-router/types/app/routes/+types/_index";
 import { hentBarn } from "~/models/hent-barn.server";
-import { formaterNorskDato } from "~/utils/formattering.util";
+import { formaterNorskDato } from "~/utils/formattering.utils";
 import { LoaderFunctionArgs } from "react-router";
 import JaNeiFaktum from "~/components/sporsmal/jaNeiFaktum";
 
@@ -52,7 +52,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return await response.json();
 }
 
-export default function Barntillegg2({ loaderData }: Route.ComponentProps) {
+// noinspection JSUnusedGlobalSymbols
+export default function Barntillegg({ loaderData }: Route.ComponentProps) {
   const barnModalRef = useRef<HTMLDialogElement>(null);
 
   const [barnetillegg, setBarnetillegg] = useState<IBarnetillegg>({

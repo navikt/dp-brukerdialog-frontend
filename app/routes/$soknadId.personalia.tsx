@@ -12,16 +12,16 @@ import {
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 
-interface IPersonalia {
+export interface IPersonalia {
   person: IPerson;
-  kontonummer: string;
+  kontonummer: string | null;
 }
 
 interface IPerson {
   fornavn: string;
   mellomnavn: string;
   etternavn: string;
-  fodselsdato: string;
+  fodselsDato: string;
   ident: string;
   postAdresse: IAdresse;
   folkeregistrertAdresse: IAdresse;
@@ -143,7 +143,7 @@ export default function Personalia() {
               variant="primary"
               iconPosition="right"
               icon={<ArrowRightIcon />}
-              onClick={() => navigate(`/${soknadId}/bodstedsland`)}
+              onClick={() => navigate(`/${soknadId}/bostedsland`)}
             >
               Neste steg
             </Button>

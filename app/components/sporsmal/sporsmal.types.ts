@@ -1,46 +1,85 @@
-type baseType = "envalg" | "langTekst" | "dato" | "land" | "kortTekst" | "barnelist";
+export type KomponentType =
+  | EnvalgSpørsmål
+  | FlervalgSpørsmål
+  | LangTekstSpørsmål
+  | KortTekstSpørsmål
+  | DatoSpørsmål
+  | LandSpørsmål
+  | PeriodeSpørsmål
+  | Varselmelding
+  | LesMer
+  | BarnelisteSporsmal;
 
-export type BaseSporsmal = {
+type InfoType = "varselmelding" | "lesMer";
+export type SpørsmalType =
+  | "envalg"
+  | "flervalg"
+  | "langTekst"
+  | "kortTekst"
+  | "dato"
+  | "periodeFra"
+  | "periodeTil"
+  | "land"
+  | "barnelist";
+
+export type KomponentBase = {
   id: string;
   label: string;
-  type: baseType;
   description?: string;
+  type: SpørsmalType | InfoType;
   visHvis?: (svar: Record<string, any>) => boolean;
 };
 
-export type EnvalgSporsmal = BaseSporsmal & {
+export type SpørsmalBase = KomponentBase & {
+  optional?: boolean;
+};
+
+export type EnvalgSpørsmål = SpørsmalBase & {
   type: "envalg";
   options: { value: string; label: string }[];
 };
 
-export type LangTekstSporsmal = BaseSporsmal & {
+export type FlervalgSpørsmål = SpørsmalBase & {
+  type: "flervalg";
+  options: { value: string; label: string }[];
+};
+
+export type LangTekstSpørsmål = SpørsmalBase & {
   type: "langTekst";
   maxLength?: number;
 };
 
-export type DatoSporsmal = BaseSporsmal & {
-  type: "dato";
-  fom?: Date;
-  tom?: Date;
-};
-
-export type LandSporsmal = BaseSporsmal & {
-  type: "land";
-};
-
-export type KortTekstSporsmal = BaseSporsmal & {
+export type KortTekstSpørsmål = SpørsmalBase & {
   type: "kortTekst";
 };
 
-export type BarnelisteSporsmal = BaseSporsmal & {
-  type: "barnelist";
-  children: Sporsmal[];
+export type DatoSpørsmål = SpørsmalBase & {
+  type: "dato";
+  fraOgMed?: Date;
+  tilOgMed?: Date;
 };
 
-export type Sporsmal =
-  | EnvalgSporsmal
-  | LangTekstSporsmal
-  | DatoSporsmal
-  | LandSporsmal
-  | KortTekstSporsmal
-  | BarnelisteSporsmal;
+export type PeriodeSpørsmål = SpørsmalBase & {
+  type: "periodeFra" | "periodeTil";
+  fraOgMed?: DatoSpørsmål;
+  tilOgMed?: DatoSpørsmål;
+  periodeLabel?: string;
+};
+
+export type LandSpørsmål = SpørsmalBase & {
+  type: "land";
+};
+
+export type Varselmelding = KomponentBase & {
+  type: "varselmelding";
+  variant: "error" | "warning" | "info" | "success";
+};
+
+export type LesMer = KomponentBase & {
+  type: "lesMer";
+};
+
+export type BarnelisteSporsmal = SpørsmalBase & {
+  type: "barnelist";
+  children: SpørsmalBase[];
+};

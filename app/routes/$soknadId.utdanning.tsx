@@ -1,23 +1,37 @@
+import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
-import { useEffect } from "react";
+import { useForm } from "@rvf/react-router";
 import { data, Form, LoaderFunctionArgs, redirect, useLoaderData, useNavigate } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { Route } from "../../.react-router/types/app/routes/+types/_index";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { z } from "zod";
-import { useForm } from "@rvf/react-router";
-import { utdanningSporsmal, UtdanningSvar } from "~/components/regelsett/utdanning";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import { ExternalLink } from "~/components/ExternalLink";
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { hentFormDefaultValues } from "~/utils/form.utils";
+import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
+import { utdanningSporsmal, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.sporsmal";
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const response = await hentSeksjon(request, params.soknadId, "utdanning");
+
+  if (response.status !== 200) {
+    return data(undefined);
+  }
+
+  const loaderData: UtdanningSvar = await response.json();
+
+  return data(loaderData);
+}
 
 export async function action({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
   const seksjonId = "utdanning";
-  const nesteSeksjonsId = "barnetillegg";
+  const nesteSeksjonId = "barnetillegg";
   const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
@@ -25,80 +39,26 @@ export async function action({ request, params }: LoaderFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av utdanning" };
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonsId}`);
+  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
-  invariant(params.soknadId, "Søknad ID er påkrevd");
-
-  const response = await hentSeksjon(request, params.soknadId, "utdanning");
-  if (response.status === 200) {
-    return await response.json();
-  }
-
-  return data({
-    tarUtdanningEllerOpplæring: undefined,
-    avsluttetUtdanningSiste6Måneder: undefined,
-    dokumenterAvsluttetUtdanningSiste6MånederNå: undefined,
-    lasteOppSenereBegrunnelse: undefined,
-    naarSendtDokumentasjonTidligere: undefined,
-    senderIkkeDokumentasjonBegrunnelse: undefined,
-    planleggerÅStarteEllerFullføreStudierSamtidig: undefined,
-  });
-}
-
-const schema = z
-  .object({
-    tarUtdanningEllerOpplæring: z.enum(["ja", "nei"]).optional(),
-    avsluttetUtdanningSiste6Måneder: z.enum(["ja", "nei"]).optional(),
-    dokumenterAvsluttetUtdanningSiste6MånederNå: z.string().optional(),
-    lasteOppSenereBegrunnelse: z.string().optional(),
-    naarSendtDokumentasjonTidligere: z.string().optional(),
-    senderIkkeDokumentasjonBegrunnelse: z.string().optional(),
-    planleggerÅStarteEllerFullføreStudierSamtidig: z.enum(["ja", "nei"]).optional(),
-  })
-  .superRefine((data, ctx) => {
-    utdanningSporsmal.forEach((sporsmal) => {
-      const synlig = !sporsmal.visHvis || sporsmal.visHvis(data);
-      const sporsmalId = sporsmal.id as keyof UtdanningSvar;
-      const svar = data[sporsmalId];
-
-      if (synlig && !svar) {
-        ctx.addIssue({
-          path: [sporsmal.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
-    });
-  });
-
-export default function Utdanning({ loaderData }: Route.ComponentProps) {
-  const utdanning = useLoaderData<typeof loader>();
+export default function Utdanning() {
+  const loaderData = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: schema,
+    schema: utdanningSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: JSON.parse(utdanning),
+    defaultValues: hentFormDefaultValues<UtdanningSvar>(loaderData),
   });
 
-  useEffect(() => {
-    const values = form.value();
-
-    utdanningSporsmal.forEach((sporsmal) => {
-      const sporsmalId = sporsmal.id as keyof UtdanningSvar;
-      if (sporsmal.visHvis && !sporsmal.visHvis(values) && values[sporsmalId] !== undefined) {
-        form.setValue(sporsmalId, undefined);
-      }
-    });
-  }, [form.value()]);
+  useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSporsmal);
 
   return (
     <Page className="brukerdialog">

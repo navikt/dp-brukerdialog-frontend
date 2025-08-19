@@ -1,23 +1,34 @@
 import { FormScope } from "@rvf/react-router";
-import { Sporsmal } from "./sporsmal.types";
+import { KomponentType } from "./sporsmal.types";
 import { Dato } from "./Dato";
 import { Envalg } from "./Envalg";
+import { Flervalg } from "./Flervalg";
+import { KortTekst } from "./KortTekst";
 import { LangTekst } from "./LangTekst";
 import { Land } from "./Land";
-import KortTekst from "~/components/sporsmal/KortTekst";
+import { Periode } from "./Periode";
+import { Varselmelding } from "./Varselmelding";
+import { LesMer } from "./LesMer";
 
 interface IProps {
-  sporsmal: Sporsmal;
-  formScope: FormScope<string | undefined>;
+  sporsmal: KomponentType;
+  formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Sporsmal({ sporsmal, formScope }: IProps) {
+export function Sporsmal({ sporsmal, formScope }: Readonly<IProps>) {
   switch (sporsmal.type) {
     case "dato":
       return <Dato sporsmal={sporsmal} formScope={formScope} />;
 
+    case "periodeFra":
+    case "periodeTil":
+      return <Periode sporsmal={sporsmal} formScope={formScope} />;
+
     case "envalg":
       return <Envalg sporsmal={sporsmal} formScope={formScope} />;
+
+    case "flervalg":
+      return <Flervalg spørsmål={sporsmal} formScope={formScope} />;
 
     case "langTekst":
       return <LangTekst sporsmal={sporsmal} formScope={formScope} />;
@@ -27,6 +38,12 @@ export function Sporsmal({ sporsmal, formScope }: IProps) {
 
     case "land":
       return <Land sporsmal={sporsmal} formScope={formScope} />;
+
+    case "varselmelding":
+      return <Varselmelding sporsmal={sporsmal} />;
+
+    case "lesMer":
+      return <LesMer spørsmål={sporsmal} />;
 
     case "barnelist":
       return sporsmal.children.map((barn) => <Sporsmal sporsmal={barn} formScope={formScope} />);

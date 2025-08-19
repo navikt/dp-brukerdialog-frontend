@@ -1,14 +1,14 @@
 import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { LANDLISTE } from "~/constants";
-import { LandSporsmal } from "./sporsmal.types";
+import { LandSpørsmål } from "./sporsmal.types";
 
 interface IProps {
-  sporsmal: LandSporsmal;
-  formScope: FormScope<string | undefined>;
+  sporsmal: LandSpørsmål;
+  formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Land({ sporsmal, formScope }: IProps) {
+export function Land({ sporsmal, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   return (
