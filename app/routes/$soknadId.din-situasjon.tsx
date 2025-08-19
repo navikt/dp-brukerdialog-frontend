@@ -12,15 +12,15 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { dinSituasjonSchema } from "~/seksjon-regelsett/din-situasjon/din-situasjon.schema";
 import {
-  dinSituasjonSporsmal,
+  dinSituasjonSpørsmål,
   DinSituasjonSvar,
-} from "~/seksjon-regelsett/din-situasjon/din-situasjon.sporsmal";
+} from "~/seksjon-regelsett/din-situasjon/din-situasjon.spørsmål";
 import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -75,7 +75,7 @@ export default function DinSituasjon() {
     defaultValues: hentFormDefaultValues<DinSituasjonSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSporsmal);
+  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
 
   return (
     <Page className="brukerdialog">
@@ -84,17 +84,17 @@ export default function DinSituasjon() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {dinSituasjonSporsmal.map((sporsmal) => {
+              {dinSituasjonSpørsmål.map((spørsmål) => {
                 // Skip rendering if the question should not be shown based on current answers
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
-                  <Sporsmal
-                    key={sporsmal.id}
-                    sporsmal={sporsmal}
-                    formScope={form.scope(sporsmal.id as keyof DinSituasjonSvar)}
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof DinSituasjonSvar)}
                   />
                 );
               })}

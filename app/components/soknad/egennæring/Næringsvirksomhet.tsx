@@ -1,4 +1,4 @@
-import JaNeiFaktum from "~/components/sporsmal/jaNeiFaktum";
+import JaNeiFaktum from "~/components/spørsmål/jaNeiFaktum";
 import { Alert, Button, Modal, TextField, VStack } from "@navikt/ds-react";
 import { useRef, useState } from "react";
 import { IEgenNæring, INæringsvirksomhet } from "~/models/egennaring.types";

@@ -40,18 +40,8 @@ import {
   pensjonFraAndreEnnNavSpørsmål,
   utbetalingFraGarantikassenForFiskere,
 } from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-norge";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
-import {
-  DatoSpørsmål,
-  EnvalgSpørsmål,
-  FlervalgSpørsmål,
-  KomponentType,
-  KortTekstSpørsmål,
-  LandSpørsmål,
-  LangTekstSpørsmål,
-  PeriodeSpørsmål,
-  Varselmelding,
-} from "~/components/sporsmal/sporsmal.types";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import styles from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -183,9 +173,9 @@ export default function AnnenPengestøtte() {
   useEffect(() => {
     const values = form.value();
     komplettSchema.forEach((spørsmål) => {
-      const sporsmalId = spørsmål.id as keyof AnnenPengestøtteSvar;
-      if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[sporsmalId] !== undefined) {
-        form.setValue(sporsmalId, undefined);
+      const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
+      if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
+        form.setValue(spørsmålId, undefined);
       }
     });
   }, [form.value()]);
@@ -196,9 +186,9 @@ export default function AnnenPengestøtte() {
     }
 
     return (
-      <Sporsmal
+      <Spørsmål
         key={spørsmål.id}
-        sporsmal={spørsmål}
+        spørsmål={spørsmål}
         formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSvar)}
       />
     );

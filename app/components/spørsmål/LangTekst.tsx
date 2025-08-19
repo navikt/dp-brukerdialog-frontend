@@ -1,22 +1,22 @@
 import { Textarea } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { LangTekstSpørsmål } from "./sporsmal.types";
+import { LangTekstSpørsmål } from "./spørsmål.types";
 
 interface IProps {
-  sporsmal: LangTekstSpørsmål;
+  spørsmål: LangTekstSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function LangTekst({ sporsmal, formScope }: Readonly<IProps>) {
+export function LangTekst({ spørsmål, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   return (
     <Textarea
       {...field.getInputProps()}
-      label={sporsmal.label}
-      description={sporsmal.description}
-      key={sporsmal.id}
-      maxLength={sporsmal.maxLength}
+      label={spørsmål.label}
+      description={spørsmål.description}
+      key={spørsmål.id}
+      maxLength={spørsmål.maxLength}
       error={field.error()}
     />
   );

@@ -13,15 +13,15 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentFormDefaultValues } from "~/utils/form.utils";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { bostedslandSchema } from "~/seksjon-regelsett/bostedsland/bostedsland.schema";
 import {
-  bostedslandSporsmal,
+  bostedslandSpørsmål,
   BostedslandSvar,
-} from "~/seksjon-regelsett/bostedsland/bostedsland.sporsmal";
+} from "~/seksjon-regelsett/bostedsland/bostedslandSpørsmål";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -75,7 +75,7 @@ export default function Bostedsland() {
     defaultValues: hentFormDefaultValues<BostedslandSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSporsmal);
+  useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
 
   return (
     <Page className="brukerdialog">
@@ -84,15 +84,15 @@ export default function Bostedsland() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {bostedslandSporsmal.map((sporsmal) => {
-                if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+              {bostedslandSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
                 return (
-                  <Sporsmal
-                    key={sporsmal.id}
-                    sporsmal={sporsmal}
-                    formScope={form.scope(sporsmal.id as keyof BostedslandSvar)}
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof BostedslandSvar)}
                   />
                 );
               })}

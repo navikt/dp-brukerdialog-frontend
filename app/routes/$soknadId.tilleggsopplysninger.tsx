@@ -11,7 +11,7 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router";
-import { Sporsmal } from "~/components/sporsmal/Sporsmal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -22,7 +22,7 @@ import { hentFormDefaultValues } from "~/utils/form.utils";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.sporsmal";
+} from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -86,16 +86,16 @@ export default function Tilleggsopplysninger() {
       <VStack gap="20">
         <Form {...form.getFormProps()}>
           <VStack gap="8">
-            {tilleggsopplysningerSpørsmål.map((sporsmal) => {
-              if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
+            {tilleggsopplysningerSpørsmål.map((spørsmål) => {
+              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Sporsmal
-                  key={sporsmal.id}
-                  sporsmal={sporsmal}
-                  formScope={form.scope(sporsmal.id as keyof TilleggsopplysningerSvar)}
+                <Spørsmål
+                  key={spørsmål.id}
+                  spørsmål={spørsmål}
+                  formScope={form.scope(spørsmål.id as keyof TilleggsopplysningerSvar)}
                 />
               );
             })}

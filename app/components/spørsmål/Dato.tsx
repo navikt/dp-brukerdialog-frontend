@@ -1,20 +1,20 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
-import { DatoSpørsmål } from "./sporsmal.types";
+import { DatoSpørsmål } from "./spørsmål.types";
 
 interface IProps {
-  sporsmal: DatoSpørsmål;
+  spørsmål: DatoSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Dato({ sporsmal, formScope }: Readonly<IProps>) {
+export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
-    fromDate: sporsmal.fraOgMed || undefined,
-    toDate: sporsmal.tilOgMed || undefined,
+    fromDate: spørsmål.fraOgMed || undefined,
+    toDate: spørsmål.tilOgMed || undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
       field.validate();
@@ -22,13 +22,13 @@ export function Dato({ sporsmal, formScope }: Readonly<IProps>) {
   });
 
   return (
-    <DatePicker {...datepickerProps} key={sporsmal.id}>
+    <DatePicker {...datepickerProps} key={spørsmål.id}>
       <DatePicker.Input
         {...inputProps}
         placeholder="DD.MM.ÅÅÅÅ"
         error={field.error()}
-        label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
-        description={sporsmal.description}
+        label={spørsmål.optional ? `${spørsmål.label}  (valgfritt)` : `${spørsmål.label}`}
+        description={spørsmål.description}
       />
     </DatePicker>
   );

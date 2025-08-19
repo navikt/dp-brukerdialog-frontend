@@ -1,4 +1,4 @@
-import { KomponentType } from "../../sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
   AnnenPengestøtteSvar,
   harMottattPengestøtteFraAndreEØSLand,
