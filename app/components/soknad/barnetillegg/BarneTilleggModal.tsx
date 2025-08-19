@@ -22,6 +22,7 @@ export default function BarneTilleggModal({
   leggTil,
 }: BarneTilleggModalProps) {
   const form = useForm({
+    id: "schema",
     schema: barneSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
@@ -31,22 +32,21 @@ export default function BarneTilleggModal({
     defaultValues: barn ? barn : {},
   });
 
-  //console.log("Form Barn: ", form.value());
+  console.log("Form Barn: ", form.value());
   console.log("Barn: ", barn?.fornavnOgEtternavn);
+
+  function submitHandler(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    leggTil(form.value() as BarneSvar);
+    ref.current?.close();
+  }
 
   return (
     <Modal ref={ref} header={{ heading: "Legg til barn" }}>
       <Modal.Body>
         <VStack gap="20">
           <VStack gap="6">
-            <Form
-              {...form.getFormProps()}
-              onSubmit={(e) => {
-                e.preventDefault();
-                leggTil(form.value() as BarneSvar);
-                ref.current?.close();
-              }}
-            >
+            <Form {...form.getFormProps()} onSubmit={submitHandler}>
               <VStack gap="8">
                 {leggTilBarnSporsmal.map((sporsmal) => {
                   if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
@@ -61,19 +61,14 @@ export default function BarneTilleggModal({
                     />
                   );
                 })}
-                <Button variant="primary" type="submit">
-                  Legg til barn
-                </Button>
               </VStack>
+              <Button variant="primary" type="submit">
+                Legg til barn
+              </Button>
             </Form>
           </VStack>
         </VStack>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" type="submit">
-          Legg til barn
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }

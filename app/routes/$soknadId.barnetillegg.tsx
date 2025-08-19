@@ -1,5 +1,5 @@
 import { useForm } from "@rvf/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Box, Button, HStack, Page, Radio, RadioGroup, VStack } from "@navikt/ds-react";
 import { data, Form, LoaderFunctionArgs, useLoaderData } from "react-router";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
@@ -44,7 +44,6 @@ export default function BarneTillegg() {
   const [modalBarn, setModalBarn] = useState<BarneSvar | undefined>(undefined);
   const [visModal, setVisModal] = useState(false);
 
-  // @ts-ignore
   const form = useForm({
     method: "PUT",
     submitSource: "state",
@@ -71,10 +70,12 @@ export default function BarneTillegg() {
     setVisModal(false);
   }
 
-  function åpneModal(barn: BarneSvar | undefined) {
-    setModalBarn(barn);
+  useEffect(() => {
+    åpneModal();
+  }, [visModal]);
+
+  function åpneModal() {
     ref.current?.showModal();
-    setVisModal(true);
   }
 
   return (
@@ -172,7 +173,10 @@ export default function BarneTillegg() {
                             icon={<PencilIcon />}
                             variant="secondary"
                             size="small"
-                            onClick={() => åpneModal(barn)}
+                            onClick={() => {
+                              setModalBarn(barn);
+                              setVisModal(true);
+                            }}
                           >
                             Endre svar
                           </Button>
@@ -191,7 +195,10 @@ export default function BarneTillegg() {
             icon={<PencilIcon />}
             variant="secondary"
             size="small"
-            onClick={() => åpneModal(undefined)}
+            onClick={() => {
+              setModalBarn(undefined);
+              setVisModal(true);
+            }}
           >
             Legg til barn manuelt
           </Button>
