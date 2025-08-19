@@ -1,4 +1,4 @@
-import { Komponent } from "../../components/sporsmal/sporsmal.types";
+import { KomponentType } from "../../components/sporsmal/sporsmal.types";
 
 export const tarUtdanningEllerOpplæring = "tarUtdanningEllerOpplæring";
 export const avsluttetUtdanningSiste6Måneder = "avsluttetUtdanningSiste6Måneder";
@@ -20,7 +20,7 @@ export type UtdanningSvar = {
   [planleggerÅStarteEllerFullføreStudierSamtidig]?: "ja" | "nei";
 };
 
-export const utdanningSporsmal: Komponent[] = [
+export const utdanningSporsmal: KomponentType[] = [
   {
     id: tarUtdanningEllerOpplæring,
     type: "envalg",

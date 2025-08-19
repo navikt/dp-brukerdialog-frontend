@@ -11,6 +11,8 @@ import {
   reistTilbakeTilBostedslandet,
 } from "./bostedsland.sporsmal";
 
+import { KomponentType, SpørsmalBase, SpørsmalType } from "~/components/sporsmal/sporsmal.types";
+
 export const bostedslandSchema = z
   .object({
     [bostedsland]: z.string().optional(),
@@ -27,7 +29,9 @@ export const bostedslandSchema = z
       const sporsmalId = sporsmal.id as keyof BostedslandSvar;
       const svar = data[sporsmalId];
 
-      if (synlig && !svar && !sporsmal.optional) {
+      const isSpørsmål = sporsmal.type !== "lesMer" && sporsmal.type !== "varselmelding";
+
+      if (synlig && !svar && isSpørsmål && !sporsmal.optional) {
         ctx.addIssue({
           path: [sporsmal.id],
           code: "custom",

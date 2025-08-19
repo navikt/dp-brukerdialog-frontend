@@ -1,14 +1,16 @@
-export type Komponent =
-  | EnvalgSporsmal
+export type KomponentType =
+  | EnvalgSpørsmål
   | FlervalgSpørsmål
-  | LangTekstSporsmal
-  | KortTekstSporsmal
-  | DatoSporsmal
-  | LandSporsmal
-  | PeriodeSporsmal
-  | VarselmeldingKomponent;
+  | LangTekstSpørsmål
+  | KortTekstSpørsmål
+  | DatoSpørsmål
+  | LandSpørsmål
+  | PeriodeSpørsmål
+  | Varselmelding
+  | LesMer;
 
-type baseKomponentType =
+type InfoType = "varselmelding" | "lesMer";
+export type SpørsmalType =
   | "envalg"
   | "flervalg"
   | "langTekst"
@@ -16,61 +18,61 @@ type baseKomponentType =
   | "dato"
   | "periodeFra"
   | "periodeTil"
-  | "land"
-  | "varselmelding";
+  | "land";
 
-export type BaseKomponent = {
+export type KomponentBase = {
   id: string;
-  type: baseKomponentType;
-  visHvis?: (svar: Record<string, any>) => boolean;
-}
-
-export type BaseSporsmal = BaseKomponent & {
   label: string;
-  optional?: boolean;
   description?: string;
-  lesMerLedetekst?: string;
-  lesMerTekst?: string;
+  type: SpørsmalType | InfoType;
+  visHvis?: (svar: Record<string, any>) => boolean;
 };
 
-export type EnvalgSporsmal = BaseSporsmal & {
+export type SpørsmalBase = KomponentBase & {
+  optional?: boolean;
+};
+
+export type EnvalgSpørsmål = SpørsmalBase & {
   type: "envalg";
   options: { value: string; label: string }[];
 };
 
-  export type FlervalgSpørsmål = BaseSporsmal & {
+export type FlervalgSpørsmål = SpørsmalBase & {
   type: "flervalg";
   options: { value: string; label: string }[];
 };
 
-export type LangTekstSporsmal = BaseSporsmal & {
+export type LangTekstSpørsmål = SpørsmalBase & {
   type: "langTekst";
   maxLength?: number;
 };
 
-export type KortTekstSporsmal = BaseSporsmal & {
+export type KortTekstSpørsmål = SpørsmalBase & {
   type: "kortTekst";
 };
 
-export type DatoSporsmal = BaseSporsmal & {
+export type DatoSpørsmål = SpørsmalBase & {
   type: "dato";
   fraOgMed?: Date;
   tilOgMed?: Date;
 };
 
-export type PeriodeSporsmal = BaseSporsmal & {
+export type PeriodeSpørsmål = SpørsmalBase & {
   type: "periodeFra" | "periodeTil";
-  fraOgMed?: DatoSporsmal;
-  tilOgMed?: DatoSporsmal;
+  fraOgMed?: DatoSpørsmål;
+  tilOgMed?: DatoSpørsmål;
   periodeLabel?: string;
 };
 
-export type LandSporsmal = BaseSporsmal & {
+export type LandSpørsmål = SpørsmalBase & {
   type: "land";
 };
 
-export type VarselmeldingKomponent = BaseKomponent & {
+export type Varselmelding = KomponentBase & {
   type: "varselmelding";
-  varselvariant: "error" | "warning" | "info" | "success"
-  varselmelding: string;
+  variant: "error" | "warning" | "info" | "success";
+};
+
+export type LesMer = KomponentBase & {
+  type: "lesMer";
 };

@@ -1,5 +1,5 @@
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
-import { Komponent } from "../components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/sporsmal/sporsmal.types";
 
 export const mottatt = "mottatt";
 export const arsak = "arsak";
@@ -11,7 +11,7 @@ export type DinSituasjonSvar = {
   [dato]?: string;
 };
 
-export const dinSituasjonSporsmal: Komponent[] = [
+export const dinSituasjonSporsmal: KomponentType[] = [
   {
     id: mottatt,
     type: "envalg",

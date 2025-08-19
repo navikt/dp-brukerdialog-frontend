@@ -1,7 +1,6 @@
 import { Checkbox, CheckboxGroup } from "@navikt/ds-react";
-import { FlervalgSpørsmål } from "./sporsmal.types";
 import { FormScope, useField } from "@rvf/react-router";
-import { LesMer } from "~/components/sporsmal/LesMer";
+import { FlervalgSpørsmål } from "./sporsmal.types";
 
 interface IProps {
   spørsmål: FlervalgSpørsmål;
@@ -12,21 +11,18 @@ export function Flervalg({ spørsmål, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   return (
-    <>
-      <CheckboxGroup
-        {...field.getInputProps()}
-        legend={spørsmål.label}
-        description={spørsmål.description}
-        key={spørsmål.id}
-        error={field.error()}
-      >
-        {spørsmål.options?.map((option) => (
-          <Checkbox key={option.value} value={option.value}>
-            {option.label}
-          </Checkbox>
-        ))}
-      </CheckboxGroup>
-      <LesMer spørsmål={spørsmål} />
-    </>
+    <CheckboxGroup
+      {...field.getInputProps()}
+      legend={spørsmål.label}
+      description={spørsmål.description}
+      key={spørsmål.id}
+      error={field.error()}
+    >
+      {spørsmål.options?.map((option) => (
+        <Checkbox key={option.value} value={option.value}>
+          {option.label}
+        </Checkbox>
+      ))}
+    </CheckboxGroup>
   );
 }
