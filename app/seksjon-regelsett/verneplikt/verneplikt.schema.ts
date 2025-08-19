@@ -7,7 +7,7 @@ import {
   senderIkkeDokumentasjonBegrunnelse,
   vernepliktSpørsmål,
   VernepliktSvar,
-} from "./vernepliktSpørsmål";
+} from "./verneplikt.spørsmål";
 
 export const vernepliktSchema = z
   .object({

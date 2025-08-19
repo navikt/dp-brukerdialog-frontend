@@ -1,9 +1,9 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
-  AnnenPengestøtteSvar,
+  AnnenPengestøtteSpørsmål,
   harMottattPengestøtteFraAndreEØSLand,
   hvilkeUtenlandskeYtelserHarDuMottatt,
-} from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-svar";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-spørsmål";
 
 export const pengestøtteFraAndreEøsLand: KomponentType[] = [
   {
@@ -43,6 +43,6 @@ export const pengestøtteFraAndreEøsLand: KomponentType[] = [
         label: "Pleiepenger, omsorgspenger eller opplæringspenger",
       },
     ],
-    visHvis: (svar: AnnenPengestøtteSvar) => svar[harMottattPengestøtteFraAndreEØSLand] === "ja",
+    visHvis: (svar: AnnenPengestøtteSpørsmål) => svar[harMottattPengestøtteFraAndreEØSLand] === "ja",
   },
 ];

@@ -9,7 +9,7 @@ import {
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
-} from "./bostedslandSpørsmål";
+} from "./bostedsland.spørsmål";
 
 export const bostedslandSchema = z
   .object({

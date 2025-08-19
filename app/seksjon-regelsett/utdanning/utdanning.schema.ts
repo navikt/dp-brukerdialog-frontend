@@ -9,7 +9,7 @@ import {
   tarUtdanningEllerOpplæring,
   utdanningSpørsmål,
   UtdanningSvar,
-} from "./utdanningSpørsmål";
+} from "./utdanning.spørsmål";
 
 export const utdanningSchema = z
   .object({

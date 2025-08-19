@@ -7,7 +7,7 @@ import { z } from "zod";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { useEffect } from "react";
 import {
-  AnnenPengestøtteSvar,
+  AnnenPengestøtteSpørsmål,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   harMottattPengestøtteFraAndreEØSLand,
   hvemUtbetalerEtterlønnen,
@@ -29,8 +29,8 @@ import {
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
   mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-svar";
-import { pengestøtteFraAndreEøsLand } from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-eøs";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-spørsmål";
+import { pengestøtteFraAndreEøsLand } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
   annenPengestøtteFraAndreEnnNav,
   dagpengerFraEtAnnetEøsLandSpørsmål,
@@ -39,10 +39,10 @@ import {
   pengestøtteFraNorgeSpørsmål,
   pensjonFraAndreEnnNavSpørsmål,
   utbetalingFraGarantikassenForFiskere,
-} from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-norge";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-norge";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
-import styles from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
+import styles from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -142,7 +142,7 @@ export default function AnnenPengestøtte() {
     .superRefine((data, ctx) => {
       komplettSchema.forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
+        const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSpørsmål;
         const svar = data[spørsmålId];
 
         if (synlig && (!svar || svar?.length === 0)) {
@@ -173,7 +173,7 @@ export default function AnnenPengestøtte() {
   useEffect(() => {
     const values = form.value();
     komplettSchema.forEach((spørsmål) => {
-      const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
+      const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSpørsmål;
       if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
         form.setValue(spørsmålId, undefined);
       }
@@ -189,7 +189,7 @@ export default function AnnenPengestøtte() {
       <Spørsmål
         key={spørsmål.id}
         spørsmål={spørsmål}
-        formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSvar)}
+        formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSpørsmål)}
       />
     );
   };

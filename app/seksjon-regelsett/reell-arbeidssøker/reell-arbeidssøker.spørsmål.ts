@@ -1,6 +1,4 @@
 export const kanDuJobbeBådeHeltidOgDeltid = "kan-du-jobbe-både-heltid-og-deltid";
-export const kanIkkeJobbeBådeHeltidOgDeltidBegrunnelse =
-  "kan-ikke-jobbe-både-heltid-og-deltid-begrunnelse";
 export const situasjonsbeskrivelseRedusertHelse =
   "situasjonsbeskrivelse-redusert-helse";
 export const situasjonsbeskrivelseOmsorgForBarnUnderEttÅr =
@@ -23,7 +21,6 @@ export const kanIkkeJobbeBådeHeltidOgDeltidAntallTimer =
 export const kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen =
   "kan-ikke-jobbe-både-heltid-og-deltid-skriv-kort-om-situasjonen";
 export const kanDuJobbeIHeleNorge = "kan-du-jobbe-i-hele-norge";
-export const kanIkkeJobbeIHeleNorgeBegrunnelse = "kan-ikke-jobbe-i-hele-norge-begrunnelse";
 export const kanDuTaAlleTyperArbeid = "kan-du-ta-alle-typer-arbeid";
 export const hvilkeTyperJobberKanDuTa = "hvilke-typer-jobber-kan-du-ta"
 export const hvilkeTyperJobberKanDuTaVarselmelding = "hvilke-typer-jobber-kan-du-ta-varselmelding";
@@ -35,7 +32,7 @@ export const kanJobbeHeltidOgDeltidMenKanIkkeJobbeIHeleNorgeVarselmelding = "kan
 export const kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse =
   "kan-ikke-jobbe-heltid-og-deltid-og-ellerkan-ikke-jobbe-i-hele-norge-situasjonsbeskrivelse";
 
-export type ReellArbeidssøkerSvar = {
+export type ReellArbeidssøkerSpørsmål = {
   [kanDuJobbeBådeHeltidOgDeltid]?: "ja" | "nei";
   [kanDuJobbeIHeleNorge]?: "ja" | "nei";
   [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]?:

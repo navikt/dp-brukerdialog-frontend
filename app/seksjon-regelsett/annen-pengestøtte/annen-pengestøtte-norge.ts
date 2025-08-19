@@ -1,6 +1,6 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
-  AnnenPengestøtteSvar,
+  AnnenPengestøtteSpørsmål,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   hvemUtbetalerEtterlønnen,
   hvemUtbetalerPengestøtten,
@@ -20,7 +20,7 @@ import {
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
   mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-svar";
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-spørsmål";
 
 export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
   {
@@ -60,7 +60,7 @@ export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
       },
       { value: "annenYtelse", label: "Annen ytelse" },
     ],
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[mottarEllerHarSøktOmPengestøtteFraAndreEnnNav] === "ja",
   },
 ];
@@ -70,7 +70,7 @@ export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
     id: hvemUtbetalerPensjonen,
     type: "kortTekst",
     label: "Hvem utbetaler pensjonen?",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "pensjonFraAndreEnnNav"
       ) || false,
@@ -81,7 +81,7 @@ export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
     label: "Fra dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "pensjonFraAndreEnnNav"
       ) || false,
@@ -92,7 +92,7 @@ export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
     label: "Til dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "pensjonFraAndreEnnNav"
       ) || false,
@@ -106,7 +106,7 @@ export const utbetalingFraGarantikassenForFiskere: KomponentType[] = [
     label: "Fra dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "garantiLottForFiskere"
       ) || false,
@@ -117,7 +117,7 @@ export const utbetalingFraGarantikassenForFiskere: KomponentType[] = [
     label: "Til dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "garantiLottForFiskere"
       ) || false,
@@ -129,7 +129,7 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
     id: hvemUtbetalerEtterlønnen,
     type: "kortTekst",
     label: "Hvem utbetaler etterlønnen?",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "etterlønnFraArbeidsgiver"
       ) || false,
@@ -140,7 +140,7 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
     label: "Fra dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "etterlønnFraArbeidsgiver"
       ) || false,
@@ -151,7 +151,7 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
     label: "Til dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "etterlønnFraArbeidsgiver"
       ) || false,
@@ -163,7 +163,7 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
     id: hvilketEøsLandUtbetalerDagpengene,
     type: "land",
     label: "Hvilket annet EØS-land utbetaler dagpengene?",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "dagpengerFraAnnetEøsLand"
       ) || false,
@@ -174,7 +174,7 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
     label: "Fra dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "dagpengerFraAnnetEøsLand"
       ) || false,
@@ -185,7 +185,7 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
     label: "Til dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         "dagpengerFraAnnetEøsLand"
       ) || false,
@@ -197,14 +197,14 @@ export const annenPengestøtteFraAndreEnnNav: KomponentType[] = [
     id: hvilkenAnnenPengestøtteMottas,
     type: "kortTekst",
     label: "Hvilken annen pengestøtte er det du mottar?",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes("annenYtelse") || false,
   },
   {
     id: hvemUtbetalerPengestøtten,
     type: "kortTekst",
     label: "Hvem utbetaler pengestøtten?",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes("annenYtelse") || false,
   },
   {
@@ -213,7 +213,7 @@ export const annenPengestøtteFraAndreEnnNav: KomponentType[] = [
     label: "Fra dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes("annenYtelse") || false,
   },
   {
@@ -222,7 +222,7 @@ export const annenPengestøtteFraAndreEnnNav: KomponentType[] = [
     label: "Til dato",
     description:
       "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
+    visHvis: (svar: AnnenPengestøtteSpørsmål) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes("annenYtelse") || false,
   },
 ];
@@ -252,7 +252,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
       type: "kortTekst",
       label: "Skriv inn hva du får beholde",
-      visHvis: (svar: AnnenPengestøtteSvar) =>
+      visHvis: (svar: AnnenPengestøtteSpørsmål) =>
         svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
     },
     {
@@ -261,7 +261,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       label: "Grunnen til at vi spør om dette?",
       description:
         "Sammenholdt med en tverrfaglig agenda iverksettes økningen på linje med satsingsområdet.",
-      visHvis: (svar: AnnenPengestøtteSvar) =>
+      visHvis: (svar: AnnenPengestøtteSpørsmål) =>
         svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
     },
   ];
