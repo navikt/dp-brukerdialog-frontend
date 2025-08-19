@@ -57,10 +57,7 @@ export default function OpprettSoknad() {
         </div>
 
         {innhold?.body && (
-          <PortableText
-            value={innhold?.body}
-            components={{ types: { readMore: SanityReadMore } }}
-          />
+          <PortableText value={innhold.body} components={{ types: { readMore: SanityReadMore } }} />
         )}
 
         <VStack gap="8" className="mt-14">

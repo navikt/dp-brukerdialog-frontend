@@ -1,10 +1,10 @@
 import type { TypedObject } from "@portabletext/types";
 
-export interface ISanityInfoside {
+export type SanityInfoside = {
   textId: string;
   body: TypedObject | TypedObject[];
-}
+};
 
-export interface ISanityData {
-  infosider: ISanityInfoside[];
-}
+export type SanityData = {
+  infosider: SanityInfoside[];
+};
