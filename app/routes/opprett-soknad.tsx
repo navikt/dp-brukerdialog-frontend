@@ -1,11 +1,14 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Box, Button, Checkbox, Page, VStack } from "@navikt/ds-react";
+import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData } from "react-router";
 import { z } from "zod";
-import { opprettSoknad } from "~/models/opprett-soknad.server";
-import { Route } from "./+types/opprett-soknad";
 import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
+import { useSanity } from "~/hooks/useSanity";
+import { opprettSoknad } from "~/models/opprett-soknad.server";
+import { SanityReadMore } from "~/sanity/components/SanityReadMore";
+import { Route } from "./+types/opprett-soknad";
 
 export async function action({ request }: Route.ActionArgs) {
   const response = await opprettSoknad(request);
@@ -22,7 +25,10 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function OpprettSoknad() {
+  const { hentInfosideTekst } = useSanity();
   const actionData = useActionData<typeof action>();
+
+  const innhold = hentInfosideTekst("infoside.opprett-søknad");
 
   const form = useForm({
     method: "post",
@@ -50,12 +56,13 @@ export default function OpprettSoknad() {
           <h1>Søknad om dagpenger</h1>
         </div>
 
-        <p>
-          Dagpenger er økonomisk støtte på veien tilbake til arbeid. For å ha rett til dagpenger, må
-          du fylle noen krav. Her kan du lese om du har rett til dagpenger.
-        </p>
+        {innhold?.body && (
+          <PortableText
+            value={innhold?.body}
+            components={{ types: { readMore: SanityReadMore } }}
+          />
+        )}
 
-        <h3>Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger</h3>
         <VStack gap="4">
           <Form {...form.getFormProps()}>
             <Box padding="4" background="surface-warning-subtle" borderRadius="medium">
