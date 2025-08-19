@@ -23,7 +23,6 @@
     "@navikt/oasis": "^3.8.0",
     "@portabletext/types": "^2.0.13",
     "@portabletext/react": "^3.2.1",
-    "@portabletext/to-html": "^2.0.14",
     "@react-router/fs-routes": "^7.7.1",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
