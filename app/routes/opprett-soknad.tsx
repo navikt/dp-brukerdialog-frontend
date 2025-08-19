@@ -63,7 +63,7 @@ export default function OpprettSoknad() {
           />
         )}
 
-        <VStack gap="4">
+        <VStack gap="8" className="mt-14">
           <Form {...form.getFormProps()}>
             <Box padding="4" background="surface-warning-subtle" borderRadius="medium">
               <Checkbox name="checkbox" error={!!form.error("checkbox")}>
@@ -84,7 +84,7 @@ export default function OpprettSoknad() {
 
             <Button
               iconPosition="right"
-              className="mt-4"
+              className="mt-8"
               icon={<ArrowRightIcon aria-hidden />}
               type="submit"
             >
