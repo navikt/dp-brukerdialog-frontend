@@ -35,7 +35,7 @@ export const kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbe
 export type ReellArbeidssøkerSpørsmål = {
   [kanDuJobbeBådeHeltidOgDeltid]?: "ja" | "nei";
   [kanDuJobbeIHeleNorge]?: "ja" | "nei";
-  [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]?:
+  [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]?: Array<
     | typeof situasjonsbeskrivelseRedusertHelse
     | typeof situasjonsbeskrivelseOmsorgForBarnUnderEttÅr
     | typeof situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse
@@ -43,7 +43,7 @@ export type ReellArbeidssøkerSpørsmål = {
     | typeof situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov
     | typeof situasjonsbeskrivelseJegErPermitert
     | typeof situasjonsbeskrivelseHarFylt60
-    | typeof situasjonsbeskrivelseAnnenSituasjon
+    | typeof situasjonsbeskrivelseAnnenSituasjon>
   [kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen]?: string;
   [kanDuTaAlleTyperArbeid]?: "ja" | "nei";
   [hvilkeTyperJobberKanDuTa]?: string;

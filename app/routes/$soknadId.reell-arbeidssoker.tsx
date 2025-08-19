@@ -2,32 +2,39 @@ import invariant from "tiny-invariant";
 import { Alert, Button, HStack, List, Page, VStack } from "@navikt/ds-react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { useForm } from "@rvf/react-router";
-import { ActionFunctionArgs, Form, redirect, useActionData, useNavigate } from "react-router";
-import { z } from "zod";
-import { useEffect } from "react";
+import {
+  ActionFunctionArgs,
+  data,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+} from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ListItem } from "@navikt/ds-react/List";
-import {
-  erDuVilligTilÅBytteYrkeEllerGåNedILønn,
-  kanDuJobbeBådeHeltidOgDeltid,
-  kanDuJobbeIHeleNorge,
-  kanDuTaAlleTyperArbeid,
-  kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
-  situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
-  situasjonsbeskrivelseRedusertHelse,
-  ReellArbeidssøkerSpørsmål,
-  situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
-  situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-  situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-  kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen,
-  situasjonsbeskrivelseJegErPermitert,
-  situasjonsbeskrivelseHarFylt60,
-  situasjonsbeskrivelseAnnenSituasjon,
-  hvilkeTyperJobberKanDuTa,
-  kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse,
-} from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
+import { ReellArbeidssøkerSpørsmål } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { reellArbeidssøkerSpørsmål } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker";
+import { reellArbeidssøkerSchema } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.schema";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { hentFormDefaultValues } from "~/utils/form.utils";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssøker");
+
+  if (!response.ok) {
+    return data(undefined);
+  }
+
+  const loaderData: ReellArbeidssøkerSpørsmål = await response.json();
+
+  return data(loaderData);
+}
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -50,73 +57,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 // noinspection JSUnusedGlobalSymbols
 export default function ReellArbeidssøker() {
+  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
-
-  const schema = z
-    .object({
-      [kanDuTaAlleTyperArbeid]: z.enum(["ja", "nei"]).optional(),
-      [hvilkeTyperJobberKanDuTa]: z.string().max(500).optional(),
-      [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
-      [kanDuJobbeBådeHeltidOgDeltid]: z.enum(["ja", "nei"]).optional(),
-      [kanIkkeJobbeBådeHeltidOgDeltidAntallTimer]: z.string().optional(),
-      [kanDuJobbeIHeleNorge]: z.enum(["ja", "nei"]).optional(),
-      [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]: z.array(
-        z
-          .enum([
-            situasjonsbeskrivelseRedusertHelse,
-            situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
-            situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
-            situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-            situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-            situasjonsbeskrivelseJegErPermitert,
-            situasjonsbeskrivelseHarFylt60,
-            situasjonsbeskrivelseAnnenSituasjon,
-          ])
-      ).optional(),
-      [kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen]: z.string().max(500).optional(),
-    })
-    .superRefine((data, ctx) => {
-      reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
-        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSpørsmål;
-        const svar = data[spørsmålId];
-
-        if (synlig && (!svar || svar?.length === 0)) {
-          ctx.addIssue({
-            path: [spørsmål.id],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-      });
-    });
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: schema,
+    schema: reellArbeidssøkerSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: {},
+    defaultValues: hentFormDefaultValues<ReellArbeidssøkerSpørsmål>(loaderData),
   });
 
-  // Fjern verdier for alle felter som ikke er synlige (basert på visHvis).
-  // Dette sikrer at kun relevante svar sendes til backend og at formData ikke inneholder "gamle" eller skjulte felt.
-  // Kalles automatisk hver gang formverdier endres.
-  useEffect(() => {
-    const values = form.value();
-
-    reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
-      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSpørsmål;
-      if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
-        form.setValue(spørsmålId, undefined);
-      }
-    });
-  }, [form.value()]);
+  useNullstillSkjulteFelter<ReellArbeidssøkerSpørsmål>(form, reellArbeidssøkerSpørsmål);
 
   return (
     <Page className="brukerdialog">
