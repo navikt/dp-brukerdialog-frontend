@@ -11,7 +11,7 @@ import {
   kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse,
   kanIkkeJobbeHeltidOgDeltidOgKanIkkeJobbeIHeleNorgeVarselmelding,
   kanJobbeHeltidOgDeltidMenKanIkkeJobbeIHeleNorgeVarselmelding,
-  ReellArbeidssøkerSvar,
+  ReellArbeidssøkerSpørsmål,
   situasjonsbeskrivelseAnnenSituasjon,
   situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
@@ -21,7 +21,7 @@ import {
   situasjonsbeskrivelseJegErPermitertVarselmelding,
   situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
   situasjonsbeskrivelseRedusertHelse,
-} from "~/components/regelsett/reell-arbeidssøker/reell-arbeidssøker-svar";
+} from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const reellArbeidssøkerSpørsmål: KomponentType[] = [
@@ -50,14 +50,14 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     label: "Informasjon om konsekvens",
     variant: "info",
     description: "Informasjon om konsekvens",
-    visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuTaAlleTyperArbeid] === "nei",
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) => svar[kanDuTaAlleTyperArbeid] === "nei",
   },
   {
     id: hvilkeTyperJobberKanDuTa,
     type: "langTekst",
     label: "Hvilke typer jobber kan du ta?",
     maxLength: 500,
-    visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuTaAlleTyperArbeid] === "nei",
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) => svar[kanDuTaAlleTyperArbeid] === "nei",
   },
   {
     id: erDuVilligTilÅBytteYrkeEllerGåNedILønn,
@@ -77,7 +77,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     label: "Informasjon om konsekvens",
     description:
       "For å ha rett til dagpenger må du være villig til å bytte yrke eller gå ned i lønn. Hvis du svarer “Nei” på spørsmålet vil du mest sannsynlig få avslag på søknaden din om dagpenger.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[erDuVilligTilÅBytteYrkeEllerGåNedILønn] === "nei",
   },
   {
@@ -96,14 +96,14 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     type: "kortTekst",
     label: "Skriv inn antall timer du kan jobbe per uke",
     description: "For å få rett til dagpenger må du normalt kunne jobbe minst 18,75 timer per uke.",
-    visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
   {
     id: "kanIkkeJobbeBådeHeltidOgDeltidAntallTimerLesMer",
     type: "lesMer",
     label: "Hvis du har uføretrygd",
     description: "Hvis du har uføretrygd må du kunne jobbe minst 11,25 timer per uke.",
-    visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
   {
     id: kanDuJobbeIHeleNorge,
@@ -123,7 +123,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     label: "",
     description:
       "Informasjon om konsekvens: Kan ikke jobbe heltid og deltid, men kan jobbe i hele Norge.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[kanDuJobbeBådeHeltidOgDeltid] === "nei" && svar[kanDuJobbeIHeleNorge] === "ja",
   },
   {
@@ -133,7 +133,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     label: "",
     description:
       "Informasjon om konsekvens: Kan ikke jobbe heltid og deltid, og kan ikke jobbe i hele Norge.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[kanDuJobbeBådeHeltidOgDeltid] === "nei" && svar[kanDuJobbeIHeleNorge] === "nei",
   },
   {
@@ -143,7 +143,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     label: "",
     description:
       "Informasjon om konsekvens: Kan jobbe heltid og deltid, men kan ikke jobbe i hele Norge.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[kanDuJobbeBådeHeltidOgDeltid] === "ja" && svar[kanDuJobbeIHeleNorge] === "nei",
   },
   {
@@ -180,7 +180,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
       { value: situasjonsbeskrivelseHarFylt60, label: "Har fylt 60 år" },
       { value: situasjonsbeskrivelseAnnenSituasjon, label: "Annen situasjon" },
     ],
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       (svar[kanDuJobbeBådeHeltidOgDeltid] === "nei" && svar[kanDuJobbeIHeleNorge] !== undefined) ||
       (svar[kanDuJobbeBådeHeltidOgDeltid] !== undefined && svar[kanDuJobbeIHeleNorge] === "nei"),
   },
@@ -194,7 +194,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
       "Når du er permittert er du som regel ikke like tilgjengelig for å jobbe i hele Norge. Permitteringsgraden og hvor lenge du er permittert, kan sette noen begrensinger for hvor i landet du kan jobbe.<br/><br/> " +
       "Skriv kort om situasjonen din og forklar hvorfor du ikke kan jobbe i hele Norge. Du kan ikke begrense jobbsøkingen mer enn det som er nødvendig på bakgrunn av permitteringen din.<br/><br/>" +
       "Hvis det skjer endringer i permitteringen din, må du gi beskjed til oss, slik at vi kan gjøre en ny vurdering.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]?.includes(
         situasjonsbeskrivelseJegErPermitert
       ) || false,
@@ -206,7 +206,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     label: "",
     description:
       "Siden du er over 60 år, kan du søke om dagpenger selv om du ikke ønsker å ta jobb i hele Norge. Du trenger ikke begrunne valget ditt.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]?.includes(
         situasjonsbeskrivelseHarFylt60
       ) || false,
@@ -219,7 +219,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     description:
       "Hvis du svarer &quot;annen situasjon&quot; og du ikke kan dokumentere svært gode grunner til at du ikke kan jobbe i hele Norge, vil du sannsynligvis få avslag på søknaden din om dagpenger.<br/><br/>" +
       "Annen situasjon kan for eksempel være hvis du har pleietrengende familie, eller den andre forelderen ikke kan delta i den daglige omsorgen for barn på grunn av sykdom eller institusjonsopphold.",
-    visHvis: (svar: ReellArbeidssøkerSvar) =>
+    visHvis: (svar: ReellArbeidssøkerSpørsmål) =>
       svar[kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]?.includes(
         situasjonsbeskrivelseAnnenSituasjon
       ) || false,

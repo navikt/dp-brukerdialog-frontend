@@ -34,7 +34,7 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
 export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
   "skriv-inn-hva-du-får-beholde-fra-tidligere-arbeidsgiver";
 
-export type AnnenPengestøtteSvar = {
+export type AnnenPengestøtteSpørsmål = {
   [harMottattPengestøtteFraAndreEØSLand]?: "ja" | "nei";
   [hvilkeUtenlandskeYtelserHarDuMottatt]?:
     | "sykepenger"

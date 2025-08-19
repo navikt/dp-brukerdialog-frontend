@@ -10,7 +10,7 @@ import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { hentFormDefaultValues } from "~/utils/form.utils";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
-import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanningSpørsmål";
+import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.spørsmål";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");

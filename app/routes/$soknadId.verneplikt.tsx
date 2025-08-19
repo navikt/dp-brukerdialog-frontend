@@ -19,7 +19,7 @@ import { vernepliktSchema } from "~/seksjon-regelsett/verneplikt/verneplikt.sche
 import {
   vernepliktSpørsmål,
   VernepliktSvar,
-} from "~/seksjon-regelsett/verneplikt/vernepliktSpørsmål";
+} from "~/seksjon-regelsett/verneplikt/verneplikt.spørsmål";
 import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

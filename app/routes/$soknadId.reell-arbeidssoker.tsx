@@ -16,7 +16,7 @@ import {
   kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
   situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
   situasjonsbeskrivelseRedusertHelse,
-  ReellArbeidssøkerSvar,
+  ReellArbeidssøkerSpørsmål,
   situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
   situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
@@ -26,8 +26,8 @@ import {
   situasjonsbeskrivelseAnnenSituasjon,
   hvilkeTyperJobberKanDuTa,
   kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse,
-} from "~/components/regelsett/reell-arbeidssøker/reell-arbeidssøker-svar";
-import { reellArbeidssøkerSpørsmål } from "~/components/regelsett/reell-arbeidssøker/reell-arbeidssøker";
+} from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
+import { reellArbeidssøkerSpørsmål } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker";
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -79,7 +79,7 @@ export default function ReellArbeidssøker() {
     .superRefine((data, ctx) => {
       reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
+        const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSpørsmål;
         const svar = data[spørsmålId];
 
         if (synlig && (!svar || svar?.length === 0)) {
@@ -111,7 +111,7 @@ export default function ReellArbeidssøker() {
     const values = form.value();
 
     reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
-      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
+      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSpørsmål;
       if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
         form.setValue(spørsmålId, undefined);
       }
@@ -144,7 +144,7 @@ export default function ReellArbeidssøker() {
                 <Spørsmål
                   key={spørsmål.id}
                   spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSvar)}
+                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSpørsmål)}
                 />
               );
             })}

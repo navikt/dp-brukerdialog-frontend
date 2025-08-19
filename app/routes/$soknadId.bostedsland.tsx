@@ -21,7 +21,7 @@ import { bostedslandSchema } from "~/seksjon-regelsett/bostedsland/bostedsland.s
 import {
   bostedslandSpørsmål,
   BostedslandSvar,
-} from "~/seksjon-regelsett/bostedsland/bostedslandSpørsmål";
+} from "~/seksjon-regelsett/bostedsland/bostedsland.spørsmål";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
