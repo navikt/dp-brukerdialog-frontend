@@ -2,13 +2,12 @@ import { BodyShort, DatePicker, useDatepicker, VStack } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import classNames from "classnames";
 import { formatISO } from "date-fns";
-import { PeriodeSporsmal } from "./sporsmal.types";
+import { PeriodeSpørsmål } from "./sporsmal.types";
 
 import styles from "./sporsmal.module.css";
-import { LesMer } from "~/components/sporsmal/LesMer";
 
 interface IProps {
-  sporsmal: PeriodeSporsmal;
+  sporsmal: PeriodeSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
@@ -56,7 +55,6 @@ export function Periode({ sporsmal, formScope }: Readonly<IProps>) {
           />
         </DatePicker>
       </VStack>
-      <LesMer spørsmål={sporsmal} />
     </VStack>
   );
 }

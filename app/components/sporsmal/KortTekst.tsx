@@ -1,10 +1,9 @@
-import { KortTekstSporsmal } from "~/components/sporsmal/sporsmal.types";
-import { FormScope, useField } from "@rvf/react-router";
 import { TextField } from "@navikt/ds-react";
-import { LesMer } from "~/components/sporsmal/LesMer";
+import { FormScope, useField } from "@rvf/react-router";
+import { KortTekstSpørsmål } from "~/components/sporsmal/sporsmal.types";
 
 interface IProps {
-  sporsmal: KortTekstSporsmal;
+  sporsmal: KortTekstSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
@@ -12,15 +11,12 @@ export function KortTekst({ sporsmal, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
 
   return (
-    <>
-      <TextField
-        {...field.getInputProps()}
-        label={sporsmal.label}
-        description={sporsmal.description}
-        key={sporsmal.id}
-        error={field.error()}
-      />
-      <LesMer spørsmål={sporsmal} />
-    </>
+    <TextField
+      {...field.getInputProps()}
+      label={sporsmal.label}
+      description={sporsmal.description}
+      key={sporsmal.id}
+      error={field.error()}
+    />
   );
 }

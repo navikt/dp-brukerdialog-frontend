@@ -1,11 +1,10 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
-import { DatoSporsmal } from "./sporsmal.types";
-import { LesMer } from "~/components/sporsmal/LesMer";
+import { DatoSpørsmål } from "./sporsmal.types";
 
 interface IProps {
-  sporsmal: DatoSporsmal;
+  sporsmal: DatoSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
@@ -31,7 +30,6 @@ export function Dato({ sporsmal, formScope }: Readonly<IProps>) {
         label={sporsmal.optional ? `${sporsmal.label}  (valgfritt)` : `${sporsmal.label}`}
         description={sporsmal.description}
       />
-      <LesMer spørsmål={sporsmal} />
     </DatePicker>
   );
 }

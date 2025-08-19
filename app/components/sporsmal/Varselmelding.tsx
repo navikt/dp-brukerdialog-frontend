@@ -1,18 +1,20 @@
-import { Alert } from "@navikt/ds-react";
-import { VarselmeldingKomponent } from "~/components/sporsmal/sporsmal.types";
+import { Alert, BodyLong, Heading } from "@navikt/ds-react";
+import { Varselmelding } from "~/components/sporsmal/sporsmal.types";
 import parse from "html-react-parser";
 
 interface IProps {
-  sporsmal: VarselmeldingKomponent;
+  sporsmal: Varselmelding;
 }
 
 export function Varselmelding({ sporsmal }: Readonly<IProps>) {
   return (
-    sporsmal.varselvariant &&
-    sporsmal.varselmelding && (
-      <Alert variant={sporsmal.varselvariant}>
-        {parse(sporsmal.varselmelding || "", { trim: true })}
-      </Alert>
-    )
+    <Alert variant={sporsmal.variant}>
+      {sporsmal.label && (
+        <Heading spacing size="small" level="3">
+          Informasjon om ansvaret ditt
+        </Heading>
+      )}
+      {<BodyLong spacing>{parse(sporsmal.description || "", { trim: true })}</BodyLong>}
+    </Alert>
   );
 }

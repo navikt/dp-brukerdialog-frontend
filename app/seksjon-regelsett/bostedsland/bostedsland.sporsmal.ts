@@ -1,4 +1,4 @@
-import { Komponent } from "../components/sporsmal/sporsmal.types";
+import { KomponentType } from "~/components/sporsmal/sporsmal.types";
 
 export const bostedsland = "bostedsland";
 export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
@@ -24,7 +24,7 @@ export function hentDefaultBostedslandSvar(): BostedslandSvar {
   ) as BostedslandSvar;
 }
 
-export const bostedslandSporsmal: Komponent[] = [
+export const bostedslandSporsmal: KomponentType[] = [
   {
     id: bostedsland,
     type: "land",
@@ -52,6 +52,7 @@ export const bostedslandSporsmal: Komponent[] = [
     id: avreiseDatoTil,
     type: "periodeTil",
     label: "Til dato",
+    optional: true,
     visHvis: (svar: BostedslandSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {

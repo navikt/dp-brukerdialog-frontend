@@ -42,14 +42,15 @@ import {
 } from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte-norge";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import {
-  DatoSporsmal,
-  EnvalgSporsmal,
+  DatoSpørsmål,
+  EnvalgSpørsmål,
   FlervalgSpørsmål,
-  KortTekstSporsmal,
-  LandSporsmal,
-  LangTekstSporsmal,
-  PeriodeSporsmal,
-  VarselmeldingKomponent,
+  KomponentType,
+  KortTekstSpørsmål,
+  LandSpørsmål,
+  LangTekstSpørsmål,
+  PeriodeSpørsmål,
+  Varselmelding,
 } from "~/components/sporsmal/sporsmal.types";
 import styles from "~/components/regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
 
@@ -189,17 +190,7 @@ export default function AnnenPengestøtte() {
     });
   }, [form.value()]);
 
-  const render = (
-    spørsmål:
-      | EnvalgSporsmal
-      | FlervalgSpørsmål
-      | LangTekstSporsmal
-      | DatoSporsmal
-      | PeriodeSporsmal
-      | LandSporsmal
-      | KortTekstSporsmal
-      | VarselmeldingKomponent
-  ) => {
+  const render = (spørsmål: KomponentType) => {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
       return null;
     }
