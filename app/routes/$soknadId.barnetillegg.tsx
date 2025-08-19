@@ -59,10 +59,18 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   });
 }
 
+export async function action({ request, params }: LoaderFunctionArgs) {
+  // Handle form submission logic here
+  // Example: parse form data, validate, save, etc.
+  console.log("Performing action for barnetillegg");
+  return null;
+}
+
 export default function BarneTillegg() {
   const barnetillegg = useLoaderData<typeof loader>();
   const ref = useRef<HTMLDialogElement>(null);
   const [modalBarn, setModalBarn] = useState<BarneSvar>({});
+  const [visModal, setVisModal] = useState(false);
 
   const form = useForm({
     method: "PUT",
@@ -87,11 +95,13 @@ export default function BarneTillegg() {
         hvilketLandBarnetBorI: barn.hvilketLandBarnetBorI,
       },
     ]);
+    setVisModal(false);
   }
 
   function åpneModal(barn: BarneSvar) {
     setModalBarn(barn);
     ref.current?.showModal();
+    setVisModal(true);
   }
 
   return (
@@ -213,12 +223,14 @@ export default function BarneTillegg() {
           >
             Legg til barn manuelt
           </Button>
-          <BarneTilleggModal
-            barn={modalBarn}
-            ref={ref}
-            barneSchema={barneSchema}
-            leggTil={leggTilBarnManuelt}
-          />
+          {visModal && (
+            <BarneTilleggModal
+              barn={modalBarn}
+              ref={ref}
+              barneSchema={barneSchema}
+              leggTil={leggTilBarnManuelt}
+            />
+          )}
         </VStack>
       </VStack>
     </Page>

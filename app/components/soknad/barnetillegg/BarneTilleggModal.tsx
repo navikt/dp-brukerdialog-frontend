@@ -28,8 +28,8 @@ export default function BarneTilleggModal({
     defaultValues: barn,
   });
 
-  console.log("Form Barn: ", form.value());
-  console.log("Barn: ", barn);
+  //console.log("Form Barn: ", form.value());
+  console.log("Barn: ", barn.fornavnOgEtternavn);
 
   return (
     <Modal ref={ref} header={{ heading: "Legg til barn" }}>
@@ -41,6 +41,7 @@ export default function BarneTilleggModal({
               onSubmit={(e) => {
                 e.preventDefault();
                 leggTil(form.value());
+                ref.current?.close();
               }}
             >
               <VStack gap="8">

@@ -71,6 +71,12 @@ export const handlers = [
               fodselsnummer: "12345678901",
               hvilketLandBarnetBorI: "Norge",
             },
+            {
+              fornavnOgEtternavn: "LILLA ",
+              etternavn: "KANIN",
+              fodselsnummer: "12345678901",
+              hvilketLandBarnetBorI: "Norge",
+            },
           ],
           barnLagtManuelt: [
             {
