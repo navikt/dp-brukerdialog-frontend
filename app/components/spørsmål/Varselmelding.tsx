@@ -11,7 +11,7 @@ export function Varselmelding({ spørsmål }: Readonly<IProps>) {
     <Alert variant={spørsmål.variant}>
       {spørsmål.label && (
         <Heading spacing size="small" level="3">
-          Informasjon om ansvaret ditt
+          {spørsmål.label}
         </Heading>
       )}
       {<BodyLong spacing>{parse(spørsmål.description || "", { trim: true })}</BodyLong>}

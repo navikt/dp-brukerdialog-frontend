@@ -190,7 +190,6 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     variant: "info",
     label: "Permittert",
     description:
-      "<h4 style='margin-top: 0'>Permittert</h4>" +
       "Når du er permittert er du som regel ikke like tilgjengelig for å jobbe i hele Norge. Permitteringsgraden og hvor lenge du er permittert, kan sette noen begrensinger for hvor i landet du kan jobbe.<br/><br/> " +
       "Skriv kort om situasjonen din og forklar hvorfor du ikke kan jobbe i hele Norge. Du kan ikke begrense jobbsøkingen mer enn det som er nødvendig på bakgrunn av permitteringen din.<br/><br/>" +
       "Hvis det skjer endringer i permitteringen din, må du gi beskjed til oss, slik at vi kan gjøre en ny vurdering.",
@@ -215,7 +214,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     id: situasjonsbeskrivelseAnnenSituasjon,
     type: "varselmelding",
     variant: "warning",
-    label: "Annen situasjon",
+    label: "",
     description:
       "Hvis du svarer &quot;annen situasjon&quot; og du ikke kan dokumentere svært gode grunner til at du ikke kan jobbe i hele Norge, vil du sannsynligvis få avslag på søknaden din om dagpenger.<br/><br/>" +
       "Annen situasjon kan for eksempel være hvis du har pleietrengende familie, eller den andre forelderen ikke kan delta i den daglige omsorgen for barn på grunn av sykdom eller institusjonsopphold.",
