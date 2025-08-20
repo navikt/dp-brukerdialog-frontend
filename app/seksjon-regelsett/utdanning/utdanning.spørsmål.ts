@@ -91,11 +91,18 @@ export const utdanningSpørsmål: KomponentType[] = [
       { value: "ja", label: "Ja" },
       { value: "nei", label: "Nei" },
     ],
+    visHvis: (svar: UtdanningSvar) => svar.tarUtdanningEllerOpplæring === "nei",
+  },
+  {
+    id: "måSendeInnSøknadNav04-06.05Varselmelding",
+    type: "varselmelding",
+    variant: "warning",
+    label: "",
+    description:
+      'For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href="https://www.nav.no/fyllut/nav040605">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - NAV 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.' +
+      "<br /><br />Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan vi avslå søknaden din om dagpenger.",
     visHvis: (svar: UtdanningSvar) =>
-      svar.avsluttetUtdanningSiste6Måneder === "nei" ||
-      svar.dokumenterAvsluttetUtdanningSiste6MånederNå === "ja" ||
-      svar.lasteOppSenereBegrunnelse !== undefined ||
-      svar.naarSendtDokumentasjonTidligere !== undefined ||
-      svar.senderIkkeDokumentasjonBegrunnelse !== undefined,
+      svar[tarUtdanningEllerOpplæring] === "ja" ||
+      svar[planleggerÅStarteEllerFullføreStudierSamtidig] === "ja",
   },
 ];
