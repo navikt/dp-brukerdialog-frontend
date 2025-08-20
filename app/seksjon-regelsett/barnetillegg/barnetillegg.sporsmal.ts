@@ -1,6 +1,6 @@
 import { KomponentType } from "~/components/sporsmal/sporsmal.types";
 
-export const fornavnOgEtternavn = "fornavnOgEtternavn";
+export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
 export const etternavn = "etternavn";
 export const fodselsnummer = "fodselsnummer";
 export const hvilketLandBarnetBorI = "hvilketLandBarnetBorI";
@@ -10,7 +10,7 @@ export const barnFraPdl = "barnFraPdl";
 export const barnLagtManuelt = "barnLagtManuelt";
 
 export type BarneSvar = {
-  [fornavnOgEtternavn]: string;
+  [fornavnOgMellomnavn]: string;
   [etternavn]: string;
   [fodselsnummer]: string;
   [hvilketLandBarnetBorI]?: string;
@@ -28,8 +28,8 @@ export function hentDefaultBarnetilleggSvar(): BarnetilleggSvar {
 
 export const leggTilBarnSporsmal: KomponentType[] = [
   {
-    id: "fornavnOgEtternavn",
-    label: "Fornavn og etternavn",
+    id: "fornavnOgMellomnavn",
+    label: "Fornavn og mellomnavn",
     type: "kortTekst",
   },
   {

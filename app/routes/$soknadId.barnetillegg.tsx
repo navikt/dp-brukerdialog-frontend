@@ -43,6 +43,7 @@ export default function BarneTillegg() {
   const ref = useRef<HTMLDialogElement>(null);
   const [modalBarn, setModalBarn] = useState<BarneSvar | undefined>(undefined);
   const [visModal, setVisModal] = useState(false);
+  const [antallManuelleBarn, setAntallManuelleBarn] = useState(-1);
 
   const form = useForm({
     method: "PUT",
@@ -57,11 +58,10 @@ export default function BarneTillegg() {
   });
 
   function leggTilBarnManuelt(barn: BarneSvar) {
-    console.log("Legger til barn manuelt:", barn);
     form.setValue("barnLagtManuelt", [
       ...(form.value("barnLagtManuelt") ?? []),
       {
-        fornavnOgEtternavn: barn.fornavnOgEtternavn!!,
+        fornavnOgMellomnavn: barn.fornavnOgMellomnavn!!,
         etternavn: barn.etternavn!!,
         fodselsnummer: barn.fodselsnummer!!,
         hvilketLandBarnetBorI: barn.hvilketLandBarnetBorI,
@@ -70,8 +70,20 @@ export default function BarneTillegg() {
     setVisModal(false);
   }
 
+  function redigereBarnManuelt(barn: BarneSvar, index: number) {
+    const eksisterendeBarn = form.value("barnLagtManuelt") as BarneSvar[];
+    if (eksisterendeBarn && eksisterendeBarn[index]) {
+      eksisterendeBarn[index] = {
+        ...eksisterendeBarn[index],
+        ...barn,
+      };
+      form.setValue("barnLagtManuelt", eksisterendeBarn);
+    }
+    setVisModal(false);
+  }
+
   useEffect(() => {
-    åpneModal();
+    if (visModal) åpneModal();
   }, [visModal]);
 
   function åpneModal() {
@@ -89,7 +101,6 @@ export default function BarneTillegg() {
                 .filter((sporsmal) => sporsmal.id === "barnFraPdl")
                 .map((sporsmal) => {
                   if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
-                    console.log("Spørsmålet er ikke synlig:", sporsmal.id);
                     return null;
                   }
                   const pdlBarn = form.value("barnFraPdl") as BarneSvar[];
@@ -105,7 +116,7 @@ export default function BarneTillegg() {
                         borderRadius="xlarge"
                       >
                         <h3 style={{ marginBottom: "5px", marginTop: "0" }}>
-                          {barn.fornavnOgEtternavn} {barn.etternavn}
+                          {barn.fornavnOgMellomnavn} {barn.etternavn}
                         </h3>
                         <h5 style={{ margin: "auto" }}>Født {formaterNorskDato(new Date())}</h5>
                         <p style={{ margin: "5px auto", textTransform: "uppercase" }}>
@@ -161,7 +172,7 @@ export default function BarneTillegg() {
                         borderRadius="xlarge"
                       >
                         <h3 style={{ marginBottom: "5px", marginTop: "0" }}>
-                          {barn.fornavnOgEtternavn} {barn.etternavn}
+                          {barn.fornavnOgMellomnavn} {barn.etternavn}
                         </h3>
                         <h5 style={{ margin: "auto" }}>Født {formaterNorskDato(new Date())}</h5>
                         <p style={{ margin: "5px auto", textTransform: "uppercase" }}>
@@ -175,6 +186,7 @@ export default function BarneTillegg() {
                             size="small"
                             onClick={() => {
                               setModalBarn(barn);
+                              setAntallManuelleBarn(index);
                               setVisModal(true);
                             }}
                           >
@@ -197,6 +209,7 @@ export default function BarneTillegg() {
             size="small"
             onClick={() => {
               setModalBarn(undefined);
+              setAntallManuelleBarn(-1);
               setVisModal(true);
             }}
           >
@@ -208,6 +221,8 @@ export default function BarneTillegg() {
               ref={ref}
               barneSchema={barneSchema}
               leggTil={leggTilBarnManuelt}
+              redigereBarnManuelt={redigereBarnManuelt}
+              index={antallManuelleBarn}
             />
           )}
         </VStack>

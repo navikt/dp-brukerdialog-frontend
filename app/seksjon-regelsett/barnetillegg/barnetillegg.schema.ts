@@ -6,13 +6,13 @@ import {
   barnLagtManuelt,
   etternavn,
   fodselsnummer,
-  fornavnOgEtternavn,
+  fornavnOgMellomnavn,
   forsørgerBarnSomIkkeVises,
   hvilketLandBarnetBorI,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.sporsmal";
 
 export const barneSchema = z.object({
-  [fornavnOgEtternavn]: z.string().max(100, "Maks 100 tegn"),
+  [fornavnOgMellomnavn]: z.string().max(100, "Maks 100 tegn"),
   [etternavn]: z.string().max(100, "Maks 100 tegn"),
   [fodselsnummer]: z.string(),
   [hvilketLandBarnetBorI]: z.string().optional(),

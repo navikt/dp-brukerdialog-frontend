@@ -34,13 +34,13 @@ export const handlers = [
           forsørgerBarnSomIkkeVises: "ja",
           barnFraPdl: [
             {
-              fornavnOgEtternavn: "FIOLETT ",
+              fornavnOgMellomnavn: "FIOLETT ",
               etternavn: "GREVLING",
               fodselsnummer: "12345678901",
               hvilketLandBarnetBorI: "Norge",
             },
             {
-              fornavnOgEtternavn: "LILLA ",
+              fornavnOgMellomnavn: "LILLA ",
               etternavn: "KANIN",
               fodselsnummer: "12345678901",
               hvilketLandBarnetBorI: "Norge",
@@ -48,7 +48,7 @@ export const handlers = [
           ],
           barnLagtManuelt: [
             {
-              fornavnOgEtternavn: "SNURRE",
+              fornavnOgMellomnavn: "SNURRE",
               etternavn: "SPRETT",
               fodselsnummer: "10987654321",
               hvilketLandBarnetBorI: "Norge",

@@ -1,7 +1,7 @@
 import { Button, Modal, VStack } from "@navikt/ds-react";
 import { Form } from "react-router";
 import { ZodObject } from "zod";
-import { useForm } from "@rvf/react-router";
+import { FormScope, useForm } from "@rvf/react-router";
 import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import {
   BarneSvar,
@@ -13,6 +13,8 @@ type BarneTilleggModalProps = {
   barneSchema: ZodObject;
   ref: React.RefObject<HTMLDialogElement | null>;
   leggTil: (barn: BarneSvar) => void;
+  redigereBarnManuelt: (barn: BarneSvar, index: number) => void;
+  index: number;
 };
 
 export default function BarneTilleggModal({
@@ -20,6 +22,8 @@ export default function BarneTilleggModal({
   barneSchema,
   ref,
   leggTil,
+  redigereBarnManuelt,
+  index,
 }: BarneTilleggModalProps) {
   const form = useForm({
     id: "schema",
@@ -30,23 +34,28 @@ export default function BarneTilleggModal({
       whenSubmitted: "onBlur",
     },
     defaultValues: barn ? barn : {},
+    handleSubmit: (data) => {
+      const validering = form.validate();
+      const harFeil = Object.keys(validering).length > 0;
+
+      if (harFeil) {
+        return;
+      }
+      if (index >= 0) {
+        redigereBarnManuelt(data as BarneSvar, index);
+      } else {
+        leggTil(data as BarneSvar);
+      }
+      ref.current?.close();
+    },
   });
-
-  console.log("Form Barn: ", form.value());
-  console.log("Barn: ", barn?.fornavnOgEtternavn);
-
-  function submitHandler(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    leggTil(form.value() as BarneSvar);
-    ref.current?.close();
-  }
 
   return (
     <Modal ref={ref} header={{ heading: "Legg til barn" }}>
       <Modal.Body>
         <VStack gap="20">
           <VStack gap="6">
-            <Form {...form.getFormProps()} onSubmit={submitHandler}>
+            <Form {...form.getFormProps()}>
               <VStack gap="8">
                 {leggTilBarnSporsmal.map((sporsmal) => {
                   if (sporsmal.visHvis && !sporsmal.visHvis(form.value())) {
@@ -57,7 +66,7 @@ export default function BarneTilleggModal({
                     <Sporsmal
                       key={sporsmal.id}
                       sporsmal={sporsmal}
-                      formScope={form.scope(sporsmal.id as keyof BarneSvar)}
+                      formScope={form.scope(sporsmal.id as keyof BarneSvar) as FormScope<string | undefined>}
                     />
                   );
                 })}
