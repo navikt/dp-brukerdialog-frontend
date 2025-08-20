@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import indexStyles from "./index.css?url";
 import { getEnv } from "./utils/env.utils";
 import { sanityClient } from "./sanity/sanity.config";
-import { ISanityData } from "./sanity/sanity.types";
+import { SanityData } from "./sanity/sanity.types";
 import { allTextsQuery } from "./sanity/sanity.query";
 
 export const links: LinksFunction = () => [
@@ -45,7 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     logger.error("Kunne ikke hente dekoratør språk");
   }
 
-  const sanityData = await sanityClient.fetch<ISanityData>(allTextsQuery, {
+  const sanityData = await sanityClient.fetch<SanityData>(allTextsQuery, {
     baseLang: "nb",
     lang: dekoratorLanguage,
   });
