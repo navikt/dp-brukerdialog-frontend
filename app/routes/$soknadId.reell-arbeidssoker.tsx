@@ -15,8 +15,10 @@ import {
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ListItem } from "@navikt/ds-react/List";
-import { ReellArbeidssøkerSpørsmål } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
-import { reellArbeidssøkerSpørsmål } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker";
+import {
+  reellArbeidssøkerSpørsmål,
+  ReellArbeidssøkerSvar,
+} from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { reellArbeidssøkerSchema } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.schema";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { hentFormDefaultValues } from "~/utils/form.utils";
@@ -31,7 +33,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return data(undefined);
   }
 
-  const loaderData: ReellArbeidssøkerSpørsmål = await response.json();
+  const loaderData: ReellArbeidssøkerSvar = await response.json();
 
   return data(loaderData);
 }
@@ -70,10 +72,10 @@ export default function ReellArbeidssøker() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<ReellArbeidssøkerSpørsmål>(loaderData),
+    defaultValues: hentFormDefaultValues<ReellArbeidssøkerSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<ReellArbeidssøkerSpørsmål>(form, reellArbeidssøkerSpørsmål);
+  useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
 
   return (
     <Page className="brukerdialog">
@@ -101,7 +103,7 @@ export default function ReellArbeidssøker() {
                 <Spørsmål
                   key={spørsmål.id}
                   spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSpørsmål)}
+                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSvar)}
                 />
               );
             })}

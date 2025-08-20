@@ -5,9 +5,10 @@ import {
   kanDuJobbeIHeleNorge,
   kanDuTaAlleTyperArbeid,
   kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
-  kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen,
   kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse,
-  ReellArbeidssøkerSpørsmål,
+  kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeKortOmSituasjonen,
+  reellArbeidssøkerSpørsmål,
+  ReellArbeidssøkerSvar,
   situasjonsbeskrivelseAnnenSituasjon,
   situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
@@ -18,7 +19,6 @@ import {
   situasjonsbeskrivelseRedusertHelse,
 } from "./reell-arbeidssøker.spørsmål";
 import { z } from "zod";
-import { reellArbeidssøkerSpørsmål } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker";
 
 export const reellArbeidssøkerSchema = z
   .object({
@@ -41,12 +41,12 @@ export const reellArbeidssøkerSchema = z
           situasjonsbeskrivelseAnnenSituasjon,
         ])
     ).optional(),
-    [kanIkkeJobbeBådeHeltidOgDeltidSkrivKortOmSituasjonen]: z.string().max(500).optional(),
+    [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeKortOmSituasjonen]: z.string().max(500).optional(),
   })
   .superRefine((data, ctx) => {
     reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSpørsmål;
+      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
       const svar = data[spørsmålId];
 
       if (synlig && (!svar || svar?.length === 0)) {
