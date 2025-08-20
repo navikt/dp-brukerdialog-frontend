@@ -81,20 +81,18 @@ export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
   },
   {
     id: hvilkenPeriodeGjelderPensjonenForFraOgMed,
-    type: "dato",
+    periodeLabel: "Hvilken periode gjelder pensjonen for?",
+    type: "periodeFra",
     label: "Fra dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(pensjonFraAndreEnnNav) ||
       false,
   },
   {
     id: hvilkenPeriodeGjelderPensjonenForTilOgMed,
-    type: "dato",
+    type: "periodeTil",
     label: "Til dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
+    optional: true,
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(pensjonFraAndreEnnNav) ||
       false,
@@ -104,20 +102,18 @@ export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
 export const utbetalingFraGarantikassenForFiskere: KomponentType[] = [
   {
     id: hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForFraOgMed,
-    type: "dato",
+    type: "periodeFra",
+    periodeLabel: "Hvilken periode gjelder utbetalingen fra GFF for?",
     label: "Fra dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(garantiLottForFiskere) ||
       false,
   },
   {
     id: hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForTilOgMed,
-    type: "dato",
+    type: "periodeTil",
     label: "Til dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
+    optional: true,
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(garantiLottForFiskere) ||
       false,
@@ -136,10 +132,9 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
   },
   {
     id: hvilkenPeriodeGjelderEtterlønnenForFraOgMed,
-    type: "dato",
+    type: "periodeFra",
+    periodeLabel: "Hvilken periode gjelder etterlønnen fra arbeidsgiver for?",
     label: "Fra dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         etterlønnFraArbeidsgiver
@@ -147,10 +142,9 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
   },
   {
     id: hvilkenPeriodeGjelderEtterlønnenForTilOgMed,
-    type: "dato",
+    type: "periodeTil",
     label: "Til dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
+    optional: true,
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         etterlønnFraArbeidsgiver
@@ -170,10 +164,9 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
   },
   {
     id: hvilkenPeriodeGjelderDagpengeneFraAnnetEøsLandForFraOgMed,
-    type: "dato",
+    type: "periodeFra",
+    periodeLabel: "Hvilken periode gjelder dagpengene fra det andre EØS-landet for?",
     label: "Fra dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         dagpengerFraAnnetEøsLand
@@ -181,10 +174,9 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
   },
   {
     id: hvilkenPeriodeGjelderDagpengeneFraAnnetEøsLandForTilOgMed,
-    type: "dato",
+    type: "periodeTil",
     label: "Til dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
+    optional: true,
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
         dagpengerFraAnnetEøsLand
@@ -209,19 +201,17 @@ export const annenPengestøtteFraAndreEnnNav: KomponentType[] = [
   },
   {
     id: hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForFraOgMed,
-    type: "dato",
+    type: "periodeFra",
+    periodeLabel: "Hvilken periode gjelder ytelsen for?",
     label: "Fra dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(annenYtelse) || false,
   },
   {
     id: hvilkenPeriodeGjelderAnnenPengestøtteFraAndreEnnNavForTilOgMed,
-    type: "dato",
+    type: "periodeTil",
     label: "Til dato",
-    description:
-      "TODO: Bytt ut denne med nytt komponent fra Nattaphong når det er tilgjengelig i main",
+    optional: true,
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(annenYtelse) || false,
   },

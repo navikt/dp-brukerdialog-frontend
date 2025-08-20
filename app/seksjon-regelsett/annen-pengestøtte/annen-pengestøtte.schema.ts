@@ -102,7 +102,9 @@ export const annenPengestøtteSchema = z
       const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
       const svar = data[spørsmålId];
 
-      if (synlig && (!svar || svar?.length === 0)) {
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
+
+      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({
           path: [spørsmål.id],
           code: "custom",
