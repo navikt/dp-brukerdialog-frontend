@@ -27,9 +27,9 @@ export const bostedslandSchema = z
       const spørsmålId = spørsmål.id as keyof BostedslandSvar;
       const svar = data[spørsmålId];
 
-      const isSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
 
-      if (synlig && !svar && isSpørsmål && !spørsmål.optional) {
+      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({
           path: [spørsmål.id],
           code: "custom",
