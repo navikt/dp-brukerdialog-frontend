@@ -1,7 +1,13 @@
 import { z } from "zod";
 import {
-  AnnenPengestøtteSpørsmål,
+  AnnenPengestøtteSvar,
+  annenYtelse,
+  dagpengerEllerArbeidsledighetstrygd,
+  dagpengerFraAnnetEøsLand,
+  etterlønnFraArbeidsgiver,
+  foreldrepengerEllerSvangerskapspenger,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+  garantiLottForFiskere,
   harMottattPengestøtteFraAndreEØSLand,
   hvemUtbetalerEtterlønnen,
   hvemUtbetalerPengestøtten,
@@ -21,7 +27,10 @@ import {
   hvilkeUtenlandskeYtelserHarDuMottatt,
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
   mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
+  pensjonFraAndreEnnNav,
+  pleiepengerOmsorgspengerEllerOpplæringspenger,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+  sykepenger,
 } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 import { annenPengestøtteAlleSpørsmål } from "~/routes/$soknadId.annen-pengestotte";
 
@@ -33,10 +42,10 @@ export const annenPengestøtteSchema = z
     [hvilkeUtenlandskeYtelserHarDuMottatt]: z
       .array(
         z.enum([
-          "sykepenger",
-          "foreldrepengerEllerSvangerskapspenger",
-          "dagpengerEllerArbeidsledighetstrygd",
-          "pleiepengerOmsorgspengerEllerOpplæringspenger",
+          sykepenger,
+          foreldrepengerEllerSvangerskapspenger,
+          dagpengerEllerArbeidsledighetstrygd,
+          pleiepengerOmsorgspengerEllerOpplæringspenger,
         ])
       )
       .optional(),
@@ -44,11 +53,11 @@ export const annenPengestøtteSchema = z
     [hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]: z
       .array(
         z.enum([
-          "pensjonFraAndreEnnNav",
-          "etterlønnFraArbeidsgiver",
-          "garantiLottForFiskere",
-          "dagpengerFraAnnetEøsLand",
-          "annenYtelse",
+          pensjonFraAndreEnnNav,
+          garantiLottForFiskere,
+          etterlønnFraArbeidsgiver,
+          dagpengerFraAnnetEøsLand,
+          annenYtelse,
         ])
       )
       .optional(),
@@ -90,7 +99,7 @@ export const annenPengestøtteSchema = z
   .superRefine((data, ctx) => {
     annenPengestøtteAlleSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSpørsmål;
+      const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
       const svar = data[spørsmålId];
 
       if (synlig && (!svar || svar?.length === 0)) {

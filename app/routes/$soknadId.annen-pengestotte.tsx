@@ -14,8 +14,13 @@ import {
 import invariant from "tiny-invariant";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import {
-  AnnenPengestøtteSpørsmål,
+  AnnenPengestøtteSvar,
+  annenYtelse,
+  dagpengerFraAnnetEøsLand,
+  etterlønnFraArbeidsgiver,
+  garantiLottForFiskere,
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
+  pensjonFraAndreEnnNav,
 } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 import { pengestøtteFraAndreEøsLand } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
@@ -44,7 +49,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return data(undefined);
   }
 
-  const loaderData: AnnenPengestøtteSpørsmål = await response.json();
+  const loaderData: AnnenPengestøtteSvar = await response.json();
 
   return data(loaderData);
 }
@@ -93,10 +98,10 @@ export default function AnnenPengestøtte() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<AnnenPengestøtteSpørsmål>(loaderData),
+    defaultValues: hentFormDefaultValues<AnnenPengestøtteSvar>(loaderData),
   });
 
-  useNullstillSkjulteFelter<AnnenPengestøtteSpørsmål>(form, annenPengestøtteAlleSpørsmål);
+  useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteAlleSpørsmål);
 
   const render = (spørsmål: KomponentType) => {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
@@ -107,7 +112,7 @@ export default function AnnenPengestøtte() {
       <Spørsmål
         key={spørsmål.id}
         spørsmål={spørsmål}
-        formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSpørsmål)}
+        formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSvar)}
       />
     );
   };
@@ -129,7 +134,7 @@ export default function AnnenPengestøtte() {
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes("pensjonFraAndreEnnNav") && (
+                ?.includes(pensjonFraAndreEnnNav) && (
                 <>
                   <Alert variant="info">
                     Du må legge ved dokumentasjon på hvem som utbetaler pensjonen, og hvilken
@@ -145,7 +150,7 @@ export default function AnnenPengestøtte() {
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes("garantiLottForFiskere") && (
+                ?.includes(garantiLottForFiskere) && (
                 <>
                   <Alert variant="info">
                     Du må dokumentasjon hvilken periode Garantikassen for fiskere utbetaler ytelsen.
@@ -163,7 +168,7 @@ export default function AnnenPengestøtte() {
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes("etterlønnFraArbeidsgiver") && (
+                ?.includes(etterlønnFraArbeidsgiver) && (
                 <>
                   <Alert variant="info">
                     Etterlønn er en ytelse som helt eller delvis dekker bortfall av inntekt for en
@@ -192,7 +197,7 @@ export default function AnnenPengestøtte() {
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes("dagpengerFraAnnetEøsLand") && (
+                ?.includes(dagpengerFraAnnetEøsLand) && (
                 <>
                   <Alert variant="info">
                     Du må legge ved dokumentasjon av hvilket land som utbetaler dagpengene, og
@@ -208,7 +213,7 @@ export default function AnnenPengestøtte() {
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes("annenYtelse") && (
+                ?.includes(annenYtelse) && (
                 <>
                   <Alert variant="info">
                     Du må legge ved dokumentasjon på hvem som utbetaler pensjonen, og hvilken

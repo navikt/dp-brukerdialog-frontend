@@ -1,9 +1,18 @@
 export const harMottattPengestøtteFraAndreEØSLand = "har-mottatt-pengestøtte-fra-andre-eøsland";
 export const hvilkeUtenlandskeYtelserHarDuMottatt = "hvilke-utenlandske-ytelser-har-du-mottatt";
+export const sykepenger = "sykepenger";
+export const foreldrepengerEllerSvangerskapspenger = "foreldrepengerEllerSvangerskapspenger";
+export const dagpengerEllerArbeidsledighetstrygd = "dagpengerEllerArbeidsledighetstrygd";
+export const pleiepengerOmsorgspengerEllerOpplæringspenger = "pleiepengerOmsorgspengerEllerOpplæringspenger";
 export const mottarEllerHarSøktOmPengestøtteFraAndreEnnNav =
   "mottar-eller-har-søkt-om-pengestøtte-fra-andre-enn-nav";
 export const hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav =
   "hvilke-ytelser-mottar-du-eller-har-du-søkt-på-fra-andre-enn-nav";
+export const pensjonFraAndreEnnNav = "pensjonFraAndreEnnNav";
+export const garantiLottForFiskere = "garantiLottForFiskere";
+export const etterlønnFraArbeidsgiver = "etterlønnFraArbeidsgiver";
+export const dagpengerFraAnnetEøsLand = "dagpengerFraAnnetEøsLand";
+export const annenYtelse = "annenYtelse";
 export const hvemUtbetalerPensjonen = "hvem-utbetaler-pensjonen";
 export const hvilkenPeriodeGjelderPensjonenForFraOgMed =
   "hvilken-periode-gjelder-pensjonen-for-fra-og-med";
@@ -34,20 +43,20 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
 export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
   "skriv-inn-hva-du-får-beholde-fra-tidligere-arbeidsgiver";
 
-export type AnnenPengestøtteSpørsmål = {
+export type AnnenPengestøtteSvar = {
   [harMottattPengestøtteFraAndreEØSLand]?: "ja" | "nei";
   [hvilkeUtenlandskeYtelserHarDuMottatt]?: Array<
-    | "sykepenger"
-    | "foreldrepengerEllerSvangerskapspenger"
-    | "dagpengerEllerArbeidsledighetstrygd"
-    | "pleiepengerOmsorgspengerEllerOpplæringspenger">;
+    | typeof sykepenger
+    | typeof foreldrepengerEllerSvangerskapspenger
+    | typeof dagpengerEllerArbeidsledighetstrygd
+    | typeof pleiepengerOmsorgspengerEllerOpplæringspenger>;
   [mottarEllerHarSøktOmPengestøtteFraAndreEnnNav]?: "ja" | "nei";
   [hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?: Array<
-    | "pensjonFraAndreEnnNav"
-    | "etterlønnFraArbeidsgiver"
-    | "garantiLottForFiskere"
-    | "dagpengerFraAnnetEøsLand"
-    | "annenYtelse">;
+    | typeof pensjonFraAndreEnnNav
+    | typeof garantiLottForFiskere
+    | typeof etterlønnFraArbeidsgiver
+    | typeof dagpengerFraAnnetEøsLand
+    | typeof annenYtelse>;
   [hvemUtbetalerPensjonen]?: string;
   [hvilkenPeriodeGjelderPensjonenForFraOgMed]?: string;
   [hvilkenPeriodeGjelderPensjonenForTilOgMed]?: string;

@@ -1,8 +1,12 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
-  AnnenPengestøtteSpørsmål,
+  AnnenPengestøtteSvar,
+  dagpengerEllerArbeidsledighetstrygd,
+  foreldrepengerEllerSvangerskapspenger,
   harMottattPengestøtteFraAndreEØSLand,
   hvilkeUtenlandskeYtelserHarDuMottatt,
+  pleiepengerOmsorgspengerEllerOpplæringspenger,
+  sykepenger,
 } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
 export const pengestøtteFraAndreEøsLand: KomponentType[] = [
@@ -32,17 +36,17 @@ export const pengestøtteFraAndreEøsLand: KomponentType[] = [
     description:
       "TODO: Høre med Chris/Kamile hvordan det skal hentes inn detaljer. En på ytelse (som med checkboxene under), eller en for alle (som i skissen).",
     options: [
-      { value: "sykepenger", label: "Sykepenger" },
+      { value: sykepenger, label: "Sykepenger" },
       {
-        value: "foreldrepengerEllerSvangerskapspenger",
+        value: foreldrepengerEllerSvangerskapspenger,
         label: "Foreldrepenger eller svangerskapspenger",
       },
-      { value: "dagpengerEllerArbeidsledighetstrygd", label: "Dagpenger / arbeidsledighetstrygd" },
+      { value: dagpengerEllerArbeidsledighetstrygd, label: "Dagpenger / arbeidsledighetstrygd" },
       {
-        value: "pleiepengerOmsorgspengerEllerOpplæringspenger",
+        value: pleiepengerOmsorgspengerEllerOpplæringspenger,
         label: "Pleiepenger, omsorgspenger eller opplæringspenger",
       },
     ],
-    visHvis: (svar: AnnenPengestøtteSpørsmål) => svar[harMottattPengestøtteFraAndreEØSLand] === "ja",
+    visHvis: (svar: AnnenPengestøtteSvar) => svar[harMottattPengestøtteFraAndreEØSLand] === "ja",
   },
 ];
