@@ -1,17 +1,27 @@
 export const mockBarnetillegg = {
-  id: "barnetillegg",
-  label: "Barnetillegg",
-  value: "barnetillegg",
-  children: [
+  barnFraPdl: [
     {
-      id: "barnetillegg-1",
-      label: "Barn 1",
-      value: "barnetillegg-1",
+      fornavnOgMellomnavn: "FIOLETT ",
+      etternavn: "GREVLING",
+      fodselsnummer: "12345678901",
+      hvilketLandBarnetBorI: "Norge",
+      forsørgerDuBarnet: undefined,
     },
     {
-      id: "barnetillegg-2",
-      label: "Barn 2",
-      value: "barnetillegg-2",
+      fornavnOgMellomnavn: "LILLA ",
+      etternavn: "KANIN",
+      fodselsnummer: "12345678901",
+      hvilketLandBarnetBorI: "Norge",
+      forsørgerDuBarnet: undefined,
     },
   ],
+  barnLagtManuelt: [
+    {
+      fornavnOgMellomnavn: "SNURRE",
+      etternavn: "SPRETT",
+      fodselsnummer: "10987654321",
+      hvilketLandBarnetBorI: "Norge",
+    },
+  ],
+  forsørgerduBarnetSomIkkeVisesHer: undefined,
 };
