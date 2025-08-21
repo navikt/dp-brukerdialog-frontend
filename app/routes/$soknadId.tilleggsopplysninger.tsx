@@ -43,7 +43,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "tilleggsopplysninger";
-  const nesteSeksjonId = "tilleggsopplysninger";
+  const nesteSeksjonId = "oppsummering";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
