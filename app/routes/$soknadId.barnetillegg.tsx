@@ -32,8 +32,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: LoaderFunctionArgs) {
-  // Handle form submission logic here
-  // Example: parse form data, validate, save, etc.
   console.log("Performing action for barnetillegg");
   return null;
 }
@@ -80,6 +78,14 @@ export default function BarneTillegg() {
       form.setValue("barnLagtManuelt", eksisterendeBarn);
     }
     setVisModal(false);
+  }
+
+  function slettBarnManuelt(index: number) {
+    const eksisterendeBarn = form.value("barnLagtManuelt") as BarneSvar[];
+    if (eksisterendeBarn && eksisterendeBarn[index]) {
+      eksisterendeBarn.splice(index, 1);
+      form.setValue("barnLagtManuelt", eksisterendeBarn);
+    }
   }
 
   useEffect(() => {
@@ -193,7 +199,12 @@ export default function BarneTillegg() {
                             Endre svar
                           </Button>
 
-                          <Button icon={<TrashIcon />} variant="tertiary" size="small">
+                          <Button
+                            icon={<TrashIcon />}
+                            variant="tertiary"
+                            size="small"
+                            onClick={() => slettBarnManuelt(index)}
+                          >
                             Slett
                           </Button>
                         </div>
