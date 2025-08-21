@@ -1,26 +1,26 @@
 import { EnvalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const forsørgerduBarnet = "forsørgerduBarnet";
-export const forsørgerduBarnetSomIkkeVisesHer = "forsørgerduBarnetSomIkkeVisesHer";
+export const forsørgerDuBarnet = "forsørgerDuBarnet";
+export const forsørgerDuBarnetSomIkkeVisesHer = "forsørgerDuBarnetSomIkkeVisesHer";
 
 export type Barn = {
   fornavnOgMellomnavn?: string;
   etternavn?: string;
   fodselsnummer: Date;
   bostedsland?: string;
-  forsørgerduBarnet?: boolean;
+  forsørgerDuBarnet?: "ja" | "nei";
   dokumentereForsørgerNå?: string;
   dokumententasjonGrunn?: string;
-  hentetFraPdl?: boolean;
+  hentetFraPdl?: "ja" | "nei";
 };
 
 export type BarnetilleggSvar = {
-  [forsørgerduBarnetSomIkkeVisesHer]?: "ja" | "nei";
+  [forsørgerDuBarnetSomIkkeVisesHer]?: "ja" | "nei";
 };
 
 export const barnetilleggSpørsmål: KomponentType[] = [
   {
-    id: forsørgerduBarnetSomIkkeVisesHer,
+    id: forsørgerDuBarnetSomIkkeVisesHer,
     type: "envalg",
     label: "Forsørger du barnet som ikke vises her?",
     options: [
@@ -31,7 +31,7 @@ export const barnetilleggSpørsmål: KomponentType[] = [
 ];
 
 export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
-  id: forsørgerduBarnet,
+  id: forsørgerDuBarnet,
   type: "envalg",
   label: "Forsørger du barnet som ikke vises her?",
   options: [

@@ -7,42 +7,59 @@ import { barnFraPdlSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.
 import {
   Barn,
   barnFraPdlSpørsmål,
-  forsørgerduBarnet,
+  forsørgerDuBarnet,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
   barn: Barn;
+  barnIndex: number;
   validerBarnFraPdl: boolean;
-  setManglerBarnFraPdlSvar: (boolean: boolean) => void;
+  barnFraPdlList: Barn[];
+  setBarnFraPdlList: (list: Barn[]) => void;
 }
 
-export function BarnFraPdl({ barn, validerBarnFraPdl, setManglerBarnFraPdlSvar }: IProps) {
-  const barnFraPdlForm = useForm({
+export function BarnFraPdl({
+  barn,
+  validerBarnFraPdl,
+  barnIndex,
+  barnFraPdlList,
+  setBarnFraPdlList,
+}: IProps) {
+  const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: barnFraPdlSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
+      initial: "onChange",
+      whenTouched: "onChange",
+      whenSubmitted: "onChange",
     },
     defaultValues: {
-      forsørgerduBarnet:
-        typeof barn.forsørgerduBarnet === "boolean"
-          ? barn.forsørgerduBarnet
-            ? "ja"
-            : "nei"
-          : undefined,
+      forsørgerDuBarnet: barn.forsørgerDuBarnet || undefined,
     },
   });
 
   useEffect(() => {
     if (validerBarnFraPdl) {
-      barnFraPdlForm.validate();
+      form.validate();
     }
+  }, [validerBarnFraPdl]);
 
-    setManglerBarnFraPdlSvar(!!barnFraPdlForm.formState.fieldErrors);
-  }, [validerBarnFraPdl, barnFraPdlForm]);
+  useEffect(() => {
+    const forsørgerDuBarnet = form.value("forsørgerDuBarnet");
+
+    if (form.formState.isDirty && forsørgerDuBarnet !== undefined) {
+      const oppdatertBarn = {
+        ...barnFraPdlList[barnIndex],
+        forsørgerDuBarnet,
+      };
+
+      const oppdatertListe = [...barnFraPdlList];
+      oppdatertListe[barnIndex] = oppdatertBarn;
+
+      setBarnFraPdlList(oppdatertListe);
+    }
+  }, [form.formState]);
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
@@ -51,8 +68,8 @@ export function BarnFraPdl({ barn, validerBarnFraPdl, setManglerBarnFraPdlSvar }
       </h3>
       <p>{barn.fodselsnummer.toString()}</p>
 
-      <Form {...barnFraPdlForm.getFormProps()}>
-        <Envalg spørsmål={barnFraPdlSpørsmål} formScope={barnFraPdlForm.scope(forsørgerduBarnet)} />
+      <Form {...form.getFormProps()}>
+        <Envalg spørsmål={barnFraPdlSpørsmål} formScope={form.scope(forsørgerDuBarnet)} />
       </Form>
     </Box>
   );

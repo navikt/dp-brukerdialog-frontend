@@ -1,6 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { f } from "node_modules/react-router/dist/development/components-CuPfnyiZ.mjs";
 import { useEffect, useState } from "react";
 import {
   ActionFunctionArgs,
@@ -24,7 +25,7 @@ import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  forsørgerduBarnetSomIkkeVisesHer,
+  forsørgerDuBarnetSomIkkeVisesHer,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
@@ -72,10 +73,9 @@ export default function Barntillegg() {
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
-  const [barnFraPdl, setBarnFraPdl] = useState<Barn[]>(loaderData?.barnFraPdl || []);
-  const [barnLagtManuelt, setBarnLagtManuelt] = useState<Barn[]>(loaderData?.barnLagtManuelt || []);
+  const [barnFraPdlList, setBarnFraPdlList] = useState(loaderData?.barnFraPdl || []);
+  const [barnLagtManueltList, setBarnLagtManueltList] = useState(loaderData?.barnLagtManuelt || []);
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
-  const [manglerBarnFraPdlSvar, setManglerBarnFraPdlSvar] = useState(false);
 
   const form = useForm({
     method: "PUT",
@@ -87,17 +87,22 @@ export default function Barntillegg() {
       whenSubmitted: "onBlur",
     },
     defaultValues: {
-      forsørgerduBarnetSomIkkeVisesHer: loaderData?.forsørgerduBarnetSomIkkeVisesHer,
+      forsørgerDuBarnetSomIkkeVisesHer: loaderData?.forsørgerDuBarnetSomIkkeVisesHer,
     },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
   function handleSubmit() {
-    setValiderBarnFraPdl(true);
     form.validate();
 
-    if (!manglerBarnFraPdlSvar) {
+    const harUbesvartBarnFraPdl = barnFraPdlList.some((barn) => !barn.forsørgerDuBarnet);
+    setValiderBarnFraPdl(harUbesvartBarnFraPdl);
+
+    const ubesvartForsørgerDuBarnetSomIkkeVisesHer =
+      form.value(forsørgerDuBarnetSomIkkeVisesHer) === undefined;
+
+    if (!harUbesvartBarnFraPdl && !ubesvartForsørgerDuBarnetSomIkkeVisesHer) {
       form.submit();
     }
   }
@@ -120,12 +125,14 @@ export default function Barntillegg() {
         </BodyLong>
         <VStack gap="10">
           <VStack gap="space-16">
-            {barnFraPdl.map((barn, index) => (
+            {barnFraPdlList.map((barn, index) => (
               <BarnFraPdl
                 key={index}
                 barn={barn}
+                barnIndex={index}
                 validerBarnFraPdl={validerBarnFraPdl}
-                setManglerBarnFraPdlSvar={setManglerBarnFraPdlSvar}
+                barnFraPdlList={barnFraPdlList}
+                setBarnFraPdlList={setBarnFraPdlList}
               />
             ))}
           </VStack>
@@ -155,12 +162,12 @@ export default function Barntillegg() {
           </Form>
 
           <VStack gap="space-16">
-            {barnLagtManuelt?.map((barn, index) => (
+            {barnLagtManueltList?.map((barn, index) => (
               <BarnLagtManuelt key={index} barn={barn} />
             ))}
           </VStack>
 
-          {form.value(forsørgerduBarnetSomIkkeVisesHer) === "ja" && (
+          {form.value(forsørgerDuBarnetSomIkkeVisesHer) === "ja" && (
             <HStack>
               <Button
                 variant="secondary"

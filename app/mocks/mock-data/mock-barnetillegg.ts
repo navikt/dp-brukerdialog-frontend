@@ -5,14 +5,12 @@ export const mockBarnetillegg = {
       etternavn: "GREVLING",
       fodselsnummer: "12345678901",
       hvilketLandBarnetBorI: "Norge",
-      forsørgerDuBarnet: "ja",
     },
     {
       fornavnOgMellomnavn: "LILLA ",
       etternavn: "KANIN",
       fodselsnummer: "12345678901",
       hvilketLandBarnetBorI: "Norge",
-      forsørgerDuBarnet: undefined,
     },
   ],
   barnLagtManuelt: [
@@ -23,5 +21,5 @@ export const mockBarnetillegg = {
       hvilketLandBarnetBorI: "Norge",
     },
   ],
-  forsørgerduBarnetSomIkkeVisesHer: undefined,
+  forsørgerDuBarnetSomIkkeVisesHer: undefined,
 };

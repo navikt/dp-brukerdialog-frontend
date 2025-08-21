@@ -2,13 +2,13 @@ import { z } from "zod";
 import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  forsørgerduBarnet,
-  forsørgerduBarnetSomIkkeVisesHer,
+  forsørgerDuBarnet,
+  forsørgerDuBarnetSomIkkeVisesHer,
 } from "./barnetillegg.spørsmål";
 
 export const barnetilleggSchema = z
   .object({
-    [forsørgerduBarnetSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
+    [forsørgerDuBarnetSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
   })
   .superRefine((data, ctx) => {
     barnetilleggSpørsmål.forEach((spørsmål) => {
@@ -28,12 +28,12 @@ export const barnetilleggSchema = z
 
 export const barnFraPdlSchema = z
   .object({
-    [forsørgerduBarnet]: z.enum(["ja", "nei"]).optional(),
+    [forsørgerDuBarnet]: z.enum(["ja", "nei"]).optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data[forsørgerduBarnet]) {
+    if (!data[forsørgerDuBarnet]) {
       ctx.addIssue({
-        path: [forsørgerduBarnet],
+        path: [forsørgerDuBarnet],
         code: "custom",
         message: "Du må svare på dette spørsmålet",
       });
