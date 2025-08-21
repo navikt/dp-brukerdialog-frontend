@@ -5,7 +5,7 @@ export const mockBarnetillegg = {
       etternavn: "GREVLING",
       fodselsnummer: "12345678901",
       hvilketLandBarnetBorI: "Norge",
-      forsørgerDuBarnet: undefined,
+      forsørgerDuBarnet: "ja",
     },
     {
       fornavnOgMellomnavn: "LILLA ",

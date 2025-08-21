@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ActionFunctionArgs,
   data,
@@ -68,38 +68,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Barntillegg() {
-  // function leggTilBarn() {
-  //   const registrerteBarn = barnetillegg.barn;
-  //   registrerteBarn?.push({
-  //     fornavnOgMellomnavn: barn.fornavnOgMellomnavn,
-  //     etternavn: barn.etternavn,
-  //     fodselsdato: barn.fodselsdato,
-  //     bostedsland: barn.bostedsland,
-  //     forsørgerDuBarnet: barn.forsørgerDuBarnet,
-  //     hentetFraPdl: false,
-  //     dokumentereForsørgerNå: barn.dokumentereForsørgerNå,
-  //     dokumententasjonGrunn: barn.dokumententasjonGrunn,
-  //   });
-  //   setBarnetillegg({ ...barnetillegg, barn: registrerteBarn });
-  //   setBarn({
-  //     fornavnOgMellomnavn: "",
-  //     etternavn: "",
-  //     fodselsdato: undefined,
-  //     bostedsland: "",
-  //     forsørgerDuBarnet: undefined,
-  //     dokumentereForsørgerNå: "",
-  //     dokumententasjonGrunn: "",
-  //     hentetFraPdl: false,
-  //   });
-  // }
-
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
   const [barnFraPdl, setBarnFraPdl] = useState<Barn[]>(loaderData?.barnFraPdl || []);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState<Barn[]>(loaderData?.barnLagtManuelt || []);
-  const [shouldValidate, setShouldValidate] = useState(false);
+  const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
+  const [manglerBarnFraPdlSvar, setManglerBarnFraPdlSvar] = useState(false);
 
   const form = useForm({
     method: "PUT",
@@ -118,8 +94,12 @@ export default function Barntillegg() {
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
   function handleSubmit() {
-    form.submit();
-    setShouldValidate(true);
+    setValiderBarnFraPdl(true);
+    form.validate();
+
+    if (!manglerBarnFraPdlSvar) {
+      form.submit();
+    }
   }
 
   return (
@@ -141,7 +121,12 @@ export default function Barntillegg() {
         <VStack gap="10">
           <VStack gap="space-16">
             {barnFraPdl.map((barn, index) => (
-              <BarnFraPdl key={index} barn={barn} shouldValidate={shouldValidate} />
+              <BarnFraPdl
+                key={index}
+                barn={barn}
+                validerBarnFraPdl={validerBarnFraPdl}
+                setManglerBarnFraPdlSvar={setManglerBarnFraPdlSvar}
+              />
             ))}
           </VStack>
 

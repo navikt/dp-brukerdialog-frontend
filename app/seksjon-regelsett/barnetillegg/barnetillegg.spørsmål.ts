@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { EnvalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const forsørgerduBarnet = "forsørgerduBarnet";
 export const forsørgerduBarnetSomIkkeVisesHer = "forsørgerduBarnetSomIkkeVisesHer";
@@ -29,3 +29,13 @@ export const barnetilleggSpørsmål: KomponentType[] = [
     ],
   },
 ];
+
+export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
+  id: forsørgerduBarnet,
+  type: "envalg",
+  label: "Forsørger du barnet som ikke vises her?",
+  options: [
+    { value: "ja", label: "Ja" },
+    { value: "nei", label: "Nei" },
+  ],
+};

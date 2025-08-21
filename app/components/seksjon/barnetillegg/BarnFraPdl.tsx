@@ -2,45 +2,25 @@ import { Box } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
-import { z } from "zod";
 import { Envalg } from "~/components/spørsmål/Envalg";
-import { EnvalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
-import { Barn, forsørgerduBarnet } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+import { barnFraPdlSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
+import {
+  Barn,
+  barnFraPdlSpørsmål,
+  forsørgerduBarnet,
+} from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
   barn: Barn;
-  shouldValidate: boolean;
+  validerBarnFraPdl: boolean;
+  setManglerBarnFraPdlSvar: (boolean: boolean) => void;
 }
 
-export const pdlBarnSpørsmål: EnvalgSpørsmål = {
-  id: forsørgerduBarnet,
-  type: "envalg",
-  label: "Forsørger du barnet som ikke vises her?",
-  options: [
-    { value: "ja", label: "Ja" },
-    { value: "nei", label: "Nei" },
-  ],
-};
-
-export const schema = z
-  .object({
-    [forsørgerduBarnet]: z.enum(["ja", "nei"]).optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (!data[forsørgerduBarnet]) {
-      ctx.addIssue({
-        path: [forsørgerduBarnet],
-        code: "custom",
-        message: "Du må svare på dette spørsmålet",
-      });
-    }
-  });
-
-export function BarnFraPdl({ barn, shouldValidate }: IProps) {
-  const form = useForm({
+export function BarnFraPdl({ barn, validerBarnFraPdl, setManglerBarnFraPdlSvar }: IProps) {
+  const barnFraPdlForm = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: schema,
+    schema: barnFraPdlSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
@@ -57,10 +37,12 @@ export function BarnFraPdl({ barn, shouldValidate }: IProps) {
   });
 
   useEffect(() => {
-    if (shouldValidate) {
-      form.validate();
+    if (validerBarnFraPdl) {
+      barnFraPdlForm.validate();
     }
-  }, [shouldValidate]);
+
+    setManglerBarnFraPdlSvar(!!barnFraPdlForm.formState.fieldErrors);
+  }, [validerBarnFraPdl, barnFraPdlForm]);
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
@@ -69,8 +51,8 @@ export function BarnFraPdl({ barn, shouldValidate }: IProps) {
       </h3>
       <p>{barn.fodselsnummer.toString()}</p>
 
-      <Form {...form.getFormProps()}>
-        <Envalg spørsmål={pdlBarnSpørsmål} formScope={form.scope(forsørgerduBarnet)} />
+      <Form {...barnFraPdlForm.getFormProps()}>
+        <Envalg spørsmål={barnFraPdlSpørsmål} formScope={barnFraPdlForm.scope(forsørgerduBarnet)} />
       </Form>
     </Box>
   );

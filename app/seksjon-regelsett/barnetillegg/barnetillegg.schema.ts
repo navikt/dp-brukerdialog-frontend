@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  forsørgerduBarnet,
   forsørgerduBarnetSomIkkeVisesHer,
 } from "./barnetillegg.spørsmål";
 
@@ -23,4 +24,18 @@ export const barnetilleggSchema = z
         });
       }
     });
+  });
+
+export const barnFraPdlSchema = z
+  .object({
+    [forsørgerduBarnet]: z.enum(["ja", "nei"]).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (!data[forsørgerduBarnet]) {
+      ctx.addIssue({
+        path: [forsørgerduBarnet],
+        code: "custom",
+        message: "Du må svare på dette spørsmålet",
+      });
+    }
   });
