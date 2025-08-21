@@ -6,7 +6,7 @@ import { Sporsmal } from "~/components/sporsmal/Sporsmal";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
-import BarneTilleggModal from "~/components/soknad/barnetillegg/BarneTilleggModal";
+import RedigerBarnModal from "~/components/soknad/barnetillegg/RedigerBarnModal";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import {
   barneSchema,
@@ -18,6 +18,7 @@ import {
   BarnetilleggSvar,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.sporsmal";
 import { hentFormDefaultValues } from "~/utils/form.utils";
+import LeggTilBarnModal from "~/components/soknad/barnetillegg/LeggTilBarnModal";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -39,8 +40,10 @@ export async function action({ request, params }: LoaderFunctionArgs) {
 export default function BarneTillegg() {
   const barnetilleggLoaderData = useLoaderData<typeof loader>();
   const ref = useRef<HTMLDialogElement>(null);
+  const leggTilBarnRef = useRef<HTMLDialogElement>(null);
   const [modalBarn, setModalBarn] = useState<BarneSvar | undefined>(undefined);
   const [visModal, setVisModal] = useState(false);
+  const [visLeggTilModal, setVisLeggTilModal] = useState(false);
   const [antallManuelleBarn, setAntallManuelleBarn] = useState(-1);
 
   const form = useForm({
@@ -65,7 +68,7 @@ export default function BarneTillegg() {
         hvilketLandBarnetBorI: barn.hvilketLandBarnetBorI,
       },
     ]);
-    setVisModal(false);
+    setVisLeggTilModal(false);
   }
 
   function redigereBarnManuelt(barn: BarneSvar, index: number) {
@@ -89,12 +92,14 @@ export default function BarneTillegg() {
   }
 
   useEffect(() => {
-    if (visModal) åpneModal();
+    console.log("BarneTilleggModal ref changed, opening modal");
+    ref.current?.showModal();
   }, [visModal]);
 
-  function åpneModal() {
-    ref.current?.showModal();
-  }
+  useEffect(() => {
+    console.log("BarneTilleggModal ref changed, opening modal");
+    leggTilBarnRef.current?.showModal();
+  }, [visLeggTilModal]);
 
   return (
     <Page className="brukerdialog">
@@ -221,19 +226,28 @@ export default function BarneTillegg() {
             onClick={() => {
               setModalBarn(undefined);
               setAntallManuelleBarn(-1);
-              setVisModal(true);
+              setVisLeggTilModal(true);
             }}
           >
             Legg til barn manuelt
           </Button>
           {visModal && (
-            <BarneTilleggModal
-              barn={modalBarn}
+            <RedigerBarnModal
+              barn={modalBarn!}
               ref={ref}
               barneSchema={barneSchema}
-              leggTil={leggTilBarnManuelt}
               redigereBarnManuelt={redigereBarnManuelt}
               index={antallManuelleBarn}
+              setVisModal={setVisModal}
+            />
+          )}
+
+          {visLeggTilModal && (
+            <LeggTilBarnModal
+              barneSchema={barneSchema}
+              ref={leggTilBarnRef}
+              leggTil={leggTilBarnManuelt}
+              setVisLeggTilModal={setVisLeggTilModal}
             />
           )}
         </VStack>
