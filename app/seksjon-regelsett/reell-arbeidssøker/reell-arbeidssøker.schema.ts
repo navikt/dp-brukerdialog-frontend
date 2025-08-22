@@ -1,55 +1,80 @@
 import {
   erDuVilligTilÅBytteYrkeEllerGåNedILønn,
-  hvilkeTyperJobberKanDuTa,
   kanDuJobbeBådeHeltidOgDeltid,
   kanDuJobbeIHeleNorge,
   kanDuTaAlleTyperArbeid,
   kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
-  kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse,
-  kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeKortOmSituasjonen,
+  kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen,
   reellArbeidssøkerSpørsmål,
   ReellArbeidssøkerSvar,
-  situasjonsbeskrivelseAnnenSituasjon,
-  situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-  situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
-  situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-  situasjonsbeskrivelseHarFylt60,
-  situasjonsbeskrivelseJegErPermitert,
-  situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
-  situasjonsbeskrivelseRedusertHelse,
+  kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
+  kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+  kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
+  kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+  kanIkkeJobbeHeltidOgDeltidHarFylt60,
+  kanIkkeJobbeHeltidOgDeltidJegErPermitert,
+  kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr,
+  kanIkkeJobbeHeltidOgDeltidRedusertHelse,
+  kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
+  kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+  kanIkkeJobbeIHeleNorgeKortOmSituasjonen,
+  kanIkkeJobbeIHeleNorgeRedusertHelse,
+  kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
+  kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
+  kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+  kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+  kanIkkeJobbeIHeleNorgeJegErPermitert,
+  kanIkkeJobbeIHeleNorgeHarFylt60,
+  kanIkkeJobbeIHeleNorgeAnnenSituasjon,
 } from "./reell-arbeidssøker.spørsmål";
 import { z } from "zod";
 
 export const reellArbeidssøkerSchema = z
   .object({
-    [kanDuTaAlleTyperArbeid]: z.enum(["ja", "nei"]).optional(),
-    [hvilkeTyperJobberKanDuTa]: z.string().max(500).optional(),
-    [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
     [kanDuJobbeBådeHeltidOgDeltid]: z.enum(["ja", "nei"]).optional(),
-    [kanIkkeJobbeBådeHeltidOgDeltidAntallTimer]: z.string().optional(),
-    [kanDuJobbeIHeleNorge]: z.enum(["ja", "nei"]).optional(),
-    [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeSituasjonsbeskrivelse]: z.array(
+    [kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]: z.array(
       z
         .enum([
-          situasjonsbeskrivelseRedusertHelse,
-          situasjonsbeskrivelseOmsorgForBarnUnderEttÅr,
-          situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
-          situasjonsbeskrivelseEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-          situasjonsbeskrivelseDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-          situasjonsbeskrivelseJegErPermitert,
-          situasjonsbeskrivelseHarFylt60,
-          situasjonsbeskrivelseAnnenSituasjon,
+          kanIkkeJobbeHeltidOgDeltidRedusertHelse,
+          kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr,
+          kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
+          kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+          kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+          kanIkkeJobbeHeltidOgDeltidJegErPermitert,
+          kanIkkeJobbeHeltidOgDeltidHarFylt60,
+          kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
         ])
     ).optional(),
-    [kanIkkeJobbeHeltidOgDeltidOgEllerkanIkkeJobbeIHeleNorgeKortOmSituasjonen]: z.string().max(500).optional(),
+    [kanIkkeJobbeBådeHeltidOgDeltidAntallTimer]: z.string().optional(),
+    [kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen]: z.string().max(500).optional(),
+    [kanDuJobbeIHeleNorge]: z.enum(["ja", "nei"]).optional(),
+    [kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]: z.array(
+      z
+        .enum([
+          kanIkkeJobbeIHeleNorgeRedusertHelse,
+          kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
+          kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
+          kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+          kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+          kanIkkeJobbeIHeleNorgeJegErPermitert,
+          kanIkkeJobbeIHeleNorgeHarFylt60,
+          kanIkkeJobbeIHeleNorgeAnnenSituasjon,
+        ])
+    ).optional(),
+    [kanIkkeJobbeIHeleNorgeKortOmSituasjonen]: z.string().max(500).optional(),
+    [kanDuTaAlleTyperArbeid]: z.enum(["ja", "nei"]).optional(),
+    [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
   })
   .superRefine((data, ctx) => {
+    // TODO: Generaliser denne på et vis så den kan brukes i alle `superRefine`. Gjelder alle `schema`-filene.
     reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
       const svar = data[spørsmålId];
 
-      if (synlig && (!svar || svar?.length === 0)) {
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
+
+      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({
           path: [spørsmål.id],
           code: "custom",

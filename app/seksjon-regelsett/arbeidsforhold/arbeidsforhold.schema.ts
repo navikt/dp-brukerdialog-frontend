@@ -32,7 +32,7 @@ export const arbeidsforholdSchema = z
       const spørsmålId = spørsmål.id as keyof ArbeidsforholdSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
 
       if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({

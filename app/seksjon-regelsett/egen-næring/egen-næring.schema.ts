@@ -20,7 +20,7 @@ export const egenNæringSchema = z
         const spørsmålId = spørsmål.id as keyof EgenNæringSvar;
         const svar = data[spørsmålId];
 
-        const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
+        const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
 
         if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
           ctx.addIssue({
