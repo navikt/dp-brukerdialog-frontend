@@ -1,7 +1,6 @@
 import { FloppydiskIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect } from "react";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { leggTilBarnManueltSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
@@ -15,29 +14,35 @@ interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
   setBarnLagtManueltList: (barn: Barn[]) => void;
   barnLagtManueltList: Barn[];
+  index: number;
+  barn: Barn;
 }
 
-export function LeggTilBarnModal({
+export function OppdatereBarnModal({
   modalRef,
   setBarnLagtManueltList,
   barnLagtManueltList,
+  index,
+  barn,
 }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
-    defaultValues: {},
+    defaultValues: barn,
     handleSubmit: (data) => {
-      const nyttBarn: Barn = {
+      const oppdatertBarn: Barn = {
         fornavnOgMellomnavn: data.fornavnOgMellomnavn,
         etternavn: data.etternavn,
         fødselsdato: data.fødselsdato,
         hvilkenLandBorBarnet: data.hvilkenLandBorBarnet,
       };
 
-      setBarnLagtManueltList([...barnLagtManueltList, nyttBarn]);
+      const oppdatertListe = [...barnLagtManueltList];
+      oppdatertListe[index] = oppdatertBarn;
+
+      setBarnLagtManueltList(oppdatertListe);
       modalRef.current?.close();
     },
-    resetAfterSubmit: true,
   });
 
   return (

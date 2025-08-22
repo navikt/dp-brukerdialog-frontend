@@ -9,6 +9,7 @@ import {
   barnFraPdlSpørsmål,
   forsørgerDuBarnet,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+import { formaterNorskDato } from "~/utils/formattering.utils";
 
 interface IProps {
   barn: Barn;
@@ -60,7 +61,7 @@ export function BarnFraPdl({
       <h3>
         {barn.fornavnOgMellomnavn} {barn.etternavn}
       </h3>
-      <p>{barn.fødselsdato}</p>
+      {barn.fødselsdato && <p>{formaterNorskDato(new Date(barn.fødselsdato))}</p>}
 
       <Form {...form.getFormProps()}>
         <Envalg spørsmål={barnFraPdlSpørsmål} formScope={form.scope(forsørgerDuBarnet)} />

@@ -73,7 +73,7 @@ export default function Barntillegg() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
-  const leggTilBarnModalRef = useRef<HTMLDialogElement>(null);
+  const modalRef = useRef<HTMLDialogElement>(null);
 
   const [barnFraPdlList, setBarnFraPdlList] = useState(loaderData?.barnFraPdl || []);
   const [barnLagtManueltList, setBarnLagtManueltList] = useState(loaderData?.barnLagtManuelt || []);
@@ -172,7 +172,7 @@ export default function Barntillegg() {
                 type="submit"
                 icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
                 onClick={() => {
-                  leggTilBarnModalRef.current?.showModal();
+                  modalRef.current?.showModal();
                 }}
               >
                 Legg til barn
@@ -196,9 +196,8 @@ export default function Barntillegg() {
               Neste steg
             </Button>
           </HStack>
-
           <LeggTilBarnModal
-            leggTilBarnModalRef={leggTilBarnModalRef}
+            modalRef={modalRef}
             barnLagtManueltList={barnLagtManueltList}
             setBarnLagtManueltList={setBarnLagtManueltList}
           />
