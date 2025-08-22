@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, Button, HStack, Modal, Page, VStack } from "@navikt/ds-react";
+import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useRef, useState } from "react";
 import {
@@ -105,6 +105,7 @@ export default function Barntillegg() {
       form.value(forsørgerDuBarnetSomIkkeVisesHer) === undefined;
 
     if (!harUbesvartBarnFraPdl && !ubesvartForsørgerDuBarnetSomIkkeVisesHer) {
+      console.log("lagrer data");
       form.submit();
     }
   }
@@ -154,7 +155,13 @@ export default function Barntillegg() {
 
           <VStack gap="space-16">
             {barnLagtManueltList?.map((barn, index) => (
-              <BarnLagtManuelt key={index} barn={barn} />
+              <BarnLagtManuelt
+                key={index}
+                index={index}
+                barn={barn}
+                barnLagtManueltList={barnLagtManueltList}
+                setBarnLagtManueltList={setBarnLagtManueltList}
+              />
             ))}
           </VStack>
 

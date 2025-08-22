@@ -4,9 +4,21 @@ import { Barn } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
   barn: Barn;
+  index: number;
+  setBarnLagtManueltList: (barn: Barn[]) => void;
+  barnLagtManueltList: Barn[];
 }
 
-export function BarnLagtManuelt({ barn }: IProps) {
+export function BarnLagtManuelt({
+  barn,
+  index,
+  setBarnLagtManueltList,
+  barnLagtManueltList,
+}: IProps) {
+  function fjernBarn() {
+    setBarnLagtManueltList(barnLagtManueltList.filter((_, i) => i !== index));
+  }
+
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <h3>
@@ -26,6 +38,7 @@ export function BarnLagtManuelt({ barn }: IProps) {
         <Button
           variant="tertiary"
           size="small"
+          onClick={fjernBarn}
           icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
         >
           Fjern

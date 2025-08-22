@@ -37,6 +37,7 @@ export function LeggTilBarnModal({
       setBarnLagtManueltList([...barnLagtManueltList, nyttBarn]);
       leggTilBarnModalRef.current?.close();
     },
+    resetAfterSubmit: true,
   });
 
   return (
