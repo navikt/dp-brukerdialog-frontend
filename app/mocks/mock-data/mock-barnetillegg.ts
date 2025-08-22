@@ -1,24 +1,26 @@
-export const mockBarnetillegg = {
+import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
+
+export const mockBarnetillegg: BarnetilleggResponse = {
   barnFraPdl: [
     {
       fornavnOgMellomnavn: "FIOLETT ",
       etternavn: "GREVLING",
-      fodselsnummer: "12345678901",
-      hvilketLandBarnetBorI: "Norge",
+      fødselsdato: "12345678901",
+      hvilkenLandBorBarnet: "NO",
     },
     {
       fornavnOgMellomnavn: "LILLA ",
       etternavn: "KANIN",
-      fodselsnummer: "12345678901",
-      hvilketLandBarnetBorI: "Norge",
+      fødselsdato: "12345678901",
+      hvilkenLandBorBarnet: "NO",
     },
   ],
   barnLagtManuelt: [
     {
       fornavnOgMellomnavn: "SNURRE",
       etternavn: "SPRETT",
-      fodselsnummer: "10987654321",
-      hvilketLandBarnetBorI: "Norge",
+      fødselsdato: "10987654321",
+      hvilkenLandBorBarnet: "NO",
     },
   ],
   forsørgerDuBarnetSomIkkeVisesHer: undefined,

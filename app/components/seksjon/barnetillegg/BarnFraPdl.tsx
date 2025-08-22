@@ -26,14 +26,8 @@ export function BarnFraPdl({
   setBarnFraPdlList,
 }: IProps) {
   const form = useForm({
-    method: "PUT",
     submitSource: "state",
     schema: barnFraPdlSchema,
-    validationBehaviorConfig: {
-      initial: "onChange",
-      whenTouched: "onChange",
-      whenSubmitted: "onChange",
-    },
     defaultValues: {
       forsørgerDuBarnet: barn.forsørgerDuBarnet || undefined,
     },
@@ -66,7 +60,7 @@ export function BarnFraPdl({
       <h3>
         {barn.fornavnOgMellomnavn} {barn.etternavn}
       </h3>
-      <p>{barn.fodselsnummer.toString()}</p>
+      <p>{barn.fødselsdato}</p>
 
       <Form {...form.getFormProps()}>
         <Envalg spørsmål={barnFraPdlSpørsmål} formScope={form.scope(forsørgerDuBarnet)} />

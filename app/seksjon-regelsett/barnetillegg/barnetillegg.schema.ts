@@ -2,8 +2,14 @@ import { z } from "zod";
 import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  etternavn,
+  fornavnOgMellomnavn,
   forsørgerDuBarnet,
   forsørgerDuBarnetSomIkkeVisesHer,
+  fødselsdato,
+  hvilkenLandBorBarnet,
+  leggTilBarnManueltSpørsmål,
+  LeggTilBarnManueltSvar,
 } from "./barnetillegg.spørsmål";
 
 export const barnetilleggSchema = z
@@ -38,4 +44,28 @@ export const barnFraPdlSchema = z
         message: "Du må svare på dette spørsmålet",
       });
     }
+  });
+
+export const leggTilBarnManueltSchema = z
+  .object({
+    [fornavnOgMellomnavn]: z.string().optional(),
+    [etternavn]: z.string().optional(),
+    [fødselsdato]: z.string().optional(),
+    [hvilkenLandBorBarnet]: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    leggTilBarnManueltSpørsmål.forEach((spørsmål) => {
+      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+      const spørsmålId = spørsmål.id as keyof LeggTilBarnManueltSvar;
+      const svar = data[spørsmålId];
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
+
+      if (erSpørsmål && synlig && !svar) {
+        ctx.addIssue({
+          path: [spørsmål.id],
+          code: "custom",
+          message: "Du må svare på dette spørsmålet",
+        });
+      }
+    });
   });

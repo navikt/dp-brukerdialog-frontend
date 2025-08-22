@@ -1,4 +1,5 @@
-import { Box } from "@navikt/ds-react";
+import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
+import { Box, Button, HStack } from "@navikt/ds-react";
 import { Barn } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
@@ -11,7 +12,25 @@ export function BarnLagtManuelt({ barn }: IProps) {
       <h3>
         {barn.fornavnOgMellomnavn} {barn.etternavn}
       </h3>
-      <p>{barn.fodselsnummer.toString()}</p>
+      <p>{barn.fødselsdato}</p>
+      <p>{barn.hvilkenLandBorBarnet}</p>
+
+      <HStack gap="4">
+        <Button
+          variant="secondary"
+          size="small"
+          icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
+        >
+          Endre svar
+        </Button>
+        <Button
+          variant="tertiary"
+          size="small"
+          icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+        >
+          Fjern
+        </Button>
+      </HStack>
     </Box>
   );
 }

@@ -1,8 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { Alert, BodyLong, Button, HStack, Modal, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { f } from "node_modules/react-router/dist/development/components-CuPfnyiZ.mjs";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import {
   ActionFunctionArgs,
   data,
@@ -14,8 +13,10 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
+import { BarnetilleggInnhold } from "~/components/seksjon/barnetillegg/BarnetilleggInnhold";
 import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
 import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
+import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
@@ -72,6 +73,7 @@ export default function Barntillegg() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
+  const leggTilBarnModalRef = useRef<HTMLDialogElement>(null);
 
   const [barnFraPdlList, setBarnFraPdlList] = useState(loaderData?.barnFraPdl || []);
   const [barnLagtManueltList, setBarnLagtManueltList] = useState(loaderData?.barnLagtManuelt || []);
@@ -111,18 +113,7 @@ export default function Barntillegg() {
     <main id="maincontent" tabIndex={-1}>
       <Page className="brukerdialog">
         <h2>Barnetillegg</h2>
-        <BodyLong spacing>
-          Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg
-          uavhengig av om barnet bor hos deg.
-          <br />
-          <br />
-          Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke
-          barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av
-          12 måneder.
-          <br />
-          <br />
-          Hvis vi har registrert noen barn på deg vises de under.
-        </BodyLong>
+        <BarnetilleggInnhold />
         <VStack gap="10">
           <VStack gap="space-16">
             {barnFraPdlList.map((barn, index) => (
@@ -173,7 +164,9 @@ export default function Barntillegg() {
                 variant="secondary"
                 type="submit"
                 icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate("/legg-til-barn")}
+                onClick={() => {
+                  leggTilBarnModalRef.current?.showModal();
+                }}
               >
                 Legg til barn
               </Button>
@@ -196,6 +189,12 @@ export default function Barntillegg() {
               Neste steg
             </Button>
           </HStack>
+
+          <LeggTilBarnModal
+            leggTilBarnModalRef={leggTilBarnModalRef}
+            barnLagtManueltList={barnLagtManueltList}
+            setBarnLagtManueltList={setBarnLagtManueltList}
+          />
         </VStack>
       </Page>
     </main>

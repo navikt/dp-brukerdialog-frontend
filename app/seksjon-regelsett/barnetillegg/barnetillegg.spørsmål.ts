@@ -6,12 +6,9 @@ export const forsørgerDuBarnetSomIkkeVisesHer = "forsørgerDuBarnetSomIkkeVises
 export type Barn = {
   fornavnOgMellomnavn?: string;
   etternavn?: string;
-  fodselsnummer: Date;
-  bostedsland?: string;
+  fødselsdato?: string;
+  hvilkenLandBorBarnet?: string;
   forsørgerDuBarnet?: "ja" | "nei";
-  dokumentereForsørgerNå?: string;
-  dokumententasjonGrunn?: string;
-  hentetFraPdl?: "ja" | "nei";
 };
 
 export type BarnetilleggSvar = {
@@ -39,3 +36,45 @@ export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
     { value: "nei", label: "Nei" },
   ],
 };
+
+export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
+export const etternavn = "etternavn";
+export const fødselsdato = "fødselsdato";
+export const hvilkenLandBorBarnet = "hvilkenLandBorBarnet";
+export const lesMerOmBarnetBosted = "lesMerOmBarnetBosted";
+
+export type LeggTilBarnManueltSvar = {
+  [fornavnOgMellomnavn]?: string;
+  [etternavn]?: string;
+  [fødselsdato]?: string;
+  [hvilkenLandBorBarnet]?: string;
+};
+
+export const leggTilBarnManueltSpørsmål: KomponentType[] = [
+  {
+    id: fornavnOgMellomnavn,
+    type: "kortTekst",
+    label: "Fornavn og mellomnavn",
+  },
+  {
+    id: etternavn,
+    type: "kortTekst",
+    label: "Etternavn",
+  },
+  {
+    id: fødselsdato,
+    type: "dato",
+    label: "Fødselsdato",
+  },
+  {
+    id: hvilkenLandBorBarnet,
+    type: "land",
+    label: "Hvilket land bor barnet i?",
+  },
+  {
+    id: lesMerOmBarnetBosted,
+    type: "lesMer",
+    label: "Les mer om barnets bosted",
+    description: "Her kan du lese mer om hvordan vi behandler informasjon om barnets bosted.",
+  },
+];
