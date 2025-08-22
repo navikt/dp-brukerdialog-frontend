@@ -26,6 +26,8 @@ import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  barnFraPdl,
+  barnLagtManuelt,
   forsørgerDuBarnetSomIkkeVisesHer,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 
@@ -105,7 +107,9 @@ export default function Barntillegg() {
       form.value(forsørgerDuBarnetSomIkkeVisesHer) === undefined;
 
     if (!harUbesvartBarnFraPdl && !ubesvartForsørgerDuBarnetSomIkkeVisesHer) {
-      console.log("lagrer data");
+      form.setValue(barnFraPdl, JSON.stringify(barnFraPdlList));
+      form.setValue(barnLagtManuelt, JSON.stringify(barnLagtManueltList));
+
       form.submit();
     }
   }
