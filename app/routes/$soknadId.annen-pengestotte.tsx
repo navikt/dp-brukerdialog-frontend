@@ -24,13 +24,13 @@ import {
 } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 import { pengestøtteFraAndreEøsLand } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
-  annenPengestøtteFraAndreEnnNav,
+  annenPengestøtteFraAndreEnnNavSpørsmål,
   dagpengerFraEtAnnetEøsLandSpørsmål,
   etterlønnFraArbeidsgiverSpørsmål,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
   pengestøtteFraNorgeSpørsmål,
   pensjonFraAndreEnnNavSpørsmål,
-  utbetalingFraGarantikassenForFiskere,
+  utbetalingFraGarantikassenForFiskereSpørsmål,
 } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-norge";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
@@ -76,10 +76,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export const annenPengestøtteAlleSpørsmål = pengestøtteFraAndreEøsLand
   .concat(pengestøtteFraNorgeSpørsmål)
   .concat(pensjonFraAndreEnnNavSpørsmål)
-  .concat(utbetalingFraGarantikassenForFiskere)
+  .concat(utbetalingFraGarantikassenForFiskereSpørsmål)
   .concat(etterlønnFraArbeidsgiverSpørsmål)
   .concat(dagpengerFraEtAnnetEøsLandSpørsmål)
-  .concat(annenPengestøtteFraAndreEnnNav)
+  .concat(annenPengestøtteFraAndreEnnNavSpørsmål)
   .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål);
 
 // noinspection JSUnusedGlobalSymbols
@@ -135,41 +135,31 @@ export default function AnnenPengestøtte() {
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
                 ?.includes(pensjonFraAndreEnnNav) && (
-                <>
-                  <Alert variant="info">
-                    Du må legge ved dokumentasjon på hvem som utbetaler pensjonen, og hvilken
-                    periode den gjelder for.
-                  </Alert>
-                  <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                    <h4>Pensjon fra andre enn Nav</h4>
-                    {pensjonFraAndreEnnNavSpørsmål.map((spørsmål) => render(spørsmål))}
-                  </VStack>
-                </>
+                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
+                  <h4>Pensjon fra andre enn Nav</h4>
+                  {pensjonFraAndreEnnNavSpørsmål.map((spørsmål) => render(spørsmål))}
+                </VStack>
               )}
 
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
                 ?.includes(garantiLottForFiskere) && (
-                <>
-                  <Alert variant="info">
-                    Du må dokumentasjon hvilken periode Garantikassen for fiskere utbetaler ytelsen.
-                  </Alert>
-                  <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                    <h4>
-                      Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for
-                      fiskere (GFF)
-                    </h4>
-                    {utbetalingFraGarantikassenForFiskere.map((spørsmål) => render(spørsmål))}
-                  </VStack>
-                </>
+                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
+                  <h4>
+                    Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for fiskere
+                    (GFF)
+                  </h4>
+                  {utbetalingFraGarantikassenForFiskereSpørsmål.map((spørsmål) => render(spørsmål))}
+                </VStack>
               )}
 
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
                 ?.includes(etterlønnFraArbeidsgiver) && (
-                <>
+                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
+                  <h4>Etterlønn fra arbeidsgiver</h4>
                   <Alert variant="info">
                     Etterlønn er en ytelse som helt eller delvis dekker bortfall av inntekt for en
                     periode du ikke er omfattet av arbeidsavtalen.
@@ -184,46 +174,29 @@ export default function AnnenPengestøtte() {
                       <li>Erstatning for usaklig oppsigelse, som ikke er lønn.</li>
                       <li>Sluttvederlag etter tariffavtale.</li>
                     </ul>
-                    Du må legge ved dokumentasjon av hvem som utbetaler etterlønnen, og hvilken
-                    periode den gjelder for.
                   </Alert>
-                  <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                    <h4>Etterlønn fra arbeidsgiver</h4>
-                    {etterlønnFraArbeidsgiverSpørsmål.map((spørsmål) => render(spørsmål))}
-                  </VStack>
-                </>
+                  {etterlønnFraArbeidsgiverSpørsmål.map((spørsmål) => render(spørsmål))}
+                </VStack>
               )}
 
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
                 ?.includes(dagpengerFraAnnetEøsLand) && (
-                <>
-                  <Alert variant="info">
-                    Du må legge ved dokumentasjon av hvilket land som utbetaler dagpengene, og
-                    hvilken periode den gjelder for.
-                  </Alert>
-                  <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                    <h4>Dagpenger fra et annet EØS-land</h4>
-                    {dagpengerFraEtAnnetEøsLandSpørsmål.map((spørsmål) => render(spørsmål))}
-                  </VStack>
-                </>
+                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
+                  <h4>Dagpenger fra et annet EØS-land</h4>
+                  {dagpengerFraEtAnnetEøsLandSpørsmål.map((spørsmål) => render(spørsmål))}
+                </VStack>
               )}
 
             {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
               form
                 .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
                 ?.includes(annenYtelse) && (
-                <>
-                  <Alert variant="info">
-                    Du må legge ved dokumentasjon på hvem som utbetaler pensjonen, og hvilken
-                    periode den gjelder for.
-                  </Alert>
-                  <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                    <h4>Annen pengestøtte fra andre enn Nav</h4>
-                    {annenPengestøtteFraAndreEnnNav.map((spørsmål) => render(spørsmål))}
-                  </VStack>
-                </>
+                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
+                  <h4>Annen pengestøtte fra andre enn Nav</h4>
+                  {annenPengestøtteFraAndreEnnNavSpørsmål.map((spørsmål) => render(spørsmål))}
+                </VStack>
               )}
 
             {fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål.map(

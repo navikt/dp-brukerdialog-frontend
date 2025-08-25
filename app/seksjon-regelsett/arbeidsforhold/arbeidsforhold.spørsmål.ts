@@ -1,14 +1,14 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const hvordanHarDuJobbet = "hvordanHarDuJobbet";
-export const fastArbeidstidIMindreEnn6Måneder = "fastArbeidstidIMindreEnn6Måneder";
-export const fastArbeidstidI6MånederEllerMer = "fastArbeidstidI6MånederEllerMer";
-export const varierendeArbeidstidDeSiste12Månedene = "varierendeArbeidstidDeSiste12Månedene";
+export const hvordanHarDuJobbet = "hvordan-har-du-jobbet";
+export const fastArbeidstidIMindreEnn6Måneder = "fast-arbeidstid-imindre-enn-6-måneder";
+export const fastArbeidstidI6MånederEllerMer = "fast-arbeidstid-i-6-måneder-eller-mer";
+export const varierendeArbeidstidDeSiste12Månedene = "varierende-arbeidstid-de-siste-12-månedene";
 export const jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene =
-  "jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedenen";
-export const harIkkeJobbetDeSiste36Månedene = "harIkkeJobbetDeSiste36Månedene";
+  "jobbet-mer-igjennomsnitt-de-siste-36-månedene-enn-de-siste-12-månedenen";
+export const harIkkeJobbetDeSiste36Månedene = "har-ikke-jobbet-de-siste-36-månedene";
 export const harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene =
-  "harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene";
+  "har-du-jobbet-iet-annet-eøs-land-sveits-eller-storbritannia-iløpet-av-de-siste-36-månedene";
 
 export type ArbeidsforholdSvar = {
   [hvordanHarDuJobbet]?:
