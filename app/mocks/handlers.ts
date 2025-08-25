@@ -6,6 +6,7 @@ import { mockPersonalia } from "./mock-data/mock-personalia";
 import { mockUtdanning } from "./mock-data/mock-utdanning";
 import { mockVerneplikt } from "~/mocks/mock-data/mock-verneplikt";
 import { mockBarnetillegg } from "./mock-data/mock-barnetillegg";
+import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -13,6 +14,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/personalia`, () => {
     return HttpResponse.json(mockPersonalia);
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/barn`, () => {
+    return HttpResponse.json(mockBarnFraPdl);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
     // return new HttpResponse(null, { status: 404 });

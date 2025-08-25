@@ -26,10 +26,9 @@ import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  barnFraPdl,
-  barnLagtManuelt,
   forsørgerDuBarnetSomIkkeVisesHer,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -47,6 +46,8 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const loaderData: BarnetilleggResponse = await response.json();
 
+  console.log(loaderData);
+
   return data(loaderData);
 }
 
@@ -56,11 +57,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "personalia";
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+
+  const response = await lagreSeksjon(
+    request,
+    params.soknadId,
+    seksjonId,
+    formData.get("payload") as string
   );
-  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
     return {
@@ -91,9 +94,7 @@ export default function Barntillegg() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: {
-      forsørgerDuBarnetSomIkkeVisesHer: loaderData?.forsørgerDuBarnetSomIkkeVisesHer,
-    },
+    defaultValues: hentFormDefaultValues<BarnetilleggSvar>(loaderData),
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -118,9 +119,13 @@ export default function Barntillegg() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHer !== undefined) {
-      form.setValue(barnFraPdl, JSON.stringify(barnFraPdlList));
-      form.setValue(barnLagtManuelt, JSON.stringify(barnLagtManueltList));
+      const payload = {
+        barnFraPdl: barnFraPdlList,
+        barnLagtManuelt: barnLagtManueltList,
+        forsørgerDuBarnetSomIkkeVisesHer: form.value(forsørgerDuBarnetSomIkkeVisesHer),
+      };
 
+      form.setValue("payload", JSON.stringify(payload));
       form.submit();
     }
   }
@@ -195,7 +200,9 @@ export default function Barntillegg() {
             </HStack>
           )}
 
-          {visFeilmelding && <BodyShort>Du må legge til et barn</BodyShort>}
+          {visFeilmelding && (
+            <BodyShort className="validation--error">Du må legge til et barn</BodyShort>
+          )}
 
           <HStack gap="4" className="mt-8">
             <Button

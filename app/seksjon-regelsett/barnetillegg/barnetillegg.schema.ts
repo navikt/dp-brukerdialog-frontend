@@ -2,8 +2,6 @@ import { z } from "zod";
 import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  barnFraPdl,
-  barnLagtManuelt,
   etternavn,
   fornavnOgMellomnavn,
   forsørgerDuBarnet,
@@ -17,8 +15,7 @@ import {
 export const barnetilleggSchema = z
   .object({
     [forsørgerDuBarnetSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
-    [barnFraPdl]: z.string().optional(),
-    [barnLagtManuelt]: z.string().optional(),
+    ["payload"]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     barnetilleggSpørsmål.forEach((spørsmål) => {

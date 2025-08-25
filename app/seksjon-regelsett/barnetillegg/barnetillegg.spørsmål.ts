@@ -42,8 +42,6 @@ export const etternavn = "etternavn";
 export const fødselsdato = "fødselsdato";
 export const hvilkenLandBorBarnet = "hvilkenLandBorBarnet";
 export const lesMerOmBarnetBosted = "lesMerOmBarnetBosted";
-export const barnLagtManuelt = "barnLagtManuelt";
-export const barnFraPdl = "barnFraPdl";
 
 export type LeggTilBarnManueltSvar = {
   [fornavnOgMellomnavn]?: string;
