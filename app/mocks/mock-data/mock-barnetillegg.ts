@@ -15,19 +15,4 @@ export const mockBarnetillegg: BarnetilleggResponse = {
       hvilkenLandBorBarnet: "NO",
     },
   ],
-  barnLagtManuelt: [
-    {
-      fornavnOgMellomnavn: "SNURRE",
-      etternavn: "SPRETT",
-      fødselsdato: "1999-12-20",
-      hvilkenLandBorBarnet: "NO",
-    },
-    {
-      fornavnOgMellomnavn: "JOHN",
-      etternavn: "DOE",
-      fødselsdato: "2000-01-01",
-      hvilkenLandBorBarnet: "UK",
-    },
-  ],
-  forsørgerDuBarnetSomIkkeVisesHer: undefined,
 };

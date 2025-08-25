@@ -1,7 +1,6 @@
 import { FloppydiskIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect } from "react";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { leggTilBarnManueltSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";

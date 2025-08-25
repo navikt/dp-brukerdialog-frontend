@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { Alert, BodyShort, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActionFunctionArgs,
   data,
@@ -80,6 +80,7 @@ export default function Barntillegg() {
   const [barnFraPdlList, setBarnFraPdlList] = useState(loaderData?.barnFraPdl || []);
   const [barnLagtManueltList, setBarnLagtManueltList] = useState(loaderData?.barnLagtManuelt || []);
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
+  const [visFeilmelding, setVisFeilmelding] = useState(false);
 
   const form = useForm({
     method: "PUT",
@@ -97,16 +98,26 @@ export default function Barntillegg() {
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
+  const forsørgerDuBarnSomIkkeVisesHer = form.value(forsørgerDuBarnetSomIkkeVisesHer);
+
+  useEffect(() => {
+    if (forsørgerDuBarnSomIkkeVisesHer !== "ja") {
+      setVisFeilmelding(false);
+    }
+  }, [forsørgerDuBarnSomIkkeVisesHer]);
+
   function handleSubmit() {
     form.validate();
+
+    if (forsørgerDuBarnSomIkkeVisesHer === "ja" && !barnLagtManueltList.length) {
+      setVisFeilmelding(true);
+      return;
+    }
 
     const harUbesvartBarnFraPdl = barnFraPdlList.some((barn) => !barn.forsørgerDuBarnet);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
-    const ubesvartForsørgerDuBarnetSomIkkeVisesHer =
-      form.value(forsørgerDuBarnetSomIkkeVisesHer) === undefined;
-
-    if (!harUbesvartBarnFraPdl && !ubesvartForsørgerDuBarnetSomIkkeVisesHer) {
+    if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHer !== undefined) {
       form.setValue(barnFraPdl, JSON.stringify(barnFraPdlList));
       form.setValue(barnLagtManuelt, JSON.stringify(barnLagtManueltList));
 
@@ -183,6 +194,9 @@ export default function Barntillegg() {
               </Button>
             </HStack>
           )}
+
+          {visFeilmelding && <BodyShort>Du må legge til et barn</BodyShort>}
+
           <HStack gap="4" className="mt-8">
             <Button
               variant="secondary"
