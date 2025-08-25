@@ -27,7 +27,7 @@ export const utdanningSchema = z
       const spørsmålId = spørsmål.id as keyof UtdanningSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
 
       if (erSpørsmål && synlig && !svar) {
         ctx.addIssue({

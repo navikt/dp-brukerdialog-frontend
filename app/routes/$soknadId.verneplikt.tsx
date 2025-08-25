@@ -82,22 +82,11 @@ export default function Verneplikt() {
                 }
 
                 return (
-                  <>
-                    <Spørsmål
-                      key={spørsmål.id}
-                      spørsmål={spørsmål}
-                      formScope={form.scope(spørsmål.id as keyof VernepliktSvar)}
-                    />
-
-                    {spørsmål.id === "dokumenterAvtjentVernepliktNå" &&
-                      form.value("dokumenterAvtjentVernepliktNå") === "nei" && (
-                        <Alert variant="warning">
-                          Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn
-                          dokumentene vi trenger for å behandle saken din. Ta kontakt med NAV hvis
-                          du ikke får tak i dokumentet
-                        </Alert>
-                      )}
-                  </>
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof VernepliktSvar)}
+                  />
                 );
               })}
             </VStack>

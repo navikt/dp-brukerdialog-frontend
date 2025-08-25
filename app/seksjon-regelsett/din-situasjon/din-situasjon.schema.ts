@@ -1,17 +1,17 @@
 import { z } from "zod";
 import {
-  arsak,
-  dato,
+  årsakTilAtDagpengeneBleStanset,
+  hvilkenDatoSøkerDuDagpengerFra,
   dinSituasjonSpørsmål,
   DinSituasjonSvar,
-  mottatt,
+  harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
 } from "./din-situasjon.spørsmål";
 
 export const dinSituasjonSchema = z
   .object({
-    [mottatt]: z.enum(["ja", "nei", "vetikke"]).optional(),
-    [arsak]: z.string().max(500, "Maks 500 tegn").optional(),
-    [dato]: z.string().optional(),
+    [harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene]: z.enum(["ja", "nei", "vetikke"]).optional(),
+    [årsakTilAtDagpengeneBleStanset]: z.string().max(500, "Maks 500 tegn").optional(),
+    [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     dinSituasjonSpørsmål.forEach((spørsmål) => {

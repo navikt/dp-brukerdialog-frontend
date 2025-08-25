@@ -72,6 +72,14 @@ export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
 
 export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
   {
+    id: "pensjonFraAndreEnnNavDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Dokumentasjon på hvem som utbetaler pensjonen, og hvilken periode den gjelder for",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(pensjonFraAndreEnnNav) ||
+      false,
+  },
+  {
     id: hvemUtbetalerPensjonen,
     type: "kortTekst",
     label: "Hvem utbetaler pensjonen?",
@@ -99,7 +107,15 @@ export const pensjonFraAndreEnnNavSpørsmål: KomponentType[] = [
   },
 ];
 
-export const utbetalingFraGarantikassenForFiskere: KomponentType[] = [
+export const utbetalingFraGarantikassenForFiskereSpørsmål: KomponentType[] = [
+  {
+    id: "utbetalingFraGarantikassenForFiskereDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Dokumentasjon som viser hvilken periode Garantikassen for fiskere utbetaler ytelsen",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(garantiLottForFiskere) ||
+      false,
+  },
   {
     id: hvilkenPeriodeGjelderUtbetalingFraGarantikassenForFiskereForFraOgMed,
     type: "periodeFra",
@@ -121,6 +137,14 @@ export const utbetalingFraGarantikassenForFiskere: KomponentType[] = [
 ];
 
 export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
+  {
+    id: "etterlønnFraArbeidsgiverDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Dokumentasjon av hvem som utbetaler etterlønnen, og hvilken periode den gjelder for",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(etterlønnFraArbeidsgiver) ||
+      false,
+  },
   {
     id: hvemUtbetalerEtterlønnen,
     type: "kortTekst",
@@ -154,6 +178,14 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
 
 export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
   {
+    id: "dagpengerFraEtAnnetEøsLandDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Dokumentasjon av hvilket land som utbetaler dagpengene, og hvilken periode den gjelder for",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(dagpengerFraAnnetEøsLand) ||
+      false,
+  },
+  {
     id: hvilketEøsLandUtbetalerDagpengene,
     type: "land",
     label: "Hvilket annet EØS-land utbetaler dagpengene?",
@@ -184,7 +216,15 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
   },
 ];
 
-export const annenPengestøtteFraAndreEnnNav: KomponentType[] = [
+export const annenPengestøtteFraAndreEnnNavSpørsmål: KomponentType[] = [
+  {
+    id: "annenPengestøtteFraAndreEnnNavDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "dokumentasjon av hvilken ytelse dette er, hvem som utbetaler den, og hvilken periode den gjelder for",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(annenYtelse) ||
+      false,
+  },
   {
     id: hvilkenAnnenPengestøtteMottas,
     type: "kortTekst",
@@ -239,18 +279,16 @@ export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
         "Under forutsetning av en inkluderende overveielse realiseres incitamentet for så vidt gjelder ressurssituasjonen.",
     },
     {
-      id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-      type: "kortTekst",
-      label: "Skriv inn hva du får beholde",
+      id: "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: "Avtale om økonomiske goder fra arbeidsgiver",
       visHvis: (svar: AnnenPengestøtteSvar) =>
         svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
     },
     {
-      id: "skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiverLesMer",
-      type: "lesMer",
-      label: "Grunnen til at vi spør om dette?",
-      description:
-        "Sammenholdt med en tverrfaglig agenda iverksettes økningen på linje med satsingsområdet.",
+      id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+      type: "kortTekst",
+      label: "Skriv inn hva du får beholde",
       visHvis: (svar: AnnenPengestøtteSvar) =>
         svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
     },
