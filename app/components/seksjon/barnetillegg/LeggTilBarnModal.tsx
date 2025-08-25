@@ -12,15 +12,11 @@ import {
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  setBarnLagtManueltList: (barn: Barn[]) => void;
-  barnLagtManueltList: Barn[];
+  setbarnLagtManuelt: (barn: Barn[]) => void;
+  barnLagtManuelt: Barn[];
 }
 
-export function LeggTilBarnModal({
-  modalRef,
-  setBarnLagtManueltList,
-  barnLagtManueltList,
-}: IProps) {
+export function LeggTilBarnModal({ modalRef, setbarnLagtManuelt, barnLagtManuelt }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
@@ -33,7 +29,7 @@ export function LeggTilBarnModal({
         bostedsland: data.bostedsland!!,
       };
 
-      setBarnLagtManueltList([...barnLagtManueltList, nyttBarn]);
+      setbarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
       modalRef.current?.close();
     },
     resetAfterSubmit: true,

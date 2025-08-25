@@ -12,16 +12,16 @@ import {
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  setBarnLagtManueltList: (barn: Barn[]) => void;
-  barnLagtManueltList: Barn[];
+  setbarnLagtManuelt: (barn: Barn[]) => void;
+  barnLagtManuelt: Barn[];
   index: number;
   barn: Barn;
 }
 
 export function OppdatereBarnModal({
   modalRef,
-  setBarnLagtManueltList,
-  barnLagtManueltList,
+  setbarnLagtManuelt,
+  barnLagtManuelt,
   index,
   barn,
 }: IProps) {
@@ -37,10 +37,10 @@ export function OppdatereBarnModal({
         bostedsland: data.bostedsland!!,
       };
 
-      const oppdatertListe = [...barnLagtManueltList];
+      const oppdatertListe = [...barnLagtManuelt];
       oppdatertListe[index] = oppdatertBarn;
 
-      setBarnLagtManueltList(oppdatertListe);
+      setbarnLagtManuelt(oppdatertListe);
       modalRef.current?.close();
     },
   });

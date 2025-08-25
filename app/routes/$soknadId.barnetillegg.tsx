@@ -36,7 +36,10 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
   barnLagtManuelt?: Barn[];
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<BarnetilleggResponse | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const seksjonResponse = await hentSeksjon(request, params.soknadId, "barnetillegg");
@@ -45,20 +48,19 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     const barnFraPdlResponse = await hentBarn(request);
 
     if (!barnFraPdlResponse.ok) {
-      return data(undefined);
+      return undefined;
     }
 
     const loaderData: BarnetilleggResponse = {
       forsørgerDuBarnetSomIkkeVisesHer: undefined,
-      barnLagtManuelt: undefined,
+      barnLagtManuelt: [],
       barnFraPdl: await barnFraPdlResponse.json(),
     };
 
-    return data(loaderData);
+    return loaderData;
   }
 
-  const loaderData = await seksjonResponse.json();
-  return data(loaderData);
+  return await seksjonResponse.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -67,15 +69,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "personalia";
+  const seksjonsData = formData.get("payload") as string;
 
-  console.log(formData.get("payload") as string);
-
-  const response = await lagreSeksjon(
-    request,
-    params.soknadId,
-    seksjonId,
-    formData.get("payload") as string
-  );
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
     return {
@@ -92,8 +88,8 @@ export default function Barntillegg() {
   const navigate = useNavigate();
   const modalRef = useRef<HTMLDialogElement>(null);
 
-  const [barnFraPdlList, setBarnFraPdlList] = useState(loaderData?.barnFraPdl || []);
-  const [barnLagtManueltList, setBarnLagtManueltList] = useState(loaderData?.barnLagtManuelt || []);
+  const [barnFraPdl, setbarnFraPdl] = useState(loaderData?.barnFraPdl || []);
+  const [barnLagtManuelt, setbarnLagtManuelt] = useState(loaderData?.barnLagtManuelt || []);
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [visFeilmelding, setVisFeilmelding] = useState(false);
 
@@ -122,18 +118,18 @@ export default function Barntillegg() {
   function handleSubmit() {
     form.validate();
 
-    if (forsørgerDuBarnSomIkkeVisesHer === "ja" && !barnLagtManueltList.length) {
+    if (forsørgerDuBarnSomIkkeVisesHer === "ja" && !barnLagtManuelt.length) {
       setVisFeilmelding(true);
       return;
     }
 
-    const harUbesvartBarnFraPdl = barnFraPdlList.some((barn: Barn) => !barn.forsørgerDuBarnet);
+    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHer !== undefined) {
-      const payload = {
-        barnFraPdl: barnFraPdlList,
-        barnLagtManuelt: barnLagtManueltList,
+      const payload: BarnetilleggResponse = {
+        barnFraPdl: barnFraPdl,
+        barnLagtManuelt: barnLagtManuelt,
         forsørgerDuBarnetSomIkkeVisesHer: form.value(forsørgerDuBarnetSomIkkeVisesHer),
       };
 
@@ -149,14 +145,14 @@ export default function Barntillegg() {
         <BarnetilleggInnhold />
         <VStack gap="10">
           <VStack gap="space-16">
-            {barnFraPdlList.map((barn: Barn, index: number) => (
+            {barnFraPdl.map((barn: Barn, index: number) => (
               <BarnFraPdl
                 key={index}
                 barn={barn}
                 barnIndex={index}
                 validerBarnFraPdl={validerBarnFraPdl}
-                barnFraPdlList={barnFraPdlList}
-                setBarnFraPdlList={setBarnFraPdlList}
+                barnFraPdl={barnFraPdl}
+                setbarnFraPdl={setbarnFraPdl}
               />
             ))}
           </VStack>
@@ -186,13 +182,13 @@ export default function Barntillegg() {
           </Form>
 
           <VStack gap="space-16">
-            {barnLagtManueltList?.map((barn: Barn, index: number) => (
+            {barnLagtManuelt?.map((barn: Barn, index: number) => (
               <BarnLagtManuelt
                 key={index}
                 index={index}
                 barn={barn}
-                barnLagtManueltList={barnLagtManueltList}
-                setBarnLagtManueltList={setBarnLagtManueltList}
+                barnLagtManuelt={barnLagtManuelt}
+                setbarnLagtManuelt={setbarnLagtManuelt}
               />
             ))}
           </VStack>
@@ -235,8 +231,8 @@ export default function Barntillegg() {
           </HStack>
           <LeggTilBarnModal
             modalRef={modalRef}
-            barnLagtManueltList={barnLagtManueltList}
-            setBarnLagtManueltList={setBarnLagtManueltList}
+            barnLagtManuelt={barnLagtManuelt}
+            setbarnLagtManuelt={setbarnLagtManuelt}
           />
         </VStack>
       </Page>

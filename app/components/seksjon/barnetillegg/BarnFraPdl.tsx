@@ -15,16 +15,16 @@ interface IProps {
   barn: Barn;
   barnIndex: number;
   validerBarnFraPdl: boolean;
-  barnFraPdlList: Barn[];
-  setBarnFraPdlList: (list: Barn[]) => void;
+  barnFraPdl: Barn[];
+  setbarnFraPdl: (list: Barn[]) => void;
 }
 
 export function BarnFraPdl({
   barn,
   validerBarnFraPdl,
   barnIndex,
-  barnFraPdlList,
-  setBarnFraPdlList,
+  barnFraPdl,
+  setbarnFraPdl,
 }: IProps) {
   const form = useForm({
     submitSource: "state",
@@ -44,15 +44,19 @@ export function BarnFraPdl({
     const forsørgerDuBarnet = form.value("forsørgerDuBarnet");
 
     if (form.formState.isDirty && forsørgerDuBarnet !== undefined) {
-      const oppdatertBarn = {
-        ...barnFraPdlList[barnIndex],
-        forsørgerDuBarnet,
+      const gammeltBarn = barnFraPdl[barnIndex];
+      const oppdatertBarn: Barn = {
+        etternavn: gammeltBarn.etternavn,
+        bostedsland: gammeltBarn.bostedsland,
+        fodselsdato: gammeltBarn.fodselsdato,
+        fornavnOgMellomnavn: gammeltBarn.fornavnOgMellomnavn,
+        forsørgerDuBarnet: forsørgerDuBarnet,
       };
 
-      const oppdatertListe = [...barnFraPdlList];
+      const oppdatertListe = [...barnFraPdl];
       oppdatertListe[barnIndex] = oppdatertBarn;
 
-      setBarnFraPdlList(oppdatertListe);
+      setbarnFraPdl(oppdatertListe);
     }
   }, [form.formState]);
 
