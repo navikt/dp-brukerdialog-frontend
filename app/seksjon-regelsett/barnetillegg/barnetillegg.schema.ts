@@ -10,12 +10,13 @@ import {
   bostedsland,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
+  payload,
 } from "./barnetillegg.spørsmål";
 
 export const barnetilleggSchema = z
   .object({
     [forsørgerDuBarnetSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
-    ["payload"]: z.string().optional(),
+    [payload]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     barnetilleggSpørsmål.forEach((spørsmål) => {

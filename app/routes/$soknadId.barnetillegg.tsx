@@ -4,7 +4,6 @@ import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -28,6 +27,7 @@ import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
   forsørgerDuBarnetSomIkkeVisesHer,
+  payload,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 import { hentFormDefaultValues } from "~/utils/form.utils";
 
@@ -83,9 +83,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Barntillegg() {
+  const navigate = useNavigate();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const navigate = useNavigate();
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const [barnFraPdl, setbarnFraPdl] = useState(loaderData?.barnFraPdl || []);
@@ -107,18 +107,16 @@ export default function Barntillegg() {
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
-  const forsørgerDuBarnSomIkkeVisesHer = form.value(forsørgerDuBarnetSomIkkeVisesHer);
-
   useEffect(() => {
-    if (forsørgerDuBarnSomIkkeVisesHer !== "ja") {
-      setVisFeilmelding(false);
-    }
-  }, [forsørgerDuBarnSomIkkeVisesHer]);
+    setVisFeilmelding(
+      form.value(forsørgerDuBarnetSomIkkeVisesHer) !== "ja" && barnLagtManuelt.length > 0
+    );
+  }, [form.value(forsørgerDuBarnetSomIkkeVisesHer), barnLagtManuelt.length]);
 
   function handleSubmit() {
     form.validate();
 
-    if (forsørgerDuBarnSomIkkeVisesHer === "ja" && !barnLagtManuelt.length) {
+    if (form.value(forsørgerDuBarnetSomIkkeVisesHer) === "ja" && !barnLagtManuelt.length) {
       setVisFeilmelding(true);
       return;
     }
@@ -126,14 +124,14 @@ export default function Barntillegg() {
     const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
-    if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHer !== undefined) {
-      const payload: BarnetilleggResponse = {
+    if (!harUbesvartBarnFraPdl && form.value(forsørgerDuBarnetSomIkkeVisesHer) !== undefined) {
+      const data: BarnetilleggResponse = {
         barnFraPdl: barnFraPdl,
         barnLagtManuelt: barnLagtManuelt,
         forsørgerDuBarnetSomIkkeVisesHer: form.value(forsørgerDuBarnetSomIkkeVisesHer),
       };
 
-      form.setValue("payload", JSON.stringify(payload));
+      form.setValue(payload, JSON.stringify(data));
       form.submit();
     }
   }

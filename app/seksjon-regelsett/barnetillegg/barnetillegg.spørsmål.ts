@@ -2,6 +2,7 @@ import { EnvalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsm
 
 export const forsørgerDuBarnet = "forsørgerDuBarnet";
 export const forsørgerDuBarnetSomIkkeVisesHer = "forsørgerDuBarnetSomIkkeVisesHer";
+export const payload = "payload";
 
 export type Barn = {
   fornavnOgMellomnavn: string;
