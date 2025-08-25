@@ -31,10 +31,10 @@ export function OppdatereBarnModal({
     defaultValues: barn,
     handleSubmit: (data) => {
       const oppdatertBarn: Barn = {
-        fornavnOgMellomnavn: data.fornavnOgMellomnavn,
-        etternavn: data.etternavn,
-        fødselsdato: data.fødselsdato,
-        hvilkenLandBorBarnet: data.hvilkenLandBorBarnet,
+        fornavnOgMellomnavn: data.fornavnOgMellomnavn!!,
+        etternavn: data.etternavn!!,
+        fodselsdato: data.fodselsdato!!,
+        bostedsland: data.bostedsland!!,
       };
 
       const oppdatertListe = [...barnLagtManueltList];

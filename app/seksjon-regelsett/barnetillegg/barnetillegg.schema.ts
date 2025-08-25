@@ -7,7 +7,7 @@ import {
   forsørgerDuBarnet,
   forsørgerDuBarnetSomIkkeVisesHer,
   fødselsdato,
-  hvilkenLandBorBarnet,
+  bostedsland,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
 } from "./barnetillegg.spørsmål";
@@ -52,7 +52,7 @@ export const leggTilBarnManueltSchema = z
     [fornavnOgMellomnavn]: z.string().optional(),
     [etternavn]: z.string().optional(),
     [fødselsdato]: z.string().optional(),
-    [hvilkenLandBorBarnet]: z.string().optional(),
+    [bostedsland]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     leggTilBarnManueltSpørsmål.forEach((spørsmål) => {

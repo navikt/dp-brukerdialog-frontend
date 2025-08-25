@@ -4,10 +4,10 @@ export const forsørgerDuBarnet = "forsørgerDuBarnet";
 export const forsørgerDuBarnetSomIkkeVisesHer = "forsørgerDuBarnetSomIkkeVisesHer";
 
 export type Barn = {
-  fornavnOgMellomnavn?: string;
-  etternavn?: string;
-  fødselsdato?: string;
-  hvilkenLandBorBarnet?: string;
+  fornavnOgMellomnavn: string;
+  etternavn: string;
+  fodselsdato: string;
+  bostedsland: string;
   forsørgerDuBarnet?: "ja" | "nei";
 };
 
@@ -39,15 +39,15 @@ export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
 
 export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
 export const etternavn = "etternavn";
-export const fødselsdato = "fødselsdato";
-export const hvilkenLandBorBarnet = "hvilkenLandBorBarnet";
+export const fødselsdato = "fodselsdato";
+export const bostedsland = "bostedsland";
 export const lesMerOmBarnetBosted = "lesMerOmBarnetBosted";
 
 export type LeggTilBarnManueltSvar = {
   [fornavnOgMellomnavn]?: string;
   [etternavn]?: string;
   [fødselsdato]?: string;
-  [hvilkenLandBorBarnet]?: string;
+  [bostedsland]?: string;
 };
 
 export const leggTilBarnManueltSpørsmål: KomponentType[] = [
@@ -67,7 +67,7 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
     label: "Fødselsdato",
   },
   {
-    id: hvilkenLandBorBarnet,
+    id: bostedsland,
     type: "land",
     label: "Hvilket land bor barnet i?",
   },

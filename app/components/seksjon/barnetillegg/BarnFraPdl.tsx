@@ -61,7 +61,7 @@ export function BarnFraPdl({
       <h3>
         {barn.fornavnOgMellomnavn} {barn.etternavn}
       </h3>
-      {barn.fødselsdato && <p>{formaterNorskDato(new Date(barn.fødselsdato))}</p>}
+      {barn.fodselsdato && <p>{formaterNorskDato(new Date(barn.fodselsdato))}</p>}
 
       <Form {...form.getFormProps()}>
         <Envalg spørsmål={barnFraPdlSpørsmål} formScope={form.scope(forsørgerDuBarnet)} />

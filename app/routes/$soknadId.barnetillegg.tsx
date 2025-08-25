@@ -19,6 +19,7 @@ import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManue
 import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { barnetilleggSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
@@ -38,16 +39,25 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "barnetillegg");
+  const seksjonResponse = await hentSeksjon(request, params.soknadId, "barnetillegg");
 
-  if (response.status !== 200) {
-    return data(undefined);
+  if (!seksjonResponse.ok) {
+    const barnFraPdlResponse = await hentBarn(request);
+
+    if (!barnFraPdlResponse.ok) {
+      return data(undefined);
+    }
+
+    const loaderData: BarnetilleggResponse = {
+      forsørgerDuBarnetSomIkkeVisesHer: undefined,
+      barnLagtManuelt: undefined,
+      barnFraPdl: await barnFraPdlResponse.json(),
+    };
+
+    return data(loaderData);
   }
 
-  const loaderData: BarnetilleggResponse = await response.json();
-
-  console.log(loaderData);
-
+  const loaderData = await seksjonResponse.json();
   return data(loaderData);
 }
 
@@ -57,6 +67,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "personalia";
+
+  console.log(formData.get("payload") as string);
 
   const response = await lagreSeksjon(
     request,
@@ -115,7 +127,7 @@ export default function Barntillegg() {
       return;
     }
 
-    const harUbesvartBarnFraPdl = barnFraPdlList.some((barn) => !barn.forsørgerDuBarnet);
+    const harUbesvartBarnFraPdl = barnFraPdlList.some((barn: Barn) => !barn.forsørgerDuBarnet);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHer !== undefined) {
@@ -137,7 +149,7 @@ export default function Barntillegg() {
         <BarnetilleggInnhold />
         <VStack gap="10">
           <VStack gap="space-16">
-            {barnFraPdlList.map((barn, index) => (
+            {barnFraPdlList.map((barn: Barn, index: number) => (
               <BarnFraPdl
                 key={index}
                 barn={barn}
@@ -174,7 +186,7 @@ export default function Barntillegg() {
           </Form>
 
           <VStack gap="space-16">
-            {barnLagtManueltList?.map((barn, index) => (
+            {barnLagtManueltList?.map((barn: Barn, index: number) => (
               <BarnLagtManuelt
                 key={index}
                 index={index}

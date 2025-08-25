@@ -27,10 +27,10 @@ export function LeggTilBarnModal({
     defaultValues: {},
     handleSubmit: (data) => {
       const nyttBarn: Barn = {
-        fornavnOgMellomnavn: data.fornavnOgMellomnavn,
-        etternavn: data.etternavn,
-        fødselsdato: data.fødselsdato,
-        hvilkenLandBorBarnet: data.hvilkenLandBorBarnet,
+        fornavnOgMellomnavn: data.fornavnOgMellomnavn!!,
+        etternavn: data.etternavn!!,
+        fodselsdato: data.fodselsdato!!,
+        bostedsland: data.bostedsland!!,
       };
 
       setBarnLagtManueltList([...barnLagtManueltList, nyttBarn]);
