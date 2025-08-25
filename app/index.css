@@ -106,3 +106,8 @@
 .inline {
   display: inline;
 }
+
+.validation--error {
+  color: var(--a-surface-danger);
+  font-weight: 600;
+}
