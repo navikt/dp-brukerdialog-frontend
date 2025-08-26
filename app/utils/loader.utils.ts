@@ -10,6 +10,8 @@ export function parseLoaderData<T>(loaderData: T | undefined): T | undefined {
     try {
       return JSON.parse(loaderData) as T;
     } catch {
+      console.error("Klarte ikke parse loaderData");
+
       return undefined;
     }
   }
