@@ -1,5 +1,6 @@
-// Hook for å hente standardverdier fra loaderData
+// Funksjon for å parse loaderData
 // Returnerer et tomt objekt hvis loaderData er undefined
+// Dette får å ungå loader retunerer tilbake json til client
 export function parseLoaderData<T>(loaderData: T | undefined): T | undefined {
   if (!loaderData) {
     return undefined;
