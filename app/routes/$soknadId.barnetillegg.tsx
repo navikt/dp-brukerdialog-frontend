@@ -44,7 +44,10 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
   barnLagtManuelt?: Barn[];
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<BarnetilleggResponse | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const seksjonResponse = await hentSeksjon(request, params.soknadId, "barnetillegg");
@@ -56,16 +59,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
       return undefined;
     }
 
-    const loaderData: BarnetilleggResponse = {
+    return {
       forsørgerDuBarnetSomIkkeVisesHer: undefined,
       barnLagtManuelt: [],
       barnFraPdl: await barnFraPdlResponse.json(),
     };
-
-    return loaderData;
   }
 
-  const loaderData: BarnetilleggResponse = await seksjonResponse.json();
+  const loaderData = await seksjonResponse.json();
   return parseLoaderData(loaderData);
 }
 
