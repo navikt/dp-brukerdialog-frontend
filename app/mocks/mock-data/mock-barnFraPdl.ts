@@ -8,7 +8,7 @@ export const mockBarnFraPdl: Barn[] = [
     bostedsland: "NO",
   },
   {
-    fornavnOgMellomnavn: "LILLA ",
+    fornavnOgMellomnavn: "LILLA",
     etternavn: "KANIN",
     fødselsdato: "1999-06-15",
     bostedsland: "NO",

@@ -9,7 +9,7 @@ export const mockBarnetillegg: BarnetilleggResponse = {
       bostedsland: "NO",
     },
     {
-      fornavnOgMellomnavn: "LILLA ",
+      fornavnOgMellomnavn: "LILLA",
       etternavn: "KANIN",
       fødselsdato: "1999-06-15",
       bostedsland: "NO",
