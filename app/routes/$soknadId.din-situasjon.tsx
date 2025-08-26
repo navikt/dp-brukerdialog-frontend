@@ -3,7 +3,6 @@ import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -21,7 +20,7 @@ import {
   dinSituasjonSpørsmål,
   DinSituasjonSvar,
 } from "~/seksjon-regelsett/din-situasjon/din-situasjon.spørsmål";
-import { hentFormDefaultValues } from "~/utils/form.utils";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -29,12 +28,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
 
   if (response.status !== 200) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: DinSituasjonSvar = await response.json();
 
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -72,7 +71,7 @@ export default function DinSituasjon() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<DinSituasjonSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);

@@ -3,7 +3,6 @@ import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -18,11 +17,11 @@ import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { tilleggsopplysningerSchema } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.schema";
 
 import invariant from "tiny-invariant";
-import { hentFormDefaultValues } from "~/utils/form.utils";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -30,12 +29,11 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
 
   if (response.status !== 200) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: TilleggsopplysningerSvar = await response.json();
-
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -75,7 +73,7 @@ export default function Tilleggsopplysninger() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<TilleggsopplysningerSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);

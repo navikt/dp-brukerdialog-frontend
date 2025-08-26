@@ -12,7 +12,7 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentFormDefaultValues } from "~/utils/form.utils";
+import { parseLoaderData } from "~/utils/loader.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
@@ -29,12 +29,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "bostedsland");
 
   if (!response.ok) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: BostedslandSvar = await response.json();
 
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -72,7 +72,7 @@ export default function Bostedsland() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<BostedslandSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
