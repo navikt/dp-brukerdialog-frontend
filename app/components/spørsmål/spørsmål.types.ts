@@ -7,9 +7,11 @@ export type KomponentType =
   | LandSpørsmål
   | PeriodeSpørsmål
   | Varselmelding
-  | LesMer;
+  | LesMer
+  | Dokumentasjonskravindikator;
 
-type InfoType = "varselmelding" | "lesMer";
+type InfoType = "varselmelding" | "lesMer" | "dokumentasjonskravindikator";
+
 export type SpørsmalType =
   | "envalg"
   | "flervalg"
@@ -75,4 +77,8 @@ export type Varselmelding = KomponentBase & {
 
 export type LesMer = KomponentBase & {
   type: "lesMer";
+};
+
+export type Dokumentasjonskravindikator = KomponentBase & {
+  type: "dokumentasjonskravindikator";
 };

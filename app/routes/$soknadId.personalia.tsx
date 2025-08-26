@@ -2,15 +2,15 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { BodyLong, BodyShort, Button, HStack, Label, Page, VStack } from "@navikt/ds-react";
 import {
   ActionFunctionArgs,
+  LoaderFunctionArgs,
   redirect,
   useLoaderData,
   useNavigate,
   useParams,
-  data,
-  LoaderFunctionArgs,
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export interface IPersonalia {
   person: IPerson;
@@ -41,7 +41,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const response = await hentPersonalia(request);
   const personalia: IPersonalia = await response.json();
 
-  return data(personalia);
+  return parseLoaderData(personalia);
 }
 
 export async function action({ params }: ActionFunctionArgs) {
@@ -53,9 +53,13 @@ export async function action({ params }: ActionFunctionArgs) {
 
 export default function Personalia() {
   const { soknadId } = useParams<{ soknadId: string }>();
+  const personalia = useLoaderData<typeof loader>();
   const navigate = useNavigate();
 
-  const personalia = useLoaderData<typeof loader>();
+  if (!personalia) {
+    return <h1>Ingen personalia funnet</h1>;
+  }
+
   const { fornavn, mellomnavn, etternavn, ident, folkeregistrertAdresse, postAdresse } =
     personalia.person;
 

@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import {
@@ -15,23 +15,26 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { dinSituasjonSchema } from "~/seksjon-regelsett/din-situasjon/din-situasjon.schema";
+import { egenNæringSchema } from "~/seksjon-regelsett/egen-næring/egen-næring.schema";
 import {
-  dinSituasjonSpørsmål,
-  DinSituasjonSvar,
-} from "~/seksjon-regelsett/din-situasjon/din-situasjon.spørsmål";
+  driverDuEgenNæringsvirksomhet,
+  driverDuEgetGårdsbruk,
+  egenNæringEgenNæringsvirksomhetSpørsmål,
+  egenNæringEgetGårdsbrukSpørsmål,
+  EgenNæringSvar,
+} from "~/seksjon-regelsett/egen-næring/egen-næring.spørsmål";
 import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
+  const response = await hentSeksjon(request, params.soknadId, "egen-næring");
 
-  if (response.status !== 200) {
+  if (!response.ok) {
     return undefined;
   }
 
-  const loaderData: DinSituasjonSvar = await response.json();
+  const loaderData: EgenNæringSvar = await response.json();
 
   return parseLoaderData(loaderData);
 }
@@ -40,8 +43,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const seksjonId = "din-situasjon";
-  const nesteSeksjonId = "personalia";
+  const seksjonId = "egen-næring";
+  const nesteSeksjonId = "verneplikt";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
@@ -57,7 +60,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-export default function DinSituasjon() {
+export default function EgenNæring() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -65,7 +68,7 @@ export default function DinSituasjon() {
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: dinSituasjonSchema,
+    schema: egenNæringSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
@@ -74,29 +77,64 @@ export default function DinSituasjon() {
     defaultValues: loaderData ?? {},
   });
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
+  useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetSpørsmål);
 
   return (
     <Page className="brukerdialog">
-      <h2>Din situasjon</h2>
+      <h2>Egen næring</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              {dinSituasjonSpørsmål.map((spørsmål) => {
-                // Skip rendering if the question should not be shown based on current answers
+              {egenNæringEgenNæringsvirksomhetSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
-
                 return (
                   <Spørsmål
                     key={spørsmål.id}
                     spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof DinSituasjonSvar)}
+                    formScope={form.scope(spørsmål.id as keyof EgenNæringSvar)}
                   />
                 );
               })}
+              {form.value(driverDuEgenNæringsvirksomhet) === "ja" && (
+                <HStack>
+                  <Button
+                    variant={"secondary"}
+                    onClick={() => {}}
+                    icon={<PlusIcon />}
+                    iconPosition="left"
+                  >
+                    Legg til næringsvirksomhet
+                  </Button>
+                </HStack>
+              )}
+
+              {egenNæringEgetGårdsbrukSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                  return null;
+                }
+                return (
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof EgenNæringSvar)}
+                  />
+                );
+              })}
+              {form.value(driverDuEgetGårdsbruk) === "ja" && (
+                <HStack>
+                  <Button
+                    variant={"secondary"}
+                    onClick={() => {}}
+                    icon={<PlusIcon />}
+                    iconPosition="left"
+                  >
+                    Legg til gårdsbruk
+                  </Button>
+                </HStack>
+              )}
 
               {actionData && (
                 <Alert variant="error" className="mt-4">

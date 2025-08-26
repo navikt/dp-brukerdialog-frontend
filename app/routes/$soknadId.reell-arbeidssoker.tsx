@@ -1,10 +1,9 @@
-import invariant from "tiny-invariant";
-import { Alert, Button, HStack, List, Page, VStack } from "@navikt/ds-react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { Alert, Button, HStack, List, Page, VStack } from "@navikt/ds-react";
+import { ListItem } from "@navikt/ds-react/List";
 import { useForm } from "@rvf/react-router";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -12,17 +11,17 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router";
+import invariant from "tiny-invariant";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { ListItem } from "@navikt/ds-react/List";
+import { reellArbeidssøkerSchema } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.schema";
 import {
   reellArbeidssøkerSpørsmål,
   ReellArbeidssøkerSvar,
 } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
-import { reellArbeidssøkerSchema } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.schema";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { hentFormDefaultValues } from "~/utils/form.utils";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -30,12 +29,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssøker");
 
   if (!response.ok) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: ReellArbeidssøkerSvar = await response.json();
 
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -72,7 +71,7 @@ export default function ReellArbeidssøker() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<ReellArbeidssøkerSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);

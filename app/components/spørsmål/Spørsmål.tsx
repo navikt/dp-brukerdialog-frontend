@@ -9,6 +9,7 @@ import { Land } from "./Land";
 import { Periode } from "./Periode";
 import { Varselmelding } from "./Varselmelding";
 import { LesMer } from "./LesMer";
+import { Dokumentasjonskravindikator } from "~/components/spørsmål/Dokumentasjonskravindikator";
 
 interface IProps {
   spørsmål: KomponentType;
@@ -44,6 +45,9 @@ export function Spørsmål({ spørsmål, formScope }: Readonly<IProps>) {
 
     case "lesMer":
       return <LesMer spørsmål={spørsmål} />;
+
+    case "dokumentasjonskravindikator":
+      return <Dokumentasjonskravindikator spørsmål={spørsmål} />;
 
     default:
       console.warn(`Ukjent spørsmålstype: ${spørsmål}`);

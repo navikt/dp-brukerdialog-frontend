@@ -34,7 +34,6 @@ import {
   forsørgerDuBarnetSomIkkeVisesHer,
   payload,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
-import { hentFormDefaultValues } from "~/utils/form.utils";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -107,7 +106,7 @@ export default function Barntillegg() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<BarnetilleggSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -212,7 +211,10 @@ export default function Barntillegg() {
           )}
 
           {visFeilmelding && (
-            <BodyShort className="validation--error"><ExclamationmarkTriangleIcon/>Du må legge til et barn</BodyShort>
+            <BodyShort className="validation--error">
+              <ExclamationmarkTriangleIcon />
+              Du må legge til et barn
+            </BodyShort>
           )}
 
           <HStack gap="4" className="mt-8">

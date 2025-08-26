@@ -3,7 +3,6 @@ import { Alert, Button, Heading, HStack, Page, VStack } from "@navikt/ds-react";
 import { FormApi, useForm } from "@rvf/react-router";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -12,11 +11,11 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentFormDefaultValues } from "~/utils/form.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { arbeidsforholdSchema } from "~/seksjon-regelsett/arbeidsforhold/arbeidsforhold.schema";
 import {
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
@@ -27,7 +26,7 @@ import {
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
   varierendeArbeidstidDeSiste12Månedene,
 } from "~/seksjon-regelsett/arbeidsforhold/arbeidsforhold.spørsmål";
-import { arbeidsforholdSchema } from "~/seksjon-regelsett/arbeidsforhold/arbeidsforhold.schema";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -35,12 +34,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "arbeidsforhold");
 
   if (!response.ok) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: ArbeidsforholdSvar = await response.json();
 
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -78,7 +77,7 @@ export default function Arbeidsforhold() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<ArbeidsforholdSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdSpørsmål);

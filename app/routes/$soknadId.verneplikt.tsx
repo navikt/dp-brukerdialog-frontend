@@ -2,7 +2,6 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import {
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -20,18 +19,18 @@ import {
   vernepliktSpørsmål,
   VernepliktSvar,
 } from "~/seksjon-regelsett/verneplikt/verneplikt.spørsmål";
-import { hentFormDefaultValues } from "~/utils/form.utils";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "verneplikt");
   if (response.status !== 200) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: VernepliktSvar = await response.json();
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: LoaderFunctionArgs) {
@@ -64,7 +63,7 @@ export default function Verneplikt() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<VernepliktSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
@@ -82,22 +81,11 @@ export default function Verneplikt() {
                 }
 
                 return (
-                  <>
-                    <Spørsmål
-                      key={spørsmål.id}
-                      spørsmål={spørsmål}
-                      formScope={form.scope(spørsmål.id as keyof VernepliktSvar)}
-                    />
-
-                    {spørsmål.id === "dokumenterAvtjentVernepliktNå" &&
-                      form.value("dokumenterAvtjentVernepliktNå") === "nei" && (
-                        <Alert variant="warning">
-                          Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn
-                          dokumentene vi trenger for å behandle saken din. Ta kontakt med NAV hvis
-                          du ikke får tak i dokumentet
-                        </Alert>
-                      )}
-                  </>
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof VernepliktSvar)}
+                  />
                 );
               })}
             </VStack>

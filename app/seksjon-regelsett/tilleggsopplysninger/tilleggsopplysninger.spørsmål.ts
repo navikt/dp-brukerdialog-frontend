@@ -1,6 +1,6 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const harTilleggsopplysninger = "harTilleggsopplysninger";
+export const harTilleggsopplysninger = "har-tilleggsopplysninger";
 export const tilleggsopplysninger = "tilleggsopplysninger";
 
 export type TilleggsopplysningerSvar = {
@@ -23,6 +23,6 @@ export const tilleggsopplysningerSpørsmål: KomponentType[] = [
     type: "langTekst",
     label: "Skriv inn tilleggsopplysninger her (maks 500 tegn)",
     maxLength: 500,
-    visHvis: (svar: TilleggsopplysningerSvar) => svar.harTilleggsopplysninger === "ja",
+    visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
   },
 ];
