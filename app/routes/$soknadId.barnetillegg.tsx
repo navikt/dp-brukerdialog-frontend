@@ -1,4 +1,9 @@
-import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ExclamationmarkTriangleIcon,
+  PersonPlusIcon,
+} from "@navikt/aksel-icons";
 import { Alert, BodyShort, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
@@ -207,7 +212,7 @@ export default function Barntillegg() {
           )}
 
           {visFeilmelding && (
-            <BodyShort className="validation--error">Du må legge til et barn</BodyShort>
+            <BodyShort className="validation--error"><ExclamationmarkTriangleIcon/>Du må legge til et barn</BodyShort>
           )}
 
           <HStack gap="4" className="mt-8">
