@@ -1,4 +1,12 @@
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  FloppydiskIcon,
+  PencilIcon,
+  PersonPlusIcon,
+  TrashIcon,
+} from "@navikt/aksel-icons";
+import {
   Alert,
   Box,
   Button,
@@ -17,19 +25,11 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useRef, useState } from "react";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  FloppydiskIcon,
-  PencilIcon,
-  PersonPlusIcon,
-  TrashIcon,
-} from "@navikt/aksel-icons";
-import { Route } from "../../.react-router/types/app/routes/+types/_index";
-import { hentBarn } from "~/models/hent-barn.server";
-import { formaterNorskDato } from "~/utils/formattering.utils";
 import { LoaderFunctionArgs } from "react-router";
 import JaNeiFaktum from "~/components/spørsmål/jaNeiFaktum";
+import { hentBarn } from "~/models/hent-barn.server";
+import { formaterNorskDato } from "~/utils/formattering.utils";
+import { Route } from "../../.react-router/types/app/routes/+types/_index";
 
 interface IBarnetillegg {
   barn?: IBarn[];

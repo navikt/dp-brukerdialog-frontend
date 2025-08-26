@@ -3,7 +3,6 @@ import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -12,11 +11,11 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentFormDefaultValues } from "~/utils/form.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { egenNæringSchema } from "~/seksjon-regelsett/egen-næring/egen-næring.schema";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
@@ -24,7 +23,7 @@ import {
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringSvar,
 } from "~/seksjon-regelsett/egen-næring/egen-næring.spørsmål";
-import { egenNæringSchema } from "~/seksjon-regelsett/egen-næring/egen-næring.schema";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -32,12 +31,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "egen-næring");
 
   if (!response.ok) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: EgenNæringSvar = await response.json();
 
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -75,7 +74,7 @@ export default function EgenNæring() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<EgenNæringSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetSpørsmål);

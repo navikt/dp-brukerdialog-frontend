@@ -3,7 +3,6 @@ import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import {
   ActionFunctionArgs,
-  data,
   Form,
   LoaderFunctionArgs,
   redirect,
@@ -12,16 +11,11 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import {
-  AnnenPengestøtteSvar,
-  annenYtelse,
-  dagpengerFraAnnetEøsLand,
-  etterlønnFraArbeidsgiver,
-  garantiLottForFiskere,
-  hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
-  pensjonFraAndreEnnNav,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
 import { pengestøtteFraAndreEøsLand } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
   annenPengestøtteFraAndreEnnNavSpørsmål,
@@ -32,13 +26,18 @@ import {
   pensjonFraAndreEnnNavSpørsmål,
   utbetalingFraGarantikassenForFiskereSpørsmål,
 } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte-norge";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import styles from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
 import { annenPengestøtteSchema } from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.schema";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { hentFormDefaultValues } from "~/utils/form.utils";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
+import {
+  AnnenPengestøtteSvar,
+  annenYtelse,
+  dagpengerFraAnnetEøsLand,
+  etterlønnFraArbeidsgiver,
+  garantiLottForFiskere,
+  hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
+  pensjonFraAndreEnnNav,
+} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -46,12 +45,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "annen-pengestøtte");
 
   if (!response.ok) {
-    return data(undefined);
+    return undefined;
   }
 
   const loaderData: AnnenPengestøtteSvar = await response.json();
 
-  return data(loaderData);
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -98,7 +97,7 @@ export default function AnnenPengestøtte() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: hentFormDefaultValues<AnnenPengestøtteSvar>(loaderData),
+    defaultValues: loaderData ?? {},
   });
 
   useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteAlleSpørsmål);
