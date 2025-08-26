@@ -21,7 +21,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   const soknadId = await response.text();
 
-  return redirect(`/${soknadId}/din-situasjon`);
+  return redirect(`/${soknadId}/barnetillegg`);
 }
 
 export default function OpprettSoknad() {

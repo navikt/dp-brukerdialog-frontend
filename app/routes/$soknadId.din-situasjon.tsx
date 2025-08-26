@@ -58,7 +58,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function DinSituasjon() {
-  const loaderData = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<DinSituasjonSvar | undefined>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 

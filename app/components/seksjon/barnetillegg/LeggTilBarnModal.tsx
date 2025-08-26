@@ -25,7 +25,7 @@ export function LeggTilBarnModal({ modalRef, setbarnLagtManuelt, barnLagtManuelt
       const nyttBarn: Barn = {
         fornavnOgMellomnavn: data.fornavnOgMellomnavn!!,
         etternavn: data.etternavn!!,
-        fodselsdato: data.fodselsdato!!,
+        fødselsdato: data.fødselsdato!!,
         bostedsland: data.bostedsland!!,
       };
 

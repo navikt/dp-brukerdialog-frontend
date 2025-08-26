@@ -5,7 +5,7 @@ export const mockPersonalia: IPersonalia = {
     fornavn: "TOPP",
     mellomnavn: "",
     etternavn: "SURE",
-    fodselsDato: "1979-05-21",
+    fødselsdato: "1979-05-21",
     ident: "21857998666",
     postAdresse: {
       adresselinje1: "Dale 17",

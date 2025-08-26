@@ -33,7 +33,7 @@ export function OppdatereBarnModal({
       const oppdatertBarn: Barn = {
         fornavnOgMellomnavn: data.fornavnOgMellomnavn!!,
         etternavn: data.etternavn!!,
-        fodselsdato: data.fodselsdato!!,
+        fødselsdato: data.fødselsdato!!,
         bostedsland: data.bostedsland!!,
       };
 

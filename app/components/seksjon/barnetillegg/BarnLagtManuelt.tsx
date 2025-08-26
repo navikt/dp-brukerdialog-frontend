@@ -32,7 +32,7 @@ export function BarnLagtManuelt({ barn, index, setbarnLagtManuelt, barnLagtManue
         <h3>
           {barn.fornavnOgMellomnavn} {barn.etternavn}
         </h3>
-        {barn.fodselsdato && <p>{formaterNorskDato(new Date(barn.fodselsdato))}</p>}
+        {barn.fødselsdato && <p>{formaterNorskDato(new Date(barn.fødselsdato))}</p>}
         <p>{barn.bostedsland}</p>
 
         <HStack gap="4">

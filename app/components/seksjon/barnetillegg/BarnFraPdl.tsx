@@ -48,7 +48,7 @@ export function BarnFraPdl({
       const oppdatertBarn: Barn = {
         etternavn: gammeltBarn.etternavn,
         bostedsland: gammeltBarn.bostedsland,
-        fodselsdato: gammeltBarn.fodselsdato,
+        fødselsdato: gammeltBarn.fødselsdato,
         fornavnOgMellomnavn: gammeltBarn.fornavnOgMellomnavn,
         forsørgerDuBarnet: forsørgerDuBarnet,
       };
@@ -65,7 +65,7 @@ export function BarnFraPdl({
       <h3>
         {barn.fornavnOgMellomnavn} {barn.etternavn}
       </h3>
-      {barn.fodselsdato && <p>{formaterNorskDato(new Date(barn.fodselsdato))}</p>}
+      {barn.fødselsdato && <p>{formaterNorskDato(new Date(barn.fødselsdato))}</p>}
 
       <Form {...form.getFormProps()}>
         <Envalg spørsmål={barnFraPdlSpørsmål} formScope={form.scope(forsørgerDuBarnet)} />

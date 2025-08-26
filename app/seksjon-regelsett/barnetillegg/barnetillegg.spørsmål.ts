@@ -7,7 +7,7 @@ export const payload = "payload";
 export type Barn = {
   fornavnOgMellomnavn: string;
   etternavn: string;
-  fodselsdato: string;
+  fødselsdato: string;
   bostedsland: string;
   forsørgerDuBarnet?: "ja" | "nei";
 };
@@ -40,7 +40,7 @@ export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
 
 export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
 export const etternavn = "etternavn";
-export const fødselsdato = "fodselsdato";
+export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";
 export const lesMerOmBarnetBosted = "lesMerOmBarnetBosted";
 

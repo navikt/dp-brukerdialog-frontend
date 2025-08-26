@@ -1,10 +1,5 @@
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ExclamationmarkTriangleIcon,
-  PersonPlusIcon,
-} from "@navikt/aksel-icons";
-import { Alert, BodyShort, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
+import { Alert, BodyShort, Button, ErrorMessage, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -34,16 +29,14 @@ import {
   forsørgerDuBarnetSomIkkeVisesHer,
   payload,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+import { parseLoaderData } from "~/utils/loader.utils";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
   barnLagtManuelt?: Barn[];
 };
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<BarnetilleggResponse | undefined> {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const seksjonResponse = await hentSeksjon(request, params.soknadId, "barnetillegg");
@@ -64,7 +57,8 @@ export async function loader({
     return loaderData;
   }
 
-  return await seksjonResponse.json();
+  const loaderData: BarnetilleggResponse = await seksjonResponse.json();
+  return parseLoaderData(loaderData);
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -95,7 +89,9 @@ export default function Barntillegg() {
   const [barnFraPdl, setbarnFraPdl] = useState(loaderData?.barnFraPdl || []);
   const [barnLagtManuelt, setbarnLagtManuelt] = useState(loaderData?.barnLagtManuelt || []);
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
-  const [visFeilmelding, setVisFeilmelding] = useState(false);
+
+  const [harEnFeil, setHarEnFeil] = useState(false);
+  const [harEnVarsel, setHarEnVarsel] = useState(false);
 
   const form = useForm({
     method: "PUT",
@@ -111,28 +107,33 @@ export default function Barntillegg() {
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
+  const forsørgerDuBarnetSomIkkeVisesHerSvar = form.value(forsørgerDuBarnetSomIkkeVisesHer);
+
   useEffect(() => {
-    setVisFeilmelding(
-      form.value(forsørgerDuBarnetSomIkkeVisesHer) !== "ja" && barnLagtManuelt.length > 0
-    );
-  }, [form.value(forsørgerDuBarnetSomIkkeVisesHer), barnLagtManuelt.length]);
+    if (forsørgerDuBarnetSomIkkeVisesHerSvar === undefined) {
+      return;
+    }
+
+    // Kan jeg droppe å bruke useEffekt her?
+    setHarEnVarsel(forsørgerDuBarnetSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
+    setHarEnFeil(forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+  }, [forsørgerDuBarnetSomIkkeVisesHerSvar, barnLagtManuelt.length]);
 
   function handleSubmit() {
     form.validate();
 
-    if (form.value(forsørgerDuBarnetSomIkkeVisesHer) === "ja" && !barnLagtManuelt.length) {
-      setVisFeilmelding(true);
+    if (harEnFeil || harEnVarsel) {
       return;
     }
 
     const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
-    if (!harUbesvartBarnFraPdl && form.value(forsørgerDuBarnetSomIkkeVisesHer) !== undefined) {
+    if (!harUbesvartBarnFraPdl && forsørgerDuBarnetSomIkkeVisesHerSvar !== undefined) {
       const data: BarnetilleggResponse = {
         barnFraPdl: barnFraPdl,
         barnLagtManuelt: barnLagtManuelt,
-        forsørgerDuBarnetSomIkkeVisesHer: form.value(forsørgerDuBarnetSomIkkeVisesHer),
+        forsørgerDuBarnetSomIkkeVisesHer: forsørgerDuBarnetSomIkkeVisesHerSvar,
       };
 
       form.setValue(payload, JSON.stringify(data));
@@ -195,7 +196,7 @@ export default function Barntillegg() {
             ))}
           </VStack>
 
-          {form.value(forsørgerDuBarnetSomIkkeVisesHer) === "ja" && (
+          {forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && (
             <HStack>
               <Button
                 variant="secondary"
@@ -210,11 +211,20 @@ export default function Barntillegg() {
             </HStack>
           )}
 
-          {visFeilmelding && (
-            <BodyShort className="validation--error">
-              <ExclamationmarkTriangleIcon />
-              Du må legge til et barn
-            </BodyShort>
+          {harEnFeil && (
+            <VStack gap="space-20">
+              <ErrorMessage showIcon>Du må legge til et barn</ErrorMessage>
+            </VStack>
+          )}
+
+          {harEnVarsel && (
+            <Alert variant="warning" className="mt-4">
+              <BodyShort className="validation--warning">
+                Du har lagt til barn manuelt, men du har svar nei på spørsmålet om du forsørger
+                barnet. Du må enten fjerne barnet eller endre svaret til ja for å kunne gå videre i
+                søknaden.
+              </BodyShort>
+            </Alert>
           )}
 
           <HStack gap="4" className="mt-8">
