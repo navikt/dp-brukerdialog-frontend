@@ -12,7 +12,7 @@ import {
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  setbarnLagtManuelt: (barn: Barn[]) => void;
+  setBarnLagtManuelt: (barn: Barn[]) => void;
   barnLagtManuelt: Barn[];
   index: number;
   barn: Barn;
@@ -20,7 +20,7 @@ interface IProps {
 
 export function OppdatereBarnModal({
   modalRef,
-  setbarnLagtManuelt,
+  setBarnLagtManuelt,
   barnLagtManuelt,
   index,
   barn,
@@ -30,19 +30,21 @@ export function OppdatereBarnModal({
     schema: leggTilBarnManueltSchema,
     defaultValues: barn,
     handleSubmit: (data) => {
+      modalRef.current?.close();
+
       const oppdatertBarn: Barn = {
-        fornavnOgMellomnavn: data.fornavnOgMellomnavn!!,
-        etternavn: data.etternavn!!,
-        fødselsdato: data.fødselsdato!!,
-        bostedsland: data.bostedsland!!,
+        fornavnOgMellomnavn: data.fornavnOgMellomnavn!,
+        etternavn: data.etternavn!,
+        fødselsdato: data.fødselsdato!,
+        bostedsland: data.bostedsland!,
       };
 
       const oppdatertListe = [...barnLagtManuelt];
       oppdatertListe[index] = oppdatertBarn;
 
-      setbarnLagtManuelt(oppdatertListe);
-      modalRef.current?.close();
+      setBarnLagtManuelt(oppdatertListe);
     },
+    resetAfterSubmit: true,
   });
 
   return (

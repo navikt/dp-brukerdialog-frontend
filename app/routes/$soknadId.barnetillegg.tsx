@@ -1,5 +1,14 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyShort, Button, ErrorMessage, HStack, Page, VStack } from "@navikt/ds-react";
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Button,
+  ErrorMessage,
+  HStack,
+  Page,
+  VStack,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -12,7 +21,6 @@ import {
   useNavigate,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { BarnetilleggInnhold } from "~/components/seksjon/barnetillegg/BarnetilleggInnhold";
 import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
 import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
 import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
@@ -87,7 +95,7 @@ export default function Barntillegg() {
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const [barnFraPdl, setbarnFraPdl] = useState(loaderData?.barnFraPdl || []);
-  const [barnLagtManuelt, setbarnLagtManuelt] = useState(loaderData?.barnLagtManuelt || []);
+  const [barnLagtManuelt, setBarnLagtManuelt] = useState(loaderData?.barnLagtManuelt || []);
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
 
   const [harEnFeil, setHarEnFeil] = useState(false);
@@ -145,7 +153,18 @@ export default function Barntillegg() {
     <main id="maincontent" tabIndex={-1}>
       <Page className="brukerdialog">
         <h2>Barnetillegg</h2>
-        <BarnetilleggInnhold />
+        <BodyLong spacing>
+          Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg
+          uavhengig av om barnet bor hos deg.
+          <br />
+          <br />
+          Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke
+          barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av
+          12 måneder.
+          <br />
+          <br />
+          Hvis vi har registrert noen barn på deg vises de under.
+        </BodyLong>
         <VStack gap="10">
           <VStack gap="space-16">
             {barnFraPdl.map((barn: Barn, index: number) => (
@@ -191,7 +210,7 @@ export default function Barntillegg() {
                 index={index}
                 barn={barn}
                 barnLagtManuelt={barnLagtManuelt}
-                setbarnLagtManuelt={setbarnLagtManuelt}
+                setBarnLagtManuelt={setBarnLagtManuelt}
               />
             ))}
           </VStack>
@@ -247,7 +266,7 @@ export default function Barntillegg() {
           <LeggTilBarnModal
             modalRef={modalRef}
             barnLagtManuelt={barnLagtManuelt}
-            setbarnLagtManuelt={setbarnLagtManuelt}
+            setBarnLagtManuelt={setBarnLagtManuelt}
           />
         </VStack>
       </Page>

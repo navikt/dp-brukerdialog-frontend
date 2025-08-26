@@ -8,16 +8,16 @@ import { formaterNorskDato } from "~/utils/formattering.utils";
 interface IProps {
   barn: Barn;
   index: number;
-  setbarnLagtManuelt: (barn: Barn[]) => void;
+  setBarnLagtManuelt: (barn: Barn[]) => void;
   barnLagtManuelt: Barn[];
 }
 
-export function BarnLagtManuelt({ barn, index, setbarnLagtManuelt, barnLagtManuelt }: IProps) {
+export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
   const modalRef = useRef<HTMLDialogElement>(null);
   const [showModal, setShowModal] = useState(false);
 
   function fjernBarn() {
-    setbarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== index));
+    setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== index));
   }
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function BarnLagtManuelt({ barn, index, setbarnLagtManuelt, barnLagtManue
           index={index}
           barn={barn}
           barnLagtManuelt={barnLagtManuelt}
-          setbarnLagtManuelt={setbarnLagtManuelt}
+          setBarnLagtManuelt={setBarnLagtManuelt}
         />
       )}
     </>

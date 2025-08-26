@@ -12,25 +12,26 @@ import {
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  setbarnLagtManuelt: (barn: Barn[]) => void;
+  setBarnLagtManuelt: (barn: Barn[]) => void;
   barnLagtManuelt: Barn[];
 }
 
-export function LeggTilBarnModal({ modalRef, setbarnLagtManuelt, barnLagtManuelt }: IProps) {
+export function LeggTilBarnModal({ modalRef, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
     defaultValues: {},
     handleSubmit: (data) => {
+      modalRef.current?.close();
+
       const nyttBarn: Barn = {
-        fornavnOgMellomnavn: data.fornavnOgMellomnavn!!,
-        etternavn: data.etternavn!!,
-        fødselsdato: data.fødselsdato!!,
-        bostedsland: data.bostedsland!!,
+        fornavnOgMellomnavn: data.fornavnOgMellomnavn!,
+        etternavn: data.etternavn!,
+        fødselsdato: data.fødselsdato!,
+        bostedsland: data.bostedsland!,
       };
 
-      setbarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
-      modalRef.current?.close();
+      setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
     },
     resetAfterSubmit: true,
   });
