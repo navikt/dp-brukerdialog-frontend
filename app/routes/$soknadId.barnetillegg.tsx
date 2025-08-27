@@ -1,378 +1,274 @@
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  FloppydiskIcon,
-  PencilIcon,
-  PersonPlusIcon,
-  TrashIcon,
-} from "@navikt/aksel-icons";
+import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import {
   Alert,
-  Box,
+  BodyLong,
+  BodyShort,
   Button,
-  DatePicker,
-  FileObject,
-  FileUpload,
+  ErrorMessage,
   HStack,
-  Modal,
   Page,
-  Radio,
-  RadioGroup,
-  Select,
-  Stack,
-  TextField,
-  useDatepicker,
   VStack,
 } from "@navikt/ds-react";
-import { useRef, useState } from "react";
-import { LoaderFunctionArgs } from "react-router";
-import JaNeiFaktum from "~/components/spørsmål/jaNeiFaktum";
+import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
+import {
+  ActionFunctionArgs,
+  Form,
+  LoaderFunctionArgs,
+  redirect,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+} from "react-router";
+import invariant from "tiny-invariant";
+import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
+import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
+import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentBarn } from "~/models/hent-barn.server";
-import { formaterNorskDato } from "~/utils/formattering.utils";
-import { Route } from "../../.react-router/types/app/routes/+types/_index";
+import { hentSeksjon } from "~/models/hentSeksjon.server";
+import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { barnetilleggSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
+import {
+  Barn,
+  barnetilleggSpørsmål,
+  BarnetilleggSvar,
+  forsørgerDuBarnetSomIkkeVisesHer,
+  payload,
+} from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+import { parseLoaderData } from "~/utils/loader.utils";
 
-interface IBarnetillegg {
-  barn?: IBarn[];
-  forsørgerBarnSomIkkeLiggerIPdl?: boolean;
+export type BarnetilleggResponse = BarnetilleggSvar & {
+  barnFraPdl?: Barn[];
+  barnLagtManuelt?: Barn[];
+};
+
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<BarnetilleggResponse | undefined> {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const seksjonResponse = await hentSeksjon(request, params.soknadId, "barnetillegg");
+
+  if (!seksjonResponse.ok) {
+    const barnFraPdlResponse = await hentBarn(request);
+
+    if (!barnFraPdlResponse.ok) {
+      return undefined;
+    }
+
+    return {
+      forsørgerDuBarnetSomIkkeVisesHer: undefined,
+      barnLagtManuelt: [],
+      barnFraPdl: await barnFraPdlResponse.json(),
+    };
+  }
+
+  const loaderData = await seksjonResponse.json();
+  return parseLoaderData(loaderData);
 }
 
-interface IBarn {
-  fornavnOgMellomnavn?: string;
-  etternavn?: string;
-  fodselsdato?: Date;
-  bostedsland?: string;
-  forsørgerDuBarnet?: boolean;
-  dokumentereForsørgerNå?: string;
-  dokumententasjonGrunn?: string;
-  hentetFraPdl?: boolean;
+export async function action({ request, params }: ActionFunctionArgs) {
+  invariant(params.soknadId, "Søknad ID er påkrevd");
+
+  const formData = await request.formData();
+  const seksjonId = "barnetillegg";
+  const nesteSeksjonId = "personalia";
+  const seksjonsData = formData.get("payload") as string;
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+
+  if (response.status !== 200) {
+    return {
+      error: "Noe gikk galt ved lagring av din situasjon",
+    };
+  }
+
+  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const response = await hentBarn(request);
-  return await response.json();
-}
+export default function Barntillegg() {
+  const navigate = useNavigate();
+  const loaderData = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const modalRef = useRef<HTMLDialogElement>(null);
 
-// noinspection JSUnusedGlobalSymbols
-export default function Barntillegg({ loaderData }: Route.ComponentProps) {
-  const barnModalRef = useRef<HTMLDialogElement>(null);
+  const [barnFraPdl, setbarnFraPdl] = useState(loaderData?.barnFraPdl || []);
+  const [barnLagtManuelt, setBarnLagtManuelt] = useState(loaderData?.barnLagtManuelt || []);
+  const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
 
-  const [barnetillegg, setBarnetillegg] = useState<IBarnetillegg>({
-    barn: loaderData as IBarn[],
-    forsørgerBarnSomIkkeLiggerIPdl: undefined,
+  const [harEnFeil, setHarEnFeil] = useState(false);
+  const [harEnVarsel, setHarEnVarsel] = useState(false);
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: barnetilleggSchema,
+    validationBehaviorConfig: {
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
+    },
+    defaultValues: loaderData ?? {},
   });
 
-  const [barn, setBarn] = useState<IBarn>({
-    fornavnOgMellomnavn: undefined,
-    etternavn: undefined,
-    fodselsdato: undefined,
-    bostedsland: undefined,
-    forsørgerDuBarnet: undefined,
-    hentetFraPdl: undefined,
-    dokumentereForsørgerNå: undefined,
-    dokumententasjonGrunn: undefined,
-  });
+  useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
-  const fødselsdato = useDatepicker({
-    onDateChange: (date) => setBarn({ ...barn, fodselsdato: date }),
-  });
+  const forsørgerDuBarnetSomIkkeVisesHerSvar = form.value(forsørgerDuBarnetSomIkkeVisesHer);
 
-  const [files, setFiles] = useState<FileObject[]>([]);
+  useEffect(() => {
+    if (forsørgerDuBarnetSomIkkeVisesHerSvar === undefined) {
+      return;
+    }
 
-  function leggTilBarn() {
-    const registrerteBarn = barnetillegg.barn;
-    registrerteBarn?.push({
-      fornavnOgMellomnavn: barn.fornavnOgMellomnavn,
-      etternavn: barn.etternavn,
-      fodselsdato: barn.fodselsdato,
-      bostedsland: barn.bostedsland,
-      forsørgerDuBarnet: barn.forsørgerDuBarnet,
-      hentetFraPdl: false,
-      dokumentereForsørgerNå: barn.dokumentereForsørgerNå,
-      dokumententasjonGrunn: barn.dokumententasjonGrunn,
-    });
-    setBarnetillegg({ ...barnetillegg, barn: registrerteBarn });
-    setBarn({
-      fornavnOgMellomnavn: "",
-      etternavn: "",
-      fodselsdato: undefined,
-      bostedsland: "",
-      forsørgerDuBarnet: undefined,
-      dokumentereForsørgerNå: "",
-      dokumententasjonGrunn: "",
-      hentetFraPdl: false,
-    });
+    // Kan jeg droppe å bruke useEffekt her?
+    setHarEnVarsel(forsørgerDuBarnetSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
+    setHarEnFeil(forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+  }, [forsørgerDuBarnetSomIkkeVisesHerSvar, barnLagtManuelt.length]);
+
+  function handleSubmit() {
+    form.validate();
+
+    if (harEnFeil || harEnVarsel) {
+      return;
+    }
+
+    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
+    setValiderBarnFraPdl(harUbesvartBarnFraPdl);
+
+    if (!harUbesvartBarnFraPdl && forsørgerDuBarnetSomIkkeVisesHerSvar !== undefined) {
+      const data: BarnetilleggResponse = {
+        barnFraPdl: barnFraPdl,
+        barnLagtManuelt: barnLagtManuelt,
+        forsørgerDuBarnetSomIkkeVisesHer: forsørgerDuBarnetSomIkkeVisesHerSvar,
+      };
+
+      form.setValue(payload, JSON.stringify(data));
+      form.submit();
+    }
   }
 
   return (
     <main id="maincontent" tabIndex={-1}>
       <Page className="brukerdialog">
         <h2>Barnetillegg</h2>
-        <VStack gap="6">
-          <div>
-            <p>
-              Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg
-              uavhengig av om barnet bor hos deg.
-            </p>
-            <p>
-              Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får
-              ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i
-              løpet av 12 måneder.
-            </p>
-            <p>Hvis vi har registrert noen barn på deg vises de under.</p>
-          </div>
-          <VStack gap={"2"}>
-            {barnetillegg.barn
-              ?.filter((barn) => barn.hentetFraPdl === true)
-              .map((barn, index) => (
-                <Box
-                  key={index}
-                  background="surface-alt-3-subtle"
-                  padding="4"
-                  shadow="medium"
-                  borderRadius="xlarge"
-                >
-                  <h2 style={{ marginBottom: "10px", marginTop: "0" }}>
-                    {barn.fornavnOgMellomnavn} {barn.etternavn}
-                  </h2>
-                  <h5 style={{ margin: "5px auto" }}>
-                    Født {formaterNorskDato(barn.fodselsdato!!)}
-                  </h5>
-                  <p style={{ margin: "5px auto", textTransform: "uppercase" }}>
-                    Bor i {barn.bostedsland} (TODO: MAP TIL LAND)
-                  </p>
-                  <p style={{ marginBottom: "0" }}>
-                    <RadioGroup legend="Forsørger du barnet?" value={barn.forsørgerDuBarnet}>
-                      <Stack gap="0 6" direction={{ xs: "column", sm: "row" }} wrap={false}>
-                        <Radio value="1">Ja</Radio>
-                        <Radio value="0">Nei</Radio>
-                      </Stack>
-                    </RadioGroup>
-                  </p>
-                </Box>
-              ))}
+        <BodyLong spacing>
+          Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg
+          uavhengig av om barnet bor hos deg.
+          <br />
+          <br />
+          Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke
+          barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av
+          12 måneder.
+          <br />
+          <br />
+          Hvis vi har registrert noen barn på deg vises de under.
+        </BodyLong>
+        <VStack gap="10">
+          <VStack gap="space-16">
+            {barnFraPdl.map((barn: Barn, index: number) => (
+              <BarnFraPdl
+                key={index}
+                barn={barn}
+                barnIndex={index}
+                validerBarnFraPdl={validerBarnFraPdl}
+                barnFraPdl={barnFraPdl}
+                setbarnFraPdl={setbarnFraPdl}
+              />
+            ))}
           </VStack>
-          <JaNeiFaktum
-            ledetekst="Forsørger du barn som ikke vises her?"
-            beskrivelse="Hvis du har forsørgeransvar for barn under 18 år som ikke vises her, kan du legge dem til."
-            verdi={barnetillegg.forsørgerBarnSomIkkeLiggerIPdl}
-            vedEndring={(value: boolean) => {
-              setBarnetillegg({ ...barnetillegg, forsørgerBarnSomIkkeLiggerIPdl: value });
-            }}
-            aktiv={true}
-          />
 
-          {barnetillegg.forsørgerBarnSomIkkeLiggerIPdl === true && (
-            <Button
-              variant="secondary"
-              icon={<PersonPlusIcon aria-hidden />}
-              onClick={() => barnModalRef.current?.showModal()}
-            >
-              Legg til barn
-            </Button>
-          )}
+          <Form {...form.getFormProps()}>
+            <VStack gap="8">
+              {barnetilleggSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                  return null;
+                }
 
-          <Modal
-            ref={barnModalRef}
-            header={{ heading: "Legg til barn du forsørger", icon: <PersonPlusIcon aria-hidden /> }}
-            width={600}
-          >
-            <Modal.Body>
-              <form
-                method="dialog"
-                id="barn"
-                onSubmit={() => {
-                  leggTilBarn();
-                }}
-              >
-                <VStack gap="5">
-                  <TextField
-                    value={barn.fornavnOgMellomnavn}
-                    label="Fornavn og mellomnavn"
-                    onChange={(value) => {
-                      setBarn({
-                        ...barn,
-                        fornavnOgMellomnavn: value.target.value,
-                      });
-                    }}
+                return (
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
                   />
-                  <TextField
-                    value={barn.etternavn}
-                    label="Etternavn"
-                    onChange={(value) => {
-                      setBarn({
-                        ...barn,
-                        etternavn: value.target.value,
-                      });
-                    }}
-                  />
-                  <DatePicker {...fødselsdato.datepickerProps}>
-                    <DatePicker.Input
-                      {...fødselsdato.inputProps}
-                      placeholder="DD.MM.ÅÅÅÅ"
-                      label="Velg dato"
-                      value={
-                        barn.fodselsdato !== undefined
-                          ? barn.fodselsdato.toLocaleDateString()
-                          : undefined
-                      }
-                    />
-                  </DatePicker>
-                  <Select
-                    label="Hvilket land bor barnet i?"
-                    value={barn.bostedsland}
-                    onChange={(value) => {
-                      setBarn({ ...barn, bostedsland: value.target.value });
-                    }}
-                  >
-                    <option value="">- Velg land -</option>
-                    <option value="NOR">Norge</option>
-                    <option value="SWE">Sverige</option>
-                    <option value="DEN">Danmark</option>
-                    <option value="todo">TODO: Gjør listen uttømmende</option>
-                  </Select>
-                  <VStack>
-                    <RadioGroup
-                      legend="Ønsker du å dokumentere dette nå?"
-                      description="Du kan laste opp fødselsattest eller annen dokumentasjon som viser at du forsørger barnet."
-                      value={barn.dokumentereForsørgerNå}
-                      onChange={(value: string) => {
-                        setBarn({ ...barn, dokumentereForsørgerNå: value });
-                      }}
-                    >
-                      <Radio value={"lastOppNaa"}>Ja, jeg vil laste opp nå</Radio>
-                      <Radio value={"lastOppEtterkant"}>
-                        Nei, jeg ønsker å sende inn dette i etterkant
-                      </Radio>
-                      <Radio value={"lastetOppTidligere"}>
-                        Jeg har sendt dette i en tidligere søknad om dagpenger
-                      </Radio>
-                      <Radio value={"nei"}>Jeg sender det ikke</Radio>
-                    </RadioGroup>
+                );
+              })}
 
-                    {barn.dokumentereForsørgerNå === "lastOppNaa" && (
-                      <VStack gap="6">
-                        <FileUpload.Dropzone
-                          label="Last opp fødselsattest"
-                          fileLimit={{ max: 1, current: files.length }}
-                          multiple={false}
-                          onSelect={setFiles}
-                        />
-                        {files.map((file) => (
-                          <FileUpload.Item
-                            key={file.file.name}
-                            file={file.file}
-                            button={{
-                              action: "delete",
-                              onClick: () => setFiles([]),
-                            }}
-                          />
-                        ))}
-                      </VStack>
-                    )}
+              {actionData && (
+                <Alert variant="error" className="mt-4">
+                  {actionData.error}
+                </Alert>
+              )}
+            </VStack>
+          </Form>
 
-                    {barn.dokumentereForsørgerNå === "lastOppEtterkant" && (
-                      <TextField
-                        value={barn.dokumententasjonGrunn}
-                        label="Hva er grunnen til at du sender dokumentasjonen senere?"
-                        onChange={(value) => {
-                          setBarn({
-                            ...barn,
-                            dokumententasjonGrunn: value.target.value,
-                          });
-                        }}
-                      />
-                    )}
-                    {barn.dokumentereForsørgerNå === "lastetOppTidligere" && (
-                      <TextField
-                        value={barn.dokumententasjonGrunn}
-                        label="Når sendte du dokumentet?"
-                        description="Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt."
-                        onChange={(value) => {
-                          setBarn({
-                            ...barn,
-                            dokumententasjonGrunn: value.target.value,
-                          });
-                        }}
-                      />
-                    )}
+          <VStack gap="space-16">
+            {barnLagtManuelt?.map((barn: Barn, index: number) => (
+              <BarnLagtManuelt
+                key={index}
+                index={index}
+                barn={barn}
+                barnLagtManuelt={barnLagtManuelt}
+                setBarnLagtManuelt={setBarnLagtManuelt}
+              />
+            ))}
+          </VStack>
 
-                    {barn.dokumentereForsørgerNå === "nei" && (
-                      <VStack gap="4">
-                        <Alert variant="warning">
-                          Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn
-                          dokumentene vi trenger for å behandle saken din. Ta kontakt med NAV hvis
-                          du ikke får tak i dokumentet
-                        </Alert>
-                        <TextField
-                          value={barn.dokumententasjonGrunn}
-                          label="Hva er grunnen til at du ikke sender inn dokumentet?"
-                          onChange={(value) => {
-                            setBarn({
-                              ...barn,
-                              dokumententasjonGrunn: value.target.value,
-                            });
-                          }}
-                        />
-                      </VStack>
-                    )}
-                  </VStack>
-                </VStack>
-              </form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button form="barn" icon={<FloppydiskIcon aria-hidden />}>
-                Lagre og lukk
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <VStack gap={"2"}>
-            {barnetillegg.barn
-              ?.filter((barn) => barn.hentetFraPdl === false)
-              .map((barn, index) => (
-                <Box
-                  key={index}
-                  background="surface-alt-3-subtle"
-                  padding="4"
-                  shadow="medium"
-                  borderRadius="xlarge"
-                >
-                  <h2 style={{ marginBottom: "10px", marginTop: "0" }}>
-                    {barn.fornavnOgMellomnavn} {barn.etternavn}
-                  </h2>
-                  <h5 style={{ margin: "5px auto" }}>
-                    Født {formaterNorskDato(barn.fodselsdato!!)}
-                  </h5>
-                  <p style={{ margin: "5px auto", textTransform: "uppercase" }}>
-                    Bor i {barn.bostedsland} (TODO: MAP TIL LAND)
-                  </p>
-                  <div>
-                    <Button icon={<PencilIcon />} variant="secondary" size="small">
-                      Endre svar
-                    </Button>
-                    <Button icon={<TrashIcon />} variant="tertiary" size="small">
-                      Slett
-                    </Button>
-                  </div>
-                </Box>
-              ))}
-
-            <HStack gap="4" className="mt-8">
+          {forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && (
+            <HStack>
               <Button
                 variant="secondary"
-                icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
                 type="submit"
-                iconPosition="right"
-                icon={<ArrowRightIcon />}
+                icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
+                onClick={() => {
+                  modalRef.current?.showModal();
+                }}
               >
-                Neste steg
+                Legg til barn
               </Button>
             </HStack>
-          </VStack>
+          )}
+
+          {harEnFeil && (
+            <VStack gap="space-20">
+              <ErrorMessage showIcon>Du må legge til et barn</ErrorMessage>
+            </VStack>
+          )}
+
+          {harEnVarsel && (
+            <Alert variant="warning" className="mt-4">
+              <BodyShort className="validation--warning">
+                Du har lagt til barn manuelt, men du har svar nei på spørsmålet om du forsørger
+                barnet. Du må enten fjerne barnet eller endre svaret til ja for å kunne gå videre i
+                søknaden.
+              </BodyShort>
+            </Alert>
+          )}
+
+          <HStack gap="4" className="mt-8">
+            <Button
+              variant="secondary"
+              icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+              onClick={() => navigate(-1)}
+            >
+              Forrige steg
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              iconPosition="right"
+              icon={<ArrowRightIcon />}
+            >
+              Neste steg
+            </Button>
+          </HStack>
+          <LeggTilBarnModal
+            modalRef={modalRef}
+            barnLagtManuelt={barnLagtManuelt}
+            setBarnLagtManuelt={setBarnLagtManuelt}
+          />
         </VStack>
       </Page>
     </main>

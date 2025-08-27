@@ -21,7 +21,7 @@ interface IPerson {
   fornavn: string;
   mellomnavn: string;
   etternavn: string;
-  fodselsDato: string;
+  fødselsdato: string;
   ident: string;
   postAdresse: IAdresse;
   folkeregistrertAdresse: IAdresse;
