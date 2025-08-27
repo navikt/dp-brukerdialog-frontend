@@ -67,6 +67,7 @@ export async function loader({
   }
 
   const loaderData = await seksjonResponse.json();
+  console.info(loaderData);
   return parseLoaderData(loaderData);
 }
 

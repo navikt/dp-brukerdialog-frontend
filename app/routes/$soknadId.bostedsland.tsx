@@ -51,7 +51,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   if (response.status !== 200) {
     return {
-      error: "Noe gikk galt ved lagring av din situasjon",
+      error: "Noe gikk galt ved lagring av seksjonen.",
     };
   }
 
