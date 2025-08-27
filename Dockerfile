@@ -3,8 +3,6 @@ FROM node:22-alpine AS node
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN sh -c \
     'npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)'
 RUN npm config set @navikt:registry=https://npm.pkg.github.com
-RUN npm config set registry https://registry.npmjs.org/
-
 
 # build app
 FROM node AS app-build
