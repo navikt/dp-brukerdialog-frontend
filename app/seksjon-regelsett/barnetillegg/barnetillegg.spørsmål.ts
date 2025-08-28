@@ -31,7 +31,7 @@ export const barnetilleggSpørsmål: KomponentType[] = [
 export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
   id: forsørgerDuBarnet,
   type: "envalg",
-  label: "Forsørger du barnet som ikke vises her?",
+  label: "Forsørger du barnet?",
   options: [
     { value: "ja", label: "Ja" },
     { value: "nei", label: "Nei" },
