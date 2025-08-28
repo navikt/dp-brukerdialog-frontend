@@ -58,7 +58,7 @@ export function OppdatereBarnModal({
         </Heading>
       </Modal.Header>
       <Modal.Body>
-        <Form {...form.getFormProps()}>
+        <Form {...form.getFormProps()} key={index}>
           <VStack gap="4" className="mt-4">
             {leggTilBarnManueltSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

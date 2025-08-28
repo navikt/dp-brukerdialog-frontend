@@ -14,17 +14,10 @@ interface IProps {
 
 export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
   const modalRef = useRef<HTMLDialogElement>(null);
-  const [showModal, setShowModal] = useState(false);
 
   function fjernBarn() {
     setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== index));
   }
-
-  useEffect(() => {
-    if (showModal) {
-      modalRef.current?.showModal();
-    }
-  }, [showModal]);
 
   return (
     <>
@@ -41,7 +34,6 @@ export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManue
             size="small"
             icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
             onClick={() => {
-              setShowModal(true);
               modalRef.current?.showModal();
             }}
           >
@@ -57,15 +49,13 @@ export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManue
           </Button>
         </HStack>
       </Box>
-      {showModal && (
-        <OppdatereBarnModal
-          modalRef={modalRef}
-          index={index}
-          barn={barn}
-          barnLagtManuelt={barnLagtManuelt}
-          setBarnLagtManuelt={setBarnLagtManuelt}
-        />
-      )}
+      <OppdatereBarnModal
+        modalRef={modalRef}
+        index={index}
+        barn={barn}
+        barnLagtManuelt={barnLagtManuelt}
+        setBarnLagtManuelt={setBarnLagtManuelt}
+      />
     </>
   );
 }
