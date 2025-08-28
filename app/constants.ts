@@ -31,3 +31,8 @@ export const LANDLISTE = [
   { value: "CYP", label: "Kypros" },
   { value: "MLT", label: "Malta" },
 ];
+
+export function findLandeNavn(value: string) {
+  const land = LANDLISTE.find((land) => land.value === value);
+  return land ? land.label : value;
+}

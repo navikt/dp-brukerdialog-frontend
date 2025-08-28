@@ -1,4 +1,4 @@
-import { Box } from "@navikt/ds-react";
+import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
@@ -10,6 +10,7 @@ import {
   forsørgerDuBarnet,
 } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
+import { findLandeNavn } from "~/constants";
 
 interface IProps {
   barn: Barn;
@@ -62,13 +63,26 @@ export function BarnFraPdl({
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
-      <h3>
+      <Heading size="small" spacing>
         {barn.fornavnOgMellomnavn} {barn.etternavn}
-      </h3>
-      {barn.fødselsdato && <p>{formaterNorskDato(new Date(barn.fødselsdato))}</p>}
+      </Heading>
+      {barn.fødselsdato && (
+        <BodyShort size="medium" spacing>
+          Født {formaterNorskDato(new Date(barn.fødselsdato))}
+        </BodyShort>
+      )}
+      {barn.bostedsland && (
+        <BodyShort size="small" spacing>
+          BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
+        </BodyShort>
+      )}
 
       <Form {...form.getFormProps()}>
-        <Envalg spørsmål={barnFraPdlSpørsmål} formScope={form.scope(forsørgerDuBarnet)} />
+        <Envalg
+          spørsmål={barnFraPdlSpørsmål}
+          formScope={form.scope(forsørgerDuBarnet)}
+          horisontal={true}
+        />
       </Form>
     </Box>
   );

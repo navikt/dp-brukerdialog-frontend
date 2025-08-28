@@ -1,9 +1,10 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
-import { Box, Button, HStack } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useEffect, useRef, useState } from "react";
 import { Barn } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
 import { OppdatereBarnModal } from "./OppdatereBarnModal";
 import { formaterNorskDato } from "~/utils/formattering.utils";
+import { findLandeNavn } from "~/constants";
 
 interface IProps {
   barn: Barn;
@@ -22,13 +23,21 @@ export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManue
   return (
     <>
       <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
-        <h3>
+        <Heading size="small" spacing>
           {barn.fornavnOgMellomnavn} {barn.etternavn}
-        </h3>
-        {barn.fødselsdato && <p>{formaterNorskDato(new Date(barn.fødselsdato))}</p>}
-        <p>{barn.bostedsland}</p>
+        </Heading>
+        {barn.fødselsdato && (
+          <BodyShort size="medium" spacing>
+            Født {formaterNorskDato(new Date(barn.fødselsdato))}
+          </BodyShort>
+        )}
+        {barn.bostedsland && (
+          <BodyShort size="small" spacing>
+            BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
+          </BodyShort>
+        )}
 
-        <HStack gap="4">
+        <HStack gap="4" paddingBlock="space-6">
           <Button
             variant="secondary"
             size="small"
