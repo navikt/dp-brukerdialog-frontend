@@ -22,7 +22,7 @@
     "@navikt/nav-dekoratoren-moduler": "^3.4.0",
     "@navikt/oasis": "^3.8.0",
     "@portabletext/types": "^2.0.13",
-    "@portabletext/react": "^3.2.1",
+    "@portabletext/react": "^4.0.2",
     "@react-router/fs-routes": "^7.7.1",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
