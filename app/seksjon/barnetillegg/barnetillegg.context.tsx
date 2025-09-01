@@ -3,11 +3,11 @@ import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 type BarnetilleggContextType = {
   barnFraPdl: Barn[];
-  setbarnFraPdl: (list: Barn[]) => void;
+  setbarnFraPdl: (barnFraPdl: Barn[]) => void;
   barnLagtManuelt: Barn[];
-  setBarnLagtManuelt: (list: Barn[]) => void;
+  setBarnLagtManuelt: (barnLagtManuelt: Barn[]) => void;
   validerBarnFraPdl: boolean;
-  setValiderBarnFraPdl: (shouldValidate: boolean) => void;
+  setValiderBarnFraPdl: (valider: boolean) => void;
 };
 
 type BarnetilleggProviderProps = {
@@ -20,9 +20,15 @@ const BarnetilleggContext = createContext<BarnetilleggContextType | undefined>(u
 
 function useBarnetilleggContext() {
   const context = useContext(BarnetilleggContext);
+
   if (!context) {
-    throw new Error("useBarnetilleggContext must be used within a BarnetilleggProvider");
+    const feilmelding =
+      "useBarnetilleggContext må brukes innenfor en BarnetilleggProvider. Sjekk om <BarnetilleggView> ligger inni <BarnetilleggProvider>.";
+
+    console.error(feilmelding);
+    throw new Error(feilmelding);
   }
+
   return context;
 }
 
