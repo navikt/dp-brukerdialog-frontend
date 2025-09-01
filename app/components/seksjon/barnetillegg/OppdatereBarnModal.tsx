@@ -3,28 +3,23 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { leggTilBarnManueltSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
+import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
-} from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  setBarnLagtManuelt: (barn: Barn[]) => void;
-  barnLagtManuelt: Barn[];
-  index: number;
+  barnIndex: number;
   barn: Barn;
 }
 
-export function OppdatereBarnModal({
-  modalRef,
-  setBarnLagtManuelt,
-  barnLagtManuelt,
-  index,
-  barn,
-}: IProps) {
+export function OppdatereBarnModal({ modalRef, barnIndex, barn }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt } = useBarnetilleggContext();
+
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
@@ -40,7 +35,7 @@ export function OppdatereBarnModal({
       };
 
       const oppdatertListe = [...barnLagtManuelt];
-      oppdatertListe[index] = oppdatertBarn;
+      oppdatertListe[barnIndex] = oppdatertBarn;
 
       setBarnLagtManuelt(oppdatertListe);
     },
@@ -58,7 +53,7 @@ export function OppdatereBarnModal({
         </Heading>
       </Modal.Header>
       <Modal.Body>
-        <Form {...form.getFormProps()} key={index}>
+        <Form {...form.getFormProps()} key={barnIndex}>
           <VStack gap="4" className="mt-4">
             {leggTilBarnManueltSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

@@ -3,20 +3,21 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { leggTilBarnManueltSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
+import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
-} from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  setBarnLagtManuelt: (barn: Barn[]) => void;
-  barnLagtManuelt: Barn[];
 }
 
-export function LeggTilBarnModal({ modalRef, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
+export function LeggTilBarnModal({ modalRef }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt } = useBarnetilleggContext();
+
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,

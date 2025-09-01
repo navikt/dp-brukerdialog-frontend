@@ -1,23 +1,24 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
-import { BodyShort, Box, Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import { useEffect, useRef, useState } from "react";
-import { Barn } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
-import { OppdatereBarnModal } from "./OppdatereBarnModal";
-import { formaterNorskDato } from "~/utils/formattering.utils";
+import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
+import { useRef } from "react";
 import { findLandeNavn } from "~/constants";
+import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
+import { formaterNorskDato } from "~/utils/formattering.utils";
+import { OppdatereBarnModal } from "./OppdatereBarnModal";
 
 interface IProps {
   barn: Barn;
-  index: number;
-  setBarnLagtManuelt: (barn: Barn[]) => void;
-  barnLagtManuelt: Barn[];
+  barnIndex: number;
 }
 
-export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
+export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt } = useBarnetilleggContext();
+
   const modalRef = useRef<HTMLDialogElement>(null);
 
   function fjernBarn() {
-    setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== index));
+    setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== barnIndex));
   }
 
   return (
@@ -58,13 +59,7 @@ export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManue
           </Button>
         </HStack>
       </Box>
-      <OppdatereBarnModal
-        modalRef={modalRef}
-        index={index}
-        barn={barn}
-        barnLagtManuelt={barnLagtManuelt}
-        setBarnLagtManuelt={setBarnLagtManuelt}
-      />
+      <OppdatereBarnModal modalRef={modalRef} barnIndex={barnIndex} barn={barn} />
     </>
   );
 }

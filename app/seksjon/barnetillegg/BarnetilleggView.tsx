@@ -1,0 +1,194 @@
+import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Button,
+  ErrorMessage,
+  HStack,
+  Page,
+  VStack,
+} from "@navikt/ds-react";
+import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
+import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
+import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
+import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
+import { barnetilleggSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
+import {
+  Barn,
+  barnetilleggSpørsmål,
+  BarnetilleggSvar,
+  forsørgerDuBarnetSomIkkeVisesHer,
+  payload,
+} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
+
+export function BarnetilleggView() {
+  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl } = useBarnetilleggContext();
+
+  const navigate = useNavigate();
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const loaderData = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const [harEnFeil, setHarEnFeil] = useState(false);
+  const [harEnVarsel, setHarEnVarsel] = useState(false);
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: barnetilleggSchema,
+    validationBehaviorConfig: {
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
+    },
+    defaultValues: loaderData ?? {},
+  });
+
+  useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
+
+  const forsørgerDuBarnetSomIkkeVisesHerSvar = form.value(forsørgerDuBarnetSomIkkeVisesHer);
+
+  useEffect(() => {
+    if (forsørgerDuBarnetSomIkkeVisesHerSvar === undefined) {
+      return;
+    }
+
+    setHarEnVarsel(forsørgerDuBarnetSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
+    setHarEnFeil(forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+  }, [forsørgerDuBarnetSomIkkeVisesHerSvar, barnLagtManuelt.length]);
+
+  function handleSubmit() {
+    form.validate();
+
+    if (harEnFeil || harEnVarsel) {
+      return;
+    }
+
+    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
+    setValiderBarnFraPdl(harUbesvartBarnFraPdl);
+
+    if (!harUbesvartBarnFraPdl && forsørgerDuBarnetSomIkkeVisesHerSvar !== undefined) {
+      const data: BarnetilleggResponse = {
+        barnFraPdl: barnFraPdl,
+        barnLagtManuelt: barnLagtManuelt,
+        forsørgerDuBarnetSomIkkeVisesHer: forsørgerDuBarnetSomIkkeVisesHerSvar,
+      };
+
+      form.setValue(payload, JSON.stringify(data));
+      form.submit();
+    }
+  }
+
+  return (
+    <main id="maincontent" tabIndex={-1}>
+      <Page className="brukerdialog">
+        <h2>Barnetillegg</h2>
+        <BodyLong spacing>
+          Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg
+          uavhengig av om barnet bor hos deg.
+          <br />
+          <br />
+          Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke
+          barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av
+          12 måneder.
+          <br />
+          <br />
+          Hvis vi har registrert noen barn på deg vises de under.
+        </BodyLong>
+        <VStack gap="10">
+          <VStack gap="space-16">
+            {barnFraPdl.map((barn: Barn, index: number) => (
+              <BarnFraPdl key={index} barnIndex={index} barn={barn} />
+            ))}
+          </VStack>
+
+          <Form {...form.getFormProps()}>
+            <VStack gap="8">
+              {barnetilleggSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                  return null;
+                }
+
+                return (
+                  <Spørsmål
+                    key={spørsmål.id}
+                    spørsmål={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
+                  />
+                );
+              })}
+
+              {actionData && (
+                <Alert variant="error" className="mt-4">
+                  {actionData.error}
+                </Alert>
+              )}
+            </VStack>
+          </Form>
+
+          <VStack gap="space-16">
+            {barnLagtManuelt?.map((barn: Barn, index: number) => (
+              <BarnLagtManuelt key={index} barnIndex={index} barn={barn} />
+            ))}
+          </VStack>
+
+          {forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && (
+            <HStack>
+              <Button
+                variant="secondary"
+                type="submit"
+                icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
+                onClick={() => {
+                  modalRef.current?.showModal();
+                }}
+              >
+                Legg til barn
+              </Button>
+            </HStack>
+          )}
+
+          {harEnFeil && (
+            <VStack gap="space-20">
+              <ErrorMessage showIcon>Du må legge til et barn</ErrorMessage>
+            </VStack>
+          )}
+
+          {harEnVarsel && (
+            <Alert variant="warning" className="mt-4">
+              <BodyShort className="validation--warning">
+                Du har lagt til barn manuelt, men du har svar nei på spørsmålet om du forsørger
+                barnet. Du må enten fjerne barnet eller endre svaret til ja for å kunne gå videre i
+                søknaden.
+              </BodyShort>
+            </Alert>
+          )}
+
+          <HStack gap="4" className="mt-8">
+            <Button
+              variant="secondary"
+              icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+              onClick={() => navigate(-1)}
+            >
+              Forrige steg
+            </Button>
+            <Button
+              variant="primary"
+              onClick={handleSubmit}
+              iconPosition="right"
+              icon={<ArrowRightIcon />}
+            >
+              Neste steg
+            </Button>
+          </HStack>
+          <LeggTilBarnModal modalRef={modalRef} />
+        </VStack>
+      </Page>
+    </main>
+  );
+}

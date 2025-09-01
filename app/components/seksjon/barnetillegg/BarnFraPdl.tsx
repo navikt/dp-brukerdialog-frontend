@@ -3,30 +3,24 @@ import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
 import { Envalg } from "~/components/spørsmål/Envalg";
-import { barnFraPdlSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
+import { findLandeNavn } from "~/constants";
+import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { barnFraPdlSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,
   barnFraPdlSpørsmål,
   forsørgerDuBarnet,
-} from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { findLandeNavn } from "~/constants";
 
 interface IProps {
   barn: Barn;
   barnIndex: number;
-  validerBarnFraPdl: boolean;
-  barnFraPdl: Barn[];
-  setbarnFraPdl: (list: Barn[]) => void;
 }
 
-export function BarnFraPdl({
-  barn,
-  validerBarnFraPdl,
-  barnIndex,
-  barnFraPdl,
-  setbarnFraPdl,
-}: IProps) {
+export function BarnFraPdl({ barn, barnIndex }: IProps) {
+  const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
+
   const form = useForm({
     submitSource: "state",
     schema: barnFraPdlSchema,
