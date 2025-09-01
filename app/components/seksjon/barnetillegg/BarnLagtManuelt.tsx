@@ -11,11 +11,7 @@ interface IProps {
 }
 
 export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
-  const {
-    barnLagtManuelt,
-    setBarnLagtManuelt,
-    setOppdaterBarn: setEndreBarn,
-  } = useBarnetilleggContext();
+  const { barnLagtManuelt, setBarnLagtManuelt, setModalData } = useBarnetilleggContext();
 
   function fjernBarn() {
     setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== barnIndex));
@@ -44,8 +40,7 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
             size="small"
             icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
             onClick={() => {
-              console.log("hit");
-              setEndreBarn({ barnIndex, barn });
+              setModalData({ operasjon: "rediger", barn, barnIndex });
             }}
           >
             Endre svar

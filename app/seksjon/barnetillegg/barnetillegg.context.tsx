@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
-type oppdaterBarnType = {
-  barnIndex: number;
-  barn: Barn;
+type ModalData = {
+  operasjon: "leggTil" | "rediger";
+  barnIndex?: number;
+  barn?: Barn;
 };
 
 type BarnetilleggContextType = {
@@ -13,8 +14,8 @@ type BarnetilleggContextType = {
   setBarnLagtManuelt: (barnLagtManuelt: Barn[]) => void;
   validerBarnFraPdl: boolean;
   setValiderBarnFraPdl: (valider: boolean) => void;
-  oppdaterBarn?: oppdaterBarnType;
-  setOppdaterBarn: (oppdaterBarn: oppdaterBarnType | undefined) => void;
+  modalData?: ModalData;
+  setModalData: (modalData?: ModalData) => void;
 };
 
 type BarnetilleggProviderProps = {
@@ -47,9 +48,7 @@ function BarnetilleggProvider({
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdlState, setbarnFraPdl] = useState(barnFraPdl);
   const [barnLagtManueltState, setBarnLagtManuelt] = useState(barnLagtManuelt);
-  const [oppdaterBarnState, setOppdaterBarnState] = useState<oppdaterBarnType | undefined>(
-    undefined
-  );
+  const [modalDataState, setModalDataState] = useState<ModalData | undefined>(undefined);
 
   return (
     <BarnetilleggContext.Provider
@@ -60,8 +59,8 @@ function BarnetilleggProvider({
         setValiderBarnFraPdl,
         setbarnFraPdl,
         setBarnLagtManuelt,
-        oppdaterBarn: oppdaterBarnState,
-        setOppdaterBarn: setOppdaterBarnState,
+        modalData: modalDataState,
+        setModalData: setModalDataState,
       }}
     >
       {children}

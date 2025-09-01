@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
 import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
-import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
+import { BarnModal } from "~/components/seksjon/barnetillegg/BarnModal";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -27,19 +27,13 @@ import {
   forsørgerDuBarnetSomIkkeVisesHer,
   payload,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
-import { OppdatereBarnModal } from "~/components/seksjon/barnetillegg/OppdatereBarnModal";
 
 export function BarnetilleggView() {
-  const {
-    barnFraPdl,
-    barnLagtManuelt,
-    setValiderBarnFraPdl,
-    oppdaterBarn: endreBarn,
-  } = useBarnetilleggContext();
+  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
+    useBarnetilleggContext();
 
   const navigate = useNavigate();
-  const leggTilBarnModalRef = useRef<HTMLDialogElement>(null);
-  const oppdatertBarnModalRef = useRef<HTMLDialogElement>(null);
+  const modalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
@@ -60,10 +54,10 @@ export function BarnetilleggView() {
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
 
   useEffect(() => {
-    if (endreBarn) {
-      oppdatertBarnModalRef.current?.showModal();
+    if (modalData) {
+      modalRef.current?.showModal();
     }
-  }, [endreBarn]);
+  }, [modalData]);
 
   const forsørgerDuBarnetSomIkkeVisesHerSvar = form.value(forsørgerDuBarnetSomIkkeVisesHer);
 
@@ -120,7 +114,6 @@ export function BarnetilleggView() {
               <BarnFraPdl key={index} barnIndex={index} barn={barn} />
             ))}
           </VStack>
-
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               {barnetilleggSpørsmål.map((spørsmål) => {
@@ -144,13 +137,11 @@ export function BarnetilleggView() {
               )}
             </VStack>
           </Form>
-
           <VStack gap="space-16">
             {barnLagtManuelt?.map((barn: Barn, index: number) => (
               <BarnLagtManuelt key={index} barnIndex={index} barn={barn} />
             ))}
           </VStack>
-
           {forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && (
             <HStack>
               <Button
@@ -158,20 +149,18 @@ export function BarnetilleggView() {
                 type="submit"
                 icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
                 onClick={() => {
-                  leggTilBarnModalRef.current?.showModal();
+                  setModalData({ operasjon: "leggTil" });
                 }}
               >
                 Legg til barn
               </Button>
             </HStack>
           )}
-
           {harEnFeil && (
             <VStack gap="space-20">
               <ErrorMessage showIcon>Du må legge til et barn</ErrorMessage>
             </VStack>
           )}
-
           {harEnVarsel && (
             <Alert variant="warning" className="mt-4">
               <BodyShort className="validation--warning">
@@ -181,7 +170,6 @@ export function BarnetilleggView() {
               </BodyShort>
             </Alert>
           )}
-
           <HStack gap="4" className="mt-8">
             <Button
               variant="secondary"
@@ -199,8 +187,7 @@ export function BarnetilleggView() {
               Neste steg
             </Button>
           </HStack>
-          <LeggTilBarnModal modalRef={leggTilBarnModalRef} />
-          <OppdatereBarnModal modalRef={oppdatertBarnModalRef} />
+          {modalData && <BarnModal modalRef={modalRef} />}
         </VStack>
       </Page>
     </main>

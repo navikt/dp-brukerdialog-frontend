@@ -15,37 +15,66 @@ interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function OppdatereBarnModal({ modalRef }: IProps) {
-  const { barnLagtManuelt, setBarnLagtManuelt, oppdaterBarn } = useBarnetilleggContext();
-
-  if (!oppdaterBarn || !modalRef) {
-    return null;
-  }
+export function BarnModal({ modalRef }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt, modalData, setModalData } = useBarnetilleggContext();
 
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
-    defaultValues: oppdaterBarn.barn,
-    handleSubmit: (data) => {
+    defaultValues: modalData?.barn || {},
+    handleSubmit: (barn) => {
+      if (modalData?.operasjon === "leggTil") {
+        leggTilBarn(barn as Barn);
+      }
+
+      if (modalData?.operasjon === "rediger") {
+        oppdaterBarn(barn as Barn);
+      }
+    },
+    onSubmitSuccess() {
+      setModalData(undefined);
       modalRef.current?.close();
-
-      const oppdatertBarn: Barn = {
-        fornavnOgMellomnavn: data.fornavnOgMellomnavn!,
-        etternavn: data.etternavn!,
-        fødselsdato: data.fødselsdato!,
-        bostedsland: data.bostedsland!,
-      };
-
-      const oppdatertListe = [...barnLagtManuelt];
-      oppdatertListe[oppdaterBarn?.barnIndex] = oppdatertBarn;
-
-      setBarnLagtManuelt(oppdatertListe);
     },
     resetAfterSubmit: true,
   });
 
+  function leggTilBarn(data: Barn) {
+    const { fornavnOgMellomnavn, etternavn, fødselsdato, bostedsland } = data;
+
+    const nyttBarn: Barn = {
+      fornavnOgMellomnavn,
+      etternavn,
+      fødselsdato,
+      bostedsland,
+    };
+
+    setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
+  }
+
+  function oppdaterBarn(data: Barn) {
+    const { fornavnOgMellomnavn, etternavn, fødselsdato, bostedsland } = data;
+
+    if (modalData?.barnIndex !== undefined) {
+      const oppdatertBarn: Barn = {
+        fornavnOgMellomnavn,
+        etternavn,
+        fødselsdato,
+        bostedsland,
+      };
+
+      const oppdatertListe = [...barnLagtManuelt];
+      oppdatertListe[modalData?.barnIndex] = oppdatertBarn;
+      setBarnLagtManuelt(oppdatertListe);
+    }
+  }
+
   return (
-    <Modal ref={modalRef} width={700} aria-labelledby="modal-heading">
+    <Modal
+      ref={modalRef}
+      width={700}
+      aria-labelledby="modal-heading"
+      onClose={() => setModalData(undefined)}
+    >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
           <HStack gap="2">
@@ -55,7 +84,7 @@ export function OppdatereBarnModal({ modalRef }: IProps) {
         </Heading>
       </Modal.Header>
       <Modal.Body>
-        <Form {...form.getFormProps()} key={oppdaterBarn.barnIndex}>
+        <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
             {leggTilBarnManueltSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
