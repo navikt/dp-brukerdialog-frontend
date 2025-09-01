@@ -29,15 +29,14 @@ import {
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 export function BarnetilleggView() {
-  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
-    useBarnetilleggContext();
-
   const navigate = useNavigate();
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEnVarsel, setHarEnVarsel] = useState(false);
+  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
+    useBarnetilleggContext();
 
   const form = useForm({
     method: "PUT",
@@ -55,7 +54,7 @@ export function BarnetilleggView() {
 
   useEffect(() => {
     if (modalData) {
-      modalRef.current?.showModal();
+      ref.current?.showModal();
     }
   }, [modalData]);
 
@@ -187,7 +186,7 @@ export function BarnetilleggView() {
               Neste steg
             </Button>
           </HStack>
-          {modalData && <BarnModal modalRef={modalRef} />}
+          {modalData && <BarnModal ref={ref} />}
         </VStack>
       </Page>
     </main>

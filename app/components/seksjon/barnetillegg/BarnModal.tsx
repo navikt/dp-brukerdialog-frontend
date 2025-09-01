@@ -12,65 +12,37 @@ import {
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
-  modalRef: React.RefObject<HTMLDialogElement | null>;
+  ref: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function BarnModal({ modalRef }: IProps) {
+export function BarnModal({ ref }: IProps) {
   const { barnLagtManuelt, setBarnLagtManuelt, modalData, setModalData } = useBarnetilleggContext();
 
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
-    defaultValues: modalData?.barn || {},
+    defaultValues: modalData?.barn ?? {},
     handleSubmit: (barn) => {
       if (modalData?.operasjon === "leggTil") {
-        leggTilBarn(barn as Barn);
+        setBarnLagtManuelt([...barnLagtManuelt, barn as Barn]);
       }
 
-      if (modalData?.operasjon === "rediger") {
-        oppdaterBarn(barn as Barn);
+      if (modalData?.operasjon === "rediger" && modalData?.barnIndex !== undefined) {
+        const oppdatertListe = [...barnLagtManuelt];
+        oppdatertListe[modalData.barnIndex] = barn as Barn;
+        setBarnLagtManuelt(oppdatertListe);
       }
     },
     onSubmitSuccess() {
       setModalData(undefined);
-      modalRef.current?.close();
+      ref.current?.close();
     },
     resetAfterSubmit: true,
   });
 
-  function leggTilBarn(data: Barn) {
-    const { fornavnOgMellomnavn, etternavn, fødselsdato, bostedsland } = data;
-
-    const nyttBarn: Barn = {
-      fornavnOgMellomnavn,
-      etternavn,
-      fødselsdato,
-      bostedsland,
-    };
-
-    setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
-  }
-
-  function oppdaterBarn(data: Barn) {
-    const { fornavnOgMellomnavn, etternavn, fødselsdato, bostedsland } = data;
-
-    if (modalData?.barnIndex !== undefined) {
-      const oppdatertBarn: Barn = {
-        fornavnOgMellomnavn,
-        etternavn,
-        fødselsdato,
-        bostedsland,
-      };
-
-      const oppdatertListe = [...barnLagtManuelt];
-      oppdatertListe[modalData.barnIndex] = oppdatertBarn;
-      setBarnLagtManuelt(oppdatertListe);
-    }
-  }
-
   return (
     <Modal
-      ref={modalRef}
+      ref={ref}
       width={700}
       aria-labelledby="modal-heading"
       onClose={() => setModalData(undefined)}
