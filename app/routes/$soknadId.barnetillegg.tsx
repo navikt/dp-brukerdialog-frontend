@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { BarnetilleggProvider } from "~/context/barnetillegg.context";
+import { BarnetilleggProvider } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";

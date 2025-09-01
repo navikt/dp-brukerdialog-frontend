@@ -16,7 +16,7 @@ import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
 import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
 import { LeggTilBarnModal } from "~/components/seksjon/barnetillegg/LeggTilBarnModal";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";

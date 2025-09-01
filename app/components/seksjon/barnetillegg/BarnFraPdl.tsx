@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Form } from "react-router";
 import { Envalg } from "~/components/spørsmål/Envalg";
 import { findLandeNavn } from "~/constants";
-import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,

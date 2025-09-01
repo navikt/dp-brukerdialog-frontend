@@ -3,7 +3,7 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,

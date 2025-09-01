@@ -2,7 +2,7 @@ import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
 import { useRef } from "react";
 import { findLandeNavn } from "~/constants";
-import { useBarnetilleggContext } from "~/context/barnetillegg.context";
+import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { OppdatereBarnModal } from "./OppdatereBarnModal";
