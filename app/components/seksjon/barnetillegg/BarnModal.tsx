@@ -63,7 +63,7 @@ export function BarnModal({ modalRef }: IProps) {
       };
 
       const oppdatertListe = [...barnLagtManuelt];
-      oppdatertListe[modalData?.barnIndex] = oppdatertBarn;
+      oppdatertListe[modalData.barnIndex] = oppdatertBarn;
       setBarnLagtManuelt(oppdatertListe);
     }
   }
