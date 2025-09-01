@@ -13,17 +13,19 @@ import {
 
 interface IProps {
   modalRef: React.RefObject<HTMLDialogElement | null>;
-  barnIndex: number;
-  barn: Barn;
 }
 
-export function OppdatereBarnModal({ modalRef, barnIndex, barn }: IProps) {
-  const { barnLagtManuelt, setBarnLagtManuelt } = useBarnetilleggContext();
+export function OppdatereBarnModal({ modalRef }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt, oppdaterBarn } = useBarnetilleggContext();
+
+  if (!oppdaterBarn || !modalRef) {
+    return null;
+  }
 
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
-    defaultValues: barn,
+    defaultValues: oppdaterBarn.barn,
     handleSubmit: (data) => {
       modalRef.current?.close();
 
@@ -35,7 +37,7 @@ export function OppdatereBarnModal({ modalRef, barnIndex, barn }: IProps) {
       };
 
       const oppdatertListe = [...barnLagtManuelt];
-      oppdatertListe[barnIndex] = oppdatertBarn;
+      oppdatertListe[oppdaterBarn?.barnIndex] = oppdatertBarn;
 
       setBarnLagtManuelt(oppdatertListe);
     },
@@ -53,7 +55,7 @@ export function OppdatereBarnModal({ modalRef, barnIndex, barn }: IProps) {
         </Heading>
       </Modal.Header>
       <Modal.Body>
-        <Form {...form.getFormProps()} key={barnIndex}>
+        <Form {...form.getFormProps()} key={oppdaterBarn.barnIndex}>
           <VStack gap="4" className="mt-4">
             {leggTilBarnManueltSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

@@ -27,12 +27,19 @@ import {
   forsørgerDuBarnetSomIkkeVisesHer,
   payload,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
+import { OppdatereBarnModal } from "~/components/seksjon/barnetillegg/OppdatereBarnModal";
 
 export function BarnetilleggView() {
-  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl } = useBarnetilleggContext();
+  const {
+    barnFraPdl,
+    barnLagtManuelt,
+    setValiderBarnFraPdl,
+    oppdaterBarn: endreBarn,
+  } = useBarnetilleggContext();
 
   const navigate = useNavigate();
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const leggTilBarnModalRef = useRef<HTMLDialogElement>(null);
+  const oppdatertBarnModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
@@ -51,6 +58,12 @@ export function BarnetilleggView() {
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
+
+  useEffect(() => {
+    if (endreBarn) {
+      oppdatertBarnModalRef.current?.showModal();
+    }
+  }, [endreBarn]);
 
   const forsørgerDuBarnetSomIkkeVisesHerSvar = form.value(forsørgerDuBarnetSomIkkeVisesHer);
 
@@ -145,7 +158,7 @@ export function BarnetilleggView() {
                 type="submit"
                 icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
                 onClick={() => {
-                  modalRef.current?.showModal();
+                  leggTilBarnModalRef.current?.showModal();
                 }}
               >
                 Legg til barn
@@ -186,7 +199,8 @@ export function BarnetilleggView() {
               Neste steg
             </Button>
           </HStack>
-          <LeggTilBarnModal modalRef={modalRef} />
+          <LeggTilBarnModal modalRef={leggTilBarnModalRef} />
+          <OppdatereBarnModal modalRef={oppdatertBarnModalRef} />
         </VStack>
       </Page>
     </main>

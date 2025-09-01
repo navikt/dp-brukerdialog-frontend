@@ -1,11 +1,9 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import { useRef } from "react";
 import { findLandeNavn } from "~/constants";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { OppdatereBarnModal } from "./OppdatereBarnModal";
 
 interface IProps {
   barn: Barn;
@@ -13,9 +11,11 @@ interface IProps {
 }
 
 export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
-  const { barnLagtManuelt, setBarnLagtManuelt } = useBarnetilleggContext();
-
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const {
+    barnLagtManuelt,
+    setBarnLagtManuelt,
+    setOppdaterBarn: setEndreBarn,
+  } = useBarnetilleggContext();
 
   function fjernBarn() {
     setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== barnIndex));
@@ -44,7 +44,8 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
             size="small"
             icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
             onClick={() => {
-              modalRef.current?.showModal();
+              console.log("hit");
+              setEndreBarn({ barnIndex, barn });
             }}
           >
             Endre svar
@@ -59,7 +60,6 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
           </Button>
         </HStack>
       </Box>
-      <OppdatereBarnModal modalRef={modalRef} barnIndex={barnIndex} barn={barn} />
     </>
   );
 }

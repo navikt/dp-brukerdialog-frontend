@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
+type oppdaterBarnType = {
+  barnIndex: number;
+  barn: Barn;
+};
+
 type BarnetilleggContextType = {
   barnFraPdl: Barn[];
   setbarnFraPdl: (barnFraPdl: Barn[]) => void;
@@ -8,6 +13,8 @@ type BarnetilleggContextType = {
   setBarnLagtManuelt: (barnLagtManuelt: Barn[]) => void;
   validerBarnFraPdl: boolean;
   setValiderBarnFraPdl: (valider: boolean) => void;
+  oppdaterBarn?: oppdaterBarnType;
+  setOppdaterBarn: (oppdaterBarn: oppdaterBarnType | undefined) => void;
 };
 
 type BarnetilleggProviderProps = {
@@ -40,6 +47,9 @@ function BarnetilleggProvider({
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdlState, setbarnFraPdl] = useState(barnFraPdl);
   const [barnLagtManueltState, setBarnLagtManuelt] = useState(barnLagtManuelt);
+  const [oppdaterBarnState, setOppdaterBarnState] = useState<oppdaterBarnType | undefined>(
+    undefined
+  );
 
   return (
     <BarnetilleggContext.Provider
@@ -50,6 +60,8 @@ function BarnetilleggProvider({
         setValiderBarnFraPdl,
         setbarnFraPdl,
         setBarnLagtManuelt,
+        oppdaterBarn: oppdaterBarnState,
+        setOppdaterBarn: setOppdaterBarnState,
       }}
     >
       {children}
