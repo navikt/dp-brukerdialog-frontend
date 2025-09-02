@@ -11,7 +11,7 @@ interface IProps {
 
 export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
-  const [error, setError] = useState<string | undefined>(field.error() ?? undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
@@ -21,9 +21,10 @@ export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
       field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
     },
     onValidate(val) {
-      if (val.isInvalid) {
+      if (val.isInvalid && !val.isEmpty) {
         setError("Ugyldig dato");
       } else {
+        field.clearError();
         setError(undefined);
       }
     },
@@ -34,7 +35,7 @@ export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
       <DatePicker.Input
         {...inputProps}
         placeholder="DD.MM.ÅÅÅÅ"
-        error={error}
+        error={error || field.error()}
         label={spørsmål.optional ? `${spørsmål.label}  (valgfritt)` : `${spørsmål.label}`}
         description={spørsmål.description}
       />
