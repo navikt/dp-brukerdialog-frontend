@@ -6,7 +6,7 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
-import styles from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.module.css";
+import styles from "./annen-pengestøtte.module.css";
 import { pengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
   annenPengestøtteFraAndreEnnNavSpørsmål,

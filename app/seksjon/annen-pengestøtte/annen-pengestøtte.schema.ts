@@ -32,7 +32,7 @@ import {
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
   sykepenger,
 } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
-import { annenPengestøtteAlleSpørsmål } from "~/routes/$soknadId.annen-pengestotte";
+import { annenPengestøtteAlleSpørsmål } from "./AnnenPengestøtteView";
 
 const kortTekstMaksLengde = 200;
 
