@@ -6,7 +6,10 @@ import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/reell-arbe
 import { ReellArbeidssøkerView } from "~/seksjon/reell-arbeidssøker/ReellArbeidsøkerView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<ReellArbeidssøkerSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssøker");
@@ -15,8 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: ReellArbeidssøkerSvar = await response.json();
-
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

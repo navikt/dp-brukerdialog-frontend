@@ -6,7 +6,10 @@ import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/annen-penges
 import { AnnenPengestøtteView } from "~/seksjon/annen-pengestøtte/AnnenPengestøtteView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<AnnenPengestøtteSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "annen-pengestøtte");
@@ -15,7 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: AnnenPengestøtteSvar = await response.json();
+  const loaderData = await response.json();
 
   return parseLoaderData(loaderData);
 }

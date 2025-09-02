@@ -6,7 +6,10 @@ import { VernepliktSvar } from "~/seksjon/verneplikt/verneplikt.spørsmål";
 import VernepliktView from "~/seksjon/verneplikt/VernepliktView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<VernepliktSvar | undefined> {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "verneplikt");
@@ -14,7 +17,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: VernepliktSvar = await response.json();
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

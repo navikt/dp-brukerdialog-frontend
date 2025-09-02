@@ -6,7 +6,10 @@ import { UtdanningSvar } from "~/seksjon/utdanning/utdanning.spørsmål";
 import { UtdanningView } from "~/seksjon/utdanning/UtdanningView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<UtdanningSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "utdanning");
@@ -15,8 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: UtdanningSvar = await response.json();
-
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

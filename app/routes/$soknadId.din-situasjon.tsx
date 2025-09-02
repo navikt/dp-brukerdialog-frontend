@@ -6,7 +6,10 @@ import { DinSituasjonSvar } from "~/seksjon/din-situasjon/din-situasjon.spørsm�
 import { DinSituasjonView } from "~/seksjon/din-situasjon/DinSituasjonView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<DinSituasjonSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
@@ -15,8 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: DinSituasjonSvar = await response.json();
-
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

@@ -6,7 +6,10 @@ import { ArbeidsforholdSvar } from "~/seksjon/arbeidsforhold/arbeidsforhold.spø
 import { ArbeidsforholdView } from "~/seksjon/arbeidsforhold/ArbeidsforholdView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<ArbeidsforholdSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "arbeidsforhold");
@@ -15,8 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: ArbeidsforholdSvar = await response.json();
-
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

@@ -29,10 +29,13 @@ type Adresse = {
   land: string;
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: LoaderFunctionArgs): Promise<Personalia | undefined> {
   const response = await hentPersonalia(request);
-  const personalia: Personalia = await response.json();
 
+  if (response.status !== 200) {
+    return undefined;
+  }
+  const personalia = await response.json();
   return parseLoaderData(personalia);
 }
 

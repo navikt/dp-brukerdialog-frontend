@@ -6,7 +6,10 @@ import { BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
 import { BostedslandView } from "~/seksjon/bostedsland/BostedslandView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<BostedslandSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "bostedsland");
@@ -15,8 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: BostedslandSvar = await response.json();
-
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

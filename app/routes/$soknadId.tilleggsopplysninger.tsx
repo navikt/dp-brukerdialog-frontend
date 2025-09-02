@@ -6,7 +6,10 @@ import { TilleggsopplysningerView } from "~/seksjon/tilleggsopplysninger/Tillegg
 import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<TilleggsopplysningerSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
@@ -15,7 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: TilleggsopplysningerSvar = await response.json();
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 
