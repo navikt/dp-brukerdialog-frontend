@@ -1,25 +1,24 @@
-import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router";
+import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-router";
 import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
 import { FormProgress } from "@navikt/ds-react";
-import { useState } from "react";
 import invariant from "tiny-invariant";
 import { hentSøknadFremgangInfo } from "~/models/hent-progress-info.server";
 
-type StegISøknad = {
+type Steg = {
   tittel: string;
   path: string;
 };
 
-type ProgressBarSteg = StegISøknad & {
+type FremgangSteg = Steg & {
   interaktiv: boolean;
   fullført?: boolean;
 };
 
-type Stegsvar = {
+type StegResponse = {
   seksjoner: string[];
 };
 
-const soknadSteps: StegISøknad[] = [
+const stegerISøknaden: Steg[] = [
   { tittel: "Din situasjon", path: "din-situasjon" },
   { tittel: "Personalia", path: "personalia" },
   { tittel: "Bostedsland", path: "bostedsland" },
@@ -35,10 +34,23 @@ const soknadSteps: StegISøknad[] = [
   { tittel: "Oppsummering", path: "oppsummering" },
 ];
 
-function fyllData(): ProgressBarSteg[] {
-  return soknadSteps.map((step) => {
+function fyllTommeSteger(): FremgangSteg[] {
+  return stegerISøknaden.map((step) => {
     return { ...step, interaktiv: false, fullført: false };
   });
+}
+
+function finnAktivSteg(seksjoner: FremgangSteg[], søknadId: string, urlPath: string) {
+  const url = new URL(urlPath);
+  const pathParts = url.pathname.split("/");
+  const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
+
+  let seksjonIndeks = seksjoner.findIndex((seksjon) => seksjon.path === seksjonsIdFraUrl);
+
+  if (seksjonIndeks === -1) {
+    return seksjoner.findIndex((data) => data.fullført === false);
+  }
+  return seksjonIndeks;
 }
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -46,27 +58,34 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const progressResponse = await hentSøknadFremgangInfo(request, params.soknadId);
   if (!progressResponse.ok) {
-    return undefined;
+    return {
+      seksjoner: fyllTommeSteger(),
+      aktiv: 1,
+    };
   }
-  const { seksjoner }: Stegsvar = await progressResponse.json();
+  const { seksjoner }: StegResponse = await progressResponse.json();
+
   const fullførtSøknaden = seksjoner.includes("oppsummering");
 
-  const soknadSections: ProgressBarSteg[] = soknadSteps.map((step) => ({
+  if (fullførtSøknaden) {
+    return redirect(`/${params.soknadId}/kvittering`);
+  }
+
+  const soknadSections: FremgangSteg[] = stegerISøknaden.map((step) => ({
     ...step,
     interaktiv: !fullførtSøknaden,
     fullført: seksjoner.includes(step.path),
   }));
 
-  return soknadSections;
+  return {
+    seksjoner: soknadSections,
+    aktiv: finnAktivSteg(soknadSections, params.soknadId, request.url) + 1,
+  };
 }
 
 export default function SoknadIdIndex() {
   const loaderData = useLoaderData<typeof loader>();
-  const progressData = loaderData || fyllData();
-
-  const [activeStep, setActiveStep] = useState(
-    loaderData ? loaderData.findIndex((data) => data.fullført === false) + 1 : 0
-  );
+  const progressData = loaderData?.seksjoner || fyllTommeSteger();
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -75,7 +94,7 @@ export default function SoknadIdIndex() {
         <h1>Søknad om dagpenger</h1>
       </div>
       <div>
-        <FormProgress totalSteps={14} activeStep={activeStep} onStepChange={setActiveStep}>
+        <FormProgress totalSteps={14} activeStep={loaderData?.aktiv || 0}>
           {progressData.map((data) => (
             <FormProgress.Step
               href={data.path}

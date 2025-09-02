@@ -1,10 +1,10 @@
 export const mockProgress = {
   seksjoner: [
-    "din-situasjon",
-    "personalia",
-    "bostedsland",
-    "arbeidsforhold",
     "annen-pengestotte",
+    "arbeidsforhold",
+    "personalia",
+    "din-situasjon",
     "egen-naring",
+    "bostedsland",
   ],
 };
