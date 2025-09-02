@@ -1,4 +1,4 @@
-import { FloppydiskIcon, PersonPlusIcon } from "@navikt/aksel-icons";
+import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
@@ -54,6 +54,16 @@ export function BarnModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const modalIkon =
+    modalData?.operasjon === ModalOperasjonEnum.LeggTil ? (
+      <PersonPlusIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+    ) : (
+      <PersonPencilIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+    );
+
+  const modalTittel =
+    modalData?.operasjon === ModalOperasjonEnum.LeggTil ? "Legg til barn" : "Rediger barn";
+
   return (
     <Modal
       ref={ref}
@@ -64,8 +74,8 @@ export function BarnModal({ ref }: IProps) {
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
           <HStack gap="2">
-            <PersonPlusIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
-            Legg til barn du forsørger
+            {modalIkon}
+            {modalTittel}
           </HStack>
         </Heading>
       </Modal.Header>
