@@ -24,7 +24,7 @@ export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
       field.setValue(date ? formatISO(date, { representation: "date" }) : "");
     },
     onValidate(val) {
-      if (val.isInvalid && !val.isEmpty) {
+      if (!val.isEmpty && val.isInvalid) {
         setError("Ugyldig dato");
       } else {
         field.clearError();

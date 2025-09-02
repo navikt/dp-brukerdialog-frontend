@@ -21,7 +21,7 @@ export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
       field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
     },
     onValidate(val) {
-      if (val.isInvalid && !val.isEmpty) {
+      if (!val.isEmpty && val.isInvalid) {
         setError("Ugyldig dato");
       } else {
         field.clearError();
