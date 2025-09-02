@@ -5,7 +5,7 @@ import {
   etternavn,
   fornavnOgMellomnavn,
   forsørgerDuBarnet,
-  forsørgerDuBarnetSomIkkeVisesHer,
+  forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
   bostedsland,
   leggTilBarnManueltSpørsmål,
@@ -15,7 +15,7 @@ import {
 
 export const barnetilleggSchema = z
   .object({
-    [forsørgerDuBarnetSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
+    [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
     [payload]: z.string().optional(),
   })
   .superRefine((data, ctx) => {

@@ -3,41 +3,64 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { leggTilBarnManueltSchema } from "~/seksjon-regelsett/barnetillegg/barnetillegg.schema";
+import {
+  ModalOperasjonEnum,
+  useBarnetilleggContext,
+} from "~/seksjon/barnetillegg/barnetillegg.context";
+import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
-} from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 interface IProps {
-  modalRef: React.RefObject<HTMLDialogElement | null>;
-  setBarnLagtManuelt: (barn: Barn[]) => void;
-  barnLagtManuelt: Barn[];
+  ref: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function LeggTilBarnModal({ modalRef, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
+export function BarnModal({ ref }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt, modalData, setModalData } = useBarnetilleggContext();
+
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
-    defaultValues: {},
-    handleSubmit: (data) => {
-      modalRef.current?.close();
+    defaultValues: modalData?.barn ?? {},
+    handleSubmit: (barn) => {
+      if (
+        modalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
+        modalData?.operasjon !== ModalOperasjonEnum.Rediger
+      ) {
+        console.error("Ugyldig operasjonstype for barnetilleggmodal");
+        return;
+      }
 
-      const nyttBarn: Barn = {
-        fornavnOgMellomnavn: data.fornavnOgMellomnavn!,
-        etternavn: data.etternavn!,
-        fødselsdato: data.fødselsdato!,
-        bostedsland: data.bostedsland!,
-      };
+      if (modalData?.operasjon === ModalOperasjonEnum.LeggTil) {
+        setBarnLagtManuelt([...barnLagtManuelt, barn as Barn]);
+      }
 
-      setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
+      if (
+        modalData?.barnIndex !== undefined &&
+        modalData?.operasjon === ModalOperasjonEnum.Rediger
+      ) {
+        const oppdatertListe = [...barnLagtManuelt];
+        oppdatertListe[modalData.barnIndex] = barn as Barn;
+        setBarnLagtManuelt(oppdatertListe);
+      }
+    },
+    onSubmitSuccess() {
+      setModalData(undefined);
+      ref.current?.close();
     },
     resetAfterSubmit: true,
   });
 
   return (
-    <Modal ref={modalRef} width={700} aria-labelledby="modal-heading">
+    <Modal
+      ref={ref}
+      width={700}
+      aria-labelledby="modal-heading"
+      onClose={() => setModalData(undefined)}
+    >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
           <HStack gap="2">

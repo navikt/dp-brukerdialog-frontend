@@ -1,23 +1,23 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
-import { BodyShort, Box, Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import { useEffect, useRef, useState } from "react";
-import { Barn } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
-import { OppdatereBarnModal } from "./OppdatereBarnModal";
-import { formaterNorskDato } from "~/utils/formattering.utils";
+import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
 import { findLandeNavn } from "~/constants";
+import {
+  ModalOperasjonEnum,
+  useBarnetilleggContext,
+} from "~/seksjon/barnetillegg/barnetillegg.context";
+import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
+import { formaterNorskDato } from "~/utils/formattering.utils";
 
 interface IProps {
   barn: Barn;
-  index: number;
-  setBarnLagtManuelt: (barn: Barn[]) => void;
-  barnLagtManuelt: Barn[];
+  barnIndex: number;
 }
 
-export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManuelt }: IProps) {
-  const modalRef = useRef<HTMLDialogElement>(null);
+export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
+  const { barnLagtManuelt, setBarnLagtManuelt, setModalData } = useBarnetilleggContext();
 
   function fjernBarn() {
-    setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== index));
+    setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== barnIndex));
   }
 
   return (
@@ -43,7 +43,7 @@ export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManue
             size="small"
             icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
             onClick={() => {
-              modalRef.current?.showModal();
+              setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn, barnIndex });
             }}
           >
             Endre svar
@@ -58,13 +58,6 @@ export function BarnLagtManuelt({ barn, index, setBarnLagtManuelt, barnLagtManue
           </Button>
         </HStack>
       </Box>
-      <OppdatereBarnModal
-        modalRef={modalRef}
-        index={index}
-        barn={barn}
-        barnLagtManuelt={barnLagtManuelt}
-        setBarnLagtManuelt={setBarnLagtManuelt}
-      />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Barn } from "~/seksjon-regelsett/barnetillegg/barnetillegg.spørsmål";
+import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
 export const mockBarnFraPdl: Barn[] = [
   {
