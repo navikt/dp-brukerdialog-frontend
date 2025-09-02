@@ -1,7 +1,10 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
 import { findLandeNavn } from "~/constants";
-import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
+import {
+  ModalOperasjonEnum,
+  useBarnetilleggContext,
+} from "~/seksjon/barnetillegg/barnetillegg.context";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 
@@ -40,7 +43,7 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
             size="small"
             icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
             onClick={() => {
-              setModalData({ operasjon: "rediger", barn, barnIndex });
+              setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn, barnIndex });
             }}
           >
             Endre svar

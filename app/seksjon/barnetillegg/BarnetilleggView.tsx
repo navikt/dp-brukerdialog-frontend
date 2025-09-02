@@ -12,11 +12,14 @@ import {
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
-import { BarnFraPdl } from "~/components/seksjon/barnetillegg/BarnFraPdl";
-import { BarnLagtManuelt } from "~/components/seksjon/barnetillegg/BarnLagtManuelt";
-import { BarnModal } from "~/components/seksjon/barnetillegg/BarnModal";
+import { BarnFraPdl } from "~/seksjon/barnetillegg/komponenter/BarnFraPdl";
+import { BarnLagtManuelt } from "~/seksjon/barnetillegg/komponenter/BarnLagtManuelt";
+import { BarnModal } from "~/seksjon/barnetillegg/komponenter/BarnModal";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
+import {
+  ModalOperasjonEnum,
+  useBarnetilleggContext,
+} from "~/seksjon/barnetillegg/barnetillegg.context";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
@@ -24,7 +27,7 @@ import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  forsørgerDuBarnetSomIkkeVisesHer,
+  forsørgerDuBarnSomIkkeVisesHer as forsørgerDuBarnSomIkkeVisesHer,
   payload,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
@@ -34,7 +37,7 @@ export function BarnetilleggView() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
-  const [harEnVarsel, setHarEnVarsel] = useState(false);
+  const [harEtVarsel, setHarEtVarsel] = useState(false);
   const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
     useBarnetilleggContext();
 
@@ -58,32 +61,32 @@ export function BarnetilleggView() {
     }
   }, [modalData]);
 
-  const forsørgerDuBarnetSomIkkeVisesHerSvar = form.value(forsørgerDuBarnetSomIkkeVisesHer);
+  const forsørgerDuBarnSomIkkeVisesHerSvar = form.value(forsørgerDuBarnSomIkkeVisesHer);
 
   useEffect(() => {
-    if (forsørgerDuBarnetSomIkkeVisesHerSvar === undefined) {
+    if (forsørgerDuBarnSomIkkeVisesHerSvar === undefined) {
       return;
     }
 
-    setHarEnVarsel(forsørgerDuBarnetSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
-    setHarEnFeil(forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
-  }, [forsørgerDuBarnetSomIkkeVisesHerSvar, barnLagtManuelt.length]);
+    setHarEtVarsel(forsørgerDuBarnSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
+    setHarEnFeil(forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+  }, [forsørgerDuBarnSomIkkeVisesHerSvar, barnLagtManuelt.length]);
 
   function handleSubmit() {
     form.validate();
 
-    if (harEnFeil || harEnVarsel) {
+    if (harEnFeil || harEtVarsel) {
       return;
     }
 
     const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
-    if (!harUbesvartBarnFraPdl && forsørgerDuBarnetSomIkkeVisesHerSvar !== undefined) {
+    if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
       const data: BarnetilleggResponse = {
         barnFraPdl: barnFraPdl,
         barnLagtManuelt: barnLagtManuelt,
-        forsørgerDuBarnetSomIkkeVisesHer: forsørgerDuBarnetSomIkkeVisesHerSvar,
+        forsørgerDuBarnSomIkkeVisesHer: forsørgerDuBarnSomIkkeVisesHerSvar,
       };
 
       form.setValue(payload, JSON.stringify(data));
@@ -141,14 +144,14 @@ export function BarnetilleggView() {
               <BarnLagtManuelt key={index} barnIndex={index} barn={barn} />
             ))}
           </VStack>
-          {forsørgerDuBarnetSomIkkeVisesHerSvar === "ja" && (
+          {forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && (
             <HStack>
               <Button
                 variant="secondary"
                 type="submit"
                 icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
                 onClick={() => {
-                  setModalData({ operasjon: "leggTil" });
+                  setModalData({ operasjon: ModalOperasjonEnum.LeggTil });
                 }}
               >
                 Legg til barn
@@ -160,7 +163,7 @@ export function BarnetilleggView() {
               <ErrorMessage showIcon>Du må legge til et barn</ErrorMessage>
             </VStack>
           )}
-          {harEnVarsel && (
+          {harEtVarsel && (
             <Alert variant="warning" className="mt-4">
               <BodyShort className="validation--warning">
                 Du har lagt til barn manuelt, men du har svar nei på spørsmålet om du forsørger

@@ -3,7 +3,10 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
+import {
+  ModalOperasjonEnum,
+  useBarnetilleggContext,
+} from "~/seksjon/barnetillegg/barnetillegg.context";
 import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
   Barn,
@@ -23,11 +26,22 @@ export function BarnModal({ ref }: IProps) {
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (barn) => {
-      if (modalData?.operasjon === "leggTil") {
+      if (
+        modalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
+        modalData?.operasjon !== ModalOperasjonEnum.Rediger
+      ) {
+        console.error("Ugyldig operasjonstype for barnetilleggmodal");
+        return;
+      }
+
+      if (modalData?.operasjon === ModalOperasjonEnum.LeggTil) {
         setBarnLagtManuelt([...barnLagtManuelt, barn as Barn]);
       }
 
-      if (modalData?.operasjon === "rediger" && modalData?.barnIndex !== undefined) {
+      if (
+        modalData?.barnIndex !== undefined &&
+        modalData?.operasjon === ModalOperasjonEnum.Rediger
+      ) {
         const oppdatertListe = [...barnLagtManuelt];
         oppdatertListe[modalData.barnIndex] = barn as Barn;
         setBarnLagtManuelt(oppdatertListe);

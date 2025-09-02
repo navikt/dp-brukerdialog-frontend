@@ -1,8 +1,13 @@
 import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 
+export enum ModalOperasjonEnum {
+  LeggTil = "leggTil",
+  Rediger = "rediger",
+}
+
 type ModalData = {
-  operasjon: "leggTil" | "rediger";
+  operasjon: ModalOperasjonEnum;
   barnIndex?: number;
   barn?: Barn;
 };
@@ -41,26 +46,26 @@ function useBarnetilleggContext() {
 }
 
 function BarnetilleggProvider({
-  barnFraPdl,
-  barnLagtManuelt,
+  barnFraPdl: barnFraPdlProps,
+  barnLagtManuelt: barnLagtManueltProps,
   children,
 }: BarnetilleggProviderProps) {
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
-  const [barnFraPdlState, setbarnFraPdl] = useState(barnFraPdl);
-  const [barnLagtManueltState, setBarnLagtManuelt] = useState(barnLagtManuelt);
-  const [modalDataState, setModalDataState] = useState<ModalData | undefined>(undefined);
+  const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
+  const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
+  const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (
     <BarnetilleggContext.Provider
       value={{
-        barnFraPdl: barnFraPdlState,
-        barnLagtManuelt: barnLagtManueltState,
+        barnFraPdl,
+        barnLagtManuelt,
         validerBarnFraPdl,
         setValiderBarnFraPdl,
         setbarnFraPdl,
         setBarnLagtManuelt,
-        modalData: modalDataState,
-        setModalData: setModalDataState,
+        modalData,
+        setModalData,
       }}
     >
       {children}

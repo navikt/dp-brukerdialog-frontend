@@ -1,7 +1,7 @@
 import { EnvalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const forsørgerDuBarnet = "forsørgerDuBarnet";
-export const forsørgerDuBarnetSomIkkeVisesHer = "forsørgerDuBarnetSomIkkeVisesHer";
+export const forsørgerDuBarnSomIkkeVisesHer = "forsørgerDuBarnSomIkkeVisesHer";
 export const payload = "payload";
 
 export type Barn = {
@@ -13,12 +13,12 @@ export type Barn = {
 };
 
 export type BarnetilleggSvar = {
-  [forsørgerDuBarnetSomIkkeVisesHer]?: "ja" | "nei";
+  [forsørgerDuBarnSomIkkeVisesHer]?: "ja" | "nei";
 };
 
 export const barnetilleggSpørsmål: KomponentType[] = [
   {
-    id: forsørgerDuBarnetSomIkkeVisesHer,
+    id: forsørgerDuBarnSomIkkeVisesHer,
     type: "envalg",
     label: "Forsørger du barnet som ikke vises her?",
     options: [

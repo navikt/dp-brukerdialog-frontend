@@ -29,7 +29,7 @@ export async function loader({
     }
 
     return {
-      forsørgerDuBarnetSomIkkeVisesHer: undefined,
+      forsørgerDuBarnSomIkkeVisesHer: undefined,
       barnLagtManuelt: [],
       barnFraPdl: await barnFraPdlResponse.json(),
     };
