@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, data, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -6,17 +6,23 @@ import { DinSituasjonSvar } from "~/seksjon/din-situasjon/din-situasjon.spørsm�
 import { DinSituasjonView } from "~/seksjon/din-situasjon/DinSituasjonView";
 import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<DinSituasjonSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
 
-  if (response.status !== 200) {
-    return undefined;
+  if (!response.ok) {
+    if (response.status === 404) {
+      return undefined;
+    }
+
+    throw data(response.statusText, { status: response.status });
   }
 
-  const loaderData: DinSituasjonSvar = await response.json();
-
+  const loaderData = await response.json();
   return parseLoaderData(loaderData);
 }
 

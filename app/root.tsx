@@ -1,6 +1,8 @@
+import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
 import {
   data,
+  isRouteErrorResponse,
   Links,
   LinksFunction,
   LoaderFunctionArgs,
@@ -12,20 +14,18 @@ import {
   useNavigate,
 } from "react-router";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
-import { onLanguageSelect, setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
-import {
-  getDekoratorHTML,
-  getDekoratorLanguage as getDekoratorLanguage,
-} from "./models/dekorator.server";
+import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { logger } from "./utils/logger.utils";
 
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
+import { Page } from "@navikt/ds-react";
 import { useEffect, useState } from "react";
+import { Route } from "./+types/root";
 import indexStyles from "./index.css?url";
-import { getEnv } from "./utils/env.utils";
 import { sanityClient } from "./sanity/sanity.config";
-import { SanityData } from "./sanity/sanity.types";
 import { allTextsQuery } from "./sanity/sanity.query";
+import { SanityData } from "./sanity/sanity.types";
+import { getEnv } from "./utils/env.utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -109,4 +109,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return <Outlet />;
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <main id="maincontent" tabIndex={-1}>
+        <Page className="brukerdialog">
+          <h1>
+            {error.status} {error.statusText}
+          </h1>
+          <p>{error.data}</p>
+        </Page>
+      </main>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <main id="maincontent" tabIndex={-1}>
+        <Page className="brukerdialog">
+          <h1>Error</h1>
+          <p>{error.message}</p>
+          <p>The stack trace is:</p>
+          <pre>{error.stack}</pre>
+        </Page>
+      </main>
+    );
+  } else {
+    return (
+      <main id="maincontent" tabIndex={-1}>
+        <Page className="brukerdialog">
+          <h1>Unknown Error</h1>
+        </Page>
+      </main>
+    );
+  }
 }

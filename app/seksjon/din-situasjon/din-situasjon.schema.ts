@@ -9,7 +9,9 @@ import {
 
 export const dinSituasjonSchema = z
   .object({
-    [harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene]: z.enum(["ja", "nei", "vetikke"]).optional(),
+    [harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene]: z
+      .enum(["ja", "nei", "vetikke"])
+      .optional(),
     [årsakTilAtDagpengeneBleStanset]: z.string().max(500, "Maks 500 tegn").optional(),
     [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
   })
@@ -18,8 +20,9 @@ export const dinSituasjonSchema = z
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof DinSituasjonSvar;
       const svar = data[spørsmålId];
+      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
 
-      if (synlig && !svar) {
+      if (synlig && erSpørsmål && !svar) {
         ctx.addIssue({
           path: [spørsmål.id],
           code: "custom",
