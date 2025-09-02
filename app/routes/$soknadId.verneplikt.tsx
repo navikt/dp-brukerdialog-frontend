@@ -14,11 +14,8 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { vernepliktSchema } from "~/seksjon-regelsett/verneplikt/verneplikt.schema";
-import {
-  vernepliktSpørsmål,
-  VernepliktSvar,
-} from "~/seksjon-regelsett/verneplikt/verneplikt.spørsmål";
+import { vernepliktSchema } from "~/seksjon/verneplikt/verneplikt.schema";
+import { vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/verneplikt.spørsmål";
 import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

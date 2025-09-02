@@ -14,8 +14,8 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { utdanningSchema } from "~/seksjon-regelsett/utdanning/utdanning.schema";
-import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon-regelsett/utdanning/utdanning.spørsmål";
+import { utdanningSchema } from "~/seksjon/utdanning/utdanning.schema";
+import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/utdanning.spørsmål";
 import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

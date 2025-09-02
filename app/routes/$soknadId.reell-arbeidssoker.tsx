@@ -16,11 +16,11 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { reellArbeidssøkerSchema } from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.schema";
+import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.schema";
 import {
   reellArbeidssøkerSpørsmål,
   ReellArbeidssøkerSvar,
-} from "~/seksjon-regelsett/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
+} from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

@@ -14,13 +14,13 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { tilleggsopplysningerSchema } from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.schema";
+import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.schema";
 
 import invariant from "tiny-invariant";
 import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
-} from "~/seksjon-regelsett/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
+} from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
 import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
