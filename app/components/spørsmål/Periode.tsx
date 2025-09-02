@@ -21,7 +21,7 @@ export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
     fromDate: spørsmål.fraOgMed ? new Date(spørsmål.fraOgMed.toString()) : undefined,
     toDate: spørsmål.tilOgMed ? new Date(spørsmål.tilOgMed.toString()) : undefined,
     onDateChange: (date) => {
-      field.setValue(date ? formatISO(date, { representation: "date" }) : "");
+      field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
     },
     onValidate(val) {
       if (!val.isEmpty && val.isInvalid) {
