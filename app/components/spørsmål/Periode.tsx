@@ -2,6 +2,7 @@ import { BodyShort, DatePicker, useDatepicker, VStack } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import classNames from "classnames";
 import { formatISO } from "date-fns";
+import { useState } from "react";
 import { PeriodeSpørsmål } from "./spørsmål.types";
 
 import styles from "./spørsmål.module.css";
@@ -13,6 +14,7 @@ interface IProps {
 
 export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
   const field = useField(formScope);
+  const [error, setError] = useState<string | undefined>(field.error() ?? undefined);
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
@@ -20,7 +22,13 @@ export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
     toDate: spørsmål.tilOgMed ? new Date(spørsmål.tilOgMed.toString()) : undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : "");
-      field.validate();
+    },
+    onValidate(val) {
+      if (val.isInvalid) {
+        setError("Ugyldig dato");
+      } else {
+        setError(undefined);
+      }
     },
   });
 
@@ -46,7 +54,7 @@ export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
             {...inputProps}
             key={spørsmål.id}
             placeholder="DD.MM.ÅÅÅÅ"
-            error={field.error()}
+            error={error}
             label={
               periodeTilSpørsmal && spørsmål.optional
                 ? `${spørsmål.label} (valgfritt)`
