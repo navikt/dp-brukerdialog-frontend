@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
@@ -29,7 +29,7 @@ export function DinSituasjonView() {
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
 
   return (
-    <Page className="brukerdialog">
+    <>
       <h2>Din situasjon</h2>
       <VStack gap="20">
         <VStack gap="6">
@@ -78,6 +78,6 @@ export function DinSituasjonView() {
           </Form>
         </VStack>
       </VStack>
-    </Page>
+    </>
   );
 }
