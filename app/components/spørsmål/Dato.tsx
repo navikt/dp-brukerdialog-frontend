@@ -36,7 +36,7 @@ export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
         {...inputProps}
         placeholder="DD.MM.ÅÅÅÅ"
         error={error || field.error()}
-        label={spørsmål.optional ? `${spørsmål.label}  (valgfritt)` : `${spørsmål.label}`}
+        label={spørsmål.optional ? `${spørsmål.label} (valgfritt)` : `${spørsmål.label}`}
         description={spørsmål.description}
       />
     </DatePicker>

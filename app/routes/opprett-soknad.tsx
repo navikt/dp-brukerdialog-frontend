@@ -2,7 +2,7 @@ import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Box, Button, Checkbox, Page, VStack } from "@navikt/ds-react";
 import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
-import { Form, redirect, useActionData } from "react-router";
+import { Form, redirect, useActionData, useNavigate, useNavigation } from "react-router";
 import { z } from "zod";
 import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
 import { useSanity } from "~/hooks/useSanity";
@@ -24,8 +24,9 @@ export async function action({ request }: Route.ActionArgs) {
   return redirect(`/${soknadId}/din-situasjon`);
 }
 
-export default function OpprettSoknad() {
+export default function OpprettSoknadRoute() {
   const { hentInfosideTekst } = useSanity();
+  const { state } = useNavigation();
   const actionData = useActionData<typeof action>();
 
   const innhold = hentInfosideTekst("infoside.opprett-søknad");
@@ -84,6 +85,7 @@ export default function OpprettSoknad() {
               className="mt-8"
               icon={<ArrowRightIcon aria-hidden />}
               type="submit"
+              loading={state === "submitting" || state === "loading"}
             >
               Start søknad
             </Button>

@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
@@ -9,6 +9,7 @@ import { dinSituasjonSchema } from "~/seksjon/din-situasjon/din-situasjon.schema
 import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
 
 export function DinSituasjonView() {
+  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ export function DinSituasjonView() {
                 type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
+                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>
