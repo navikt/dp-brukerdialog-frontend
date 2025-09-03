@@ -25,7 +25,7 @@ import {
   mottarEllerHarSøktOmPengestøtteFraAndreEnnNav,
   pensjonFraAndreEnnNav,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
+} from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
 export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
   {
@@ -142,8 +142,9 @@ export const etterlønnFraArbeidsgiverSpørsmål: KomponentType[] = [
     type: "dokumentasjonskravindikator",
     label: "Dokumentasjon av hvem som utbetaler etterlønnen, og hvilken periode den gjelder for",
     visHvis: (svar: AnnenPengestøtteSvar) =>
-      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(etterlønnFraArbeidsgiver) ||
-      false,
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
+        etterlønnFraArbeidsgiver
+      ) || false,
   },
   {
     id: hvemUtbetalerEtterlønnen,
@@ -180,10 +181,12 @@ export const dagpengerFraEtAnnetEøsLandSpørsmål: KomponentType[] = [
   {
     id: "dagpengerFraEtAnnetEøsLandDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av hvilket land som utbetaler dagpengene, og hvilken periode den gjelder for",
+    label:
+      "Dokumentasjon av hvilket land som utbetaler dagpengene, og hvilken periode den gjelder for",
     visHvis: (svar: AnnenPengestøtteSvar) =>
-      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(dagpengerFraAnnetEøsLand) ||
-      false,
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(
+        dagpengerFraAnnetEøsLand
+      ) || false,
   },
   {
     id: hvilketEøsLandUtbetalerDagpengene,
@@ -220,10 +223,10 @@ export const annenPengestøtteFraAndreEnnNavSpørsmål: KomponentType[] = [
   {
     id: "annenPengestøtteFraAndreEnnNavDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "dokumentasjon av hvilken ytelse dette er, hvem som utbetaler den, og hvilken periode den gjelder for",
+    label:
+      "dokumentasjon av hvilken ytelse dette er, hvem som utbetaler den, og hvilken periode den gjelder for",
     visHvis: (svar: AnnenPengestøtteSvar) =>
-      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(annenYtelse) ||
-      false,
+      svar[hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav]?.includes(annenYtelse) || false,
   },
   {
     id: hvilkenAnnenPengestøtteMottas,
