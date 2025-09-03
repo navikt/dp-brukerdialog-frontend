@@ -43,14 +43,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "personalia";
-  const seksjonsData = formData.get("payload");
+  const payload = formData.get("payload");
+  const seksjonsData = JSON.parse(payload as string);
 
-  const response = await lagreSeksjon(
-    request,
-    params.soknadId,
-    seksjonId,
-    JSON.parse(seksjonsData as string)
-  );
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
     return {
