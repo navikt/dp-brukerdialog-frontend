@@ -13,7 +13,7 @@ interface IProps {
   barnIndex: number;
 }
 
-export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
+export function BarnLagtManuelt({ barn, barnIndex }: Readonly<IProps>) {
   const { barnLagtManuelt, setBarnLagtManuelt, setModalData } = useBarnetilleggContext();
 
   function fjernBarn() {
@@ -21,43 +21,41 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
   }
 
   return (
-    <>
-      <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
-        <Heading size="small" spacing>
-          {barn.fornavnOgMellomnavn} {barn.etternavn}
-        </Heading>
-        {barn.fødselsdato && (
-          <BodyShort size="medium" spacing>
-            Født {formaterNorskDato(new Date(barn.fødselsdato))}
-          </BodyShort>
-        )}
-        {barn.bostedsland && (
-          <BodyShort size="small" spacing>
-            BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
-          </BodyShort>
-        )}
+    <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
+      <Heading size="small" spacing>
+        {barn.fornavnOgMellomnavn} {barn.etternavn}
+      </Heading>
+      {barn.fødselsdato && (
+        <BodyShort size="medium" spacing>
+          Født {formaterNorskDato(new Date(barn.fødselsdato))}
+        </BodyShort>
+      )}
+      {barn.bostedsland && (
+        <BodyShort size="small" spacing>
+          BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
+        </BodyShort>
+      )}
 
-        <HStack gap="4" paddingBlock="space-6">
-          <Button
-            variant="secondary"
-            size="small"
-            icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
-            onClick={() => {
-              setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn, barnIndex });
-            }}
-          >
-            Endre svar
-          </Button>
-          <Button
-            variant="tertiary"
-            size="small"
-            onClick={fjernBarn}
-            icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
-          >
-            Fjern
-          </Button>
-        </HStack>
-      </Box>
-    </>
+      <HStack gap="4" paddingBlock="space-6">
+        <Button
+          variant="secondary"
+          size="small"
+          icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
+          onClick={() => {
+            setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn, barnIndex });
+          }}
+        >
+          Endre svar
+        </Button>
+        <Button
+          variant="tertiary"
+          size="small"
+          onClick={fjernBarn}
+          icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+        >
+          Fjern
+        </Button>
+      </HStack>
+    </Box>
   );
 }
