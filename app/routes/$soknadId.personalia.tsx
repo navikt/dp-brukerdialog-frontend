@@ -3,7 +3,7 @@ import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaView } from "~/seksjon/personalia/PersonaliaView";
 
-type Personalia = {
+export type Personalia = {
   person: Person;
   kontonummer: string | null;
 };

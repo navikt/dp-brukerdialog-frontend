@@ -13,7 +13,7 @@ interface IProps {
   barnIndex: number;
 }
 
-export function BarnLagtManuelt({ barn, barnIndex }: Readonly<IProps>) {
+export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
   const { barnLagtManuelt, setBarnLagtManuelt, setModalData } = useBarnetilleggContext();
 
   function fjernBarn() {
