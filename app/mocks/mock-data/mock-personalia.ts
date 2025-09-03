@@ -1,6 +1,4 @@
-import { IPersonalia } from "~/routes/$soknadId.personalia";
-
-export const mockPersonalia: IPersonalia = {
+export const mockPersonalia = {
   person: {
     fornavn: "TOPP",
     mellomnavn: "",
