@@ -7,7 +7,7 @@ import {
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
-} from "~/seksjon-regelsett/bostedsland/bostedsland.spørsmål";
+} from "~/seksjon/bostedsland/bostedsland.spørsmål";
 
 export const mockBostedsland: BostedslandSvar = {
   [bostedsland]: "FI",
