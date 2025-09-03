@@ -1,12 +1,11 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { BarnetilleggProvider } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { BarnetilleggProvider } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { Barn, BarnetilleggSvar } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { BarnetilleggView } from "~/seksjon/barnetillegg/BarnetilleggView";
-import { parseLoaderData } from "~/utils/loader.utils";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -19,9 +18,9 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<BarnetilleggResponse | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const seksjonResponse = await hentSeksjon(request, params.soknadId, "barnetillegg");
+  const response = await hentSeksjon(request, params.soknadId, "barnetillegg");
 
-  if (!seksjonResponse.ok) {
+  if (!response.ok) {
     const barnFraPdlResponse = await hentBarn(request);
 
     if (!barnFraPdlResponse.ok) {
@@ -35,8 +34,7 @@ export async function loader({
     };
   }
 
-  const loaderData = await seksjonResponse.json();
-  return parseLoaderData(loaderData);
+  return await response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -45,9 +43,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "personalia";
-  const seksjonsData = formData.get("payload") as string;
+  const seksjonsData = formData.get("payload");
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const response = await lagreSeksjon(
+    request,
+    params.soknadId,
+    seksjonId,
+    JSON.parse(seksjonsData as string)
+  );
 
   if (response.status !== 200) {
     return {

@@ -23,9 +23,11 @@ import {
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringSvar,
 } from "~/seksjon-regelsett/egen-næring/egen-næring.spørsmål";
-import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<EgenNæringSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "egen-næring");
@@ -34,9 +36,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return undefined;
   }
 
-  const loaderData: EgenNæringSvar = await response.json();
-
-  return parseLoaderData(loaderData);
+  return await response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -48,8 +48,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
-  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const seksjonData = Object.fromEntries(filtrertEntries);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
 
   if (response.status !== 200) {
     return {

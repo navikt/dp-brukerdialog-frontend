@@ -2,7 +2,6 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaView } from "~/seksjon/personalia/PersonaliaView";
-import { parseLoaderData } from "~/utils/loader.utils";
 
 type Personalia = {
   person: Person;
@@ -35,8 +34,8 @@ export async function loader({ request }: LoaderFunctionArgs): Promise<Personali
   if (response.status !== 200) {
     return undefined;
   }
-  const personalia = await response.json();
-  return parseLoaderData(personalia);
+
+  return await response.json();
 }
 
 export async function action({ params }: ActionFunctionArgs) {
