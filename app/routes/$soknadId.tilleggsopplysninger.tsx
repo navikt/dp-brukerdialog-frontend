@@ -4,7 +4,6 @@ import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { TilleggsopplysningerView } from "~/seksjon/tilleggsopplysninger/TilleggopplysningerView";
 import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
-import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({
   request,
@@ -18,8 +17,7 @@ export async function loader({
     return undefined;
   }
 
-  const loaderData = await response.json();
-  return parseLoaderData(loaderData);
+  return await response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -31,9 +29,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
-  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
+  const seksjonData = Object.fromEntries(filtrertEntries);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
 
   if (response.status !== 200) {
     return {

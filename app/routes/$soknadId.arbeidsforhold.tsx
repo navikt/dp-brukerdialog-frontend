@@ -4,7 +4,6 @@ import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ArbeidsforholdSvar } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål";
 import { ArbeidsforholdView } from "~/seksjon/arbeidsforhold/ArbeidsforholdView";
-import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({
   request,
@@ -18,8 +17,7 @@ export async function loader({
     return undefined;
   }
 
-  const loaderData = await response.json();
-  return parseLoaderData(loaderData);
+  return await response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -31,7 +29,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
-  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
+  const seksjonsData = Object.fromEntries(filtrertEntries);
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {

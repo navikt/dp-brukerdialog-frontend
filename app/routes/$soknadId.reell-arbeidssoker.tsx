@@ -4,7 +4,6 @@ import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { ReellArbeidssøkerView } from "~/seksjon/reell-arbeidssøker/ReellArbeidsøkerView";
-import { parseLoaderData } from "~/utils/loader.utils";
 
 export async function loader({
   request,
@@ -18,8 +17,7 @@ export async function loader({
     return undefined;
   }
 
-  const loaderData = await response.json();
-  return parseLoaderData(loaderData);
+  return await response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -28,9 +26,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "reell-arbeidssoker";
   const nesteSeksjonId = "tilleggsopplysninger";
-  const seksjonsData = JSON.stringify(Object.fromEntries(formData.entries()));
+  const filtrertEntries = Array.from(formData.entries()).filter(
+    ([_, value]) => value !== undefined && value !== "undefined"
+  );
+  const seksjonData = Object.fromEntries(filtrertEntries);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
 
   if (response.status !== 200) {
     return {
