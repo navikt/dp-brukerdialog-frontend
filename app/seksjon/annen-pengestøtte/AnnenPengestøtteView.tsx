@@ -1,47 +1,65 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
+import { Alert, BodyLong, Button, ErrorMessage, HStack, Page, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
-import styles from "./annen-pengestøtte.module.css";
-import { pengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
-  annenPengestøtteFraAndreEnnNavSpørsmål,
-  dagpengerFraEtAnnetEøsLandSpørsmål,
-  etterlønnFraArbeidsgiverSpørsmål,
+  harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
+  PengestøtteFraAndreEøsLandModalSvar,
+  pengestøtteFraAndreEøsLandSpørsmål,
+} from "~/seksjon/annen-pengestøtte/annen-pengestøtte-eøs.spørsmål";
+import {
+  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+  PengestøtteFraNorgeModalSvar,
   pengestøtteFraNorgeSpørsmål,
-  pensjonFraAndreEnnNavSpørsmål,
-  utbetalingFraGarantikassenForFiskereSpørsmål,
-} from "~/seksjon/annen-pengestøtte/annen-pengestøtte-norge";
+  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+} from "~/seksjon/annen-pengestøtte/annen-pengestøtte-norge.spørsmål";
 import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.schema";
 import {
+  AnnenPengestøtteResponse,
+  annenPengestøtteSpørsmål,
   AnnenPengestøtteSvar,
-  annenYtelse,
-  dagpengerFraAnnetEøsLand,
-  etterlønnFraArbeidsgiver,
-  garantiLottForFiskere,
-  hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
-  pensjonFraAndreEnnNav,
 } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
-
-export const annenPengestøtteAlleSpørsmål = pengestøtteFraAndreEøsLand
-  .concat(pengestøtteFraNorgeSpørsmål)
-  .concat(pensjonFraAndreEnnNavSpørsmål)
-  .concat(utbetalingFraGarantikassenForFiskereSpørsmål)
-  .concat(etterlønnFraArbeidsgiverSpørsmål)
-  .concat(dagpengerFraEtAnnetEøsLandSpørsmål)
-  .concat(annenPengestøtteFraAndreEnnNavSpørsmål)
-  .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål);
+import { useEffect, useRef, useState } from "react";
+import {
+  ModalOperasjonEnum,
+  useAnnenPengestøtteContext,
+} from "~/seksjon/annen-pengestøtte/annen-pengestøtte.context";
+import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/komponenter/PengestøtteFraAndreEøsLandDetaljer";
+import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/komponenter/PengestøtteFraAndreEøsLandModal";
+import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/komponenter/PengestøtteFraNorgeModal";
+import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/komponenter/PengestøtteFraNorgeDetaljer";
+import { payload } from "~/seksjon/egen-næring/egen-næring.spørsmål";
 
 export function AnnenPengestøtteView() {
+  const navigate = useNavigate();
+  const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
+  const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-
-  const navigate = useNavigate();
+  const [
+    visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding,
+    setVisMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding,
+  ] = useState(false);
+  const [
+    visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding,
+    setVisMottattEllerSøktOmPengestøtteFraNorgeFeilmelding,
+  ] = useState(false);
+  const {
+    pengestøtteFraAndreEøsLand,
+    setPengestøtteFraAndreEøsLand,
+    pengestøtteFraAndreEøsLandModalData,
+    setPengestøtteFraAndreEøsLandModalData,
+    pengestøtteFraNorge,
+    setPengestøtteFraNorge,
+    pengestøtteFraNorgeModalData,
+    setPengestøtteFraNorgeModalData,
+  } = useAnnenPengestøtteContext();
 
   const form = useForm({
     method: "PUT",
@@ -55,8 +73,92 @@ export function AnnenPengestøtteView() {
     defaultValues: loaderData ?? {},
   });
 
-  useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteAlleSpørsmål);
+  useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteSpørsmål);
 
+  useEffect(() => {
+    if (pengestøtteFraAndreEøsLandModalData) {
+      pengestøtteFraAndreEøsLandModalRef.current?.showModal();
+    }
+  }, [pengestøtteFraAndreEøsLandModalData]);
+
+  useEffect(() => {
+    if (pengestøtteFraNorgeModalData) {
+      pengestøtteFraNorgeModalRef.current?.showModal();
+    }
+  }, [pengestøtteFraNorgeModalData]);
+
+  useEffect(() => {
+    setVisMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding(
+      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== "ja" &&
+        pengestøtteFraAndreEøsLand.length > 0
+    );
+    if (form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
+      setPengestøtteFraAndreEøsLand([]);
+    }
+  }, [
+    form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand),
+    pengestøtteFraAndreEøsLand.length,
+  ]);
+
+  useEffect(() => {
+    setVisMottattEllerSøktOmPengestøtteFraNorgeFeilmelding(
+      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== "ja" &&
+        pengestøtteFraNorge.length > 0
+    );
+    if (form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
+      setPengestøtteFraNorge([]);
+    }
+  }, [form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav), pengestøtteFraNorge.length]);
+
+  function handleSubmit() {
+    form.validate();
+
+    const manglerPengestøtteFraAndreEøsLand =
+      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" &&
+      pengestøtteFraAndreEøsLand.length === 0;
+    const manglerPengestøtteFraNorge =
+      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" &&
+      pengestøtteFraNorge.length === 0;
+
+    if (manglerPengestøtteFraAndreEøsLand) {
+      setVisMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding(true);
+    }
+
+    if (manglerPengestøtteFraNorge) {
+      setVisMottattEllerSøktOmPengestøtteFraNorgeFeilmelding(true);
+    }
+
+    if (manglerPengestøtteFraAndreEøsLand || manglerPengestøtteFraNorge) {
+      return;
+    }
+
+    if (
+      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== undefined &&
+      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== undefined &&
+      !manglerPengestøtteFraAndreEøsLand &&
+      !manglerPengestøtteFraNorge
+    ) {
+      const annenPengestøtteResponse: AnnenPengestøtteResponse = {
+        [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.value(
+          harMottattEllerSøktOmPengestøtteFraAndreEøsLand
+        ),
+        [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.value(
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
+        ),
+        [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.value(
+          skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
+        ),
+        pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLand,
+        [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.value(
+          mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
+        ),
+        pengestøtteFraNorge: pengestøtteFraNorge,
+      };
+
+      form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
+      form.submit();
+    }
+  }
   const render = (spørsmål: KomponentType) => {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
       return null;
@@ -78,111 +180,127 @@ export function AnnenPengestøtteView() {
         <Form {...form.getFormProps()}>
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
-            {pengestøtteFraAndreEøsLand.map((spørsmål) => {
+            {pengestøtteFraAndreEøsLandSpørsmål.map((spørsmål) => {
               return render(spørsmål);
             })}
+
+            {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
+              <>
+                <BodyLong>
+                  <strong>Dine pengestøtter fra EØS land</strong>
+                  <br />
+                  Du må legge til alle trygdeytelser fra EØS-land, Sveits eller Storbritannia du har
+                  mottatt eller søkt på de siste 36 måneder
+                </BodyLong>
+                {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
+                  <ErrorMessage showIcon>
+                    Du må legge til pengestøtte fra andre EØS-land
+                  </ErrorMessage>
+                )}
+                <VStack gap="space-16">
+                  {pengestøtteFraAndreEøsLand?.map(
+                    (
+                      pengestøtteFraAndreEøsLandSvar: PengestøtteFraAndreEøsLandModalSvar,
+                      index: number
+                    ) => (
+                      <PengestøtteFraAndreEøsLandDetaljer
+                        key={index}
+                        pengestøtteFraAndreEøsLandSvarIndex={index}
+                        pengestøtteFraAndreEøsLandSvar={pengestøtteFraAndreEøsLandSvar}
+                      />
+                    )
+                  )}
+                </VStack>
+                <HStack>
+                  <Button
+                    type={"button"}
+                    variant={"secondary"}
+                    onClick={() => {
+                      setPengestøtteFraAndreEøsLandModalData({
+                        operasjon: ModalOperasjonEnum.LeggTil,
+                      });
+                    }}
+                    icon={<PlusIcon />}
+                    iconPosition={"left"}
+                  >
+                    Legg til pengestøtte fra andre EØS-land
+                  </Button>
+                </HStack>
+              </>
+            )}
 
             <h3>Pengestøtte fra Norge</h3>
             {pengestøtteFraNorgeSpørsmål.map((spørsmål) => render(spørsmål))}
 
-            {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
-              form
-                .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes(pensjonFraAndreEnnNav) && (
-                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                  <h4>Pensjon fra andre enn Nav</h4>
-                  {pensjonFraAndreEnnNavSpørsmål.map((spørsmål) => render(spørsmål))}
+            {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
+              <>
+                <BodyLong>
+                  <strong>Dine pengestøtter fra Norge</strong>
+                  <br />
+                  Du må legge til alle pengestøtter du mottar eller har søkt om som ikke er fra Nav.
+                </BodyLong>
+                {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
+                  <ErrorMessage showIcon>Du må legge til pengestøtte fra Norge</ErrorMessage>
+                )}
+                <VStack gap="space-16">
+                  {pengestøtteFraNorge?.map(
+                    (pengestøtteFraNorgeSvar: PengestøtteFraNorgeModalSvar, index: number) => (
+                      <PengestøtteFraNorgeDetaljer
+                        key={index}
+                        pengestøtteFraNorgeSvarIndex={index}
+                        pengestøtteFraNorgeSvar={pengestøtteFraNorgeSvar}
+                      />
+                    )
+                  )}
                 </VStack>
-              )}
-
-            {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
-              form
-                .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes(garantiLottForFiskere) && (
-                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                  <h4>
-                    Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for fiskere
-                    (GFF)
-                  </h4>
-                  {utbetalingFraGarantikassenForFiskereSpørsmål.map((spørsmål) => render(spørsmål))}
-                </VStack>
-              )}
-
-            {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
-              form
-                .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes(etterlønnFraArbeidsgiver) && (
-                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                  <h4>Etterlønn fra arbeidsgiver</h4>
-                  <Alert variant="info">
-                    Etterlønn er en ytelse som helt eller delvis dekker bortfall av inntekt for en
-                    periode du ikke er omfattet av arbeidsavtalen.
-                    <br />
-                    <br />
-                    Dette er ikke etterlønn:
-                    <ul>
-                      <li>Vanlig oppsigelsestid.</li>
-                      <li>
-                        Godtgjørelse som avtales i forbindelse med opphør av arbeidsforholdet.
-                      </li>
-                      <li>Erstatning for usaklig oppsigelse, som ikke er lønn.</li>
-                      <li>Sluttvederlag etter tariffavtale.</li>
-                    </ul>
-                  </Alert>
-                  {etterlønnFraArbeidsgiverSpørsmål.map((spørsmål) => render(spørsmål))}
-                </VStack>
-              )}
-
-            {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
-              form
-                .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes(dagpengerFraAnnetEøsLand) && (
-                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                  <h4>Dagpenger fra et annet EØS-land</h4>
-                  {dagpengerFraEtAnnetEøsLandSpørsmål.map((spørsmål) => render(spørsmål))}
-                </VStack>
-              )}
-
-            {form.value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav) &&
-              form
-                .value(hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav)
-                ?.includes(annenYtelse) && (
-                <VStack gap="4" className={styles.annenPengestotteDetaljer}>
-                  <h4>Annen pengestøtte fra andre enn Nav</h4>
-                  {annenPengestøtteFraAndreEnnNavSpørsmål.map((spørsmål) => render(spørsmål))}
-                </VStack>
-              )}
+                <HStack>
+                  <Button
+                    type={"button"}
+                    variant={"secondary"}
+                    onClick={() => {
+                      setPengestøtteFraNorgeModalData({
+                        operasjon: ModalOperasjonEnum.LeggTil,
+                      });
+                    }}
+                    icon={<PlusIcon />}
+                    iconPosition={"left"}
+                  >
+                    Legg til annen pengestøtte fra Norge
+                  </Button>
+                </HStack>
+              </>
+            )}
 
             {fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål.map(
               (spørsmål) => render(spørsmål)
             )}
-
-            {actionData && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
-
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="secondary"
-                icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="submit"
-                iconPosition="right"
-                icon={<ArrowRightIcon />}
-              >
-                Neste steg
-              </Button>
-            </HStack>
           </VStack>
+          {actionData && (
+            <Alert variant="error" className="mt-4">
+              {actionData.error}
+            </Alert>
+          )}
+
+          <HStack gap="4" className="mt-8">
+            <Button
+              variant="secondary"
+              icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+              onClick={() => navigate(-1)}
+            >
+              Forrige steg
+            </Button>
+            <Button variant="primary" type="button" iconPosition="right" icon={<ArrowRightIcon />} onClick={handleSubmit}>
+              Neste steg
+            </Button>
+          </HStack>
         </Form>
       </VStack>
+      {pengestøtteFraAndreEøsLandModalData && (
+        <PengestøtteFraAndreEøsLandModal ref={pengestøtteFraAndreEøsLandModalRef} />
+      )}
+      {pengestøtteFraNorgeModalData && (
+        <PengestøtteFraNorgeModal ref={pengestøtteFraNorgeModalRef} />
+      )}
     </Page>
   );
 }
