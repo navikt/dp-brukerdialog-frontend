@@ -40,7 +40,7 @@ function fyllTommeSteger(): FremgangSteg[] {
   });
 }
 
-function finnAktivSteg(seksjoner: FremgangSteg[], søknadId: string, urlPath: string) {
+function finnAktivSteg(seksjoner: FremgangSteg[], urlPath: string) {
   const url = new URL(urlPath);
   const pathParts = url.pathname.split("/");
   const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
@@ -59,7 +59,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const progressResponse = await hentSøknadFremgangInfo(request, params.soknadId);
   if (!progressResponse.ok) {
     return {
-      seksjoner: fyllTommeSteger(),
+      søknadProgress: fyllTommeSteger(),
       aktiv: 1,
     };
   }
@@ -78,14 +78,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }));
 
   return {
-    seksjoner: soknadSections,
-    aktiv: finnAktivSteg(soknadSections, params.soknadId, request.url) + 1,
+    søknadProgress: soknadSections,
+    aktivSteg: finnAktivSteg(soknadSections, request.url) + 1,
   };
 }
 
 export default function SoknadIdIndex() {
   const loaderData = useLoaderData<typeof loader>();
-  const progressData = loaderData?.seksjoner || fyllTommeSteger();
+  const progressData = loaderData?.søknadProgress;
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -94,14 +94,14 @@ export default function SoknadIdIndex() {
         <h1>Søknad om dagpenger</h1>
       </div>
       <div>
-        <FormProgress totalSteps={14} activeStep={loaderData?.aktiv || 0}>
-          {progressData.map((data) => (
+        <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 0}>
+          {progressData.map((steg) => (
             <FormProgress.Step
-              href={data.path}
-              completed={data.fullført}
-              interactive={data.interaktiv}
+              href={steg.path}
+              completed={steg.fullført}
+              interactive={steg.interaktiv}
             >
-              {data.tittel}
+              {steg.tittel}
             </FormProgress.Step>
           ))}
           <FormProgress.Step interactive={false}>Kvittering</FormProgress.Step>
