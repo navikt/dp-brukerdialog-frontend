@@ -1,17 +1,14 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
 import { AnnenPengestøtteView } from "~/seksjon/annen-pengestøtte/AnnenPengestøtteView";
+import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.context";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<AnnenPengestøtteSvar | undefined> {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "annen-pengestøtte");
+  const response = await hentSeksjon(request, params.soknadId, "annen-pengestotte");
 
   if (!response.ok) {
     return undefined;
@@ -26,10 +23,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "annen-pengestotte";
   const nesteSeksjonId = "egen-naring";
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
-  );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const payload = formData.get("payload");
+  const seksjonsData = JSON.parse(payload as string);
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
@@ -43,5 +38,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function AnnenPengestøtteRoute() {
-  return <AnnenPengestøtteView />;
+  const loaderData = useLoaderData<typeof loader>();
+
+  return (
+    <AnnenPengestøtteProvider
+      pengestøtteFraAndreEøsLand={loaderData?.pengestøtteFraAndreEøsLand || []}
+      pengestøtteFraNorge={loaderData?.pengestøtteFraNorge || []}
+    >
+      <AnnenPengestøtteView />
+    </AnnenPengestøtteProvider>
+  );
 }
