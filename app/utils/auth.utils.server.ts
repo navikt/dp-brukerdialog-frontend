@@ -4,10 +4,14 @@ import { logger } from "./logger.utils";
 
 export async function getSoknadOrkestratorOboToken(request: Request) {
   if (getEnv("IS_LOCALHOST") === "true") {
-    if (expiresIn(getEnv("DP_SOKNAD_ORKESTRATOR_TOKEN")) <= 0) {
+    const token = getEnv("DP_SOKNAD_ORKESTRATOR_TOKEN");
+    const useMsw = getEnv("USE_MSW") === "true";
+
+    if (expiresIn(token) <= 0 && !useMsw) {
       logger.error("Lokalt token utløpt! Oppdatere token på nytt!");
     }
-    return getEnv("DP_SOKNAD_ORKESTRATOR_TOKEN") || "";
+
+    return token || "";
   }
 
   const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-soknad-orkestrator`;

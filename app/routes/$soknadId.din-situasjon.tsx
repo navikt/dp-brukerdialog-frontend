@@ -4,12 +4,8 @@ import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { DinSituasjonSvar } from "~/seksjon/din-situasjon/din-situasjon.spørsmål";
 import { DinSituasjonView } from "~/seksjon/din-situasjon/DinSituasjonView";
-import { parseLoaderData } from "~/utils/loader.utils";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<DinSituasjonSvar | undefined> {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
@@ -22,8 +18,7 @@ export async function loader({
     throw data(response.statusText, { status: response.status });
   }
 
-  const loaderData = await response.json();
-  return parseLoaderData(loaderData);
+  return await response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -35,8 +30,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
-  const seksjonsData = JSON.stringify(Object.fromEntries(filtrertEntries));
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const seksjonData = Object.fromEntries(filtrertEntries);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
 
   if (response.status !== 200) {
     return {

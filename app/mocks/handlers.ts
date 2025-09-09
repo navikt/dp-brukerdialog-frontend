@@ -7,6 +7,7 @@ import { mockUtdanning } from "./mock-data/mock-utdanning";
 import { mockVerneplikt } from "~/mocks/mock-data/mock-verneplikt";
 import { mockBarnetillegg } from "./mock-data/mock-barnetillegg";
 import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
+import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -19,7 +20,6 @@ export const handlers = [
     return HttpResponse.json(mockBarnFraPdl);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
-    // return new HttpResponse(null, { status: 404 });
     return HttpResponse.json(mockDinSituasjon);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/bostedsland`, () => {
@@ -33,5 +33,8 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/barnetillegg`, () => {
     return HttpResponse.json(mockBarnetillegg);
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/egen-naring`, () => {
+    return HttpResponse.json(mockEngenNæring);
   }),
 ];

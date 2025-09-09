@@ -1,6 +1,7 @@
 import { TextField } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { KortTekstSpørsmål } from "~/components/spørsmål/spørsmål.types";
+import parse from "html-react-parser";
 
 interface IProps {
   spørsmål: KortTekstSpørsmål;
@@ -14,7 +15,7 @@ export function KortTekst({ spørsmål, formScope }: Readonly<IProps>) {
     <TextField
       {...field.getInputProps()}
       label={spørsmål.label}
-      description={spørsmål.description}
+      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={spørsmål.id}
       error={field.error()}
     />

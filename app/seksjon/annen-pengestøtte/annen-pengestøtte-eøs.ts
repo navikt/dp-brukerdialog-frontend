@@ -7,7 +7,7 @@ import {
   hvilkeUtenlandskeYtelserHarDuMottatt,
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   sykepenger,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
+} from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
 export const pengestøtteFraAndreEøsLand: KomponentType[] = [
   {

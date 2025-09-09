@@ -31,8 +31,8 @@ import {
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
   sykepenger,
-} from "~/seksjon-regelsett/annen-pengestøtte/annen-pengestøtte.spørsmål";
-import { annenPengestøtteAlleSpørsmål } from "~/routes/$soknadId.annen-pengestotte";
+} from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
+import { annenPengestøtteAlleSpørsmål } from "./AnnenPengestøtteView";
 
 const kortTekstMaksLengde = 200;
 
@@ -102,7 +102,10 @@ export const annenPengestøtteSchema = z
       const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
+      const erSpørsmål =
+        spørsmål.type !== "lesMer" &&
+        spørsmål.type !== "varselmelding" &&
+        spørsmål.type !== "dokumentasjonskravindikator";
 
       if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({

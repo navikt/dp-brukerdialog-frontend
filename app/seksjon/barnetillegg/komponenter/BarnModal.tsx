@@ -18,7 +18,7 @@ interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function BarnModal({ ref }: IProps) {
+export function BarnModal({ ref }: Readonly<IProps>) {
   const { barnLagtManuelt, setBarnLagtManuelt, modalData, setModalData } = useBarnetilleggContext();
 
   const form = useForm({
