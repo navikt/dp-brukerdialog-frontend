@@ -1,8 +1,8 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Box, Button, Checkbox, Page, VStack } from "@navikt/ds-react";
+import { Alert, Box, Button, Checkbox, VStack } from "@navikt/ds-react";
 import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
-import { Form, redirect, useActionData, useNavigate, useNavigation } from "react-router";
+import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
 import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
 import { useSanity } from "~/hooks/useSanity";
@@ -51,12 +51,12 @@ export default function OpprettSoknadRoute() {
 
   return (
     <main id="maincontent" tabIndex={-1}>
-      <Page className="brukerdialog">
-        <div className="soknad-header">
-          <SoknadIkon />
-          <h1>Søknad om dagpenger</h1>
-        </div>
+      <div className="soknad-header">
+        <SoknadIkon />
+        <h1>Søknad om dagpenger</h1>
+      </div>
 
+      <div className="seksjon">
         {innhold?.body && (
           <PortableText value={innhold.body} components={{ types: { readMore: SanityReadMore } }} />
         )}
@@ -91,7 +91,7 @@ export default function OpprettSoknadRoute() {
             </Button>
           </Form>
         </VStack>
-      </Page>
+      </div>
     </main>
   );
 }
