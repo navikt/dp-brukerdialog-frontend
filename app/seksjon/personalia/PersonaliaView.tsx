@@ -20,7 +20,7 @@ export function PersonaliaView() {
     personalia.kontonummer && personalia.kontonummer.replace(/(.{4})(.{2})(.{5})/, "$1 $2 $3");
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Personalia</h2>
       <VStack gap="20">
         <VStack gap="4">

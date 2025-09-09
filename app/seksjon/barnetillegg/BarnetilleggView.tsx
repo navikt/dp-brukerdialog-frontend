@@ -86,7 +86,7 @@ export function BarnetilleggView() {
   }
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Barnetillegg</h2>
       <BodyLong spacing>
         Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg

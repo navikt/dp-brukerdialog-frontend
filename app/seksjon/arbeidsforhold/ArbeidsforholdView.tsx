@@ -70,7 +70,7 @@ export function ArbeidsforholdView() {
   }
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Arbeidsforhold</h2>
       <VStack gap="20">
         <VStack gap="6">

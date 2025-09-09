@@ -28,7 +28,7 @@ export function UtdanningView() {
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSpørsmål);
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Utdanning</h2>
       <VStack gap="20">
         <VStack gap="6">

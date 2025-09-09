@@ -32,7 +32,7 @@ export function ReellArbeidssøkerView() {
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Reell arbeidssøker</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>

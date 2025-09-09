@@ -18,7 +18,7 @@
   margin-bottom: var(--a-spacing-8);
 }
 
-.seksjon {
+.innhold {
   max-width: var(--seksjon-max-width);
   margin: 0 auto var(--a-spacing-20);
 }

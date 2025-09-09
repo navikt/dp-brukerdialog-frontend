@@ -28,7 +28,7 @@ export default function VernepliktView() {
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Verneplikt</h2>
       <VStack gap="20">
         <VStack gap="6">

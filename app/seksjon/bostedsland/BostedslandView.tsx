@@ -28,7 +28,7 @@ export function BostedslandView() {
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Bostedsland</h2>
       <VStack gap="20">
         <VStack gap="6">

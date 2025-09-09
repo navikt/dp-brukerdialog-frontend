@@ -56,7 +56,7 @@ export default function OpprettSoknadRoute() {
         <h1>Søknad om dagpenger</h1>
       </div>
 
-      <div className="seksjon">
+      <div className="innhold">
         {innhold?.body && (
           <PortableText value={innhold.body} components={{ types: { readMore: SanityReadMore } }} />
         )}

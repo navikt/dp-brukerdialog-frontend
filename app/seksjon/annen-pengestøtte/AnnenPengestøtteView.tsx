@@ -72,7 +72,7 @@ export function AnnenPengestøtteView() {
   }
 
   return (
-    <div className="seksjon">
+    <div className="innhold">
       <h2>Annen pengstøtte</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>

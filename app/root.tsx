@@ -113,7 +113,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     return (
       <main id="maincontent" tabIndex={-1}>
-        <div className="seksjon">
+        <div className="innhold">
           <h1>
             {error.status} {error.statusText}
           </h1>
@@ -124,7 +124,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   } else if (error instanceof Error) {
     return (
       <main id="maincontent" tabIndex={-1}>
-        <div className="seksjon">
+        <div className="innhold">
           <h1>Error</h1>
           <p>{error.message}</p>
           <p>The stack trace is:</p>
@@ -135,7 +135,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   } else {
     return (
       <main id="maincontent" tabIndex={-1}>
-        <div className="seksjon">
+        <div className="innhold">
           <h1>Unknown Error</h1>
         </div>
       </main>
