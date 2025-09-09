@@ -60,7 +60,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!progressResponse.ok) {
     return {
       søknadProgress: fyllTommeSteger(),
-      aktiv: 1,
+      aktivSteg: 1,
     };
   }
   const { seksjoner }: StegResponse = await progressResponse.json();
@@ -94,7 +94,7 @@ export default function SoknadIdIndex() {
         <h1>Søknad om dagpenger</h1>
       </div>
       <div>
-        <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 0}>
+        <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 1}>
           {progressData.map((steg) => (
             <FormProgress.Step
               href={steg.path}
