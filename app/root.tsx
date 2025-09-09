@@ -16,9 +16,7 @@ import {
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { logger } from "./utils/logger.utils";
-
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
-import { Page } from "@navikt/ds-react";
 import { useEffect, useState } from "react";
 import { Route } from "./+types/root";
 import indexStyles from "./index.css?url";
@@ -115,31 +113,31 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     return (
       <main id="maincontent" tabIndex={-1}>
-        <Page className="brukerdialog">
+        <div className="innhold">
           <h1>
             {error.status} {error.statusText}
           </h1>
           <p>{error.data}</p>
-        </Page>
+        </div>
       </main>
     );
   } else if (error instanceof Error) {
     return (
       <main id="maincontent" tabIndex={-1}>
-        <Page className="brukerdialog">
+        <div className="innhold">
           <h1>Error</h1>
           <p>{error.message}</p>
           <p>The stack trace is:</p>
           <pre>{error.stack}</pre>
-        </Page>
+        </div>
       </main>
     );
   } else {
     return (
       <main id="maincontent" tabIndex={-1}>
-        <Page className="brukerdialog">
+        <div className="innhold">
           <h1>Unknown Error</h1>
-        </Page>
+        </div>
       </main>
     );
   }

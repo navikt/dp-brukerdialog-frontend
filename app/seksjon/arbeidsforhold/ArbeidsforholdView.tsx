@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, Page, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { FormApi, useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
@@ -70,7 +70,7 @@ export function ArbeidsforholdView() {
   }
 
   return (
-    <Page className="brukerdialog">
+    <div className="innhold">
       <h2>Arbeidsforhold</h2>
       <VStack gap="20">
         <VStack gap="6">
@@ -128,6 +128,6 @@ export function ArbeidsforholdView() {
           </Form>
         </VStack>
       </VStack>
-    </Page>
+    </div>
   );
 }

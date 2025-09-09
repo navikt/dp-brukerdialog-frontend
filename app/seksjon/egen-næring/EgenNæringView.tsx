@@ -63,8 +63,7 @@ export function EgenNæringView() {
 
   useEffect(() => {
     setVisNæringsvirksomhetFeilmelding(
-      form.value(driverDuEgenNæringsvirksomhet) !== "ja" &&
-        næringsvirksomheter.length > 0
+      form.value(driverDuEgenNæringsvirksomhet) !== "ja" && næringsvirksomheter.length > 0
     );
     if (form.value(driverDuEgenNæringsvirksomhet) === "nei") {
       setNæringsvirksomheter([]);
@@ -72,9 +71,7 @@ export function EgenNæringView() {
   }, [form.value(driverDuEgenNæringsvirksomhet), næringsvirksomheter.length]);
 
   useEffect(() => {
-    setVisGårdsbrukFeilmelding(
-      form.value(driverDuEgetGårdsbruk) !== "ja" && gårdsbruk.length > 0
-    );
+    setVisGårdsbrukFeilmelding(form.value(driverDuEgetGårdsbruk) !== "ja" && gårdsbruk.length > 0);
     if (form.value(driverDuEgetGårdsbruk) === "nei") {
       setGårdsbruk([]);
     }
@@ -96,8 +93,7 @@ export function EgenNæringView() {
     form.validate();
 
     const manglerRegistrertNæringsvirksomhet =
-      form.value(driverDuEgenNæringsvirksomhet) === "ja" &&
-      næringsvirksomheter.length === 0;
+      form.value(driverDuEgenNæringsvirksomhet) === "ja" && næringsvirksomheter.length === 0;
     const manglerRegistrertGårdsbruk =
       form.value(driverDuEgetGårdsbruk) === "ja" && gårdsbruk.length === 0;
 
@@ -132,7 +128,7 @@ export function EgenNæringView() {
   }
 
   return (
-    <Page className="brukerdialog">
+    <div className="innhold">
       <h2>Egen næring</h2>
       <VStack gap="20">
         <VStack gap="6">
@@ -254,6 +250,6 @@ export function EgenNæringView() {
       </VStack>
       {næringsvirksomhetModalData && <NæringsvirksomhetModal ref={næringsvirksomhetModalRef} />}
       {gårdsbrukModalData && <GårdsbrukModal ref={gårdsbrukModalRef} />}
-    </Page>
+    </div>
   );
 }

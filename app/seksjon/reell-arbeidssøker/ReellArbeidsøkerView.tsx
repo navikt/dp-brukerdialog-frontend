@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, List, Page, VStack } from "@navikt/ds-react";
+import { Alert, Button, HStack, List, VStack } from "@navikt/ds-react";
 import { ListItem } from "@navikt/ds-react/List";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
@@ -32,7 +32,7 @@ export function ReellArbeidssøkerView() {
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
 
   return (
-    <Page className="brukerdialog">
+    <div className="innhold">
       <h2>Reell arbeidssøker</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
@@ -88,6 +88,6 @@ export function ReellArbeidssøkerView() {
           </VStack>
         </Form>
       </VStack>
-    </Page>
+    </div>
   );
 }
