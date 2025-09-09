@@ -29,7 +29,7 @@ export function DinSituasjonView() {
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
 
   return (
-    <>
+    <div className="seksjon">
       <h2>Din situasjon</h2>
       <VStack gap="20">
         <VStack gap="6">
@@ -78,6 +78,6 @@ export function DinSituasjonView() {
           </Form>
         </VStack>
       </VStack>
-    </>
+    </div>
   );
 }

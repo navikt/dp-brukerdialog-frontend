@@ -1,12 +1,11 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, Page, VStack } from "@navikt/ds-react";
+import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
-import styles from "./annen-pengestøtte.module.css";
 import { pengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/annen-pengestøtte-eøs";
 import {
   annenPengestøtteFraAndreEnnNavSpørsmål,
@@ -27,6 +26,7 @@ import {
   hvilkeYtelserMottarDuEllerHarDuSøktPåFraAndreEnnNav,
   pensjonFraAndreEnnNav,
 } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
+import styles from "./annen-pengestøtte.module.css";
 
 export const annenPengestøtteAlleSpørsmål = pengestøtteFraAndreEøsLand
   .concat(pengestøtteFraNorgeSpørsmål)
@@ -57,7 +57,7 @@ export function AnnenPengestøtteView() {
 
   useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteAlleSpørsmål);
 
-  const render = (spørsmål: KomponentType) => {
+  function render(spørsmål: KomponentType) {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
       return null;
     }
@@ -69,10 +69,10 @@ export function AnnenPengestøtteView() {
         formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSvar)}
       />
     );
-  };
+  }
 
   return (
-    <Page className="brukerdialog">
+    <div className="seksjon">
       <h2>Annen pengstøtte</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
@@ -183,6 +183,6 @@ export function AnnenPengestøtteView() {
           </VStack>
         </Form>
       </VStack>
-    </Page>
+    </div>
   );
 }

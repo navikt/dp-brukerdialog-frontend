@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { BodyLong, BodyShort, Button, HStack, Label, Page, VStack } from "@navikt/ds-react";
+import { BodyLong, BodyShort, Button, HStack, Label, VStack } from "@navikt/ds-react";
 import { useLoaderData, useNavigate, useParams } from "react-router";
 import { loader } from "~/routes/$soknadId.personalia";
 
@@ -20,7 +20,7 @@ export function PersonaliaView() {
     personalia.kontonummer && personalia.kontonummer.replace(/(.{4})(.{2})(.{5})/, "$1 $2 $3");
 
   return (
-    <Page className="brukerdialog">
+    <div className="seksjon">
       <h2>Personalia</h2>
       <VStack gap="20">
         <VStack gap="4">
@@ -106,6 +106,6 @@ export function PersonaliaView() {
           </HStack>
         </VStack>
       </VStack>
-    </Page>
+    </div>
   );
 }

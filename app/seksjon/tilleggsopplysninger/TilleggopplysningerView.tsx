@@ -31,7 +31,7 @@ export function TilleggsopplysningerView() {
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);
 
   return (
-    <Page className="brukerdialog">
+    <div className="seksjon">
       <h2>Tilleggsopplysninger</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
@@ -76,6 +76,6 @@ export function TilleggsopplysningerView() {
           </VStack>
         </Form>
       </VStack>
-    </Page>
+    </div>
   );
 }
