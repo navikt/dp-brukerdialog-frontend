@@ -10,6 +10,7 @@ import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
 import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
+import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -44,5 +45,8 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId`, () => {
+    return HttpResponse.json(mockOppsummering);
   }),
 ];
