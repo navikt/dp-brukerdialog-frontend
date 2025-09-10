@@ -2,6 +2,7 @@ import { Alert, BodyLong, VStack } from "@navikt/ds-react";
 import DinSituasjonOppsummering from "~/seksjon/din-situasjon/oppsummering/DinSituasjonOppsummering";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
+import BostedslandOppsummering from "~/seksjon/bostedsland/oppsummering/BostedslandOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -11,8 +12,11 @@ export default function OppsummeringView() {
   }
   console.log("typeof loaderData", Array.isArray(loaderData));
   console.log("loaderData", loaderData);
-  let dinSituasjonOppsumeringData = loaderData.find(
+  const dinSituasjonOppsumeringData = loaderData.find(
     (seksjon) => seksjon.seksjonId === "din-situasjon"
+  );
+  const bostedslandOppsummeringData = loaderData.find(
+    (seksjon) => seksjon.seksjonId === "bostedsland"
   );
 
   return (
@@ -35,6 +39,9 @@ export default function OppsummeringView() {
           <h2>Dine svar</h2>
           <DinSituasjonOppsummering
             seksjonsData={dinSituasjonOppsumeringData ? dinSituasjonOppsumeringData.data : ""}
+          />
+          <BostedslandOppsummering
+            seksjonsData={bostedslandOppsummeringData ? bostedslandOppsummeringData.data : ""}
           />
         </VStack>
       </VStack>
