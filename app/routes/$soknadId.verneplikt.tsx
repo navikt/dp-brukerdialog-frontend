@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -19,7 +19,7 @@ export async function loader({
   return await response.json();
 }
 
-export async function action({ request, params }: LoaderFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const formData = await request.formData();
