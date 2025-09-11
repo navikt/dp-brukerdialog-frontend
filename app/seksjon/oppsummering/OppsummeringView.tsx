@@ -4,6 +4,7 @@ import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import BostedslandOppsummering from "~/seksjon/bostedsland/oppsummering/BostedslandOppsummering";
 import BarnetilleggOppsummering from "~/seksjon/barnetillegg/oppsummering/BarnetilleggOppsummering";
+import VernepliktOppsummering from "~/seksjon/verneplikt/oppsummering/VernepliktOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -43,6 +44,11 @@ export default function OppsummeringView() {
           />
           <BostedslandOppsummering
             seksjonsData={bostedslandOppsummeringData ? bostedslandOppsummeringData.data : ""}
+          />
+          <VernepliktOppsummering
+            seksjonsData={
+              loaderData.find((seksjon) => seksjon.seksjonId === "verneplikt")?.data || ""
+            }
           />
           <BarnetilleggOppsummering
             seksjonsData={
