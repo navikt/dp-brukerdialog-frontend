@@ -13,6 +13,8 @@ interface IEnv {
   SANITY_DATASET: string;
   DP_SOKNAD_ORKESTRATOR_TOKEN: string;
   DP_SOKNAD_ORKESTRATOR_URL: string;
+  DP_MELLOMLAGRING_TOKEN: string;
+  DP_MELLOMLAGRING_URL: string;
   FARO_URL: string;
 }
 
