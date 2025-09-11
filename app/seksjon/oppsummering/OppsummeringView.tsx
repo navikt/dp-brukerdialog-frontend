@@ -5,6 +5,7 @@ import { loader } from "~/routes/$soknadId.oppsummering";
 import BostedslandOppsummering from "~/seksjon/bostedsland/oppsummering/BostedslandOppsummering";
 import BarnetilleggOppsummering from "~/seksjon/barnetillegg/oppsummering/BarnetilleggOppsummering";
 import VernepliktOppsummering from "~/seksjon/verneplikt/oppsummering/VernepliktOppsummering";
+import UtdanningOppsummering from "~/seksjon/utdanning/oppsummering/UtdanningOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -28,7 +29,6 @@ export default function OppsummeringView() {
           <Alert variant="warning" fullWidth>
             Husk å trykke på "Send søknad" nederst på siden før du avslutter
           </Alert>
-
           <BodyLong>
             Nå kan du se over at alt er riktig før du sender inn søknaden. Ved behov kan du endre
             opplysningene.
@@ -37,17 +37,23 @@ export default function OppsummeringView() {
             Når du har sendt inn søknaden kommer du til en kvitteringsside med informasjon om veien
             videre. Der kan du også ettersende dokumentasjon som mangler.
           </BodyLong>
-
           <h2>Dine svar</h2>
           <DinSituasjonOppsummering
             seksjonsData={dinSituasjonOppsumeringData ? dinSituasjonOppsumeringData.data : ""}
           />
+          //personalia
           <BostedslandOppsummering
             seksjonsData={bostedslandOppsummeringData ? bostedslandOppsummeringData.data : ""}
           />
+          // Arbeidsforhold // Annen pengestøtte // Egen næring //
           <VernepliktOppsummering
             seksjonsData={
               loaderData.find((seksjon) => seksjon.seksjonId === "verneplikt")?.data || ""
+            }
+          />
+          <UtdanningOppsummering
+            seksjonsData={
+              loaderData.find((seksjon) => seksjon.seksjonId === "utdanning")?.data || ""
             }
           />
           <BarnetilleggOppsummering
@@ -55,6 +61,7 @@ export default function OppsummeringView() {
               loaderData.find((seksjon) => seksjon.seksjonId === "barnetillegg")?.data || ""
             }
           />
+          //Reell arbeidssøker // Tilleggsopplysninger // Dokumentasjon
         </VStack>
       </VStack>
     </div>
