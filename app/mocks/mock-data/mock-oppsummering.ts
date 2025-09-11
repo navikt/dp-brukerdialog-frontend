@@ -17,7 +17,7 @@ export const mockOppsummering = [
   },
   {
     seksjonId: "egen-naring",
-    data: '{"gårdsbruk": [], "næringsvirksomheter": [], "driver-du-eget-gårdsbruk": "nei", "driver-du-egen-næringsvirksomhet": "nei"}',
+    data: '{"gårdsbruk": [{"organisasjonsnummer": "wqd", "hvem-eier-gårdsbruket": ["andre"], "hvilke-type-gårdsbruk-driver-du": ["dyr"], "hvor-mange-prosent-av-inntekten-går-til-deg": "wq", "hvordan-har-du-beregnet-antall-arbeidstimer-totalt": "wef", "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-valgt-år": "asf", "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-antall-timer": "dqw"}], "næringsvirksomheter": [{"organisasjonsnummer": "1232", "hvor-mange-timer-jobbet-per-uke-nå": "44", "hvor-mange-timer-jobbet-per-uke-før-arbeidstiden-ble-redusert": "123"}], "driver-du-eget-gårdsbruk": "ja", "driver-du-egen-næringsvirksomhet": "ja"}',
   },
   {
     seksjonId: "verneplikt",
@@ -26,5 +26,9 @@ export const mockOppsummering = [
   {
     seksjonId: "utdanning",
     data: '{"tar-utdanning-eller-opplæring": "nei", "avsluttet-utdanning-siste-6-måneder": "nei", "planlegger-åstarte-eller-fullføre-studier-samtidig": "nei"}',
+  },
+  {
+    seksjonId: "barnetillegg",
+    data: '{"barnFraPdl": [{"etternavn": "LEVEREGEL", "bostedsland": "NOR", "fødselsdato": "2013-12-11", "forsørgerDuBarnet": "nei", "fornavnOgMellomnavn": "AKSEPTABEL"}], "barnLagtManuelt": [{"etternavn": "Zimmer", "bostedsland": "ESP", "fødselsdato": "2025-09-23", "fornavnOgMellomnavn": "Hans Josef"}], "forsørgerDuBarnSomIkkeVisesHer": "ja"}',
   },
 ];

@@ -3,6 +3,7 @@ import DinSituasjonOppsummering from "~/seksjon/din-situasjon/oppsummering/DinSi
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import BostedslandOppsummering from "~/seksjon/bostedsland/oppsummering/BostedslandOppsummering";
+import BarnetilleggOppsummering from "~/seksjon/barnetillegg/oppsummering/BarnetilleggOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -42,6 +43,11 @@ export default function OppsummeringView() {
           />
           <BostedslandOppsummering
             seksjonsData={bostedslandOppsummeringData ? bostedslandOppsummeringData.data : ""}
+          />
+          <BarnetilleggOppsummering
+            seksjonsData={
+              loaderData.find((seksjon) => seksjon.seksjonId === "barnetillegg")?.data || ""
+            }
           />
         </VStack>
       </VStack>

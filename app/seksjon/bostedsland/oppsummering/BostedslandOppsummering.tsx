@@ -1,6 +1,6 @@
 import { bostedslandSpørsmål, BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import { findLandeNavn } from "~/constants";
+import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function BostedslandOppsummering({ seksjonsData }: { seksjonsData: string }) {
   if (seksjonsData === "") {
@@ -24,14 +24,7 @@ export default function BostedslandOppsummering({ seksjonsData }: { seksjonsData
             return (
               <FormSummary.Answer key={key}>
                 <FormSummary.Label>{spørsmål.label}</FormSummary.Label>
-                {spørsmål.type === "envalg" && (
-                  <FormSummary.Value>
-                    {spørsmål.options.find((s) => s.value === value)?.label}
-                  </FormSummary.Value>
-                )}
-                {spørsmål.type === "land" && (
-                  <FormSummary.Value>{findLandeNavn(value)}</FormSummary.Value>
-                )}
+                <OppsummeringsSvar spørsmål={spørsmål} svar={value} />
               </FormSummary.Answer>
             );
           }
