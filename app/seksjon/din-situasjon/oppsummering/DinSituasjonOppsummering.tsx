@@ -12,7 +12,7 @@ export default function DinSituasjonOppsummering({ seksjonsData }: DinSituasjonO
   if (seksjonsData === "") return;
 
   const dinSituasjonData: DinSituasjonSvar = JSON.parse(seksjonsData);
-  const dinSituasjonKeys = Object.entries(dinSituasjonData);
+  const dinSituasjonEntries = Object.entries(dinSituasjonData);
 
   return (
     <FormSummary>
@@ -20,11 +20,11 @@ export default function DinSituasjonOppsummering({ seksjonsData }: DinSituasjonO
         <FormSummary.Heading level="2">Din Situasjon</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
-        {!dinSituasjonKeys.length && (
+        {!dinSituasjonEntries.length && (
           <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
         )}
 
-        {dinSituasjonKeys.map(([key, value]) => {
+        {dinSituasjonEntries.map(([key, value]) => {
           const spørsmål = dinSituasjonSpørsmål.find((s) => s.id === key);
           if (spørsmål) {
             return (
