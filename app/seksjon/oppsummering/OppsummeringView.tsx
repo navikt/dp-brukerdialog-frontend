@@ -6,6 +6,7 @@ import BostedslandOppsummering from "~/seksjon/bostedsland/oppsummering/Bostedsl
 import BarnetilleggOppsummering from "~/seksjon/barnetillegg/oppsummering/BarnetilleggOppsummering";
 import VernepliktOppsummering from "~/seksjon/verneplikt/oppsummering/VernepliktOppsummering";
 import UtdanningOppsummering from "~/seksjon/utdanning/oppsummering/UtdanningOppsummering";
+import ReellArbeidssøkerOppsummering from "~/seksjon/reell-arbeidssøker/oppsummering/ReellArbeidssøkerOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -13,8 +14,7 @@ export default function OppsummeringView() {
   if (loaderData === undefined) {
     return <></>;
   }
-  console.log("typeof loaderData", Array.isArray(loaderData));
-  console.log("loaderData", loaderData);
+
   const dinSituasjonOppsumeringData = loaderData.find(
     (seksjon) => seksjon.seksjonId === "din-situasjon"
   );
@@ -61,7 +61,12 @@ export default function OppsummeringView() {
               loaderData.find((seksjon) => seksjon.seksjonId === "barnetillegg")?.data || ""
             }
           />
-          //Reell arbeidssøker // Tilleggsopplysninger // Dokumentasjon
+          <ReellArbeidssøkerOppsummering
+            seksjonsData={
+              loaderData.find((seksjon) => seksjon.seksjonId === "reell-arbeidsoker")?.data || ""
+            }
+          />
+          // Tilleggsopplysninger // Dokumentasjon
         </VStack>
       </VStack>
     </div>

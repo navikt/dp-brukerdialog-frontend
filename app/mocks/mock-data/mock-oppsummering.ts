@@ -28,6 +28,10 @@ export const mockOppsummering = [
     data: '{"tar-utdanning-eller-opplæring": "nei", "avsluttet-utdanning-siste-6-måneder": "nei", "planlegger-åstarte-eller-fullføre-studier-samtidig": "nei"}',
   },
   {
+    seksjonId: "reell-arbeidsoker",
+    data: '{"kan-du-jobbe-i-hele-norge": "nei", "kan-du-ta-alle-typer-arbeid": "ja", "kan-du-jobbe-både-heltid-og-deltid": "nei", "kan-ikke-jobbe-både-heltid-og-deltid-antall-timer": "12", "er-du-villig-til-å-bytte-yrke-eller-gå-ned-i-lønn": "ja", "kan-ikke-jobbe-i-hele-norge-situasjonen-som-gjelder-deg[0]": "kan-ikke-jobbe-i-hele-norge-eneansvar-eller-delt-ansvar-for-barn-under-18-år-med-spesielle-behov", "kan-ikke-jobbe-heltid-og-deltid-kort-om-sitasjonen":"Turnus", "kan-ikke-jobbe-heltid-og-deltid-situasjonen-som-gjelder-deg[0]": "kan-ikke-jobbe-heltid-og-deltid-redusert-helse", "kan-ikke-jobbe-i-hele-norge-kort-om-sitasjonen": "Har vondt i foten"}',
+  },
+  {
     seksjonId: "barnetillegg",
     data: '{"barnFraPdl": [{"etternavn": "LEVEREGEL", "bostedsland": "NOR", "fødselsdato": "2013-12-11", "forsørgerDuBarnet": "nei", "fornavnOgMellomnavn": "AKSEPTABEL"}], "barnLagtManuelt": [{"etternavn": "Zimmer", "bostedsland": "ESP", "fødselsdato": "2025-09-23", "fornavnOgMellomnavn": "Hans Josef"}], "forsørgerDuBarnSomIkkeVisesHer": "ja"}',
   },
