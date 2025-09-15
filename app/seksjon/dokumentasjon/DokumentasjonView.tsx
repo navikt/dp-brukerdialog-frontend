@@ -1,11 +1,10 @@
 import { Alert, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useState } from "react";
-import { useActionData, useLoaderData, useParams } from "react-router";
-import { action, loader } from "~/routes/$soknadId.utdanning";
+import { useActionData, useParams } from "react-router";
+import { action } from "~/routes/$soknadId.utdanning";
 
 export function DokumentasjonView() {
-  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { soknadId } = useParams();
 
@@ -13,6 +12,13 @@ export function DokumentasjonView() {
   const [lasterOpp, setLasterOpp] = useState(false);
 
   async function lastOppfil(newFiles: FileObject[]) {
+    //Todo:
+    // Håndter flere filer
+    // Håndter feil
+    // Håndter loading state
+    // Sette max filstørrelse
+    // Sette max antall filer
+
     const file = newFiles[0]?.file;
     if (!file) return;
 

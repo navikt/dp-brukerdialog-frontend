@@ -47,7 +47,6 @@ export const handlers = [
     return HttpResponse.json(mockProgress);
   }),
   http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, () => {
-    console.log("🔥 Mocking mellomlagring API called, returning mock response");
     return HttpResponse.json(mockMellomlagring);
   }),
 ];
