@@ -7,6 +7,7 @@ import BarnetilleggOppsummering from "~/seksjon/barnetillegg/oppsummering/Barnet
 import VernepliktOppsummering from "~/seksjon/verneplikt/oppsummering/VernepliktOppsummering";
 import UtdanningOppsummering from "~/seksjon/utdanning/oppsummering/UtdanningOppsummering";
 import ReellArbeidssøkerOppsummering from "~/seksjon/reell-arbeidssøker/oppsummering/ReellArbeidssøkerOppsummering";
+import TilleggOpplysningerOppsummering from "~/seksjon/tilleggsopplysninger/oppsummering/TilleggOpplysningerOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -64,6 +65,11 @@ export default function OppsummeringView() {
           <ReellArbeidssøkerOppsummering
             seksjonsData={
               loaderData.find((seksjon) => seksjon.seksjonId === "reell-arbeidsoker")?.data || ""
+            }
+          />
+          <TilleggOpplysningerOppsummering
+            seksjonsData={
+              loaderData.find((seksjon) => seksjon.seksjonId === "tilleggsopplysninger")?.data || ""
             }
           />
           // Tilleggsopplysninger // Dokumentasjon
