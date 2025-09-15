@@ -10,6 +10,7 @@ import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
 import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
+import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -44,5 +45,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
+  }),
+  http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, () => {
+    console.log("🔥 Mocking mellomlagring API called, returning mock response");
+    return HttpResponse.json(mockMellomlagring);
   }),
 ];

@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-interface IEnv {
+export interface IEnv {
   USE_MSW: string;
   APP_ENV: string;
   NAIS_CLUSTER_NAME: string;

@@ -1,9 +1,9 @@
 import { expiresIn, getToken, requestOboToken, validateToken } from "@navikt/oasis";
-import { getEnv } from "./env.utils";
+import { getEnv, IEnv } from "./env.utils";
 import { logger } from "./logger.utils";
 
-function handleLocalhostToken() {
-  const token = getEnv("DP_MELLOMLAGRING_TOKEN");
+function handleLocalhostToken(tokenName: keyof IEnv) {
+  const token = getEnv(tokenName);
   const useMsw = getEnv("USE_MSW") === "true";
 
   if (expiresIn(token) <= 0 && !useMsw) {
@@ -15,7 +15,7 @@ function handleLocalhostToken() {
 
 export async function getSoknadOrkestratorOboToken(request: Request) {
   if (getEnv("IS_LOCALHOST") === "true") {
-    handleLocalhostToken();
+    return handleLocalhostToken("DP_SOKNAD_ORKESTRATOR_TOKEN");
   }
 
   const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-soknad-orkestrator`;
@@ -24,7 +24,7 @@ export async function getSoknadOrkestratorOboToken(request: Request) {
 
 export async function getMellomlagringOboToken(request: Request) {
   if (getEnv("IS_LOCALHOST") === "true") {
-    handleLocalhostToken();
+    return handleLocalhostToken("DP_MELLOMLAGRING_TOKEN");
   }
 
   const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-mellomlagring`;
