@@ -35,4 +35,8 @@ export const mockOppsummering = [
     seksjonId: "barnetillegg",
     data: '{"barnFraPdl": [{"etternavn": "LEVEREGEL", "bostedsland": "NOR", "fødselsdato": "2013-12-11", "forsørgerDuBarnet": "nei", "fornavnOgMellomnavn": "AKSEPTABEL"}], "barnLagtManuelt": [{"etternavn": "Zimmer", "bostedsland": "ESP", "fødselsdato": "2025-09-23", "fornavnOgMellomnavn": "Hans Josef"}], "forsørgerDuBarnSomIkkeVisesHer": "ja"}',
   },
+  {
+    seksjonId: "tilleggsopplysninger",
+    data: '{"tilleggsopplysninger": "asdf", "har-tilleggsopplysninger": "ja"}',
+  },
 ];
