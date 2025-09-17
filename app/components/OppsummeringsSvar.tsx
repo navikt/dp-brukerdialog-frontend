@@ -13,6 +13,8 @@ export default function OppsummeringsSvar({
   switch (spørsmål.type) {
     case "kortTekst":
       return <FormSummary.Value>{svar}</FormSummary.Value>;
+    case "langTekst":
+      return <FormSummary.Value>{svar}</FormSummary.Value>;
     case "envalg":
       return (
         <FormSummary.Value>
