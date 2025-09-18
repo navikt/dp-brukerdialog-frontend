@@ -17,7 +17,7 @@ export const mockOppsummering = [
   },
   {
     seksjonId: "egen-naring",
-    data: '{"gårdsbruk": [{"organisasjonsnummer": "wqd", "hvem-eier-gårdsbruket": ["andre"], "hvilke-type-gårdsbruk-driver-du": ["dyr"], "hvor-mange-prosent-av-inntekten-går-til-deg": "wq", "hvordan-har-du-beregnet-antall-arbeidstimer-totalt": "wef", "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-valgt-år": "asf", "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-antall-timer": "dqw"}], "næringsvirksomheter": [{"organisasjonsnummer": "1232", "hvor-mange-timer-jobbet-per-uke-nå": "44", "hvor-mange-timer-jobbet-per-uke-før-arbeidstiden-ble-redusert": "123"}], "driver-du-eget-gårdsbruk": "ja", "driver-du-egen-næringsvirksomhet": "ja"}',
+    data: '{"driver-du-egen-næringsvirksomhet": "ja", "næringsvirksomheter": [{"organisasjonsnummer": "987654321","hvor-mange-timer-jobbet-per-uke-før-arbeidstiden-ble-redusert": "37","hvor-mange-timer-jobbet-per-uke-nå": "9"},{"organisasjonsnummer": "456123789","hvor-mange-timer-jobbet-per-uke-før-arbeidstiden-ble-redusert": "60","hvor-mange-timer-jobbet-per-uke-nå": "30"}],"driver-du-eget-gårdsbruk": "ja","gårdsbruk": [{"organisasjonsnummer": "123456789","hvilke-type-gårdsbruk-driver-du": ["dyr"],"hvem-eier-gårdsbruket": ["jeg"],"hvor-mange-prosent-av-inntekten-går-til-deg": "100","hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-valgt-år": "2024","hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-antall-timer": "350","hvordan-har-du-beregnet-antall-arbeidstimer-totalt": "En pluss en er to"}]}',
   },
   {
     seksjonId: "verneplikt",
