@@ -10,6 +10,7 @@ import ReellArbeidssøkerOppsummering from "~/seksjon/reell-arbeidssøker/oppsum
 import TilleggOpplysningerOppsummering from "~/seksjon/tilleggsopplysninger/oppsummering/TilleggOpplysningerOppsummering";
 import PersonaliaOppsummering from "~/seksjon/personalia/oppsummering/PersonaliaOppsummering";
 import EgenNæringOppsummering from "~/seksjon/egen-næring/oppsummering/EgenNæringOppsummering";
+import AnnenPengestøtteOppsummering from "~/seksjon/annen-pengestøtte/oppsummering/AnnenPengestøtteOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -52,7 +53,12 @@ export default function OppsummeringView() {
           <BostedslandOppsummering
             seksjonsData={bostedslandOppsummeringData ? bostedslandOppsummeringData.data : ""}
           />
-          // Arbeidsforhold // Annen pengestøtte
+          // Arbeidsforhold
+          <AnnenPengestøtteOppsummering
+            seksjonsData={
+              loaderData.find((seksjon) => seksjon.seksjonId === "annen-pengestotte")?.data || ""
+            }
+          />
           <EgenNæringOppsummering
             seksjonsData={
               loaderData.find((seksjon) => seksjon.seksjonId === "egen-naring")?.data || ""

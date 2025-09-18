@@ -24,6 +24,8 @@ export default function OppsummeringsSvar({
     case "land":
       return <FormSummary.Value>{findLandeNavn(svar)}</FormSummary.Value>;
     case "dato":
+    case "periodeFra":
+    case "periodeTil":
       return <FormSummary.Value>{formaterNorskDato(new Date(svar))}</FormSummary.Value>;
     default:
       return <></>;
