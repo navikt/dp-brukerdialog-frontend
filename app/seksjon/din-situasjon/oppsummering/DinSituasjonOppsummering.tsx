@@ -5,10 +5,7 @@ import {
 } from "~/seksjon/din-situasjon/din-situasjon.spørsmål";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
-type DinSituasjonOppsummeringProps = {
-  seksjonsData: string;
-};
-export default function DinSituasjonOppsummering({ seksjonsData }: DinSituasjonOppsummeringProps) {
+export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const dinSituasjonData: DinSituasjonSvar = JSON.parse(seksjonsData);
@@ -18,6 +15,7 @@ export default function DinSituasjonOppsummering({ seksjonsData }: DinSituasjonO
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Din Situasjon</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!dinSituasjonEntries.length && (

@@ -6,7 +6,7 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
 
-export default function ReellArbeidssøkerOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const reellArbeidssøkerData: ReellArbeidssøkerSvar = JSON.parse(seksjonsData);
@@ -94,6 +94,7 @@ export default function ReellArbeidssøkerOppsummering({ seksjonsData }: { seksj
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Reell arbeidssøker</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {reellArbeidssøkerSpørsmål.map((spørsmål) => {

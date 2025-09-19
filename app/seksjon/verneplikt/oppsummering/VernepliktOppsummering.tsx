@@ -2,7 +2,7 @@ import { vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/verne
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
-export default function VernepliktOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const vernepliktData: VernepliktSvar = JSON.parse(seksjonsData);
@@ -15,8 +15,8 @@ export default function VernepliktOppsummering({ seksjonsData }: { seksjonsData:
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Verneplikt</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
-
       <FormSummary.Answers>
         <FormSummary.Answer>
           <FormSummary.Label>{spørsmål.label}</FormSummary.Label>

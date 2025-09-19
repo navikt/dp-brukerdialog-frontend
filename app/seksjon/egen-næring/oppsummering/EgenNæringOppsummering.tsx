@@ -12,7 +12,7 @@ import {
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
-export default function EgenNæringOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const egenNæringSvar: EgenNæringResponse = JSON.parse(seksjonsData);
@@ -32,6 +32,7 @@ export default function EgenNæringOppsummering({ seksjonsData }: { seksjonsData
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Egen næring</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
