@@ -5,6 +5,7 @@ import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 
 type OppsummeringSeksjon = {
+  seksjonsUrl: string;
   seksjonId: string;
   data: string;
 };
@@ -20,6 +21,11 @@ export async function loader({
 
   if (response.status === 200) {
     oppsummering = await response.json();
+    oppsummering = oppsummering.map((seksjon: any) => ({
+      seksjonsUrl: `/${params.soknadId}/${seksjon.seksjonId}`,
+      seksjonId: seksjon.seksjonId,
+      data: seksjon.data,
+    }));
   }
 
   const personaliaResponse = await hentPersonalia(request);
@@ -42,6 +48,7 @@ export async function loader({
   oppsummering = [
     ...oppsummering,
     {
+      seksjonsUrl: `/${params.søknadId}/personalia`,
       seksjonId: "personalia",
       data: JSON.stringify(personalia),
     },

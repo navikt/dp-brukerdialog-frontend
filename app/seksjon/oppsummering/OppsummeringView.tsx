@@ -11,6 +11,7 @@ import TilleggOpplysningerOppsummering from "~/seksjon/tilleggsopplysninger/opps
 import PersonaliaOppsummering from "~/seksjon/personalia/oppsummering/PersonaliaOppsummering";
 import EgenNæringOppsummering from "~/seksjon/egen-næring/oppsummering/EgenNæringOppsummering";
 import AnnenPengestøtteOppsummering from "~/seksjon/annen-pengestøtte/oppsummering/AnnenPengestøtteOppsummering";
+import { stegerISøknaden } from "~/routes/$soknadId";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -19,12 +20,44 @@ export default function OppsummeringView() {
     return <></>;
   }
 
-  const dinSituasjonOppsumeringData = loaderData.find(
-    (seksjon) => seksjon.seksjonId === "din-situasjon"
-  );
-  const bostedslandOppsummeringData = loaderData.find(
-    (seksjon) => seksjon.seksjonId === "bostedsland"
-  );
+  function renderOppsummeringsSeksjon(
+    seksjonsId: string,
+    seksjonsData: string,
+    seksjonsUrl: string
+  ) {
+    switch (seksjonsId) {
+      case "din-situasjon":
+        return <DinSituasjonOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      case "personalia":
+        return <PersonaliaOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      case "bostedsland":
+        return <BostedslandOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      // Arbeidsforhold
+      case "annen-pengestotte":
+        return (
+          <AnnenPengestøtteOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />
+        );
+      case "egen-naring":
+        return <EgenNæringOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      case "verneplikt":
+        return <VernepliktOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      case "utdanning":
+        return <UtdanningOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      case "barnetillegg":
+        return <BarnetilleggOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
+      case "reell-arbeidsoker":
+        return (
+          <ReellArbeidssøkerOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />
+        );
+      case "tilleggsopplysninger":
+        return (
+          <TilleggOpplysningerOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />
+        );
+      // Dokumentasjon
+      default:
+        return <></>;
+    }
+  }
 
   return (
     <div className="innhold">
@@ -42,54 +75,15 @@ export default function OppsummeringView() {
             videre. Der kan du også ettersende dokumentasjon som mangler.
           </BodyLong>
           <h2>Dine svar</h2>
-          <DinSituasjonOppsummering
-            seksjonsData={dinSituasjonOppsumeringData ? dinSituasjonOppsumeringData.data : ""}
-          />
-          <PersonaliaOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "personalia")?.data || ""
-            }
-          />
-          <BostedslandOppsummering
-            seksjonsData={bostedslandOppsummeringData ? bostedslandOppsummeringData.data : ""}
-          />
-          // Arbeidsforhold
-          <AnnenPengestøtteOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "annen-pengestotte")?.data || ""
-            }
-          />
-          <EgenNæringOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "egen-naring")?.data || ""
-            }
-          />
-          <VernepliktOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "verneplikt")?.data || ""
-            }
-          />
-          <UtdanningOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "utdanning")?.data || ""
-            }
-          />
-          <BarnetilleggOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "barnetillegg")?.data || ""
-            }
-          />
-          <ReellArbeidssøkerOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "reell-arbeidsoker")?.data || ""
-            }
-          />
-          <TilleggOpplysningerOppsummering
-            seksjonsData={
-              loaderData.find((seksjon) => seksjon.seksjonId === "tilleggsopplysninger")?.data || ""
-            }
-          />
-          // Dokumentasjon
+          {stegerISøknaden.map((seksjon) => {
+            const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
+            return renderOppsummeringsSeksjon(
+              seksjon.path,
+              seksjonsData?.data ?? "",
+              seksjonsData?.seksjonsUrl ?? ""
+            );
+            return <></>;
+          })}
         </VStack>
       </VStack>
     </div>

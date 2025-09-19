@@ -16,7 +16,7 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
-export default function AnnenPengestøtteOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const data: AnnenPengestøtteResponse = JSON.parse(seksjonsData);
@@ -48,6 +48,7 @@ export default function AnnenPengestøtteOppsummering({ seksjonsData }: { seksjo
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Annen pengestøtte</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>

@@ -2,7 +2,7 @@ import { bostedslandSpørsmål, BostedslandSvar } from "~/seksjon/bostedsland/bo
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
-export default function BostedslandOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") {
     return <></>;
   }
@@ -14,6 +14,7 @@ export default function BostedslandOppsummering({ seksjonsData }: { seksjonsData
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Bostedsland</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!entries.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}

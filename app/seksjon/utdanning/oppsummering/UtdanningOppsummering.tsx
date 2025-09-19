@@ -2,7 +2,7 @@ import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/utdannin
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
-export default function UtdanningOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const utdanningData: UtdanningSvar = JSON.parse(seksjonsData);
@@ -12,6 +12,7 @@ export default function UtdanningOppsummering({ seksjonsData }: { seksjonsData: 
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Utdanning</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!utdanningEntries.length && (

@@ -7,9 +7,8 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function TilleggOpplysningerOppsummering({
   seksjonsData,
-}: {
-  seksjonsData: string;
-}) {
+  seksjonsUrl,
+}: SeksjonProps) {
   if (seksjonsData === "") return;
 
   const tilleggOpplysningerData: TilleggsopplysningerSvar = JSON.parse(seksjonsData);
@@ -19,6 +18,7 @@ export default function TilleggOpplysningerOppsummering({
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Tilleggsopplysninger</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {tilleggsopplysningerSpørsmål.map((spørsmål) => {

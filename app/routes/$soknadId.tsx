@@ -18,7 +18,7 @@ type StegResponse = {
   seksjoner: string[];
 };
 
-const stegerISøknaden: Steg[] = [
+export const stegerISøknaden: Steg[] = [
   { tittel: "Din situasjon", path: "din-situasjon" },
   { tittel: "Personalia", path: "personalia" },
   { tittel: "Bostedsland", path: "bostedsland" },

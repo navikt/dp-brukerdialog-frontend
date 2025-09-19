@@ -7,7 +7,7 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 
-export default function BarnetilleggOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (seksjonsData === "") {
     return <></>;
   }
@@ -35,6 +35,7 @@ export default function BarnetilleggOppsummering({ seksjonsData }: { seksjonsDat
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Barnetillegg</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!entries.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}

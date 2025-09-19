@@ -8,12 +8,13 @@ type PersonaliaType = {
   folkeregistrertPoststed: string;
 };
 
-export default function PersonaliaOppsummering({ seksjonsData }: { seksjonsData: string }) {
+export default function PersonaliaOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   const personalia: PersonaliaType = JSON.parse(seksjonsData);
   return (
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Personalia</FormSummary.Heading>
+        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
