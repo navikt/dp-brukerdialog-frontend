@@ -81,6 +81,11 @@
   border: 0;
 }
 
+/* Overskriver stilene til Alert-komponenten */
+.navds-alert p.navds-body-long {
+  margin: 0;
+}
+
 /* Overskriver stilene til ExpansionCard-komponenten */
 :where(.navds-expansioncard__header):hover + .navds-expansioncard__content,
 .navds-expansioncard__header:hover {

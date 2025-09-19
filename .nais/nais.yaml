@@ -68,6 +68,7 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
         - application: dp-soknad-orkestrator
+        - application: dp-mellomlagring
   idporten:
     enabled: true
     sidecar:
