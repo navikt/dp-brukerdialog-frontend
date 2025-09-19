@@ -38,11 +38,11 @@ export const barnFraPdlSpørsmål: EnvalgSpørsmål = {
   ],
 };
 
-export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
+export const fornavnOgMellomnavn = "fornavn-og-mellomnavn";
 export const etternavn = "etternavn";
 export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";
-export const lesMerOmBarnetBosted = "lesMerOmBarnetBosted";
+export const lesMerOmBarnetBosted = "les-mer-om-barnet-bosted";
 
 export type LeggTilBarnManueltSvar = {
   [fornavnOgMellomnavn]?: string;
