@@ -15,8 +15,11 @@ export function DokumentasjonView() {
   // Todo,
   // Sette typer av filer vi tillater
   // Sette begrensninger for total filstørrelse
-  // Sette totalt 5 filer
-  // Her sette vi totalt, ikke per enkelt fil
+  // Håntere sletting
+  // Håndtere retry ved feil
+  // Finn ut hvordan vi skal hente dokumentkravId
+  // Sette begrensning på antall filer
+  // Finn ut filstørreslse begrensning, om det er totalt eller per fil
 
   // F.eks fra Søknadsdialog
   // export const ALLOWED_FILE_FORMATS = ["image/png", "image/jpg", "image/jpeg", "application/pdf"];
