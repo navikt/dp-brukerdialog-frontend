@@ -12,6 +12,16 @@ export function DokumentasjonView() {
   const [filOpplastingsFeil, setFilOpplastingsFeil] = useState<Record<string, string>>({});
   const [opplastere, setOpplastere] = useState<string[]>([]);
 
+  // Todo,
+  // Sette typer av filer vi tillater
+  // Sette begrensninger for total filstørrelse
+  // Sette totalt 5 filer
+  // Her sette vi totalt, ikke per enkelt fil
+
+  // F.eks fra Søknadsdialog
+  // export const ALLOWED_FILE_FORMATS = ["image/png", "image/jpg", "image/jpeg", "application/pdf"];
+  // export const MAX_TOTAL_DOKUMENTKRAV_FILE_SIZE = 52428800;
+
   async function lastOppfiler(filer: FileObject[]) {
     setFiler(filer);
     setOpplastere(filer.map((f) => f.file.name));
