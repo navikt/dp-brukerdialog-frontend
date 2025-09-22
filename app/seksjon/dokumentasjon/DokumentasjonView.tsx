@@ -25,7 +25,7 @@ export function DokumentasjonView() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch(`/api/dokument/${soknadId}/123`, {
+    const response = await fetch(`/api/dokument/${soknadId}/1014.1`, {
       method: "POST",
       body: formData,
     });

@@ -9,8 +9,6 @@ export async function action({ params, request }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
   invariant(params.dokumentkravId, "Dokumentkrav ID er påkrevd");
 
-  console.log("Lagrer fil...");
-
   const callId = uuidV4();
   const søknadId = params.soknadId as string;
   const dokumentkravId = params.dokumentkravId as string;
@@ -35,10 +33,6 @@ export async function action({ params, request }: ActionFunctionArgs) {
       body: requestData,
     });
 
-    const responseData = await response.json();
-
-    console.log(responseData);
-
-    return responseData;
+    return await response.json();
   } catch (error) {}
 }
