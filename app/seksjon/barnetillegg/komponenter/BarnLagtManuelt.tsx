@@ -1,6 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import { findLandeNavn } from "~/constants";
+import { findLandNavn } from "~/constants";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
@@ -32,7 +32,7 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
       )}
       {barn.bostedsland && (
         <BodyShort size="small" spacing>
-          BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
+          BOR I {findLandNavn(barn.bostedsland).toUpperCase()}
         </BodyShort>
       )}
 
