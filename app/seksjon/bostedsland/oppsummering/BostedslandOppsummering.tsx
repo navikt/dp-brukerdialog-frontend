@@ -3,12 +3,10 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") {
-    return <></>;
-  }
+  if (!seksjonsData) return <></>;
 
   const bostedslandSvar: BostedslandSvar = JSON.parse(seksjonsData);
-  const entries = Object.entries(bostedslandSvar);
+  const seksjonSvar = Object.entries(bostedslandSvar);
 
   return (
     <FormSummary>
@@ -16,9 +14,9 @@ export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: S
         <FormSummary.Heading level="2">Bostedsland</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
-        {!entries.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
+        {!seksjonSvar.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
 
-        {entries.map(([key, value]) => {
+        {seksjonSvar.map(([key, value]) => {
           const spørsmål = bostedslandSpørsmål.find((s) => s.id === key);
           if (spørsmål) {
             return (

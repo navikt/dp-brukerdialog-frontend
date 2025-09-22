@@ -17,7 +17,7 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
 
 export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const data: AnnenPengestøtteResponse = JSON.parse(seksjonsData);
 

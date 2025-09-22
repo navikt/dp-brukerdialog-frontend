@@ -3,7 +3,7 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const vernepliktData: VernepliktSvar = JSON.parse(seksjonsData);
   if (vernepliktData["avtjent-verneplikt"] === undefined) return;

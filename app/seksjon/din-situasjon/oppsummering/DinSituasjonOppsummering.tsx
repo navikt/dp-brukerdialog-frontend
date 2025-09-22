@@ -6,7 +6,7 @@ import {
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const dinSituasjonData: DinSituasjonSvar = JSON.parse(seksjonsData);
   const dinSituasjonEntries = Object.entries(dinSituasjonData);

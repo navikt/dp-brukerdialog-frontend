@@ -13,7 +13,7 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const egenNæringSvar: EgenNæringResponse = JSON.parse(seksjonsData);
 

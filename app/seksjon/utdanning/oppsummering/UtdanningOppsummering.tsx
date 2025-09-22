@@ -3,7 +3,7 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const utdanningData: UtdanningSvar = JSON.parse(seksjonsData);
   const utdanningEntries = Object.entries(utdanningData);

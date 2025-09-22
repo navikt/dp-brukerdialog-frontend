@@ -1,4 +1,6 @@
 import {
+  kanIkkeJobbeIHeleNorgeKortOmSituasjonen,
+  kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
   reellArbeidssøkerSpørsmål,
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
@@ -7,28 +9,31 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
 
 export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const reellArbeidssøkerData: ReellArbeidssøkerSvar = JSON.parse(seksjonsData);
   const reellArbeidssøkerEntries = Object.entries(reellArbeidssøkerData);
 
   function kanIkkeJobbeIHeleNorge(spørsmål: FlervalgSpørsmål, svar: string) {
     const kanIkkeJobbeIHeleNorgeSpørsmål: FlervalgSpørsmål = reellArbeidssøkerSpørsmål.find(
-      (s) => s.id === "kan-ikke-jobbe-i-hele-norge-situasjonen-som-gjelder-deg"
+      (s) => s.id === kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg
     ) as FlervalgSpørsmål;
 
     const kanIkkeJobbeIHeleNorgeOmSituasjonen = reellArbeidssøkerEntries.find(
-      (entry) => entry[0] === "kan-ikke-jobbe-i-hele-norge-kort-om-sitasjonen"
+      (entry) => entry[0] === kanIkkeJobbeIHeleNorgeKortOmSituasjonen
     );
 
-    const kanIkkeJobbeINorgeGrunn = Object.entries(reellArbeidssøkerData)
-      .filter(([key]) => key.startsWith("kan-ikke-jobbe-i-hele-norge-situasjonen-som-gjelder-deg"))
-      .map(([, value]) => {
-        return (
-          kanIkkeJobbeIHeleNorgeSpørsmål?.options?.find((o) => o.value === value)?.label || value
-        );
-      })
-      .join(", ");
+    function hentKanIkkeJobbeINorgeGrunnLabelTekst() {
+      return Object.entries(reellArbeidssøkerData)
+        .filter(([key]) => key.startsWith(kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg))
+        .map(([, value]) => {
+          return (
+            kanIkkeJobbeIHeleNorgeSpørsmål?.options?.find((o) => o.value === value)?.label || value
+          );
+        })
+        .join(", ");
+    }
+
     return (
       <>
         <FormSummary.Answer key={spørsmål.id}>
@@ -37,7 +42,7 @@ export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsU
         </FormSummary.Answer>
         <FormSummary.Answer key={spørsmål.id}>
           <FormSummary.Label>Velg situasjon som gjelder deg</FormSummary.Label>
-          <FormSummary.Value>{kanIkkeJobbeINorgeGrunn}</FormSummary.Value>
+          <FormSummary.Value>{hentKanIkkeJobbeINorgeGrunnLabelTekst()}</FormSummary.Value>
         </FormSummary.Answer>
         {kanIkkeJobbeIHeleNorgeOmSituasjonen && (
           <FormSummary.Answer key={spørsmål.id}>

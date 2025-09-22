@@ -8,9 +8,7 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 
 export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (seksjonsData === "") {
-    return <></>;
-  }
+  if (!seksjonsData) return <></>;
 
   const barnetilleggSvar: BarnetilleggResponse = JSON.parse(seksjonsData);
   const entries = Object.entries(barnetilleggSvar);

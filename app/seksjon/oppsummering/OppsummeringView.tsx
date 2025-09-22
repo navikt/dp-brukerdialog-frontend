@@ -16,15 +16,16 @@ import { stegerISøknaden } from "~/routes/$soknadId";
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
 
-  if (loaderData === undefined) {
+  if (!loaderData) {
     return <></>;
   }
 
   function renderOppsummeringsSeksjon(
     seksjonsId: string,
-    seksjonsData: string,
-    seksjonsUrl: string
+    seksjonsUrl: string,
+    seksjonsData: string
   ) {
+    if (!seksjonsData) return <></>;
     switch (seksjonsId) {
       case "din-situasjon":
         return <DinSituasjonOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
@@ -77,12 +78,12 @@ export default function OppsummeringView() {
           <h2>Dine svar</h2>
           {stegerISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
+            if (!seksjonsData) return <></>;
             return renderOppsummeringsSeksjon(
               seksjon.path,
-              seksjonsData?.data ?? "",
-              seksjonsData?.seksjonsUrl ?? ""
+              seksjonsData.seksjonsUrl,
+              seksjonsData.data
             );
-            return <></>;
           })}
         </VStack>
       </VStack>

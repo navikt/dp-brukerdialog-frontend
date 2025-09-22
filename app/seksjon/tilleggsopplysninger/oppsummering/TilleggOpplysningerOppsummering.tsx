@@ -9,7 +9,7 @@ export default function TilleggOpplysningerOppsummering({
   seksjonsData,
   seksjonsUrl,
 }: SeksjonProps) {
-  if (seksjonsData === "") return;
+  if (!seksjonsData) return <></>;
 
   const tilleggOpplysningerData: TilleggsopplysningerSvar = JSON.parse(seksjonsData);
   const tilleggOpplysningerEntries = Object.entries(tilleggOpplysningerData);
