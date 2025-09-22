@@ -48,7 +48,6 @@ export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUr
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Annen pengestøtte</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
@@ -131,6 +130,9 @@ export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUr
           </FormSummary.Answer>
         )}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

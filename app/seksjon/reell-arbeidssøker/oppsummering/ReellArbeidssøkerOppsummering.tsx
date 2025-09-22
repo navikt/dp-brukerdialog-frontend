@@ -94,7 +94,6 @@ export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsU
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Reell arbeidssøker</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {reellArbeidssøkerSpørsmål.map((spørsmål) => {
@@ -121,6 +120,9 @@ export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsU
           );
         })}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

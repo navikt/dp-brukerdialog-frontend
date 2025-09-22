@@ -48,7 +48,7 @@ export async function loader({
   oppsummering = [
     ...oppsummering,
     {
-      seksjonsUrl: `/${params.søknadId}/personalia`,
+      seksjonsUrl: `/${params.soknadId}/personalia`,
       seksjonId: "personalia",
       data: JSON.stringify(personalia),
     },

@@ -12,7 +12,6 @@ export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: Sek
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Utdanning</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!utdanningEntries.length && (
@@ -30,6 +29,9 @@ export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: Sek
           }
         })}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

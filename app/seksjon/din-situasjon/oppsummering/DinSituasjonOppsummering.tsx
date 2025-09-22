@@ -15,7 +15,6 @@ export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: 
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Din Situasjon</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!dinSituasjonEntries.length && (
@@ -34,6 +33,9 @@ export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: 
           }
         })}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

@@ -15,7 +15,6 @@ export default function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: Se
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Verneplikt</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
@@ -23,6 +22,9 @@ export default function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: Se
           <OppsummeringsSvar spørsmål={spørsmål} svar={vernepliktData["avtjent-verneplikt"]} />
         </FormSummary.Answer>
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

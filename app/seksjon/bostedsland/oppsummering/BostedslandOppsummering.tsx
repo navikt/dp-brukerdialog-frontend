@@ -14,7 +14,6 @@ export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: S
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Bostedsland</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {!entries.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
@@ -31,6 +30,9 @@ export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: S
           }
         })}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

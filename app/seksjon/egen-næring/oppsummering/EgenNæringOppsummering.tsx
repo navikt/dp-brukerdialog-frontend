@@ -32,7 +32,6 @@ export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: S
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Egen næring</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
@@ -97,6 +96,9 @@ export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: S
             </FormSummary.Answer>
           ))}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }

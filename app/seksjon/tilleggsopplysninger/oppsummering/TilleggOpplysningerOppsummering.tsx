@@ -18,7 +18,6 @@ export default function TilleggOpplysningerOppsummering({
     <FormSummary>
       <FormSummary.Header>
         <FormSummary.Heading level="2">Tilleggsopplysninger</FormSummary.Heading>
-        <FormSummary.EditLink href={seksjonsUrl} />
       </FormSummary.Header>
       <FormSummary.Answers>
         {tilleggsopplysningerSpørsmål.map((spørsmål) => {
@@ -34,6 +33,9 @@ export default function TilleggOpplysningerOppsummering({
           }
         })}
       </FormSummary.Answers>
+      <FormSummary.Footer>
+        <FormSummary.EditLink href={seksjonsUrl} />
+      </FormSummary.Footer>
     </FormSummary>
   );
 }
