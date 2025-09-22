@@ -1,7 +1,7 @@
 import { EnvalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const forsørgerDuBarnet = "forsørgerDuBarnet";
-export const forsørgerDuBarnSomIkkeVisesHer = "forsørgerDuBarnSomIkkeVisesHer";
+export const forsørgerDuBarnSomIkkeVisesHer = "forsørger-du-barn-som-ikke-vises-her";
 export const payload = "payload";
 
 export type Barn = {

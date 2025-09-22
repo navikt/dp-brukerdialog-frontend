@@ -1,6 +1,5 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const pengestøtteFraAndreEøsLand = "pengestøtte-fra-andre-eøs-land";
 export const harMottattEllerSøktOmPengestøtteFraAndreEøsLand = "har-mottatt-eller-søkt-om-pengestøtte-fra-andre-eøs-land";
 export const hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand =
   "hvilken-pengestøtte-har-du-mottatt-eller-søkt-om-fra-andre-eøs-land";

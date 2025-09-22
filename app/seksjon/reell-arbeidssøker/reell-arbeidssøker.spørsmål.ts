@@ -22,7 +22,6 @@ export const kanIkkeJobbeBådeHeltidOgDeltidAntallTimer =
   "kan-ikke-jobbe-både-heltid-og-deltid-antall-timer";
 export const kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen =
   "kan-ikke-jobbe-heltid-og-deltid-kort-om-sitasjonen";
-
 export const kanDuJobbeIHeleNorge = "kan-du-jobbe-i-hele-norge";
 export const kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg =
   "kan-ikke-jobbe-i-hele-norge-situasjonen-som-gjelder-deg";
@@ -40,7 +39,6 @@ export const kanIkkeJobbeIHeleNorgeHarFylt60 = "kan-ikke-jobbe-i-hele-norge-har-
 export const kanIkkeJobbeIHeleNorgeAnnenSituasjon = "kan-ikke-jobbe-i-hele-norge-annen-situasjon";
 export const kanIkkeJobbeIHeleNorgeKortOmSituasjonen =
   "kan-ikke-jobbe-i-hele-norge-kort-om-sitasjonen";
-
 export const kanDuTaAlleTyperArbeid = "kan-du-ta-alle-typer-arbeid";
 export const erDuVilligTilÅBytteYrkeEllerGåNedILønn =
   "er-du-villig-til-å-bytte-yrke-eller-gå-ned-i-lønn";
