@@ -32,6 +32,6 @@ export default function OppsummeringsSvar({
     case "periodeTil":
       return <FormSummary.Value>{formaterNorskDato(new Date(svar))}</FormSummary.Value>;
     default:
-      return <></>;
+      return <>Ukjent spørsmålstype</>;
   }
 }
