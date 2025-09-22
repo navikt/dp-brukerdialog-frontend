@@ -4,7 +4,11 @@ import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/barnetillegg.context";
-import { Barn, BarnetilleggSvar } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
+import {
+  Barn,
+  BarnetilleggSvar,
+  forsørgerDuBarnSomIkkeVisesHer,
+} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { BarnetilleggView } from "~/seksjon/barnetillegg/BarnetilleggView";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
@@ -28,7 +32,7 @@ export async function loader({
     }
 
     return {
-      forsørgerDuBarnSomIkkeVisesHer: undefined,
+      [forsørgerDuBarnSomIkkeVisesHer]: undefined,
       barnLagtManuelt: [],
       barnFraPdl: await barnFraPdlResponse.json(),
     };
