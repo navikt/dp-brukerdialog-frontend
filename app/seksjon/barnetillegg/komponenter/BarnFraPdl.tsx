@@ -3,7 +3,7 @@ import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
 import { Envalg } from "~/components/spørsmål/Envalg";
-import { findLandeNavn } from "~/constants";
+import { findLandNavn } from "~/constants";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
@@ -67,7 +67,7 @@ export function BarnFraPdl({ barn, barnIndex }: IProps) {
       )}
       {barn.bostedsland && (
         <BodyShort size="small" spacing>
-          BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
+          BOR I {findLandNavn(barn.bostedsland).toUpperCase()}
         </BodyShort>
       )}
 

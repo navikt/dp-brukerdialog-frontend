@@ -46,7 +46,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "barnetillegg";
-  const nesteSeksjonId = "personalia";
+  const nesteSeksjonId = "reell-arbeidssoker";
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
