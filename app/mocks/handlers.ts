@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 import { getEnv } from "~/utils/env.utils";
 import { mockBostedsland } from "./mock-data/mock-bostedsland";
 import { mockDinSituasjon } from "./mock-data/mock-din-situasjon";
@@ -46,7 +46,17 @@ export const handlers = [
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
   }),
-  http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, () => {
+  http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, async () => {
+    // Simulerer nettverksforsinkelse
+    await delay(1000);
+
+    // Returnerer 500 for å simulere feil
+    // return new HttpResponse("Feil ved opplasting", {
+    //   status: 500,
+    //   statusText: "Feil ved opplasting",
+    // });
+
+    // Returnerer 200 for å simulere suksess
     return HttpResponse.json(mockMellomlagring);
   }),
 ];

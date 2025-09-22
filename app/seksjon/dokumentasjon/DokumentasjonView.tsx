@@ -9,34 +9,42 @@ export function DokumentasjonView() {
   const { soknadId } = useParams();
 
   const [filer, setFiler] = useState<FileObject[]>([]);
-  const [lasterOpp, setLasterOpp] = useState(false);
+  const [filOpplastingsFeil, setFilOpplastingsFeil] = useState<Record<string, string>>({});
+  const [opplastere, setOpplastere] = useState<string[]>([]);
 
-  async function lastOppfil(newFiles: FileObject[]) {
-    //Todo:
-    // Håndter flere filer
-    // Håndter feil
-    // Håndter loading state
-    // Sette max filstørrelse
-    // Sette max antall filer
+  async function lastOppfiler(filer: FileObject[]) {
+    setFiler(filer);
+    setOpplastere(filer.map((f) => f.file.name));
+    setFilOpplastingsFeil({});
 
-    const file = newFiles[0]?.file;
-    if (!file) return;
+    try {
+      await Promise.all(
+        filer.map(async (fileObj) => {
+          const formData = new FormData();
+          formData.append("file", fileObj.file);
 
-    const formData = new FormData();
-    formData.append("file", file);
+          const response = await fetch(`/api/dokument/${soknadId}/1014.1`, {
+            method: "POST",
+            body: formData,
+          });
 
-    const response = await fetch(`/api/dokument/${soknadId}/1014.1`, {
-      method: "POST",
-      body: formData,
-    });
+          if (!response.ok) {
+            setFilOpplastingsFeil((prev) => ({
+              ...prev,
+              [fileObj.file.name]: response.statusText || "Feil ved opplasting",
+            }));
 
-    console.log(await response.json());
+            return;
+          }
 
-    setTimeout(() => {
-      setLasterOpp(false);
-    }, 1000);
-
-    setFiler(newFiles);
+          await response.json();
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setOpplastere([]);
+    }
   }
 
   return (
@@ -49,17 +57,18 @@ export function DokumentasjonView() {
               label="Last opp dokument"
               fileLimit={{ max: 5, current: filer.length }}
               accept={".png, .jpg, .jpeg, .pdf"}
-              onSelect={(newFiles) => lastOppfil(newFiles)}
+              onSelect={(newFiles) => lastOppfiler(newFiles)}
             />
           </form>
           {filer.map((file) => (
             <FileUploadItem
               key={file.file.name}
               file={file.file}
-              status={lasterOpp ? "uploading" : "idle"}
+              status={opplastere.includes(file.file.name) ? "uploading" : "idle"}
+              error={filOpplastingsFeil[file.file.name]}
               button={{
                 action: "delete",
-                onClick: () => setFiler([]),
+                onClick: () => setFiler(filer.filter((f) => f.file.name !== file.file.name)),
               }}
             />
           ))}
