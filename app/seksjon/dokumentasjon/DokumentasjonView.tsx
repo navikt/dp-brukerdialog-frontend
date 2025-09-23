@@ -3,11 +3,16 @@ import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload"
 import { useState } from "react";
 import { useActionData, useParams } from "react-router";
 import { action } from "~/routes/$soknadId.utdanning";
-import { MAX_ANTALL_FILER, TILATT_FIL_TYPER } from "~/utils/dokument.utils";
+import {
+  hentMaksFilStørrelseMB,
+  MAX_ANTALL_FILER,
+  MAX_FIL_STØRRELSE,
+  TILATT_FIL_TYPER,
+} from "~/utils/dokument.utils";
 
 type FilOpplastingError = {
   filNavn: string;
-  typeFeil: "UGYLDIG_FORMAT" | "UGYLDIG_STØRRELSE" | "TEKSNISK_FEIL";
+  typeFeil: "FIL_FOR_STOR" | "TEKSNISK_FEIL";
 };
 
 export function DokumentasjonView() {
@@ -33,6 +38,23 @@ export function DokumentasjonView() {
     setFiler(filer);
     setOpplastere(filer.map((f) => f.file.name));
     setFilOpplastingsFeil([]);
+
+    let harFeil = false;
+
+    filer.forEach((fileObj) => {
+      if (fileObj.file.size > MAX_FIL_STØRRELSE) {
+        setFilOpplastingsFeil((prev) => [
+          ...prev.filter((err) => err.filNavn !== fileObj.file.name),
+          { filNavn: fileObj.file.name, typeFeil: "FIL_FOR_STOR" },
+        ]);
+        harFeil = true;
+      }
+    });
+
+    if (harFeil) {
+      setOpplastere([]); // Ikke last opp filer med feil
+      return;
+    }
 
     try {
       await Promise.all(
@@ -63,18 +85,6 @@ export function DokumentasjonView() {
     }
   }
 
-  async function slettFil(filnavn: string) {
-    try {
-      const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
-        method: "POST",
-        // body: formData,
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-    }
-  }
-
   function hentFilFeilmelding(filnavn: string) {
     const harEnFeil = filOpplastingsFeil.find((err) => err.filNavn === filnavn)?.typeFeil;
 
@@ -83,10 +93,8 @@ export function DokumentasjonView() {
     }
 
     switch (harEnFeil) {
-      case "UGYLDIG_FORMAT":
-        return "Filformatet er ikke støttet.";
-      case "UGYLDIG_STØRRELSE":
-        return "Filstørrelsen overskrider grensen.";
+      case "FIL_FOR_STOR":
+        return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB.`;
       case "TEKSNISK_FEIL":
         return "Det oppstod en teknisk feil.";
       default:
