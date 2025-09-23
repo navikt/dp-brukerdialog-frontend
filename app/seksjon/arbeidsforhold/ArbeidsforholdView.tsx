@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { FormApi, useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
@@ -7,6 +7,8 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/arbeidsforhold.schema";
 import {
+  Arbeidsforhold,
+  ArbeidsforholdResponse,
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
   fastArbeidstidI6MånederEllerMer,
@@ -16,11 +18,22 @@ import {
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
   varierendeArbeidstidDeSiste12Månedene,
 } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål";
+import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/komponenter/ArbeidsforholdModal";
+import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/arbeidsforhold.context";
+import { useEffect, useRef, useState } from "react";
+import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.context";
+import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/komponenter/ArbeidsforholdDetaljer";
+import { payload } from "~/seksjon/egen-næring/egen-næring.spørsmål";
 
 export function ArbeidsforholdView() {
+  const navigate = useNavigate();
+  const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const navigate = useNavigate();
+  const [visManglerArbeidsforholdFeilmelding, setVisManglerArbeidsforholdFeilmelding] =
+    useState(false);
+  const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, modalData, setModalData } =
+    useArbeidsforholdContext();
 
   const form = useForm({
     method: "PUT",
@@ -69,6 +82,58 @@ export function ArbeidsforholdView() {
     return "";
   }
 
+  useEffect(() => {
+    if (modalData) {
+      ref.current?.showModal();
+    }
+  }, [modalData]);
+
+  useEffect(() => {
+    setVisManglerArbeidsforholdFeilmelding(false);
+  }, [
+    registrerteArbeidsforhold.length,
+  ]);
+
+  useEffect(() => {
+    if (form.value(hvordanHarDuJobbet) === "har-ikke-jobbet-de-siste-36-månedene") {
+      setRegistrerteArbeidsforhold([]);
+    }
+  }, [
+    form.value(hvordanHarDuJobbet),
+  ]);
+
+  function handleSubmit() {
+    form.validate();
+
+    const manglerArbeidsforhold =
+      form.value(hvordanHarDuJobbet) &&
+      form.value(hvordanHarDuJobbet) !== "har-ikke-jobbet-de-siste-36-månedene" &&
+      registrerteArbeidsforhold.length === 0;
+
+    if (manglerArbeidsforhold) {
+      setVisManglerArbeidsforholdFeilmelding(true);
+      return;
+    }
+
+    if (
+      form.value(hvordanHarDuJobbet) !== undefined &&
+      form.value(harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene) !==
+        undefined &&
+      !manglerArbeidsforhold
+    ) {
+      const arbeidsforholdResponse: ArbeidsforholdResponse = {
+        [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
+        [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
+          harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+        ),
+        registrerteArbeidsforhold: registrerteArbeidsforhold,
+      };
+
+      form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
+      form.submit();
+    }
+  }
+
   return (
     <div className="innhold">
       <h2>Arbeidsforhold</h2>
@@ -90,15 +155,40 @@ export function ArbeidsforholdView() {
               })}
 
               {getLedetekstDineArbeidsforhold(form) !== "" && (
-                <>
-                  <Heading size="xsmall">Dine arbeidsforhold</Heading>
-                  {getLedetekstDineArbeidsforhold(form)}
+                <VStack gap="space-16">
+                  <BodyLong>
+                    <strong>Dine arbeidsforhold</strong>
+                    <br />
+                    {getLedetekstDineArbeidsforhold(form)}
+                  </BodyLong>
+                  {registrerteArbeidsforhold?.map(
+                    (arbeidsforhold: Arbeidsforhold, index: number) => (
+                      <ArbeidsforholdDetaljer
+                        key={index}
+                        arbeidsforholdIndex={index}
+                        arbeidsforhold={arbeidsforhold}
+                      />
+                    )
+                  )}
                   <HStack>
-                    <Button variant="secondary" type="button" icon={<BriefcaseIcon />}>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      icon={<BriefcaseIcon />}
+                      onClick={() => {
+                        setModalData({
+                          operasjon: ModalOperasjonEnum.LeggTil,
+                          ledetekst: getLedetekstDineArbeidsforhold(form),
+                        });
+                      }}
+                    >
                       Legg til arbeidsforhold
                     </Button>
                   </HStack>
-                </>
+                  {visManglerArbeidsforholdFeilmelding && (
+                    <ErrorMessage showIcon>Du må legge til minst et arbeidsforhold</ErrorMessage>
+                  )}
+                </VStack>
               )}
 
               {actionData && (
@@ -118,15 +208,17 @@ export function ArbeidsforholdView() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
+                onClick={handleSubmit}
               >
                 Neste steg
               </Button>
             </HStack>
           </Form>
         </VStack>
+        {modalData && <ArbeidsforholdModal ref={ref} />}
       </VStack>
     </div>
   );

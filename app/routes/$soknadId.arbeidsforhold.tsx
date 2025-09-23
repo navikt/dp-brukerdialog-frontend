@@ -1,14 +1,11 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { ArbeidsforholdSvar } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål";
 import { ArbeidsforholdView } from "~/seksjon/arbeidsforhold/ArbeidsforholdView";
+import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/arbeidsforhold.context";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<ArbeidsforholdSvar | undefined> {
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "arbeidsforhold");
@@ -26,10 +23,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "arbeidsforhold";
   const nesteSeksjonId = "annen-pengestotte";
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
-  );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const payload = formData.get("payload");
+  const seksjonsData = JSON.parse(payload as string);
+
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
@@ -42,5 +38,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function ArbeidsforholdRoute() {
-  return <ArbeidsforholdView />;
+  const loaderData = useLoaderData<typeof loader>();
+
+  return (
+    <ArbeidsforholdProvider registrerteArbeidsforhold={loaderData?.registrerteArbeidsforhold || []}>
+      <ArbeidsforholdView />
+    </ArbeidsforholdProvider>
+  );
 }

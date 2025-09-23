@@ -77,7 +77,7 @@ export function BarnetilleggView() {
       const data: BarnetilleggResponse = {
         barnFraPdl: barnFraPdl,
         barnLagtManuelt: barnLagtManuelt,
-        forsørgerDuBarnSomIkkeVisesHer: forsørgerDuBarnSomIkkeVisesHerSvar,
+        [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
       };
 
       form.setValue(payload, JSON.stringify(data));

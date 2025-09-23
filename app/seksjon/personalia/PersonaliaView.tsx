@@ -41,10 +41,6 @@ export function PersonaliaView() {
               <BodyShort>{formattertIdent}</BodyShort>
             </div>
             <div className="mb-4">
-              <Label as="p">Fødselsnummer</Label>
-              <BodyShort>{formattertIdent}</BodyShort>
-            </div>
-            <div className="mb-4">
               <Label as="p">Folkeregistrert adresse</Label>
               <BodyShort>
                 {folkeregistrertAdresse && (
@@ -91,7 +87,7 @@ export function PersonaliaView() {
             <Button
               variant="secondary"
               icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-              onClick={() => navigate(`/${soknadId}/din-situasjon`)}
+              onClick={() => navigate(-1)}
             >
               Forrige steg
             </Button>

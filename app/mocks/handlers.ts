@@ -13,6 +13,8 @@ import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
 
 let uploadCount = 0;
+import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
+import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -26,6 +28,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
     return HttpResponse.json(mockDinSituasjon);
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/arbeidsforhold`, () => {
+    return HttpResponse.json(mockArbeidsforhold);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/bostedsland`, () => {
     return HttpResponse.json(mockBostedsland);
@@ -64,5 +69,8 @@ export const handlers = [
         statusText: "Feil ved opplasting",
       });
     }
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId`, () => {
+    return HttpResponse.json(mockOppsummering);
   }),
 ];

@@ -67,7 +67,7 @@ export function BarnFraPdl({ barn, barnIndex }: IProps) {
       )}
       {barn.bostedsland && (
         <BodyShort size="small" spacing>
-          BOR I {findLandeNavn(barn.bostedsland).toUpperCase()}
+          BOR I {findLandNavn(barn.bostedsland).toUpperCase()}
         </BodyShort>
       )}
 
