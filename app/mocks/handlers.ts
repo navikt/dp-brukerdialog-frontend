@@ -11,10 +11,10 @@ import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
-
-let uploadCount = 0;
 import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
 import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
+
+let antallOpplastetDokument = 0;
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -55,11 +55,11 @@ export const handlers = [
   }),
   http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, async () => {
     await delay(1000);
-    uploadCount += 1;
+    antallOpplastetDokument += 1;
 
     return HttpResponse.json(mockMellomlagring);
 
-    if (uploadCount < 4) {
+    if (antallOpplastetDokument < 4) {
       // Første 3 kall: suksess
       return HttpResponse.json(mockMellomlagring);
     } else {

@@ -11,7 +11,7 @@ import {
   forsørgerDuBarnet,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { findLandeNavn } from "~/utils/land.utils";
+import { findLandNavn } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;
