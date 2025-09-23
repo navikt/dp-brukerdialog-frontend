@@ -2,7 +2,7 @@ import { expiresIn, getToken, requestOboToken, validateToken } from "@navikt/oas
 import { getEnv, IEnv } from "./env.utils";
 import { logger } from "./logger.utils";
 
-function handleLocalhostToken(tokenName: keyof IEnv) {
+function håndterLocalhostToken(tokenName: keyof IEnv) {
   const token = getEnv(tokenName);
   const useMsw = getEnv("USE_MSW") === "true";
 
@@ -13,41 +13,41 @@ function handleLocalhostToken(tokenName: keyof IEnv) {
   return token || "";
 }
 
-export async function getSoknadOrkestratorOboToken(request: Request) {
+export async function hentSoknadOrkestratorOboToken(request: Request) {
   if (getEnv("IS_LOCALHOST") === "true") {
-    return handleLocalhostToken("DP_SOKNAD_ORKESTRATOR_TOKEN");
+    return håndterLocalhostToken("DP_SOKNAD_ORKESTRATOR_TOKEN");
   }
 
   const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-soknad-orkestrator`;
-  return await getOnBehalfOfToken(request, audience);
+  return await hentOnBehalfOfToken(request, audience);
 }
 
-export async function getMellomlagringOboToken(request: Request) {
+export async function hentMellomlagringOboToken(request: Request) {
   if (getEnv("IS_LOCALHOST") === "true") {
-    return handleLocalhostToken("DP_MELLOMLAGRING_TOKEN");
+    return håndterLocalhostToken("DP_MELLOMLAGRING_TOKEN");
   }
 
   const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-mellomlagring`;
-  return await getOnBehalfOfToken(request, audience);
+  return await hentOnBehalfOfToken(request, audience);
 }
 
-export async function getOnBehalfOfToken(request: Request, audience: string): Promise<string> {
+export async function hentOnBehalfOfToken(request: Request, audience: string): Promise<string> {
   const token = getToken(request);
   if (!token) {
-    logger.error("Missing token");
-    throw new Error("Missing token");
+    logger.error("Mangler token");
+    throw new Error("Mangler token");
   }
 
   const validation = await validateToken(token);
   if (!validation.ok) {
-    logger.error(`Failed to validate token: ${validation.error}`);
-    throw new Response("Token validation failed", { status: 401 });
+    logger.error(`Uautorisert: ${validation.error}`);
+    throw new Response("Uautorisert", { status: 401 });
   }
 
   const onBehalfOfToken = await requestOboToken(token, audience);
   if (!onBehalfOfToken.ok) {
-    logger.error(`Failed to get OBO token: ${onBehalfOfToken.error}`);
-    throw new Response("Unauthorized", { status: 401 });
+    logger.error(`Klarte ikke å hente OBO token: ${onBehalfOfToken.error}`);
+    throw new Response("Klarte ikke å hente OBO token", { status: 500 });
   }
 
   return onBehalfOfToken.token;

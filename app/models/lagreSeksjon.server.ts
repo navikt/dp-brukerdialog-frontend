@@ -1,4 +1,4 @@
-import { getSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
+import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 
 export async function lagreSeksjon<T>(
@@ -8,7 +8,7 @@ export async function lagreSeksjon<T>(
   seksjonsData: T
 ) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}/${seksjonId}`;
-  const onBehalfOfToken = await getSoknadOrkestratorOboToken(request);
+  const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 
   return await fetch(url, {
     method: "PUT",

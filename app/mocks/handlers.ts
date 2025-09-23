@@ -55,20 +55,19 @@ export const handlers = [
   }),
   http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, async () => {
     await delay(1000);
-    antallOpplastetDokument += 1;
-
     return HttpResponse.json(mockMellomlagring);
 
-    if (antallOpplastetDokument < 4) {
-      // Første 3 kall: suksess
-      return HttpResponse.json(mockMellomlagring);
-    } else {
-      // 4. kall: feil
-      return new HttpResponse("Feil ved opplasting", {
-        status: 500,
-        statusText: "Feil ved opplasting",
-      });
-    }
+    // antallOpplastetDokument += 1;
+    // if (antallOpplastetDokument < 4) {
+    //   // Første 3 kall: suksess
+    //   return HttpResponse.json(mockMellomlagring);
+    // } else {
+    //   // 4. kall: feil
+    //   return new HttpResponse("Feil ved opplasting", {
+    //     status: 500,
+    //     statusText: "Feil ved opplasting",
+    //   });
+    // }
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId`, () => {
     return HttpResponse.json(mockOppsummering);

@@ -2,7 +2,7 @@ import { parseFormData } from "@remix-run/form-data-parser";
 import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { v4 as uuidV4 } from "uuid";
-import { getMellomlagringOboToken } from "~/utils/auth.utils.server";
+import { hentMellomlagringOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 
 export async function action({ params, request }: ActionFunctionArgs) {
@@ -14,14 +14,14 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const dokumentkravId = params.dokumentkravId as string;
 
   const formData = await parseFormData(request);
-  const dokument = formData.get("file") as File;
+  const fil = formData.get("file") as File;
 
   try {
     const url = `${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/${søknadId}/${dokumentkravId}`;
-    const onBehalfOfToken = await getMellomlagringOboToken(request);
+    const onBehalfOfToken = await hentMellomlagringOboToken(request);
 
-    const requestData = new FormData();
-    requestData.append("file", dokument);
+    const body = new FormData();
+    body.append("file", fil);
 
     const response = await fetch(url, {
       method: "POST",
@@ -30,7 +30,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
         Authorization: `Bearer ${onBehalfOfToken}`,
         "X-Request-Id": callId,
       },
-      body: requestData,
+      body: body,
     });
 
     if (!response.ok) {
