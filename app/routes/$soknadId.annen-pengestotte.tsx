@@ -8,6 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { erTilbakenavigering } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
 import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 const NYESTE_VERSJON = 1;
@@ -31,8 +32,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "annen-pengestotte";
   const nesteSeksjonId = "egen-naring";
+  const forrigeSeksjonId = "arbeidsforhold";
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
@@ -48,6 +51,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return {
       error: "Noe gikk galt ved lagring av seksjonen.",
     };
+  }
+
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
