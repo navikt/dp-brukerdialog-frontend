@@ -134,6 +134,6 @@ export const arbeidsforholdModalArbeidstidenErRedusertSpørsmål: KomponentType[
     type: "langTekst",
     label: "Hva er grunnen til at du ikke har tatt imot tilbudet?",
     maxLength: 500,
-    visHvis: (svar: ArbeidsforholdModalSvar) => svar[jegErOppsagtHvaHarDuSvartPåTilbudet] === "nei",
+    visHvis: (svar: ArbeidsforholdModalSvar) => svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
   },
 ];
