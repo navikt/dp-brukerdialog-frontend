@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useActionData, useParams } from "react-router";
 import { action } from "~/routes/$soknadId.utdanning";
 import {
+  hentFilTypeListeTekst,
   hentMaksFilStørrelseMB,
   MAX_ANTALL_FILER,
   MAX_FIL_STØRRELSE,
@@ -12,7 +13,7 @@ import {
 
 type FilOpplastingError = {
   filNavn: string;
-  typeFeil: "FIL_FOR_STOR" | "TEKSNISK_FEIL";
+  typeFeil: "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKSNISK_FEIL";
 };
 
 export function DokumentasjonView() {
@@ -27,12 +28,6 @@ export function DokumentasjonView() {
   // Håntere sletting
   // Håndtere retry ved feil
   // Finn ut hvordan vi skal hente dokumentkravId
-  // Sette begrensning på antall filer
-  // Finn ut filstørreslse begrensning, om det er totalt eller per fil
-
-  // F.eks fra Søknadsdialog
-  // export const ALLOWED_FILE_FORMATS = ["image/png", "image/jpg", "image/jpeg", "application/pdf"];
-  // export const MAX_TOTAL_DOKUMENTKRAV_FILE_SIZE = 52428800;
 
   async function lastOppfiler(filer: FileObject[]) {
     setFiler(filer);
@@ -42,6 +37,18 @@ export function DokumentasjonView() {
     let harFeil = false;
 
     filer.forEach((fileObj) => {
+      const fileName = fileObj.file.name.toLowerCase();
+      const erGyldigFormat = TILATT_FIL_TYPER.some((format) => fileName.endsWith(format));
+
+      if (!erGyldigFormat) {
+        setFilOpplastingsFeil((prev) => [
+          ...prev.filter((err) => err.filNavn !== fileObj.file.name),
+          { filNavn: fileObj.file.name, typeFeil: "UGYLDIG_FORMAT" },
+        ]);
+        harFeil = true;
+        return;
+      }
+
       if (fileObj.file.size > MAX_FIL_STØRRELSE) {
         setFilOpplastingsFeil((prev) => [
           ...prev.filter((err) => err.filNavn !== fileObj.file.name),
@@ -52,7 +59,7 @@ export function DokumentasjonView() {
     });
 
     if (harFeil) {
-      setOpplastere([]); // Ikke last opp filer med feil
+      setOpplastere([]);
       return;
     }
 
@@ -95,6 +102,8 @@ export function DokumentasjonView() {
     switch (harEnFeil) {
       case "FIL_FOR_STOR":
         return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB.`;
+      case "UGYLDIG_FORMAT":
+        return "Ugyldig filformat.";
       case "TEKSNISK_FEIL":
         return "Det oppstod en teknisk feil.";
       default:
@@ -110,8 +119,9 @@ export function DokumentasjonView() {
           <form method="post" encType="multipart/form-data">
             <FileUploadDropzone
               label="Last opp dokument"
+              description={`Du kan laste opp opptil ${MAX_ANTALL_FILER} filer. Hver fil kan være opptil ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper ${hentFilTypeListeTekst()}.`}
               fileLimit={{ max: MAX_ANTALL_FILER, current: filer.length }}
-              accept={TILATT_FIL_TYPER}
+              accept={hentFilTypeListeTekst()}
               onSelect={(filer) => lastOppfiler(filer)}
             />
           </form>

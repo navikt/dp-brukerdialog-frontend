@@ -52,6 +52,8 @@ export const handlers = [
     await delay(1000);
     uploadCount += 1;
 
+    return HttpResponse.json(mockMellomlagring);
+
     if (uploadCount < 4) {
       // Første 3 kall: suksess
       return HttpResponse.json(mockMellomlagring);
