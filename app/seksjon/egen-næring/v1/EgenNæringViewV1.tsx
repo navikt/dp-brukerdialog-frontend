@@ -1,6 +1,6 @@
 import { useForm } from "@rvf/react-router";
 import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { action, loader } from "~/routes/$soknadId.egen-naring";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -10,12 +10,13 @@ import {
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringResponse,
   EgenNæringSvar,
+  erTilbakenavigering,
   Gårdsbruk,
   Næringsvirksomhet,
   payload,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { Alert, Button, ErrorMessage, HStack, Page, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
@@ -28,7 +29,6 @@ import {
 } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 export function EgenNæringViewV1() {
-  const navigate = useNavigate();
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
@@ -89,7 +89,22 @@ export function EgenNæringViewV1() {
     }
   }, [gårdsbrukModalData]);
 
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+
+    const egenNæringResponse: EgenNæringResponse = {
+      [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
+      næringsvirksomheter: næringsvirksomheter,
+      [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
+      gårdsbruk: gårdsbruk,
+    };
+
+    form.setValue(payload, JSON.stringify(egenNæringResponse));
+    form.submit();
+  }
+
   function handleSubmit() {
+    form.setValue(erTilbakenavigering, false);
     form.validate();
 
     const manglerRegistrertNæringsvirksomhet =
@@ -231,8 +246,9 @@ export function EgenNæringViewV1() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
+                type="button"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
+                onClick={handleTilbakenavigering}
               >
                 Forrige steg
               </Button>

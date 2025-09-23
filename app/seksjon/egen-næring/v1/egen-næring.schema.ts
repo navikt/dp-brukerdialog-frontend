@@ -8,6 +8,7 @@ import {
   egenNæringEgenNæringsvirksomhetSpørsmål,
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringSvar,
+  erTilbakenavigering,
   hvemEierGårdsbruket,
   hvilkeTypeGårdsbrukDriverDu,
   hvordanHarDuBeregnetAntallArbeidstimerTotalt,
@@ -34,8 +35,13 @@ export const egenNæringSchema = z
     [driverDuEgenNæringsvirksomhet]: z.enum(["ja", "nei"]).optional(),
     [driverDuEgetGårdsbruk]: z.enum(["ja", "nei"]).optional(),
     versjon: z.number().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     egenNæringEgenNæringsvirksomhetSpørsmål
       .concat(egenNæringEgetGårdsbrukSpørsmål)
       .forEach((spørsmål) => {
