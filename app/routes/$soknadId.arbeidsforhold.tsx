@@ -2,8 +2,8 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { ArbeidsforholdView } from "~/seksjon/arbeidsforhold/ArbeidsforholdView";
-import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/arbeidsforhold.context";
+import { ArbeidsforholdView } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdView";
+import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
