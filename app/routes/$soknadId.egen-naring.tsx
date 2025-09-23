@@ -2,9 +2,9 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { EgenNæringView } from "~/seksjon/egen-næring/EgenNæringView";
-import { EgenNæringProvider } from "~/seksjon/egen-næring/egen-næring.context";
-import { EgenNæringResponse } from "~/seksjon/egen-næring/egen-næring.spørsmål";
+import { EgenNæringView } from "~/seksjon/egen-næring/v1/EgenNæringView";
+import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { EgenNæringResponse } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
 export async function loader({
   request,
@@ -52,5 +52,4 @@ export default function EgenNæringRoute() {
       <EgenNæringView />
     </EgenNæringProvider>
   );
-
 }

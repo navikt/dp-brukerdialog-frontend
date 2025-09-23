@@ -3,13 +3,13 @@ import invariant from "tiny-invariant";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { BarnetilleggProvider } from "~/seksjon/barnetillegg/barnetillegg.context";
+import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
   Barn,
   BarnetilleggSvar,
   forsørgerDuBarnSomIkkeVisesHer,
-} from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
-import { BarnetilleggView } from "~/seksjon/barnetillegg/BarnetilleggView";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import { BarnetilleggView } from "~/seksjon/barnetillegg/v1/BarnetilleggView";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];

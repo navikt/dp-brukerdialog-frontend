@@ -2,8 +2,8 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { TilleggsopplysningerView } from "~/seksjon/tilleggsopplysninger/TilleggopplysningerView";
-import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
+import { TilleggsopplysningerView } from "~/seksjon/tilleggsopplysninger/v1/TilleggopplysningerView";
+import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
 export async function loader({
   request,

@@ -2,8 +2,7 @@ import { ActionFunctionArgs, data, LoaderFunctionArgs, redirect } from "react-ro
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { DinSituasjonSvar } from "~/seksjon/din-situasjon/din-situasjon.spørsmål";
-import { DinSituasjonView } from "~/seksjon/din-situasjon/DinSituasjonView";
+import { DinSituasjonView } from "~/seksjon/din-situasjon/v1/DinSituasjonView";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");

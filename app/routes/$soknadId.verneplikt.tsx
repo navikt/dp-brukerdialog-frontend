@@ -2,8 +2,8 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { VernepliktSvar } from "~/seksjon/verneplikt/verneplikt.spørsmål";
-import VernepliktView from "~/seksjon/verneplikt/VernepliktView";
+import { VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+import VernepliktView from "~/seksjon/verneplikt/v1/VernepliktView";
 
 export async function loader({
   request,

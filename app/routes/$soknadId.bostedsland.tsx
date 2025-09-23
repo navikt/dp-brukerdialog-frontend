@@ -2,8 +2,8 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
-import { BostedslandView } from "~/seksjon/bostedsland/BostedslandView";
+import { BostedslandSvar } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
+import { BostedslandView } from "~/seksjon/bostedsland/v1/BostedslandView";
 
 export async function loader({
   request,
