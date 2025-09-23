@@ -32,7 +32,7 @@ export const LANDLISTE = [
   { value: "MLT", label: "Malta" },
 ];
 
-export function findLandNavn(value: string) {
+export function finnLandnavn(value: string) {
   const land = LANDLISTE.find((land) => land.value === value);
   return land ? land.label : value;
 }

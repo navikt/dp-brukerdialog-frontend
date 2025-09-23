@@ -1,28 +1,27 @@
-import { Alert, FileObject, VStack } from "@navikt/ds-react";
+import { FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useState } from "react";
-import { useActionData, useParams } from "react-router";
-import { action } from "~/routes/$soknadId.utdanning";
+import { useParams } from "react-router";
 import {
-  hentFilTypeListeTekst,
   hentMaksFilStørrelseMB,
+  hentTillatteFiltyperString,
+  hentTillatteFiltyperTekst,
   MAX_ANTALL_FILER,
   MAX_FIL_STØRRELSE,
-  TILATT_FIL_TYPER,
+  TILLATTE_FILTYPER,
 } from "~/utils/dokument.utils";
 
 type FilOpplastingError = {
   filNavn: string;
-  typeFeil: "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKSNISK_FEIL";
+  typeFeil: "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL";
 };
 
 export function DokumentasjonView() {
-  const actionData = useActionData<typeof action>();
   const { soknadId } = useParams();
 
   const [filer, setFiler] = useState<FileObject[]>([]);
   const [filOpplastingsFeil, setFilOpplastingsFeil] = useState<FilOpplastingError[]>([]);
-  const [opplastere, setOpplastere] = useState<string[]>([]);
+  const [filerLoadingState, setFilerLoadingState] = useState<string[]>([]);
 
   // Todo,
   // Håntere sletting
@@ -31,14 +30,14 @@ export function DokumentasjonView() {
 
   async function lastOppfiler(filer: FileObject[]) {
     setFiler(filer);
-    setOpplastere(filer.map((f) => f.file.name));
+    setFilerLoadingState(filer.map((f) => f.file.name));
     setFilOpplastingsFeil([]);
 
     let harFeil = false;
 
     filer.forEach((fileObj) => {
       const fileName = fileObj.file.name.toLowerCase();
-      const erGyldigFormat = TILATT_FIL_TYPER.some((format) => fileName.endsWith(format));
+      const erGyldigFormat = TILLATTE_FILTYPER.some((format) => fileName.endsWith(format));
 
       if (!erGyldigFormat) {
         setFilOpplastingsFeil((prev) => [
@@ -59,7 +58,7 @@ export function DokumentasjonView() {
     });
 
     if (harFeil) {
-      setOpplastere([]);
+      setFilerLoadingState([]);
       return;
     }
 
@@ -77,7 +76,7 @@ export function DokumentasjonView() {
           if (!response.ok) {
             setFilOpplastingsFeil((prev) => [
               ...prev.filter((err) => err.filNavn !== fileObj.file.name),
-              { filNavn: fileObj.file.name, typeFeil: "TEKSNISK_FEIL" },
+              { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
             ]);
             return;
           }
@@ -88,7 +87,7 @@ export function DokumentasjonView() {
     } catch (error) {
       console.error(error);
     } finally {
-      setOpplastere([]);
+      setFilerLoadingState([]);
     }
   }
 
@@ -104,7 +103,7 @@ export function DokumentasjonView() {
         return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB.`;
       case "UGYLDIG_FORMAT":
         return "Ugyldig filformat.";
-      case "TEKSNISK_FEIL":
+      case "TEKNISK_FEIL":
         return "Det oppstod en teknisk feil.";
       default:
         return "Ukjent feil.";
@@ -119,9 +118,9 @@ export function DokumentasjonView() {
           <form method="post" encType="multipart/form-data">
             <FileUploadDropzone
               label="Last opp dokument"
-              description={`Du kan laste opp opptil ${MAX_ANTALL_FILER} filer. Hver fil kan være opptil ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper ${hentFilTypeListeTekst()}.`}
+              description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
               fileLimit={{ max: MAX_ANTALL_FILER, current: filer.length }}
-              accept={hentFilTypeListeTekst()}
+              accept={hentTillatteFiltyperString()}
               onSelect={(filer) => lastOppfiler(filer)}
             />
           </form>
@@ -129,7 +128,7 @@ export function DokumentasjonView() {
             <FileUploadItem
               key={file.file.name}
               file={file.file}
-              status={opplastere.includes(file.file.name) ? "uploading" : "idle"}
+              status={filerLoadingState.includes(file.file.name) ? "uploading" : "idle"}
               error={hentFilFeilmelding(file.file.name)}
               button={{
                 action: "delete",
@@ -137,12 +136,6 @@ export function DokumentasjonView() {
               }}
             />
           ))}
-
-          {actionData && (
-            <Alert variant="error" className="mt-4">
-              {actionData.error}
-            </Alert>
-          )}
         </VStack>
       </VStack>
     </div>

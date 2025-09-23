@@ -6,7 +6,7 @@ import {
 } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { findLandNavn } from "~/utils/land.utils";
+import { finnLandnavn } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;
@@ -32,7 +32,7 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
       )}
       {barn.bostedsland && (
         <BodyShort size="small" spacing>
-          BOR I {findLandNavn(barn.bostedsland).toUpperCase()}
+          BOR I {finnLandnavn(barn.bostedsland).toUpperCase()}
         </BodyShort>
       )}
 
