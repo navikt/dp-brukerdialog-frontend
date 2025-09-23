@@ -23,10 +23,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "arbeidsforhold";
   const nesteSeksjonId = "annen-pengestotte";
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
-  );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const payload = formData.get("payload");
+  const seksjonsData = JSON.parse(payload as string);
+
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
 
   if (response.status !== 200) {
