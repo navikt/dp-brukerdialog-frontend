@@ -6,6 +6,7 @@ import {
   ArbeidsforholdModalSvar,
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
+  erTilbakenavigering,
   fastArbeidstidI6MånederEllerMer,
   fastArbeidstidIMindreEnn6Måneder,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -68,13 +69,13 @@ import {
 import {
   arbeidsforholdModalArbeidsgiverErKonkursSpørsmål,
   konkursDekkerLønnsgarantiordningenKravetDitt,
+  konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
   konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
   konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet,
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
   konkursHarDuSøktOmLønnsgarantimidler,
   konkursHvorMangeTimerHarDuJobbetIUka,
-  konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
   konkursNårStartetDuIDenneJobben,
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
   konkursVetDuHvorMangeTimerDuJobbetIUka,
@@ -107,6 +108,7 @@ import {
 export const arbeidsforholdSchema = z
   .object({
     [payload]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
     [hvordanHarDuJobbet]: z
       .enum([
         fastArbeidstidIMindreEnn6Måneder,
@@ -122,6 +124,9 @@ export const arbeidsforholdSchema = z
     versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data[erTilbakenavigering] === true) {
+      return;
+    }
     arbeidsforholdSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof ArbeidsforholdSvar;
