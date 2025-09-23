@@ -12,6 +12,8 @@ import {
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/annen-pengestøtte-norge.spørsmål";
 
+export const erTilbakenavigering = "erTilbakenavigering";
+
 export type AnnenPengestøtteSvar = {
   [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]?: "ja" | "nei";
   [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]?: "ja" | "nei";
