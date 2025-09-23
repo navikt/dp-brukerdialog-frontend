@@ -5,6 +5,7 @@ import {
   bostedsland,
   bostedslandSpørsmål,
   BostedslandSvar,
+  erTilbakenavigering,
   hvorforReistDuFraNorge,
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
@@ -21,8 +22,12 @@ export const bostedslandSchema = z
     [avreiseDatoTil]: z.string().optional(),
     [hvorforReistDuFraNorge]: z.string().optional(),
     versjon: z.number().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data[erTilbakenavigering] === true) {
+      return;
+    }
     bostedslandSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof BostedslandSvar;

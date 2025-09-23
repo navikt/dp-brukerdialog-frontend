@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.bostedsland";
@@ -9,12 +9,12 @@ import { bostedslandSchema } from "~/seksjon/bostedsland/v1/bostedsland.schema";
 import {
   bostedslandSpørsmål,
   BostedslandSvar,
+  erTilbakenavigering,
 } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
 
 export function BostedslandViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -29,6 +29,16 @@ export function BostedslandViewV1() {
   });
 
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
+
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+    form.submit();
+  }
+
+  function handleSubmit() {
+    form.setValue(erTilbakenavigering, false);
+    form.submit();
+  }
 
   return (
     <div className="innhold">
@@ -61,8 +71,9 @@ export function BostedslandViewV1() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
+                type="button"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
+                onClick={handleTilbakenavigering}
               >
                 Forrige steg
               </Button>
@@ -71,6 +82,7 @@ export function BostedslandViewV1() {
                 type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
+                onClick={handleSubmit}
               >
                 Neste steg
               </Button>
