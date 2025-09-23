@@ -9,7 +9,7 @@ import {
 } from "~/seksjon/arbeidsforhold/arbeidsforhold.context";
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/arbeidsforhold.schema";
 import {
-  Arbeidsforhold,
+  Arbeidsforhold, arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdModalSvar,
 } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål";
@@ -43,7 +43,8 @@ export function ArbeidsforholdModal({ ref }: Readonly<IProps>) {
     .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
     .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
     .concat(arbeidsforholdModalJegErPermittertSpørsmål)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål);
+    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
+    .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål);
 
   const form = useForm({
     submitSource: "state",

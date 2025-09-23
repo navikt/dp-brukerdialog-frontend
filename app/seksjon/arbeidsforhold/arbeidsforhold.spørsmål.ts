@@ -79,7 +79,7 @@ export const jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene =
   "jobbet-mer-igjennomsnitt-de-siste-36-månedene-enn-de-siste-12-månedenen";
 export const harIkkeJobbetDeSiste36Månedene = "har-ikke-jobbet-de-siste-36-månedene";
 export const harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene =
-  "har-du-jobbet-i-et-annet-eøs-land-sveits-eller-storbritannia-iløpet-av-de-siste-36-månedene";
+  "har-du-jobbet-i-et-annet-eøs-land-sveits-eller-storbritannia-i-løpet-av-de-siste-36-månedene";
 export const navnetPåBedriften = "navn-på-bedriften";
 export const hvilketLandJobbetDuI = "hvilket-land-jobbet-du-i";
 export const oppgiPersonnummeretPinDuHaddeIDetteLandet =
@@ -98,6 +98,13 @@ export const arbeidstidenErRedusert = "arbeidstiden-er-redusert";
 export const arbeidsgiverErKonkurs = "arbeidsgiver-er-konkurs";
 export const jegErPermitert = "jeg-er-permitert";
 export const arbeidsforholdetErIkkeEndret = "arbeidsforholdet-er-ikke-endret";
+export const harDuJobbetSkiftTurnusEllerRotasjon = "har-du-jobbet-skift-turnus-eller-rotasjon";
+export const hvilkenTypeRotasjonsordningJobbetDu = "hvilken-type-rotasjonsordning-jobbet-du";
+export const annenRotasjonBeskrivelse = "annen-rotasjon-beskrivelse";
+export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed =
+  "oppgi-siste-arbeidsperiode-iden-siste-rotasjonen-din-dato-fra-og-med";
+export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed =
+  "oppgi-siste-arbeidsperiode-iden-siste-rotasjonen-din-dato-til-og-med";
 
 export type Arbeidsforhold = {
   [navnetPåBedriften]?: string;
@@ -160,6 +167,11 @@ export type Arbeidsforhold = {
   [ikkeEndretHvorMangeTimerHarDuJobbetIUka]?: string;
   [ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
   [ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
+  [harDuJobbetSkiftTurnusEllerRotasjon]?: string;
+  [hvilkenTypeRotasjonsordningJobbetDu]?: string;
+  [annenRotasjonBeskrivelse]?: string;
+  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]?: string;
+  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]?: string;
 };
 
 export type ArbeidsforholdModalSvar = {
@@ -223,6 +235,11 @@ export type ArbeidsforholdModalSvar = {
   [ikkeEndretHvorMangeTimerHarDuJobbetIUka]?: string;
   [ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
   [ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
+  [harDuJobbetSkiftTurnusEllerRotasjon]?: string;
+  [hvilkenTypeRotasjonsordningJobbetDu]?: string;
+  [annenRotasjonBeskrivelse]?: string;
+  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]?: string;
+  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]?: string;
 };
 
 export type ArbeidsforholdSvar = {
@@ -362,5 +379,60 @@ export const arbeidsforholdModalSpørsmål: KomponentType[] = [
       { value: jegErPermitert, label: "Jeg er permittert" },
       { value: arbeidsforholdetErIkkeEndret, label: "Arbeidsforholdet er ikke endret" },
     ],
+  },
+];
+
+export const arbeidsforholdModalSkiftTurnusRotasjonSpørsmål: KomponentType[] = [
+  {
+    id: harDuJobbetSkiftTurnusEllerRotasjon,
+    type: "envalg",
+    label: "Har du jobbet du skift, turnus eller rotasjon?",
+    options: [
+      { value: "skift-eller-turnus", label: "Ja, jeg har jobbet skift eller turnus" },
+      { value: "rotasjon", label: "Ja, jeg har jobbet rotasjon" },
+      { value: "hverken-skift-turnus-eller-rotasjon", label: "Nei, ingen av delene" },
+    ],
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      (svar[hvordanHarDetteArbeidsforholdetEndretSeg] &&
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== arbeidsforholdetErIkkeEndret) ||
+      false,
+  },
+  {
+    id: hvilkenTypeRotasjonsordningJobbetDu,
+    type: "envalg",
+    label: "Hvilke type rotasjonsordning jobbet du?",
+    options: [
+      { value: "2-4-rotasjon", label: "2:4" },
+      { value: "2-3-rotasjon", label: "2:3" },
+      { value: "1-1-rotasjon", label: "1:1" },
+      { value: "annen-rotasjon", label: "Annen rotasjon" },
+    ],
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[harDuJobbetSkiftTurnusEllerRotasjon] == "rotasjon",
+  },
+  {
+    id: annenRotasjonBeskrivelse,
+    type: "langTekst",
+    maxLength: 500,
+    label: "Annen rotasjon",
+    description:
+      "Beskriv kort hvor mange uker du jobber inkludert om du jobber helg og hvor mange uker du har fri i rotasjonsordningen",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[hvilkenTypeRotasjonsordningJobbetDu] == "annen-rotasjon",
+  },
+  {
+    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
+    type: "periodeFra",
+    periodeLabel: "Oppgi siste arbeidsperiode du hadde i den siste rotasjonen din",
+    label: "Fra og med",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[harDuJobbetSkiftTurnusEllerRotasjon] == "rotasjon",
+  },
+  {
+    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
+    type: "periodeTil",
+    label: "Til og med",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[harDuJobbetSkiftTurnusEllerRotasjon] == "rotasjon",
   },
 ];
