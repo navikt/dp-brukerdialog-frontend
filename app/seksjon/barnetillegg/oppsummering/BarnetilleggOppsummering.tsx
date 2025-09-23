@@ -1,5 +1,6 @@
 import {
   barnetilleggSpørsmål,
+  forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
@@ -13,9 +14,9 @@ export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: 
   const barnetilleggSvar: BarnetilleggResponse = JSON.parse(seksjonsData);
   const entries = Object.entries(barnetilleggSvar);
 
-  const forsørgerDuBarnSomIkkeVisesHer = barnetilleggSvar.forsørgerDuBarnSomIkkeVisesHer;
+  const forsørgerDuBarnSomIkkeVisesHerSvar = barnetilleggSvar[forsørgerDuBarnSomIkkeVisesHer];
 
-  if (forsørgerDuBarnSomIkkeVisesHer === undefined) {
+  if (forsørgerDuBarnSomIkkeVisesHerSvar === undefined) {
     return <></>;
   }
 
@@ -41,7 +42,7 @@ export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: 
             <FormSummary.Label>{forsørgerDuBarnetSpørsmål?.label}</FormSummary.Label>
             <OppsummeringsSvar
               spørsmål={forsørgerDuBarnetSpørsmål}
-              svar={forsørgerDuBarnSomIkkeVisesHer}
+              svar={forsørgerDuBarnSomIkkeVisesHerSvar}
             />
           </FormSummary.Answer>
         }
