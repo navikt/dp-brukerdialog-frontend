@@ -1,5 +1,7 @@
 import { z } from "zod";
 import {
+  annenRotasjonBeskrivelse,
+  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdModalSvar,
   arbeidsforholdSpørsmål,
@@ -7,13 +9,17 @@ import {
   fastArbeidstidI6MånederEllerMer,
   fastArbeidstidIMindreEnn6Måneder,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  harDuJobbetSkiftTurnusEllerRotasjon,
   harIkkeJobbetDeSiste36Månedene,
+  hvilkenTypeRotasjonsordningJobbetDu,
   hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   hvordanHarDuJobbet,
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
   navnetPåBedriften,
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
+  oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
+  oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
   varierendeArbeidstidDeSiste12Månedene,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
@@ -201,6 +207,11 @@ export const arbeidsforholdModalSchema = z
     [ikkeEndretHvorMangeTimerHarDuJobbetIUka]: z.string().optional(),
     [ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet]: z.string().optional(),
     [ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet]: z.string().optional(),
+    [harDuJobbetSkiftTurnusEllerRotasjon]: z.string().optional(),
+    [hvilkenTypeRotasjonsordningJobbetDu]: z.string().optional(),
+    [annenRotasjonBeskrivelse]: z.string().optional(),
+    [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]: z.string().optional(),
+    [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     arbeidsforholdModalSpørsmål
@@ -212,6 +223,7 @@ export const arbeidsforholdModalSchema = z
       .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
       .concat(arbeidsforholdModalJegErPermittertSpørsmål)
       .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
+      .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål)
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
         const spørsmålId = spørsmål.id as keyof ArbeidsforholdModalSvar;

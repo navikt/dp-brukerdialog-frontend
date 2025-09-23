@@ -1,6 +1,7 @@
 import {
   ArbeidsforholdResponse,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  harDuJobbetSkiftTurnusEllerRotasjon,
   hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   hvordanHarDuJobbet,
@@ -33,6 +34,7 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
       [jegHarSagtOppHvorMangeTimerHarDuJobbetIUka]: "93",
       [jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka]: "ja",
+      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverken-skift-turnus-eller-rotasjon",
     },
     {
       [navnetPåBedriften]: "VAKKER TØNNE AS",
@@ -43,7 +45,8 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka]: "nei",
       [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]: "ja",
       [kontraktenErUgåttHvaHarDuSvartPåTilbudet]: "nei",
-      [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie."
+      [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie.",
+      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverken-skift-turnus-eller-rotasjon",
     },
   ],
   [hvordanHarDuJobbet]: "fast-arbeidstid-i-6-måneder-eller-mer",

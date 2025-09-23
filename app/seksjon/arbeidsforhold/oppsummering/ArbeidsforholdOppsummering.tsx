@@ -2,10 +2,12 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
+  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdResponse,
   arbeidsforholdSpørsmål,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
 } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål";
 import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.jegErOppsagt";
@@ -41,7 +43,8 @@ export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }
     .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
     .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
     .concat(arbeidsforholdModalJegErPermittertSpørsmål)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål);
+    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
+    .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål);
 
   return (
     <FormSummary>
@@ -56,22 +59,24 @@ export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }
             svar={data[hvordanHarDuJobbet] ?? "Ubesvart"}
           />
         </FormSummary.Answer>
-        <FormSummary.Answer>
-          <FormSummary.Label>
-            {
-              harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneSpørsmål?.label
-            }
-          </FormSummary.Label>
-          <OppsummeringsSvar
-            spørsmål={
-              harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneSpørsmål!
-            }
-            svar={
-              data[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ??
-              "Ubesvart"
-            }
-          />
-        </FormSummary.Answer>
+        {data[hvordanHarDuJobbet] !== harIkkeJobbetDeSiste36Månedene && (
+          <FormSummary.Answer>
+            <FormSummary.Label>
+              {
+                harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneSpørsmål?.label
+              }
+            </FormSummary.Label>
+            <OppsummeringsSvar
+              spørsmål={
+                harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneSpørsmål!
+              }
+              svar={
+                data[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ??
+                "Ubesvart"
+              }
+            />
+          </FormSummary.Answer>
+        )}
 
         {data.registrerteArbeidsforhold?.map((arbeidsforholdModalSvar, index) => (
           <FormSummary.Answer>
