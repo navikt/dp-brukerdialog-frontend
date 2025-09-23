@@ -12,6 +12,7 @@ import PersonaliaOppsummering from "~/seksjon/personalia/oppsummering/Personalia
 import EgenNæringOppsummering from "~/seksjon/egen-næring/oppsummering/EgenNæringOppsummering";
 import AnnenPengestøtteOppsummering from "~/seksjon/annen-pengestøtte/oppsummering/AnnenPengestøtteOppsummering";
 import { stegerISøknaden } from "~/routes/$soknadId";
+import ArbeidsforholdOppsummering from "~/seksjon/arbeidsforhold/oppsummering/ArbeidsforholdOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -33,7 +34,8 @@ export default function OppsummeringView() {
         return <PersonaliaOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
       case "bostedsland":
         return <BostedslandOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
-      // Arbeidsforhold
+      case "arbeidsforhold":
+        return <ArbeidsforholdOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
       case "annen-pengestotte":
         return (
           <AnnenPengestøtteOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />
