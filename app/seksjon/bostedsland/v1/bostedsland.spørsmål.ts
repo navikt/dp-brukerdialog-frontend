@@ -7,6 +7,7 @@ export const reisteDuITaktMedRotasjon = "reiste-du-i-takt-med-rotasjon";
 export const avreiseDatoFra = "avreise-dato-fra";
 export const avreiseDatoTil = "avreise-dato-til";
 export const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
+export const erTilbakenavigering = "erTilbakenavigering";
 
 export type BostedslandSvar = {
   [bostedsland]?: string;
