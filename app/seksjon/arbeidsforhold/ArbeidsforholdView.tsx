@@ -90,17 +90,13 @@ export function ArbeidsforholdView() {
 
   useEffect(() => {
     setVisManglerArbeidsforholdFeilmelding(false);
-  }, [
-    registrerteArbeidsforhold.length,
-  ]);
+  }, [registrerteArbeidsforhold.length]);
 
   useEffect(() => {
     if (form.value(hvordanHarDuJobbet) === "har-ikke-jobbet-de-siste-36-månedene") {
       setRegistrerteArbeidsforhold([]);
     }
-  }, [
-    form.value(hvordanHarDuJobbet),
-  ]);
+  }, [form.value(hvordanHarDuJobbet)]);
 
   function handleSubmit() {
     form.validate();
@@ -115,23 +111,16 @@ export function ArbeidsforholdView() {
       return;
     }
 
-    if (
-      form.value(hvordanHarDuJobbet) !== undefined &&
-      form.value(harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene) !==
-        undefined &&
-      !manglerArbeidsforhold
-    ) {
-      const arbeidsforholdResponse: ArbeidsforholdResponse = {
-        [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
-        [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
-          harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-        ),
-        registrerteArbeidsforhold: registrerteArbeidsforhold,
-      };
+    const arbeidsforholdResponse: ArbeidsforholdResponse = {
+      [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
+      [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
+        harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+      ),
+      registrerteArbeidsforhold: registrerteArbeidsforhold,
+    };
 
-      form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
-      form.submit();
-    }
+    form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
+    form.submit();
   }
 
   return (
