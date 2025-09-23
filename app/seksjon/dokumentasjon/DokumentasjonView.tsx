@@ -3,18 +3,22 @@ import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload"
 import { useState } from "react";
 import { useActionData, useParams } from "react-router";
 import { action } from "~/routes/$soknadId.utdanning";
+import { MAX_ANTALL_FILER, TILATT_FIL_TYPER } from "~/utils/dokument.utils";
+
+type FilOpplastingError = {
+  filNavn: string;
+  typeFeil: "UGYLDIG_FORMAT" | "UGYLDIG_STØRRELSE" | "TEKSNISK_FEIL";
+};
 
 export function DokumentasjonView() {
   const actionData = useActionData<typeof action>();
   const { soknadId } = useParams();
 
   const [filer, setFiler] = useState<FileObject[]>([]);
-  const [filOpplastingsFeil, setFilOpplastingsFeil] = useState<Record<string, string>>({});
+  const [filOpplastingsFeil, setFilOpplastingsFeil] = useState<FilOpplastingError[]>([]);
   const [opplastere, setOpplastere] = useState<string[]>([]);
 
   // Todo,
-  // Sette typer av filer vi tillater
-  // Sette begrensninger for total filstørrelse
   // Håntere sletting
   // Håndtere retry ved feil
   // Finn ut hvordan vi skal hente dokumentkravId
@@ -28,7 +32,7 @@ export function DokumentasjonView() {
   async function lastOppfiler(filer: FileObject[]) {
     setFiler(filer);
     setOpplastere(filer.map((f) => f.file.name));
-    setFilOpplastingsFeil({});
+    setFilOpplastingsFeil([]);
 
     try {
       await Promise.all(
@@ -36,17 +40,16 @@ export function DokumentasjonView() {
           const formData = new FormData();
           formData.append("file", fileObj.file);
 
-          const response = await fetch(`/api/dokument/${soknadId}/1014.1`, {
+          const response = await fetch(`/api/dokument/last-opp/${soknadId}/1014.1`, {
             method: "POST",
             body: formData,
           });
 
           if (!response.ok) {
-            setFilOpplastingsFeil((prev) => ({
-              ...prev,
-              [fileObj.file.name]: response.statusText || "Feil ved opplasting",
-            }));
-
+            setFilOpplastingsFeil((prev) => [
+              ...prev.filter((err) => err.filNavn !== fileObj.file.name),
+              { filNavn: fileObj.file.name, typeFeil: "TEKSNISK_FEIL" },
+            ]);
             return;
           }
 
@@ -60,6 +63,37 @@ export function DokumentasjonView() {
     }
   }
 
+  async function slettFil(filnavn: string) {
+    try {
+      const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
+        method: "POST",
+        // body: formData,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
+  }
+
+  function hentFilFeilmelding(filnavn: string) {
+    const harEnFeil = filOpplastingsFeil.find((err) => err.filNavn === filnavn)?.typeFeil;
+
+    if (!harEnFeil) {
+      return undefined;
+    }
+
+    switch (harEnFeil) {
+      case "UGYLDIG_FORMAT":
+        return "Filformatet er ikke støttet.";
+      case "UGYLDIG_STØRRELSE":
+        return "Filstørrelsen overskrider grensen.";
+      case "TEKSNISK_FEIL":
+        return "Det oppstod en teknisk feil.";
+      default:
+        return "Ukjent feil.";
+    }
+  }
+
   return (
     <div className="innhold">
       <h2>Dokumenter</h2>
@@ -68,9 +102,9 @@ export function DokumentasjonView() {
           <form method="post" encType="multipart/form-data">
             <FileUploadDropzone
               label="Last opp dokument"
-              fileLimit={{ max: 5, current: filer.length }}
-              accept={".png, .jpg, .jpeg, .pdf"}
-              onSelect={(newFiles) => lastOppfiler(newFiles)}
+              fileLimit={{ max: MAX_ANTALL_FILER, current: filer.length }}
+              accept={TILATT_FIL_TYPER}
+              onSelect={(filer) => lastOppfiler(filer)}
             />
           </form>
           {filer.map((file) => (
@@ -78,7 +112,7 @@ export function DokumentasjonView() {
               key={file.file.name}
               file={file.file}
               status={opplastere.includes(file.file.name) ? "uploading" : "idle"}
-              error={filOpplastingsFeil[file.file.name]}
+              error={hentFilFeilmelding(file.file.name)}
               button={{
                 action: "delete",
                 onClick: () => setFiler(filer.filter((f) => f.file.name !== file.file.name)),

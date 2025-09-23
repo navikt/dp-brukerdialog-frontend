@@ -2,7 +2,7 @@ const { rawlist } = require("@inquirer/prompts");
 const fs = require("fs");
 const path = require("path");
 
-let envPath = path.resolve(__dirname, ".env");
+const envPath = path.resolve(__dirname, ".env");
 let envText = fs.readFileSync(envPath, "utf-8");
 
 const TOKENX_BASE_URL = "https://tokenx-token-generator.intern.dev.nav.no/api/public/obo";

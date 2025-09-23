@@ -3,7 +3,6 @@ import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
 import { Envalg } from "~/components/spørsmål/Envalg";
-import { findLandeNavn } from "~/constants";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/barnetillegg.schema";
 import {
@@ -12,6 +11,7 @@ import {
   forsørgerDuBarnet,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
+import { findLandeNavn } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;

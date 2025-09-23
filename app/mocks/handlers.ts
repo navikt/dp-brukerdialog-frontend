@@ -12,6 +12,8 @@ import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
 
+let uploadCount = 0;
+
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
     return HttpResponse.text("b1778783-3ec1-4cd1-8eae-b496c10a6122");
@@ -47,16 +49,18 @@ export const handlers = [
     return HttpResponse.json(mockProgress);
   }),
   http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, async () => {
-    // Simulerer nettverksforsinkelse
     await delay(1000);
+    uploadCount += 1;
 
-    // Returnerer 500 for å simulere feil
-    // return new HttpResponse("Feil ved opplasting", {
-    //   status: 500,
-    //   statusText: "Feil ved opplasting",
-    // });
-
-    // Returnerer 200 for å simulere suksess
-    return HttpResponse.json(mockMellomlagring);
+    if (uploadCount < 4) {
+      // Første 3 kall: suksess
+      return HttpResponse.json(mockMellomlagring);
+    } else {
+      // 4. kall: feil
+      return new HttpResponse("Feil ved opplasting", {
+        status: 500,
+        statusText: "Feil ved opplasting",
+      });
+    }
   }),
 ];

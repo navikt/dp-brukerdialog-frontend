@@ -33,6 +33,20 @@ export async function action({ params, request }: ActionFunctionArgs) {
       body: requestData,
     });
 
+    if (!response.ok) {
+      return new Response("Feil ved opplasting", {
+        status: response.status,
+        statusText: response.statusText,
+      });
+    }
+
     return await response.json();
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+
+    return new Response("Feil ved opplasting", {
+      status: 500,
+      statusText: "Feil ved opplasting",
+    });
+  }
 }
