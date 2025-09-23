@@ -72,14 +72,14 @@ import {
 
 export const payload = "payload";
 export const hvordanHarDuJobbet = "hvordan-har-du-jobbet";
-export const fastArbeidstidIMindreEnn6Måneder = "fast-arbeidstid-imindre-enn-6-måneder";
+export const fastArbeidstidIMindreEnn6Måneder = "fast-arbeidstid-i-mindre-enn-6-måneder";
 export const fastArbeidstidI6MånederEllerMer = "fast-arbeidstid-i-6-måneder-eller-mer";
 export const varierendeArbeidstidDeSiste12Månedene = "varierende-arbeidstid-de-siste-12-månedene";
 export const jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene =
   "jobbet-mer-igjennomsnitt-de-siste-36-månedene-enn-de-siste-12-månedenen";
 export const harIkkeJobbetDeSiste36Månedene = "har-ikke-jobbet-de-siste-36-månedene";
 export const harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene =
-  "har-du-jobbet-iet-annet-eøs-land-sveits-eller-storbritannia-iløpet-av-de-siste-36-månedene";
+  "har-du-jobbet-i-et-annet-eøs-land-sveits-eller-storbritannia-iløpet-av-de-siste-36-månedene";
 export const navnetPåBedriften = "navn-på-bedriften";
 export const hvilketLandJobbetDuI = "hvilket-land-jobbet-du-i";
 export const oppgiPersonnummeretPinDuHaddeIDetteLandet =
