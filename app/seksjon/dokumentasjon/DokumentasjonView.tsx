@@ -11,7 +11,7 @@ import {
   TILLATTE_FILTYPER,
 } from "~/utils/dokument.utils";
 
-type FilOpplastingError = {
+type OpplastingFeil = {
   filNavn: string;
   typeFeil: "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL";
 };
@@ -20,8 +20,8 @@ export function DokumentasjonView() {
   const { soknadId } = useParams();
 
   const [filer, setFiler] = useState<FileObject[]>([]);
-  const [filOpplastingsFeil, setFilOpplastingsFeil] = useState<FilOpplastingError[]>([]);
-  const [filerLoadingState, setFilerLoadingState] = useState<string[]>([]);
+  const [feilmeldinger, setFeilmeldinger] = useState<OpplastingFeil[]>([]);
+  const [lasterOppState, setLasterOppState] = useState<string[]>([]);
 
   // Todo,
   // Håntere sletting
@@ -30,8 +30,8 @@ export function DokumentasjonView() {
 
   async function lastOppfiler(filer: FileObject[]) {
     setFiler(filer);
-    setFilerLoadingState(filer.map((f) => f.file.name));
-    setFilOpplastingsFeil([]);
+    setLasterOppState(filer.map((f) => f.file.name));
+    setFeilmeldinger([]);
 
     let harFeil = false;
 
@@ -40,7 +40,7 @@ export function DokumentasjonView() {
       const erGyldigFormat = TILLATTE_FILTYPER.some((format) => fileName.endsWith(format));
 
       if (!erGyldigFormat) {
-        setFilOpplastingsFeil((prev) => [
+        setFeilmeldinger((prev) => [
           ...prev.filter((err) => err.filNavn !== fileObj.file.name),
           { filNavn: fileObj.file.name, typeFeil: "UGYLDIG_FORMAT" },
         ]);
@@ -49,7 +49,7 @@ export function DokumentasjonView() {
       }
 
       if (fileObj.file.size > MAX_FIL_STØRRELSE) {
-        setFilOpplastingsFeil((prev) => [
+        setFeilmeldinger((prev) => [
           ...prev.filter((err) => err.filNavn !== fileObj.file.name),
           { filNavn: fileObj.file.name, typeFeil: "FIL_FOR_STOR" },
         ]);
@@ -58,7 +58,7 @@ export function DokumentasjonView() {
     });
 
     if (harFeil) {
-      setFilerLoadingState([]);
+      setLasterOppState([]);
       return;
     }
 
@@ -74,7 +74,7 @@ export function DokumentasjonView() {
           });
 
           if (!response.ok) {
-            setFilOpplastingsFeil((prev) => [
+            setFeilmeldinger((prev) => [
               ...prev.filter((err) => err.filNavn !== fileObj.file.name),
               { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
             ]);
@@ -87,12 +87,12 @@ export function DokumentasjonView() {
     } catch (error) {
       console.error(error);
     } finally {
-      setFilerLoadingState([]);
+      setLasterOppState([]);
     }
   }
 
   function hentFilFeilmelding(filnavn: string) {
-    const harEnFeil = filOpplastingsFeil.find((err) => err.filNavn === filnavn)?.typeFeil;
+    const harEnFeil = feilmeldinger.find((err) => err.filNavn === filnavn)?.typeFeil;
 
     if (!harEnFeil) {
       return undefined;
@@ -128,7 +128,7 @@ export function DokumentasjonView() {
             <FileUploadItem
               key={file.file.name}
               file={file.file}
-              status={filerLoadingState.includes(file.file.name) ? "uploading" : "idle"}
+              status={lasterOppState.includes(file.file.name) ? "uploading" : "idle"}
               error={hentFilFeilmelding(file.file.name)}
               button={{
                 action: "delete",
