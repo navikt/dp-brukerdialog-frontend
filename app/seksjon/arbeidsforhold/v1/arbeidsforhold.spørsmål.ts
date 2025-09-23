@@ -71,6 +71,7 @@ import {
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 
 export const payload = "payload";
+export const erTilbakenavigering = "erTilbakenavigering";
 export const hvordanHarDuJobbet = "hvordan-har-du-jobbet";
 export const fastArbeidstidIMindreEnn6Måneder = "fast-arbeidstid-i-mindre-enn-6-måneder";
 export const fastArbeidstidI6MånederEllerMer = "fast-arbeidstid-i-6-måneder-eller-mer";

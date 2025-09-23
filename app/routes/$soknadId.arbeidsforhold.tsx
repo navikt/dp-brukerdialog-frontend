@@ -8,6 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { erTilbakenavigering } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
 import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 
@@ -32,8 +33,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "arbeidsforhold";
   const nesteSeksjonId = "annen-pengestotte";
+  const forrigeSeksjonId = "bostedsland";
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
@@ -48,6 +51,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return {
       error: "Noe gikk galt ved lagring av din situasjon",
     };
+  }
+
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);

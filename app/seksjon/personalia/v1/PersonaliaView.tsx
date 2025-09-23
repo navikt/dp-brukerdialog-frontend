@@ -87,7 +87,7 @@ export function PersonaliaView() {
             <Button
               variant="secondary"
               icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(`/${soknadId}/din-situasjon`)}
             >
               Forrige steg
             </Button>

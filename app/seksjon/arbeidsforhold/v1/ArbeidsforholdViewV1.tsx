@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { FormApi, useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
@@ -11,6 +11,7 @@ import {
   ArbeidsforholdResponse,
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
+  erTilbakenavigering,
   fastArbeidstidI6MånederEllerMer,
   fastArbeidstidIMindreEnn6Måneder,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -26,7 +27,6 @@ import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/
 import { payload } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
 export function ArbeidsforholdViewV1() {
-  const navigate = useNavigate();
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -98,7 +98,23 @@ export function ArbeidsforholdViewV1() {
     }
   }, [form.value(hvordanHarDuJobbet)]);
 
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+
+    const arbeidsforholdResponse: ArbeidsforholdResponse = {
+      [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
+      [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
+        harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+      ),
+      registrerteArbeidsforhold: registrerteArbeidsforhold,
+    };
+
+    form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
+    form.submit();
+  }
+
   function handleSubmit() {
+    form.setValue(erTilbakenavigering, false);
     form.validate();
 
     const manglerArbeidsforhold =
@@ -191,8 +207,9 @@ export function ArbeidsforholdViewV1() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
+                type="button"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
+                onClick={handleTilbakenavigering}
               >
                 Forrige steg
               </Button>
