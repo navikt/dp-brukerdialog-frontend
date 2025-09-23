@@ -11,6 +11,7 @@ import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
+import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
@@ -24,6 +25,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
     return HttpResponse.json(mockDinSituasjon);
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/arbeidsforhold`, () => {
+    return HttpResponse.json(mockArbeidsforhold);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/bostedsland`, () => {
     return HttpResponse.json(mockBostedsland);
