@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -19,6 +19,7 @@ import {
   AnnenPengestøtteResponse,
   annenPengestøtteSpørsmål,
   AnnenPengestøtteSvar,
+  erTilbakenavigering,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import { useEffect, useRef, useState } from "react";
 import { ModalOperasjonEnum, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
@@ -34,7 +35,6 @@ import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 
 export function AnnenPengestøtteViewV1() {
-  const navigate = useNavigate();
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
@@ -107,7 +107,33 @@ export function AnnenPengestøtteViewV1() {
     }
   }, [form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav), pengestøtteFraNorge.length]);
 
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+
+    const annenPengestøtteResponse: AnnenPengestøtteResponse = {
+      [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.value(
+        harMottattEllerSøktOmPengestøtteFraAndreEøsLand
+      ),
+      [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.value(
+        fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
+      ),
+      [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.value(
+        skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
+      ),
+      pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLand,
+      [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.value(
+        mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
+      ),
+      pengestøtteFraNorge: pengestøtteFraNorge,
+    };
+
+    form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
+
+    form.submit();
+  }
+
   function handleSubmit() {
+    form.setValue(erTilbakenavigering, false);
     form.validate();
 
     const manglerPengestøtteFraAndreEøsLand =
@@ -279,8 +305,9 @@ export function AnnenPengestøtteViewV1() {
           <HStack gap="4" className="mt-8">
             <Button
               variant="secondary"
+              type="button"
               icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-              onClick={() => navigate(-1)}
+              onClick={handleTilbakenavigering}
             >
               Forrige steg
             </Button>

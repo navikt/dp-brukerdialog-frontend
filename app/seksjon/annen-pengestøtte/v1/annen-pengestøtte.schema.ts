@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   annenPengestøtteSpørsmål,
   AnnenPengestøtteSvar,
+  erTilbakenavigering,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import {
   dagpengerEllerArbeidsledighetstrygd,
@@ -20,17 +21,17 @@ import {
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 import {
   etterlønnFraArbeidsgiver,
-  pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
+  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   hvemUtbetalerPengestøtten,
   hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  pensjonFraAndreEnnNav,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
-  PengestøtteFraNorgeModalSvar,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeModalSpørsmål,
+  PengestøtteFraNorgeModalSvar,
+  pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
+  pensjonFraAndreEnnNav,
+  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
 import { payload } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
@@ -39,6 +40,7 @@ const kortTekstMaksLengde = 200;
 export const annenPengestøtteSchema = z
   .object({
     [payload]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
     [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: z.enum(["ja", "nei"]).optional(),
     [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),
     [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: z
@@ -51,6 +53,10 @@ export const annenPengestøtteSchema = z
     versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data[erTilbakenavigering] === true) {
+      return;
+    }
+
     annenPengestøtteSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof AnnenPengestøtteSvar;
