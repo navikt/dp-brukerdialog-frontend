@@ -1,17 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import { vernepliktSchema } from "~/seksjon/verneplikt/verneplikt.schema";
-import { vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/verneplikt.spørsmål";
+import { erTilbakenavigering, vernepliktSpørsmål, VernepliktSvar, } from "~/seksjon/verneplikt/verneplikt.spørsmål";
 
 export default function VernepliktView() {
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
-  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -26,6 +25,11 @@ export default function VernepliktView() {
   });
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
+
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+    form.submit();
+  }
 
   return (
     <div className="innhold">
@@ -58,8 +62,9 @@ export default function VernepliktView() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
+                type="button"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
+                onClick={handleTilbakenavigering}
               >
                 Forrige steg
               </Button>

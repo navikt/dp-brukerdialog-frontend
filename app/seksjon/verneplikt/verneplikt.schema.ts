@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   avtjentVerneplikt,
   dokumenterAvtjentVernepliktNå,
+  erTilbakenavigering,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
   senderIkkeDokumentasjonBegrunnelse,
@@ -18,8 +19,13 @@ export const vernepliktSchema = z
     [lasteOppSenereBegrunnelse]: z.string().optional(),
     [naarSendtDokumentasjonTidligere]: z.string().optional(),
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     vernepliktSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof VernepliktSvar;
