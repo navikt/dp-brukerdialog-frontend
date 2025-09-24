@@ -21,8 +21,8 @@ function setLocale(locale: string | undefined): string {
   }
 }
 
-export function finnLandnavnMedLocale(code: string, locale: string | undefined) {
-  return countries.getName(code, setLocale(locale)) || "";
+export function finnLandnavnMedLocale(code: string, locale?: string | undefined) {
+  return countries.getName(code, setLocale(locale)) || "nb";
 }
 
 export const LANDKODE_LISTE = [
@@ -279,5 +279,5 @@ export const LANDKODE_LISTE = [
 
 export const LANDLISTE = LANDKODE_LISTE.map((land) => ({
   value: land.value,
-  label: finnLandnavnMedLocale(land.value, "nb"),
+  label: finnLandnavnMedLocale(land.value),
 }));
