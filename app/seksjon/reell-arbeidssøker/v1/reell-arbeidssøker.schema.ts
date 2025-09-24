@@ -1,31 +1,32 @@
 import {
   erDuVilligTilÅBytteYrkeEllerGåNedILønn,
+  erTilbakenavigering,
   kanDuJobbeBådeHeltidOgDeltid,
   kanDuJobbeIHeleNorge,
   kanDuTaAlleTyperArbeid,
   kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
-  kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen,
-  reellArbeidssøkerSpørsmål,
-  ReellArbeidssøkerSvar,
   kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
   kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidHarFylt60,
   kanIkkeJobbeHeltidOgDeltidJegErPermitert,
+  kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen,
   kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr,
   kanIkkeJobbeHeltidOgDeltidRedusertHelse,
   kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
-  kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
-  kanIkkeJobbeIHeleNorgeKortOmSituasjonen,
-  kanIkkeJobbeIHeleNorgeRedusertHelse,
-  kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
+  kanIkkeJobbeIHeleNorgeAnnenSituasjon,
+  kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
   kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-  kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-  kanIkkeJobbeIHeleNorgeJegErPermitert,
   kanIkkeJobbeIHeleNorgeHarFylt60,
-  kanIkkeJobbeIHeleNorgeAnnenSituasjon,
+  kanIkkeJobbeIHeleNorgeJegErPermitert,
+  kanIkkeJobbeIHeleNorgeKortOmSituasjonen,
+  kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
+  kanIkkeJobbeIHeleNorgeRedusertHelse,
+  kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+  reellArbeidssøkerSpørsmål,
+  ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.spørsmål";
 import { z } from "zod";
 
@@ -67,9 +68,15 @@ export const reellArbeidssøkerSchema = z
     [kanDuTaAlleTyperArbeid]: z.enum(["ja", "nei"]).optional(),
     [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
     versjon: z.number().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     // TODO: Generaliser denne på et vis så den kan brukes i alle `superRefine`. Gjelder alle `schema`-filene.
+
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
