@@ -10,7 +10,7 @@ import { formaterNorskDato } from "~/utils/formattering.utils";
 import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
 export function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
-  if (!seksjonsData) return <></>;
+  if (!seksjonsData) return null;
 
   const barnetilleggSvar: BarnetilleggResponse = JSON.parse(seksjonsData);
   const entries = Object.entries(barnetilleggSvar);

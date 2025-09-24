@@ -4,7 +4,7 @@ import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
 export function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
-  if (!seksjonsData) return <></>;
+  if (!seksjonsData) return null;
 
   const bostedslandSvar: BostedslandSvar = JSON.parse(seksjonsData);
   const seksjonSvar = Object.entries(bostedslandSvar);

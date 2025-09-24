@@ -4,7 +4,7 @@ import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
 export function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
-  if (!seksjonsData) return <></>;
+  if (!seksjonsData) return null;
 
   const utdanningData: UtdanningSvar = JSON.parse(seksjonsData);
   const utdanningEntries = Object.entries(utdanningData);

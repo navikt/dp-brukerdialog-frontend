@@ -4,7 +4,7 @@ import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
 export function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
-  if (!seksjonsData) return <></>;
+  if (!seksjonsData) return null;
 
   const vernepliktData: VernepliktSvar = JSON.parse(seksjonsData);
   if (vernepliktData["avtjent-verneplikt"] === undefined) return;

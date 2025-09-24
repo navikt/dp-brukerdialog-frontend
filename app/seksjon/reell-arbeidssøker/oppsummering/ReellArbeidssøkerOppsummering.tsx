@@ -10,7 +10,7 @@ import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
 import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
 export function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
-  if (!seksjonsData) return <></>;
+  if (!seksjonsData) return null;
 
   const reellArbeidssøkerData: ReellArbeidssøkerSvar = JSON.parse(seksjonsData);
   const reellArbeidssøkerEntries = Object.entries(reellArbeidssøkerData);

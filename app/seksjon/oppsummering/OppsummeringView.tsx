@@ -31,7 +31,7 @@ export default function OppsummeringView() {
     seksjonsUrl: string,
     seksjonsData: string
   ) {
-    if (!seksjonsData) return <></>;
+    if (!seksjonsData) return null;
     switch (seksjonsId) {
       case "din-situasjon":
         return <DinSituasjonOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
@@ -85,7 +85,7 @@ export default function OppsummeringView() {
           <h2>Dine svar</h2>
           {stegerISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
-            if (!seksjonsData) return <></>;
+            if (!seksjonsData) return null;
             return renderOppsummeringsSeksjon(
               seksjon.path,
               seksjonsData.seksjonsUrl,
