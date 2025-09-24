@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  erTilbakenavigering,
   harTilleggsopplysninger,
   tilleggsopplysninger,
   tilleggsopplysningerSpørsmål,
@@ -10,8 +11,13 @@ export const tilleggsopplysningerSchema = z
   .object({
     [harTilleggsopplysninger]: z.enum(["ja", "nei"]).optional(),
     [tilleggsopplysninger]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     tilleggsopplysningerSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof TilleggsopplysningerSvar;
