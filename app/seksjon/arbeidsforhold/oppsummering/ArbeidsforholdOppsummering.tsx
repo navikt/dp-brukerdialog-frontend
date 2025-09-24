@@ -71,8 +71,7 @@ export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }
                 harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneSpørsmål!
               }
               svar={
-                data[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ??
-                "Ubesvart"
+                data[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]
               }
             />
           </FormSummary.Answer>

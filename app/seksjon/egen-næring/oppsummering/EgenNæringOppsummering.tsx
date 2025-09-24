@@ -71,7 +71,7 @@ export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: S
           {driverDuEgenGårdsbrukSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenGårdsbrukSpørsmål}
-              svar={egenNæringSvar["driver-du-eget-gårdsbruk"] ?? "Ikke besvart"}
+              svar={egenNæringSvar["driver-du-eget-gårdsbruk"]}
             />
           ) : (
             "Ikke besvart"

@@ -3,14 +3,13 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
-export default function OppsummeringsSvar({
-  spørsmål,
-  svar,
-}: {
+interface IProps {
   spørsmål: KomponentType;
-  svar: string;
-}) {
-  if (svar === "" || svar === undefined) {
+  svar?: string;
+}
+
+export default function OppsummeringsSvar({ spørsmål, svar }: IProps) {
+  if (!svar) {
     return <FormSummary.Value>Ubesvart</FormSummary.Value>;
   }
 

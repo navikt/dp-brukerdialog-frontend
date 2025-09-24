@@ -56,7 +56,7 @@ export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUr
           </FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={mottattEllerSøktOmPengestøtteFraAndreEøsLand!}
-            svar={data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] ?? "Ubesvart"}
+            svar={data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand]}
           />
         </FormSummary.Answer>
 
