@@ -93,7 +93,7 @@ export default function SoknadIdIndex() {
         <SoknadIkon />
         <h1>Søknad om dagpenger</h1>
       </div>
-      <div>
+      <div className="innhold">
         <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 1}>
           {progressData.map((steg) => (
             <FormProgress.Step
