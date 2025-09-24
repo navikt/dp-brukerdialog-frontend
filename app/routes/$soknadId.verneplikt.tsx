@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+import { erTilbakenavigering, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
 import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
 
 const NYESTE_VERSJON = 1;
@@ -36,10 +36,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "verneplikt";
   const nesteSeksjonId = "utdanning";
+  const forrigeSeksjonId = "egen-naring";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon" && key !== erTilbakenavigering
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
   const versjon = formData.get("versjon");
@@ -52,6 +54,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av verneplikt" };
+  }
+
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
