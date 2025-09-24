@@ -1,4 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalSpørsmål,
@@ -12,12 +14,11 @@ import {
   pengestøtteFraNorgeSpørsmål,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/annen-pengestøtte-norge.spørsmål";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const data: AnnenPengestøtteResponse = JSON.parse(seksjonsData);
 

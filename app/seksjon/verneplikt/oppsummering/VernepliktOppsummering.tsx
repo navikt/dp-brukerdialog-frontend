@@ -1,8 +1,9 @@
 import { vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/verneplikt.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
+export function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
   if (!seksjonsData) return <></>;
 
   const vernepliktData: VernepliktSvar = JSON.parse(seksjonsData);

@@ -3,13 +3,11 @@ import {
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function TilleggOpplysningerOppsummering({
-  seksjonsData,
-  seksjonsUrl,
-}: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function TilleggOpplysningerOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const tilleggOpplysningerData: TilleggsopplysningerSvar = JSON.parse(seksjonsData);
   const tilleggOpplysningerEntries = Object.entries(tilleggOpplysningerData);

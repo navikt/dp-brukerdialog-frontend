@@ -1,8 +1,9 @@
 import { bostedslandSpørsmål, BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
+export function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
   if (!seksjonsData) return <></>;
 
   const bostedslandSvar: BostedslandSvar = JSON.parse(seksjonsData);

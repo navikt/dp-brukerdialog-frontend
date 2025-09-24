@@ -1,5 +1,5 @@
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import {
   arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
@@ -18,9 +18,10 @@ import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/a
 import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.konkurs";
 import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.permittert";
 import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.ikkeEndret";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const data: ArbeidsforholdResponse = JSON.parse(seksjonsData);
 

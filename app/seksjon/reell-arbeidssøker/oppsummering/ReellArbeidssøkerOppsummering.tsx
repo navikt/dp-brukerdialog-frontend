@@ -5,10 +5,11 @@ import {
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
+export function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
   if (!seksjonsData) return <></>;
 
   const reellArbeidssøkerData: ReellArbeidssøkerSvar = JSON.parse(seksjonsData);
