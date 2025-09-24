@@ -1,7 +1,7 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { FormSummary } from "@navikt/ds-react";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { finnLandnavn, finnLandnavnMedLocale } from "~/utils/land.utils";
+import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 export default function OppsummeringsSvar({
   spørsmål,

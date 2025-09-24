@@ -21,7 +21,7 @@ function setLocale(locale: string | undefined): string {
   }
 }
 
-export function finnLandnavnMedLocale(code: string, locale?: string | undefined) {
+export function finnLandnavnMedLocale(code: string, locale?: string) {
   return countries.getName(code, setLocale(locale)) || "nb";
 }
 
