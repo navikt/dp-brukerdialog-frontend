@@ -11,7 +11,7 @@ import {
   forsørgerDuBarnet,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { finnLandnavn } from "~/utils/land.utils";
+import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;
@@ -67,7 +67,7 @@ export function BarnFraPdl({ barn, barnIndex }: IProps) {
       )}
       {barn.bostedsland && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavn(barn.bostedsland).toUpperCase()}
+          BOR I {finnLandnavnMedLocale(barn.bostedsland).toUpperCase()}
         </BodyShort>
       )}
 

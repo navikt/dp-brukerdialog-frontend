@@ -1,7 +1,7 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { FormSummary } from "@navikt/ds-react";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { finnLandnavn } from "~/utils/land.utils";
+import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 export default function OppsummeringsSvar({
   spørsmål,
@@ -26,7 +26,7 @@ export default function OppsummeringsSvar({
         </FormSummary.Value>
       );
     case "land":
-      return <FormSummary.Value>{finnLandnavn(svar)}</FormSummary.Value>;
+      return <FormSummary.Value>{finnLandnavnMedLocale(svar)}</FormSummary.Value>;
     case "dato":
     case "periodeFra":
     case "periodeTil":
