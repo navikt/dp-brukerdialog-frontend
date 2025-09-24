@@ -1,12 +1,12 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import { findLandNavn } from "~/constants";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/barnetillegg.context";
 import { Barn } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
+import { finnLandnavn } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;
@@ -32,7 +32,7 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
       )}
       {barn.bostedsland && (
         <BodyShort size="small" spacing>
-          BOR I {findLandNavn(barn.bostedsland).toUpperCase()}
+          BOR I {finnLandnavn(barn.bostedsland).toUpperCase()}
         </BodyShort>
       )}
 

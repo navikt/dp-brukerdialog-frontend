@@ -25,23 +25,23 @@ const pinoLogger: Logger = pino(getEnv("IS_LOCALHOST") === "true" ? devConfig : 
 
 // Logger wrapper to handle server-side and client-side logging. Console.log is needed client-side for faro auto capture to function properly
 export const logger = {
-  info: (data: unknown, ...args: never[]) => {
+  info: (data: unknown, ...args: unknown[]) => {
     if (typeof document === "undefined") {
-      pinoLogger.info(data, ...args);
+      pinoLogger.info(data as any, ...(args as any));
     } else {
       console.log(data, ...args);
     }
   },
-  error: (data: unknown, ...args: never[]) => {
+  error: (data: unknown, ...args: unknown[]) => {
     if (typeof document === "undefined") {
-      pinoLogger.error(data, ...args);
+      pinoLogger.error(data as any, ...(args as any));
     } else {
       console.error(data, ...args);
     }
   },
-  warn: (data: unknown, ...args: never[]) => {
+  warn: (data: unknown, ...args: unknown[]) => {
     if (typeof document === "undefined") {
-      pinoLogger.warn(data, ...args);
+      pinoLogger.warn(data as any, ...(args as any));
     } else {
       console.warn(data, ...args);
     }

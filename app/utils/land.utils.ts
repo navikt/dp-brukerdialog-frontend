@@ -1,0 +1,38 @@
+export const LANDLISTE = [
+  { value: "NOR", label: "Norge" },
+  { value: "SWE", label: "Sverige" },
+  { value: "DNK", label: "Danmark" },
+  { value: "FIN", label: "Finland" },
+  { value: "ISL", label: "Island" },
+  { value: "GBR", label: "Storbritannia" },
+  { value: "DEU", label: "Tyskland" },
+  { value: "FRA", label: "Frankrike" },
+  { value: "ITA", label: "Italia" },
+  { value: "ESP", label: "Spania" },
+  { value: "PRT", label: "Portugal" },
+  { value: "POL", label: "Polen" },
+  { value: "NLD", label: "Nederland" },
+  { value: "BEL", label: "Belgia" },
+  { value: "CHE", label: "Sveits" },
+  { value: "AUT", label: "Østerrike" },
+  { value: "IRL", label: "Irland" },
+  { value: "CZE", label: "Tsjekkia" },
+  { value: "SVK", label: "Slovakia" },
+  { value: "SVN", label: "Slovenia" },
+  { value: "HUN", label: "Ungarn" },
+  { value: "HRV", label: "Kroatia" },
+  { value: "EST", label: "Estland" },
+  { value: "LVA", label: "Latvia" },
+  { value: "LTU", label: "Litauen" },
+  { value: "LUX", label: "Luxembourg" },
+  { value: "ROU", label: "Romania" },
+  { value: "BGR", label: "Bulgaria" },
+  { value: "GRC", label: "Hellas" },
+  { value: "CYP", label: "Kypros" },
+  { value: "MLT", label: "Malta" },
+];
+
+export function finnLandnavn(value: string) {
+  const land = LANDLISTE.find((land) => land.value === value);
+  return land ? land.label : value;
+}

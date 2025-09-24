@@ -2,12 +2,21 @@ const { rawlist } = require("@inquirer/prompts");
 const fs = require("fs");
 const path = require("path");
 
-let envPath = path.resolve(__dirname, ".env");
+const envPath = path.resolve(__dirname, ".env");
 let envText = fs.readFileSync(envPath, "utf-8");
 
-const TOKENX_URL = "https://tokenx-token-generator.intern.dev.nav.no/api/public/obo";
-const ENV = "DP_SOKNAD_ORKESTRATOR_TOKEN";
-const AUD = "dev-gcp:teamdagpenger:dp-soknad-orkestrator";
+const TOKENX_BASE_URL = "https://tokenx-token-generator.intern.dev.nav.no/api/public/obo";
+
+const TOKEN_LIST = [
+  {
+    env: "DP_SOKNAD_ORKESTRATOR_TOKEN",
+    aud: "dev-gcp:teamdagpenger:dp-soknad-orkestrator",
+  },
+  {
+    env: "DP_MELLOMLAGRING_TOKEN",
+    aud: "dev-gcp:teamdagpenger:dp-mellomlagring",
+  },
+];
 
 const IDENT_LIST = [
   { name: "Top Sure: 21857998666", value: "21857998666" },
@@ -25,26 +34,28 @@ async function init() {
       choices: IDENT_LIST,
     });
 
-    const token = await getToken(ident);
+    for (const { env, aud } of TOKEN_LIST) {
+      const token = await getToken(ident, aud);
 
-    if (!token) {
-      throw new Error("Token ble ikke funnet i responsen");
+      if (!token) {
+        throw new Error(`Token ble ikke funnet for ${env}`);
+      }
+
+      setEnvValue(env, token);
     }
-
-    setEnvValue(ENV, token);
   } catch (err) {
     console.error("❌ Feil:", err.message);
   }
 }
 
-async function getToken(ident) {
+async function getToken(ident, aud) {
   const formData = new FormData();
 
   formData.append("pid", ident);
-  formData.append("aud", AUD);
+  formData.append("aud", aud);
 
   try {
-    const response = await fetch(TOKENX_URL, {
+    const response = await fetch(TOKENX_BASE_URL, {
       method: "POST",
       body: formData,
     });
