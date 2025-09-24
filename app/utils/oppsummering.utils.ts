@@ -5,6 +5,6 @@ export type SeksjonProps = {
   seksjonsUrl: string;
 };
 
-export function skalSkjuleSpørsmålBasertPåType(spørsmål: KomponentType) {
+export function erInformasjonsFelt(spørsmål: KomponentType) {
   return ["varselmelding, lesMer", "dokumentasjonskravindikator"].includes(spørsmål.type);
 }

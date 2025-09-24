@@ -7,7 +7,7 @@ import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { SeksjonProps } from "~/seksjon/oppsummering/OppsummeringUtils";
+import { SeksjonProps } from "~/utils/oppsummering.utils";
 
 export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;

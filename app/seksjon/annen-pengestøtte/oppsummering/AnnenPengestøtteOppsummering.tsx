@@ -15,10 +15,7 @@ import {
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/annen-pengestøtte.spørsmål";
-import {
-  SeksjonProps,
-  skalSkjuleSpørsmålBasertPåType,
-} from "~/seksjon/oppsummering/OppsummeringUtils";
+import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
 export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
@@ -75,7 +72,7 @@ export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUr
                       pengestøtteFraAndreEøsLandModalSpørsmål,
                       støtte[0]
                     );
-                    if (aktivSpørsmål && !skalSkjuleSpørsmålBasertPåType(aktivSpørsmål)) {
+                    if (aktivSpørsmål && !erInformasjonsFelt(aktivSpørsmål)) {
                       return (
                         <FormSummary.Answer key={støtte[0]}>
                           <FormSummary.Label>{aktivSpørsmål?.label}</FormSummary.Label>
@@ -103,7 +100,7 @@ export default function AnnenPengestøtteOppsummering({ seksjonsData, seksjonsUr
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((støtte) => {
                     const aktivSpørsmål = finnSpørsmål(pengestøtteFraNorgeModalSpørsmål, støtte[0]);
-                    if (aktivSpørsmål && !skalSkjuleSpørsmålBasertPåType(aktivSpørsmål)) {
+                    if (aktivSpørsmål && !erInformasjonsFelt(aktivSpørsmål)) {
                       return (
                         <FormSummary.Answer key={støtte[0]}>
                           <FormSummary.Label>{aktivSpørsmål?.label}</FormSummary.Label>
