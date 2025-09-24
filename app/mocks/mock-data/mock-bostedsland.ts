@@ -10,7 +10,7 @@ import {
 } from "~/seksjon/bostedsland/bostedsland.spørsmål";
 
 export const mockBostedsland: BostedslandSvar = {
-  [bostedsland]: "FI",
+  [bostedsland]: "FIN",
   [reistTilbakeTilBostedslandet]: "ja",
   [reisteDuHjemTilLandetDuBorI]: "nei",
   [reisteDuITaktMedRotasjon]: "nei",

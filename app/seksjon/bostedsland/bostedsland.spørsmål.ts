@@ -39,7 +39,7 @@ export const bostedslandSpørsmål: KomponentType[] = [
       { value: "ja", label: "Ja" },
       { value: "nei", label: "Nei" },
     ],
-    visHvis: (svar: BostedslandSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NO",
+    visHvis: (svar: BostedslandSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NOR",
   },
   {
     id: avreiseDatoFra,
