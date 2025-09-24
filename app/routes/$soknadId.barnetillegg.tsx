@@ -13,6 +13,7 @@ import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.con
 import {
   Barn,
   BarnetilleggSvar,
+  erTilbakenavigering,
   forsørgerDuBarnSomIkkeVisesHer,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
@@ -64,8 +65,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "reell-arbeidssoker";
+  const forrigeSeksjonId = "utdanning";
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
@@ -81,6 +84,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return {
       error: "Noe gikk galt ved lagring av din situasjon",
     };
+  }
+
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);

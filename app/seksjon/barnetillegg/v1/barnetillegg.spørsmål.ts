@@ -3,6 +3,7 @@ import { EnvalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsm
 export const forsørgerDuBarnet = "forsørgerDuBarnet";
 export const forsørgerDuBarnSomIkkeVisesHer = "forsørger-du-barn-som-ikke-vises-her";
 export const payload = "payload";
+export const erTilbakenavigering = "erTilbakenavigering";
 
 export type Barn = {
   fornavnOgMellomnavn: string;
