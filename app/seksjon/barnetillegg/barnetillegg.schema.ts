@@ -2,12 +2,13 @@ import { z } from "zod";
 import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  bostedsland,
+  erTilbakenavigering,
   etternavn,
   fornavnOgMellomnavn,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
-  bostedsland,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
   payload,
@@ -17,8 +18,13 @@ export const barnetilleggSchema = z
   .object({
     [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
     [payload]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     barnetilleggSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof BarnetilleggSvar;
