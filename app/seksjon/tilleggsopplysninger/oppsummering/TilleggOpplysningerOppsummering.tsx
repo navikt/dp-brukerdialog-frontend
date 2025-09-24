@@ -4,6 +4,7 @@ import {
 } from "~/seksjon/tilleggsopplysninger/tilleggsopplysninger.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
 export default function TilleggOpplysningerOppsummering({
   seksjonsData,
@@ -21,9 +22,10 @@ export default function TilleggOpplysningerOppsummering({
       </FormSummary.Header>
       <FormSummary.Answers>
         {tilleggsopplysningerSpørsmål.map((spørsmål) => {
-          const entry = tilleggOpplysningerEntries.find((entry) => entry[0] === spørsmål.id);
-          if (entry) {
-            const svar = entry[1];
+          if (erInformasjonsFelt(spørsmål)) return null;
+          const finnSvaret = tilleggOpplysningerEntries.find((entry) => entry[0] === spørsmål.id);
+          if (finnSvaret) {
+            const svar = finnSvaret[1];
             return (
               <FormSummary.Answer key={spørsmål.id}>
                 <FormSummary.Label>{spørsmål.label}</FormSummary.Label>

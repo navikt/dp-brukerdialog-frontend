@@ -10,7 +10,7 @@ export default function OppsummeringsSvar({
   spørsmål: KomponentType;
   svar: string;
 }) {
-  if (svar === "" || svar === undefined) {
+  if (svar === "" || svar === undefined || !spørsmål) {
     return <FormSummary.Value>Ubesvart</FormSummary.Value>;
   }
 

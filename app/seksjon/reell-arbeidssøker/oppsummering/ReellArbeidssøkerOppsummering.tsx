@@ -7,6 +7,7 @@ import {
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
+import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
 export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
@@ -104,6 +105,7 @@ export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsU
         {reellArbeidssøkerSpørsmål.map((spørsmål) => {
           let svar = reellArbeidssøkerData[spørsmål.id as keyof ReellArbeidssøkerSvar];
           if (
+            erInformasjonsFelt(spørsmål) ||
             svar === undefined ||
             spørsmål.id === "kan-ikke-jobbe-i-hele-norge-kort-om-sitasjonen" ||
             spørsmål.id === "kan-ikke-jobbe-heltid-og-deltid-kort-om-sitasjonen"

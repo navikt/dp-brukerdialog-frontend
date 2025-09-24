@@ -1,4 +1,5 @@
 import { FormSummary } from "@navikt/ds-react";
+import { SeksjonProps } from "~/utils/oppsummering.utils";
 
 type PersonaliaType = {
   navn: string;

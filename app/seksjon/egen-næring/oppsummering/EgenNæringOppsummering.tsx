@@ -11,6 +11,7 @@ import {
 } from "~/seksjon/egen-næring/egen-næring.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { SeksjonProps } from "~/utils/oppsummering.utils";
 
 export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
