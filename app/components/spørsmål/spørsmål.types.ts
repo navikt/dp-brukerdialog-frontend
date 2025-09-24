@@ -12,7 +12,7 @@ export type KomponentType =
 
 type InfoType = "varselmelding" | "lesMer" | "dokumentasjonskravindikator";
 
-export type SpørsmalType =
+export type SpørsmålType =
   | "envalg"
   | "flervalg"
   | "langTekst"
@@ -26,47 +26,47 @@ export type KomponentBase = {
   id: string;
   label: string;
   description?: string;
-  type: SpørsmalType | InfoType;
+  type: SpørsmålType | InfoType;
   visHvis?: (svar: Record<string, any>) => boolean;
 };
 
-export type SpørsmalBase = KomponentBase & {
+export type SpørsmålBase = KomponentBase & {
   optional?: boolean;
 };
 
-export type EnvalgSpørsmål = SpørsmalBase & {
+export type EnvalgSpørsmål = SpørsmålBase & {
   type: "envalg";
   options: { value: string; label: string }[];
 };
 
-export type FlervalgSpørsmål = SpørsmalBase & {
+export type FlervalgSpørsmål = SpørsmålBase & {
   type: "flervalg";
   options: { value: string; label: string }[];
 };
 
-export type LangTekstSpørsmål = SpørsmalBase & {
+export type LangTekstSpørsmål = SpørsmålBase & {
   type: "langTekst";
   maxLength?: number;
 };
 
-export type KortTekstSpørsmål = SpørsmalBase & {
+export type KortTekstSpørsmål = SpørsmålBase & {
   type: "kortTekst";
 };
 
-export type DatoSpørsmål = SpørsmalBase & {
+export type DatoSpørsmål = SpørsmålBase & {
   type: "dato";
   fraOgMed?: Date;
   tilOgMed?: Date;
 };
 
-export type PeriodeSpørsmål = SpørsmalBase & {
+export type PeriodeSpørsmål = SpørsmålBase & {
   type: "periodeFra" | "periodeTil";
   fraOgMed?: DatoSpørsmål;
   tilOgMed?: DatoSpørsmål;
   periodeLabel?: string;
 };
 
-export type LandSpørsmål = SpørsmalBase & {
+export type LandSpørsmål = SpørsmålBase & {
   type: "land";
 };
 

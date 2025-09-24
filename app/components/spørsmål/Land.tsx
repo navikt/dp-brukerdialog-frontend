@@ -1,7 +1,7 @@
 import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { LandSpørsmål } from "./spørsmål.types";
 import { LANDLISTE } from "~/utils/land.utils";
+import { LandSpørsmål } from "./spørsmål.types";
 
 interface IProps {
   spørsmål: LandSpørsmål;
