@@ -1,6 +1,6 @@
 :root {
   --app-max-width: 787px;
-  --app-min-height: 60vh;
+  --app-min-height: 65vh;
   --innhold-max-width: 576px;
 }
 
@@ -51,10 +51,6 @@
   margin-bottom: var(--a-spacing-8);
 }
 
-.mt-14 {
-  margin-top: var(--a-spacing-14);
-}
-
 .mt-4 {
   margin-top: var(--a-spacing-4);
 }
@@ -67,6 +63,13 @@
   margin-top: var(--a-spacing-8);
 }
 
+.mt-14 {
+  margin-top: var(--a-spacing-14);
+}
+
+.mt-12 {
+  margin-top: var(--a-spacing-12);
+}
 .mb-4 {
   margin-bottom: var(--a-spacing-4);
 }
