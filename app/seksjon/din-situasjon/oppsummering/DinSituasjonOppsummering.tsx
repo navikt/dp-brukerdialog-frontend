@@ -3,10 +3,11 @@ import {
   dinSituasjonSpørsmål,
   DinSituasjonSvar,
 } from "~/seksjon/din-situasjon/din-situasjon.spørsmål";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const dinSituasjonData: DinSituasjonSvar = JSON.parse(seksjonsData);
   const dinSituasjonEntries = Object.entries(dinSituasjonData);

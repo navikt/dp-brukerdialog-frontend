@@ -1,9 +1,10 @@
 import { vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/verneplikt.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function VernepliktOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const vernepliktData: VernepliktSvar = JSON.parse(seksjonsData);
   if (vernepliktData["avtjent-verneplikt"] === undefined) return;

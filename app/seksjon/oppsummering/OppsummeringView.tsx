@@ -1,18 +1,23 @@
 import { Alert, BodyLong, VStack } from "@navikt/ds-react";
-import DinSituasjonOppsummering from "~/seksjon/din-situasjon/oppsummering/DinSituasjonOppsummering";
+import { DinSituasjonOppsummering } from "~/seksjon/din-situasjon/oppsummering/DinSituasjonOppsummering";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
-import BostedslandOppsummering from "~/seksjon/bostedsland/oppsummering/BostedslandOppsummering";
-import BarnetilleggOppsummering from "~/seksjon/barnetillegg/oppsummering/BarnetilleggOppsummering";
-import VernepliktOppsummering from "~/seksjon/verneplikt/oppsummering/VernepliktOppsummering";
-import UtdanningOppsummering from "~/seksjon/utdanning/oppsummering/UtdanningOppsummering";
-import ReellArbeidssøkerOppsummering from "~/seksjon/reell-arbeidssøker/oppsummering/ReellArbeidssøkerOppsummering";
-import TilleggOpplysningerOppsummering from "~/seksjon/tilleggsopplysninger/oppsummering/TilleggOpplysningerOppsummering";
-import PersonaliaOppsummering from "~/seksjon/personalia/oppsummering/PersonaliaOppsummering";
-import EgenNæringOppsummering from "~/seksjon/egen-næring/oppsummering/EgenNæringOppsummering";
-import AnnenPengestøtteOppsummering from "~/seksjon/annen-pengestøtte/oppsummering/AnnenPengestøtteOppsummering";
+import { BostedslandOppsummering } from "~/seksjon/bostedsland/oppsummering/BostedslandOppsummering";
+import { BarnetilleggOppsummering } from "~/seksjon/barnetillegg/oppsummering/BarnetilleggOppsummering";
+import { VernepliktOppsummering } from "~/seksjon/verneplikt/oppsummering/VernepliktOppsummering";
+import { UtdanningOppsummering } from "~/seksjon/utdanning/oppsummering/UtdanningOppsummering";
+import { ReellArbeidssøkerOppsummering } from "~/seksjon/reell-arbeidssøker/oppsummering/ReellArbeidssøkerOppsummering";
+import { TilleggOpplysningerOppsummering } from "~/seksjon/tilleggsopplysninger/oppsummering/TilleggOpplysningerOppsummering";
+import { PersonaliaOppsummering } from "~/seksjon/personalia/oppsummering/PersonaliaOppsummering";
+import { EgenNæringOppsummering } from "~/seksjon/egen-næring/oppsummering/EgenNæringOppsummering";
+import { AnnenPengestøtteOppsummering } from "~/seksjon/annen-pengestøtte/oppsummering/AnnenPengestøtteOppsummering";
 import { stegerISøknaden } from "~/routes/$soknadId";
-import ArbeidsforholdOppsummering from "~/seksjon/arbeidsforhold/oppsummering/ArbeidsforholdOppsummering";
+import { ArbeidsforholdOppsummering } from "~/seksjon/arbeidsforhold/oppsummering/ArbeidsforholdOppsummering";
+
+export type OppsummeringProps = {
+  seksjonsData: string;
+  seksjonsUrl: string;
+};
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -26,7 +31,7 @@ export default function OppsummeringView() {
     seksjonsUrl: string,
     seksjonsData: string
   ) {
-    if (!seksjonsData) return <></>;
+    if (!seksjonsData) return null;
     switch (seksjonsId) {
       case "din-situasjon":
         return <DinSituasjonOppsummering seksjonsData={seksjonsData} seksjonsUrl={seksjonsUrl} />;
@@ -80,7 +85,7 @@ export default function OppsummeringView() {
           <h2>Dine svar</h2>
           {stegerISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
-            if (!seksjonsData) return <></>;
+            if (!seksjonsData) return null;
             return renderOppsummeringsSeksjon(
               seksjon.path,
               seksjonsData.seksjonsUrl,

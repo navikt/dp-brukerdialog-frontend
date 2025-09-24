@@ -5,11 +5,12 @@ import {
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
 import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const barnetilleggSvar: BarnetilleggResponse = JSON.parse(seksjonsData);
   const entries = Object.entries(barnetilleggSvar);

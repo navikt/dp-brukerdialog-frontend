@@ -1,9 +1,10 @@
 import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/utdanning.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const utdanningData: UtdanningSvar = JSON.parse(seksjonsData);
   const utdanningEntries = Object.entries(utdanningData);

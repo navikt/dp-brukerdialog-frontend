@@ -10,10 +10,11 @@ import {
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/egen-næring.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { OppsummeringProps } from "~/seksjon/oppsummering/OppsummeringView";
 
-export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: OppsummeringProps) {
+  if (!seksjonsData) return null;
 
   const egenNæringSvar: EgenNæringResponse = JSON.parse(seksjonsData);
 
@@ -71,7 +72,7 @@ export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: S
           {driverDuEgenGårdsbrukSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenGårdsbrukSpørsmål}
-              svar={egenNæringSvar["driver-du-eget-gårdsbruk"] ?? "Ikke besvart"}
+              svar={egenNæringSvar["driver-du-eget-gårdsbruk"]}
             />
           ) : (
             "Ikke besvart"
