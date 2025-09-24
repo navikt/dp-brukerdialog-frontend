@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
+export const erTilbakenavigering = "erTilbakenavigering";
 export const tarUtdanningEllerOpplæring = "tar-utdanning-eller-opplæring";
 export const avsluttetUtdanningSiste6Måneder = "avsluttet-utdanning-siste-6-måneder";
 export const dokumenterAvsluttetUtdanningSiste6MånederNå =
@@ -42,14 +43,17 @@ export const utdanningSpørsmål: KomponentType[] = [
     ],
     visHvis: (svar: UtdanningSvar) => svar[tarUtdanningEllerOpplæring] === "nei",
   },
-  { id: "avsluttetUtdanningSiste6MånederVarselmelding",
+  {
+    id: "avsluttetUtdanningSiste6MånederVarselmelding",
     type: "varselmelding",
     variant: "info",
     label: "",
-    description: "Du må dokumentere sluttdatoen. Du kan legge ved bekreftelse på når du avla siste avsluttende eksamen eller aktivitet. Hvis du har avbrutt skolegangen, kan du legge ved bekreftelse fra skolen på dette.",
+    description:
+      "Du må dokumentere sluttdatoen. Du kan legge ved bekreftelse på når du avla siste avsluttende eksamen eller aktivitet. Hvis du har avbrutt skolegangen, kan du legge ved bekreftelse fra skolen på dette.",
     visHvis: (svar: UtdanningSvar) => svar[avsluttetUtdanningSiste6Måneder] === "ja",
   },
-  { id: "avsluttetUtdanningSiste6MånederDokumentkravindikator",
+  {
+    id: "avsluttetUtdanningSiste6MånederDokumentkravindikator",
     type: "dokumentasjonskravindikator",
     label: "Dokumentasjon av sluttdato for utdanning",
     visHvis: (svar: UtdanningSvar) => svar[avsluttetUtdanningSiste6Måneder] === "ja",
