@@ -1,6 +1,10 @@
 import { bostedslandSpørsmål, BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import {
+  SeksjonProps,
+  skalSkjuleSpørsmålBasertPåType,
+} from "~/seksjon/oppsummering/OppsummeringUtils";
 
 export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
@@ -18,7 +22,7 @@ export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: S
 
         {seksjonSvar.map(([key, value]) => {
           const spørsmål = bostedslandSpørsmål.find((s) => s.id === key);
-          if (spørsmål) {
+          if (spørsmål && !skalSkjuleSpørsmålBasertPåType(spørsmål)) {
             return (
               <FormSummary.Answer key={key}>
                 <FormSummary.Label>{spørsmål.label}</FormSummary.Label>

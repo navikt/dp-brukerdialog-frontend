@@ -1,6 +1,10 @@
 import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/utdanning.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import {
+  SeksjonProps,
+  skalSkjuleSpørsmålBasertPåType,
+} from "~/seksjon/oppsummering/OppsummeringUtils";
 
 export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
@@ -19,7 +23,7 @@ export default function UtdanningOppsummering({ seksjonsData, seksjonsUrl }: Sek
         )}
         {utdanningSpørsmål.map((spørsmål) => {
           const svaret = utdanningEntries.find((s) => s[0] === spørsmål.id);
-          if (svaret) {
+          if (svaret && !skalSkjuleSpørsmålBasertPåType(spørsmål)) {
             return (
               <FormSummary.Answer key={spørsmål.id}>
                 <FormSummary.Label>{spørsmål.label}</FormSummary.Label>

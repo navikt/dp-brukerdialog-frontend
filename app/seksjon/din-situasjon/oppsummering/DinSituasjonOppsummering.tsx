@@ -4,6 +4,10 @@ import {
   DinSituasjonSvar,
 } from "~/seksjon/din-situasjon/din-situasjon.spørsmål";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import {
+  SeksjonProps,
+  skalSkjuleSpørsmålBasertPåType,
+} from "~/seksjon/oppsummering/OppsummeringUtils";
 
 export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
@@ -23,7 +27,8 @@ export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: 
 
         {dinSituasjonEntries.map(([key, value]) => {
           const spørsmål = dinSituasjonSpørsmål.find((s) => s.id === key);
-          if (spørsmål) {
+
+          if (spørsmål && !skalSkjuleSpørsmålBasertPåType(spørsmål)) {
             return (
               <FormSummary.Answer key={key}>
                 <FormSummary.Label>{spørsmål.label}</FormSummary.Label>

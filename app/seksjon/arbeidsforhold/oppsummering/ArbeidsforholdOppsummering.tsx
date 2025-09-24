@@ -18,6 +18,10 @@ import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/a
 import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.konkurs";
 import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.permittert";
 import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.ikkeEndret";
+import {
+  SeksjonProps,
+  skalSkjuleSpørsmålBasertPåType,
+} from "~/seksjon/oppsummering/OppsummeringUtils";
 
 export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
   if (!seksjonsData) return <></>;
@@ -88,12 +92,13 @@ export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }
                     alleArbeidsforholdModalSpørsmål,
                     arbeidsforholdModalSvar[0]
                   );
-                  return (
-                    <FormSummary.Answer key={arbeidsforholdModalSvar[0]}>
-                      <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
-                      <OppsummeringsSvar spørsmål={spørsmål!} svar={arbeidsforholdModalSvar[1]} />
-                    </FormSummary.Answer>
-                  );
+                  if (spørsmål && !skalSkjuleSpørsmålBasertPåType(spørsmål))
+                    return (
+                      <FormSummary.Answer key={arbeidsforholdModalSvar[0]}>
+                        <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                        <OppsummeringsSvar spørsmål={spørsmål!} svar={arbeidsforholdModalSvar[1]} />
+                      </FormSummary.Answer>
+                    );
                 })}
               </FormSummary.Answers>
             </FormSummary.Value>
