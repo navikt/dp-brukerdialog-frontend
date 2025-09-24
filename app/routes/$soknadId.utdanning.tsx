@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import { erTilbakenavigering, UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
 import { UtdanningViewV1 } from "~/seksjon/utdanning/v1/UtdanningViewV1";
 
 const NYESTE_VERSJON = 1;
@@ -36,10 +36,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "utdanning";
   const nesteSeksjonId = "barnetillegg";
+  const forrigeSeksjonId = "verneplikt";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon" && key !== erTilbakenavigering
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
   const versjon = formData.get("versjon");
@@ -52,6 +54,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av utdanning" };
+  }
+
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);

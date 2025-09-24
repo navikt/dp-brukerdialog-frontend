@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   avsluttetUtdanningSiste6Måneder,
   dokumenterAvsluttetUtdanningSiste6MånederNå,
+  erTilbakenavigering,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
   planleggerÅStarteEllerFullføreStudierSamtidig,
@@ -21,8 +22,13 @@ export const utdanningSchema = z
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
     [planleggerÅStarteEllerFullføreStudierSamtidig]: z.enum(["ja", "nei"]).optional(),
     versjon: z.number().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     utdanningSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof UtdanningSvar;
