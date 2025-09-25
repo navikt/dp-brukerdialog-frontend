@@ -9,18 +9,18 @@ import {
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
-} from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import {
   jegHarSagtOppHvaVarÅrsaken,
   jegHarSagtOppHvorMangeTimerHarDuJobbetIUka,
   jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka,
-} from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.jegHarSagtOpp";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
 import {
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka
-} from "~/seksjon/arbeidsforhold/arbeidsforhold.spørsmål.kontraktenErUgått";
+  kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
 
 export const mockArbeidsforhold: ArbeidsforholdResponse = {
   registrerteArbeidsforhold: [
@@ -43,7 +43,8 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [varighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
       [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontrakten-er-ugått",
       [kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka]: "nei",
-      [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]: "ja",
+      [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
+        "ja",
       [kontraktenErUgåttHvaHarDuSvartPåTilbudet]: "nei",
       [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie.",
       [harDuJobbetSkiftTurnusEllerRotasjon]: "hverken-skift-turnus-eller-rotasjon",
