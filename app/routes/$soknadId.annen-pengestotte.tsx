@@ -2,8 +2,9 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { AnnenPengestøtteView } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteView";
+import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
 import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+const NYESTE_VERSJON = 1;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -11,7 +12,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "annen-pengestotte");
 
   if (!response.ok) {
-    return undefined;
+    return {
+      versjon: NYESTE_VERSJON,
+      skjema: undefined,
+    };
   }
 
   return await response.json();
@@ -26,7 +30,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const versjon = formData.get("versjon");
+  const seksjonsDataMedVersjon = {
+    skjema: seksjonsData,
+    versjon: Number(versjon),
+  };
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsDataMedVersjon);
 
   if (response.status !== 200) {
     return {
@@ -39,13 +49,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function AnnenPengestøtteRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  return (
-    <AnnenPengestøtteProvider
-      pengestøtteFraAndreEøsLand={loaderData?.pengestøtteFraAndreEøsLand || []}
-      pengestøtteFraNorge={loaderData?.pengestøtteFraNorge || []}
-    >
-      <AnnenPengestøtteView />
-    </AnnenPengestøtteProvider>
-  );
+  switch (loaderData.versjon) {
+    case 1:
+      return (
+        <AnnenPengestøtteProvider
+          pengestøtteFraAndreEøsLand={loaderData?.skjema?.pengestøtteFraAndreEøsLand || []}
+          pengestøtteFraNorge={loaderData?.skjema?.pengestøtteFraNorge || []}
+        >
+          <AnnenPengestøtteViewV1 />
+        </AnnenPengestøtteProvider>
+      );
+    default:
+      return <div>Ukjent versjon</div>;
+  }
 }

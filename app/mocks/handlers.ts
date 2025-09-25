@@ -48,7 +48,7 @@ export const handlers = [
     return HttpResponse.json(mockEngenNæring);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/annen-pengestotte`, () => {
-    return HttpResponse.json(mockAnnenPengestøtte);
+    return HttpResponse.json({ versjon: 1, skjema: mockAnnenPengestøtte });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
