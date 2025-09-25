@@ -25,7 +25,7 @@ import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/v1/annen-penges
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { payload } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
-export function ArbeidsforholdView() {
+export function ArbeidsforholdViewV1() {
   const navigate = useNavigate();
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
@@ -44,8 +44,11 @@ export function ArbeidsforholdView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: loaderData.skjema ?? {},
   });
+  useEffect(() => {
+    form.setValue("versjon", loaderData.versjon);
+  }, [form, loaderData.versjon]);
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdSpørsmål);
 

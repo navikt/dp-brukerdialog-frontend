@@ -119,6 +119,7 @@ export const arbeidsforholdSchema = z
     [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: z
       .enum(["ja", "nei"])
       .optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     arbeidsforholdSpørsmål.forEach((spørsmål) => {
