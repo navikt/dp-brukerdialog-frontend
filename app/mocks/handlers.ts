@@ -27,13 +27,13 @@ export const handlers = [
     return HttpResponse.json(mockBarnFraPdl);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
-    return HttpResponse.json({ versjon: 3, schema: mockDinSituasjon });
+    return HttpResponse.json({ versjon: 1, skjema: mockDinSituasjon });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/arbeidsforhold`, () => {
     return HttpResponse.json(mockArbeidsforhold);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/bostedsland`, () => {
-    return HttpResponse.json(mockBostedsland);
+    return HttpResponse.json({ versjon: 1, skjema: mockBostedsland });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/utdanning`, () => {
     return HttpResponse.json(mockUtdanning);

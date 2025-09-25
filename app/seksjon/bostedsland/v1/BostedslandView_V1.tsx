@@ -10,8 +10,9 @@ import {
   bostedslandSpørsmål,
   BostedslandSvar,
 } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
+import { useEffect } from "react";
 
-export function BostedslandView() {
+export function BostedslandView_V1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -25,8 +26,12 @@ export function BostedslandView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: loaderData.skjema ?? {},
   });
+
+  useEffect(() => {
+    form.setValue("versjon", loaderData.versjon);
+  }, [form, loaderData.versjon]);
 
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
 

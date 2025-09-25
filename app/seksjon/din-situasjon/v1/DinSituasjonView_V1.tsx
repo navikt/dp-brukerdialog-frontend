@@ -39,7 +39,6 @@ export function DinSituasjonView_V1() {
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
-            <div>Versjon: {loaderData.versjon}</div>
             <br />
             <VStack gap="8">
               {dinSituasjonSpørsmål.map((spørsmål) => {
