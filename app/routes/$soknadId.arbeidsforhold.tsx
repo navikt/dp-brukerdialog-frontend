@@ -2,8 +2,10 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { ArbeidsforholdView } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdView";
+import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
 import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
+
+const NYESTE_VERSJON = 1;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -11,7 +13,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "arbeidsforhold");
 
   if (!response.ok) {
-    return undefined;
+    return {
+      versjon: NYESTE_VERSJON,
+      skjema: undefined,
+    };
   }
 
   return await response.json();
@@ -26,7 +31,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const versjon = formData.get("versjon");
+  const seksjonsPayload = {
+    versjon: Number(versjon),
+    skjema: seksjonsData,
+  };
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsPayload);
 
   if (response.status !== 200) {
     return {
@@ -39,10 +49,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function ArbeidsforholdRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  return (
-    <ArbeidsforholdProvider registrerteArbeidsforhold={loaderData?.registrerteArbeidsforhold || []}>
-      <ArbeidsforholdView />
-    </ArbeidsforholdProvider>
-  );
+  switch (loaderData.versjon) {
+    case 1:
+      return (
+        <ArbeidsforholdProvider
+          registrerteArbeidsforhold={loaderData?.skjema?.registrerteArbeidsforhold || []}
+        >
+          <ArbeidsforholdViewV1 />
+        </ArbeidsforholdProvider>
+      );
+    default:
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+  }
 }
