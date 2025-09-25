@@ -11,7 +11,7 @@ import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { DinSituasjonView_V1 } from "~/seksjon/din-situasjon/v1/DinSituasjonView_V1";
 import { defaultVersjonSvar, SeksjonDataType } from "~/utils/versjon.utils";
 
-const LATEST_VERSJON = 1;
+const NYESTE_VERSJON = 1;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -21,7 +21,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!response.ok) {
     if (response.status === 404) {
       return {
-        versjon: LATEST_VERSJON,
+        versjon: NYESTE_VERSJON,
         skjema: undefined,
       };
     }
@@ -64,7 +64,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function DinSituasjonRoute() {
   const loaderData: SeksjonDataType = useLoaderData<typeof loader>();
-  loaderData.versjon = loaderData?.versjon ?? LATEST_VERSJON;
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
   switch (loaderData.versjon) {
     case 1:
