@@ -33,7 +33,7 @@ import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/ko
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 
-export function AnnenPengestøtteView() {
+export function AnnenPengestøtteViewV1() {
   const navigate = useNavigate();
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
@@ -67,10 +67,14 @@ export function AnnenPengestøtteView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: loaderData.skjema ?? {},
   });
 
   useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteSpørsmål);
+
+  useEffect(() => {
+    form.setValue("versjon", loaderData.versjon);
+  }, [form, loaderData.versjon]);
 
   useEffect(() => {
     if (pengestøtteFraAndreEøsLandModalData) {

@@ -48,6 +48,7 @@ export const annenPengestøtteSchema = z
       .string()
       .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
       .optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     annenPengestøtteSpørsmål.forEach((spørsmål) => {
