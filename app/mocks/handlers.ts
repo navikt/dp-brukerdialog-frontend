@@ -27,7 +27,7 @@ export const handlers = [
     return HttpResponse.json(mockBarnFraPdl);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
-    return HttpResponse.json(mockDinSituasjon);
+    return HttpResponse.json({ versjon: 3, schema: mockDinSituasjon });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/arbeidsforhold`, () => {
     return HttpResponse.json(mockArbeidsforhold);

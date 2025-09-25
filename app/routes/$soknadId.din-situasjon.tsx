@@ -1,8 +1,17 @@
-import { ActionFunctionArgs, data, LoaderFunctionArgs, redirect } from "react-router";
+import {
+  ActionFunctionArgs,
+  data,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { DinSituasjonView } from "~/seksjon/din-situasjon/v1/DinSituasjonView";
+import { DinSituasjonView_V1 } from "~/seksjon/din-situasjon/v1/DinSituasjonView_V1";
+import { defaultVersjonSvar, SeksjonDataType } from "~/utils/versjon.utils";
+
+const LATEST_VERSJON = 1;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -11,7 +20,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   if (!response.ok) {
     if (response.status === 404) {
-      return undefined;
+      return {
+        versjon: LATEST_VERSJON,
+        skjema: undefined,
+      };
     }
 
     throw data(response.statusText, { status: response.status });
@@ -26,11 +38,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "personalia";
+
+  const versjon = formData.get("versjon");
+
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
+
+  const payload = {
+    versjon: Number(versjon),
+    skjema: seksjonData,
+  };
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
 
   if (response.status !== 200) {
     return {
@@ -42,5 +63,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function DinSituasjonRoute() {
-  return <DinSituasjonView />;
+  const loaderData: SeksjonDataType = useLoaderData<typeof loader>();
+  loaderData.versjon = loaderData?.versjon ?? LATEST_VERSJON;
+
+  switch (loaderData.versjon) {
+    case 1:
+      return <DinSituasjonView_V1 />;
+    default:
+      return <div>{defaultVersjonSvar()}</div>;
+  }
 }

@@ -7,8 +7,9 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
 import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
+import { useEffect } from "react";
 
-export function DinSituasjonView() {
+export function DinSituasjonView_V1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -23,8 +24,12 @@ export function DinSituasjonView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: loaderData.skjema ?? {},
   });
+
+  useEffect(() => {
+    form.setValue("versjon", loaderData.versjon?.toString());
+  }, [form, loaderData.versjon]);
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
 
@@ -34,6 +39,8 @@ export function DinSituasjonView() {
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
+            <div>Versjon: {loaderData.versjon}</div>
+            <br />
             <VStack gap="8">
               {dinSituasjonSpørsmål.map((spørsmål) => {
                 // Skip rendering if the question should not be shown based on current answers
@@ -56,7 +63,6 @@ export function DinSituasjonView() {
                 </Alert>
               )}
             </VStack>
-
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
