@@ -1,19 +1,26 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
-import VernepliktView from "~/seksjon/verneplikt/v1/VernepliktView";
+import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<VernepliktSvar | undefined> {
+const NYESTE_VERSJON = 1;
+
+type VernepliktLoaderDataType = {
+  versjon: number;
+  skjema: VernepliktSvar | undefined;
+};
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "verneplikt");
-  if (response.status !== 200) {
-    return undefined;
+  if (!response.ok) {
+    return {
+      skjema: undefined,
+      versjon: NYESTE_VERSJON,
+    };
   }
 
   return await response.json();
@@ -26,11 +33,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "verneplikt";
   const nesteSeksjonId = "utdanning";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
+  const versjon = formData.get("versjon");
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
+  const seksjonDataMedVersjon = {
+    versjon: Number(versjon),
+    skjema: seksjonData,
+  } as VernepliktSvar;
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av verneplikt" };
   }
@@ -39,5 +52,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function VernepliktRoute() {
-  return <VernepliktView />;
+  const loaderData: VernepliktLoaderDataType = useLoaderData<typeof loader>();
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
+
+  switch (loaderData.versjon) {
+    case 1:
+      return <VernepliktViewV1 />;
+    default:
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+  }
 }

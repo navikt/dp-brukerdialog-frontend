@@ -18,6 +18,7 @@ export const vernepliktSchema = z
     [lasteOppSenereBegrunnelse]: z.string().optional(),
     [naarSendtDokumentasjonTidligere]: z.string().optional(),
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     vernepliktSpørsmål.forEach((spørsmål) => {
