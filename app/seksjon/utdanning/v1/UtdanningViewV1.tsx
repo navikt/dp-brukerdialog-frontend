@@ -8,7 +8,7 @@ import { action, loader } from "~/routes/$soknadId.utdanning";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
 
-export function UtdanningView() {
+export function UtdanningViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export function UtdanningView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSpørsmål);
@@ -34,6 +34,7 @@ export function UtdanningView() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
+              <input type="hidden" name="versjon" value={loaderData.versjon} />
               {utdanningSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;

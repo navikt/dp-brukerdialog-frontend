@@ -36,7 +36,7 @@ export const handlers = [
     return HttpResponse.json({ versjon: 1, skjema: mockBostedsland });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/utdanning`, () => {
-    return HttpResponse.json(mockUtdanning);
+    return HttpResponse.json({ versjon: 1, skjema: mockUtdanning });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/verneplikt`, () => {
     return HttpResponse.json({ versjon: 1, skjema: mockVerneplikt });
