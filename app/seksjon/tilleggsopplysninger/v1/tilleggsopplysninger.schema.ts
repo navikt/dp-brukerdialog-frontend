@@ -10,6 +10,7 @@ export const tilleggsopplysningerSchema = z
   .object({
     [harTilleggsopplysninger]: z.enum(["ja", "nei"]).optional(),
     [tilleggsopplysninger]: z.string().optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     tilleggsopplysningerSpørsmål.forEach((spørsmål) => {

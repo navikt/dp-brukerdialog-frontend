@@ -1,20 +1,29 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { TilleggsopplysningerView } from "~/seksjon/tilleggsopplysninger/v1/TilleggopplysningerView";
 import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
+const NYESTE_VERSJON = 1;
+type TilleggsopplysningerSvarType = {
+  skjema: TilleggsopplysningerSvar | undefined;
+  versjon: number;
+};
+
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<TilleggsopplysningerSvar | undefined> {
+}: LoaderFunctionArgs): Promise<TilleggsopplysningerSvarType> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
 
   if (response.status !== 200) {
-    return undefined;
+    return {
+      versjon: NYESTE_VERSJON,
+      skjema: undefined,
+    };
   }
 
   return await response.json();
@@ -27,11 +36,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "tilleggsopplysninger";
   const nesteSeksjonId = "oppsummering";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
+  const versjon = formData.get("versjon");
+  const seksjonDataMedVersjon = {
+    skjema: seksjonData,
+    versjon: Number(versjon),
+  };
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
 
   if (response.status !== 200) {
     return {
@@ -43,5 +57,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function TilleggsopplysningerRoute() {
-  return <TilleggsopplysningerView />;
+  const loaderData: TilleggsopplysningerSvarType = useLoaderData<typeof loader>();
+  loaderData.versjon = loaderData.versjon ?? NYESTE_VERSJON;
+
+  switch (loaderData.versjon) {
+    case 1:
+      return <TilleggsopplysningerView />;
+    default:
+      throw new Error(`Unknown versjon: ${loaderData.versjon}`);
+  }
 }

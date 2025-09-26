@@ -13,6 +13,7 @@ import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
 import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
 import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
+import { mockTilleggsopplysninger } from "~/mocks/mock-data/mock-tilleggsopplysninger";
 
 let antallOpplastetDokument = 0;
 
@@ -49,6 +50,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/annen-pengestotte`, () => {
     return HttpResponse.json({ versjon: 1, skjema: mockAnnenPengestøtte });
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/tilleggsopplysninger`, () => {
+    return HttpResponse.json({ versjon: 1, skjema: mockTilleggsopplysninger });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
