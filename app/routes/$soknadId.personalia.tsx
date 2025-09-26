@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
-import { PersonaliaView } from "~/seksjon/personalia/PersonaliaView";
+import { PersonaliaView } from "~/seksjon/personalia/v1/PersonaliaView";
 
 export type Personalia = {
   person: Person;

@@ -2,20 +2,22 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { EgenNæringView } from "~/seksjon/egen-næring/EgenNæringView";
-import { EgenNæringProvider } from "~/seksjon/egen-næring/egen-næring.context";
-import { EgenNæringResponse } from "~/seksjon/egen-næring/egen-næring.spørsmål";
+import { EgenNæringView } from "~/seksjon/egen-næring/v1/EgenNæringView";
+import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { EgenNæringResponse } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<EgenNæringResponse | undefined> {
+const NYESTE_VERSJON = 1;
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "egen-naring");
 
   if (!response.ok) {
-    return undefined;
+    return {
+      skjema: undefined,
+      versjon: NYESTE_VERSJON,
+    };
   }
 
   return await response.json();
@@ -30,7 +32,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const versjon = formData.get("versjon");
+  const seksjonsDataMedVersjon = {
+    skjema: seksjonsData,
+    versjon: Number(versjon),
+  };
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsDataMedVersjon);
 
   if (response.status !== 200) {
     return {
@@ -43,14 +51,20 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function EgenNæringRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  const skjema: EgenNæringResponse = loaderData?.skjema ?? {};
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  return (
-    <EgenNæringProvider
-      næringsvirksomheter={loaderData?.næringsvirksomheter || []}
-      gårdsbruk={loaderData?.gårdsbruk || []}
-    >
-      <EgenNæringView />
-    </EgenNæringProvider>
-  );
-
+  switch (loaderData.versjon) {
+    case 1:
+      return (
+        <EgenNæringProvider
+          næringsvirksomheter={skjema?.næringsvirksomheter || []}
+          gårdsbruk={skjema?.gårdsbruk || []}
+        >
+          <EgenNæringView />
+        </EgenNæringProvider>
+      );
+    default:
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+  }
 }

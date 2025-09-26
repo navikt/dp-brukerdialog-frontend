@@ -7,12 +7,13 @@ import { mockUtdanning } from "./mock-data/mock-utdanning";
 import { mockVerneplikt } from "~/mocks/mock-data/mock-verneplikt";
 import { mockBarnetillegg } from "./mock-data/mock-barnetillegg";
 import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
-import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
+import { mockEgenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
 import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
 import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
+import { mockTilleggsopplysninger } from "~/mocks/mock-data/mock-tilleggsopplysninger";
 
 let antallOpplastetDokument = 0;
 
@@ -27,28 +28,31 @@ export const handlers = [
     return HttpResponse.json(mockBarnFraPdl);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
-    return HttpResponse.json(mockDinSituasjon);
+    return HttpResponse.json({ versjon: 1, skjema: mockDinSituasjon });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/arbeidsforhold`, () => {
-    return HttpResponse.json(mockArbeidsforhold);
+    return HttpResponse.json({ versjon: 1, skjema: mockArbeidsforhold });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/bostedsland`, () => {
-    return HttpResponse.json(mockBostedsland);
+    return HttpResponse.json({ versjon: 1, skjema: mockBostedsland });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/utdanning`, () => {
-    return HttpResponse.json(mockUtdanning);
+    return HttpResponse.json({ versjon: 1, skjema: mockUtdanning });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/verneplikt`, () => {
-    return HttpResponse.json(mockVerneplikt);
+    return HttpResponse.json({ versjon: 1, skjema: mockVerneplikt });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/barnetillegg`, () => {
-    return HttpResponse.json(mockBarnetillegg);
+    return HttpResponse.json({ versjon: 1, skjema: mockBarnetillegg });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/egen-naring`, () => {
-    return HttpResponse.json(mockEngenNæring);
+    return HttpResponse.json({ versjon: 1, skjema: mockEgenNæring });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/annen-pengestotte`, () => {
-    return HttpResponse.json(mockAnnenPengestøtte);
+    return HttpResponse.json({ versjon: 1, skjema: mockAnnenPengestøtte });
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/tilleggsopplysninger`, () => {
+    return HttpResponse.json({ versjon: 1, skjema: mockTilleggsopplysninger });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);

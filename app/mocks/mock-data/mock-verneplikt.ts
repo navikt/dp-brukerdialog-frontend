@@ -1,5 +1,5 @@
 export const mockVerneplikt = {
-  avtjentVerneplikt: undefined,
+  avtjentVerneplikt: "ja",
   dokumenterAvtjentVernepliktNå: undefined,
   lasteOppSenereBegrunnelse: undefined,
   naarSendtDokumentasjonTidligere: undefined,
