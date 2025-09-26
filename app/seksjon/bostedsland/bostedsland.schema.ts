@@ -5,6 +5,7 @@ import {
   bostedsland,
   bostedslandSpørsmål,
   BostedslandSvar,
+  erTilbakenavigering,
   hvorforReistDuFraNorge,
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
@@ -20,14 +21,21 @@ export const bostedslandSchema = z
     [avreiseDatoFra]: z.string().optional(),
     [avreiseDatoTil]: z.string().optional(),
     [hvorforReistDuFraNorge]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data[erTilbakenavigering] === true) {
+      return;
+    }
     bostedslandSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof BostedslandSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
+      const erSpørsmål =
+        spørsmål.type !== "lesMer" &&
+        spørsmål.type !== "varselmelding" &&
+        spørsmål.type !== "dokumentasjonskravindikator";
 
       if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({

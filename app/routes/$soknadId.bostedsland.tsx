@@ -2,7 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
+import { BostedslandSvar, erTilbakenavigering } from "~/seksjon/bostedsland/bostedsland.spørsmål";
 import { BostedslandView } from "~/seksjon/bostedsland/BostedslandView";
 
 export async function loader({
@@ -24,10 +24,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "bostedsland";
   const nesteSeksjonId = "arbeidsforhold";
+  const forrigeSeksjonId = "personalia";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== erTilbakenavigering
   );
   const seksjonsData = Object.fromEntries(filtrertEntries);
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
@@ -38,6 +40,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+  }
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 

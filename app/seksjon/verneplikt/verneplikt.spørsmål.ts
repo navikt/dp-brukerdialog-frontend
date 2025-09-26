@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
+export const erTilbakenavigering = "erTilbakenavigering";
 export const avtjentVerneplikt = "avtjent-verneplikt";
 export const dokumenterAvtjentVernepliktNå = "dokumenter-avtjent-verneplikt-nå";
 export const lasteOppSenereBegrunnelse = "laste-opp-senere-begrunnelse";

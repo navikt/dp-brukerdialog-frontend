@@ -2,6 +2,7 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const harTilleggsopplysninger = "har-tilleggsopplysninger";
 export const tilleggsopplysninger = "tilleggsopplysninger";
+export const erTilbakenavigering = "erTilbakenavigering";
 
 export type TilleggsopplysningerSvar = {
   [harTilleggsopplysninger]?: "ja" | "nei";

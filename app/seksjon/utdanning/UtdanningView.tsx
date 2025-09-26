@@ -1,17 +1,20 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.utdanning";
 import { utdanningSchema } from "~/seksjon/utdanning/utdanning.schema";
-import { utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/utdanning.spørsmål";
+import {
+  erTilbakenavigering,
+  utdanningSpørsmål,
+  UtdanningSvar,
+} from "~/seksjon/utdanning/utdanning.spørsmål";
 
 export function UtdanningView() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -26,6 +29,11 @@ export function UtdanningView() {
   });
 
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSpørsmål);
+
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+    form.submit();
+  }
 
   return (
     <div className="innhold">
@@ -57,8 +65,9 @@ export function UtdanningView() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
+                type="button"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
+                onClick={handleTilbakenavigering}
               >
                 Forrige steg
               </Button>

@@ -6,6 +6,7 @@ import {
   ArbeidsforholdModalSvar,
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
+  erTilbakenavigering,
   fastArbeidstidI6MånederEllerMer,
   fastArbeidstidIMindreEnn6Måneder,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -68,13 +69,13 @@ import {
 import {
   arbeidsforholdModalArbeidsgiverErKonkursSpørsmål,
   konkursDekkerLønnsgarantiordningenKravetDitt,
+  konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
   konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
   konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet,
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
   konkursHarDuSøktOmLønnsgarantimidler,
   konkursHvorMangeTimerHarDuJobbetIUka,
-  konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
   konkursNårStartetDuIDenneJobben,
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
   konkursVetDuHvorMangeTimerDuJobbetIUka,
@@ -107,6 +108,7 @@ import {
 export const arbeidsforholdSchema = z
   .object({
     [payload]: z.string().optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
     [hvordanHarDuJobbet]: z
       .enum([
         fastArbeidstidIMindreEnn6Måneder,
@@ -121,6 +123,9 @@ export const arbeidsforholdSchema = z
       .optional(),
   })
   .superRefine((data, ctx) => {
+    if (data[erTilbakenavigering] === true) {
+      return;
+    }
     arbeidsforholdSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof ArbeidsforholdSvar;
@@ -152,9 +157,8 @@ export const arbeidsforholdModalSchema = z
     [jegErOppsagtHvaVarÅrsaken]: z.string().optional(),
     [jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka]: z.string().optional(),
     [jegErOppsagtHvorMangeTimerHarDuJobbetIUka]: z.string().optional(),
-    [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]: z
-      .string()
-      .optional(),
+    [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]:
+      z.string().optional(),
     [jegErOppsagtHvaHarDuSvartPåTilbudet]: z.string().optional(),
     [jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: z.string().optional(),
     [jegHarSagtOppHvaVarÅrsaken]: z.string().optional(),
@@ -186,12 +190,18 @@ export const arbeidsforholdModalSchema = z
     [konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler]: z.string().optional(),
     [konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler]: z.string().optional(),
     [konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet]: z.string().optional(),
-    [konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen]: z.string().optional(),
+    [konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen]: z
+      .string()
+      .optional(),
     [konkursHarDuSøktOmLønnsgarantimidler]: z.string().optional(),
     [konkursDekkerLønnsgarantiordningenKravetDitt]: z.string().optional(),
-    [konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet]: z.string().optional(),
-    [konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn]: z.string().optional(),
-    [permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato]: z.string().optional(),
+    [konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet]:
+      z.string().optional(),
+    [konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn]:
+      z.string().optional(),
+    [permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato]: z
+      .string()
+      .optional(),
     [permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]: z.string().optional(),
     [permittertNårStartetDuIDenneJobben]: z.string().optional(),
     [permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien]: z.string().optional(),

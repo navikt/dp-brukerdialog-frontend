@@ -1,6 +1,7 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const payload = "payload";
+export const erTilbakenavigering = "erTilbakenavigering";
 export const driverDuEgenNæringsvirksomhet = "driver-du-egen-næringsvirksomhet";
 export const næringsvirksomheter = "næringsvirksomheter";
 export const gårdsbruk = "gårdsbruk";
@@ -50,7 +51,7 @@ export type EgenNæringSvar = {
 export type EgenNæringResponse = EgenNæringSvar & {
   [næringsvirksomheter]?: Array<Næringsvirksomhet> | [];
   [gårdsbruk]?: Array<Gårdsbruk> | [];
-}
+};
 
 export const egenNæringEgenNæringsvirksomhetSpørsmål: KomponentType[] = [
   {
@@ -186,6 +187,6 @@ export const leggTilGårdsbrukSpørsmål: KomponentType[] = [
     id: hvordanHarDuBeregnetAntallArbeidstimerTotalt,
     type: "langTekst",
     label: "Forklar kort hvordan du har beregnet antall arbeidstimer totalt",
-    maxLength: 500
+    maxLength: 500,
   },
 ];

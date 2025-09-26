@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-ico
 import { Alert, BodyLong, BodyShort, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
@@ -15,6 +15,7 @@ import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  erTilbakenavigering,
   forsørgerDuBarnSomIkkeVisesHer,
   payload,
 } from "~/seksjon/barnetillegg/barnetillegg.spørsmål";
@@ -23,7 +24,6 @@ import { BarnLagtManuelt } from "~/seksjon/barnetillegg/komponenter/BarnLagtManu
 import { BarnModal } from "~/seksjon/barnetillegg/komponenter/BarnModal";
 
 export function BarnetilleggView() {
-  const navigate = useNavigate();
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -62,6 +62,19 @@ export function BarnetilleggView() {
     setHarEtVarsel(forsørgerDuBarnSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
     setHarEnFeil(forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
   }, [forsørgerDuBarnSomIkkeVisesHerSvar, barnLagtManuelt.length]);
+
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+
+    const data: BarnetilleggResponse = {
+      barnFraPdl: barnFraPdl,
+      barnLagtManuelt: barnLagtManuelt,
+      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+    };
+
+    form.setValue(payload, JSON.stringify(data));
+    form.submit();
+  }
 
   function handleSubmit() {
     form.validate();
@@ -165,8 +178,9 @@ export function BarnetilleggView() {
         <HStack gap="4" className="mt-8">
           <Button
             variant="secondary"
+            type="button"
             icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-            onClick={() => navigate(-1)}
+            onClick={handleTilbakenavigering}
           >
             Forrige steg
           </Button>

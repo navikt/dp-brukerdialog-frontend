@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   avsluttetUtdanningSiste6Måneder,
   dokumenterAvsluttetUtdanningSiste6MånederNå,
+  erTilbakenavigering,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
   planleggerÅStarteEllerFullføreStudierSamtidig,
@@ -20,14 +21,22 @@ export const utdanningSchema = z
     [naarSendtDokumentasjonTidligere]: z.string().optional(),
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
     [planleggerÅStarteEllerFullføreStudierSamtidig]: z.enum(["ja", "nei"]).optional(),
+    [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.erTilbakenavigering) {
+      return;
+    }
+
     utdanningSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const spørsmålId = spørsmål.id as keyof UtdanningSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
+      const erSpørsmål =
+        spørsmål.type !== "lesMer" &&
+        spørsmål.type !== "varselmelding" &&
+        spørsmål.type !== "dokumentasjonskravindikator";
 
       if (erSpørsmål && synlig && !svar) {
         ctx.addIssue({

@@ -42,6 +42,7 @@ export const kanIkkeJobbeIHeleNorgeKortOmSituasjonen =
 export const kanDuTaAlleTyperArbeid = "kan-du-ta-alle-typer-arbeid";
 export const erDuVilligTilÅBytteYrkeEllerGåNedILønn =
   "er-du-villig-til-å-bytte-yrke-eller-gå-ned-i-lønn";
+export const erTilbakenavigering = "erTilbakenavigering";
 
 export type ReellArbeidssøkerSvar = {
   [kanDuJobbeBådeHeltidOgDeltid]?: "ja" | "nei";
