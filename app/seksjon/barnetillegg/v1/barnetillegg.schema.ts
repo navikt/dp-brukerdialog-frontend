@@ -17,6 +17,7 @@ export const barnetilleggSchema = z
   .object({
     [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
     [payload]: z.string().optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     barnetilleggSpørsmål.forEach((spørsmål) => {

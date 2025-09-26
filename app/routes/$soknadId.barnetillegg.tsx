@@ -16,10 +16,17 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
   barnLagtManuelt?: Barn[];
 };
 
+type BarnetilleggResponseType = {
+  versjon: number;
+  skjema: BarnetilleggResponse | undefined;
+};
+
+const NYESTE_VERSJON = 1;
+
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<BarnetilleggResponse | undefined> {
+}: LoaderFunctionArgs): Promise<BarnetilleggResponseType> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "barnetillegg");
@@ -28,13 +35,19 @@ export async function loader({
     const barnFraPdlResponse = await hentBarn(request);
 
     if (!barnFraPdlResponse.ok) {
-      return undefined;
+      return {
+        versjon: NYESTE_VERSJON,
+        skjema: undefined,
+      };
     }
 
     return {
-      [forsørgerDuBarnSomIkkeVisesHer]: undefined,
-      barnLagtManuelt: [],
-      barnFraPdl: await barnFraPdlResponse.json(),
+      versjon: NYESTE_VERSJON,
+      skjema: {
+        [forsørgerDuBarnSomIkkeVisesHer]: undefined,
+        barnLagtManuelt: [],
+        barnFraPdl: await barnFraPdlResponse.json(),
+      },
     };
   }
 
@@ -50,7 +63,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const versjon = formData.get("versjon");
+  const seksjonsDataMedVersjon = {
+    skjema: seksjonsData,
+    versjon: Number(versjon),
+  };
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsDataMedVersjon);
 
   if (response.status !== 200) {
     return {
@@ -62,14 +81,21 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function BarntilleggRoute() {
-  const loaderData = useLoaderData<typeof loader>();
+  const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
+  const skjema: BarnetilleggResponse = loaderData?.skjema ?? {};
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  return (
-    <BarnetilleggProvider
-      barnFraPdl={loaderData?.barnFraPdl || []}
-      barnLagtManuelt={loaderData?.barnLagtManuelt || []}
-    >
-      <BarnetilleggView />
-    </BarnetilleggProvider>
-  );
+  switch (loaderData.versjon) {
+    case 1:
+      return (
+        <BarnetilleggProvider
+          barnFraPdl={skjema?.barnFraPdl || []}
+          barnLagtManuelt={skjema?.barnLagtManuelt || []}
+        >
+          <BarnetilleggView />
+        </BarnetilleggProvider>
+      );
+    default:
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+  }
 }

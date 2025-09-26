@@ -42,7 +42,7 @@ export const handlers = [
     return HttpResponse.json({ versjon: 1, skjema: mockVerneplikt });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/barnetillegg`, () => {
-    return HttpResponse.json(mockBarnetillegg);
+    return HttpResponse.json({ versjon: 1, skjema: mockBarnetillegg });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/egen-naring`, () => {
     return HttpResponse.json({ versjon: 1, skjema: mockEgenNæring });

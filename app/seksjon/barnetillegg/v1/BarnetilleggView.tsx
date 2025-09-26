@@ -41,7 +41,7 @@ export function BarnetilleggView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -108,6 +108,7 @@ export function BarnetilleggView() {
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
+            <input type="hidden" name="versjon" value={loaderData.versjon} />
             {barnetilleggSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
