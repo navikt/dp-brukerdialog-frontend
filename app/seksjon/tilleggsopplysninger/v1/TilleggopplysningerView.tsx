@@ -25,7 +25,7 @@ export function TilleggsopplysningerView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);
@@ -36,6 +36,7 @@ export function TilleggsopplysningerView() {
       <VStack gap="20">
         <Form {...form.getFormProps()}>
           <VStack gap="8">
+            <input type="hidden" name="versjon" value={loaderData.versjon} />
             {tilleggsopplysningerSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
