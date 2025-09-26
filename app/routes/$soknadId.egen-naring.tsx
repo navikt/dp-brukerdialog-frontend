@@ -27,7 +27,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  console.log(formData);
   const seksjonId = "egen-naring";
   const nesteSeksjonId = "verneplikt";
   const payload = formData.get("payload");

@@ -8,7 +8,7 @@ import { action, loader } from "~/routes/$soknadId.verneplikt";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
 
-export default function VernepliktView() {
+export default function VernepliktViewV1() {
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function VernepliktView() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
@@ -34,6 +34,7 @@ export default function VernepliktView() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
+              <input type="hidden" name="versjon" value={loaderData.versjon} />
               {vernepliktSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;

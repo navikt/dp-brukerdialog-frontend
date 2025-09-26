@@ -39,7 +39,7 @@ export const handlers = [
     return HttpResponse.json(mockUtdanning);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/verneplikt`, () => {
-    return HttpResponse.json(mockVerneplikt);
+    return HttpResponse.json({ versjon: 1, skjema: mockVerneplikt });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/barnetillegg`, () => {
     return HttpResponse.json(mockBarnetillegg);
