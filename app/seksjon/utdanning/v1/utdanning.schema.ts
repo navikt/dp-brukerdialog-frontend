@@ -20,6 +20,7 @@ export const utdanningSchema = z
     [naarSendtDokumentasjonTidligere]: z.string().optional(),
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
     [planleggerÅStarteEllerFullføreStudierSamtidig]: z.enum(["ja", "nei"]).optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     utdanningSpørsmål.forEach((spørsmål) => {
@@ -27,7 +28,10 @@ export const utdanningSchema = z
       const spørsmålId = spørsmål.id as keyof UtdanningSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
+      const erSpørsmål =
+        spørsmål.type !== "lesMer" &&
+        spørsmål.type !== "varselmelding" &&
+        spørsmål.type !== "dokumentasjonskravindikator";
 
       if (erSpørsmål && synlig && !svar) {
         ctx.addIssue({
