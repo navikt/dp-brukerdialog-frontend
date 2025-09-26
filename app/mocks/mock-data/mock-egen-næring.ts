@@ -13,7 +13,7 @@ import {
   organisasjonsnummer,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
-export const mockEngenNæring: EgenNæringResponse = {
+export const mockEgenNæring: EgenNæringResponse = {
   [driverDuEgenNæringsvirksomhet]: "ja",
   næringsvirksomheter: [
     {

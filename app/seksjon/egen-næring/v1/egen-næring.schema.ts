@@ -33,6 +33,7 @@ export const egenNæringSchema = z
     [payload]: z.string().optional(),
     [driverDuEgenNæringsvirksomhet]: z.enum(["ja", "nei"]).optional(),
     [driverDuEgetGårdsbruk]: z.enum(["ja", "nei"]).optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     egenNæringEgenNæringsvirksomhetSpørsmål
