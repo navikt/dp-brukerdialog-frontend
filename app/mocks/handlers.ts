@@ -7,7 +7,7 @@ import { mockUtdanning } from "./mock-data/mock-utdanning";
 import { mockVerneplikt } from "~/mocks/mock-data/mock-verneplikt";
 import { mockBarnetillegg } from "./mock-data/mock-barnetillegg";
 import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
-import { mockEngenNæring } from "~/mocks/mock-data/mock-egen-næring";
+import { mockEgenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";
 import { mockMellomlagring } from "./mock-data/mock-mellomlagring";
@@ -45,7 +45,7 @@ export const handlers = [
     return HttpResponse.json(mockBarnetillegg);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/egen-naring`, () => {
-    return HttpResponse.json(mockEngenNæring);
+    return HttpResponse.json({ versjon: 1, skjema: mockEgenNæring });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/annen-pengestotte`, () => {
     return HttpResponse.json({ versjon: 1, skjema: mockAnnenPengestøtte });
