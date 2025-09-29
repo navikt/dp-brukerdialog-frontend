@@ -124,7 +124,7 @@ export const arbeidsforholdSchema = z
     versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data[erTilbakenavigering] === true) {
+    if (data[erTilbakenavigering]) {
       return;
     }
     arbeidsforholdSpørsmål.forEach((spørsmål) => {
