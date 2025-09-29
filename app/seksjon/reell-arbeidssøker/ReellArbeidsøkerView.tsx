@@ -17,6 +17,8 @@ export function ReellArbeidssøkerView() {
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
+  console.log(`🔥 loaderData :`, loaderData);
+
   const form = useForm({
     method: "PUT",
     submitSource: "state",
@@ -48,7 +50,6 @@ export function ReellArbeidssøkerView() {
               </List>
             </VStack>
             {reellArbeidssøkerSpørsmål.map((spørsmål) => {
-              // Skip rendering if the question should not be shown based on current answers
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }

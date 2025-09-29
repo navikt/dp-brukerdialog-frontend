@@ -4,6 +4,7 @@ import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
 import { ReellArbeidssøkerView } from "~/seksjon/reell-arbeidssøker/ReellArbeidsøkerView";
+import { normaliserFormData } from "~/utils/action.utils.server";
 
 export async function loader({
   request,
@@ -11,7 +12,7 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<ReellArbeidssøkerSvar | undefined> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssøker");
+  const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssoker");
 
   if (!response.ok) {
     return undefined;
@@ -29,8 +30,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([_, value]) => value !== undefined && value !== "undefined"
   );
-  const seksjonData = Object.fromEntries(filtrertEntries);
-
+  const seksjonData = normaliserFormData(Object.fromEntries(filtrertEntries));
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
 
   if (response.status !== 200) {
