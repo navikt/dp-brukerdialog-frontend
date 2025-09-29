@@ -14,7 +14,7 @@ export const dinSituasjonSchema = z
       .optional(),
     [årsakTilAtDagpengeneBleStanset]: z.string().max(500, "Maks 500 tegn").optional(),
     [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
-    versjon: z.string().optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     dinSituasjonSpørsmål.forEach((spørsmål) => {

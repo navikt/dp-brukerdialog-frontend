@@ -38,20 +38,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "personalia";
 
-  const versjon = formData.get("versjon");
-
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
 
+  const versjon = formData.get("versjon");
   const payload = {
     versjon: Number(versjon),
     skjema: seksjonData,
   };
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
-
   if (response.status !== 200) {
     return {
       error: "Noe gikk galt ved lagring av din situasjon",

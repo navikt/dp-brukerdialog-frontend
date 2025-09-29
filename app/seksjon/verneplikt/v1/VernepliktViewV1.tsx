@@ -33,8 +33,8 @@ export default function VernepliktViewV1() {
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
+            <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              <input type="hidden" name="versjon" value={loaderData.versjon} />
               {vernepliktSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
