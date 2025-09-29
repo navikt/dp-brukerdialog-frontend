@@ -11,7 +11,7 @@ import {
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
-export function TilleggsopplysningerView() {
+export function TilleggsopplysningerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();

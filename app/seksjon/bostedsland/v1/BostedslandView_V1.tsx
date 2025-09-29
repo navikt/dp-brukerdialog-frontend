@@ -26,12 +26,8 @@ export function BostedslandView_V1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData.skjema ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
-
-  useEffect(() => {
-    form.setValue("versjon", loaderData.versjon);
-  }, [form, loaderData.versjon]);
 
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
 
@@ -41,6 +37,7 @@ export function BostedslandView_V1() {
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
+            <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
               {bostedslandSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

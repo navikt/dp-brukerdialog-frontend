@@ -22,7 +22,7 @@ import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdl";
 import { BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManuelt";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 
-export function BarnetilleggView() {
+export function BarnetilleggViewV1() {
   const navigate = useNavigate();
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();

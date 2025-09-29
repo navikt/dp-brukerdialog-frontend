@@ -67,14 +67,10 @@ export function AnnenPengestøtteViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData.skjema ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteSpørsmål);
-
-  useEffect(() => {
-    form.setValue("versjon", loaderData.versjon);
-  }, [form, loaderData.versjon]);
 
   useEffect(() => {
     if (pengestøtteFraAndreEøsLandModalData) {
@@ -179,6 +175,7 @@ export function AnnenPengestøtteViewV1() {
       <h2>Annen pengstøtte</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
+          <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
             {pengestøtteFraAndreEøsLandSpørsmål.map((spørsmål) => {

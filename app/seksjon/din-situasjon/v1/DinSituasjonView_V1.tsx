@@ -24,12 +24,8 @@ export function DinSituasjonView_V1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData.skjema ?? {},
+    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
-
-  useEffect(() => {
-    form.setValue("versjon", loaderData.versjon?.toString());
-  }, [form, loaderData.versjon]);
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
 
@@ -39,7 +35,7 @@ export function DinSituasjonView_V1() {
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
-            <br />
+            <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
               {dinSituasjonSpørsmål.map((spørsmål) => {
                 // Skip rendering if the question should not be shown based on current answers

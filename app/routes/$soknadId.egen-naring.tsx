@@ -2,7 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { EgenNæringView } from "~/seksjon/egen-næring/v1/EgenNæringView";
+import { EgenNæringViewV1 } from "~/seksjon/egen-næring/v1/EgenNæringViewV1";
 import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import { EgenNæringResponse } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
@@ -61,7 +61,7 @@ export default function EgenNæringRoute() {
           næringsvirksomheter={skjema?.næringsvirksomheter || []}
           gårdsbruk={skjema?.gårdsbruk || []}
         >
-          <EgenNæringView />
+          <EgenNæringViewV1 />
         </EgenNæringProvider>
       );
     default:

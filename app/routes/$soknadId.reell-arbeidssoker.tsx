@@ -3,7 +3,7 @@ import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
-import { ReellArbeidssøkerView } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidsøkerView";
+import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidsøkerView";
 
 const NYESTE_VERSJON = 1;
 type ReellArbeidssøkerSvarType = {
@@ -63,7 +63,7 @@ export default function ReellArbeidssøkerRoute() {
 
   switch (Number(loaderData.versjon)) {
     case 1:
-      return <ReellArbeidssøkerView />;
+      return <ReellArbeidssøkerViewV1 />;
     default:
       throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
   }

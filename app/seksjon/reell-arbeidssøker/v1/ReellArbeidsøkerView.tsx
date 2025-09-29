@@ -12,7 +12,7 @@ import {
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
 
-export function ReellArbeidssøkerView() {
+export function ReellArbeidssøkerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();

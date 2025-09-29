@@ -2,7 +2,7 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from 
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { TilleggsopplysningerView } from "~/seksjon/tilleggsopplysninger/v1/TilleggopplysningerView";
+import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggopplysningerView";
 import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
 const NYESTE_VERSJON = 1;
@@ -62,7 +62,7 @@ export default function TilleggsopplysningerRoute() {
 
   switch (loaderData.versjon) {
     case 1:
-      return <TilleggsopplysningerView />;
+      return <TilleggsopplysningerViewV1 />;
     default:
       throw new Error(`Unknown versjon: ${loaderData.versjon}`);
   }

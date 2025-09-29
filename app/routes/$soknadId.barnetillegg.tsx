@@ -9,7 +9,7 @@ import {
   BarnetilleggSvar,
   forsørgerDuBarnSomIkkeVisesHer,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnetilleggView } from "~/seksjon/barnetillegg/v1/BarnetilleggView";
+import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -92,7 +92,7 @@ export default function BarntilleggRoute() {
           barnFraPdl={skjema?.barnFraPdl || []}
           barnLagtManuelt={skjema?.barnLagtManuelt || []}
         >
-          <BarnetilleggView />
+          <BarnetilleggViewV1 />
         </BarnetilleggProvider>
       );
     default:

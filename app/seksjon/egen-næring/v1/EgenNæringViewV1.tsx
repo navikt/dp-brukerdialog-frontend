@@ -27,7 +27,7 @@ import {
   useEgenNæringContext,
 } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
-export function EgenNæringView() {
+export function EgenNæringViewV1() {
   const navigate = useNavigate();
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
