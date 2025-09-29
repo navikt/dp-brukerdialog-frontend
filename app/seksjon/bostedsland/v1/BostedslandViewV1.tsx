@@ -35,11 +35,6 @@ export function BostedslandViewV1() {
     form.submit();
   }
 
-  function handleSubmit() {
-    form.setValue(erTilbakenavigering, false);
-    form.submit();
-  }
-
   return (
     <div className="innhold">
       <h2>Bostedsland</h2>
@@ -82,7 +77,6 @@ export function BostedslandViewV1() {
                 type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
-                onClick={handleSubmit}
               >
                 Neste steg
               </Button>
