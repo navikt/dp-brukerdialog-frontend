@@ -1,16 +1,18 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigate } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.din-situasjon";
-import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
-import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
+import { action, loader } from "~/routes/$soknadId.bostedsland";
+import { bostedslandSchema } from "~/seksjon/bostedsland/v1/bostedsland.schema";
+import {
+  bostedslandSpørsmål,
+  BostedslandSvar,
+} from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
 import { useEffect } from "react";
 
-export function DinSituasjonView_V1() {
-  const { state } = useNavigation();
+export function BostedslandViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ export function DinSituasjonView_V1() {
   const form = useForm({
     method: "PUT",
     submitSource: "state",
-    schema: dinSituasjonSchema,
+    schema: bostedslandSchema,
     validationBehaviorConfig: {
       initial: "onBlur",
       whenTouched: "onBlur",
@@ -27,27 +29,25 @@ export function DinSituasjonView_V1() {
     defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
+  useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);
 
   return (
     <div className="innhold">
-      <h2>Din situasjon</h2>
+      <h2>Bostedsland</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              {dinSituasjonSpørsmål.map((spørsmål) => {
-                // Skip rendering if the question should not be shown based on current answers
+              {bostedslandSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
-
                 return (
                   <Spørsmål
                     key={spørsmål.id}
                     spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof DinSituasjonSvar)}
+                    formScope={form.scope(spørsmål.id as keyof BostedslandSvar)}
                   />
                 );
               })}
@@ -58,6 +58,7 @@ export function DinSituasjonView_V1() {
                 </Alert>
               )}
             </VStack>
+
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
@@ -71,7 +72,6 @@ export function DinSituasjonView_V1() {
                 type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
-                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>

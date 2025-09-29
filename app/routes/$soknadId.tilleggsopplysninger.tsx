@@ -64,6 +64,6 @@ export default function TilleggsopplysningerRoute() {
     case 1:
       return <TilleggsopplysningerViewV1 />;
     default:
-      throw new Error(`Unknown versjon: ${loaderData.versjon}`);
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
   }
 }

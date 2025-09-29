@@ -3,8 +3,7 @@ import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { BostedslandSvar } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
-import { BostedslandView_V1 } from "~/seksjon/bostedsland/v1/BostedslandView_V1";
-import { defaultVersjonSvar } from "~/utils/versjon.utils";
+import { BostedslandViewV1 } from "~/seksjon/bostedsland/v1/BostedslandViewV1";
 
 const NYESTE_VERSJON = 1;
 
@@ -60,8 +59,8 @@ export default function BostedslandRoute() {
 
   switch (loaderData.versjon) {
     case 1:
-      return <BostedslandView_V1 />;
+      return <BostedslandViewV1 />;
     default:
-      return <div>{defaultVersjonSvar()}</div>;
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
   }
 }

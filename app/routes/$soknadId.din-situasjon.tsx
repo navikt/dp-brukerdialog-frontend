@@ -8,8 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { DinSituasjonView_V1 } from "~/seksjon/din-situasjon/v1/DinSituasjonView_V1";
-import { defaultVersjonSvar, SeksjonDataType } from "~/utils/versjon.utils";
+import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 
 const NYESTE_VERSJON = 1;
 
@@ -63,13 +62,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function DinSituasjonRoute() {
-  const loaderData: SeksjonDataType = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
   loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
   switch (loaderData.versjon) {
     case 1:
-      return <DinSituasjonView_V1 />;
+      return <DinSituasjonViewV1 />;
     default:
-      return <div>{defaultVersjonSvar()}</div>;
+      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
   }
 }
