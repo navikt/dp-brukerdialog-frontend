@@ -17,8 +17,6 @@ export function ReellArbeidssøkerView() {
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
 
-  console.log(`🔥 loaderData :`, loaderData);
-
   const form = useForm({
     method: "PUT",
     submitSource: "state",
