@@ -1,20 +1,32 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { UtdanningSvar } from "~/seksjon/utdanning/utdanning.spørsmål";
-import { UtdanningView } from "~/seksjon/utdanning/UtdanningView";
+import { UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import { UtdanningViewV1 } from "~/seksjon/utdanning/v1/UtdanningViewV1";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<UtdanningSvar | undefined> {
+const NYESTE_VERSJON = 1;
+type UtdanningSvarType = {
+  versjon: number;
+  seksjon: UtdanningSvar | undefined;
+};
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "utdanning");
 
   if (response.status !== 200) {
-    return undefined;
+    return {
+      seksjon: undefined,
+      versjon: NYESTE_VERSJON,
+    };
   }
 
   return await response.json();
@@ -27,11 +39,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "utdanning";
   const nesteSeksjonId = "barnetillegg";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
+  const versjon = formData.get("versjon");
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
+  const seksjonDataMedVersjon = {
+    versjon: Number(versjon),
+    seksjon: seksjonData,
+  } as UtdanningSvar;
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av utdanning" };
   }
@@ -40,5 +58,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function UtdanningRoute() {
-  return <UtdanningView />;
+  const loaderData: UtdanningSvarType = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
+
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+    case 1:
+      return <UtdanningViewV1 />;
+    default:
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for utdanning for søknaden ${soknadId}`
+      );
+      return <UtdanningViewV1 />;
+  }
 }

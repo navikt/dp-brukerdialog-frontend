@@ -1,9 +1,17 @@
-import { ActionFunctionArgs, data, LoaderFunctionArgs, redirect } from "react-router";
+import {
+  ActionFunctionArgs,
+  data,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { DinSituasjonSvar } from "~/seksjon/din-situasjon/din-situasjon.spørsmål";
-import { DinSituasjonView } from "~/seksjon/din-situasjon/DinSituasjonView";
+import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
+
+const NYESTE_VERSJON = 1;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -12,7 +20,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   if (!response.ok) {
     if (response.status === 404) {
-      return undefined;
+      return {
+        versjon: NYESTE_VERSJON,
+        seksjon: undefined,
+      };
     }
 
     throw data(response.statusText, { status: response.status });
@@ -27,12 +38,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "personalia";
+
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
 
+  const versjon = formData.get("versjon");
+  const payload = {
+    versjon: Number(versjon),
+    seksjon: seksjonData,
+  };
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
   if (response.status !== 200) {
     return {
       error: "Noe gikk galt ved lagring av din situasjon",
@@ -43,5 +61,16 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function DinSituasjonRoute() {
-  return <DinSituasjonView />;
+  const loaderData = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
+
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+    case 1:
+      return <DinSituasjonViewV1 />;
+    default:
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for din situasjon for søknaden ${soknadId}`
+      );
+      return <DinSituasjonViewV1 />;
+  }
 }

@@ -1,20 +1,35 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
-import { ReellArbeidssøkerView } from "~/seksjon/reell-arbeidssøker/ReellArbeidsøkerView";
+import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidsøkerView";
+
+const NYESTE_VERSJON = 1;
+type ReellArbeidssøkerSvarType = {
+  versjon: number;
+  seksjon: ReellArbeidssøkerSvar | undefined;
+};
 
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<ReellArbeidssøkerSvar | undefined> {
+}: LoaderFunctionArgs): Promise<ReellArbeidssøkerSvarType> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssøker");
+  const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssoker");
 
   if (!response.ok) {
-    return undefined;
+    return {
+      versjon: NYESTE_VERSJON,
+      seksjon: undefined,
+    };
   }
 
   return await response.json();
@@ -27,11 +42,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "reell-arbeidssoker";
   const nesteSeksjonId = "tilleggsopplysninger";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonData);
+  const versjon = formData.get("versjon");
+  const seksjonDataMedVersjon = {
+    seksjon: seksjonData,
+    versjon: Number(versjon),
+  };
+
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
 
   if (response.status !== 200) {
     return {
@@ -43,5 +64,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function ReellArbeidssøkerRoute() {
-  return <ReellArbeidssøkerView />;
+  const loaderData = useLoaderData<typeof loader>();
+  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
+  const { soknadId } = useParams();
+
+  switch (Number(loaderData.versjon)) {
+    case 1:
+      return <ReellArbeidssøkerViewV1 />;
+    default:
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for reell-arbeidssøker for søknaden ${soknadId}`
+      );
+      return <ReellArbeidssøkerViewV1 />;
+  }
 }
