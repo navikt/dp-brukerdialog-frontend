@@ -107,10 +107,8 @@ export function AnnenPengestøtteViewV1() {
     }
   }, [form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav), pengestøtteFraNorge.length]);
 
-  function handleTilbakenavigering() {
-    form.setValue(erTilbakenavigering, true);
-
-    const annenPengestøtteResponse: AnnenPengestøtteResponse = {
+  function lagAnnenPengestøtteResponse(): AnnenPengestøtteResponse {
+    return {
       [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.value(
         harMottattEllerSøktOmPengestøtteFraAndreEøsLand
       ),
@@ -126,7 +124,12 @@ export function AnnenPengestøtteViewV1() {
       ),
       pengestøtteFraNorge: pengestøtteFraNorge,
     };
+  }
 
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+
+    const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
     form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
 
     form.submit();
@@ -161,24 +164,9 @@ export function AnnenPengestøtteViewV1() {
       !manglerPengestøtteFraAndreEøsLand &&
       !manglerPengestøtteFraNorge
     ) {
-      const annenPengestøtteResponse: AnnenPengestøtteResponse = {
-        [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.value(
-          harMottattEllerSøktOmPengestøtteFraAndreEøsLand
-        ),
-        [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.value(
-          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
-        ),
-        [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.value(
-          skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
-        ),
-        pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLand,
-        [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.value(
-          mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
-        ),
-        pengestøtteFraNorge: pengestøtteFraNorge,
-      };
-
+      const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
       form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
+
       form.submit();
     }
   }

@@ -98,18 +98,22 @@ export function ArbeidsforholdViewV1() {
     }
   }, [form.value(hvordanHarDuJobbet)]);
 
-  function handleTilbakenavigering() {
-    form.setValue(erTilbakenavigering, true);
-
-    const arbeidsforholdResponse: ArbeidsforholdResponse = {
+  function lagArbeidsforholdResponse(): ArbeidsforholdResponse {
+    return {
       [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
       [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
         harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
       ),
       registrerteArbeidsforhold: registrerteArbeidsforhold,
     };
+  }
 
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+
+    const arbeidsforholdResponse = lagArbeidsforholdResponse();
     form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
+
     form.submit();
   }
 
@@ -127,15 +131,9 @@ export function ArbeidsforholdViewV1() {
       return;
     }
 
-    const arbeidsforholdResponse: ArbeidsforholdResponse = {
-      [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
-      [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
-        harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-      ),
-      registrerteArbeidsforhold: registrerteArbeidsforhold,
-    };
-
+    const arbeidsforholdResponse = lagArbeidsforholdResponse();
     form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
+
     form.submit();
   }
 
