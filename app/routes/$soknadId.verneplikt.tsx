@@ -9,7 +9,7 @@ const NYESTE_VERSJON = 1;
 
 type VernepliktLoaderDataType = {
   versjon: number;
-  skjema: VernepliktSvar | undefined;
+  seksjon: VernepliktSvar | undefined;
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -18,7 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentSeksjon(request, params.soknadId, "verneplikt");
   if (!response.ok) {
     return {
-      skjema: undefined,
+      seksjon: undefined,
       versjon: NYESTE_VERSJON,
     };
   }
@@ -40,7 +40,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const seksjonDataMedVersjon = {
     versjon: Number(versjon),
-    skjema: seksjonData,
+    seksjon: seksjonData,
   } as VernepliktSvar;
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);

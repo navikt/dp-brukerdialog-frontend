@@ -15,7 +15,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   if (!response.ok) {
     return {
-      skjema: undefined,
+      seksjon: undefined,
       versjon: NYESTE_VERSJON,
     };
   }
@@ -34,7 +34,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const versjon = formData.get("versjon");
   const seksjonsDataMedVersjon = {
-    skjema: seksjonsData,
+    seksjon: seksjonsData,
     versjon: Number(versjon),
   };
 
@@ -51,15 +51,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function EgenNæringRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const skjema: EgenNæringResponse = loaderData?.skjema ?? {};
+  const seksjon: EgenNæringResponse = loaderData?.seksjon ?? {};
   loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
   switch (loaderData.versjon) {
     case 1:
       return (
         <EgenNæringProvider
-          næringsvirksomheter={skjema?.næringsvirksomheter || []}
-          gårdsbruk={skjema?.gårdsbruk || []}
+          næringsvirksomheter={seksjon?.næringsvirksomheter || []}
+          gårdsbruk={seksjon?.gårdsbruk || []}
         >
           <EgenNæringViewV1 />
         </EgenNæringProvider>

@@ -18,7 +18,7 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
 
 type BarnetilleggResponseType = {
   versjon: number;
-  skjema: BarnetilleggResponse | undefined;
+  seksjon: BarnetilleggResponse | undefined;
 };
 
 const NYESTE_VERSJON = 1;
@@ -37,13 +37,13 @@ export async function loader({
     if (!barnFraPdlResponse.ok) {
       return {
         versjon: NYESTE_VERSJON,
-        skjema: undefined,
+        seksjon: undefined,
       };
     }
 
     return {
       versjon: NYESTE_VERSJON,
-      skjema: {
+      seksjon: {
         [forsørgerDuBarnSomIkkeVisesHer]: undefined,
         barnLagtManuelt: [],
         barnFraPdl: await barnFraPdlResponse.json(),
@@ -65,7 +65,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const versjon = formData.get("versjon");
   const seksjonsDataMedVersjon = {
-    skjema: seksjonsData,
+    seksjon: seksjonsData,
     versjon: Number(versjon),
   };
 
@@ -82,15 +82,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function BarntilleggRoute() {
   const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
-  const skjema: BarnetilleggResponse = loaderData?.skjema ?? {};
+  const seksjon: BarnetilleggResponse = loaderData?.seksjon ?? {};
   loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
   switch (loaderData.versjon) {
     case 1:
       return (
         <BarnetilleggProvider
-          barnFraPdl={skjema?.barnFraPdl || []}
-          barnLagtManuelt={skjema?.barnLagtManuelt || []}
+          barnFraPdl={seksjon?.barnFraPdl || []}
+          barnLagtManuelt={seksjon?.barnLagtManuelt || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>

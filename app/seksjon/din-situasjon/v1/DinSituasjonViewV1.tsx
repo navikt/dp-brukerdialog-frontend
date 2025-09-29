@@ -24,7 +24,7 @@ export function DinSituasjonViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);

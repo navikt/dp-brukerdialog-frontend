@@ -21,7 +21,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     if (response.status === 404) {
       return {
         versjon: NYESTE_VERSJON,
-        skjema: undefined,
+        seksjon: undefined,
       };
     }
 
@@ -46,7 +46,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
   const payload = {
     versjon: Number(versjon),
-    skjema: seksjonData,
+    seksjon: seksjonData,
   };
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);

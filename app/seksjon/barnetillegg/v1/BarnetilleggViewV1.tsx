@@ -41,7 +41,7 @@ export function BarnetilleggViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);

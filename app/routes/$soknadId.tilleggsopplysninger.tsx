@@ -7,7 +7,7 @@ import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/till
 
 const NYESTE_VERSJON = 1;
 type TilleggsopplysningerSvarType = {
-  skjema: TilleggsopplysningerSvar | undefined;
+  seksjon: TilleggsopplysningerSvar | undefined;
   versjon: number;
 };
 
@@ -22,7 +22,7 @@ export async function loader({
   if (response.status !== 200) {
     return {
       versjon: NYESTE_VERSJON,
-      skjema: undefined,
+      seksjon: undefined,
     };
   }
 
@@ -42,7 +42,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const versjon = formData.get("versjon");
   const seksjonDataMedVersjon = {
-    skjema: seksjonData,
+    seksjon: seksjonData,
     versjon: Number(versjon),
   };
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);

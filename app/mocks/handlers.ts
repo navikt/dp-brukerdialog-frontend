@@ -29,34 +29,34 @@ export const handlers = [
     return HttpResponse.json(mockBarnFraPdl);
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/din-situasjon`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockDinSituasjon });
+    return HttpResponse.json({ versjon: 1, seksjon: mockDinSituasjon });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/bostedsland`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockBostedsland });
+    return HttpResponse.json({ versjon: 1, seksjon: mockBostedsland });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/arbeidsforhold`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockArbeidsforhold });
+    return HttpResponse.json({ versjon: 1, seksjon: mockArbeidsforhold });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/annen-pengestotte`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockAnnenPengestøtte });
+    return HttpResponse.json({ versjon: 1, seksjon: mockAnnenPengestøtte });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/egen-naring`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockEgenNæring });
+    return HttpResponse.json({ versjon: 1, seksjon: mockEgenNæring });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/verneplikt`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockVerneplikt });
+    return HttpResponse.json({ versjon: 1, seksjon: mockVerneplikt });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/utdanning`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockUtdanning });
+    return HttpResponse.json({ versjon: 1, seksjon: mockUtdanning });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/barnetillegg`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockBarnetillegg });
+    return HttpResponse.json({ versjon: 1, seksjon: mockBarnetillegg });
   }),
-  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/reell-arbeidssøker`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockReellArbeidsøker });
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/reell-arbeidssoker`, () => {
+    return HttpResponse.json({ versjon: 1, seksjon: mockReellArbeidsøker });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/tilleggsopplysninger`, () => {
-    return HttpResponse.json({ versjon: 1, skjema: mockTilleggsopplysninger });
+    return HttpResponse.json({ versjon: 1, seksjon: mockTilleggsopplysninger });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);

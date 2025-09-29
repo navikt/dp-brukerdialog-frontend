@@ -15,7 +15,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!response.ok) {
     return {
       versjon: NYESTE_VERSJON,
-      skjema: undefined,
+      seksjon: undefined,
     };
   }
 
@@ -34,7 +34,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
   const seksjonsPayload = {
     versjon: Number(versjon),
-    skjema: seksjonsData,
+    seksjon: seksjonsData,
   };
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsPayload);
 
@@ -55,7 +55,7 @@ export default function ArbeidsforholdRoute() {
     case 1:
       return (
         <ArbeidsforholdProvider
-          registrerteArbeidsforhold={loaderData?.skjema?.registrerteArbeidsforhold || []}
+          registrerteArbeidsforhold={loaderData?.seksjon?.registrerteArbeidsforhold || []}
         >
           <ArbeidsforholdViewV1 />
         </ArbeidsforholdProvider>

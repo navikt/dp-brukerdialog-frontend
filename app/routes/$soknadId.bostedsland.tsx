@@ -9,7 +9,7 @@ const NYESTE_VERSJON = 1;
 
 type BostedslandLoaderDataType = {
   versjon: number;
-  skjema: BostedslandSvar | undefined;
+  seksjon: BostedslandSvar | undefined;
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -20,7 +20,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!response.ok) {
     return {
       versjon: NYESTE_VERSJON,
-      skjema: undefined,
+      seksjon: undefined,
     };
   }
 
@@ -40,7 +40,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
   const payload = {
     versjon: Number(versjon),
-    skjema: seksjonsData,
+    seksjon: seksjonsData,
   };
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
 

@@ -44,7 +44,7 @@ export function ArbeidsforholdViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdSpørsmål);

@@ -26,7 +26,7 @@ export function BostedslandViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<BostedslandSvar>(form, bostedslandSpørsmål);

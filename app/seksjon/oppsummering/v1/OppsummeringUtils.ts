@@ -6,5 +6,5 @@ export type SeksjonProps = {
 };
 
 export function skalSkjuleSpørsmålBasertPåType(spørsmål: KomponentType) {
-  return ["varselmelding, lesMer", "dokumentasjonskravindikator"].includes(spørsmål.type);
+  return ["varselmelding", "lesMer", "dokumentasjonskravindikator"].includes(spørsmål.type);
 }

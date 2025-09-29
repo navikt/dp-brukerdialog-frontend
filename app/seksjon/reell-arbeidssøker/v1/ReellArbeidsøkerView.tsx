@@ -26,7 +26,7 @@ export function ReellArbeidssøkerViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.skjema, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
@@ -36,8 +36,8 @@ export function ReellArbeidssøkerViewV1() {
       <h2>Reell arbeidssøker</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
+          <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack>
               For å få dagpenger må du være reell arbeidssøker. Dette betyr at du som hovedregel
               <List>

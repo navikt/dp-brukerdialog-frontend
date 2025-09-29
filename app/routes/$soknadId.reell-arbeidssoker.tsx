@@ -8,7 +8,7 @@ import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/Reell
 const NYESTE_VERSJON = 1;
 type ReellArbeidssøkerSvarType = {
   versjon: number;
-  skjema: ReellArbeidssøkerSvar | undefined;
+  seksjon: ReellArbeidssøkerSvar | undefined;
 };
 
 export async function loader({
@@ -22,7 +22,7 @@ export async function loader({
   if (!response.ok) {
     return {
       versjon: NYESTE_VERSJON,
-      skjema: undefined,
+      seksjon: undefined,
     };
   }
 
@@ -42,7 +42,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const versjon = formData.get("versjon");
   const seksjonDataMedVersjon = {
-    skjema: seksjonData,
+    seksjon: seksjonData,
     versjon: Number(versjon),
   };
 

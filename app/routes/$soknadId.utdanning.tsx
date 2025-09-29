@@ -8,7 +8,7 @@ import { UtdanningViewV1 } from "~/seksjon/utdanning/v1/UtdanningViewV1";
 const NYESTE_VERSJON = 1;
 type UtdanningSvarType = {
   versjon: number;
-  skjema: UtdanningSvar | undefined;
+  seksjon: UtdanningSvar | undefined;
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -18,7 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   if (response.status !== 200) {
     return {
-      skjema: undefined,
+      seksjon: undefined,
       versjon: NYESTE_VERSJON,
     };
   }
@@ -40,7 +40,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const seksjonDataMedVersjon = {
     versjon: Number(versjon),
-    skjema: seksjonData,
+    seksjon: seksjonData,
   } as UtdanningSvar;
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);

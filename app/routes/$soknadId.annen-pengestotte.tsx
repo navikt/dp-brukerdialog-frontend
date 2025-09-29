@@ -14,7 +14,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   if (!response.ok) {
     return {
       versjon: NYESTE_VERSJON,
-      skjema: undefined,
+      seksjon: undefined,
     };
   }
 
@@ -32,7 +32,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const versjon = formData.get("versjon");
   const seksjonsDataMedVersjon = {
-    skjema: seksjonsData,
+    seksjon: seksjonsData,
     versjon: Number(versjon),
   };
 
@@ -55,8 +55,8 @@ export default function AnnenPengestøtteRoute() {
     case 1:
       return (
         <AnnenPengestøtteProvider
-          pengestøtteFraAndreEøsLand={loaderData?.skjema?.pengestøtteFraAndreEøsLand || []}
-          pengestøtteFraNorge={loaderData?.skjema?.pengestøtteFraNorge || []}
+          pengestøtteFraAndreEøsLand={loaderData?.seksjon?.pengestøtteFraAndreEøsLand || []}
+          pengestøtteFraNorge={loaderData?.seksjon?.pengestøtteFraNorge || []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>
