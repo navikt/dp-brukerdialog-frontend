@@ -32,9 +32,9 @@ import { z } from "zod";
 export const reellArbeidssøkerSchema = z
   .object({
     [kanDuJobbeBådeHeltidOgDeltid]: z.enum(["ja", "nei"]).optional(),
-    [kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]: z.array(
-      z
-        .enum([
+    [kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]: z
+      .array(
+        z.enum([
           kanIkkeJobbeHeltidOgDeltidRedusertHelse,
           kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr,
           kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
@@ -44,13 +44,14 @@ export const reellArbeidssøkerSchema = z
           kanIkkeJobbeHeltidOgDeltidHarFylt60,
           kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
         ])
-    ).optional(),
+      )
+      .optional(),
     [kanIkkeJobbeBådeHeltidOgDeltidAntallTimer]: z.string().optional(),
     [kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen]: z.string().max(500).optional(),
     [kanDuJobbeIHeleNorge]: z.enum(["ja", "nei"]).optional(),
-    [kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]: z.array(
-      z
-        .enum([
+    [kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]: z
+      .array(
+        z.enum([
           kanIkkeJobbeIHeleNorgeRedusertHelse,
           kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
           kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
@@ -60,10 +61,12 @@ export const reellArbeidssøkerSchema = z
           kanIkkeJobbeIHeleNorgeHarFylt60,
           kanIkkeJobbeIHeleNorgeAnnenSituasjon,
         ])
-    ).optional(),
+      )
+      .optional(),
     [kanIkkeJobbeIHeleNorgeKortOmSituasjonen]: z.string().max(500).optional(),
     [kanDuTaAlleTyperArbeid]: z.enum(["ja", "nei"]).optional(),
     [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
+    versjon: z.number().optional(),
   })
   .superRefine((data, ctx) => {
     // TODO: Generaliser denne på et vis så den kan brukes i alle `superRefine`. Gjelder alle `schema`-filene.
@@ -72,7 +75,10 @@ export const reellArbeidssøkerSchema = z
       const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
       const svar = data[spørsmålId];
 
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding" && spørsmål.type !== "dokumentasjonskravindikator";
+      const erSpørsmål =
+        spørsmål.type !== "lesMer" &&
+        spørsmål.type !== "varselmelding" &&
+        spørsmål.type !== "dokumentasjonskravindikator";
 
       if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
         ctx.addIssue({
