@@ -16,16 +16,13 @@ export function normaliserFormData(data: Record<string, unknown>) {
       // flervalgMatch[2] er andre gruppe, altså tallet inni klammeparentesene (f.eks. "0")
       const flervalgNavn = flervalgMatch[1];
 
-      // Initialiserer arrayet hvis det ikke finnes fra før
       if (!Array.isArray(seksjonSvar[flervalgNavn])) {
         seksjonSvar[flervalgNavn] = [];
       }
 
-      // Legger til verdien i arrayet
       const svarArray = seksjonSvar[flervalgNavn] as unknown[];
       svarArray.push(verdi);
     } else {
-      // Vanlig spørsmål, lagrer direkte
       seksjonSvar[navn] = verdi;
     }
   });
