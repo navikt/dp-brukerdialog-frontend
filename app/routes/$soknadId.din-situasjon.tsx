@@ -4,6 +4,7 @@ import {
   LoaderFunctionArgs,
   redirect,
   useLoaderData,
+  useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
@@ -61,11 +62,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function DinSituasjonRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
 
   switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <DinSituasjonViewV1 />;
     default:
-      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for din situasjon for søknaden ${soknadId}`
+      );
+      return <DinSituasjonViewV1 />;
   }
 }

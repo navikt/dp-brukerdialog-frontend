@@ -1,4 +1,10 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -60,11 +66,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function ReellArbeidssøkerRoute() {
   const loaderData = useLoaderData<typeof loader>();
   loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
+  const { soknadId } = useParams();
 
   switch (Number(loaderData.versjon)) {
     case 1:
       return <ReellArbeidssøkerViewV1 />;
     default:
-      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for reell-arbeidssøker for søknaden ${soknadId}`
+      );
+      return <ReellArbeidssøkerViewV1 />;
   }
 }

@@ -1,4 +1,10 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -53,11 +59,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function UtdanningRoute() {
   const loaderData: UtdanningSvarType = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
 
   switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <UtdanningViewV1 />;
     default:
-      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for utdanning for søknaden ${soknadId}`
+      );
+      return <UtdanningViewV1 />;
   }
 }

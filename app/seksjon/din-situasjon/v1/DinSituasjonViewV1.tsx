@@ -7,7 +7,6 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
 import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
-import { useEffect } from "react";
 
 export function DinSituasjonViewV1() {
   const { state } = useNavigation();

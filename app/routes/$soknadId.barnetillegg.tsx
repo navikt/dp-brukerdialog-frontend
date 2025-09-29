@@ -1,4 +1,10 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
@@ -83,6 +89,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function BarntilleggRoute() {
   const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
   const seksjon: BarnetilleggResponse = loaderData?.seksjon ?? {};
+  const { soknadId } = useParams();
 
   switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
@@ -95,6 +102,16 @@ export default function BarntilleggRoute() {
         </BarnetilleggProvider>
       );
     default:
-      throw new Error(`Ukjent versjon: ${loaderData.versjon}`);
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for barnetillegg for søknaden ${soknadId}`
+      );
+      return (
+        <BarnetilleggProvider
+          barnFraPdl={seksjon?.barnFraPdl || []}
+          barnLagtManuelt={seksjon?.barnLagtManuelt || []}
+        >
+          <BarnetilleggViewV1 />
+        </BarnetilleggProvider>
+      );
   }
 }

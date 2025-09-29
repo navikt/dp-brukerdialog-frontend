@@ -10,7 +10,6 @@ import {
   bostedslandSpørsmål,
   BostedslandSvar,
 } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
-import { useEffect } from "react";
 
 export function BostedslandViewV1() {
   const loaderData = useLoaderData<typeof loader>();
