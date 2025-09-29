@@ -25,7 +25,7 @@ export const bostedslandSchema = z
     [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
-    if (data[erTilbakenavigering] === true) {
+    if (data[erTilbakenavigering]) {
       return;
     }
     bostedslandSpørsmål.forEach((spørsmål) => {
