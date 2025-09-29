@@ -58,9 +58,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function TilleggsopplysningerRoute() {
   const loaderData: TilleggsopplysningerSvarType = useLoaderData<typeof loader>();
-  loaderData.versjon = loaderData.versjon ?? NYESTE_VERSJON;
 
-  switch (loaderData.versjon) {
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <TilleggsopplysningerViewV1 />;
     default:

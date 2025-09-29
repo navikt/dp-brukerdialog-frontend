@@ -83,9 +83,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function BarntilleggRoute() {
   const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
   const seksjon: BarnetilleggResponse = loaderData?.seksjon ?? {};
-  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  switch (loaderData.versjon) {
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <BarnetilleggProvider

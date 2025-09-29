@@ -55,9 +55,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function BostedslandRoute() {
   const loaderData: BostedslandLoaderDataType = useLoaderData<typeof loader>();
-  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  switch (loaderData.versjon) {
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <BostedslandViewV1 />;
     default:

@@ -49,9 +49,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function AnnenPengestøtteRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  loaderData.versjon = loaderData?.versjon ?? NYESTE_VERSJON;
 
-  switch (loaderData.versjon) {
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <AnnenPengestøtteProvider
