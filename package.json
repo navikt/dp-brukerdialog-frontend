@@ -24,7 +24,7 @@
     "@navikt/oasis": "^3.8.0",
     "@portabletext/react": "^4.0.3",
     "@portabletext/types": "^2.0.15",
-    "@react-router/fs-routes": "^7.9.2",
+    "@react-router/fs-routes": "^7.9.3",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
     "@remix-run/form-data-parser": "^0.10.1",
