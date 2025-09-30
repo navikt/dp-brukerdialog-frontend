@@ -1,14 +1,8 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { BostedslandSvar, erTilbakenavigering } from "~/seksjon/bostedsland/bostedsland.spørsmål";
+import { BostedslandSvar, erTilbakenavigering, } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
 import { BostedslandViewV1 } from "~/seksjon/bostedsland/v1/BostedslandViewV1";
 
 const NYESTE_VERSJON = 1;
@@ -42,7 +36,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const nesteSeksjonId = "arbeidsforhold";
   const forrigeSeksjonId = "personalia";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon" && key !== erTilbakenavigering
+    ([key, value]) =>
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erTilbakenavigering
   );
   const seksjonsData = Object.fromEntries(filtrertEntries);
   const versjon = formData.get("versjon");
