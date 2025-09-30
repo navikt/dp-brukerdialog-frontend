@@ -1,4 +1,4 @@
-import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/reell-arbeidssøker.spørsmål";
+import { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
 
 export const mockReellArbeidssøker: ReellArbeidssøkerSvar = {
   "kan-du-jobbe-både-heltid-og-deltid": "nei",

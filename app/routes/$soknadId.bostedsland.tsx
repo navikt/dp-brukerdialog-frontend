@@ -1,20 +1,27 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { BostedslandSvar } from "~/seksjon/bostedsland/bostedsland.spørsmål";
-import { BostedslandView } from "~/seksjon/bostedsland/BostedslandView";
+import { BostedslandSvar, erTilbakenavigering, } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
+import { BostedslandViewV1 } from "~/seksjon/bostedsland/v1/BostedslandViewV1";
 
-export async function loader({
-  request,
-  params,
-}: LoaderFunctionArgs): Promise<BostedslandSvar | undefined> {
+const NYESTE_VERSJON = 1;
+
+type BostedslandLoaderDataType = {
+  versjon: number;
+  seksjon: BostedslandSvar | undefined;
+};
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentSeksjon(request, params.soknadId, "bostedsland");
 
   if (!response.ok) {
-    return undefined;
+    return {
+      versjon: NYESTE_VERSJON,
+      seksjon: undefined,
+    };
   }
 
   return await response.json();
@@ -24,13 +31,24 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "bostedsland";
   const nesteSeksjonId = "arbeidsforhold";
+  const forrigeSeksjonId = "personalia";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([_, value]) => value !== undefined && value !== "undefined"
+    ([key, value]) =>
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erTilbakenavigering
   );
   const seksjonsData = Object.fromEntries(filtrertEntries);
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsData);
+  const versjon = formData.get("versjon");
+  const payload = {
+    versjon: Number(versjon),
+    seksjon: seksjonsData,
+  };
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
 
   if (response.status !== 200) {
     return {
@@ -38,9 +56,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+  }
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
 export default function BostedslandRoute() {
-  return <BostedslandView />;
+  const loaderData: BostedslandLoaderDataType = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
+
+  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+    case 1:
+      return <BostedslandViewV1 />;
+    default:
+      console.error(
+        `Ukjent versjon nummer: ${loaderData.versjon} for bostedsland for søknaden ${soknadId}`
+      );
+      return <BostedslandViewV1 />;
+  }
 }

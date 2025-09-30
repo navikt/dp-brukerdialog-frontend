@@ -7,7 +7,7 @@ import {
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
-} from "~/seksjon/bostedsland/bostedsland.spørsmål";
+} from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
 
 export const mockBostedsland: BostedslandSvar = {
   [bostedsland]: "FIN",

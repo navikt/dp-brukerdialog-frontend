@@ -1,20 +1,27 @@
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  EgenNæringResponse, hvemEierGårdsbruket, hvilkeTypeGårdsbrukDriverDu, hvordanHarDuBeregnetAntallArbeidstimerTotalt,
+  EgenNæringResponse,
+  hvemEierGårdsbruket,
+  hvilkeTypeGårdsbrukDriverDu,
+  hvordanHarDuBeregnetAntallArbeidstimerTotalt,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
-  hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr, hvorMangeProsentAvInntektenGårTilDeg,
+  hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
+  hvorMangeProsentAvInntektenGårTilDeg,
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
-  hvorMangeTimerJobbetPerUkeNå, organisasjonsnummer,
-} from "~/seksjon/egen-næring/egen-næring.spørsmål";
+  hvorMangeTimerJobbetPerUkeNå,
+  organisasjonsnummer,
+} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
-export const mockEngenNæring: EgenNæringResponse = {
+export const mockEgenNæring: EgenNæringResponse = {
   [driverDuEgenNæringsvirksomhet]: "ja",
-  næringsvirksomheter: [{
-    [organisasjonsnummer]: "255663143",
-    [hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]: "2",
-    [hvorMangeTimerJobbetPerUkeNå]: "3"
-  }],
+  næringsvirksomheter: [
+    {
+      [organisasjonsnummer]: "255663143",
+      [hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]: "2",
+      [hvorMangeTimerJobbetPerUkeNå]: "3",
+    },
+  ],
   [driverDuEgetGårdsbruk]: "ja",
   gårdsbruk: [
     {
@@ -24,7 +31,7 @@ export const mockEngenNæring: EgenNæringResponse = {
       [hvorMangeProsentAvInntektenGårTilDeg]: "65",
       [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]: "2024",
       [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]: "21",
-      [hvordanHarDuBeregnetAntallArbeidstimerTotalt]: "Jeg brukte en kalkulator."
-    }
+      [hvordanHarDuBeregnetAntallArbeidstimerTotalt]: "Jeg brukte en kalkulator.",
+    },
   ],
 };
