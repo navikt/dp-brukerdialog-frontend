@@ -6,15 +6,13 @@ import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
-import {
-  ModalOperasjonEnum,
-  useBarnetilleggContext,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import { ModalOperasjonEnum, useBarnetilleggContext, } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  erTilbakenavigering,
   forsørgerDuBarnSomIkkeVisesHer,
   payload,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
