@@ -4,8 +4,9 @@ export type KomponentType =
   | LangTekstSpørsmål
   | KortTekstSpørsmål
   | DatoSpørsmål
-  | LandSpørsmål
   | PeriodeSpørsmål
+  | LandSpørsmål
+  | TallSpørsmål
   | Varselmelding
   | LesMer
   | Dokumentasjonskravindikator;
@@ -20,7 +21,8 @@ export type SpørsmålType =
   | "dato"
   | "periodeFra"
   | "periodeTil"
-  | "land";
+  | "land"
+  | "tall";
 
 export type KomponentBase = {
   id: string;
@@ -68,6 +70,10 @@ export type PeriodeSpørsmål = SpørsmålBase & {
 
 export type LandSpørsmål = SpørsmålBase & {
   type: "land";
+};
+
+export type TallSpørsmål = SpørsmålBase & {
+  type: "tall";
 };
 
 export type Varselmelding = KomponentBase & {
