@@ -23,13 +23,6 @@ export default function RenderOppsummeringSeksjon({
 }: RenderSeksjonProps) {
   const seksjonSvarene = JSON.parse(seksjonsData);
 
-  function printVersjonsFeilmelding(seksjonsId: string, versjon: number) {
-    console.error(
-      `Ukjent versjon for seksjon ${seksjonsId}. Mottatt versjon: ${versjon}. 
-        Prøver å vise nyeste versjon av oppsummeringsmodulen for seksjonen.`
-    );
-  }
-
   switch (seksjonsId) {
     case "din-situasjon":
       switch (seksjonSvarene.versjon) {
@@ -41,7 +34,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <DinSituasjonOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -61,7 +53,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <BostedslandOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -79,7 +70,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <ArbeidsforholdOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -98,7 +88,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <AnnenPengestøtteOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -116,7 +105,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <EgenNæringOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -134,7 +122,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <VernepliktOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -153,7 +140,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <UtdanningOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -172,7 +158,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <BarnetilleggOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -191,7 +176,6 @@ export default function RenderOppsummeringSeksjon({
             />
           );
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <ReellArbeidssøkerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
@@ -211,7 +195,6 @@ export default function RenderOppsummeringSeksjon({
           );
 
         default:
-          printVersjonsFeilmelding(seksjonsId, seksjonSvarene.versjon);
           return (
             <TilleggOpplysningerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
