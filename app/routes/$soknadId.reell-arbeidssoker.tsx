@@ -8,8 +8,12 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import { erTilbakenavigering, ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+import {
+  erTilbakenavigering,
+  ReellArbeidssøkerSvar,
+} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
 import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidsøkerView";
+import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
 type ReellArbeidssøkerSvarType = {
@@ -44,10 +48,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const nesteSeksjonId = "tilleggsopplysninger";
   const forrigeSeksjonId = "barnetillegg";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon" && key !== erTilbakenavigering
+    ([key, value]) =>
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erTilbakenavigering
   );
-  const seksjonData = Object.fromEntries(filtrertEntries);
 
+  const seksjonData = normaliserFormData(Object.fromEntries(filtrertEntries));
   const versjon = formData.get("versjon");
   const seksjonDataMedVersjon = {
     seksjon: seksjonData,

@@ -8,9 +8,13 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { normaliserFormData } from "~/utils/action.utils.server";
 import { EgenNæringViewV1 } from "~/seksjon/egen-næring/v1/EgenNæringViewV1";
 import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
-import { EgenNæringResponse, erTilbakenavigering, } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+import {
+  EgenNæringResponse,
+  erTilbakenavigering,
+} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
 const NYESTE_VERSJON = 1;
 
@@ -38,7 +42,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const nesteSeksjonId = "verneplikt";
   const forrigeSeksjonId = "annen-pengestotte";
   const payload = formData.get("payload");
-  const seksjonsData = JSON.parse(payload as string);
+  const seksjonsData = normaliserFormData(JSON.parse(payload as string));
 
   const versjon = formData.get("versjon");
   const seksjonsDataMedVersjon = {

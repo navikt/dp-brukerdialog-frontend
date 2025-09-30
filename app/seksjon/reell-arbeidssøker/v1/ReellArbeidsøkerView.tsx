@@ -54,7 +54,6 @@ export function ReellArbeidssøkerViewV1() {
               </List>
             </VStack>
             {reellArbeidssøkerSpørsmål.map((spørsmål) => {
-              // Skip rendering if the question should not be shown based on current answers
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }

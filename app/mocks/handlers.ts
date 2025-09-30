@@ -15,6 +15,7 @@ import { mockOppsummering } from "~/mocks/mock-data/mock-oppsummering";
 import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
 import { mockTilleggsopplysninger } from "~/mocks/mock-data/mock-tilleggsopplysninger";
 import { mockReellArbeidsøker } from "~/mocks/mock-data/mock-reell-arbeidsøker";
+import { mockReellArbeidssøker } from "./mock-data/mock-reell-arbeidssøker";
 
 let antallOpplastetDokument = 0;
 
@@ -57,6 +58,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/tilleggsopplysninger`, () => {
     return HttpResponse.json({ versjon: 1, seksjon: mockTilleggsopplysninger });
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId/reell-arbeidssoker`, () => {
+    return HttpResponse.json({ versjon: 1, seksjon: mockReellArbeidssøker });
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
