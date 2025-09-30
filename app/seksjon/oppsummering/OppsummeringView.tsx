@@ -2,7 +2,7 @@ import { Alert, BodyLong, VStack } from "@navikt/ds-react";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import { stegerISøknaden } from "~/routes/$soknadId";
-import RenderOppsummeringSeksjon from "~/seksjon/oppsummering/RenderOppsummeringSeksjon";
+import OppsummeringSeksjon from "~/seksjon/oppsummering/OppsummeringSeksjon";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -30,7 +30,7 @@ export default function OppsummeringView() {
             const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
             return (
-              <RenderOppsummeringSeksjon
+              <OppsummeringSeksjon
                 seksjonsId={seksjon.path}
                 seksjonsUrl={seksjonsData.seksjonsUrl}
                 seksjonsData={seksjonsData.data}

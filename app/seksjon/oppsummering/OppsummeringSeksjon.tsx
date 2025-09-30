@@ -16,7 +16,7 @@ type RenderSeksjonProps = {
   seksjonsData: string;
 };
 
-export default function RenderOppsummeringSeksjon({
+export default function OppsummeringSeksjon({
   seksjonsId,
   seksjonsUrl,
   seksjonsData,
