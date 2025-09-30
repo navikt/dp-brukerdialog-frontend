@@ -9,8 +9,8 @@ type PersonaliaType = {
   folkeregistrertPoststed: string;
 };
 
-export default function PersonaliaOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  const personalia: PersonaliaType = JSON.parse(seksjonsData);
+export default function PersonaliaOppsummering({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  const personalia: PersonaliaType = JSON.parse(seksjonSvarene);
   return (
     <FormSummary>
       <FormSummary.Header>

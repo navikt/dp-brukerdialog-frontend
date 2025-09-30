@@ -9,12 +9,11 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { SeksjonProps } from "~/utils/oppsummering.utils";
 
-export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function BarnetilleggOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  if (!seksjonSvarene) return <></>;
 
-  const barnetilleggSvar: BarnetilleggResponse = JSON.parse(seksjonsData);
+  const barnetilleggSvar: BarnetilleggResponse = seksjonSvarene as BarnetilleggResponse;
   const entries = Object.entries(barnetilleggSvar);
-
   const forsørgerDuBarnSomIkkeVisesHerSvar = barnetilleggSvar[forsørgerDuBarnSomIkkeVisesHer];
 
   if (forsørgerDuBarnSomIkkeVisesHerSvar === undefined) {

@@ -20,10 +20,13 @@ import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsf
 import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function ArbeidsforholdOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function ArbeidsforholdOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+}: SeksjonProps) {
+  if (!seksjonSvarene) return <></>;
 
-  const data: ArbeidsforholdResponse = JSON.parse(seksjonsData);
+  const data: ArbeidsforholdResponse = seksjonSvarene as ArbeidsforholdResponse;
 
   const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
     spørsmålListe.find((spørsmål) => spørsmål.id === id);

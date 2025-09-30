@@ -6,13 +6,14 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function TilleggOpplysningerOppsummering({
-  seksjonsData,
+export default function TilleggOpplysningerOppsummeringV1({
+  seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+  if (!seksjonSvarene) return <></>;
 
-  const tilleggOpplysningerData: TilleggsopplysningerSvar = JSON.parse(seksjonsData);
+  const tilleggOpplysningerData: TilleggsopplysningerSvar =
+    seksjonSvarene as TilleggsopplysningerSvar;
   const tilleggOpplysningerEntries = Object.entries(tilleggOpplysningerData);
 
   return (

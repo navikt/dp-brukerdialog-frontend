@@ -9,10 +9,14 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
 import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function ReellArbeidssøkerOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+}: SeksjonProps) {
+  console.log(seksjonsUrl);
+  if (!seksjonSvarene) return <></>;
 
-  const reellArbeidssøkerData: ReellArbeidssøkerSvar = JSON.parse(seksjonsData);
+  const reellArbeidssøkerData: ReellArbeidssøkerSvar = seksjonSvarene as ReellArbeidssøkerSvar;
   const reellArbeidssøkerEntries = Object.entries(reellArbeidssøkerData);
 
   function kanIkkeJobbeIHeleNorge(spørsmål: FlervalgSpørsmål, svar: string) {

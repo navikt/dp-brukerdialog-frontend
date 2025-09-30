@@ -13,10 +13,10 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { SeksjonProps } from "~/utils/oppsummering.utils";
 
-export default function EgenNæringOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  if (!seksjonSvarene) return <></>;
 
-  const egenNæringSvar: EgenNæringResponse = JSON.parse(seksjonsData);
+  const egenNæringSvar: EgenNæringResponse = seksjonSvarene as EgenNæringResponse;
 
   const driverDuEgenNæringsvirksomhetSpørsmål = egenNæringEgenNæringsvirksomhetSpørsmål.find(
     (s) => s.id === driverDuEgenNæringsvirksomhet

@@ -6,11 +6,10 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function BostedslandOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  if (!seksjonSvarene) return <></>;
 
-  const bostedslandSvar: BostedslandSvar = JSON.parse(seksjonsData);
-  const seksjonSvar = Object.entries(bostedslandSvar);
+  const seksjonSvar = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>
