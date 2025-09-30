@@ -89,7 +89,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertSpørsmål: KomponentType[
   },
   {
     id: arbeidstidenErRedusertHvorMangeTimerHarDuJobbetIUka,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du har jobbet per uke før arbeidstiden ble redusert?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[arbeidstidenErRedusertVetDuHvorMangeTimerDuJobbetIUka] === "ja",

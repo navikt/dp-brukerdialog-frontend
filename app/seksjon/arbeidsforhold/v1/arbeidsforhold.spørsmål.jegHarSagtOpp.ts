@@ -68,7 +68,7 @@ export const arbeidsforholdModalJegHarSagtOppSelvSpørsmål: KomponentType[] = [
   },
   {
     id: jegHarSagtOppHvorMangeTimerHarDuJobbetIUka,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du har jobbet per uke før du sa opp",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka] === "ja",

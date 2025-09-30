@@ -251,5 +251,23 @@ export const arbeidsforholdModalSchema = z
             message: "Du må svare på dette spørsmålet",
           });
         }
+
+        // TODO: Nå må det være rom for noe generalisering her :D
+        if (svar && spørsmål.type === "tall") {
+          if (isNaN(+svar.replace(",", "."))) {
+            ctx.addIssue({
+              path: [spørsmål.id],
+              code: "custom",
+              message: "Svaret må være et tall",
+            });
+          }
+          if (svar.startsWith("-")) {
+            ctx.addIssue({
+              path: [spørsmål.id],
+              code: "custom",
+              message: "Tallet kan ikke være negativt",
+            });
+          }
+        }
       });
   });

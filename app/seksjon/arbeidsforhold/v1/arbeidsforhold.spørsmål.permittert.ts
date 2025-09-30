@@ -125,7 +125,7 @@ export const arbeidsforholdModalJegErPermittertSpørsmål: KomponentType[] = [
   },
   {
     id: permittertHvorMangeTimerHarDuJobbetIUka,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du har jobbet per uke før du ble permittert?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertVetDuHvorMangeTimerDuJobbetIUka] === "ja",
@@ -158,7 +158,7 @@ export const arbeidsforholdModalJegErPermittertSpørsmål: KomponentType[] = [
   },
   {
     id: permittertHvorMangeProsentErDuPermittert,
-    type: "kortTekst",
+    type: "tall",
     label: "Hvor mange prosent er du permittert?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
