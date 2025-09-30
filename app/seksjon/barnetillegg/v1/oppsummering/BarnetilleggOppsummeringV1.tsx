@@ -7,18 +7,18 @@ import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
-import { SeksjonProps } from "~/utils/oppsummering.utils";
 
-export default function BarnetilleggOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
-  const barnetilleggSvar: BarnetilleggResponse = JSON.parse(seksjonsData);
+export default function BarnetilleggOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  if (!seksjonSvarene) return null;
+
+  const barnetilleggSvar = seksjonSvarene as BarnetilleggResponse;
   const entries = Object.entries(barnetilleggSvar);
-
   const forsørgerDuBarnSomIkkeVisesHerSvar = barnetilleggSvar[forsørgerDuBarnSomIkkeVisesHer];
 
   if (forsørgerDuBarnSomIkkeVisesHerSvar === undefined) {
-    return <></>;
+    return null;
   }
 
   const forsørgerDuBarnetSpørsmål = barnetilleggSpørsmål.find(
