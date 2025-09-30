@@ -116,7 +116,7 @@ export const leggTilNæringsvirksomhetSpørsmål: KomponentType[] = [
   },
   {
     id: hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
-    type: "kortTekst",
+    type: "tall",
     label:
       "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert",
   },

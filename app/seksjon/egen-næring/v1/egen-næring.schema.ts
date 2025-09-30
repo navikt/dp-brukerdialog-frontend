@@ -88,6 +88,13 @@ export const leggTilNæringsvirksomhetSchema = z
           message: "Du må svare på dette spørsmålet",
         });
       }
+      if (synlig && svar && spørsmål.type === "tall" && !spørsmål.optional && isNaN(+svar.replace(",", "."))) {
+        ctx.addIssue({
+          path: [spørsmål.id],
+          code: "custom",
+          message: "Du må skrive inn et tall",
+        });
+      }
     });
   });
 
