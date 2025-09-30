@@ -68,7 +68,7 @@ export const arbeidsforholdModalJegHarFåttAvskjedSpørsmål: KomponentType[] = 
   },
   {
     id: avskjedigetHvorMangeTimerHarDuJobbetIUka,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du har jobbet per uke før du ble avskjediget",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[avskjedigetVetDuHvorMangeTimerDuJobbetIUka] === "ja",

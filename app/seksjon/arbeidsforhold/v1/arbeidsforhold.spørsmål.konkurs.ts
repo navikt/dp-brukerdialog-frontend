@@ -100,7 +100,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursSpørsmål: KomponentType[]
   },
   {
     id: konkursHvorMangeTimerHarDuJobbetIUka,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du har jobbet per uke før arbeidsgiver gikk konkurs",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[konkursVetDuHvorMangeTimerDuJobbetIUka] === "ja",

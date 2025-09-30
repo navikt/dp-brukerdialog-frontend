@@ -88,12 +88,22 @@ export const leggTilNæringsvirksomhetSchema = z
           message: "Du må svare på dette spørsmålet",
         });
       }
-      if (synlig && svar && spørsmål.type === "tall" && !spørsmål.optional && isNaN(+svar.replace(",", "."))) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må skrive inn et tall",
-        });
+      // TODO: Nå må det være rom for noe generalisering her :D
+        if (svar && spørsmål.type === "tall") {
+          if (isNaN(+(svar as string).replace(",", "."))) {
+            ctx.addIssue({
+              path: [spørsmål.id],
+              code: "custom",
+              message: "Svaret må være et tall",
+            });
+          }
+          if ((svar as string).startsWith("-")) {
+            ctx.addIssue({
+              path: [spørsmål.id],
+              code: "custom",
+              message: "Tallet kan ikke være negativt",
+            });
+          }
       }
     });
   });
@@ -127,6 +137,23 @@ export const leggTilGårdsbrukSchema = z
           code: "custom",
           message: "Du må svare på dette spørsmålet",
         });
+      }
+      // TODO: Nå må det være rom for noe generalisering her :D
+      if (svar && spørsmål.type === "tall") {
+        if (isNaN(+(svar as string).replace(",", "."))) {
+          ctx.addIssue({
+            path: [spørsmål.id],
+            code: "custom",
+            message: "Svaret må være et tall",
+          });
+        }
+        if ((svar as string).startsWith("-")) {
+          ctx.addIssue({
+            path: [spørsmål.id],
+            code: "custom",
+            message: "Tallet kan ikke være negativt",
+          });
+        }
       }
     });
   });
