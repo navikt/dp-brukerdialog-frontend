@@ -11,12 +11,13 @@ import {
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { SeksjonProps } from "~/utils/oppsummering.utils";
+
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
 export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonSvarene) return <></>;
+  if (!seksjonSvarene) return null;
 
-  const egenNæringSvar: EgenNæringResponse = seksjonSvarene as EgenNæringResponse;
+  const egenNæringSvar = seksjonSvarene as EgenNæringResponse;
 
   const driverDuEgenNæringsvirksomhetSpørsmål = egenNæringEgenNæringsvirksomhetSpørsmål.find(
     (s) => s.id === driverDuEgenNæringsvirksomhet

@@ -15,15 +15,16 @@ import {
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
-import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
 export default function AnnenPengestøtteOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return <></>;
+  if (!seksjonSvarene) return null;
 
-  const data: AnnenPengestøtteResponse = seksjonSvarene as AnnenPengestøtteResponse;
+  const data = seksjonSvarene as AnnenPengestøtteResponse;
 
   const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
     spørsmålListe.find((spørsmål) => spørsmål.id === id);

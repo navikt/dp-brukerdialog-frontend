@@ -18,15 +18,16 @@ import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/a
 import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
 import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
 import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
-import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
 export default function ArbeidsforholdOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return <></>;
+  if (!seksjonSvarene) return null;
 
-  const data: ArbeidsforholdResponse = seksjonSvarene as ArbeidsforholdResponse;
+  const data = seksjonSvarene as ArbeidsforholdResponse;
 
   const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
     spørsmålListe.find((spørsmål) => spørsmål.id === id);

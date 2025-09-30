@@ -4,16 +4,16 @@ import {
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
 export default function TilleggOpplysningerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return <></>;
+  if (!seksjonSvarene) return null;
 
-  const tilleggOpplysningerData: TilleggsopplysningerSvar =
-    seksjonSvarene as TilleggsopplysningerSvar;
+  const tilleggOpplysningerData = seksjonSvarene as TilleggsopplysningerSvar;
   const tilleggOpplysningerEntries = Object.entries(tilleggOpplysningerData);
 
   return (
