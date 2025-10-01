@@ -165,7 +165,7 @@ export const leggTilGårdsbrukSpørsmål: KomponentType[] = [
       { value: samboerEktefelle, label: "Samboer/ektefelle" },
       { value: andre, label: "Andre" },
     ],
-    label: "Hvem eier gårdsbruket? Du kan krysse for flere",
+    label: "Hvem eier gårdsbruket?",
   },
   {
     id: hvorMangeProsentAvInntektenGårTilDeg,
