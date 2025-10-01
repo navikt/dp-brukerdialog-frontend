@@ -1,20 +1,16 @@
-import {
-  tilleggsopplysningerSpørsmål,
-  TilleggsopplysningerSvar,
-} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { tilleggsopplysningerSpørsmål } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
-export default function TilleggOpplysningerOppsummeringV1({
+export default function TilleggsopplysningerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
-  const tilleggOpplysningerData = seksjonSvarene as TilleggsopplysningerSvar;
-  const tilleggOpplysningerEntries = Object.entries(tilleggOpplysningerData);
+  const tilleggsopplysningerSvar = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>
@@ -22,15 +18,16 @@ export default function TilleggOpplysningerOppsummeringV1({
         <FormSummary.Heading level="2">Tilleggsopplysninger</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
+        {!tilleggsopplysningerSvar.length && (
+          <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
+        )}
         {tilleggsopplysningerSpørsmål.map((spørsmål) => {
-          if (erInformasjonsFelt(spørsmål)) return null;
-          const finnSvaret = tilleggOpplysningerEntries.find((entry) => entry[0] === spørsmål.id);
-          if (finnSvaret) {
-            const svar = finnSvaret[1];
+          const svar = tilleggsopplysningerSvar.find((svar) => svar[0] === spørsmål.id);
+          if (svar && !erInformasjonsFelt(spørsmål)) {
             return (
               <FormSummary.Answer key={spørsmål.id}>
                 <FormSummary.Label>{spørsmål.label}</FormSummary.Label>
-                <OppsummeringsSvar spørsmål={spørsmål} svar={svar} />
+                <OppsummeringsSvar spørsmål={spørsmål} svar={svar[1]} />
               </FormSummary.Answer>
             );
           }

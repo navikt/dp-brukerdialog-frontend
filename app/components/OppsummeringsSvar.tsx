@@ -39,7 +39,7 @@ export default function OppsummeringsSvar({
       return <FormSummary.Value>{finnLandnavnMedLocale(svar as string)}</FormSummary.Value>;
     case "dato":
       return (
-        <FormSummary.Value>dato {formaterNorskDato(new Date(svar as string))}</FormSummary.Value>
+        <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>
       );
     case "periodeFra":
       return <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>;

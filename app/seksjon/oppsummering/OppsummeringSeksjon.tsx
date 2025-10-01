@@ -8,7 +8,7 @@ import VernepliktOppsummeringV1 from "~/seksjon/verneplikt/v1/oppsummering/Verne
 import UtdanningOppsummeringV1 from "~/seksjon/utdanning/v1/oppsummering/UtdanningOppsummeringV1";
 import BarnetilleggOppsummeringV1 from "~/seksjon/barnetillegg/v1/oppsummering/BarnetilleggOppsummeringV1";
 import ReellArbeidssøkerOppsummeringV1 from "~/seksjon/reell-arbeidssøker/v1/oppsummering/ReellArbeidssøkerOppsummeringV1";
-import TilleggOpplysningerOppsummeringV1 from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggOpplysningerOppsummeringV1";
+import TilleggsopplysningerOppsummeringV1 from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggsopplysningerOppsummeringV1";
 
 type RenderSeksjonProps = {
   seksjonsId: string;
@@ -188,7 +188,7 @@ export default function OppsummeringSeksjon({
       switch (seksjonSvarene.versjon) {
         case 1:
           return (
-            <TilleggOpplysningerOppsummeringV1
+            <TilleggsopplysningerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
             />
@@ -196,7 +196,7 @@ export default function OppsummeringSeksjon({
 
         default:
           return (
-            <TilleggOpplysningerOppsummeringV1
+            <TilleggsopplysningerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
             />
