@@ -22,7 +22,7 @@ export const tilleggsopplysningerSpørsmål: KomponentType[] = [
   {
     id: tilleggsopplysninger,
     type: "langTekst",
-    label: "Skriv inn tilleggsopplysninger her (maks 500 tegn)",
+    label: "Skriv inn tilleggsopplysninger her",
     maxLength: 500,
     visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
   },

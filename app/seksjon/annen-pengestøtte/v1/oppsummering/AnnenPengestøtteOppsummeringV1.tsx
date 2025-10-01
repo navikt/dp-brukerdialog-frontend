@@ -71,16 +71,16 @@ export default function AnnenPengestøtteOppsummeringV1({
               <FormSummary.Label> {`Pengestøtte fra EØS-land ${index + 1}`}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
-                  {Object.entries(pengestøtte).map((støtte) => {
-                    const aktivSpørsmål = finnSpørsmål(
+                  {Object.entries(pengestøtte).map((enPengestøtte) => {
+                    const spørsmål = finnSpørsmål(
                       pengestøtteFraAndreEøsLandModalSpørsmål,
-                      støtte[0]
+                      enPengestøtte[0]
                     );
-                    if (aktivSpørsmål && !erInformasjonsFelt(aktivSpørsmål)) {
+                    if (spørsmål && !erInformasjonsFelt(spørsmål) && (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))) {
                       return (
-                        <FormSummary.Answer key={støtte[0]}>
-                          <FormSummary.Label>{aktivSpørsmål?.label}</FormSummary.Label>
-                          <OppsummeringsSvar spørsmål={aktivSpørsmål!} svar={støtte[1]} />
+                        <FormSummary.Answer key={enPengestøtte[0]}>
+                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                          <OppsummeringsSvar spørsmål={spørsmål!} svar={enPengestøtte[1]} />
                         </FormSummary.Answer>
                       );
                     }
@@ -102,13 +102,13 @@ export default function AnnenPengestøtteOppsummeringV1({
               <FormSummary.Label> {`Pengestøtte fra Norge ${index + 1}`}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
-                  {Object.entries(pengestøtte).map((støtte) => {
-                    const aktivSpørsmål = finnSpørsmål(pengestøtteFraNorgeModalSpørsmål, støtte[0]);
-                    if (aktivSpørsmål && !erInformasjonsFelt(aktivSpørsmål)) {
+                  {Object.entries(pengestøtte).map((enPengestøtte) => {
+                    const spørsmål = finnSpørsmål(pengestøtteFraNorgeModalSpørsmål, enPengestøtte[0]);
+                    if (spørsmål && !erInformasjonsFelt(spørsmål) && (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))) {
                       return (
-                        <FormSummary.Answer key={støtte[0]}>
-                          <FormSummary.Label>{aktivSpørsmål?.label}</FormSummary.Label>
-                          <OppsummeringsSvar spørsmål={aktivSpørsmål!} svar={støtte[1]} />
+                        <FormSummary.Answer key={enPengestøtte[0]}>
+                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                          <OppsummeringsSvar spørsmål={spørsmål!} svar={enPengestøtte[1]} />
                         </FormSummary.Answer>
                       );
                     }
