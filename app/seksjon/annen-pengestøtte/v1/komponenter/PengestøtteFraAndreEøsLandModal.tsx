@@ -17,6 +17,7 @@ import {
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 import { useEffect } from "react";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -66,6 +67,11 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
     },
     resetAfterSubmit: true,
   });
+
+  useNullstillSkjulteFelter<PengestøtteFraAndreEøsLandModalSvar>(
+    form,
+    pengestøtteFraAndreEøsLandModalSpørsmål
+  );
 
   useEffect(() => {
     if (form.value(mottarDuFortsattPengestøttenFraAndreEøsLand) === "ja") {

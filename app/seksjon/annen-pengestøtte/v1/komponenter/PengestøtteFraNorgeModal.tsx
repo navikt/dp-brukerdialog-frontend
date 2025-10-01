@@ -12,6 +12,7 @@ import {
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
 import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -61,6 +62,8 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
     },
     resetAfterSubmit: true,
   });
+
+  useNullstillSkjulteFelter<PengestøtteFraNorgeModalSvar>(form, pengestøtteFraNorgeModalSpørsmål);
 
   const modalTittel =
     pengestøtteFraNorgeModalData?.operasjon === ModalOperasjonEnum.LeggTil
