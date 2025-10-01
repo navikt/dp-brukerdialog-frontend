@@ -4,15 +4,15 @@ import {
   egenNæringEgenNæringsvirksomhetSpørsmål,
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringResponse,
-  Gårdsbruk,
   leggTilGårdsbrukSpørsmål,
   leggTilNæringsvirksomhetSpørsmål,
-  Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
   if (!seksjonSvarene) return null;
@@ -27,8 +27,8 @@ export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl 
     (s) => s.id === driverDuEgetGårdsbruk
   );
 
-  const finnLabel = (spørsmålListe: { id: string; label: string }[], id: string) =>
-    spørsmålListe.find((spørsmål) => spørsmål.id === id)?.label;
+  const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
+    spørsmålListe.find((spørsmål) => spørsmål.id === id);
 
   return (
     <FormSummary>
@@ -48,21 +48,27 @@ export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl 
           )}
         </FormSummary.Answer>
         {egenNæringSvar["driver-du-egen-næringsvirksomhet"] === "ja" &&
-          egenNæringSvar["næringsvirksomheter"]?.map((næring, index) => (
+          egenNæringSvar["næringsvirksomheter"]?.map((næringsvirksomhet, index) => (
             <FormSummary.Answer key={index}>
               <FormSummary.Label>Egen næringsvirksomhet {index + 1}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
-                  {Object.keys(næring).map((key) => (
-                    <FormSummary.Answer>
-                      <FormSummary.Label>
-                        {finnLabel(leggTilNæringsvirksomhetSpørsmål, key)}
-                      </FormSummary.Label>
-                      <FormSummary.Value>
-                        {næring[key as keyof Næringsvirksomhet]}
-                      </FormSummary.Value>
-                    </FormSummary.Answer>
-                  ))}
+                  {Object.entries(næringsvirksomhet).map((arbeidsforholdModalSvar) => {
+                    const spørsmål = finnSpørsmål(
+                      leggTilNæringsvirksomhetSpørsmål,
+                      arbeidsforholdModalSvar[0]
+                    );
+                    if (spørsmål && !erInformasjonsFelt(spørsmål))
+                      return (
+                        <FormSummary.Answer key={arbeidsforholdModalSvar[0]}>
+                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                          <OppsummeringsSvar
+                            spørsmål={spørsmål!}
+                            svar={arbeidsforholdModalSvar[1]}
+                          />
+                        </FormSummary.Answer>
+                      );
+                  })}
                 </FormSummary.Answers>
               </FormSummary.Value>
             </FormSummary.Answer>
@@ -80,19 +86,27 @@ export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl 
           )}
         </FormSummary.Answer>
         {egenNæringSvar["driver-du-eget-gårdsbruk"] === "ja" &&
-          egenNæringSvar["gårdsbruk"]?.map((næring, index) => (
+          egenNæringSvar["gårdsbruk"]?.map((gårdsbruk, index) => (
             <FormSummary.Answer key={index}>
               <FormSummary.Label>Eget gårdsbruk {index + 1}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
-                  {Object.keys(næring).map((key) => (
-                    <FormSummary.Answer>
-                      <FormSummary.Label>
-                        {finnLabel(leggTilGårdsbrukSpørsmål, key)}
-                      </FormSummary.Label>
-                      <FormSummary.Value>{næring[key as keyof Gårdsbruk]}</FormSummary.Value>
-                    </FormSummary.Answer>
-                  ))}
+                  {Object.entries(gårdsbruk).map((arbeidsforholdModalSvar) => {
+                    const spørsmål = finnSpørsmål(
+                      leggTilGårdsbrukSpørsmål,
+                      arbeidsforholdModalSvar[0]
+                    );
+                    if (spørsmål && !erInformasjonsFelt(spørsmål))
+                      return (
+                        <FormSummary.Answer key={arbeidsforholdModalSvar[0]}>
+                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                          <OppsummeringsSvar
+                            spørsmål={spørsmål!}
+                            svar={arbeidsforholdModalSvar[1]}
+                          />
+                        </FormSummary.Answer>
+                      );
+                  })}
                 </FormSummary.Answers>
               </FormSummary.Value>
             </FormSummary.Answer>
