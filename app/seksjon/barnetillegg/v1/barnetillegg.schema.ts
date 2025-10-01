@@ -13,6 +13,7 @@ import {
   LeggTilBarnManueltSvar,
   payload,
 } from "./barnetillegg.spørsmål";
+import { valider } from "~/utils/validering.util";
 
 export const barnetilleggSchema = z
   .object({
@@ -21,23 +22,15 @@ export const barnetilleggSchema = z
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (data.erTilbakenavigering) {
       return;
     }
 
     barnetilleggSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof BarnetilleggSvar;
-      const svar = data[spørsmålId];
-
-      if (synlig && !svar) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof BarnetilleggSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });
 
@@ -62,19 +55,10 @@ export const leggTilBarnManueltSchema = z
     [fødselsdato]: z.string().optional(),
     [bostedsland]: z.string().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     leggTilBarnManueltSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof LeggTilBarnManueltSvar;
-      const svar = data[spørsmålId];
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
-
-      if (erSpørsmål && synlig && !svar) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof LeggTilBarnManueltSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });

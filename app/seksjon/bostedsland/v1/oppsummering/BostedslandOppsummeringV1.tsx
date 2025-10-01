@@ -1,16 +1,13 @@
-import {
-  bostedslandSpørsmål,
-  BostedslandSvar,
-} from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
+import { bostedslandSpørsmål } from "~/seksjon/bostedsland/v1/bostedsland.spørsmål";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
-export default function BostedslandOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function BostedslandOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  if (!seksjonSvarene) return null;
 
-  const bostedslandSvar: BostedslandSvar = JSON.parse(seksjonsData);
-  const seksjonSvar = Object.entries(bostedslandSvar);
+  const seksjonSvar = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>

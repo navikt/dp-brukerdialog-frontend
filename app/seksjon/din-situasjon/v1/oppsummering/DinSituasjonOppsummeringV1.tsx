@@ -1,16 +1,13 @@
 import { FormSummary } from "@navikt/ds-react";
-import {
-  dinSituasjonSpørsmål,
-  DinSituasjonSvar,
-} from "~/seksjon/din-situasjon/v1/din-situasjon.spørsmål";
+import { dinSituasjonSpørsmål } from "~/seksjon/din-situasjon/v1/din-situasjon.spørsmål";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { erInformasjonsFelt, SeksjonProps } from "~/utils/oppsummering.utils";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
-export default function DinSituasjonOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function DinSituasjonOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  if (!seksjonSvarene) return null;
 
-  const dinSituasjonData: DinSituasjonSvar = JSON.parse(seksjonsData);
-  const dinSituasjonEntries = Object.entries(dinSituasjonData);
+  const dinSituasjonEntries = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>

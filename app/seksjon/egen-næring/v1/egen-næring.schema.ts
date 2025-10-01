@@ -28,6 +28,7 @@ import {
   samboerEktefelle,
   skog,
 } from "./egen-næring.spørsmål";
+import { valider } from "~/utils/validering.util";
 
 export const egenNæringSchema = z
   .object({
@@ -37,7 +38,7 @@ export const egenNæringSchema = z
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (data.erTilbakenavigering) {
       return;
     }
@@ -46,21 +47,8 @@ export const egenNæringSchema = z
       .concat(egenNæringEgetGårdsbrukSpørsmål)
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const spørsmålId = spørsmål.id as keyof EgenNæringSvar;
-        const svar = data[spørsmålId];
-
-        const erSpørsmål =
-          spørsmål.type !== "lesMer" &&
-          spørsmål.type !== "varselmelding" &&
-          spørsmål.type !== "dokumentasjonskravindikator";
-
-        if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-          ctx.addIssue({
-            path: [spørsmål.id],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
+        const svar = data[spørsmål.id as keyof EgenNæringSvar];
+        valider(spørsmål, svar, synlig, context);
       });
   });
 
@@ -70,31 +58,11 @@ export const leggTilNæringsvirksomhetSchema = z
     [hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]: z.string().optional(),
     [hvorMangeTimerJobbetPerUkeNå]: z.string().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     leggTilNæringsvirksomhetSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof LeggTilNæringsvirksomhetSvar;
-      const svar = data[spørsmålId];
-
-      const erSpørsmål =
-        spørsmål.type !== "lesMer" &&
-        spørsmål.type !== "varselmelding" &&
-        spørsmål.type !== "dokumentasjonskravindikator";
-
-      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
-      if (synlig && svar && spørsmål.type === "tall" && !spørsmål.optional && isNaN(+svar.replace(",", "."))) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må skrive inn et tall",
-        });
-      }
+      const svar = data[spørsmål.id as keyof LeggTilNæringsvirksomhetSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });
 
@@ -110,23 +78,10 @@ export const leggTilGårdsbrukSchema = z
       .optional(),
     [hvordanHarDuBeregnetAntallArbeidstimerTotalt]: z.string().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     leggTilGårdsbrukSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof LeggTilGårdsbrukSvar;
-      const svar = data[spørsmålId];
-
-      const erSpørsmål =
-        spørsmål.type !== "lesMer" &&
-        spørsmål.type !== "varselmelding" &&
-        spørsmål.type !== "dokumentasjonskravindikator";
-
-      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof LeggTilGårdsbrukSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });

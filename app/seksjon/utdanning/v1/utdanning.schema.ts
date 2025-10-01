@@ -11,6 +11,7 @@ import {
   utdanningSpørsmål,
   UtdanningSvar,
 } from "./utdanning.spørsmål";
+import { valider } from "~/utils/validering.util";
 
 export const utdanningSchema = z
   .object({
@@ -24,27 +25,14 @@ export const utdanningSchema = z
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (data.erTilbakenavigering) {
       return;
     }
 
     utdanningSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof UtdanningSvar;
-      const svar = data[spørsmålId];
-
-      const erSpørsmål =
-        spørsmål.type !== "lesMer" &&
-        spørsmål.type !== "varselmelding" &&
-        spørsmål.type !== "dokumentasjonskravindikator";
-
-      if (erSpørsmål && synlig && !svar) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof UtdanningSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });

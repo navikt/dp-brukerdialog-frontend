@@ -10,7 +10,6 @@ type Steg = {
 };
 
 type FremgangSteg = Steg & {
-  interaktiv: boolean;
   fullført?: boolean;
 };
 
@@ -36,7 +35,7 @@ export const stegerISøknaden: Steg[] = [
 
 function fyllTommeSteger(): FremgangSteg[] {
   return stegerISøknaden.map((step) => {
-    return { ...step, interaktiv: false, fullført: false };
+    return { ...step, fullført: false };
   });
 }
 
@@ -73,7 +72,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const soknadSections: FremgangSteg[] = stegerISøknaden.map((step) => ({
     ...step,
-    interaktiv: !fullførtSøknaden,
     fullført: seksjoner.includes(step.path),
   }));
 
@@ -96,11 +94,7 @@ export default function SoknadIdIndex() {
       <div className="innhold">
         <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 1}>
           {progressData.map((steg) => (
-            <FormProgress.Step
-              href={steg.path}
-              completed={steg.fullført}
-              interactive={steg.interaktiv}
-            >
+            <FormProgress.Step href={steg.path} completed={steg.fullført} interactive={false}>
               {steg.tittel}
             </FormProgress.Step>
           ))}

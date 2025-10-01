@@ -35,7 +35,7 @@ export const arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål: Komponen
   },
   {
     id: ikkeEndretHvorMangeTimerHarDuJobbetIUka,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du har jobber i uka i dette arbeidsforholdet",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[ikkeEndretVetDuHvorMangeTimerDuJobbetIUka] === "ja",

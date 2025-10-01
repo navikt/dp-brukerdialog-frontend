@@ -1,5 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
-import { SeksjonProps } from "~/utils/oppsummering.utils";
+
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
 type PersonaliaType = {
   navn: string;
@@ -9,8 +10,8 @@ type PersonaliaType = {
   folkeregistrertPoststed: string;
 };
 
-export default function PersonaliaOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  const personalia: PersonaliaType = JSON.parse(seksjonsData);
+export default function PersonaliaOppsummering({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+  const personalia: PersonaliaType = JSON.parse(seksjonSvarene);
   return (
     <FormSummary>
       <FormSummary.Header>

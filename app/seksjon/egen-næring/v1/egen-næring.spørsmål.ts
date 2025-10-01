@@ -122,7 +122,7 @@ export const leggTilNæringsvirksomhetSpørsmål: KomponentType[] = [
   },
   {
     id: hvorMangeTimerJobbetPerUkeNå,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
     description:
       "For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger.<br/><br/>" +
@@ -165,22 +165,22 @@ export const leggTilGårdsbrukSpørsmål: KomponentType[] = [
       { value: samboerEktefelle, label: "Samboer/ektefelle" },
       { value: andre, label: "Andre" },
     ],
-    label: "Hvem eier gårdsbruket? Du kan krysse for flere",
+    label: "Hvem eier gårdsbruket?",
   },
   {
     id: hvorMangeProsentAvInntektenGårTilDeg,
-    type: "kortTekst",
+    type: "tall",
     label: "Hvor mange prosent av inntekten går til deg?",
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
-    type: "kortTekst",
+    type: "tall",
     label: "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år?",
     description: "Velg hvilket år du oppgir timer for først",
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv hvor mange arbeidstimer som ble brukt",
   },
   {

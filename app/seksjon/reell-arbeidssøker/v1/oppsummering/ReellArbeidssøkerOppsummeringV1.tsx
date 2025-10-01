@@ -7,12 +7,17 @@ import {
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { FlervalgSpørsmål } from "~/components/spørsmål/spørsmål.types";
-import { SeksjonProps, erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 
-export default function ReellArbeidssøkerOppsummering({ seksjonsData, seksjonsUrl }: SeksjonProps) {
-  if (!seksjonsData) return <></>;
+export default function ReellArbeidssøkerOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+}: SeksjonProps) {
+  console.log(seksjonsUrl);
+  if (!seksjonSvarene) return null;
 
-  const reellArbeidssøkerData: ReellArbeidssøkerSvar = JSON.parse(seksjonsData);
+  const reellArbeidssøkerData = seksjonSvarene as ReellArbeidssøkerSvar;
   const reellArbeidssøkerEntries = Object.entries(reellArbeidssøkerData);
 
   function kanIkkeJobbeIHeleNorge(spørsmål: FlervalgSpørsmål, svar: string) {

@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentOppsummering } from "~/models/hent-oppsummering.server";
-import OppsummeringView from "~/seksjon/oppsummering/v1/OppsummeringView";
+import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 
 type OppsummeringSeksjon = {
