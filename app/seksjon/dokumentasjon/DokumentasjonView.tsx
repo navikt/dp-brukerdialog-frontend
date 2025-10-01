@@ -1,7 +1,8 @@
 import { FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useState } from "react";
-import { useParams } from "react-router";
+import { use, useState } from "react";
+import { useLoaderData, useParams } from "react-router";
+import { loader } from "~/routes/$soknadId.dokumentasjon";
 import {
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
@@ -19,9 +20,13 @@ type OpplastingFeil = {
 export function DokumentasjonView() {
   const { soknadId } = useParams();
 
+  const loaderData = useLoaderData<typeof loader>();
+
   const [filer, setFiler] = useState<FileObject[]>([]);
   const [feilmeldinger, setFeilmeldinger] = useState<OpplastingFeil[]>([]);
   const [lasterOppState, setLasterOppState] = useState<string[]>([]);
+
+  console.log(loaderData);
 
   // Todo,
   // Håntere sletting
@@ -110,6 +115,26 @@ export function DokumentasjonView() {
     }
   }
 
+  async function slettFil(filnavn: string) {
+    try {
+      const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        return;
+      }
+
+      setFiler(filer.filter((f) => f.file.name !== filnavn));
+
+      await response.json();
+    } catch (error) {
+      setFeilmeldinger(feilmeldinger.filter((err) => err.filNavn !== filnavn));
+      console.error(error);
+    } finally {
+    }
+  }
+
   return (
     <div className="innhold">
       <h2>Dokumenter</h2>
@@ -132,7 +157,7 @@ export function DokumentasjonView() {
               error={hentFilFeilmelding(file.file.name)}
               button={{
                 action: "delete",
-                onClick: () => setFiler(filer.filter((f) => f.file.name !== file.file.name)),
+                onClick: () => slettFil(file.file.name),
               }}
             />
           ))}
