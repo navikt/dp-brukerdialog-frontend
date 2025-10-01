@@ -27,7 +27,6 @@ export function DokumentasjonView() {
   const [lastetOppFil, setLastetOppFil] = useState<Fil[]>([]);
 
   // Todo,
-  // Håntere sletting
   // Håndtere retry ved feil
   // Finn ut hvordan vi skal hente dokumentkravId
 

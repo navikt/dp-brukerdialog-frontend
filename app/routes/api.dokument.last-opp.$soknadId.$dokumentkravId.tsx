@@ -35,9 +35,9 @@ export async function action({ params, request }: ActionFunctionArgs) {
   } catch (error) {
     console.error(error);
 
-    return new Response("Feil ved opplasting", {
+    return new Response("Feil ved opplasting av dokument", {
       status: 500,
-      statusText: "Feil ved opplasting",
+      statusText: "Feil ved opplasting av dokument",
     });
   }
 }
