@@ -6,6 +6,7 @@ import {
   DinSituasjonSvar,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
 } from "./din-situasjon.spørsmål";
+import { valider } from "~/utils/validering.util";
 
 export const dinSituasjonSchema = z
   .object({
@@ -16,19 +17,10 @@ export const dinSituasjonSchema = z
     [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
     versjon: z.number().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     dinSituasjonSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof DinSituasjonSvar;
-      const svar = data[spørsmålId];
-      const erSpørsmål = spørsmål.type !== "lesMer" && spørsmål.type !== "varselmelding";
-
-      if (synlig && erSpørsmål && !svar) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof DinSituasjonSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });

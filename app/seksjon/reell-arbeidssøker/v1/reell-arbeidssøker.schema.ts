@@ -29,6 +29,7 @@ import {
   ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.spørsmål";
 import { z } from "zod";
+import { valider } from "~/utils/validering.util";
 
 export const reellArbeidssøkerSchema = z
   .object({
@@ -70,29 +71,14 @@ export const reellArbeidssøkerSchema = z
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
-  .superRefine((data, ctx) => {
-    // TODO: Generaliser denne på et vis så den kan brukes i alle `superRefine`. Gjelder alle `schema`-filene.
-
+  .superRefine((data, context) => {
     if (data.erTilbakenavigering) {
       return;
     }
 
     reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof ReellArbeidssøkerSvar;
-      const svar = data[spørsmålId];
-
-      const erSpørsmål =
-        spørsmål.type !== "lesMer" &&
-        spørsmål.type !== "varselmelding" &&
-        spørsmål.type !== "dokumentasjonskravindikator";
-
-      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof ReellArbeidssøkerSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });

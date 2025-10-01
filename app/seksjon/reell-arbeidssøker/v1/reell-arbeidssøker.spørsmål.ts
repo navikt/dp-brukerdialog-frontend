@@ -203,7 +203,7 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
   },
   {
     id: kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
-    type: "kortTekst",
+    type: "tall",
     label: "Skriv inn antall timer du kan jobbe per uke",
     description: "For å få rett til dagpenger må du normalt kunne jobbe minst 18,75 timer per uke.",
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
