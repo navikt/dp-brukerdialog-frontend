@@ -1,9 +1,8 @@
 import { BodyLong, Box, FileObject, Heading, List, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { set } from "date-fns";
-import { use, useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router";
-import { Fil, loader } from "~/routes/$soknadId.dokumentasjon";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Fil } from "~/routes/$soknadId.dokumentasjon";
 import {
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
@@ -20,16 +19,14 @@ type OpplastingFeil = {
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
-  const [filer, setFiler] = useState<FileObject[]>([]);
   const [feilmeldinger, setFeilmeldinger] = useState<OpplastingFeil[]>([]);
   const [lasterOppState, setLasterOppState] = useState<string[]>([]);
-
+  const [filer, setFiler] = useState<FileObject[]>([]);
   const [lastetOppFil, setLastetOppFil] = useState<Fil[]>([]);
 
   // Todo,
   // Håndtere retry ved feil
   // Finn ut hvordan vi skal hente dokumentkravId
-
   async function lastOppfiler(filer: FileObject[]) {
     setFiler(filer);
     setLasterOppState(filer.map((f) => f.file.name));
@@ -65,32 +62,33 @@ export function DokumentasjonView() {
     }
 
     try {
-      await Promise.all(
-        filer.map(async (fileObj) => {
-          const formData = new FormData();
-          formData.append("file", fileObj.file);
+      const opplastedeFiler: Fil[] = (
+        await Promise.all(
+          filer.map(async (fileObj) => {
+            const formData = new FormData();
+            formData.append("file", fileObj.file);
 
-          const response = await fetch(`/api/dokument/last-opp/${soknadId}/1014.1`, {
-            method: "POST",
-            body: formData,
-          });
+            const response = await fetch(`/api/dokument/last-opp/${soknadId}/1014.1`, {
+              method: "POST",
+              body: formData,
+            });
 
-          if (!response.ok) {
-            setFeilmeldinger((prev) => [
-              ...prev.filter((err) => err.filNavn !== fileObj.file.name),
-              { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
-            ]);
+            if (!response.ok) {
+              setFeilmeldinger((prev) => [
+                ...prev.filter((err) => err.filNavn !== fileObj.file.name),
+                { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
+              ]);
+              return undefined;
+            }
 
-            return;
-          }
+            return await response.json(); // <- returnerer array
+          })
+        )
+      )
+        .flat()
+        .filter(Boolean); // flat ut og fjern undefined
 
-          const responseData = await response.json();
-
-          setLastetOppFil(responseData);
-
-          return responseData;
-        })
-      );
+      setLastetOppFil(opplastedeFiler);
     } catch (error) {
       console.error(error);
     } finally {
@@ -117,11 +115,10 @@ export function DokumentasjonView() {
     }
   }
 
-  // Send filsti som parameter
-  async function slettFil() {
+  async function slettEnFil(filsti: string) {
     try {
       const formData = new FormData();
-      formData.append("filsti", lastetOppFil[0].filsti);
+      formData.append("filsti", filsti);
 
       const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
         method: "POST",
@@ -132,11 +129,7 @@ export function DokumentasjonView() {
         return;
       }
 
-      console.log("Slettet fil");
-
-      // Todo: merge disse to sammen
-      setLastetOppFil([]);
-      setFiler([]);
+      setLastetOppFil((prev) => prev.filter((fil) => fil.filsti !== filsti));
 
       return await response.json();
     } catch (error) {
@@ -146,7 +139,7 @@ export function DokumentasjonView() {
   }
 
   useEffect(() => {
-    console.log("lastetOppFil", lastetOppFil);
+    // console.log("lastetOppFil", lastetOppFil);
   }, [lastetOppFil]);
 
   return (
@@ -181,15 +174,18 @@ export function DokumentasjonView() {
               onSelect={(filer) => lastOppfiler(filer)}
             />
           </form>
-          {filer.map((file) => (
+        </VStack>
+        <VStack gap="4" className="mt-8">
+          {lastetOppFil?.map((file) => (
             <FileUploadItem
-              key={file.file.name}
-              file={file.file}
-              status={lasterOppState.includes(file.file.name) ? "uploading" : "idle"}
-              error={hentFilFeilmelding(file.file.name)}
+              key={file.filsti}
+              file={{ name: file.filnavn, size: file.storrelse }}
+              status={lasterOppState.includes(file.filsti) ? "uploading" : "idle"}
+              translations={{ uploading: "Laster opp..." }}
+              error={hentFilFeilmelding(file.filsti)}
               button={{
                 action: "delete",
-                onClick: () => slettFil(),
+                onClick: () => slettEnFil(file.filsti),
               }}
             />
           ))}
