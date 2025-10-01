@@ -14,7 +14,6 @@ export default function ReellArbeidssøkerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
-  console.log(seksjonsUrl);
   if (!seksjonSvarene) return null;
 
   const reellArbeidssøkerData = seksjonSvarene as ReellArbeidssøkerSvar;

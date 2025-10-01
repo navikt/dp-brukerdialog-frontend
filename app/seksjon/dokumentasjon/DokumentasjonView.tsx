@@ -1,8 +1,9 @@
-import { FileObject, VStack } from "@navikt/ds-react";
+import { BodyLong, Box, FileObject, Heading, List, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { use, useState } from "react";
+import { set } from "date-fns";
+import { use, useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router";
-import { loader } from "~/routes/$soknadId.dokumentasjon";
+import { Fil, loader } from "~/routes/$soknadId.dokumentasjon";
 import {
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
@@ -19,14 +20,11 @@ type OpplastingFeil = {
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
-
-  const loaderData = useLoaderData<typeof loader>();
-
   const [filer, setFiler] = useState<FileObject[]>([]);
   const [feilmeldinger, setFeilmeldinger] = useState<OpplastingFeil[]>([]);
   const [lasterOppState, setLasterOppState] = useState<string[]>([]);
 
-  console.log(loaderData);
+  const [lastetOppFil, setLastetOppFil] = useState<Fil[]>([]);
 
   // Todo,
   // Håntere sletting
@@ -83,10 +81,15 @@ export function DokumentasjonView() {
               ...prev.filter((err) => err.filNavn !== fileObj.file.name),
               { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
             ]);
+
             return;
           }
 
-          await response.json();
+          const responseData = await response.json();
+
+          setLastetOppFil(responseData);
+
+          return responseData;
         })
       );
     } catch (error) {
@@ -115,31 +118,61 @@ export function DokumentasjonView() {
     }
   }
 
-  async function slettFil(filnavn: string) {
+  // Send filsti som parameter
+  async function slettFil() {
     try {
+      const formData = new FormData();
+      formData.append("filsti", lastetOppFil[0].filsti);
+
       const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
         method: "POST",
+        body: formData,
       });
 
       if (!response.ok) {
         return;
       }
 
-      setFiler(filer.filter((f) => f.file.name !== filnavn));
+      console.log("Slettet fil");
 
-      await response.json();
+      // Todo: merge disse to sammen
+      setLastetOppFil([]);
+      setFiler([]);
+
+      return await response.json();
     } catch (error) {
-      setFeilmeldinger(feilmeldinger.filter((err) => err.filNavn !== filnavn));
       console.error(error);
     } finally {
     }
   }
 
+  useEffect(() => {
+    console.log("lastetOppFil", lastetOppFil);
+  }, [lastetOppFil]);
+
   return (
     <div className="innhold">
-      <h2>Dokumenter</h2>
-      <VStack gap="20">
-        <VStack gap="6">
+      <h2>Dokumentasjon</h2>
+      <BodyLong spacing>
+        Du må laste opp dokumentasjon som bekrefter opplysningene i søknaden. Du får raskere svar på
+        søknaden din hvis vi har all dokumentasjonen når vi starter behandlingen. Du kan bruke
+        filformatene PDF, JPG og PNG.
+      </BodyLong>
+      <BodyLong>Slik bruker du bilder som dokumentasjon i søknaden:</BodyLong>
+      <BodyLong spacing>
+        <List as="ol">
+          <List.Item>Bruk et kamera med god oppløsning.</List.Item>
+          <List.Item>Pass på at det er godt lys.</List.Item>
+          <List.Item>Legg dokumentet på et bord eller gulv med kontrast til dokumentet.</List.Item>
+        </List>
+      </BodyLong>
+
+      <Heading size="small" level="3">
+        Dokumenter du skal sende inn
+      </Heading>
+
+      <Box padding="space-16" background="surface-subtle" borderRadius="large" className="mt-4">
+        <VStack gap="8">
           <form method="post" encType="multipart/form-data">
             <FileUploadDropzone
               label="Last opp dokument"
@@ -157,12 +190,12 @@ export function DokumentasjonView() {
               error={hentFilFeilmelding(file.file.name)}
               button={{
                 action: "delete",
-                onClick: () => slettFil(file.file.name),
+                onClick: () => slettFil(),
               }}
             />
           ))}
         </VStack>
-      </VStack>
+      </Box>
     </div>
   );
 }

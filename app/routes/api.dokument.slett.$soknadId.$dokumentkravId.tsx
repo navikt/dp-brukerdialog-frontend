@@ -13,22 +13,13 @@ export async function action({ params, request }: ActionFunctionArgs) {
     const url = `${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/${filsti}`;
     const onBehalfOfToken = await hentMellomlagringOboToken(request);
 
-    const response = await fetch(url, {
+    return await fetch(url, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${onBehalfOfToken}`,
       },
     });
-
-    if (!response.ok) {
-      return new Response("Feil ved sletting av dokument", {
-        status: response.status,
-        statusText: response.statusText,
-      });
-    }
-
-    return await response.json();
   } catch (error) {
     console.error(error);
 
