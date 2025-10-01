@@ -104,6 +104,7 @@ import {
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
+import { valider } from "~/utils/validering.util";
 
 export const arbeidsforholdSchema = z
   .object({
@@ -224,7 +225,7 @@ export const arbeidsforholdModalSchema = z
     [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]: z.string().optional(),
     [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]: z.string().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     arbeidsforholdModalSpørsmål
       .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål)
       .concat(arbeidsforholdModalJegHarSagtOppSelvSpørsmål)
@@ -237,37 +238,7 @@ export const arbeidsforholdModalSchema = z
       .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål)
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const spørsmålId = spørsmål.id as keyof ArbeidsforholdModalSvar;
-        const svar = data[spørsmålId];
-        const erSpørsmål =
-          spørsmål.type !== "lesMer" &&
-          spørsmål.type !== "varselmelding" &&
-          spørsmål.type !== "dokumentasjonskravindikator";
-
-        if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-          ctx.addIssue({
-            path: [spørsmål.id],
-            code: "custom",
-            message: "Du må svare på dette spørsmålet",
-          });
-        }
-
-        // TODO: Nå må det være rom for noe generalisering her :D
-        if (svar && spørsmål.type === "tall") {
-          if (isNaN(+svar.replace(",", "."))) {
-            ctx.addIssue({
-              path: [spørsmål.id],
-              code: "custom",
-              message: "Svaret må være et tall",
-            });
-          }
-          if (svar.startsWith("-")) {
-            ctx.addIssue({
-              path: [spørsmål.id],
-              code: "custom",
-              message: "Tallet kan ikke være negativt",
-            });
-          }
-        }
+        const svar = data[spørsmål.id as keyof ArbeidsforholdModalSvar];
+        valider(spørsmål, svar, synlig, context);
       });
   });

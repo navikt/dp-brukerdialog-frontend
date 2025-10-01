@@ -11,6 +11,7 @@ import {
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
 } from "./bostedsland.spørsmål";
+import { valider } from "~/utils/validering.util";
 
 export const bostedslandSchema = z
   .object({
@@ -24,26 +25,13 @@ export const bostedslandSchema = z
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (data[erTilbakenavigering]) {
       return;
     }
     bostedslandSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof BostedslandSvar;
-      const svar = data[spørsmålId];
-
-      const erSpørsmål =
-        spørsmål.type !== "lesMer" &&
-        spørsmål.type !== "varselmelding" &&
-        spørsmål.type !== "dokumentasjonskravindikator";
-
-      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof BostedslandSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });

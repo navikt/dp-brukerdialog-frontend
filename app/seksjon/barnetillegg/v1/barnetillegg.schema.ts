@@ -30,7 +30,7 @@ export const barnetilleggSchema = z
     barnetilleggSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof BarnetilleggSvar];
-      valider(spørsmål, svar, synlig, context)
+      valider(spørsmål, svar, synlig, context);
     });
   });
 
@@ -59,6 +59,6 @@ export const leggTilBarnManueltSchema = z
     leggTilBarnManueltSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilBarnManueltSvar];
-      valider(spørsmål, svar, synlig, context)
+      valider(spørsmål, svar, synlig, context);
     });
   });
