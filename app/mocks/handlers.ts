@@ -81,6 +81,9 @@ export const handlers = [
     //   });
     // }
   }),
+  http.delete(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:filsti`, async () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/:soknadId`, () => {
     return HttpResponse.json(mockOppsummering);
   }),
