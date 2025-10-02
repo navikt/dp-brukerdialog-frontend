@@ -22,7 +22,7 @@ export function DokumentasjonView() {
   const [feilmeldinger, setFeilmeldinger] = useState<OpplastingFeil[]>([]);
   const [lasterOppState, setLasterOppState] = useState<string[]>([]);
   const [filer, setFiler] = useState<FileObject[]>([]);
-  const [lastetOppFil, setLastetOppFil] = useState<Fil[]>([]);
+  const [filerLastetOpp, setFilerLastetOpp] = useState<Fil[]>([]);
 
   // Todo,
   // Håndtere retry ved feil
@@ -81,14 +81,14 @@ export function DokumentasjonView() {
               return undefined;
             }
 
-            return await response.json(); // <- returnerer array
+            return await response.json();
           })
         )
       )
         .flat()
-        .filter(Boolean); // flat ut og fjern undefined
+        .filter(Boolean);
 
-      setLastetOppFil(opplastedeFiler);
+      setFilerLastetOpp(opplastedeFiler);
     } catch (error) {
       console.error(error);
     } finally {
@@ -129,7 +129,7 @@ export function DokumentasjonView() {
         return;
       }
 
-      setLastetOppFil((prev) => prev.filter((fil) => fil.filsti !== filsti));
+      setFilerLastetOpp((prev) => prev.filter((fil) => fil.filsti !== filsti));
 
       return await response.json();
     } catch (error) {
@@ -137,10 +137,6 @@ export function DokumentasjonView() {
     } finally {
     }
   }
-
-  useEffect(() => {
-    // console.log("lastetOppFil", lastetOppFil);
-  }, [lastetOppFil]);
 
   return (
     <div className="innhold">
@@ -176,16 +172,16 @@ export function DokumentasjonView() {
           </form>
         </VStack>
         <VStack gap="4" className="mt-8">
-          {lastetOppFil?.map((file) => (
+          {filerLastetOpp?.map((fil) => (
             <FileUploadItem
-              key={file.filsti}
-              file={{ name: file.filnavn, size: file.storrelse }}
-              status={lasterOppState.includes(file.filsti) ? "uploading" : "idle"}
+              key={fil.filsti}
+              file={{ name: fil.filnavn, size: fil.storrelse }}
+              status={lasterOppState.includes(fil.filsti) ? "uploading" : "idle"}
               translations={{ uploading: "Laster opp..." }}
-              error={hentFilFeilmelding(file.filsti)}
+              error={hentFilFeilmelding(fil.filsti)}
               button={{
                 action: "delete",
-                onClick: () => slettEnFil(file.filsti),
+                onClick: () => slettEnFil(fil.filsti),
               }}
             />
           ))}
