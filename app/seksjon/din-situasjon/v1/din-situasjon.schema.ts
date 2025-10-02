@@ -6,7 +6,7 @@ import {
   DinSituasjonSvar,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
 } from "./din-situasjon.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const dinSituasjonSchema = z
   .object({

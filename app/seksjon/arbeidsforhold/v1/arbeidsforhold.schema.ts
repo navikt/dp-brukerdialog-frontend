@@ -104,7 +104,7 @@ import {
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const arbeidsforholdSchema = z
   .object({

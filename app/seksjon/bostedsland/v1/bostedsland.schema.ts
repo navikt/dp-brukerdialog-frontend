@@ -11,7 +11,7 @@ import {
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
 } from "./bostedsland.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const bostedslandSchema = z
   .object({

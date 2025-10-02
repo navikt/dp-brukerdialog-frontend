@@ -20,7 +20,7 @@ export function valider(
     });
   }
   if (svar && spørsmål.type === "tall") {
-    if (isNaN(+(svar as string).replace(",", "."))) {
+    if (Number.isNaN(+(svar as string).replace(",", "."))) {
       context.addIssue({
         path: [spørsmål.id],
         code: "custom",

@@ -28,7 +28,7 @@ import {
   samboerEktefelle,
   skog,
 } from "./egen-næring.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const egenNæringSchema = z
   .object({

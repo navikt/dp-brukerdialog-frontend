@@ -34,7 +34,7 @@ import {
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
 import { payload } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 const kortTekstMaksLengde = 200;
 

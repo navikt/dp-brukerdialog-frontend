@@ -9,8 +9,11 @@ import {
   hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
+  pengestøtteFraNorgeModalSpørsmål,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+import { formaterNorskDato } from "~/utils/formattering.utils";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   pengestøtteFraNorgeSvar: PengestøtteFraNorgeModalSvar;
@@ -33,32 +36,40 @@ export function PengestøtteFraNorgeDetaljer({
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <h3 style={{ marginTop: "0" }}>
-        {pengestøtteFraNorgeSvar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]}
+        {finnOptionLabel(
+          pengestøtteFraNorgeModalSpørsmål,
+          hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
+          pengestøtteFraNorgeSvar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
+        )}
       </h3>
       <BodyShort spacing>
         {pengestøtteFraNorgeSvar[hvemUtbetalerPengestøtten] && (
           <>
-            {pengestøtteFraNorgeSvar[hvemUtbetalerPengestøtten]}
+            {pengestøtteFraNorgeSvar[hvemUtbetalerPengestøtten]?.toUpperCase()}
             <br />
           </>
         )}
         <>
           Fra og med&nbsp;
-          {
-            pengestøtteFraNorgeSvar[
-              iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed
-            ]
-          }
+          {formaterNorskDato(
+            new Date(
+              pengestøtteFraNorgeSvar[
+                iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed
+              ]!
+            )
+          )}
           {pengestøtteFraNorgeSvar[
             iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
           ] && (
             <>
               , til og med&nbsp;
-              {
-                pengestøtteFraNorgeSvar[
-                  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
-                ]
-              }
+              {formaterNorskDato(
+                new Date(
+                  pengestøtteFraNorgeSvar[
+                    iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
+                  ]
+                )
+              )}
             </>
           )}
         </>

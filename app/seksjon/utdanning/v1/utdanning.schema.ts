@@ -11,7 +11,7 @@ import {
   utdanningSpørsmål,
   UtdanningSvar,
 } from "./utdanning.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const utdanningSchema = z
   .object({
