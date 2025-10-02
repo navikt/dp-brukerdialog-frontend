@@ -6,7 +6,7 @@ import {
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "./tilleggsopplysninger.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const tilleggsopplysningerSchema = z
   .object({

@@ -6,12 +6,16 @@ import {
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
+  pengestøtteFraAndreEøsLandModalSpørsmål,
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 import {
   ModalOperasjonEnum,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+import { formaterNorskDato } from "~/utils/formattering.utils";
+import { finnLandnavnMedLocale } from "~/utils/land.utils";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   pengestøtteFraAndreEøsLandSvar: PengestøtteFraAndreEøsLandModalSvar;
@@ -37,10 +41,16 @@ export function PengestøtteFraAndreEøsLandDetaljer({
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <h3 style={{ marginTop: "0" }}>
-        {pengestøtteFraAndreEøsLandSvar[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]}
+        {finnOptionLabel(
+          pengestøtteFraAndreEøsLandModalSpørsmål,
+          hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
+          pengestøtteFraAndreEøsLandSvar[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]!
+        )}
       </h3>
       <BodyShort spacing>
-        {pengestøtteFraAndreEøsLandSvar[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]}
+        {finnLandnavnMedLocale(
+          pengestøtteFraAndreEøsLandSvar[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]!
+        ).toUpperCase()}
         <br />
         {pengestøtteFraAndreEøsLandSvar[
           iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
@@ -50,23 +60,31 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           ] && (
             <>
               Mottatt fra og med&nbsp;
-              {
-                pengestøtteFraAndreEøsLandSvar[
-                  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
-                ]
-              }
+              {formaterNorskDato(
+                new Date(
+                  pengestøtteFraAndreEøsLandSvar[
+                    iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
+                  ]
+                )
+              )}
               , til og med&nbsp;
-              {
-                pengestøtteFraAndreEøsLandSvar[
-                  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed
-                ]
-              }
+              {formaterNorskDato(
+                new Date(
+                  pengestøtteFraAndreEøsLandSvar[
+                    iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed
+                  ]
+                )
+              )}
             </>
           )}
         {pengestøtteFraAndreEøsLandSvar[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed] && (
           <>
             Motatt fra og med{" "}
-            {pengestøtteFraAndreEøsLandSvar[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]}
+            {formaterNorskDato(
+              new Date(
+                pengestøtteFraAndreEøsLandSvar[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]
+              )
+            )}
           </>
         )}
       </BodyShort>

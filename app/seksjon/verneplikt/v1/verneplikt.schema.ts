@@ -9,7 +9,7 @@ import {
   vernepliktSpørsmål,
   VernepliktSvar,
 } from "./verneplikt.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const vernepliktSchema = z
   .object({

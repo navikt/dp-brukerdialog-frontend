@@ -3,12 +3,15 @@ import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import {
   Arbeidsforhold,
+  arbeidsforholdModalSpørsmål,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   navnetPåBedriften,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
+import { formaterNorskDato } from "~/utils/formattering.utils";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   arbeidsforhold: Arbeidsforhold;
@@ -31,15 +34,21 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: 
       <BodyShort spacing>
         <>
           Fra og med&nbsp;
-          {arbeidsforhold[varighetPåArbeidsforholdetFraOgMedDato]}
+          {formaterNorskDato(new Date(arbeidsforhold[varighetPåArbeidsforholdetFraOgMedDato]!))}
           {arbeidsforhold[varighetPåArbeidsforholdetTilOgMedDato] && (
             <>
               , til og med&nbsp;
-              {arbeidsforhold[varighetPåArbeidsforholdetTilOgMedDato]}
+              {formaterNorskDato(new Date(arbeidsforhold[varighetPåArbeidsforholdetTilOgMedDato]))}
             </>
           )}
           <br />
-          <span>{arbeidsforhold[hvordanHarDetteArbeidsforholdetEndretSeg]}</span>
+          <span>
+            {finnOptionLabel(
+              arbeidsforholdModalSpørsmål,
+              hvordanHarDetteArbeidsforholdetEndretSeg,
+              arbeidsforhold[hvordanHarDetteArbeidsforholdetEndretSeg]!
+            )}
+          </span>
         </>
       </BodyShort>
       <HStack gap="4">

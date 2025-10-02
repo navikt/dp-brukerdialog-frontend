@@ -29,7 +29,7 @@ import {
   ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.spørsmål";
 import { z } from "zod";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const reellArbeidssøkerSchema = z
   .object({

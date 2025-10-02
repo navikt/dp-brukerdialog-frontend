@@ -13,7 +13,7 @@ import {
   LeggTilBarnManueltSvar,
   payload,
 } from "./barnetillegg.spørsmål";
-import { valider } from "~/utils/validering.util";
+import { valider } from "~/utils/validering.utils";
 
 export const barnetilleggSchema = z
   .object({
