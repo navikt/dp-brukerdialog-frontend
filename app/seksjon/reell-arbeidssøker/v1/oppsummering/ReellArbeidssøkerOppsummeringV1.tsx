@@ -8,7 +8,6 @@ export default function ReellArbeidssøkerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
 }: SeksjonProps) {
-  console.log(seksjonsUrl);
   if (!seksjonSvarene) return null;
 
   const reellArbeidssøkerSvar = Object.entries(seksjonSvarene);

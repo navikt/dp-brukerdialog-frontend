@@ -23,7 +23,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     const body = new FormData();
     body.append("file", fil);
 
-    const response = await fetch(url, {
+    return await fetch(url, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -32,21 +32,12 @@ export async function action({ params, request }: ActionFunctionArgs) {
       },
       body: body,
     });
-
-    if (!response.ok) {
-      return new Response("Feil ved opplasting", {
-        status: response.status,
-        statusText: response.statusText,
-      });
-    }
-
-    return await response.json();
   } catch (error) {
     console.error(error);
 
-    return new Response("Feil ved opplasting", {
+    return new Response("Feil ved opplasting av dokument", {
       status: 500,
-      statusText: "Feil ved opplasting",
+      statusText: "Feil ved opplasting av dokument",
     });
   }
 }
