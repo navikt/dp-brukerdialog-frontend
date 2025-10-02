@@ -1,8 +1,7 @@
 import { BodyLong, Box, FileObject, Heading, List, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
-import { Fil } from "~/routes/$soknadId.dokumentasjon";
 import {
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
@@ -11,6 +10,14 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILTYPER,
 } from "~/utils/dokument.utils";
+
+export type Fil = {
+  filnavn: string;
+  urn: string;
+  tidspunkt: string;
+  storrelse: number;
+  filsti: string;
+};
 
 type OpplastingFeil = {
   filNavn: string;
@@ -78,6 +85,7 @@ export function DokumentasjonView() {
                 ...prev.filter((err) => err.filNavn !== fileObj.file.name),
                 { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
               ]);
+
               return undefined;
             }
 
