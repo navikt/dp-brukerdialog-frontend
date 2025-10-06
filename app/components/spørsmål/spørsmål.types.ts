@@ -26,6 +26,25 @@ export type SpørsmålType =
   | "tall"
   | "nedtrekksliste";
 
+export const INFO_KOMPONENTER: InfoType[] = [
+  "varselmelding",
+  "lesMer",
+  "dokumentasjonskravindikator",
+];
+
+export const SPØRSMÅL_KOMPONENTER: SpørsmålType[] = [
+  "envalg",
+  "flervalg",
+  "langTekst",
+  "kortTekst",
+  "dato",
+  "periodeFra",
+  "periodeTil",
+  "land",
+  "tall",
+  "nedtrekksliste",
+];
+
 export type KomponentBase = {
   id: string;
   label: string;
