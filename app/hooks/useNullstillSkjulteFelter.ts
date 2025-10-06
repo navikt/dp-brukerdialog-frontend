@@ -12,9 +12,10 @@ export function useNullstillSkjulteFelter<T extends Record<string, any>>(
     const values = form.value();
 
     spørsmål.forEach((spørsmål) => {
-      const spørsmålId = spørsmål.id as keyof T;
-      if (spørsmål.visHvis && !spørsmål.visHvis(values) && values[spørsmålId] !== undefined) {
-        form.setValue(spørsmålId as any, undefined as any);
+      if (spørsmål.visHvis && !spørsmål.visHvis(values)) {
+        console.log(spørsmål);
+        // @ts-ignore
+        form.setValue(spørsmål.id, undefined);
       }
     });
   }, [form.value(), form, spørsmål]);
