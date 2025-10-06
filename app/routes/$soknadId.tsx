@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-route
 import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
 import { FormProgress } from "@navikt/ds-react";
 import invariant from "tiny-invariant";
-import { hentSøknadFremgangInfo } from "~/models/hent-progress-info.server";
+import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
 
 type Steg = {
   tittel: string;
