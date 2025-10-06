@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-export interface IEnv {
+export type IEnv = {
   USE_MSW: string;
   APP_ENV: string;
   NAIS_CLUSTER_NAME: string;
@@ -16,7 +16,7 @@ export interface IEnv {
   DP_MELLOMLAGRING_TOKEN: string;
   DP_MELLOMLAGRING_URL: string;
   FARO_URL: string;
-}
+};
 
 export function getEnv(value: keyof IEnv) {
   const env = typeof window !== "undefined" ? window.env : process.env;

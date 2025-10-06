@@ -63,16 +63,17 @@ export default function OpprettSoknadRoute() {
 
         <VStack gap="8" className="mt-14">
           <Form {...form.getFormProps()}>
-            <Box padding="4" background="surface-warning-subtle" borderRadius="medium">
+            <Box
+              padding="4"
+              background={
+                !!form.value("checkbox") ? "surface-success-subtle" : "surface-warning-subtle"
+              }
+              borderRadius="medium"
+            >
               <Checkbox name="checkbox" error={!!form.error("checkbox")}>
                 Jeg bekrefter at jeg vil svare så riktig som jeg kan
               </Checkbox>
             </Box>
-            {form.error("checkbox") && (
-              <Alert variant="error" className="mt-4">
-                {form.error("checkbox")}
-              </Alert>
-            )}
 
             {actionData && actionData.error && (
               <Alert variant="error" className="mt-4">
