@@ -28,7 +28,7 @@
     "@react-router/fs-routes": "^7.9.3",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
-    "@remix-run/form-data-parser": "^0.10.1",
+    "@remix-run/form-data-parser": "^0.11.0",
     "@rvf/react-router": "^8.1.0",
     "@rvf/zod": "^7.0.4",
     "@sanity/client": "^7.12.0",
