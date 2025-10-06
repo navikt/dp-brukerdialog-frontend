@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-router";
-import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
+import { SoknadIkon } from "~/components/soknadIkon";
 import { FormProgress } from "@navikt/ds-react";
 import invariant from "tiny-invariant";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";

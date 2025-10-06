@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
-import { SoknadIkon } from "~/components/illustrasjon/soknadIkon";
+import { SoknadIkon } from "~/components/soknadIkon";
 import { useSanity } from "~/hooks/useSanity";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { SanityReadMore } from "~/sanity/components/SanityReadMore";
