@@ -6,8 +6,9 @@ export function generateMermaidFlow(spørsmål: KomponentType[]): string {
   const main = spørsmål[0];
   if (!main) return "";
 
-  // Forutsetter at første spørsmål er start
-  lines.push(`  ${main.id as any}["${main.label}"]`);
+  // Bruk label hvis den finnes, ellers description
+  const mainTekst = main.label && main.label.trim() !== "" ? main.label : (main.description ?? "");
+  lines.push(`  ${main.id as any}["${mainTekst}"]`);
 
   spørsmål.forEach((q) => {
     if (q.type === "envalg" && q.options) {
@@ -19,7 +20,10 @@ export function generateMermaidFlow(spørsmål: KomponentType[]): string {
             // Syntetisk svar-objekt for å sjekke visHvis
             next.visHvis({ [q.id]: opt.value })
           ) {
-            lines.push(`  ${q.id as any} -- ${opt.label} --> ${next.id as any}["${next.label}"]`);
+            // Bruk label hvis den finnes, ellers description
+            const nextTekst =
+              next.label && next.label.trim() !== "" ? next.label : (next.description ?? "");
+            lines.push(`  ${q.id as any} -- ${opt.label} --> ${next.id as any}["${nextTekst}"]`);
           }
         });
       });
