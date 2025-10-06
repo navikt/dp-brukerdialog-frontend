@@ -9,14 +9,22 @@ export function useNullstillSkjulteFelter<T extends Record<string, any>>(
   spørsmål: KomponentType[]
 ) {
   useEffect(() => {
-    const values = form.value();
+    const opprinneligeVerdier = form.value();
+    const oppdaterteVerdier = { ...opprinneligeVerdier };
 
     spørsmål.forEach((spørsmål) => {
-      if (spørsmål.visHvis && !spørsmål.visHvis(values)) {
-        console.log(spørsmål);
-        // @ts-ignore
-        form.setValue(spørsmål.id, undefined);
+      const spørsmålId = spørsmål.id as keyof T;
+      if (
+        spørsmål.visHvis &&
+        !spørsmål.visHvis(opprinneligeVerdier) &&
+        opprinneligeVerdier[spørsmålId] !== undefined
+      ) {
+        oppdaterteVerdier[spørsmålId] = undefined as any;
       }
     });
+
+    if (JSON.stringify(oppdaterteVerdier) !== JSON.stringify(opprinneligeVerdier)) {
+      form.resetForm(oppdaterteVerdier as any);
+    }
   }, [form.value(), form, spørsmål]);
 }
