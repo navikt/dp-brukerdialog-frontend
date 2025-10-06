@@ -27,6 +27,15 @@ export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAn
 export const hvordanHarDuBeregnetAntallArbeidstimerTotalt =
   "hvordan-har-du-beregnet-antall-arbeidstimer-totalt";
 
+export function genererÅrstallOptions() {
+  const iÅr = new Date().getFullYear();
+  const år: { value: string; label: string }[] = [];
+  for (let a = iÅr; a > iÅr - 5; a--) {
+    år.push({ value: a.toString(), label: a.toString() });
+  }
+  return år;
+}
+
 export type Næringsvirksomhet = {
   [organisasjonsnummer]: string;
   [hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]: string;
@@ -174,9 +183,10 @@ export const leggTilGårdsbrukSpørsmål: KomponentType[] = [
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
-    type: "tall",
-    label: "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år?",
-    description: "Velg hvilket år du oppgir timer for først",
+    type: "nedtrekksliste",
+    options: genererÅrstallOptions(),
+    label:
+      "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år? Velg hvilket år du oppgir timer for først",
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,

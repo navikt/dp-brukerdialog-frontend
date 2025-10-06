@@ -7,6 +7,7 @@ export type KomponentType =
   | PeriodeSpørsmål
   | LandSpørsmål
   | TallSpørsmål
+  | NedtrekkslisteSpørsmål
   | Varselmelding
   | LesMer
   | Dokumentasjonskravindikator;
@@ -22,7 +23,8 @@ export type SpørsmålType =
   | "periodeFra"
   | "periodeTil"
   | "land"
-  | "tall";
+  | "tall"
+  | "nedtrekksliste";
 
 export type KomponentBase = {
   id: string;
@@ -74,6 +76,11 @@ export type LandSpørsmål = SpørsmålBase & {
 
 export type TallSpørsmål = SpørsmålBase & {
   type: "tall";
+};
+
+export type NedtrekkslisteSpørsmål = SpørsmålBase & {
+  type: "nedtrekksliste";
+  options: { value: string; label: string }[];
 };
 
 export type Varselmelding = KomponentBase & {

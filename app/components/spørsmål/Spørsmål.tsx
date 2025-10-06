@@ -11,6 +11,7 @@ import { Varselmelding } from "./Varselmelding";
 import { LesMer } from "./LesMer";
 import { Dokumentasjonskravindikator } from "~/components/spørsmål/Dokumentasjonskravindikator";
 import { Tall } from "~/components/spørsmål/Tall";
+import { Nedtrekksliste } from "~/components/spørsmål/Nedtrekksliste";
 
 interface IProps {
   spørsmål: KomponentType;
@@ -43,6 +44,9 @@ export function Spørsmål({ spørsmål, formScope }: Readonly<IProps>) {
 
     case "tall":
       return <Tall spørsmål={spørsmål} formScope={formScope} />;
+
+    case "nedtrekksliste":
+      return <Nedtrekksliste spørsmål={spørsmål} formScope={formScope} />;
 
     case "varselmelding":
       return <Varselmelding spørsmål={spørsmål} />;
