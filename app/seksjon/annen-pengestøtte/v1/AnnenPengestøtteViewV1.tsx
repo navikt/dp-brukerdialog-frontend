@@ -188,7 +188,14 @@ export function AnnenPengestøtteViewV1() {
     <div className="innhold">
       <h2>Annen pengstøtte</h2>
       <VStack gap="20">
-        <Form {...form.getFormProps()}>
+        <Form
+          {...form.getFormProps()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }}
+        >
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
