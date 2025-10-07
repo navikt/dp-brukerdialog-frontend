@@ -6,12 +6,12 @@ import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
 import { SoknadIkon } from "~/components/soknadIkon";
 import { useSanity } from "~/hooks/useSanity";
-import { opprettSoknad } from "~/models/opprett-soknad.server";
+import { opprettSøknad } from "~/models/opprett-søknad.server";
 import { SanityReadMore } from "~/sanity/components/SanityReadMore";
 import { Route } from "./+types/opprett-soknad";
 
 export async function action({ request }: Route.ActionArgs) {
-  const response = await opprettSoknad(request);
+  const response = await opprettSøknad(request);
 
   if (!response.ok) {
     return {
