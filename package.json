@@ -52,7 +52,7 @@
     "@inquirer/prompts": "^7.8.6",
     "@react-router/dev": "^7.9.3",
     "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
+    "@types/react-dom": "^19.2.1",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.45.0",
     "autoprefixer": "^10.4.21",
