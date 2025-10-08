@@ -11,107 +11,118 @@ import {
   TILLATTE_FILTYPER,
 } from "~/utils/dokument.utils";
 
-export type Fil = {
+export type DokumentkravFil = {
   filnavn: string;
   urn: string;
   tidspunkt: string;
   storrelse: number;
   filsti: string;
+  status: MellomlagringStatus;
+  feil?: FeilType;
 };
 
-type OpplastingFeil = {
-  filNavn: string;
-  typeFeil: "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL";
-};
+type MellomlagringStatus = "LASTER_OPP" | "LASTET_OPP" | "IDLE";
+type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL";
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
-  const [feilmeldinger, setFeilmeldinger] = useState<OpplastingFeil[]>([]);
-  const [lasterOppState, setLasterOppState] = useState<string[]>([]);
-  const [filer, setFiler] = useState<FileObject[]>([]);
-  const [filerLastetOpp, setFilerLastetOpp] = useState<Fil[]>([]);
+  const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
 
   // Todo,
   // Håndtere retry ved feil
   // Finn ut hvordan vi skal hente dokumentkravId
-  async function lastOppfiler(filer: FileObject[]) {
-    setFiler(filer);
-    setLasterOppState(filer.map((f) => f.file.name));
-    setFeilmeldinger([]);
+  function setDokumentkravFilStatus(fil: File): DokumentkravFil {
+    const filnavn = fil.name.toLowerCase();
+    const erGyldigFormat = TILLATTE_FILTYPER.some((format) => filnavn.endsWith(format));
 
-    let harFeil = false;
+    const dokumentkravFil: DokumentkravFil = {
+      filnavn: filnavn,
+      urn: "",
+      tidspunkt: "",
+      storrelse: fil.size,
+      filsti: "",
+      feil: undefined,
+      status: "LASTER_OPP",
+    };
 
-    filer.forEach((fileObj) => {
-      const fileName = fileObj.file.name.toLowerCase();
-      const erGyldigFormat = TILLATTE_FILTYPER.some((format) => fileName.endsWith(format));
-
-      if (!erGyldigFormat) {
-        setFeilmeldinger((prev) => [
-          ...prev.filter((err) => err.filNavn !== fileObj.file.name),
-          { filNavn: fileObj.file.name, typeFeil: "UGYLDIG_FORMAT" },
-        ]);
-        harFeil = true;
-        return;
-      }
-
-      if (fileObj.file.size > MAX_FIL_STØRRELSE) {
-        setFeilmeldinger((prev) => [
-          ...prev.filter((err) => err.filNavn !== fileObj.file.name),
-          { filNavn: fileObj.file.name, typeFeil: "FIL_FOR_STOR" },
-        ]);
-        harFeil = true;
-      }
-    });
-
-    if (harFeil) {
-      setLasterOppState([]);
-      return;
+    if (!erGyldigFormat) {
+      return { ...dokumentkravFil, feil: "UGYLDIG_FORMAT", status: "IDLE" };
     }
 
-    try {
-      const opplastedeFiler: Fil[] = (
-        await Promise.all(
-          filer.map(async (fileObj) => {
-            const formData = new FormData();
-            formData.append("file", fileObj.file);
+    if (fil.size > MAX_FIL_STØRRELSE) {
+      return { ...dokumentkravFil, feil: "FIL_FOR_STOR", status: "IDLE" };
+    }
 
-            const response = await fetch(`/api/dokument/last-opp/${soknadId}/1014.1`, {
+    return dokumentkravFil;
+  }
+
+  async function lastOppfiler(filer: FileObject[]) {
+    const nyeFiler: DokumentkravFil[] = filer
+      .filter((fil) => !dokumentkravFiler.some((f) => f.filnavn === fil.file.name.toLowerCase()))
+      .map((fil) => setDokumentkravFilStatus(fil.file));
+
+    setDokumentkravFiler((prev) => [...prev, ...nyeFiler]);
+
+    try {
+      const mellomlagreFilerResponse = await Promise.all(
+        filer.map(async (fileObj) => {
+          const formData = new FormData();
+          formData.append("file", fileObj.file);
+
+          const mellomlagreEnFilResponse = await fetch(
+            `/api/dokument/last-opp/${soknadId}/1014.1`,
+            {
               method: "POST",
               body: formData,
-            });
-
-            if (!response.ok) {
-              setFeilmeldinger((prev) => [
-                ...prev.filter((err) => err.filNavn !== fileObj.file.name),
-                { filNavn: fileObj.file.name, typeFeil: "TEKNISK_FEIL" },
-              ]);
-
-              return undefined;
             }
+          );
 
-            return await response.json();
-          })
-        )
-      )
-        .flat()
-        .filter(Boolean);
+          if (!mellomlagreEnFilResponse.ok) {
+            const filMedTekniskFeil: DokumentkravFil = {
+              filnavn: fileObj.file.name.toLowerCase(),
+              urn: "",
+              tidspunkt: "",
+              storrelse: fileObj.file.size,
+              filsti: "",
+              feil: "TEKNISK_FEIL",
+              status: "IDLE",
+            };
 
-      setFilerLastetOpp(opplastedeFiler);
+            return filMedTekniskFeil;
+          }
+
+          const mellomlagretFil: DokumentkravFil[] = await mellomlagreEnFilResponse.json();
+
+          return {
+            ...mellomlagretFil[0], // Mellomlagring returnerer en liste med en fil
+            status: "LASTET_OPP",
+            feil: undefined,
+          };
+        })
+      );
+
+      setDokumentkravFiler((prev) =>
+        prev.map((filer) => {
+          const oppdatertFil = mellomlagreFilerResponse.find(
+            (fil) => fil.filnavn === filer.filnavn
+          );
+
+          if (!oppdatertFil) return filer;
+
+          return {
+            ...filer,
+            ...oppdatertFil,
+            status: oppdatertFil.feil ? oppdatertFil.status : "LASTET_OPP",
+          };
+        })
+      );
     } catch (error) {
       console.error(error);
-    } finally {
-      setLasterOppState([]);
     }
   }
 
-  function hentFilFeilmelding(filnavn: string) {
-    const harEnFeil = feilmeldinger.find((err) => err.filNavn === filnavn)?.typeFeil;
-
-    if (!harEnFeil) {
-      return undefined;
-    }
-
-    switch (harEnFeil) {
+  function hentFilFeilmelding(feilType: FeilType) {
+    switch (feilType) {
       case "FIL_FOR_STOR":
         return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB.`;
       case "UGYLDIG_FORMAT":
@@ -137,7 +148,7 @@ export function DokumentasjonView() {
         return;
       }
 
-      setFilerLastetOpp((prev) => prev.filter((fil) => fil.filsti !== filsti));
+      setDokumentkravFiler((prev) => prev.filter((fil) => fil.filsti !== filsti));
 
       return await response.json();
     } catch (error) {
@@ -173,20 +184,20 @@ export function DokumentasjonView() {
             <FileUploadDropzone
               label="Last opp dokument"
               description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
-              fileLimit={{ max: MAX_ANTALL_FILER, current: filer.length }}
+              fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentkravFiler.length }}
               accept={hentTillatteFiltyperString()}
               onSelect={(filer) => lastOppfiler(filer)}
             />
           </form>
         </VStack>
         <VStack gap="4" className="mt-8">
-          {filerLastetOpp?.map((fil) => (
+          {dokumentkravFiler?.map((fil, _index) => (
             <FileUploadItem
-              key={fil.filsti}
+              key={_index}
               file={{ name: fil.filnavn, size: fil.storrelse }}
-              status={lasterOppState.includes(fil.filsti) ? "uploading" : "idle"}
+              status={fil.status === "LASTER_OPP" ? "uploading" : "idle"}
               translations={{ uploading: "Laster opp..." }}
-              error={hentFilFeilmelding(fil.filsti)}
+              error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
               button={{
                 action: "delete",
                 onClick: () => slettEnFil(fil.filsti),
