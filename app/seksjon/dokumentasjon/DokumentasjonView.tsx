@@ -8,7 +8,7 @@ import {
   hentTillatteFiltyperTekst,
   MAX_ANTALL_FILER,
   MAX_FIL_STØRRELSE,
-  TILLATTE_FILTYPER,
+  TILLATTE_FILTYPER as TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 
 export type DokumentkravFil = {
@@ -22,21 +22,18 @@ export type DokumentkravFil = {
 };
 
 type MellomlagringStatus = "LASTER_OPP" | "LASTET_OPP" | "IDLE";
-type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL";
+type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL" | "DUPLIKAT_FIL" | "UKJENT_FEIL";
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
 
-  // Todo,
-  // Håndtere retry ved feil
-  // Finn ut hvordan vi skal hente dokumentkravId
-  function setDokumentkravFilStatus(fil: File): DokumentkravFil {
-    const filnavn = fil.name.toLowerCase();
-    const erGyldigFormat = TILLATTE_FILTYPER.some((format) => filnavn.endsWith(format));
+  function setDokumentkravFil(fil: File, eksisterendeFiler: DokumentkravFil[]): DokumentkravFil {
+    const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.name.endsWith(format));
+    const erDuplikat = eksisterendeFiler.some((f) => f.filnavn === fil.name);
 
     const dokumentkravFil: DokumentkravFil = {
-      filnavn: filnavn,
+      filnavn: fil.name,
       urn: "",
       tidspunkt: "",
       storrelse: fil.size,
@@ -44,6 +41,10 @@ export function DokumentasjonView() {
       feil: undefined,
       status: "LASTER_OPP",
     };
+
+    if (erDuplikat) {
+      return { ...dokumentkravFil, feil: "DUPLIKAT_FIL", status: "IDLE" };
+    }
 
     if (!erGyldigFormat) {
       return { ...dokumentkravFil, feil: "UGYLDIG_FORMAT", status: "IDLE" };
@@ -57,9 +58,9 @@ export function DokumentasjonView() {
   }
 
   async function lastOppfiler(filer: FileObject[]) {
-    const nyeFiler: DokumentkravFil[] = filer
-      .filter((fil) => !dokumentkravFiler.some((f) => f.filnavn === fil.file.name.toLowerCase()))
-      .map((fil) => setDokumentkravFilStatus(fil.file));
+    const nyeFiler: DokumentkravFil[] = filer.map((fil) =>
+      setDokumentkravFil(fil.file, dokumentkravFiler)
+    );
 
     setDokumentkravFiler((prev) => [...prev, ...nyeFiler]);
 
@@ -69,13 +70,16 @@ export function DokumentasjonView() {
           const formData = new FormData();
           formData.append("file", fileObj.file);
 
-          const mellomlagreEnFilResponse = await fetch(
-            `/api/dokument/last-opp/${soknadId}/1014.1`,
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
+          const url = `/api/dokument/last-opp/${soknadId}/1014.1`;
+
+          if (!soknadId) {
+            throw new Error("SøknadId er ikke definert");
+          }
+
+          const mellomlagreEnFilResponse = await fetch(url, {
+            method: "POST",
+            body: formData,
+          });
 
           if (!mellomlagreEnFilResponse.ok) {
             const filMedTekniskFeil: DokumentkravFil = {
@@ -84,8 +88,8 @@ export function DokumentasjonView() {
               tidspunkt: "",
               storrelse: fileObj.file.size,
               filsti: "",
-              feil: "TEKNISK_FEIL",
               status: "IDLE",
+              feil: "TEKNISK_FEIL",
             };
 
             return filMedTekniskFeil;
@@ -112,7 +116,7 @@ export function DokumentasjonView() {
           return {
             ...filer,
             ...oppdatertFil,
-            status: oppdatertFil.feil ? oppdatertFil.status : "LASTET_OPP",
+            status: "LASTET_OPP",
           };
         })
       );
@@ -124,13 +128,17 @@ export function DokumentasjonView() {
   function hentFilFeilmelding(feilType: FeilType) {
     switch (feilType) {
       case "FIL_FOR_STOR":
-        return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB.`;
+        return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
       case "UGYLDIG_FORMAT":
-        return "Ugyldig filformat.";
+        return "Ugyldig filformat";
       case "TEKNISK_FEIL":
-        return "Det oppstod en teknisk feil.";
+        return "Det oppstod en teknisk feil";
+      case "DUPLIKAT_FIL":
+        return "Filene er duplikater";
+      case "UKJENT_FEIL":
+        return "Det oppstod en ukjent feil";
       default:
-        return "Ukjent feil.";
+        return "Det oppstod en ukjent feil";
     }
   }
 
