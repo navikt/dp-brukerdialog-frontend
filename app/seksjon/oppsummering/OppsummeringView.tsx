@@ -1,4 +1,4 @@
-import { Alert, BodyLong, VStack } from "@navikt/ds-react";
+import { Alert, BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import { stegerISøknaden } from "~/routes/$soknadId";
@@ -37,6 +37,11 @@ export default function OppsummeringView() {
               />
             );
           })}
+          <HStack justify="end">
+            <form method="POST">
+              <Button>Send søknad</Button>
+            </form>
+          </HStack>
         </VStack>
       </VStack>
     </div>
