@@ -20,19 +20,29 @@ export type DokumentkravFil = {
   filsti?: string;
   status: MellomlagringStatus;
   feil?: FeilType;
-  file?: File;
 };
 
 type MellomlagringStatus = "LASTER_OPP" | "LASTET_OPP" | "IDLE";
 type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL" | "DUPLIKAT_FIL" | "UKJENT_FEIL";
+
+type FilMedFeil = {
+  id: string;
+  filnavn: string;
+  feil: FeilType;
+};
+
+type Fil = {
+  file: File;
+  id: string;
+};
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
 
   async function lastOppfiler(filer: FileObject[]) {
-    const feilDokumenter: DokumentkravFil[] = [];
-    const opplastingsDokumenter: DokumentkravFil[] = [];
+    const filerMedFeil: FilMedFeil[] = [];
+    const filerKlarTilOpplasting: Fil[] = [];
 
     filer.forEach((filObj) => {
       const fil = filObj.file;
@@ -40,71 +50,57 @@ export function DokumentasjonView() {
       const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.name.endsWith(format));
 
       if (erDuplikat) {
-        feilDokumenter.push({
-          id: crypto.randomUUID(),
-          filnavn: fil.name,
-          status: "IDLE",
-          feil: "DUPLIKAT_FIL",
-          file: fil,
-        });
+        filerMedFeil.push({ id: crypto.randomUUID(), filnavn: fil.name, feil: "DUPLIKAT_FIL" });
       } else if (!erGyldigFormat) {
-        feilDokumenter.push({
-          id: crypto.randomUUID(),
-          filnavn: fil.name,
-          status: "IDLE",
-          feil: "UGYLDIG_FORMAT",
-          file: fil,
-        });
+        filerMedFeil.push({ id: crypto.randomUUID(), filnavn: fil.name, feil: "UGYLDIG_FORMAT" });
       } else if (fil.size > MAX_FIL_STØRRELSE) {
-        feilDokumenter.push({
-          id: crypto.randomUUID(),
-          filnavn: fil.name,
-          status: "IDLE",
-          feil: "FIL_FOR_STOR",
-          file: fil,
-        });
+        filerMedFeil.push({ id: crypto.randomUUID(), filnavn: fil.name, feil: "FIL_FOR_STOR" });
       } else {
-        opplastingsDokumenter.push({
-          id: crypto.randomUUID(),
-          filnavn: fil.name,
-          storrelse: fil.size,
-          status: "LASTER_OPP",
-          feil: undefined,
-          file: fil,
-        });
+        filerKlarTilOpplasting.push({ file: fil, id: crypto.randomUUID() });
       }
     });
 
+    const feilDokumenter: DokumentkravFil[] = filerMedFeil.map((fil) => ({
+      id: fil.id,
+      filnavn: fil.filnavn,
+      status: "IDLE",
+      feil: fil.feil,
+    }));
+
+    const opplastingsDokumenter: DokumentkravFil[] = filerKlarTilOpplasting.map((fil) => ({
+      id: fil.id,
+      filnavn: fil.file.name,
+      storrelse: fil.file.size,
+      status: "LASTER_OPP",
+    }));
+
     setDokumentkravFiler((prev) => [...prev, ...feilDokumenter, ...opplastingsDokumenter]);
 
-    if (opplastingsDokumenter.length === 0) return;
+    if (filerKlarTilOpplasting.length === 0) return;
 
     try {
       const responser = await Promise.all(
-        opplastingsDokumenter.map(async (fil) => {
+        filerKlarTilOpplasting.map(async (fil) => {
           const formData = new FormData();
-          formData.append("file", fil.file!);
+          formData.append("file", fil.file);
 
           const url = `/api/dokument/last-opp/${soknadId}/1014.1`;
           const respons = await fetch(url, { method: "POST", body: formData });
 
           if (!respons.ok) {
             return {
-              filnavn: fil.filnavn,
-              urn: "",
-              tidspunkt: "",
-              storrelse: fil.storrelse,
-              filsti: "",
+              filnavn: fil.file.name,
+              storrelse: fil.file.size,
               status: "IDLE",
-              feil: "TEKNISK_FEIL" as FeilType,
+              feil: "TEKNISK_FEIL",
               id: fil.id,
             };
           }
 
-          const filerFraBackend = await respons.json();
+          const filer = await respons.json();
 
           return {
-            ...filerFraBackend[0],
+            ...filer[0],
             status: "LASTET_OPP",
             feil: undefined,
             id: fil.id,
@@ -143,27 +139,30 @@ export function DokumentasjonView() {
       return;
     }
 
-    if (fil.filsti) {
-      try {
-        const formData = new FormData();
-        formData.append("filsti", fil.filsti);
+    if (!fil.filsti) {
+      console.log("Ingen filsti for fil, kan ikke slette");
+      return;
+    }
 
-        const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
-          method: "POST",
-          body: formData,
-        });
+    try {
+      const formData = new FormData();
+      formData.append("filsti", fil.filsti);
 
-        if (!response.ok) {
-          return;
-        }
+      const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
+        method: "POST",
+        body: formData,
+      });
 
-        setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
-
-        return await response.text();
-      } catch (error) {
-        console.error(error);
-      } finally {
+      if (!response.ok) {
+        return;
       }
+
+      setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
+
+      return await response.text();
+    } catch (error) {
+      console.error(error);
+    } finally {
     }
   }
 
