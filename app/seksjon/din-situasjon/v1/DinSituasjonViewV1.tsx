@@ -37,7 +37,6 @@ export function DinSituasjonViewV1() {
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
               {dinSituasjonSpørsmål.map((spørsmål) => {
-                // Skip rendering if the question should not be shown based on current answers
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
@@ -70,7 +69,6 @@ export function DinSituasjonViewV1() {
                 type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
-                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>

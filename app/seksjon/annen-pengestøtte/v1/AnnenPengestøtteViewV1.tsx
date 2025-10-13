@@ -298,7 +298,6 @@ export function AnnenPengestøtteViewV1() {
             <Button
               variant="secondary"
               type="button"
-              disabled={form.formState.isSubmitting}
               icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
               onClick={handleTilbakenavigering}
             >
@@ -307,7 +306,6 @@ export function AnnenPengestøtteViewV1() {
             <Button
               variant="primary"
               type="submit"
-              disabled={form.formState.isSubmitting}
               iconPosition="right"
               icon={<ArrowRightIcon />}
               onClick={handleSubmit}
