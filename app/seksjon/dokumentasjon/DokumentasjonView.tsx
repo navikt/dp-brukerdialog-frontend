@@ -70,7 +70,7 @@ export function DokumentasjonView() {
 
     setDokumentkravFiler((prev) => [...prev, ...filerMedEnFeil, ...filerKlarTilOpplasting]);
 
-    if (filerKlarTilOpplasting.length) {
+    if (filerKlarTilOpplasting.length > 0) {
       try {
         const responser = await Promise.all(
           filerKlarTilOpplasting.map(async (fil) => {
@@ -107,7 +107,7 @@ export function DokumentasjonView() {
         );
 
         setDokumentkravFiler((prev) =>
-          prev.map((fil) => ({ ...fil, ...responser.find((r) => r.id === fil.id) }))
+          prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
         );
       } catch (error) {
         console.error(error);
