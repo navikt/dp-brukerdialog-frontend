@@ -29,6 +29,9 @@ export function DokumentasjonView() {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
 
+  // Todo,
+  // Håndtere retry ved feil
+  // Finn ut hvordan vi skal hente dokumentkravId
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedEnFeil: DokumentkravFil[] = [];
     const filerKlarTilOpplasting: DokumentkravFil[] = [];
