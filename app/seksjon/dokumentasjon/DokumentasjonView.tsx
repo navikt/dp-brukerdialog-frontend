@@ -18,69 +18,65 @@ export type DokumentkravFil = {
   tidspunkt?: string;
   storrelse?: number;
   filsti?: string;
-  status: MellomlagringStatus;
+  lasterOpp?: boolean;
+  file?: File;
   feil?: FeilType;
 };
 
-type MellomlagringStatus = "LASTER_OPP" | "LASTET_OPP" | "IDLE";
 type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL" | "DUPLIKAT_FIL" | "UKJENT_FEIL";
-
-type FilMedFeil = {
-  id: string;
-  filnavn: string;
-  feil: FeilType;
-};
-
-type Fil = {
-  file: File;
-  id: string;
-};
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
 
   async function lastOppfiler(filer: FileObject[]) {
-    const filerMedFeil: FilMedFeil[] = [];
-    const filerKlarTilOpplasting: Fil[] = [];
+    const filerMedEnFeil: DokumentkravFil[] = [];
+    const filerKlarTilOpplasting: DokumentkravFil[] = [];
 
-    filer.forEach((filObj) => {
-      const fil = filObj.file;
-      const erDuplikat = dokumentkravFiler.some((f) => f.filnavn === fil.name);
-      const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.name.endsWith(format));
+    filer.forEach((fil: FileObject) => {
+      const erDuplikat = dokumentkravFiler.some((f) => f.filnavn === fil.file.name);
+      const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.file.name.endsWith(format));
 
       if (erDuplikat) {
-        filerMedFeil.push({ id: crypto.randomUUID(), filnavn: fil.name, feil: "DUPLIKAT_FIL" });
+        filerMedEnFeil.push({
+          id: crypto.randomUUID(),
+          filnavn: fil.file.name,
+          feil: "DUPLIKAT_FIL",
+        });
       } else if (!erGyldigFormat) {
-        filerMedFeil.push({ id: crypto.randomUUID(), filnavn: fil.name, feil: "UGYLDIG_FORMAT" });
-      } else if (fil.size > MAX_FIL_STØRRELSE) {
-        filerMedFeil.push({ id: crypto.randomUUID(), filnavn: fil.name, feil: "FIL_FOR_STOR" });
+        filerMedEnFeil.push({
+          id: crypto.randomUUID(),
+          filnavn: fil.file.name,
+          feil: "UGYLDIG_FORMAT",
+        });
+      } else if (fil.file.size > MAX_FIL_STØRRELSE) {
+        filerMedEnFeil.push({
+          id: crypto.randomUUID(),
+          filnavn: fil.file.name,
+          feil: "FIL_FOR_STOR",
+        });
       } else {
-        filerKlarTilOpplasting.push({ file: fil, id: crypto.randomUUID() });
+        filerKlarTilOpplasting.push({
+          id: crypto.randomUUID(),
+          file: fil.file,
+          filnavn: fil.file.name,
+          lasterOpp: true,
+        });
       }
     });
 
-    const feilDokumenter: DokumentkravFil[] = filerMedFeil.map((fil) => ({
-      id: fil.id,
-      filnavn: fil.filnavn,
-      status: "IDLE",
-      feil: fil.feil,
-    }));
-
-    const opplastingsDokumenter: DokumentkravFil[] = filerKlarTilOpplasting.map((fil) => ({
-      id: fil.id,
-      filnavn: fil.file.name,
-      storrelse: fil.file.size,
-      status: "LASTER_OPP",
-    }));
-
-    setDokumentkravFiler((prev) => [...prev, ...feilDokumenter, ...opplastingsDokumenter]);
+    setDokumentkravFiler((prev) => [...prev, ...filerMedEnFeil, ...filerKlarTilOpplasting]);
 
     if (filerKlarTilOpplasting.length === 0) return;
 
     try {
       const responser = await Promise.all(
         filerKlarTilOpplasting.map(async (fil) => {
+          if (!fil.file) {
+            console.error("Mangler fil data");
+            return;
+          }
+
           const formData = new FormData();
           formData.append("file", fil.file);
 
@@ -91,7 +87,7 @@ export function DokumentasjonView() {
             return {
               filnavn: fil.file.name,
               storrelse: fil.file.size,
-              status: "IDLE",
+              lasterOpp: false,
               feil: "TEKNISK_FEIL",
               id: fil.id,
             };
@@ -100,8 +96,8 @@ export function DokumentasjonView() {
           const filer = await respons.json();
 
           return {
-            ...filer[0],
-            status: "LASTET_OPP",
+            ...filer[0], // Mellomlagring returnerer en liste
+            lasterOpp: false,
             feil: undefined,
             id: fil.id,
           };
@@ -204,7 +200,7 @@ export function DokumentasjonView() {
             <FileUploadItem
               key={fil.id}
               file={{ name: fil.filnavn, size: fil.storrelse }}
-              status={fil.status === "LASTER_OPP" ? "uploading" : "idle"}
+              status={fil.lasterOpp ? "uploading" : "idle"}
               translations={{ uploading: "Laster opp..." }}
               error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
               button={{
