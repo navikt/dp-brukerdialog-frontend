@@ -86,14 +86,14 @@ export function AnnenPengestøtteViewV1() {
 
   useEffect(() => {
     setVisMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding(
-      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== "ja" &&
+      form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== "ja" &&
         pengestøtteFraAndreEøsLand.length > 0
     );
-    if (form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
+    if (form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
       setPengestøtteFraAndreEøsLand([]);
     }
   }, [
-    form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand),
+    form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand),
     pengestøtteFraAndreEøsLand.length,
   ]);
 
@@ -102,24 +102,27 @@ export function AnnenPengestøtteViewV1() {
       form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== "ja" &&
         pengestøtteFraNorge.length > 0
     );
-    if (form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
+    if (form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
       setPengestøtteFraNorge([]);
     }
-  }, [form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav), pengestøtteFraNorge.length]);
+  }, [
+    form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav),
+    pengestøtteFraNorge.length,
+  ]);
 
   function lagAnnenPengestøtteResponse(): AnnenPengestøtteResponse {
     return {
-      [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.value(
+      [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.transient.value(
         harMottattEllerSøktOmPengestøtteFraAndreEøsLand
       ),
-      [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.value(
+      [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.transient.value(
         fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       ),
-      [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.value(
+      [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.transient.value(
         skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
       ),
       pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLand,
-      [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.value(
+      [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.transient.value(
         mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
       ),
       pengestøtteFraNorge: pengestøtteFraNorge,
@@ -140,10 +143,10 @@ export function AnnenPengestøtteViewV1() {
     form.validate();
 
     const manglerPengestøtteFraAndreEøsLand =
-      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" &&
+      form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" &&
       pengestøtteFraAndreEøsLand.length === 0;
     const manglerPengestøtteFraNorge =
-      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" &&
+      form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" &&
       pengestøtteFraNorge.length === 0;
 
     if (manglerPengestøtteFraAndreEøsLand) {
@@ -159,8 +162,8 @@ export function AnnenPengestøtteViewV1() {
     }
 
     if (
-      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== undefined &&
-      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== undefined &&
+      form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== undefined &&
+      form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== undefined &&
       !manglerPengestøtteFraAndreEøsLand &&
       !manglerPengestøtteFraNorge
     ) {
@@ -170,8 +173,9 @@ export function AnnenPengestøtteViewV1() {
       form.submit();
     }
   }
+
   const render = (spørsmål: KomponentType) => {
-    if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+    if (spørsmål.visHvis && !spørsmål.visHvis(form.transient.value())) {
       return null;
     }
 
@@ -188,14 +192,7 @@ export function AnnenPengestøtteViewV1() {
     <div className="innhold">
       <h2>Annen pengstøtte</h2>
       <VStack gap="20">
-        <Form
-          {...form.getFormProps()}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
-          }}
-        >
+        <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
@@ -203,7 +200,7 @@ export function AnnenPengestøtteViewV1() {
               return render(spørsmål);
             })}
 
-            {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
+            {form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
               <VStack gap="space-16">
                 <BodyLong>
                   <strong>Dine pengestøtter fra EØS land</strong>
@@ -250,7 +247,7 @@ export function AnnenPengestøtteViewV1() {
             <h3>Pengestøtte fra Norge</h3>
             {pengestøtteFraNorgeSpørsmål.map((spørsmål) => render(spørsmål))}
 
-            {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
+            {form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
                 <BodyLong>
                   <strong>Dine pengestøtter fra Norge</strong>
@@ -301,6 +298,7 @@ export function AnnenPengestøtteViewV1() {
             <Button
               variant="secondary"
               type="button"
+              disabled={form.formState.isSubmitting}
               icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
               onClick={handleTilbakenavigering}
             >
@@ -308,7 +306,8 @@ export function AnnenPengestøtteViewV1() {
             </Button>
             <Button
               variant="primary"
-              type="button"
+              type="submit"
+              disabled={form.formState.isSubmitting}
               iconPosition="right"
               icon={<ArrowRightIcon />}
               onClick={handleSubmit}
