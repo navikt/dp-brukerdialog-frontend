@@ -1,6 +1,6 @@
 import { BodyLong, Box, FileObject, Heading, List, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import {
   hentMaksFilStørrelseMB,
@@ -8,7 +8,7 @@ import {
   hentTillatteFiltyperTekst,
   MAX_ANTALL_FILER,
   MAX_FIL_STØRRELSE,
-  TILLATTE_FILTYPER as TILLATTE_FILFORMAT,
+  TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 
 export type DokumentkravFil = {
