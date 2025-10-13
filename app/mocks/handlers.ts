@@ -72,11 +72,9 @@ export const handlers = [
     // antallOpplastetDokument += 1;
     // if (antallOpplastetDokument < 4) {
     //   // Første 3 kall: suksess
-    //   console.log("Opplasting vellykket");
     //   return HttpResponse.json(mockMellomlagring);
     // } else {
     //   // 4. kall: feil
-    //   console.log("Opplasting feilet");
     //   return new HttpResponse("Feil ved opplasting", {
     //     status: 500,
     //     statusText: "Feil ved opplasting",
