@@ -67,48 +67,48 @@ export function DokumentasjonView() {
 
     setDokumentkravFiler((prev) => [...prev, ...filerMedEnFeil, ...filerKlarTilOpplasting]);
 
-    if (filerKlarTilOpplasting.length === 0) return;
+    if (filerKlarTilOpplasting.length) {
+      try {
+        const responser = await Promise.all(
+          filerKlarTilOpplasting.map(async (fil) => {
+            if (!fil.file) {
+              console.error("Mangler fil data");
+              return;
+            }
 
-    try {
-      const responser = await Promise.all(
-        filerKlarTilOpplasting.map(async (fil) => {
-          if (!fil.file) {
-            console.error("Mangler fil data");
-            return;
-          }
+            const formData = new FormData();
+            formData.append("file", fil.file);
 
-          const formData = new FormData();
-          formData.append("file", fil.file);
+            const url = `/api/dokument/last-opp/${soknadId}/1014.1`;
+            const respons = await fetch(url, { method: "POST", body: formData });
 
-          const url = `/api/dokument/last-opp/${soknadId}/1014.1`;
-          const respons = await fetch(url, { method: "POST", body: formData });
+            if (!respons.ok) {
+              return {
+                filnavn: fil.file.name,
+                storrelse: fil.file.size,
+                lasterOpp: false,
+                feil: "TEKNISK_FEIL",
+                id: fil.id,
+              };
+            }
 
-          if (!respons.ok) {
+            const filer = await respons.json();
+
             return {
-              filnavn: fil.file.name,
-              storrelse: fil.file.size,
+              ...filer[0], // Mellomlagring returnerer en liste
               lasterOpp: false,
-              feil: "TEKNISK_FEIL",
+              feil: undefined,
               id: fil.id,
             };
-          }
+          })
+        );
 
-          const filer = await respons.json();
-
-          return {
-            ...filer[0], // Mellomlagring returnerer en liste
-            lasterOpp: false,
-            feil: undefined,
-            id: fil.id,
-          };
-        })
-      );
-
-      setDokumentkravFiler((prev) =>
-        prev.map((fil) => ({ ...fil, ...responser.find((r) => r.id === fil.id) }))
-      );
-    } catch (error) {
-      console.error(error);
+        setDokumentkravFiler((prev) =>
+          prev.map((fil) => ({ ...fil, ...responser.find((r) => r.id === fil.id) }))
+        );
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
