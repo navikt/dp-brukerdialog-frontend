@@ -9,13 +9,11 @@ export function useNullstillSkjulteFelter<T extends Record<string, any>>(
   spørsmål: KomponentType[]
 ) {
   useEffect(() => {
-    const values = form.value();
-
     spørsmål.forEach((spørsmål) => {
-      if (spørsmål.visHvis && !spørsmål.visHvis(values)) {
+      if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
         // @ts-ignore
         form.setValue(spørsmål.id, undefined);
       }
     });
-  }, [form.value(), form, spørsmål]);
+  }, [form]);
 }
