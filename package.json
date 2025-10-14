@@ -34,7 +34,7 @@
     "@sanity/client": "^7.12.0",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
-    "html-react-parser": "^5.2.6",
+    "html-react-parser": "^5.2.7",
     "i18n-iso-countries": "^7.14.0",
     "isbot": "^5.1.31",
     "msw": "^2.11.5",
@@ -49,11 +49,11 @@
     "vite-plugin-devtools-json": "^1.0.0"
   },
   "devDependencies": {
-    "@inquirer/prompts": "^7.8.6",
+    "@inquirer/prompts": "^7.9.0",
     "@react-router/dev": "^7.9.3",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1",
-    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@types/react-dom": "^19.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.45.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.37.0",
