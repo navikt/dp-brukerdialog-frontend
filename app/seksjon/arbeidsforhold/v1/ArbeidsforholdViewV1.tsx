@@ -100,10 +100,11 @@ export function ArbeidsforholdViewV1() {
 
   function lagArbeidsforholdResponse(): ArbeidsforholdResponse {
     return {
-      [hvordanHarDuJobbet]: form.value(hvordanHarDuJobbet),
-      [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: form.value(
-        harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-      ),
+      [hvordanHarDuJobbet]: form.transient.value(hvordanHarDuJobbet),
+      [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]:
+        form.transient.value(
+          harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+        ),
       registrerteArbeidsforhold: registrerteArbeidsforhold,
     };
   }
@@ -149,6 +150,7 @@ export function ArbeidsforholdViewV1() {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
+
                 return (
                   <Spørsmål
                     key={spørsmål.id}
@@ -213,7 +215,7 @@ export function ArbeidsforholdViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="button"
+                type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
                 onClick={handleSubmit}

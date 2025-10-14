@@ -109,17 +109,17 @@ export function AnnenPengestøtteViewV1() {
 
   function lagAnnenPengestøtteResponse(): AnnenPengestøtteResponse {
     return {
-      [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.value(
+      [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.transient.value(
         harMottattEllerSøktOmPengestøtteFraAndreEøsLand
       ),
       [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.value(
         fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       ),
-      [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.value(
+      [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.transient.value(
         skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
       ),
       pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLand,
-      [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.value(
+      [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: form.transient.value(
         mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
       ),
       pengestøtteFraNorge: pengestøtteFraNorge,
@@ -170,6 +170,7 @@ export function AnnenPengestøtteViewV1() {
       form.submit();
     }
   }
+
   const render = (spørsmål: KomponentType) => {
     if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
       return null;
@@ -188,14 +189,7 @@ export function AnnenPengestøtteViewV1() {
     <div className="innhold">
       <h2>Annen pengstøtte</h2>
       <VStack gap="20">
-        <Form
-          {...form.getFormProps()}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-            }
-          }}
-        >
+        <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
@@ -308,7 +302,7 @@ export function AnnenPengestøtteViewV1() {
             </Button>
             <Button
               variant="primary"
-              type="button"
+              type="submit"
               iconPosition="right"
               icon={<ArrowRightIcon />}
               onClick={handleSubmit}

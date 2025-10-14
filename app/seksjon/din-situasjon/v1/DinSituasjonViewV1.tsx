@@ -9,7 +9,6 @@ import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.sch
 import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
 
 export function DinSituasjonViewV1() {
-  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
@@ -37,7 +36,6 @@ export function DinSituasjonViewV1() {
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
               {dinSituasjonSpørsmål.map((spørsmål) => {
-                // Skip rendering if the question should not be shown based on current answers
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
@@ -70,7 +68,6 @@ export function DinSituasjonViewV1() {
                 type="submit"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
-                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>
