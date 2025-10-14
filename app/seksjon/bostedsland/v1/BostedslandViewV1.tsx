@@ -47,6 +47,7 @@ export function BostedslandViewV1() {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
+
                 return (
                   <Spørsmål
                     key={spørsmål.id}

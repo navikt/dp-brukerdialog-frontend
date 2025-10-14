@@ -198,6 +198,7 @@ export function EgenNæringViewV1() {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
+
                 return (
                   <Spørsmål
                     key={spørsmål.id}
@@ -253,7 +254,7 @@ export function EgenNæringViewV1() {
                 Forrige steg
               </Button>
               <Button
-                type={"button"}
+                type="submit"
                 variant="primary"
                 onClick={handleSubmit}
                 iconPosition="right"

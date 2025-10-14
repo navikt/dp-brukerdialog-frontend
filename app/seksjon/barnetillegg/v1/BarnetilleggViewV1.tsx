@@ -6,7 +6,10 @@ import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
-import { ModalOperasjonEnum, useBarnetilleggContext, } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import {
+  ModalOperasjonEnum,
+  useBarnetilleggContext,
+} from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   Barn,
@@ -184,6 +187,7 @@ export function BarnetilleggViewV1() {
           </Button>
           <Button
             variant="primary"
+            type="submit"
             onClick={handleSubmit}
             iconPosition="right"
             icon={<ArrowRightIcon />}

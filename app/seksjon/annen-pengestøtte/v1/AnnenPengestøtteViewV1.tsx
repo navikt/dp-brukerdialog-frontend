@@ -86,14 +86,14 @@ export function AnnenPengestøtteViewV1() {
 
   useEffect(() => {
     setVisMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding(
-      form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== "ja" &&
+      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== "ja" &&
         pengestøtteFraAndreEøsLand.length > 0
     );
-    if (form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
+    if (form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
       setPengestøtteFraAndreEøsLand([]);
     }
   }, [
-    form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand),
+    form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand),
     pengestøtteFraAndreEøsLand.length,
   ]);
 
@@ -102,20 +102,17 @@ export function AnnenPengestøtteViewV1() {
       form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== "ja" &&
         pengestøtteFraNorge.length > 0
     );
-    if (form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
+    if (form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
       setPengestøtteFraNorge([]);
     }
-  }, [
-    form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav),
-    pengestøtteFraNorge.length,
-  ]);
+  }, [form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav), pengestøtteFraNorge.length]);
 
   function lagAnnenPengestøtteResponse(): AnnenPengestøtteResponse {
     return {
       [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: form.transient.value(
         harMottattEllerSøktOmPengestøtteFraAndreEøsLand
       ),
-      [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.transient.value(
+      [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: form.value(
         fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
       ),
       [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: form.transient.value(
@@ -143,10 +140,10 @@ export function AnnenPengestøtteViewV1() {
     form.validate();
 
     const manglerPengestøtteFraAndreEøsLand =
-      form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" &&
+      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" &&
       pengestøtteFraAndreEøsLand.length === 0;
     const manglerPengestøtteFraNorge =
-      form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" &&
+      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" &&
       pengestøtteFraNorge.length === 0;
 
     if (manglerPengestøtteFraAndreEøsLand) {
@@ -162,8 +159,8 @@ export function AnnenPengestøtteViewV1() {
     }
 
     if (
-      form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== undefined &&
-      form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== undefined &&
+      form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== undefined &&
+      form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) !== undefined &&
       !manglerPengestøtteFraAndreEøsLand &&
       !manglerPengestøtteFraNorge
     ) {
@@ -175,7 +172,7 @@ export function AnnenPengestøtteViewV1() {
   }
 
   const render = (spørsmål: KomponentType) => {
-    if (spørsmål.visHvis && !spørsmål.visHvis(form.transient.value())) {
+    if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
       return null;
     }
 
@@ -200,7 +197,7 @@ export function AnnenPengestøtteViewV1() {
               return render(spørsmål);
             })}
 
-            {form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
+            {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
               <VStack gap="space-16">
                 <BodyLong>
                   <strong>Dine pengestøtter fra EØS land</strong>
@@ -247,7 +244,7 @@ export function AnnenPengestøtteViewV1() {
             <h3>Pengestøtte fra Norge</h3>
             {pengestøtteFraNorgeSpørsmål.map((spørsmål) => render(spørsmål))}
 
-            {form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
+            {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
                 <BodyLong>
                   <strong>Dine pengestøtter fra Norge</strong>

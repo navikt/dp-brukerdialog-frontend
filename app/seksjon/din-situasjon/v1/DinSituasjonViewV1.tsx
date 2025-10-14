@@ -9,7 +9,6 @@ import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.sch
 import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
 
 export function DinSituasjonViewV1() {
-  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigate = useNavigate();
