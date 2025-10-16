@@ -3,6 +3,7 @@ import invariant from "tiny-invariant";
 import { hentOppsummering } from "~/models/hent-oppsummering.server";
 import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
 import { hentPersonalia } from "~/models/hent-personalia.server";
+import { sendSøknad } from "~/models/send-søknad.server";
 
 type OppsummeringSeksjon = {
   seksjonsUrl: string;
@@ -56,11 +57,19 @@ export async function loader({
   return oppsummering;
 }
 
-export async function action({ params }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadId er påkrevd");
   const nesteSeksjonId = "kvittering";
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  const response = await sendSøknad(request, params.soknadId);
+
+  if (response.status === 200) {
+    return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  } else {
+    return {
+      error: "Noe gikk galt ved innsending av søknaden.",
+    };
+  }
 }
 
 export default function Oppsummering() {
