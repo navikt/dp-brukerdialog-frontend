@@ -2,6 +2,7 @@ import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { LANDLISTE } from "~/utils/land.utils";
 import { LandSpørsmål } from "./spørsmål.types";
+import parse from "html-react-parser";
 
 interface IProps {
   spørsmål: LandSpørsmål;
@@ -15,6 +16,7 @@ export function Land({ spørsmål, formScope }: Readonly<IProps>) {
     <Select
       {...field.getInputProps()}
       label={spørsmål.label}
+      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
       key={spørsmål.id}
     >

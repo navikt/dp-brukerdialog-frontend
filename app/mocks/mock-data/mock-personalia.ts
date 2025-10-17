@@ -1,30 +1,21 @@
-import { Personalia } from "~/routes/$soknadId.personalia";
+import {
+  avreiseDatoFra,
+  avreiseDatoTil,
+  bostedsland, folkeregistrertAdresseErNorgeStemmerDet,
+  hvorforReistDuFraNorge,
+  PersonaliaSvar,
+  reisteDuHjemTilLandetDuBorI,
+  reisteDuITaktMedRotasjon,
+  reistTilbakeTilBostedslandet,
+} from "~/seksjon/personalia/v1/personalia.spørsmål";
 
-export const mockPersonalia: Personalia = {
-  person: {
-    fornavn: "TOPP",
-    mellomnavn: "",
-    etternavn: "SURE",
-    fødselsdato: "1979-05-21",
-    ident: "21857998666",
-    postAdresse: {
-      adresselinje1: "Dale 17",
-      adresselinje2: "",
-      adresselinje3: "",
-      postnummer: "9423",
-      poststed: "Grøtavær",
-      landkode: "NO",
-      land: "NORGE",
-    },
-    folkeregistrertAdresse: {
-      adresselinje1: "Dale 17",
-      adresselinje2: "",
-      adresselinje3: "",
-      postnummer: "9423",
-      poststed: "Grøtavær",
-      landkode: "NO",
-      land: "NORGE",
-    },
-  },
-  kontonummer: null,
+export const mockPersonalia: PersonaliaSvar = {
+  [folkeregistrertAdresseErNorgeStemmerDet]: "nei",
+  [bostedsland]: "FIN",
+  [reistTilbakeTilBostedslandet]: "ja",
+  [reisteDuHjemTilLandetDuBorI]: "nei",
+  [reisteDuITaktMedRotasjon]: "nei",
+  [avreiseDatoFra]: "2025-08-13",
+  [avreiseDatoTil]: "2025-08-15",
+  [hvorforReistDuFraNorge]: "Fordi ..",
 };

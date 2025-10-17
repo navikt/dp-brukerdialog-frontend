@@ -37,7 +37,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const seksjonId = "din-situasjon";
-  const nesteSeksjonId = "personalia";
+  const nesteSeksjonId = "arbeidsforhold";
 
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"

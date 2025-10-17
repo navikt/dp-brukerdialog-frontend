@@ -1,6 +1,5 @@
 import DinSituasjonOppsummeringV1 from "~/seksjon/din-situasjon/v1/oppsummering/DinSituasjonOppsummeringV1";
-import PersonaliaOppsummering from "~/seksjon/personalia/v1/oppsummering/PersonaliaOppsummering";
-import BostedslandOppsummeringV1 from "~/seksjon/bostedsland/v1/oppsummering/BostedslandOppsummeringV1";
+import PersonaliaOppsummeringV1 from "~/seksjon/personalia/v1/oppsummering/PersonaliaOppsummeringV1";
 import ArbeidsforholdOppsummeringV1 from "~/seksjon/arbeidsforhold/v1/oppsummering/ArbeidsforholdOppsummeringV1";
 import AnnenPengestøtteOppsummeringV1 from "~/seksjon/annen-pengestøtte/v1/oppsummering/AnnenPengestøtteOppsummeringV1";
 import EgenNæringOppsummeringV1 from "~/seksjon/egen-næring/v1/oppsummering/EgenNæringOppsummeringV1";
@@ -42,19 +41,17 @@ export default function OppsummeringSeksjon({
           );
       }
     case "personalia":
-      return <PersonaliaOppsummering seksjonSvarene={seksjonsData} seksjonsUrl={seksjonsUrl} />;
-    case "bostedsland":
       switch (seksjonSvarene.versjon) {
         case 1:
           return (
-            <BostedslandOppsummeringV1
+            <PersonaliaOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
             />
           );
         default:
           return (
-            <BostedslandOppsummeringV1
+            <PersonaliaOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
             />

@@ -4,8 +4,8 @@ export const mockOppsummering = [
     data: '{"versjon": 1, "seksjon": {"hvilken-dato-søker-du-dagpenger-fra": "2025-09-04", "har-du-mottatt-dagpenger-fra-nav-iløpet-av-de-siste-52-ukene": "nei"}}',
   },
   {
-    seksjonId: "bostedsland",
-    data: '{"versjon": 1, "seksjon": {"bostedsland": "SWE", "reiste-du-i-takt-med-rotasjon": "nei", "reist-tilbake-til-bostedslandet": "nei", "reiste-du-hjem-til-landet-du-bor-i": "nei"}}',
+    seksjonId: "personalia",
+    data: '{"versjon": 1, "seksjon": {"navn-fra-pdl": "MINI MOCK", "fødselsnummer-fra-pdl": "093184 37294", "alder-fra-pdl": "41", "kontonummer-fra-kontoregister": "4162 80 56720", "adresselinje-1-fra-pdl": "Søndre Gate 1", "postnummer-fra-pdl": "1233", "poststed-fra-pdl": "BYEN", "land-fra-pdl": "SVERIGE","bostedsland": "FIN", "reiste-du-i-takt-med-rotasjon": "nei", "reist-tilbake-til-bostedslandet": "nei", "reiste-du-hjem-til-landet-du-bor-i": "nei"}}',
   },
   {
     seksjonId: "arbeidsforhold",
