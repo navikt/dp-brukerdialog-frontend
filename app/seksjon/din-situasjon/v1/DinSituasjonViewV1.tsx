@@ -1,17 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
-import { dinSituasjonSpørsmål, DinSituasjonSvar } from "./din-situasjon.spørsmål";
+import { dinSituasjonSpørsmål, DinSituasjonSvar, erTilbakenavigering, } from "./din-situasjon.spørsmål";
 
 export function DinSituasjonViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -26,6 +25,11 @@ export function DinSituasjonViewV1() {
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
+
+  function handleTilbakenavigering() {
+    form.setValue(erTilbakenavigering, true);
+    form.submit();
+  }
 
   return (
     <div className="innhold">
@@ -58,8 +62,9 @@ export function DinSituasjonViewV1() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="secondary"
+                type="button"
                 icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-                onClick={() => navigate(-1)}
+                onClick={handleTilbakenavigering}
               >
                 Forrige steg
               </Button>

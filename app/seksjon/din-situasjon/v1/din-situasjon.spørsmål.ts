@@ -1,9 +1,11 @@
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene = "har-du-mottatt-dagpenger-fra-nav-iløpet-av-de-siste-52-ukene";
+export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene =
+  "har-du-mottatt-dagpenger-fra-nav-iløpet-av-de-siste-52-ukene";
 export const årsakTilAtDagpengeneBleStanset = "årsak-til-at-dagpengene-ble-stanset";
 export const hvilkenDatoSøkerDuDagpengerFra = "hvilken-dato-søker-du-dagpenger-fra";
+export const erTilbakenavigering = "erTilbakenavigering";
 
 export type DinSituasjonSvar = {
   [harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene]?: "ja" | "nei" | "vetikke";
@@ -27,7 +29,8 @@ export const dinSituasjonSpørsmål: KomponentType[] = [
     type: "langTekst",
     label: "Skriv årsaken til at dagpengene ble stanset (Maks 500 tegn)",
     maxLength: 500,
-    visHvis: (svar: DinSituasjonSvar) => svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
+    visHvis: (svar: DinSituasjonSvar) =>
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
   },
   {
     id: hvilkenDatoSøkerDuDagpengerFra,
@@ -35,7 +38,9 @@ export const dinSituasjonSpørsmål: KomponentType[] = [
     label: "Hvilken dato søker du dagpenger fra?",
     description:
       "Du kan få dagpenger fra første dag du er helt eller delvis arbeidsledig eller permittert og tidligst fra den dagen du sender inn søknaden. Datoen du søker om dagpenger fra har betydning for beregning av dagpengene dine.",
-    visHvis: (svar: DinSituasjonSvar) => svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" || svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
+    visHvis: (svar: DinSituasjonSvar) =>
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
     fraOgMed: startOfDay(subMonths(new Date(), 6)),
     tilOgMed: endOfDay(addMonths(new Date(), 3)),
   },
@@ -48,6 +53,8 @@ export const dinSituasjonSpørsmål: KomponentType[] = [
       "<strong>Eksempel:</strong><br/><br/>" +
       "Hvis du søker om dagpenger fra 1. til 5. mars, vil januar bli siste måned med inntekt som tas med i beregningen av dagpengene dine. Søker du om dagpenger fra 6. mars, vil februar bli siste måned med inntekt som tas med i beregningen.<br/><br/>" +
       "Hvis 5. mars er en lørdag, får vi inn inntekten din mandag 7. mars. Da må du søke dagpenger fra tirsdag 8. mars hvis du vil ha med inntekten din fra februar i beregningen.",
-    visHvis: (svar: DinSituasjonSvar) => svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" || svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
+    visHvis: (svar: DinSituasjonSvar) =>
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
   },
 ];

@@ -10,6 +10,7 @@ import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
+import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
 const NYESTE_VERSJON = 1;
 
@@ -36,11 +37,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "din-situasjon";
   const nesteSeksjonId = "arbeidsforhold";
+  const forrigeSeksjonId = "personalia";
 
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
+    ([key, value]) =>
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erTilbakenavigering
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
 
@@ -55,6 +62,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return {
       error: "Noe gikk galt ved lagring av din situasjon",
     };
+  }
+
+  if (erTilbakeknapp) {
+    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
