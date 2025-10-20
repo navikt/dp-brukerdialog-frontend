@@ -76,7 +76,7 @@ export default function AnnenPengestøtteRoute() {
       );
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for annen-pengestøtte for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for annen-pengestøtte for søknaden ${soknadId}`
       );
       return (
         <AnnenPengestøtteProvider

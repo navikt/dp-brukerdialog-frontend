@@ -87,7 +87,7 @@ export default function ReellArbeidssøkerRoute() {
       return <ReellArbeidssøkerViewV1 />;
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for reell-arbeidssøker for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for reell-arbeidssøker for søknaden ${soknadId}`
       );
       return <ReellArbeidssøkerViewV1 />;
   }

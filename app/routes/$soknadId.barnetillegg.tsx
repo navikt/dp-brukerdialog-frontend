@@ -110,7 +110,7 @@ export default function BarntilleggRoute() {
       );
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for barnetillegg for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for barnetillegg for søknaden ${soknadId}`
       );
       return (
         <BarnetilleggProvider

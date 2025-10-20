@@ -72,7 +72,7 @@ export default function VernepliktRoute() {
       return <VernepliktViewV1 />;
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for verneplikt for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for verneplikt for søknaden ${soknadId}`
       );
       return <VernepliktViewV1 />;
   }

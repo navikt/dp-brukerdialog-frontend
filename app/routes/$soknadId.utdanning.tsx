@@ -72,7 +72,7 @@ export default function UtdanningRoute() {
       return <UtdanningViewV1 />;
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for utdanning for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for utdanning for søknaden ${soknadId}`
       );
       return <UtdanningViewV1 />;
   }

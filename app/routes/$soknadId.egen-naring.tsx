@@ -82,7 +82,7 @@ export default function EgenNæringRoute() {
       );
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for egen-næring for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for egen-næring for søknaden ${soknadId}`
       );
       return (
         <EgenNæringProvider

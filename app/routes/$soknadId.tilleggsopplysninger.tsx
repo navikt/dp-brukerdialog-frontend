@@ -77,7 +77,7 @@ export default function TilleggsopplysningerRoute() {
       return <TilleggsopplysningerViewV1 />;
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for tilleggsopplysninger for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for tilleggsopplysninger for søknaden ${soknadId}`
       );
       return <TilleggsopplysningerViewV1 />;
   }

@@ -75,7 +75,7 @@ export default function ArbeidsforholdRoute() {
       );
     default:
       console.error(
-        `Ukjent versjon nummer: ${loaderData.versjon} for arbeidsforhold for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.versjon} for arbeidsforhold for søknaden ${soknadId}`
       );
       return (
         <ArbeidsforholdProvider
