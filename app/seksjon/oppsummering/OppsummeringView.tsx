@@ -1,7 +1,7 @@
 import { Alert, BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
-import { stegerISøknaden } from "~/routes/$soknadId";
+import { stegISøknaden } from "~/routes/$soknadId";
 import OppsummeringSeksjon from "~/seksjon/oppsummering/OppsummeringSeksjon";
 
 export default function OppsummeringView() {
@@ -26,7 +26,7 @@ export default function OppsummeringView() {
             videre. Der kan du også ettersende dokumentasjon som mangler.
           </BodyLong>
           <h2>Dine svar</h2>
-          {stegerISøknaden.map((seksjon) => {
+          {stegISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
             return (

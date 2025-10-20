@@ -17,10 +17,9 @@ type StegResponse = {
   seksjoner: string[];
 };
 
-export const stegerISøknaden: Steg[] = [
-  { tittel: "Din situasjon", path: "din-situasjon" },
+export const stegISøknaden: Steg[] = [
   { tittel: "Personalia", path: "personalia" },
-  { tittel: "Bostedsland", path: "bostedsland" },
+  { tittel: "Din situasjon", path: "din-situasjon" },
   { tittel: "Arbeidsforhold", path: "arbeidsforhold" },
   { tittel: "Annen pengestøtte", path: "annen-pengestotte" },
   { tittel: "Egen næring", path: "egen-naring" },
@@ -34,7 +33,7 @@ export const stegerISøknaden: Steg[] = [
 ];
 
 function fyllTommeSteger(): FremgangSteg[] {
-  return stegerISøknaden.map((step) => {
+  return stegISøknaden.map((step) => {
     return { ...step, fullført: false };
   });
 }
@@ -70,7 +69,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return redirect(`/${params.soknadId}/kvittering`);
   }
 
-  const soknadSections: FremgangSteg[] = stegerISøknaden.map((step) => ({
+  const soknadSections: FremgangSteg[] = stegISøknaden.map((step) => ({
     ...step,
     fullført: seksjoner.includes(step.path),
   }));

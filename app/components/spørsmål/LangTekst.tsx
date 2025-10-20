@@ -1,6 +1,7 @@
 import { Textarea } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { LangTekstSpørsmål } from "./spørsmål.types";
+import parse from "html-react-parser";
 
 interface IProps {
   spørsmål: LangTekstSpørsmål;
@@ -14,7 +15,7 @@ export function LangTekst({ spørsmål, formScope }: Readonly<IProps>) {
     <Textarea
       {...field.getInputProps()}
       label={spørsmål.label}
-      description={spørsmål.description}
+      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={spørsmål.id}
       maxLength={spørsmål.maxLength}
       error={field.error()}

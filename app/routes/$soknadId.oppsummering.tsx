@@ -2,7 +2,6 @@ import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
 import { hentOppsummering } from "~/models/hent-oppsummering.server";
 import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
-import { hentPersonalia } from "~/models/hent-personalia.server";
 import { sendSøknad } from "~/models/send-søknad.server";
 
 type OppsummeringSeksjon = {
@@ -29,31 +28,6 @@ export async function loader({
     }));
   }
 
-  const personaliaResponse = await hentPersonalia(request);
-  if (personaliaResponse.status !== 200) {
-    console.error("Feil ved henting av personalia");
-    return oppsummering;
-  }
-
-  const personaliaResponseJson = await personaliaResponse.json();
-  const { fornavn, mellomnavn, etternavn, ident, folkeregistrertAdresse } =
-    personaliaResponseJson.person;
-  const personalia = {
-    navn: fornavn + (mellomnavn ? ` ${mellomnavn}` : "") + ` ${etternavn}`,
-    personnummer: ident,
-    folkeregistrertAdresse: folkeregistrertAdresse.adresselinje1,
-    folkeregistrertPostnummer: folkeregistrertAdresse.postnummer,
-    folkeregistrertPoststed: folkeregistrertAdresse.poststed,
-  };
-
-  oppsummering = [
-    ...oppsummering,
-    {
-      seksjonsUrl: `/${params.soknadId}/personalia`,
-      seksjonId: "personalia",
-      data: JSON.stringify(personalia),
-    },
-  ];
   return oppsummering;
 }
 
