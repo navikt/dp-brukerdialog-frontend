@@ -36,7 +36,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "arbeidsforhold";
   const nesteSeksjonId = "annen-pengestotte";
-  const forrigeSeksjonId = "bostedsland";
+  const forrigeSeksjonId = "din-situasjon";
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
 
