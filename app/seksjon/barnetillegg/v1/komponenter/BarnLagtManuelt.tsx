@@ -5,7 +5,13 @@ import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import {
+  Barn,
+  bostedsland,
+  etternavn,
+  fornavnOgMellomnavn,
+  fødselsdato,
+} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
@@ -33,16 +39,16 @@ export function BarnLagtManuelt({ barn }: IProps) {
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <Heading size="small" spacing>
-        {barn.fornavnOgMellomnavn} {barn.etternavn}
+        {barn[fornavnOgMellomnavn]} {barn[etternavn]}
       </Heading>
-      {barn.fødselsdato && (
+      {barn[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barn.fødselsdato))}
+          Født {formaterNorskDato(new Date(barn[fødselsdato]))}
         </BodyShort>
       )}
-      {barn.bostedsland && (
+      {barn[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barn.bostedsland).toUpperCase()}
+          BOR I {finnLandnavnMedLocale(barn[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
 

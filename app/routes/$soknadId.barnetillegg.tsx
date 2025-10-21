@@ -1,22 +1,21 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
   Barn,
   BarnetilleggSvar,
+  bostedsland,
   erTilbakenavigering,
+  etternavn,
+  fornavnOgMellomnavn,
   forsørgerDuBarnSomIkkeVisesHer,
+  fødselsdato,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
+import { normaliserFormData } from "~/utils/action.utils.server";
 import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
@@ -51,12 +50,23 @@ export async function loader({
       };
     }
 
+    const barnFraPdl = await barnFraPdlResponse.json();
+
+    const barn = barnFraPdl.map((etBarnFraPdl: any) => {
+      return {
+        [fornavnOgMellomnavn]: etBarnFraPdl.fornavnOgMellomnavn,
+        [etternavn]: etBarnFraPdl.etternavn,
+        [fødselsdato]: etBarnFraPdl.fødselsdato,
+        [bostedsland]: etBarnFraPdl.bostedsland,
+      } as Barn;
+    });
+
     return {
       versjon: NYESTE_VERSJON,
       seksjon: {
         [forsørgerDuBarnSomIkkeVisesHer]: undefined,
         barnLagtManuelt: [],
-        barnFraPdl: await barnFraPdlResponse.json(),
+        barnFraPdl: barn,
       },
     };
   }
@@ -72,22 +82,26 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "reell-arbeidssoker";
   const forrigeSeksjonId = "utdanning";
-  const payload = formData.get("payload");
+  const seksjonsvar = formData.get("seksjonsvar");
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
   const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
-  const seksjonsdata = {
-    seksjonId,
-    seksjon: JSON.parse(payload as string),
-    dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
-    versjon: Number(versjon),
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjonId,
+      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
+      versjon: Number(versjon),
+      dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string)
+    }),
+    pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsdata);
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
     return {
-      error: "Noe gikk galt ved lagring av din situasjon",
+      error: "Noe gikk galt ved lagring av barnetillegg",
     };
   }
 

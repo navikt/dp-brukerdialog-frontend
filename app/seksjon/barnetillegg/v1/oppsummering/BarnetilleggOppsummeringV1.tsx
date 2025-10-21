@@ -1,6 +1,11 @@
 import {
   barnetilleggSpørsmål,
+  bostedsland,
+  etternavn,
+  fornavnOgMellomnavn,
+  forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
+  fødselsdato,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
@@ -60,30 +65,30 @@ export default function BarnetilleggOppsummeringV1({
                 <FormSummary.Answers>
                   <FormSummary.Answer>
                     <FormSummary.Label>{finnLabelNavn("fornavnOgMellomnavn")}</FormSummary.Label>
-                    <FormSummary.Value>{barn.fornavnOgMellomnavn}</FormSummary.Value>
+                    <FormSummary.Value>{barn[fornavnOgMellomnavn]}</FormSummary.Value>
                   </FormSummary.Answer>
                   <FormSummary.Answer>
                     <FormSummary.Label>{finnLabelNavn("etternavn")}</FormSummary.Label>
-                    <FormSummary.Value>{barn.etternavn}</FormSummary.Value>
+                    <FormSummary.Value>{barn[etternavn]}</FormSummary.Value>
                   </FormSummary.Answer>
                   <FormSummary.Answer>
                     <FormSummary.Label>{finnLabelNavn("fødselsdato")}</FormSummary.Label>
                     <FormSummary.Value>
-                      {formaterNorskDato(new Date(barn.fødselsdato))}
+                      {formaterNorskDato(new Date(barn[fødselsdato]))}
                     </FormSummary.Value>
                   </FormSummary.Answer>
                   <FormSummary.Answer>
                     <FormSummary.Label>{finnLabelNavn("bostedsland")}</FormSummary.Label>
-                    <FormSummary.Value>{barn.bostedsland}</FormSummary.Value>
+                    <FormSummary.Value>{barn[bostedsland]}</FormSummary.Value>
                   </FormSummary.Answer>
                   <FormSummary.Answer>
                     <FormSummary.Label>Forsørger du barnet?</FormSummary.Label>
                     <FormSummary.Value>
                       {barnetilleggSvar.barnLagtManuelt?.find(
-                        (b) => b.fødselsdato === barn.fødselsdato
+                        (b) => b.fødselsdato === barn[fødselsdato]
                       )
                         ? "Ja"
-                        : barn.forsørgerDuBarnet === "ja"
+                        : barn[forsørgerDuBarnet] === "ja"
                           ? "Ja"
                           : "Nei"}
                     </FormSummary.Value>

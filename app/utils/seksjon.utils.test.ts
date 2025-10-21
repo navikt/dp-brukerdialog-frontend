@@ -1,56 +1,88 @@
-import { expect, test } from "vitest";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
-import { finnOptionLabel } from "./seksjon.utils";
+import { describe, expect, it } from "vitest";
+import { lagSeksjonPayload } from "../utils/seksjon.utils";
+import {
+  egenNæringEgenNæringsvirksomhetSpørsmål,
+  egenNæringEgetGårdsbrukSpørsmål,
+  leggTilGårdsbrukSpørsmål,
+  leggTilNæringsvirksomhetSpørsmål,
+} from "../seksjon/egen-næring/v1/egen-næring.spørsmål";
 
-const alleSpørsmål: KomponentType[] = [
-  {
-    id: "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand",
-    type: "envalg",
-    label: "Hvilke utenlandske pengestøtte har du mottatt eller søkt om?",
-    options: [
-      { value: "sykepenger", label: "Sykepenger" },
+describe("lagSeksjonPayload", () => {
+  const formData = {
+    "driver-du-egen-næringsvirksomhet": "ja",
+    næringsvirksomheter: [
       {
-        value: "foreldrepengerEllerSvangerskapspenger",
-        label: "Foreldrepenger eller svangerskapspenger",
-      },
-      {
-        value: "dagpengerEllerArbeidsledighetstrygd",
-        label: "Dagpenger / arbeidsledighetstrygd",
-      },
-      {
-        value: "pleiepengerOmsorgspengerEllerOpplæringspenger",
-        label: "Pleiepenger, omsorgspenger eller opplæringspenger ",
+        organisasjonsnummer: "1",
+        "hvor-mange-timer-jobbet-per-uke-før-arbeidstiden-ble-redusert": "2",
+        "hvor-mange-timer-jobbet-per-uke-nå": "2",
       },
     ],
-  },
-];
+    "driver-du-eget-gårdsbruk": "ja",
+    gårdsbruk: [
+      {
+        organisasjonsnummer: "1",
+        "hvilke-type-gårdsbruk-driver-du": ["dyr"],
+        "hvem-eier-gårdsbruket": ["jeg"],
+        "hvor-mange-prosent-av-inntekten-går-til-deg": "1",
+        "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-valgt-år": "2025",
+        "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-antall-timer":
+          "1",
+        "hvordan-har-du-beregnet-antall-arbeidstimer-totalt": "1",
+      },
+      {
+        organisasjonsnummer: "2",
+        "hvilke-type-gårdsbruk-driver-du": ["jord"],
+        "hvem-eier-gårdsbruket": ["jeg"],
+        "hvor-mange-prosent-av-inntekten-går-til-deg": "2",
+        "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-valgt-år": "2024",
+        "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-antall-timer":
+          "2",
+        "hvordan-har-du-beregnet-antall-arbeidstimer-totalt": "2",
+      },
+    ],
+    versjon: 1,
+  };
 
-test("finnOptionLabel returnerer forventet resultat hvis spørsmål og option eksisterer", () => {
-  const resultat = finnOptionLabel(
-    alleSpørsmål,
-    "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand",
-    "foreldrepengerEllerSvangerskapspenger"
-  );
+  it("should create del1Payload for egenNæringEgenNæringsvirksomhetSpørsmål", () => {
+    const del1Payload = lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, formData);
+    expect(del1Payload.length).toBeGreaterThan(0);
+    expect(del1Payload.some((item) => item.id === "driver-du-egen-næringsvirksomhet")).toBe(true);
+  });
 
-  expect(resultat).toEqual("Foreldrepenger eller svangerskapspenger");
-});
+  it("should create del2Payload for each næringsvirksomhet", () => {
+    const del2Payload = formData.næringsvirksomheter.flatMap((virksomhet) =>
+      lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, virksomhet)
+    );
+    expect(del2Payload.length).toBeGreaterThan(0);
+    expect(del2Payload.some((item) => item.id === "organisasjonsnummer")).toBe(true);
+  });
 
-test("finnOptionLabel returnerer forventet resultat hvis spørsmål eksisterer, men option ikke gjør det", () => {
-  const resultat = finnOptionLabel(
-    alleSpørsmål,
-    "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand",
-    "enUkjentOption"
-  );
+  it("should create del3Payload for egenNæringEgetGårdsbrukSpørsmål", () => {
+    const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, formData);
+    expect(del3Payload.length).toBeGreaterThan(0);
+    expect(del3Payload.some((item) => item.id === "driver-du-eget-gårdsbruk")).toBe(true);
+  });
 
-  expect(resultat).toEqual("Ukjent spørsmål eller option");
-});
+  it("should create del4Payload for each gårdsbruk", () => {
+    const del4Payload = formData.gårdsbruk.flatMap((gårdsbruket) =>
+      lagSeksjonPayload(leggTilGårdsbrukSpørsmål, gårdsbruket)
+    );
+    expect(del4Payload.length).toBeGreaterThan(0);
+    expect(del4Payload.some((item) => item.id === "organisasjonsnummer")).toBe(true);
+  });
 
-test("finnOptionLabel returnerer forventet resultat hvis spørsmål ikke eksisterer", () => {
-  const resultat = finnOptionLabel(
-    alleSpørsmål,
-    "etUkjentSpørsmål",
-    "enUkjentOption"
-  );
-
-  expect(resultat).toEqual("Ukjent spørsmål eller option");
+  it("should create brutto payload with all parts", () => {
+    const del1Payload = lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, formData);
+    const del2Payload = formData.næringsvirksomheter.flatMap((virksomhet) =>
+      lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, virksomhet)
+    );
+    const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, formData);
+    const del4Payload = formData.gårdsbruk.flatMap((gårdsbruket) =>
+      lagSeksjonPayload(leggTilGårdsbrukSpørsmål, gårdsbruket)
+    );
+    const brutto = [...del1Payload, ...del2Payload, ...del3Payload, ...del4Payload];
+    expect(brutto.length).toBe(
+      del1Payload.length + del2Payload.length + del3Payload.length + del4Payload.length
+    );
+  });
 });

@@ -21,3 +21,24 @@ export async function lagreSeksjon<T>(
     body: JSON.stringify(seksjonsData),
   });
 }
+
+export async function lagreSeksjonV2<T>(
+  request: Request,
+  soknadId: string,
+  seksjonId: string,
+  putSeksjonRequest: T
+) {
+  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/v2/${soknadId}/${seksjonId}`;
+  const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
+
+  return await fetch(url, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${onBehalfOfToken}`,
+      connection: "keep-alive",
+      "Content-Type": "application/json; charset=UTF-8",
+    },
+    body: JSON.stringify(putSeksjonRequest),
+  });
+}

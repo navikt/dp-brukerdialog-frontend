@@ -12,8 +12,11 @@ import {
   EgenNæringSvar,
   erTilbakenavigering,
   Gårdsbruk,
+  leggTilGårdsbrukSpørsmål,
+  leggTilNæringsvirksomhetSpørsmål,
   Næringsvirksomhet,
-  payload,
+  seksjonsvar,
+  pdfGrunnlag,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
@@ -27,6 +30,7 @@ import {
   ModalOperasjonEnum,
   useEgenNæringContext,
 } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function EgenNæringViewV1() {
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
@@ -99,7 +103,7 @@ export function EgenNæringViewV1() {
       gårdsbruk: gårdsbruk,
     };
 
-    form.setValue(payload, JSON.stringify(egenNæringResponse));
+    form.setValue(seksjonsvar, JSON.stringify(egenNæringResponse));
     form.submit();
   }
 
@@ -137,7 +141,22 @@ export function EgenNæringViewV1() {
         gårdsbruk: gårdsbruk,
       };
 
-      form.setValue(payload, JSON.stringify(egenNæringResponse));
+      const pdfPayload = {
+        navn: "Egen næring",
+        spørsmål: [
+          ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, form.transient.value()),
+          ...næringsvirksomheter.map((enVirksomhet) =>
+            lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, enVirksomhet)
+          ),
+          ...lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, form.transient.value()),
+          ...gårdsbruk.map((etGårdsbruk) =>
+            lagSeksjonPayload(leggTilGårdsbrukSpørsmål, etGårdsbruk)
+          ),
+        ],
+      };
+
+      form.setValue(seksjonsvar, JSON.stringify(egenNæringResponse));
+      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
       form.submit();
     }
   }

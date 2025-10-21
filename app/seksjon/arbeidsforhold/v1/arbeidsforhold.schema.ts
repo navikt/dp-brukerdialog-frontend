@@ -21,11 +21,11 @@ import {
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
+  payload,
   varierendeArbeidstidDeSiste12Månedene,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
 } from "./arbeidsforhold.spørsmål";
-import { payload } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import {
   arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål,
   jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,

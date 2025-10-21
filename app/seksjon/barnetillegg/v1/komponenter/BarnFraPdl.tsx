@@ -2,16 +2,20 @@ import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
-import { Envalg } from "~/components/spørsmål/Envalg";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   Barn,
   barnFraPdlSpørsmål,
+  bostedsland,
+  etternavn,
+  fornavnOgMellomnavn,
   forsørgerDuBarnet,
+  fødselsdato,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 
 interface IProps {
   barn: Barn;
@@ -24,7 +28,7 @@ export function BarnFraPdl({ barn }: IProps) {
     submitSource: "state",
     schema: barnFraPdlSchema,
     defaultValues: {
-      forsørgerDuBarnet: barn.forsørgerDuBarnet || undefined,
+      ...barn,
     },
   });
 
@@ -35,11 +39,11 @@ export function BarnFraPdl({ barn }: IProps) {
   }, [validerBarnFraPdl]);
 
   useEffect(() => {
-    const forsørgerDuBarnet = form.value("forsørgerDuBarnet");
+    const forsørgerDuBarnetSvar = form.value("forsørger-du-barnet");
 
-    if (form.formState.isDirty && forsørgerDuBarnet !== undefined) {
-      const oppdatertListe = barnFraPdl.map((b) =>
-        b.id === barn.id ? { ...b, forsørgerDuBarnet } : b
+    if (form.formState.isDirty && forsørgerDuBarnetSvar !== undefined) {
+      const oppdatertListe = barnFraPdl.map((etBarn) =>
+        etBarn.id === barn.id ? { ...etBarn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar, } : etBarn
       );
 
       setbarnFraPdl(oppdatertListe);
@@ -49,25 +53,33 @@ export function BarnFraPdl({ barn }: IProps) {
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <Heading size="small" spacing>
-        {barn.fornavnOgMellomnavn} {barn.etternavn}
+        {barn[fornavnOgMellomnavn]} {barn[etternavn]}
       </Heading>
-      {barn.fødselsdato && (
+      {barn[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barn.fødselsdato))}
+          Født {formaterNorskDato(new Date(barn[fødselsdato]))}
         </BodyShort>
       )}
-      {barn.bostedsland && (
+      {barn[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barn.bostedsland).toUpperCase()}
+          BOR I {finnLandnavnMedLocale(barn[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
 
       <Form {...form.getFormProps()}>
-        <Envalg
-          spørsmål={barnFraPdlSpørsmål}
-          formScope={form.scope(forsørgerDuBarnet)}
-          horisontal={true}
-        />
+        {barnFraPdlSpørsmål.map((spørsmål) => {
+          if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            return null;
+          }
+
+          return (
+            <Spørsmål
+              key={spørsmål.id}
+              spørsmål={spørsmål}
+              formScope={form.scope(spørsmål.id as keyof Barn)}
+            />
+          );
+        })}
       </Form>
     </Box>
   );

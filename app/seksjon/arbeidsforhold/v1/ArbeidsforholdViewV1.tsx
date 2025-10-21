@@ -17,6 +17,7 @@ import {
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDuJobbet,
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+  payload,
   varierendeArbeidstidDeSiste12Månedene,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
@@ -24,7 +25,6 @@ import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsfor
 import { useEffect, useRef, useState } from "react";
 import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
-import { payload } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 
 export function ArbeidsforholdViewV1() {
   const ref = useRef<HTMLDialogElement>(null);

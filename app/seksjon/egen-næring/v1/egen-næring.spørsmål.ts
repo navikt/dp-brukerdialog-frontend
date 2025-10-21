@@ -1,6 +1,7 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const payload = "payload";
+export const seksjonsvar = "seksjonsvar";
+export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
 export const driverDuEgenNæringsvirksomhet = "driver-du-egen-næringsvirksomhet";
 export const næringsvirksomheter = "næringsvirksomheter";
@@ -21,9 +22,9 @@ export const samboerEktefelle = "samboer-ektefelle";
 export const andre = "andre";
 export const hvorMangeProsentAvInntektenGårTilDeg = "hvor-mange-prosent-av-inntekten-går-til-deg";
 export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr =
-  "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-valgt-år";
+  "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-i-løpet-av-et-år-valgt-år";
 export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer =
-  "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-iløpet-av-et-år-antall-timer";
+  "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-i-løpet-av-et-år-antall-timer";
 export const hvordanHarDuBeregnetAntallArbeidstimerTotalt =
   "hvordan-har-du-beregnet-antall-arbeidstimer-totalt";
 
