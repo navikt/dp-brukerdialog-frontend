@@ -57,6 +57,9 @@ export function Spørsmål({ spørsmål, formScope }: Readonly<IProps>) {
     case "dokumentasjonskravindikator":
       return <Dokumentasjonskravindikator spørsmål={spørsmål} />;
 
+    case "registeropplysning":
+      return null;
+
     default:
       console.warn(`Ukjent spørsmålstype: ${spørsmål}`);
       return null;

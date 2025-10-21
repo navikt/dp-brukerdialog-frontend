@@ -10,9 +10,10 @@ export type KomponentType =
   | NedtrekkslisteSpørsmål
   | Varselmelding
   | LesMer
-  | Dokumentasjonskravindikator;
+  | Dokumentasjonskravindikator
+  | Registeropplysning;
 
-type InfoType = "varselmelding" | "lesMer" | "dokumentasjonskravindikator";
+type InfoType = "varselmelding" | "lesMer" | "dokumentasjonskravindikator" | "bodyShort";
 
 export type SpørsmålType =
   | "envalg"
@@ -24,12 +25,14 @@ export type SpørsmålType =
   | "periodeTil"
   | "land"
   | "tall"
-  | "nedtrekksliste";
+  | "nedtrekksliste"
+  | "registeropplysning";
 
 export const INFO_KOMPONENTER: InfoType[] = [
   "varselmelding",
   "lesMer",
   "dokumentasjonskravindikator",
+  "bodyShort",
 ];
 
 export type KomponentBase = {
@@ -87,6 +90,10 @@ export type TallSpørsmål = SpørsmålBase & {
 export type NedtrekkslisteSpørsmål = SpørsmålBase & {
   type: "nedtrekksliste";
   options: { value: string; label: string }[];
+};
+
+export type Registeropplysning = SpørsmålBase & {
+  type: "registeropplysning";
 };
 
 export type Varselmelding = KomponentBase & {

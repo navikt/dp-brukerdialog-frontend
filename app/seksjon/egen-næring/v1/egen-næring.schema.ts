@@ -24,7 +24,8 @@ import {
   leggTilNæringsvirksomhetSpørsmål,
   LeggTilNæringsvirksomhetSvar,
   organisasjonsnummer,
-  payload,
+  seksjonsvar,
+  pdfGrunnlag,
   samboerEktefelle,
   skog,
 } from "./egen-næring.spørsmål";
@@ -32,7 +33,8 @@ import { valider } from "~/utils/validering.utils";
 
 export const egenNæringSchema = z
   .object({
-    [payload]: z.string().optional(),
+    [seksjonsvar]: z.string().optional(),
+    [pdfGrunnlag]: z.string().optional(),
     [driverDuEgenNæringsvirksomhet]: z.enum(["ja", "nei"]).optional(),
     [driverDuEgetGårdsbruk]: z.enum(["ja", "nei"]).optional(),
     versjon: z.number().optional(),

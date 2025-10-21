@@ -6,7 +6,7 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.utdanning";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
-import { erTilbakenavigering, utdanningSpørsmål, UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import { erTilbakenavigering, utdanningSpørsmål, UtdanningSvar, } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
 
 export function UtdanningViewV1() {
   const loaderData = useLoaderData<typeof loader>();

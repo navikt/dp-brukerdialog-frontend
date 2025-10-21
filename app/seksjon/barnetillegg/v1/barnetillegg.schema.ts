@@ -11,16 +11,18 @@ import {
   fødselsdato,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
-  payload,
+  pdfGrunnlag,
+  seksjonsvar,
 } from "./barnetillegg.spørsmål";
 import { valider } from "~/utils/validering.utils";
 
 export const barnetilleggSchema = z
   .object({
-    [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
-    [payload]: z.string().optional(),
     dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
+    [seksjonsvar]: z.string().optional(),
+    [pdfGrunnlag]: z.string().optional(),
+    [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, context) => {
@@ -37,6 +39,10 @@ export const barnetilleggSchema = z
 
 export const barnFraPdlSchema = z
   .object({
+    [fornavnOgMellomnavn]: z.string().optional(),
+    [etternavn]: z.string().optional(),
+    [fødselsdato]: z.string().optional(),
+    [bostedsland]: z.string().optional(),
     [forsørgerDuBarnet]: z.enum(["ja", "nei"]).optional(),
   })
   .superRefine((data, ctx) => {

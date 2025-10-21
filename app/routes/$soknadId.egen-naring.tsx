@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { EgenNæringViewV1 } from "~/seksjon/egen-næring/v1/EgenNæringViewV1";
 import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
@@ -41,16 +41,21 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "egen-naring";
   const nesteSeksjonId = "verneplikt";
   const forrigeSeksjonId = "annen-pengestotte";
-  const payload = formData.get("payload");
-  const seksjonsData = normaliserFormData(JSON.parse(payload as string));
-
+  const seksjonsvar = formData.get("seksjonsvar");
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
-  const seksjonsDataMedVersjon = {
-    seksjon: seksjonsData,
-    versjon: Number(versjon),
+
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
+      versjon: Number(versjon),
+    }),
+    pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsDataMedVersjon);
+  console.info(putSeksjonRequest);
+
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
     return {

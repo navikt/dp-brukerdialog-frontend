@@ -15,13 +15,18 @@ import {
   Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
+  barnFraPdlSpørsmål,
   erTilbakenavigering,
+  forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
-  payload,
+  leggTilBarnManueltSpørsmål,
+  seksjonsvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdl";
 import { BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManuelt";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
+import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -72,14 +77,26 @@ export function BarnetilleggViewV1() {
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
 
-    const data: BarnetilleggResponse = {
+    const barnetilleggResponse: BarnetilleggResponse = {
       barnFraPdl: barnFraPdl,
-      barnLagtManuelt: barnLagtManuelt,
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+      barnLagtManuelt: barnLagtManuelt,
     };
 
+    const pdfPayload = {
+      navn: "Barnetillegg",
+      spørsmål: [
+        ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
+        ...lagSeksjonPayload(barnetilleggSpørsmål, form.transient.value()),
+        ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
+          lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
+        ),
+      ],
+    };
+
+    form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
+    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
     form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
-    form.setValue(payload, JSON.stringify(data));
     form.submit();
   }
 
@@ -90,18 +107,30 @@ export function BarnetilleggViewV1() {
       return;
     }
 
-    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn.forsørgerDuBarnet);
+    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn[forsørgerDuBarnet]);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      const data: BarnetilleggResponse = {
+      const barnetilleggResponse: BarnetilleggResponse = {
         barnFraPdl: barnFraPdl,
-        barnLagtManuelt: barnLagtManuelt,
         [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+        barnLagtManuelt: barnLagtManuelt,
       };
 
+      const pdfPayload = {
+        navn: "Barnetillegg",
+        spørsmål: [
+          ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
+          ...lagSeksjonPayload(barnetilleggSpørsmål, form.transient.value()),
+          ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
+            lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
+          ),
+        ],
+      };
+
+      form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
+      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
       form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
-      form.setValue(payload, JSON.stringify(data));
       form.submit();
     }
   }
