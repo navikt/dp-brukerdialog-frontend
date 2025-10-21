@@ -1,8 +1,8 @@
 import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { LANDLISTE } from "~/utils/land.utils";
-import { LandSpørsmål } from "./spørsmål.types";
 import parse from "html-react-parser";
+import { FLERE_LANDLISTE, OFTE_VALGTE_LANLISTE } from "~/utils/land.utils";
+import { LandSpørsmål } from "./spørsmål.types";
 
 interface IProps {
   spørsmål: LandSpørsmål;
@@ -21,11 +21,20 @@ export function Land({ spørsmål, formScope }: Readonly<IProps>) {
       key={spørsmål.id}
     >
       <option value="">Velg et land</option>
-      {LANDLISTE.map((land) => (
-        <option key={land.value} value={land.value}>
-          {land.label}
-        </option>
-      ))}
+      <optgroup label="Ofte valgte land">
+        {OFTE_VALGTE_LANLISTE.map((land) => (
+          <option key={land.value} value={land.value}>
+            {land.label}
+          </option>
+        ))}
+      </optgroup>
+      <optgroup label="Flere land">
+        {FLERE_LANDLISTE.map((land) => (
+          <option key={land.value} value={land.value}>
+            {land.label}
+          </option>
+        ))}
+      </optgroup>
     </Select>
   );
 }

@@ -25,7 +25,9 @@ export function finnLandnavnMedLocale(code: string, locale?: string) {
   return countries.getName(code, setLocale(locale)) || "nb";
 }
 
-export const LANDKODE_LISTE = [
+export const OFTE_VALGTE_LANDKODER = ["NOR", "SWE", "POL"];
+
+export const FLERE_LANDKODER = [
   "AFG",
   "ALA",
   "ALB",
@@ -258,26 +260,28 @@ export const LANDKODE_LISTE = [
   "LUX",
   "MLT",
   "NLD",
-  "POL",
   "PRT",
   "ROU",
   "SVK",
   "SVN",
   "ESP",
   "CHE",
-  "SWE",
   "CZE",
   "DEU",
   "HUN",
   "AUT",
-  "NOR",
   "SJM",
   "GBR",
   "JEY",
   "IMN",
 ];
 
-export const LANDLISTE = LANDKODE_LISTE.map((landkode) => ({
+export const OFTE_VALGTE_LANLISTE = OFTE_VALGTE_LANDKODER.map((landkode) => ({
+  value: landkode,
+  label: finnLandnavnMedLocale(landkode),
+}));
+
+export const FLERE_LANDLISTE = FLERE_LANDKODER.map((landkode) => ({
   value: landkode,
   label: finnLandnavnMedLocale(landkode),
 })).sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
