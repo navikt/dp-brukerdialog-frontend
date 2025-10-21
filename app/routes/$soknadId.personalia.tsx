@@ -42,8 +42,8 @@ type Adresse = {
 
 type PersonaliaLoaderDataType = {
   versjon: number;
-  personalia: Personalia | undefined;
-  seksjon: PersonaliaSvar | undefined;
+  personalia?: Personalia;
+  seksjon?: PersonaliaSvar;
 };
 
 export async function loader({ params, request }: LoaderFunctionArgs): Promise<any> {
