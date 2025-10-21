@@ -280,4 +280,4 @@ export const LANDKODE_LISTE = [
 export const LANDLISTE = LANDKODE_LISTE.map((landkode) => ({
   value: landkode,
   label: finnLandnavnMedLocale(landkode),
-}));
+})).sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
