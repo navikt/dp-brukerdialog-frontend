@@ -12,9 +12,11 @@ import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
   Barn,
+  barnetilleggSpørsmål,
   BarnetilleggSvar,
   erTilbakenavigering,
   forsørgerDuBarnSomIkkeVisesHer,
+  leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 
@@ -71,6 +73,48 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const forrigeSeksjonId = "utdanning";
   const payload = formData.get("payload");
   const seksjonsData = JSON.parse(payload as string);
+
+  const brutto = Object.entries(seksjonsData).map(([key, value]) => {
+    const tilhørendeSpørsmål =
+      barnetilleggSpørsmål.find((spørsmål) => {
+        return spørsmål.id === key;
+      }) ||
+      leggTilBarnManueltSpørsmål.find((spørsmål) => {
+        return spørsmål.id === key;
+      });
+
+    return {
+      id: tilhørendeSpørsmål?.id,
+      type: tilhørendeSpørsmål?.type,
+      label: tilhørendeSpørsmål?.label,
+      description: tilhørendeSpørsmål?.description,
+      options: (tilhørendeSpørsmål as any)?.options,
+      svar: value,
+    };
+  });
+
+  const netto = Object.entries(seksjonsData).map(([key, value]) => {
+    const tilhørendeSpørsmål =
+      barnetilleggSpørsmål.find((spørsmål) => {
+        return spørsmål.id === key;
+      }) ||
+      leggTilBarnManueltSpørsmål.find((spørsmål) => {
+        return spørsmål.id === key;
+      });
+
+    return {
+      id: key,
+      verdi: value,
+      label: tilhørendeSpørsmål?.label,
+    };
+  });
+
+  const alt = {
+    netto: netto,
+    brutto: brutto,
+  };
+
+  console.log(JSON.stringify(alt));
 
   const versjon = formData.get("versjon");
   const seksjonsDataMedVersjon = {

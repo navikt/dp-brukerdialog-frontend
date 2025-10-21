@@ -1,15 +1,13 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerView";
-import { erTilbakenavigering, TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import {
+  erTilbakenavigering,
+  tilleggsopplysningerSpørsmål,
+  TilleggsopplysningerSvar,
+} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
 const NYESTE_VERSJON = 1;
 type TilleggsopplysningerSvarType = {
@@ -44,9 +42,52 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const nesteSeksjonId = "oppsummering";
   const forrigeSeksjonId = "reell-arbeidssoker";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon" && key !== erTilbakenavigering
+    ([key, value]) =>
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erTilbakenavigering
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
+
+  console.log("filtrertEntries:", filtrertEntries);
+
+  // seksjonsdata:  { 'har-tilleggsopplysninger': 'ja', tilleggsopplysninger: 'asd123' } =>
+
+  const brutto = filtrertEntries.map(([key, value]) => {
+    const tilhørendeSpørsmål = tilleggsopplysningerSpørsmål.find((spørsmål) => {
+      return spørsmål.id === key;
+    });
+
+    return {
+      id: tilhørendeSpørsmål?.id,
+      type: tilhørendeSpørsmål?.type,
+      label: tilhørendeSpørsmål?.label,
+      description: tilhørendeSpørsmål?.description,
+      options: (tilhørendeSpørsmål as any)?.options,
+      svar: value,
+    };
+  });
+
+  const netto = filtrertEntries.map(([key, value]) => {
+    const label =
+      tilleggsopplysningerSpørsmål.find((spørsmål) => {
+        return spørsmål.id === key;
+      })?.label || "";
+
+    return {
+      id: key,
+      verdi: value,
+      label: label,
+    };
+  });
+
+  const alt = {
+    netto: netto,
+    brutto: brutto,
+  };
+
+  console.log(JSON.stringify(alt));
 
   const versjon = formData.get("versjon");
   const seksjonDataMedVersjon = {
