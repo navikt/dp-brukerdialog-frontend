@@ -1,7 +1,9 @@
 import {
+  Accordion,
   Alert,
   BodyLong,
   Button,
+  ExpansionCard,
   Heading,
   HStack,
   Link,
@@ -10,8 +12,16 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import DokumentasjonsBox from "~/seksjon/kvittering/DokumentasjonsBox";
+import { useLoaderData } from "react-router";
+import { loader } from "~/routes/$soknadId.oppsummering";
+import { stegISøknaden } from "~/routes/$soknadId";
 
 export default function KvitteringView() {
+  const loaderData = useLoaderData<typeof loader>();
+  console.log(loaderData);
+  if (!loaderData) {
+    return null;
+  }
   var listeMedMangledeDokumentasjoner = [
     {
       type: "Arbeidsavtale",
@@ -115,6 +125,30 @@ export default function KvitteringView() {
               />
             );
           })}
+
+          <ExpansionCard aria-label="Dine svar">
+            <ExpansionCard.Header>
+              <ExpansionCard.Title>Dine svar</ExpansionCard.Title>
+            </ExpansionCard.Header>
+            <ExpansionCard.Content>
+              <Accordion>
+                {stegISøknaden.map((seksjon) => {
+                  const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
+                  if (!seksjonsData) return null;
+                  return (
+                    <Accordion.Item key={seksjon.path}>
+                      <Accordion.Header>{seksjon.tittel}</Accordion.Header>
+                      <Accordion.Content>
+                        {seksjonsData.seksjonId === "utdanning"
+                          ? Object.entries(seksjonsData.data)
+                          : seksjonsData.data}
+                      </Accordion.Content>
+                    </Accordion.Item>
+                  );
+                })}
+              </Accordion>
+            </ExpansionCard.Content>
+          </ExpansionCard>
           <HStack>
             <Button variant="primary">Gå til mine dagpenger</Button>
           </HStack>
