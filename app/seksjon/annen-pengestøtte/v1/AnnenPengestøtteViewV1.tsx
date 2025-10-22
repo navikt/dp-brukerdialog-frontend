@@ -33,6 +33,7 @@ import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøt
 import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function AnnenPengestøtteViewV1() {
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
@@ -136,6 +137,8 @@ export function AnnenPengestøtteViewV1() {
   }
 
   function handleSubmit() {
+    //console.log("FORM: ", form.value());
+
     form.setValue(erTilbakenavigering, false);
     form.validate();
 
@@ -166,6 +169,9 @@ export function AnnenPengestøtteViewV1() {
     ) {
       const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
       form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
+
+      const brutto = lagSeksjonPayload(annenPengestøtteSpørsmål, form);
+      console.log("BRUTTO: ", JSON.stringify(brutto));
 
       form.submit();
     }

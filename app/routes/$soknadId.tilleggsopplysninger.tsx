@@ -1,11 +1,16 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerView";
 import {
   erTilbakenavigering,
-  tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
 
@@ -52,42 +57,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   console.log("filtrertEntries:", filtrertEntries);
 
-  // seksjonsdata:  { 'har-tilleggsopplysninger': 'ja', tilleggsopplysninger: 'asd123' } =>
+  // const brutto = lagSeksjonPayload(tilleggsopplysningerSpørsmål, filtrertEntries);
 
-  const brutto = filtrertEntries.map(([key, value]) => {
-    const tilhørendeSpørsmål = tilleggsopplysningerSpørsmål.find((spørsmål) => {
-      return spørsmål.id === key;
-    });
-
-    return {
-      id: tilhørendeSpørsmål?.id,
-      type: tilhørendeSpørsmål?.type,
-      label: tilhørendeSpørsmål?.label,
-      description: tilhørendeSpørsmål?.description,
-      options: (tilhørendeSpørsmål as any)?.options,
-      svar: value,
-    };
-  });
-
-  const netto = filtrertEntries.map(([key, value]) => {
-    const label =
-      tilleggsopplysningerSpørsmål.find((spørsmål) => {
-        return spørsmål.id === key;
-      })?.label || "";
-
-    return {
-      id: key,
-      verdi: value,
-      label: label,
-    };
-  });
-
-  const alt = {
-    netto: netto,
-    brutto: brutto,
-  };
-
-  console.log(JSON.stringify(alt));
+  // console.log(JSON.stringify(brutto));
 
   const versjon = formData.get("versjon");
   const seksjonDataMedVersjon = {

@@ -11,6 +11,7 @@ import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 import { erTilbakenavigering } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
 import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+
 const NYESTE_VERSJON = 1;
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
