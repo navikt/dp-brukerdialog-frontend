@@ -6,7 +6,7 @@ export const payload = "payload";
 export const erTilbakenavigering = "erTilbakenavigering";
 
 export type Barn = {
-  id?: string;
+  id: string;
   fornavnOgMellomnavn: string;
   etternavn: string;
   fødselsdato: string;

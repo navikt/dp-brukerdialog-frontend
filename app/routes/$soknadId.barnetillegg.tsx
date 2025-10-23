@@ -52,11 +52,7 @@ export async function loader({
       };
     }
 
-    const barnfraPdlResponseData: Barn[] = await barnFraPdlResponse.json();
-    const barnFraPdl: Barn[] = barnfraPdlResponseData.map((barn: Barn) => ({
-      ...barn,
-      id: crypto.randomUUID(),
-    }));
+    const barnFraPdl: Barn[] = await barnFraPdlResponse.json();
 
     return {
       versjon: NYESTE_VERSJON,
