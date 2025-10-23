@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.barnetillegg";
+import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
@@ -17,6 +17,7 @@ import {
   BarnetilleggSvar,
   erTilbakenavigering,
   forsørgerDuBarnSomIkkeVisesHer,
+  payload,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdl";
 import { BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManuelt";
@@ -46,7 +47,7 @@ export function BarnetilleggViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: loaderData?.skjema ?? {},
+    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -70,10 +71,14 @@ export function BarnetilleggViewV1() {
 
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
-    form.setValue("versjon", loaderData?.versjon ?? 1);
-    form.setValue("barnFraPdl", JSON.stringify(barnFraPdl));
-    form.setValue("barnLagtManuelt", JSON.stringify(barnLagtManuelt));
-    form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
+
+    const data: BarnetilleggResponse = {
+      barnFraPdl: barnFraPdl,
+      barnLagtManuelt: barnLagtManuelt,
+      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+    };
+
+    form.setValue(payload, JSON.stringify(data));
     form.submit();
   }
 
@@ -88,10 +93,13 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      form.setValue("versjon", loaderData?.versjon ?? 1);
-      form.setValue("barnFraPdl", JSON.stringify(barnFraPdl));
-      form.setValue("barnLagtManuelt", JSON.stringify(barnLagtManuelt));
-      form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
+      const data: BarnetilleggResponse = {
+        barnFraPdl: barnFraPdl,
+        barnLagtManuelt: barnLagtManuelt,
+        [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+      };
+
+      form.setValue(payload, JSON.stringify(data));
       form.submit();
     }
   }
@@ -119,6 +127,7 @@ export function BarnetilleggViewV1() {
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
+            <input type="hidden" name="versjon" value={loaderData.versjon} />
             {barnetilleggSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
