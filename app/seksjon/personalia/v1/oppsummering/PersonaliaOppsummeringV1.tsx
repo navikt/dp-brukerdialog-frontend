@@ -16,12 +16,17 @@ import {
 } from "~/seksjon/personalia/v1/personalia.spørsmål";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 function finnRegisterverdi(key: string, registerverdier: [string, string][]) {
   return registerverdier.find((verdi) => verdi[0] === key)?.[1];
 }
 
-export default function PersonaliaOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+export default function PersonaliaOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+  redigerbar,
+}: SeksjonProps) {
   const seksjonSvar = Object.entries(seksjonSvarene);
   return (
     <FormSummary>
@@ -79,9 +84,7 @@ export default function PersonaliaOppsummeringV1({ seksjonSvarene, seksjonsUrl }
           }
         })}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }

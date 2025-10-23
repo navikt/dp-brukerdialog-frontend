@@ -20,10 +20,12 @@ import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsf
 import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export default function ArbeidsforholdOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
+  redigerbar,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
@@ -106,9 +108,7 @@ export default function ArbeidsforholdOppsummeringV1({
           </FormSummary.Answer>
         ))}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }

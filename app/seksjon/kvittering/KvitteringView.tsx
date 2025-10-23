@@ -15,6 +15,7 @@ import DokumentasjonsBox from "~/seksjon/kvittering/DokumentasjonsBox";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import { stegISøknaden } from "~/routes/$soknadId";
+import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 
 export default function KvitteringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -131,22 +132,20 @@ export default function KvitteringView() {
               <ExpansionCard.Title>Dine svar</ExpansionCard.Title>
             </ExpansionCard.Header>
             <ExpansionCard.Content>
-              <Accordion>
+              <VStack gap="6">
                 {stegISøknaden.map((seksjon) => {
                   const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
                   if (!seksjonsData) return null;
                   return (
-                    <Accordion.Item key={seksjon.path}>
-                      <Accordion.Header>{seksjon.tittel}</Accordion.Header>
-                      <Accordion.Content>
-                        {seksjonsData.seksjonId === "utdanning"
-                          ? Object.entries(seksjonsData.data)
-                          : seksjonsData.data}
-                      </Accordion.Content>
-                    </Accordion.Item>
+                    <Oppsummering
+                      seksjonsId={seksjon.path}
+                      seksjonsUrl={seksjonsData.seksjonsUrl}
+                      seksjonsData={seksjonsData.data}
+                      redigerbar={false}
+                    />
                   );
                 })}
-              </Accordion>
+              </VStack>
             </ExpansionCard.Content>
           </ExpansionCard>
           <HStack>

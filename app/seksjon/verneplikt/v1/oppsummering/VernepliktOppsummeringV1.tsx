@@ -4,8 +4,13 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function VernepliktOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+export default function VernepliktOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+  redigerbar,
+}: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
   const vernepliktSvar = Object.entries(seksjonSvarene);
@@ -29,9 +34,7 @@ export default function VernepliktOppsummeringV1({ seksjonSvarene, seksjonsUrl }
           }
         })}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }

@@ -13,8 +13,13 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+export default function EgenNæringOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+  redigerbar,
+}: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
   const egenNæringSvar = seksjonSvarene as EgenNæringResponse;
@@ -112,9 +117,7 @@ export default function EgenNæringOppsummeringV1({ seksjonSvarene, seksjonsUrl 
             </FormSummary.Answer>
           ))}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }

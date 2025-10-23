@@ -3,8 +3,13 @@ import { dinSituasjonSpørsmål } from "~/seksjon/din-situasjon/v1/din-situasjon
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function DinSituasjonOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+export default function DinSituasjonOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+  redigerbar,
+}: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
   const dinSituasjonEntries = Object.entries(seksjonSvarene);
@@ -32,9 +37,7 @@ export default function DinSituasjonOppsummeringV1({ seksjonSvarene, seksjonsUrl
           }
         })}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }
