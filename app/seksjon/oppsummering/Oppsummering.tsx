@@ -13,12 +13,14 @@ type RenderSeksjonProps = {
   seksjonsId: string;
   seksjonsUrl: string;
   seksjonsData: string;
+  redigerbar?: boolean;
 };
 
-export default function OppsummeringSeksjon({
+export default function Oppsummering({
   seksjonsId,
   seksjonsUrl,
   seksjonsData,
+  redigerbar = true,
 }: RenderSeksjonProps) {
   const seksjonSvarene = JSON.parse(seksjonsData);
 
@@ -30,6 +32,7 @@ export default function OppsummeringSeksjon({
             <DinSituasjonOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -37,6 +40,7 @@ export default function OppsummeringSeksjon({
             <DinSituasjonOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -47,6 +51,7 @@ export default function OppsummeringSeksjon({
             <PersonaliaOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -54,6 +59,7 @@ export default function OppsummeringSeksjon({
             <PersonaliaOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -64,6 +70,7 @@ export default function OppsummeringSeksjon({
             <ArbeidsforholdOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -71,6 +78,7 @@ export default function OppsummeringSeksjon({
             <ArbeidsforholdOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -82,6 +90,7 @@ export default function OppsummeringSeksjon({
             <AnnenPengestøtteOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -89,6 +98,7 @@ export default function OppsummeringSeksjon({
             <AnnenPengestøtteOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -99,6 +109,7 @@ export default function OppsummeringSeksjon({
             <EgenNæringOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -106,6 +117,7 @@ export default function OppsummeringSeksjon({
             <EgenNæringOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -116,6 +128,7 @@ export default function OppsummeringSeksjon({
             <VernepliktOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -123,6 +136,7 @@ export default function OppsummeringSeksjon({
             <VernepliktOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -134,6 +148,7 @@ export default function OppsummeringSeksjon({
             <UtdanningOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -141,6 +156,7 @@ export default function OppsummeringSeksjon({
             <UtdanningOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -152,6 +168,7 @@ export default function OppsummeringSeksjon({
             <BarnetilleggOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -159,6 +176,7 @@ export default function OppsummeringSeksjon({
             <BarnetilleggOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -170,6 +188,7 @@ export default function OppsummeringSeksjon({
             <ReellArbeidssøkerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
         default:
@@ -177,6 +196,7 @@ export default function OppsummeringSeksjon({
             <ReellArbeidssøkerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }
@@ -188,6 +208,7 @@ export default function OppsummeringSeksjon({
             <TilleggsopplysningerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
 
@@ -196,6 +217,7 @@ export default function OppsummeringSeksjon({
             <TilleggsopplysningerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjon}
               seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
             />
           );
       }

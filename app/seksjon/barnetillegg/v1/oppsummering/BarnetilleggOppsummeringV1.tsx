@@ -9,8 +9,13 @@ import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function BarnetilleggOppsummeringV1({ seksjonSvarene, seksjonsUrl }: SeksjonProps) {
+export default function BarnetilleggOppsummeringV1({
+  seksjonSvarene,
+  seksjonsUrl,
+  redigerbar,
+}: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
   const barnetilleggSvar = seksjonSvarene as BarnetilleggResponse;
@@ -89,9 +94,7 @@ export default function BarnetilleggOppsummeringV1({ seksjonSvarene, seksjonsUrl
           );
         })}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }

@@ -3,10 +3,12 @@ import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export default function TilleggsopplysningerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
+  redigerbar,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
@@ -33,9 +35,7 @@ export default function TilleggsopplysningerOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }

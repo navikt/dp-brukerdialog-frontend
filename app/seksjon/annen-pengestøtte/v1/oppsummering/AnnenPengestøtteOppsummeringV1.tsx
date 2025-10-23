@@ -17,10 +17,12 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export default function AnnenPengestøtteOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
+  redigerbar,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
@@ -76,7 +78,11 @@ export default function AnnenPengestøtteOppsummeringV1({
                       pengestøtteFraAndreEøsLandModalSpørsmål,
                       enPengestøtte[0]
                     );
-                    if (spørsmål && !erInformasjonsFelt(spørsmål) && (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))) {
+                    if (
+                      spørsmål &&
+                      !erInformasjonsFelt(spørsmål) &&
+                      (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))
+                    ) {
                       return (
                         <FormSummary.Answer key={enPengestøtte[0]}>
                           <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
@@ -103,8 +109,15 @@ export default function AnnenPengestøtteOppsummeringV1({
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
-                    const spørsmål = finnSpørsmål(pengestøtteFraNorgeModalSpørsmål, enPengestøtte[0]);
-                    if (spørsmål && !erInformasjonsFelt(spørsmål) && (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))) {
+                    const spørsmål = finnSpørsmål(
+                      pengestøtteFraNorgeModalSpørsmål,
+                      enPengestøtte[0]
+                    );
+                    if (
+                      spørsmål &&
+                      !erInformasjonsFelt(spørsmål) &&
+                      (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))
+                    ) {
                       return (
                         <FormSummary.Answer key={enPengestøtte[0]}>
                           <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
@@ -139,9 +152,7 @@ export default function AnnenPengestøtteOppsummeringV1({
           </FormSummary.Answer>
         )}
       </FormSummary.Answers>
-      <FormSummary.Footer>
-        <FormSummary.EditLink href={seksjonsUrl} />
-      </FormSummary.Footer>
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
     </FormSummary>
   );
 }
