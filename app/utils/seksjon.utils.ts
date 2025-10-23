@@ -1,5 +1,4 @@
 import { FlervalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsmål.types";
-import { FormApi } from "@rvf/react-router";
 
 export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: string, svar: string) {
   return (
@@ -9,16 +8,16 @@ export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: s
   );
 }
 
-export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: FormApi<any>) {
+export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any) {
   return alleSpørsmål
     .map((spørsmål) => {
-      const svar = Object.entries(alleSvar.value()).find(([key, value]) => {
+      const svar = Object.entries(alleSvar).find(([key, value]) => {
         return key === spørsmål.id;
       });
 
       if (
         svar !== undefined ||
-        (!!spørsmål.visHvis && spørsmål.visHvis(Object.entries(alleSvar.value()))) ||
+        (!!spørsmål.visHvis && spørsmål.visHvis(Object.entries(alleSvar))) ||
         (svar === undefined && !spørsmål.visHvis)
       ) {
         return {

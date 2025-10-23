@@ -12,6 +12,8 @@ import {
   EgenNæringSvar,
   erTilbakenavigering,
   Gårdsbruk,
+  leggTilGårdsbrukSpørsmål,
+  leggTilNæringsvirksomhetSpørsmål,
   Næringsvirksomhet,
   payload,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
@@ -27,6 +29,7 @@ import {
   ModalOperasjonEnum,
   useEgenNæringContext,
 } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function EgenNæringViewV1() {
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
@@ -137,7 +140,33 @@ export function EgenNæringViewV1() {
         gårdsbruk: gårdsbruk,
       };
 
+      const transientFormValue = form.transient.value();
+
+      const del1Payload = lagSeksjonPayload(
+        egenNæringEgenNæringsvirksomhetSpørsmål,
+        transientFormValue
+      );
+
+      const del2Payload = næringsvirksomheter.map((virksomhet) =>
+        lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, virksomhet)
+      );
+
+      const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, transientFormValue);
+
+      const del4Payload = gårdsbruk.map((gårdsbruket) =>
+        lagSeksjonPayload(leggTilGårdsbrukSpørsmål, gårdsbruket)
+      );
+
+      const brutto = [...del1Payload, ...del2Payload, ...del3Payload, ...del4Payload];
+
+      console.log("BRUTTO: ", JSON.stringify(brutto));
+
+      //console.log("FORM VALUE: ", JSON.stringify(transientFormValue));
+
+      //console.log("LOADER DATA: ", JSON.stringify(loaderData));
+
       form.setValue(payload, JSON.stringify(egenNæringResponse));
+      form.setValue("brutto", JSON.stringify(brutto));
       form.submit();
     }
   }
