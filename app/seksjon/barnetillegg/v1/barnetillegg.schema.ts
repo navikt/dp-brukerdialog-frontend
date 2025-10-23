@@ -18,8 +18,11 @@ import { valider } from "~/utils/validering.utils";
 export const barnetilleggSchema = z
   .object({
     [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
-    [payload]: z.string().optional(),
+    // [payload]: z.string().optional(),
+    barnFraPdl: z.string().optional(),
+    dokumentkravList: z.string().optional(),
     versjon: z.number().optional(),
+    barnLagtManuelt: z.string().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
   .superRefine((data, context) => {

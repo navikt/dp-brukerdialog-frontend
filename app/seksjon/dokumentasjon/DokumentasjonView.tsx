@@ -139,7 +139,7 @@ export function DokumentasjonView() {
     }
 
     if (!fil.filsti) {
-      console.log("Ingen filsti for fil, kan ikke slette");
+      console.error("Ingen filsti for fil, kan ikke slette");
       return;
     }
 

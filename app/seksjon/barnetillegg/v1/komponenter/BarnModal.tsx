@@ -4,6 +4,7 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
+  Dokumentasjonskrav,
   ModalOperasjonEnum,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
@@ -16,34 +17,55 @@ import {
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
+  spørsmålId: string;
 }
 
-export function BarnModal({ ref }: Readonly<IProps>) {
-  const { barnLagtManuelt, setBarnLagtManuelt, modalData, setModalData } = useBarnetilleggContext();
+export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
+  const {
+    barnLagtManuelt,
+    setBarnLagtManuelt,
+    modalData,
+    setModalData,
+    dokumentkravList,
+    setDokumentkravList,
+  } = useBarnetilleggContext();
 
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (barn) => {
-      if (
+      const ugyldigModalOperasjon =
         modalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        modalData?.operasjon !== ModalOperasjonEnum.Rediger
-      ) {
+        modalData?.operasjon !== ModalOperasjonEnum.Rediger;
+
+      if (ugyldigModalOperasjon) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
 
-      if (modalData?.operasjon === ModalOperasjonEnum.LeggTil) {
-        setBarnLagtManuelt([...barnLagtManuelt, barn as Barn]);
+      if (modalData.operasjon === ModalOperasjonEnum.LeggTil) {
+        const id = crypto.randomUUID();
+        const nyttBarn = {
+          id: id,
+          ...barn,
+        } as Barn;
+
+        const nyttDokumentkrav: Dokumentasjonskrav = {
+          id: id,
+          spørsmålId: spørsmålId,
+          beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+        };
+
+        setDokumentkravList([...dokumentkravList, nyttDokumentkrav]);
+        setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
       }
 
-      if (
-        modalData?.barnIndex !== undefined &&
-        modalData?.operasjon === ModalOperasjonEnum.Rediger
-      ) {
-        const oppdatertListe = [...barnLagtManuelt];
-        oppdatertListe[modalData.barnIndex] = barn as Barn;
+      if (modalData.operasjon === ModalOperasjonEnum.Rediger && modalData?.barn?.id) {
+        const oppdatertListe = barnLagtManuelt.map((b) =>
+          b.id === modalData.barn?.id ? { ...barn, id: b.id } : b
+        ) as Barn[];
+
         setBarnLagtManuelt(oppdatertListe);
       }
     },

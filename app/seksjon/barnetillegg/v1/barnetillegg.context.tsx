@@ -8,9 +8,21 @@ export enum ModalOperasjonEnum {
 
 type ModalData = {
   operasjon: ModalOperasjonEnum;
-  barnIndex?: number;
   barn?: Barn;
 };
+
+export const DOKUMENTKRAV_SVAR_SEND_NAA = "dokumentkrav.svar.send.naa";
+export const DOKUMENTKRAV_SVAR_SENDER_IKKE = "dokumentkrav.svar.sender.ikke";
+export const DOKUMENTKRAV_SVAR_SENDER_SENERE = "dokumentkrav.svar.send.senere";
+export const DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE = "dokumentkrav.svar.andre.sender";
+export const DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE = "dokumentkrav.svar.sendt.tidligere";
+
+export type GyldigDokumentkravSvar =
+  | typeof DOKUMENTKRAV_SVAR_SEND_NAA
+  | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
+  | typeof DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE
+  | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
+  | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
 
 type BarnetilleggContextType = {
   barnFraPdl: Barn[];
@@ -21,12 +33,26 @@ type BarnetilleggContextType = {
   setValiderBarnFraPdl: (valider: boolean) => void;
   modalData?: ModalData;
   setModalData: (modalData?: ModalData) => void;
+  dokumentkravList: Dokumentasjonskrav[];
+  setDokumentkravList: (dokumentkravList: Dokumentasjonskrav[]) => void;
 };
 
 type BarnetilleggProviderProps = {
   barnFraPdl: Barn[];
   barnLagtManuelt: Barn[];
+  dokumentkravList: Dokumentasjonskrav[];
   children: React.ReactNode;
+};
+
+export type Dokumentasjonskrav = {
+  id: string;
+  spørsmålId: string;
+  beskrivelse?: string;
+  gyldigeValg?: GyldigDokumentkravSvar[];
+  svar?: GyldigDokumentkravSvar;
+  begrunnelse?: string;
+  bundle?: string;
+  bundleFilsti?: string;
 };
 
 const BarnetilleggContext = createContext<BarnetilleggContextType | undefined>(undefined);
@@ -48,11 +74,13 @@ function useBarnetilleggContext() {
 function BarnetilleggProvider({
   barnFraPdl: barnFraPdlProps,
   barnLagtManuelt: barnLagtManueltProps,
+  dokumentkravList: [],
   children,
 }: BarnetilleggProviderProps) {
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
+  const [dokumentkravList, setDokumentkravList] = useState<Dokumentasjonskrav[]>([]);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (
@@ -63,6 +91,8 @@ function BarnetilleggProvider({
         validerBarnFraPdl,
         setValiderBarnFraPdl,
         setbarnFraPdl,
+        dokumentkravList,
+        setDokumentkravList,
         setBarnLagtManuelt,
         modalData,
         setModalData,

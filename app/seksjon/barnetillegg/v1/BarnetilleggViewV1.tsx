@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
+import { action, loader } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
@@ -17,7 +17,6 @@ import {
   BarnetilleggSvar,
   erTilbakenavigering,
   forsørgerDuBarnSomIkkeVisesHer,
-  payload,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdl";
 import { BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManuelt";
@@ -29,8 +28,14 @@ export function BarnetilleggViewV1() {
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
-  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
-    useBarnetilleggContext();
+  const {
+    barnFraPdl,
+    barnLagtManuelt,
+    setValiderBarnFraPdl,
+    modalData,
+    setModalData,
+    dokumentkravList,
+  } = useBarnetilleggContext();
 
   const form = useForm({
     method: "PUT",
@@ -41,7 +46,7 @@ export function BarnetilleggViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: loaderData?.skjema ?? {},
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -65,14 +70,10 @@ export function BarnetilleggViewV1() {
 
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
-
-    const data: BarnetilleggResponse = {
-      barnFraPdl: barnFraPdl,
-      barnLagtManuelt: barnLagtManuelt,
-      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-    };
-
-    form.setValue(payload, JSON.stringify(data));
+    form.setValue("versjon", loaderData?.versjon ?? 1);
+    form.setValue("barnFraPdl", JSON.stringify(barnFraPdl));
+    form.setValue("barnLagtManuelt", JSON.stringify(barnLagtManuelt));
+    form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
     form.submit();
   }
 
@@ -87,13 +88,10 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      const data: BarnetilleggResponse = {
-        barnFraPdl: barnFraPdl,
-        barnLagtManuelt: barnLagtManuelt,
-        [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-      };
-
-      form.setValue(payload, JSON.stringify(data));
+      form.setValue("versjon", loaderData?.versjon ?? 1);
+      form.setValue("barnFraPdl", JSON.stringify(barnFraPdl));
+      form.setValue("barnLagtManuelt", JSON.stringify(barnLagtManuelt));
+      form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
       form.submit();
     }
   }
@@ -115,13 +113,12 @@ export function BarnetilleggViewV1() {
       </BodyLong>
       <VStack gap="10">
         <VStack gap="space-16">
-          {barnFraPdl.map((barn: Barn, index: number) => (
-            <BarnFraPdl key={index} barnIndex={index} barn={barn} />
+          {barnFraPdl.map((barn: Barn) => (
+            <BarnFraPdl key={barn.id} barn={barn} />
           ))}
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
             {barnetilleggSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
@@ -144,8 +141,8 @@ export function BarnetilleggViewV1() {
           </VStack>
         </Form>
         <VStack gap="space-16">
-          {barnLagtManuelt?.map((barn: Barn, index: number) => (
-            <BarnLagtManuelt key={index} barnIndex={index} barn={barn} />
+          {barnLagtManuelt?.map((barn: Barn) => (
+            <BarnLagtManuelt key={barn.id} barn={barn} />
           ))}
         </VStack>
         {forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && (
@@ -195,7 +192,7 @@ export function BarnetilleggViewV1() {
             Neste steg
           </Button>
         </HStack>
-        {modalData && <BarnModal ref={ref} />}
+        {modalData && <BarnModal ref={ref} spørsmålId={forsørgerDuBarnSomIkkeVisesHer} />}
       </VStack>
     </div>
   );

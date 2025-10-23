@@ -15,10 +15,9 @@ import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;
-  barnIndex: number;
 }
 
-export function BarnFraPdl({ barn, barnIndex }: IProps) {
+export function BarnFraPdl({ barn }: IProps) {
   const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
 
   const form = useForm({
@@ -39,17 +38,9 @@ export function BarnFraPdl({ barn, barnIndex }: IProps) {
     const forsørgerDuBarnet = form.value("forsørgerDuBarnet");
 
     if (form.formState.isDirty && forsørgerDuBarnet !== undefined) {
-      const gammeltBarn = barnFraPdl[barnIndex];
-      const oppdatertBarn: Barn = {
-        etternavn: gammeltBarn.etternavn,
-        bostedsland: gammeltBarn.bostedsland,
-        fødselsdato: gammeltBarn.fødselsdato,
-        fornavnOgMellomnavn: gammeltBarn.fornavnOgMellomnavn,
-        forsørgerDuBarnet: forsørgerDuBarnet,
-      };
-
-      const oppdatertListe = [...barnFraPdl];
-      oppdatertListe[barnIndex] = oppdatertBarn;
+      const oppdatertListe = barnFraPdl.map((b) =>
+        b.id === barn.id ? { ...b, forsørgerDuBarnet } : b
+      );
 
       setbarnFraPdl(oppdatertListe);
     }
