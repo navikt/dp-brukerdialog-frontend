@@ -29,14 +29,8 @@ export function BarnetilleggViewV1() {
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
-  const {
-    barnFraPdl,
-    barnLagtManuelt,
-    setValiderBarnFraPdl,
-    modalData,
-    setModalData,
-    dokumentkravList,
-  } = useBarnetilleggContext();
+  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
+    useBarnetilleggContext();
 
   const form = useForm({
     method: "PUT",

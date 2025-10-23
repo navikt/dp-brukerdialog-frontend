@@ -62,8 +62,8 @@ export async function loader({
       versjon: NYESTE_VERSJON,
       seksjon: {
         [forsørgerDuBarnSomIkkeVisesHer]: undefined,
-        barnFraPdl: barnFraPdl,
         barnLagtManuelt: [],
+        barnFraPdl: barnFraPdl,
       },
     };
   }
@@ -78,11 +78,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "reell-arbeidssoker";
   const forrigeSeksjonId = "utdanning";
-  const seksjon = formData.get("seksjon");
+  const payload = formData.get("payload");
   const versjon = formData.get("versjon");
 
   const data = {
-    seksjon: JSON.parse(seksjon as string),
+    seksjon: JSON.parse(payload as string),
     versjon: Number(versjon),
   };
 
