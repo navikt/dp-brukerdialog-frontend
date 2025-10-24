@@ -29,8 +29,21 @@ export function BarnetilleggViewV1() {
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
-  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
-    useBarnetilleggContext();
+  const {
+    barnFraPdl,
+    barnLagtManuelt,
+    setValiderBarnFraPdl,
+    modalData,
+    setModalData,
+    dokumentasjonskrav,
+  } = useBarnetilleggContext();
+
+  useEffect(() => {
+    console.log("-----");
+    console.log(barnLagtManuelt);
+    console.log(dokumentasjonskrav);
+    console.log("-----");
+  }, [useBarnetilleggContext()]);
 
   const form = useForm({
     method: "PUT",
@@ -72,6 +85,7 @@ export function BarnetilleggViewV1() {
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
     };
 
+    form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
     form.setValue(payload, JSON.stringify(data));
     form.submit();
   }
@@ -93,6 +107,7 @@ export function BarnetilleggViewV1() {
         [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
       };
 
+      form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
       form.setValue(payload, JSON.stringify(data));
       form.submit();
     }
@@ -115,8 +130,8 @@ export function BarnetilleggViewV1() {
       </BodyLong>
       <VStack gap="10">
         <VStack gap="space-16">
-          {barnFraPdl.map((barn: Barn, index: number) => (
-            <BarnFraPdl key={index} barnIndex={index} barn={barn} />
+          {barnFraPdl.map((barn: Barn) => (
+            <BarnFraPdl key={barn.id} barn={barn} />
           ))}
         </VStack>
         <Form {...form.getFormProps()}>
@@ -144,8 +159,8 @@ export function BarnetilleggViewV1() {
           </VStack>
         </Form>
         <VStack gap="space-16">
-          {barnLagtManuelt?.map((barn: Barn, index: number) => (
-            <BarnLagtManuelt key={index} barnIndex={index} barn={barn} />
+          {barnLagtManuelt?.map((barn: Barn) => (
+            <BarnLagtManuelt key={barn.id} barn={barn} />
           ))}
         </VStack>
         {forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && (
@@ -195,7 +210,7 @@ export function BarnetilleggViewV1() {
             Neste steg
           </Button>
         </HStack>
-        {modalData && <BarnModal ref={ref} />}
+        {modalData && <BarnModal ref={ref} spørsmålId={forsørgerDuBarnSomIkkeVisesHer} />}
       </VStack>
     </div>
   );

@@ -10,14 +10,23 @@ import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
   barn: Barn;
-  barnIndex: number;
 }
 
-export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
-  const { barnLagtManuelt, setBarnLagtManuelt, setModalData } = useBarnetilleggContext();
+export function BarnLagtManuelt({ barn }: IProps) {
+  const {
+    barnLagtManuelt,
+    setBarnLagtManuelt,
+    setModalData,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
+  } = useBarnetilleggContext();
 
   function fjernBarn() {
-    setBarnLagtManuelt(barnLagtManuelt.filter((_, i) => i !== barnIndex));
+    setDokumentasjonskrav(
+      dokumentasjonskrav.filter((krav) => krav.id !== barn.dokumentasjonskravId)
+    );
+
+    setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
   }
 
   return (
@@ -42,7 +51,7 @@ export function BarnLagtManuelt({ barn, barnIndex }: IProps) {
           size="small"
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
-            setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn, barnIndex });
+            setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn });
           }}
         >
           Endre svar

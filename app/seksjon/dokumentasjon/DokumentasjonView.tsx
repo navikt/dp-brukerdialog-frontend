@@ -23,6 +23,30 @@ export type DokumentkravFil = {
   feil?: FeilType;
 };
 
+export type Dokumentasjonskrav = {
+  id: string;
+  spørsmålId: string;
+  beskrivelse?: string;
+  gyldigeValg?: GyldigDokumentkravSvar[];
+  svar?: GyldigDokumentkravSvar;
+  begrunnelse?: string;
+  bundle?: string;
+  bundleFilsti?: string;
+};
+
+export const DOKUMENTKRAV_SVAR_SEND_NAA = "dokumentkrav.svar.send.naa";
+export const DOKUMENTKRAV_SVAR_SENDER_IKKE = "dokumentkrav.svar.sender.ikke";
+export const DOKUMENTKRAV_SVAR_SENDER_SENERE = "dokumentkrav.svar.send.senere";
+export const DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE = "dokumentkrav.svar.andre.sender";
+export const DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE = "dokumentkrav.svar.sendt.tidligere";
+
+export type GyldigDokumentkravSvar =
+  | typeof DOKUMENTKRAV_SVAR_SEND_NAA
+  | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
+  | typeof DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE
+  | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
+  | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
+
 type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL" | "DUPLIKAT_FIL" | "UKJENT_FEIL";
 
 export function DokumentasjonView() {
@@ -139,7 +163,7 @@ export function DokumentasjonView() {
     }
 
     if (!fil.filsti) {
-      console.log("Ingen filsti for fil, kan ikke slette");
+      console.error("Ingen filsti for fil, kan ikke slette");
       return;
     }
 

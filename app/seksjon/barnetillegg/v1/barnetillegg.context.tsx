@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import {
+  Dokumentasjonskrav,
+  GyldigDokumentkravSvar,
+} from "~/seksjon/dokumentasjon/DokumentasjonView";
 
 export enum ModalOperasjonEnum {
   LeggTil = "leggTil",
@@ -8,7 +12,6 @@ export enum ModalOperasjonEnum {
 
 type ModalData = {
   operasjon: ModalOperasjonEnum;
-  barnIndex?: number;
   barn?: Barn;
 };
 
@@ -21,11 +24,14 @@ type BarnetilleggContextType = {
   setValiderBarnFraPdl: (valider: boolean) => void;
   modalData?: ModalData;
   setModalData: (modalData?: ModalData) => void;
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
 };
 
 type BarnetilleggProviderProps = {
   barnFraPdl: Barn[];
   barnLagtManuelt: Barn[];
+  dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
@@ -48,11 +54,14 @@ function useBarnetilleggContext() {
 function BarnetilleggProvider({
   barnFraPdl: barnFraPdlProps,
   barnLagtManuelt: barnLagtManueltProps,
+  dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: BarnetilleggProviderProps) {
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
+  const [dokumentasjonskrav, setDokumentasjonskrav] =
+    useState<Dokumentasjonskrav[]>(dokumentasjonskravProps);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (
@@ -63,6 +72,8 @@ function BarnetilleggProvider({
         validerBarnFraPdl,
         setValiderBarnFraPdl,
         setbarnFraPdl,
+        dokumentasjonskrav,
+        setDokumentasjonskrav,
         setBarnLagtManuelt,
         modalData,
         setModalData,

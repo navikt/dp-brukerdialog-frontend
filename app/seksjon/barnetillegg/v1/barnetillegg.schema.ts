@@ -19,6 +19,7 @@ export const barnetilleggSchema = z
   .object({
     [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
     [payload]: z.string().optional(),
+    dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })
