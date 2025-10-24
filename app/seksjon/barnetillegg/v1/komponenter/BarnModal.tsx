@@ -4,7 +4,6 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
-  Dokumentasjonskrav,
   ModalOperasjonEnum,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
@@ -14,6 +13,7 @@ import {
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonView";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -66,13 +66,13 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           b.id === modalData.barn?.id ? { ...barn, id: b.id } : b
         ) as Barn[];
 
-        const oppdatertKravList = dokumentkravList.map((k) =>
-          k.id === modalData.barn?.id
+        const oppdatertKravList = dokumentkravList.map((oppdatertKrav) =>
+          oppdatertKrav.id === modalData.barn?.id
             ? {
-                ...k,
+                ...oppdatertKrav,
                 beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
               }
-            : k
+            : oppdatertKrav
         );
 
         setDokumentkravList(oppdatertKravList);

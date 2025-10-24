@@ -9,10 +9,7 @@ import invariant from "tiny-invariant";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
-import {
-  BarnetilleggProvider,
-  Dokumentasjonskrav,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
   Barn,
   BarnetilleggSvar,
@@ -20,6 +17,7 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonView";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -52,14 +50,12 @@ export async function loader({
       };
     }
 
-    const barnFraPdl: Barn[] = await barnFraPdlResponse.json();
-
     return {
       versjon: NYESTE_VERSJON,
       seksjon: {
         [forsørgerDuBarnSomIkkeVisesHer]: undefined,
         barnLagtManuelt: [],
-        barnFraPdl: barnFraPdl,
+        barnFraPdl: await barnFraPdlResponse.json(),
       },
     };
   }
@@ -71,18 +67,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
+  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "barnetillegg";
   const nesteSeksjonId = "reell-arbeidssoker";
   const forrigeSeksjonId = "utdanning";
   const payload = formData.get("payload");
   const versjon = formData.get("versjon");
 
-  const data = {
+  const seksjonsdata = {
     seksjon: JSON.parse(payload as string),
     versjon: Number(versjon),
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, data);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonsdata);
 
   if (response.status !== 200) {
     return {
@@ -90,7 +87,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(erTilbakenavigering) === "true") {
+  if (erTilbakeknapp) {
     return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
   }
 

@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import {
+  Dokumentasjonskrav,
+  GyldigDokumentkravSvar,
+} from "~/seksjon/dokumentasjon/DokumentasjonView";
 
 export enum ModalOperasjonEnum {
   LeggTil = "leggTil",
@@ -10,19 +14,6 @@ type ModalData = {
   operasjon: ModalOperasjonEnum;
   barn?: Barn;
 };
-
-export const DOKUMENTKRAV_SVAR_SEND_NAA = "dokumentkrav.svar.send.naa";
-export const DOKUMENTKRAV_SVAR_SENDER_IKKE = "dokumentkrav.svar.sender.ikke";
-export const DOKUMENTKRAV_SVAR_SENDER_SENERE = "dokumentkrav.svar.send.senere";
-export const DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE = "dokumentkrav.svar.andre.sender";
-export const DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE = "dokumentkrav.svar.sendt.tidligere";
-
-export type GyldigDokumentkravSvar =
-  | typeof DOKUMENTKRAV_SVAR_SEND_NAA
-  | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
-  | typeof DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE
-  | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
-  | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
 
 type BarnetilleggContextType = {
   barnFraPdl: Barn[];
@@ -42,17 +33,6 @@ type BarnetilleggProviderProps = {
   barnLagtManuelt: Barn[];
   dokumentkravList: Dokumentasjonskrav[];
   children: React.ReactNode;
-};
-
-export type Dokumentasjonskrav = {
-  id: string;
-  spørsmålId: string;
-  beskrivelse?: string;
-  gyldigeValg?: GyldigDokumentkravSvar[];
-  svar?: GyldigDokumentkravSvar;
-  begrunnelse?: string;
-  bundle?: string;
-  bundleFilsti?: string;
 };
 
 const BarnetilleggContext = createContext<BarnetilleggContextType | undefined>(undefined);
