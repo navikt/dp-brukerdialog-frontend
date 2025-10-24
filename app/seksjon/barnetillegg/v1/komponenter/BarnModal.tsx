@@ -26,8 +26,8 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
     setBarnLagtManuelt,
     modalData,
     setModalData,
-    dokumentkravList,
-    setDokumentkravList,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useBarnetilleggContext();
 
   const form = useForm({
@@ -45,19 +45,21 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
       }
 
       if (modalData.operasjon === ModalOperasjonEnum.LeggTil) {
-        const id = crypto.randomUUID();
+        const dokumentasjonskravId = crypto.randomUUID();
+
         const nyttBarn = {
-          id: id,
+          id: crypto.randomUUID(),
+          dokumentasjonskravId: dokumentasjonskravId,
           ...barn,
         } as Barn;
 
         const nyttDokumentkrav: Dokumentasjonskrav = {
-          id: id,
+          id: dokumentasjonskravId,
           spørsmålId: spørsmålId,
           beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
         };
 
-        setDokumentkravList([...dokumentkravList, nyttDokumentkrav]);
+        setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
         setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
       }
 
@@ -66,16 +68,16 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           b.id === modalData.barn?.id ? { ...barn, id: b.id } : b
         ) as Barn[];
 
-        const oppdatertKravList = dokumentkravList.map((oppdatertKrav) =>
-          oppdatertKrav.id === modalData.barn?.id
+        const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
+          krav.id === modalData.barn?.id
             ? {
-                ...oppdatertKrav,
+                ...krav,
                 beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
               }
-            : oppdatertKrav
+            : krav
         );
 
-        setDokumentkravList(oppdatertKravList);
+        setDokumentasjonskrav(oppdatertDokumentasjonskrav);
         setBarnLagtManuelt(oppdatertListe);
       }
     },

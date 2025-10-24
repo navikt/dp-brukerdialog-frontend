@@ -24,8 +24,8 @@ type BarnetilleggContextType = {
   setValiderBarnFraPdl: (valider: boolean) => void;
   modalData?: ModalData;
   setModalData: (modalData?: ModalData) => void;
-  dokumentkravList: Dokumentasjonskrav[];
-  setDokumentkravList: (dokumentkravList: Dokumentasjonskrav[]) => void;
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
 };
 
 type BarnetilleggProviderProps = {
@@ -60,7 +60,7 @@ function BarnetilleggProvider({
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
-  const [dokumentkravList, setDokumentkravList] = useState<Dokumentasjonskrav[]>([]);
+  const [dokumentasjonskrav, setDokumentasjonskrav] = useState<Dokumentasjonskrav[]>([]);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (
@@ -71,8 +71,8 @@ function BarnetilleggProvider({
         validerBarnFraPdl,
         setValiderBarnFraPdl,
         setbarnFraPdl,
-        dokumentkravList,
-        setDokumentkravList,
+        dokumentasjonskrav,
+        setDokumentasjonskrav,
         setBarnLagtManuelt,
         modalData,
         setModalData,

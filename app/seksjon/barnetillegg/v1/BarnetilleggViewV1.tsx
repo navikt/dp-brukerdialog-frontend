@@ -35,7 +35,7 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl,
     modalData,
     setModalData,
-    dokumentkravList,
+    dokumentasjonskrav,
   } = useBarnetilleggContext();
 
   const form = useForm({
@@ -78,7 +78,7 @@ export function BarnetilleggViewV1() {
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
     };
 
-    form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
+    form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
     form.setValue(payload, JSON.stringify(data));
     form.submit();
   }
@@ -100,7 +100,7 @@ export function BarnetilleggViewV1() {
         [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
       };
 
-      form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
+      form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
       form.setValue(payload, JSON.stringify(data));
       form.submit();
     }

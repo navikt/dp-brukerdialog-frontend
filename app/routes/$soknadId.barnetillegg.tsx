@@ -27,7 +27,7 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
 type BarnetilleggResponseType = {
   versjon: number;
   seksjon?: BarnetilleggResponse;
-  dokumentkravList?: Dokumentasjonskrav[];
+  dokumentasjonskrav?: Dokumentasjonskrav[];
 };
 
 const NYESTE_VERSJON = 1;
@@ -106,7 +106,7 @@ export default function BarntilleggRoute() {
         <BarnetilleggProvider
           barnFraPdl={loaderData?.seksjon?.barnFraPdl || []}
           barnLagtManuelt={loaderData?.seksjon?.barnLagtManuelt || []}
-          dokumentkravList={loaderData?.dokumentkravList || []}
+          dokumentkravList={loaderData?.dokumentasjonskrav || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>
@@ -119,7 +119,7 @@ export default function BarntilleggRoute() {
         <BarnetilleggProvider
           barnFraPdl={loaderData?.seksjon?.barnFraPdl || []}
           barnLagtManuelt={loaderData?.seksjon?.barnLagtManuelt || []}
-          dokumentkravList={loaderData?.dokumentkravList || []}
+          dokumentkravList={loaderData?.dokumentasjonskrav || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>

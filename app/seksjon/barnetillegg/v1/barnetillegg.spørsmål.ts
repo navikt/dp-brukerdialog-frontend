@@ -11,6 +11,7 @@ export type Barn = {
   etternavn: string;
   fødselsdato: string;
   bostedsland: string;
+  dokumentasjonskravId?: string;
   forsørgerDuBarnet?: "ja" | "nei";
 };
 
