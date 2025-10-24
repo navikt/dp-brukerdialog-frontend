@@ -60,7 +60,11 @@ export async function loader({
     };
   }
 
-  return await response.json();
+  const seksjonData = await response.json();
+
+  console.log(`🔥 seksjonsdata :`, seksjonData);
+
+  return seksjonData;
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -73,11 +77,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const forrigeSeksjonId = "utdanning";
   const payload = formData.get("payload");
   const versjon = formData.get("versjon");
-  const dokumentkravList = formData.get("dokumentkravList");
+  const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
   const seksjonsdata = {
     seksjon: JSON.parse(payload as string),
-    dokumentkravList: JSON.parse(dokumentkravList as string),
+    dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
     versjon: Number(versjon),
   };
 
@@ -106,7 +110,7 @@ export default function BarntilleggRoute() {
         <BarnetilleggProvider
           barnFraPdl={loaderData?.seksjon?.barnFraPdl || []}
           barnLagtManuelt={loaderData?.seksjon?.barnLagtManuelt || []}
-          dokumentkravList={loaderData?.dokumentasjonskrav || []}
+          dokumentasjonskrav={loaderData?.dokumentasjonskrav || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>
@@ -119,7 +123,7 @@ export default function BarntilleggRoute() {
         <BarnetilleggProvider
           barnFraPdl={loaderData?.seksjon?.barnFraPdl || []}
           barnLagtManuelt={loaderData?.seksjon?.barnLagtManuelt || []}
-          dokumentkravList={loaderData?.dokumentasjonskrav || []}
+          dokumentasjonskrav={loaderData?.dokumentasjonskrav || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>

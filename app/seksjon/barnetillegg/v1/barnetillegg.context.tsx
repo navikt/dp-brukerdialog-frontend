@@ -31,7 +31,7 @@ type BarnetilleggContextType = {
 type BarnetilleggProviderProps = {
   barnFraPdl: Barn[];
   barnLagtManuelt: Barn[];
-  dokumentkravList: Dokumentasjonskrav[];
+  dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
@@ -54,13 +54,14 @@ function useBarnetilleggContext() {
 function BarnetilleggProvider({
   barnFraPdl: barnFraPdlProps,
   barnLagtManuelt: barnLagtManueltProps,
-  dokumentkravList: [],
+  dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: BarnetilleggProviderProps) {
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
-  const [dokumentasjonskrav, setDokumentasjonskrav] = useState<Dokumentasjonskrav[]>([]);
+  const [dokumentasjonskrav, setDokumentasjonskrav] =
+    useState<Dokumentasjonskrav[]>(dokumentasjonskravProps);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (

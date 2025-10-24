@@ -69,7 +69,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
         ) as Barn[];
 
         const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-          krav.id === modalData.barn?.id
+          krav.id === modalData.barn?.dokumentasjonskravId
             ? {
                 ...krav,
                 beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,

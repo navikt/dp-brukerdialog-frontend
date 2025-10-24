@@ -17,12 +17,15 @@ export function BarnLagtManuelt({ barn }: IProps) {
     barnLagtManuelt,
     setBarnLagtManuelt,
     setModalData,
-    dokumentkravList,
-    setDokumentkravList,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useBarnetilleggContext();
 
   function fjernBarn() {
-    setDokumentkravList(dokumentkravList.filter((dokumentkrav) => dokumentkrav.id !== barn.id));
+    setDokumentasjonskrav(
+      dokumentasjonskrav.filter((krav) => krav.id !== barn.dokumentasjonskravId)
+    );
+
     setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
   }
 
