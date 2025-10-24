@@ -1,7 +1,7 @@
 import {
-  Accordion,
   Alert,
   BodyLong,
+  BodyShort,
   Button,
   ExpansionCard,
   Heading,
@@ -16,10 +16,10 @@ import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import { stegISøknaden } from "~/routes/$soknadId";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import { ComponentIcon } from "@navikt/aksel-icons";
 
 export default function KvitteringView() {
   const loaderData = useLoaderData<typeof loader>();
-  console.log(loaderData);
   if (!loaderData) {
     return null;
   }
@@ -34,12 +34,6 @@ export default function KvitteringView() {
       type: "Dokumentasjon på redusert arbeidsstid",
       sendesAv: "deg",
       beskrivelse: "Dokumentasjon som viser at du har fått redusert arbeidsstid.",
-      status: "Mottatt",
-    },
-    {
-      type: "Arbeidsavtale",
-      sendesAv: "deg",
-      beskrivelse: "Dokumentasjon på din arbeidsavtale fra din arbeidsgiver.",
       status: "Mottatt",
     },
   ];
@@ -60,7 +54,7 @@ export default function KvitteringView() {
             <VStack>
               <Heading size="medium">Søknad mottatt</Heading>
             </VStack>
-            <Tag variant={"warning"} size="xsmall">
+            <Tag icon={<ComponentIcon />} variant={"warning"} size="xsmall">
               Mangler dokumentasjon
             </Tag>
           </HStack>
@@ -80,8 +74,10 @@ export default function KvitteringView() {
               Registrer deg som arbeidssøker
             </Link>
           </Alert>
-          <h2>Dokumentasjon</h2>
-          <BodyLong>Frist for innsendinger er 14 dager etter at du sendte søknaden.</BodyLong>
+          <Heading size="medium">Dokumentasjon</Heading>
+          <BodyShort size="small">
+            Frist for innsendinger er 14 dager etter at du sendte søknaden.
+          </BodyShort>
           <BodyLong>
             Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er ansvarlig
             for at dokumentasjonen sendes til oss. Hvis du ikke sender alle dokumentene innen
@@ -100,7 +96,7 @@ export default function KvitteringView() {
             </Link>
             .
           </ReadMore>
-          <Heading size="small">Dokumenter du skal sende inn</Heading>
+          <Heading size="medium">Dokumenter du skal sende inn</Heading>
           {listeMedMangledeDokumentasjoner.map((dokumentasjon, index) => {
             return (
               <DokumentasjonsBox
@@ -115,7 +111,7 @@ export default function KvitteringView() {
             <Button variant="primary">Send inn dokumenter</Button>
           </HStack>
 
-          <Heading size="small">Dokumenter du ikke skal sende</Heading>
+          <Heading size="medium">Dokumenter du ikke skal sende</Heading>
           {listeMedMangledeDokumentasjonerSomIkkeSkalSendes.map((dokumentasjon) => {
             return (
               <DokumentasjonsBox

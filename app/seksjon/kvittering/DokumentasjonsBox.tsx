@@ -1,4 +1,5 @@
 import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
+import { ComponentIcon } from "@navikt/aksel-icons";
 
 type DokumentasjonsBoxProps = {
   type: string;
@@ -17,15 +18,15 @@ export default function DokumentasjonsBox({
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="large">
       <VStack gap="2">
         <HStack justify="space-between">
-          <Heading size="xsmall">{type}</Heading>
+          <Heading size="small">{type}</Heading>
 
           {status === "Mangler" && (
-            <Tag variant={"warning"} size="xsmall">
+            <Tag icon={<ComponentIcon />} variant={"warning"} size="xsmall">
               Mangler
             </Tag>
           )}
           {status === "Mottatt" && (
-            <Tag variant={"success"} size="xsmall">
+            <Tag icon={<ComponentIcon />} variant={"success"} size="xsmall">
               Mottatt
             </Tag>
           )}
