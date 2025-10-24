@@ -66,6 +66,16 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           b.id === modalData.barn?.id ? { ...barn, id: b.id } : b
         ) as Barn[];
 
+        const oppdatertKravList = dokumentkravList.map((k) =>
+          k.id === modalData.barn?.id
+            ? {
+                ...k,
+                beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+              }
+            : k
+        );
+
+        setDokumentkravList(oppdatertKravList);
         setBarnLagtManuelt(oppdatertListe);
       }
     },

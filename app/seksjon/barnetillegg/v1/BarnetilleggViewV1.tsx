@@ -29,8 +29,14 @@ export function BarnetilleggViewV1() {
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
-  const { barnFraPdl, barnLagtManuelt, setValiderBarnFraPdl, modalData, setModalData } =
-    useBarnetilleggContext();
+  const {
+    barnFraPdl,
+    barnLagtManuelt,
+    setValiderBarnFraPdl,
+    modalData,
+    setModalData,
+    dokumentkravList,
+  } = useBarnetilleggContext();
 
   const form = useForm({
     method: "PUT",
@@ -72,6 +78,7 @@ export function BarnetilleggViewV1() {
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
     };
 
+    form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
     form.setValue(payload, JSON.stringify(data));
     form.submit();
   }
@@ -93,6 +100,7 @@ export function BarnetilleggViewV1() {
         [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
       };
 
+      form.setValue("dokumentkravList", JSON.stringify(dokumentkravList));
       form.setValue(payload, JSON.stringify(data));
       form.submit();
     }
