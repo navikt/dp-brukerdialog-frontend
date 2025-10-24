@@ -73,9 +73,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const forrigeSeksjonId = "utdanning";
   const payload = formData.get("payload");
   const versjon = formData.get("versjon");
+  const dokumentkravList = formData.get("dokumentkravList");
 
   const seksjonsdata = {
     seksjon: JSON.parse(payload as string),
+    dokumentkravList: JSON.parse(dokumentkravList as string),
     versjon: Number(versjon),
   };
 
