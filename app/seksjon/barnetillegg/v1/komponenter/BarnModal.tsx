@@ -13,7 +13,7 @@ import {
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonView";
+import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -53,7 +53,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           ...barn,
         } as Barn;
 
-        const nyttDokumentkrav: Dokumentasjonskrav = {
+        const nyttDokumentkrav: DokumentasjonskravType = {
           id: dokumentasjonskravId,
           spørsmålId: spørsmålId,
           beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
@@ -68,13 +68,14 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           b.id === modalData.barn?.id ? { ...barn, id: b.id } : b
         ) as Barn[];
 
-        const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-          krav.id === modalData.barn?.dokumentasjonskravId
-            ? {
-                ...krav,
-                beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
-              }
-            : krav
+        const oppdatertDokumentasjonskrav = dokumentasjonskrav.map(
+          (krav: DokumentasjonskravType) =>
+            krav.id === modalData.barn?.dokumentasjonskravId
+              ? {
+                  ...krav,
+                  beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+                }
+              : krav
         );
 
         setDokumentasjonskrav(oppdatertDokumentasjonskrav);

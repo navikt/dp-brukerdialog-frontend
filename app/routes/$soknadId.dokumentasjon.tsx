@@ -1,7 +1,8 @@
-import { Dokumentasjonskrav, DokumentasjonView } from "~/seksjon/dokumentasjon/DokumentasjonView";
+import { DokumentasjonView } from "~/seksjon/dokumentasjon/DokumentasjonView";
 import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
+import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 type Seksjon = {
   seksjonId: string;
@@ -11,7 +12,7 @@ type Seksjon = {
 type SeksjonsResponseType = {
   versjon: number;
   seksjon?: object;
-  dokumentasjonskrav?: Dokumentasjonskrav[];
+  dokumentasjonskrav?: DokumentasjonskravType[];
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -31,7 +32,5 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function DokumentasjonRoute() {
-  const loaderData = useLoaderData<typeof loader>();
-  console.log("loaderData", loaderData);
   return <DokumentasjonView />;
 }
