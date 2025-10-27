@@ -60,11 +60,7 @@ export async function loader({
     };
   }
 
-  const seksjonData = await response.json();
-
-  console.log(`🔥 seksjonsdata :`, seksjonData);
-
-  return seksjonData;
+  return response.json();
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
