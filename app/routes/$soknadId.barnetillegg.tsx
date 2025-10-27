@@ -17,7 +17,7 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonView";
+import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -27,7 +27,7 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
 type BarnetilleggResponseType = {
   versjon: number;
   seksjon?: BarnetilleggResponse;
-  dokumentasjonskrav?: Dokumentasjonskrav[];
+  dokumentasjonskrav?: DokumentasjonskravType[];
 };
 
 const NYESTE_VERSJON = 1;
