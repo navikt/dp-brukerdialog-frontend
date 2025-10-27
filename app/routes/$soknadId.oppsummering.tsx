@@ -1,6 +1,6 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
 import invariant from "tiny-invariant";
-import { hentOppsummering } from "~/models/hent-oppsummering.server";
+import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
 import { sendSøknad } from "~/models/send-søknad.server";
 
@@ -17,7 +17,7 @@ export async function loader({
   invariant(params.soknadId, "Søknad ID er påkrevd");
   let oppsummering = undefined;
 
-  const response = await hentOppsummering(request, params.soknadId);
+  const response = await hentAlleSeksjoner(request, params.soknadId);
 
   if (response.status === 200) {
     oppsummering = await response.json();

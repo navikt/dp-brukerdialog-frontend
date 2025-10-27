@@ -1,7 +1,7 @@
 import { getEnv } from "~/utils/env.utils";
 import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 
-export async function hentOppsummering(request: Request, soknadId: string) {
+export async function hentAlleSeksjoner(request: Request, soknadId: string) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 

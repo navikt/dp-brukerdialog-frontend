@@ -1,13 +1,13 @@
 import invariant from "tiny-invariant";
 import KvitteringView from "~/seksjon/kvittering/KvitteringView";
 import { LoaderFunctionArgs } from "react-router";
-import { hentOppsummering } from "~/models/hent-oppsummering.server";
+import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
   let oppsummering = undefined;
 
-  const response = await hentOppsummering(request, params.soknadId);
+  const response = await hentAlleSeksjoner(request, params.soknadId);
 
   if (response.status === 200) {
     oppsummering = await response.json();
