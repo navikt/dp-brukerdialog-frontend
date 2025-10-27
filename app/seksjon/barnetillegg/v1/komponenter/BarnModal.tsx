@@ -56,7 +56,8 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
         const nyttDokumentkrav: DokumentasjonskravType = {
           id: dokumentasjonskravId,
           spørsmålId: spørsmålId,
-          beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+          tittel: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+          type: "Barn",
         };
 
         setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);

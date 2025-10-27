@@ -30,7 +30,10 @@ export function DokumentasjonView() {
       <VStack gap="4">
         {loaderData.map((seksjon) =>
           seksjon?.dokumentasjonskrav?.map((dokumentasjonskrav) => (
-            <Dokumentasjonskrav dokumentasjonskrav={dokumentasjonskrav} />
+            <Dokumentasjonskrav
+              key={dokumentasjonskrav.id}
+              dokumentasjonskrav={dokumentasjonskrav}
+            />
           ))
         )}
       </VStack>

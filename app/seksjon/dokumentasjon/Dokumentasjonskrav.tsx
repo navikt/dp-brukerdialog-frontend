@@ -1,5 +1,9 @@
-import { Box, FileObject, VStack } from "@navikt/ds-react";
+import { BodyLong, Box, FileObject, Heading, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { useForm } from "@rvf/react-router";
+import { useState } from "react";
+import { Form, useParams } from "react-router";
+import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
@@ -8,8 +12,16 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { useParams } from "react-router";
-import { useState } from "react";
+import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
+import {
+  dokumentasjonskravSpørsmål,
+  DokumentasjonskravSvar,
+  DOKUMENTKRAV_SVAR_SEND_NAA,
+  DOKUMENTKRAV_SVAR_SENDER_IKKE,
+  DOKUMENTKRAV_SVAR_SENDER_SENERE,
+  DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+  velgHvaDuVilGjøre,
+} from "./dokumentasjonskrav.spørsmål";
 
 export type DokumentkravFil = {
   id: string;
@@ -26,7 +38,8 @@ export type DokumentkravFil = {
 export type DokumentasjonskravType = {
   id: string;
   spørsmålId: string;
-  beskrivelse?: string;
+  tittel?: string;
+  type?: "Barn" | "Arbeidsforhold";
   gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
   begrunnelse?: string;
@@ -34,16 +47,9 @@ export type DokumentasjonskravType = {
   bundleFilsti?: string;
 };
 
-export const DOKUMENTKRAV_SVAR_SEND_NAA = "dokumentkrav.svar.send.naa";
-export const DOKUMENTKRAV_SVAR_SENDER_IKKE = "dokumentkrav.svar.sender.ikke";
-export const DOKUMENTKRAV_SVAR_SENDER_SENERE = "dokumentkrav.svar.send.senere";
-export const DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE = "dokumentkrav.svar.andre.sender";
-export const DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE = "dokumentkrav.svar.sendt.tidligere";
-
 export type GyldigDokumentkravSvar =
   | typeof DOKUMENTKRAV_SVAR_SEND_NAA
   | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
-  | typeof DOKUMENTKRAV_SVAR_SEND_NOEN_ANDRE
   | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
   | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
 
@@ -159,6 +165,17 @@ export function Dokumentasjonskrav({ dokumentasjonskrav }: DokumentasjonskravPro
     }
   }
 
+  function hentBeskrivelse(type: string) {
+    switch (type) {
+      case "Barn":
+        return "Dokumentasjon for barn lagt til i søknaden";
+      case "Arbeidsforhold":
+        return "Dokumentasjon for arbeidsforhold lagt til i søknaden";
+      default:
+        return "Dokumentasjon";
+    }
+  }
+
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil) {
       setDokumentkravFiler((prev) => prev.filter((f) => !(f.filnavn === fil.filnavn && f.feil)));
@@ -191,18 +208,61 @@ export function Dokumentasjonskrav({ dokumentasjonskrav }: DokumentasjonskravPro
     } finally {
     }
   }
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: dokumentasjonskravSchema,
+    validationBehaviorConfig: {
+      initial: "onBlur",
+      whenTouched: "onBlur",
+      whenSubmitted: "onBlur",
+    },
+    defaultValues: {},
+  });
+
+  // Todo:
+  // Sett tittel på dokumentasjonskrav
+  // Sett dokumentasjonskrav beskrivelse
   return (
     <Box padding="space-16" background="surface-subtle" borderRadius="large" className="mt-4">
       <VStack gap="8">
-        <form method="post" encType="multipart/form-data">
-          <FileUploadDropzone
-            label="Last opp dokument"
-            description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
-            fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentkravFiler.length }}
-            accept={hentTillatteFiltyperString()}
-            onSelect={(filer) => lastOppfiler(filer)}
-          />
-        </form>
+        <Form {...form.getFormProps()}>
+          <VStack gap="4">
+            <Heading size="small" level="3">
+              {dokumentasjonskrav.tittel || "Dokumentasjon"}
+            </Heading>
+
+            {dokumentasjonskrav.type && (
+              <BodyLong>{hentBeskrivelse(dokumentasjonskrav.type)}</BodyLong>
+            )}
+
+            {dokumentasjonskravSpørsmål.map((spørsmål) => {
+              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                return null;
+              }
+
+              return (
+                <Spørsmål
+                  key={spørsmål.id}
+                  spørsmål={spørsmål}
+                  formScope={form.scope(spørsmål.id as keyof DokumentasjonskravSvar)}
+                />
+              );
+            })}
+          </VStack>
+
+          {form.value(velgHvaDuVilGjøre) === DOKUMENTKRAV_SVAR_SEND_NAA && (
+            <FileUploadDropzone
+              className="mt-4"
+              label="Last opp dokument"
+              description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
+              fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentkravFiler.length }}
+              accept={hentTillatteFiltyperString()}
+              onSelect={(filer) => lastOppfiler(filer)}
+            />
+          )}
+        </Form>
       </VStack>
       <VStack gap="4" className="mt-8">
         {dokumentkravFiler?.map((fil) => (
