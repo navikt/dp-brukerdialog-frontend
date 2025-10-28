@@ -1,5 +1,4 @@
 import { BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
-
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.dokumentasjon";

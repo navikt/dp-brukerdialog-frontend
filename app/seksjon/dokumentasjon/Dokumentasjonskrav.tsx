@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form } from "react-router";
+import { Form, useParams } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import {
@@ -20,9 +20,13 @@ import {
   DOKUMENTKRAV_SVAR_SENDER_IKKE,
   DOKUMENTKRAV_SVAR_SENDER_SENERE,
   DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+  hvaErGrunnenTilAtDuIkkeSenderDokumentet,
+  hvaErGrunnenTilAtDuSenderDokumentetSenere,
+  nårSendteDuDokumentet,
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.spørsmål";
 import { FilOpplasting } from "./FilOpplasting";
+import { be } from "date-fns/locale";
 
 export type DokumentasjonskravType = {
   id: string;
@@ -44,10 +48,12 @@ export type GyldigDokumentkravSvar =
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: DokumentasjonskravType;
-  seksjon: object;
+  seksjon: any;
 }
 
 export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: DokumentasjonskravProps) {
+  const { soknadId } = useParams();
+
   function hentBeskrivelse(type: string) {
     switch (type) {
       case "Barn":
@@ -78,42 +84,57 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
   }
 
   const form = useForm({
-    method: "POST",
+    method: "PUT",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
     defaultValues: {},
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onSubmit",
     },
-    handleSubmit: (values) => {
-      console.log(values);
+    handleSubmit: (dokumentasjonskravSvar) => {
+      const begrunnelse =
+        dokumentasjonskravSvar[nårSendteDuDokumentet] ||
+        dokumentasjonskravSvar[hvaErGrunnenTilAtDuIkkeSenderDokumentet] ||
+        dokumentasjonskravSvar[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
+        undefined;
+
+      const svar = {
+        ...dokumentasjonskrav,
+        svar: dokumentasjonskravSvar[velgHvaDuVilGjøre],
+        begrunnelse: begrunnelse,
+      };
+
+      lagreDokumentasjonskravSvar(svar);
     },
   });
 
-  async function lagreDokumentasjonskravSvar() {
-    // const dokumentasjonskravSvar: DokumentasjonskravSvar = form.value();
-    // const data = {
-    //   ...seksjon,
-    //   dokumentasjonskrav,
-    // };
-    // try {
-    //   const response = await fetch(
-    //     `/api/lagre-dokumentasjonskrav/${soknadId}/${seksjon.seksjonId}/`,
-    //     {
-    //       method: "POST",
-    //       // body: formData,
-    //     }
-    //   );
-    //   if (!response.ok) {
-    //     return;
-    //   }
-    //   return await response.text();
-    // } catch (error) {
-    //   console.error(error);
-    // } finally {
-    // }
+  async function lagreDokumentasjonskravSvar(svar: DokumentasjonskravType) {
+    const seksjonsdata = {
+      ...seksjon,
+      dokumentasjonskrav: svar,
+    };
+
+    const formData = new FormData();
+    formData.append("seksjonsdata", JSON.stringify(seksjonsdata));
+
+    try {
+      const response = await fetch(
+        `/api/lagre-dokumentasjonskrav/${soknadId}/${seksjon.seksjonId}/`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        return;
+      }
+      return await response.text();
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
   }
 
   return (
@@ -147,17 +168,18 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
           {form.value(velgHvaDuVilGjøre) === DOKUMENTKRAV_SVAR_SEND_NAA && (
             <FilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
           )}
+
+          <Button
+            type="submit"
+            variant="secondary"
+            icon={<FloppydiskIcon aria-hidden />}
+            iconPosition="right"
+            className="mt-8"
+          >
+            Lagre
+          </Button>
         </Form>
       </VStack>
-      <Button
-        variant="secondary"
-        icon={<FloppydiskIcon aria-hidden />}
-        iconPosition="right"
-        className="mt-8"
-        type="submit"
-      >
-        Lagre
-      </Button>
     </Box>
   );
 }

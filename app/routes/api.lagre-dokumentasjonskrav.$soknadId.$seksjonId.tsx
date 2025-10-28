@@ -6,24 +6,21 @@ import { lagreSeksjon } from "~/models/lagreSeksjon.server";
 export async function action({ params, request }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  // const søknadId = params.soknadId as string;
-  // const seksjonId = params.seksjonId as string;
+  const søknadId = params.soknadId as string;
+  const seksjonId = params.seksjonId as string;
+  const formData = await parseFormData(request);
+  const seksjonsdata = formData.get("seksjonsdata");
 
-  // const formData = await parseFormData(request);
-  // const seksjonsdata = formData.get("seksjonsdata");
+  const response = await lagreSeksjon(
+    request,
+    søknadId,
+    seksjonId,
+    JSON.parse(seksjonsdata as string)
+  );
 
-  try {
-    // const response = await lagreSeksjon(request, søknadId, seksjonId, seksjonsdata);
-
-    console.log("hit proxy");
-
-    return;
-  } catch (error) {
-    console.error(error);
-
-    return new Response("Feil ved opplasting av dokument", {
-      status: 500,
-      statusText: "Feil ved opplasting av dokument",
-    });
+  if (response.status !== 200) {
+    return {
+      error: "Noe gikk galt ved lagring av dokumentasjonskrav",
+    };
   }
 }
