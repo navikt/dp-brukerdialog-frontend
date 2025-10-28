@@ -12,6 +12,7 @@ import {
 import { useForm } from "@rvf/react-router";
 import { Form, useParams } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import {
   dokumentasjonskravSpørsmål,
@@ -26,7 +27,6 @@ import {
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.spørsmål";
 import { FilOpplasting } from "./FilOpplasting";
-import { be } from "date-fns/locale";
 
 export type DokumentasjonskravType = {
   id: string;
@@ -87,7 +87,21 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
     method: "PUT",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
-    defaultValues: {},
+    defaultValues: {
+      [velgHvaDuVilGjøre]: dokumentasjonskrav.svar,
+      [hvaErGrunnenTilAtDuSenderDokumentetSenere]:
+        dokumentasjonskrav.svar === DOKUMENTKRAV_SVAR_SENDER_SENERE
+          ? dokumentasjonskrav.begrunnelse
+          : undefined,
+      [nårSendteDuDokumentet]:
+        dokumentasjonskrav.svar === DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
+          ? dokumentasjonskrav.begrunnelse
+          : undefined,
+      [hvaErGrunnenTilAtDuIkkeSenderDokumentet]:
+        dokumentasjonskrav.svar === DOKUMENTKRAV_SVAR_SENDER_IKKE
+          ? dokumentasjonskrav.begrunnelse
+          : undefined,
+    },
     validationBehaviorConfig: {
       initial: "onSubmit",
       whenTouched: "onSubmit",
@@ -110,30 +124,32 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
     },
   });
 
+  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravSpørsmål);
+
   async function lagreDokumentasjonskravSvar(svar: DokumentasjonskravType) {
+    const dokumentasjonskrav: DokumentasjonskravType[] = seksjon.dokumentasjonskrav;
+    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: DokumentasjonskravType) =>
+      krav.id === svar.id ? svar : krav
+    );
+
     const seksjonsdata = {
       ...seksjon,
-      dokumentasjonskrav: svar,
+      dokumentasjonskrav: oppdatertDokumentasjonskrav,
     };
 
     const formData = new FormData();
     formData.append("seksjonsdata", JSON.stringify(seksjonsdata));
 
-    try {
-      const response = await fetch(
-        `/api/lagre-dokumentasjonskrav/${soknadId}/${seksjon.seksjonId}/`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      if (!response.ok) {
-        return;
+    const response = await fetch(
+      `/api/lagre-dokumentasjonskrav/${soknadId}/${seksjon.seksjonId}/`,
+      {
+        method: "POST",
+        body: formData,
       }
-      return await response.text();
-    } catch (error) {
-      console.error(error);
-    } finally {
+    );
+
+    if (!response.ok) {
+      console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
     }
   }
 

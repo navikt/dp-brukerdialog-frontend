@@ -1,8 +1,8 @@
+import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.dokumentasjon";
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 export function DokumentasjonView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -63,17 +63,10 @@ export function DokumentasjonView() {
           variant="secondary"
           type="button"
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
-          // onClick={handleTilbakenavigering}
         >
           Forrige steg
         </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          // onClick={handleSubmit}
-          iconPosition="right"
-          icon={<ArrowRightIcon />}
-        >
+        <Button variant="primary" type="submit" iconPosition="right" icon={<ArrowRightIcon />}>
           Neste steg
         </Button>
       </HStack>

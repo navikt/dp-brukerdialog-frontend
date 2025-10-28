@@ -66,7 +66,9 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
 
       if (modalData.operasjon === ModalOperasjonEnum.Rediger && modalData?.barn?.id) {
         const oppdatertListe = barnLagtManuelt.map((b) =>
-          b.id === modalData.barn?.id ? { ...barn, id: b.id } : b
+          b.id === modalData.barn?.id
+            ? { ...barn, id: b.id, dokumentasjonskravId: b.dokumentasjonskravId }
+            : b
         ) as Barn[];
 
         const oppdatertDokumentasjonskrav = dokumentasjonskrav.map(
@@ -74,7 +76,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
             krav.id === modalData.barn?.dokumentasjonskravId
               ? {
                   ...krav,
-                  beskrivelse: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+                  tittel: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
                 }
               : krav
         );
