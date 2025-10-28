@@ -18,6 +18,9 @@ export type DokumentasjonskravSvar = {
     | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
     | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
     | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
+  [hvaErGrunnenTilAtDuSenderDokumentetSenere]?: string;
+  [nårSendteDuDokumentet]?: string;
+  [hvaErGrunnenTilAtDuIkkeSenderDokumentet]?: string;
 };
 
 export const dokumentasjonskravSpørsmål: KomponentType[] = [

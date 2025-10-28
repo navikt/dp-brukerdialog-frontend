@@ -8,8 +8,13 @@ import {
   DOKUMENTKRAV_SVAR_SENDER_IKKE,
   DOKUMENTKRAV_SVAR_SENDER_SENERE,
   DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+  hvaErGrunnenTilAtDuIkkeSenderDokumentet,
+  hvaErGrunnenTilAtDuSenderDokumentetSenere,
+  nårSendteDuDokumentet,
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.spørsmål";
+
+const kortTekstMaksLengde = 200;
 
 export const dokumentasjonskravSchema = z
   .object({
@@ -20,6 +25,18 @@ export const dokumentasjonskravSchema = z
         DOKUMENTKRAV_SVAR_SENDER_SENERE,
         DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
       ])
+      .optional(),
+    [hvaErGrunnenTilAtDuSenderDokumentetSenere]: z
+      .string()
+      .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
+      .optional(),
+    [nårSendteDuDokumentet]: z
+      .string()
+      .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
+      .optional(),
+    [hvaErGrunnenTilAtDuIkkeSenderDokumentet]: z
+      .string()
+      .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
       .optional(),
   })
   .superRefine((data, context) => {

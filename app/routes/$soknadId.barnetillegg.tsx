@@ -102,8 +102,6 @@ export default function BarntilleggRoute() {
   const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
-  console.log(`🔥 loaderData :`, loaderData);
-
   switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
