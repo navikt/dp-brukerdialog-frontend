@@ -1,4 +1,13 @@
-import { BodyLong, Box, FileObject, Heading, VStack } from "@navikt/ds-react";
+import {
+  BodyLong,
+  BodyShort,
+  Box,
+  FileObject,
+  Heading,
+  List,
+  ReadMore,
+  VStack,
+} from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useForm } from "@rvf/react-router";
 import { useState } from "react";
@@ -39,7 +48,7 @@ export type DokumentasjonskravType = {
   id: string;
   spørsmålId: string;
   tittel?: string;
-  type?: "Barn" | "Arbeidsforhold";
+  type: "Barn" | "Arbeidsforhold";
   gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
   begrunnelse?: string;
@@ -57,11 +66,14 @@ type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL" | "DUPLIKAT_F
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: DokumentasjonskravType;
+  seksjon: any;
 }
 
-export function Dokumentasjonskrav({ dokumentasjonskrav }: DokumentasjonskravProps) {
+export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: DokumentasjonskravProps) {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
+
+  console.log(seksjon);
 
   // Todo,
   // Håndtere retry ved feil
@@ -168,7 +180,25 @@ export function Dokumentasjonskrav({ dokumentasjonskrav }: DokumentasjonskravPro
   function hentBeskrivelse(type: string) {
     switch (type) {
       case "Barn":
-        return "Dokumentasjon for barn lagt til i søknaden";
+        return (
+          <ReadMore header="Dette må dokumentasjonen inneholde">
+            <VStack gap="2">
+              <BodyShort>Arbeidsavtalen må inneholde</BodyShort>
+              <List as="ul">
+                <List.Item>datoen du startet i jobben din</List.Item>
+                <List.Item>stillingsprosent eller avtalt arbeidstid</List.Item>
+                <List.Item>sluttdato, hvis du har en midlertidig arbeidsavtale</List.Item>
+              </List>
+              <BodyLong>
+                Arbeidsavtalen må inneholde datoen du startet i jobben din stillingsprosent eller
+                avtalt arbeidstid avtalt oppsigelsestid sluttdato, hvis du har en midlertidig
+                arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
+                skjemaet  "Bekreftelse på sluttårsak/nedsatt arbeidstid" (NAV 04-08.03). Du kan også
+                be arbeidsgiveren din bekrefte opplysningene på en annen måte.
+              </BodyLong>
+            </VStack>
+          </ReadMore>
+        );
       case "Arbeidsforhold":
         return "Dokumentasjon for arbeidsforhold lagt til i søknaden";
       default:
@@ -228,7 +258,7 @@ export function Dokumentasjonskrav({ dokumentasjonskrav }: DokumentasjonskravPro
     <Box padding="space-16" background="surface-subtle" borderRadius="large" className="mt-4">
       <VStack gap="8">
         <Form {...form.getFormProps()}>
-          <VStack gap="4">
+          <VStack gap="6">
             <Heading size="small" level="3">
               {dokumentasjonskrav.tittel || "Dokumentasjon"}
             </Heading>

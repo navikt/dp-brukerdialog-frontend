@@ -54,6 +54,16 @@ export const dokumentasjonskravSpørsmål: KomponentType[] = [
       svar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
   },
   {
+    id: "test",
+    type: "varselmelding",
+    variant: "warning",
+    label: "",
+    description:
+      "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet.",
+    visHvis: (svar: DokumentasjonskravSvar) =>
+      svar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SENDER_IKKE,
+  },
+  {
     id: hvaErGrunnenTilAtDuIkkeSenderDokumentet,
     type: "langTekst",
     label: "Hva er grunnen til at du ikke sender dokumentet?",

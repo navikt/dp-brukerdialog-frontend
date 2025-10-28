@@ -25,9 +25,10 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
 };
 
 type BarnetilleggResponseType = {
-  versjon: number;
+  seksjonsId?: string;
   seksjon?: BarnetilleggResponse;
   dokumentasjonskrav?: DokumentasjonskravType[];
+  versjon: number;
 };
 
 const NYESTE_VERSJON = 1;
@@ -76,6 +77,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
   const seksjonsdata = {
+    seksjonId,
     seksjon: JSON.parse(payload as string),
     dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
     versjon: Number(versjon),
@@ -99,6 +101,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function BarntilleggRoute() {
   const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
+
+  console.log(`🔥 loaderData :`, loaderData);
 
   switch (loaderData?.versjon ?? NYESTE_VERSJON) {
     case 1:
