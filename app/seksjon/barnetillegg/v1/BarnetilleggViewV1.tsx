@@ -38,12 +38,6 @@ export function BarnetilleggViewV1() {
     dokumentasjonskrav,
   } = useBarnetilleggContext();
 
-  const context = useBarnetilleggContext();
-
-  useEffect(() => {
-    console.log(context);
-  }, [context]);
-
   const form = useForm({
     method: "PUT",
     submitSource: "state",
