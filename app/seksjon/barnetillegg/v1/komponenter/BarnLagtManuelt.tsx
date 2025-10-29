@@ -1,5 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
+import { useEffect } from "react";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
@@ -22,11 +23,11 @@ export function BarnLagtManuelt({ barn }: IProps) {
   } = useBarnetilleggContext();
 
   function fjernBarn() {
+    setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
+
     setDokumentasjonskrav(
       dokumentasjonskrav.filter((krav) => krav.id !== barn.dokumentasjonskravId)
     );
-
-    setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
   }
 
   return (

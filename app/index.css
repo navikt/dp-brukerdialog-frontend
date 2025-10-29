@@ -90,6 +90,14 @@
   box-shadow: none;
 }
 
+.navds-alert .navds-body-long.navds-typo--spacing {
+  margin-bottom: 0;
+}
+
+.fileUpload .navds-dropzone__area {
+  background-color: white;
+}
+
 .expansionCard {
   background-color: var(--a-purple-100);
   border: none;
