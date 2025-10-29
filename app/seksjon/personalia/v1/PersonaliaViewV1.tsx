@@ -10,18 +10,23 @@ import {
   adresselinje2FraPdl,
   adresselinje3FraPdl,
   alderFraPdl,
+  etternavnFraPdl,
   folkeregistrertAdresseErNorgeStemmerDet,
+  fornavnFraPdl,
   fødselsnummerFraPdl,
   kontonummerFraKontoregister,
   landFraPdl,
-  navnFraPdl,
-  personaliaFolkeregistrertAdresseErNorgeSpørsmål,
+  landKodeFraPdl,
+  mellomnavnFraPdl,
+  pdfGrunnlag,
+  personaliaBostedslandSpørsmål,
   personaliaSpørsmål,
   PersonaliaSvar,
   postnummerFraPdl,
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.spørsmål";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function PersonaliaViewV1() {
   const loaderData = useLoaderData<typeof loader>();
@@ -52,18 +57,36 @@ export function PersonaliaViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  form.setValue(navnFraPdl, `${fornavn} ${mellomnavn} ${etternavn}`);
-  form.setValue(fødselsnummerFraPdl, formattertIdent || "");
+  form.setValue(fornavnFraPdl, fornavn || "");
+  form.setValue(mellomnavnFraPdl, mellomnavn || "");
+  form.setValue(etternavnFraPdl, etternavn || "");
+  form.setValue(fødselsnummerFraPdl, ident || "");
   form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
   form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
   form.setValue(adresselinje3FraPdl, folkeregistrertAdresse.adresselinje3 || "");
   form.setValue(postnummerFraPdl, folkeregistrertAdresse.postnummer || "");
   form.setValue(poststedFraPdl, folkeregistrertAdresse.poststed || "");
+  form.setValue(landKodeFraPdl, folkeregistrertAdresse.landkode || "");
   form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
   form.setValue(alderFraPdl, alder?.toString() || "");
-  form.setValue(kontonummerFraKontoregister, formattertKontonummer || "");
+  form.setValue(kontonummerFraKontoregister, loaderData.personalia.kontonummer || "");
 
-  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaSpørsmål);
+  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
+
+  async function handleSubmit() {
+    if (Object.values(await form.validate()).length === 0) {
+      const pdfPayload = {
+        navn: "Personalia",
+        spørsmål: [
+          ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+          ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+        ],
+      };
+
+      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+      form.submit();
+    }
+  }
 
   return (
     <div className="innhold">
@@ -126,7 +149,7 @@ export function PersonaliaViewV1() {
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              {personaliaFolkeregistrertAdresseErNorgeSpørsmål.map((spørsmål) => {
+              {personaliaSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
@@ -143,7 +166,7 @@ export function PersonaliaViewV1() {
               {(form.value(folkeregistrertAdresseErNorgeStemmerDet) === "nei" ||
                 form.value(landFraPdl) !== "NORGE") && <h2>Bostedsland</h2>}
 
-              {personaliaSpørsmål.map((spørsmål) => {
+              {personaliaBostedslandSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
@@ -167,7 +190,8 @@ export function PersonaliaViewV1() {
             <HStack gap="4" className="mt-8">
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
               >

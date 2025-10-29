@@ -13,7 +13,7 @@ export type KomponentType =
   | Dokumentasjonskravindikator
   | Registeropplysning;
 
-type InfoType = "varselmelding" | "lesMer" | "dokumentasjonskravindikator" | "bodyShort";
+type InfoType = "varselmelding" | "lesMer" | "dokumentasjonskravindikator";
 
 export type SpørsmålType =
   | "envalg"
@@ -32,7 +32,6 @@ export const INFO_KOMPONENTER: InfoType[] = [
   "varselmelding",
   "lesMer",
   "dokumentasjonskravindikator",
-  "bodyShort",
 ];
 
 export type KomponentBase = {

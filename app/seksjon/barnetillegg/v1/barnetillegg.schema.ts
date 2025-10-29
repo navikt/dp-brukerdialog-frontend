@@ -39,10 +39,12 @@ export const barnetilleggSchema = z
 
 export const barnFraPdlSchema = z
   .object({
+    id: z.string().optional(),
     [fornavnOgMellomnavn]: z.string().optional(),
     [etternavn]: z.string().optional(),
     [fødselsdato]: z.string().optional(),
     [bostedsland]: z.string().optional(),
+    dokumentasjonskravId: z.string().optional(),
     [forsørgerDuBarnet]: z.enum(["ja", "nei"]).optional(),
   })
   .superRefine((data, ctx) => {

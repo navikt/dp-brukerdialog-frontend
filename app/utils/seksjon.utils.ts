@@ -11,13 +11,13 @@ export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: s
 export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any) {
   return alleSpørsmål
     .map((spørsmål) => {
-      const svar = Object.entries(alleSvar).find(([key, value]) => {
+      const svar = Object.entries(alleSvar).find(([key]) => {
         return key === spørsmål.id;
       });
 
       if (
-        svar !== undefined ||
-        (!!spørsmål.visHvis && spørsmål.visHvis(Object.entries(alleSvar))) ||
+        svar?.[1] !== undefined ||
+        (!!spørsmål.visHvis && spørsmål.visHvis(alleSvar)) ||
         (svar === undefined && !spørsmål.visHvis)
       ) {
         return {

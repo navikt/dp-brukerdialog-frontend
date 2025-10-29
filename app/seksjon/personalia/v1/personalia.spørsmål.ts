@@ -1,16 +1,21 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const navnFraPdl = "navn-fra-pdl"
-export const fødselsnummerFraPdl = "fødselsnummer-fra-pdl"
+export const seksjonsvar = "seksjonsvar";
+export const pdfGrunnlag = "pdfGrunnlag";
+export const fornavnFraPdl = "fornavn-fra-pdl";
+export const mellomnavnFraPdl = "mellomnavn-fra-pdl";
+export const etternavnFraPdl = "etternavn-fra-pdl";
+export const fødselsnummerFraPdl = "fødselsnummer-fra-pdl";
 export const alderFraPdl = "alder-fra-pdl";
-export const adresselinje1FraPdl = "adresselinje-1-fra-pdl"
-export const adresselinje2FraPdl = "adresselinje-2-fra-pdl"
-export const adresselinje3FraPdl = "adresselinje-3-fra-pdl"
-export const postnummerFraPdl = "postnummer-fra-pdl"
-export const poststedFraPdl = "poststed-fra-pdl"
-export const kontonummerFraKontoregister = "kontonummer-fra-kontoregister"
+export const adresselinje1FraPdl = "adresselinje-1-fra-pdl";
+export const adresselinje2FraPdl = "adresselinje-2-fra-pdl";
+export const adresselinje3FraPdl = "adresselinje-3-fra-pdl";
+export const postnummerFraPdl = "postnummer-fra-pdl";
+export const poststedFraPdl = "poststed-fra-pdl";
+export const kontonummerFraKontoregister = "kontonummer-fra-kontoregister";
 export const folkeregistrertAdresseErNorgeStemmerDet =
   "folkeregistrert-adresse-er-norge-stemmer-det";
+export const landKodeFraPdl = "landkode-fra-pdl";
 export const landFraPdl = "land-fra-pdl";
 export const bostedsland = "bostedsland";
 export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
@@ -22,7 +27,9 @@ export const hvorforReistDuFraNorge = "hvorfor-reist-du-fra-norge";
 export const erTilbakenavigering = "erTilbakenavigering";
 
 export type PersonaliaSvar = {
-  [navnFraPdl]?: string;
+  [fornavnFraPdl]?: string;
+  [mellomnavnFraPdl]?: string;
+  [etternavnFraPdl]?: string;
   [fødselsnummerFraPdl]?: string;
   [alderFraPdl]?: string;
   [adresselinje1FraPdl]?: string;
@@ -31,6 +38,7 @@ export type PersonaliaSvar = {
   [postnummerFraPdl]?: string;
   [poststedFraPdl]?: string;
   [kontonummerFraKontoregister]?: string;
+  [landKodeFraPdl]?: string;
   [landFraPdl]?: string;
   [folkeregistrertAdresseErNorgeStemmerDet]?: string;
   [bostedsland]?: string;
@@ -42,7 +50,67 @@ export type PersonaliaSvar = {
   [hvorforReistDuFraNorge]?: string;
 };
 
-export const personaliaFolkeregistrertAdresseErNorgeSpørsmål: KomponentType[] = [
+export const personaliaSpørsmål: KomponentType[] = [
+  {
+    id: fornavnFraPdl,
+    type: "registeropplysning",
+    label: "Fornavn",
+  },
+  {
+    id: mellomnavnFraPdl,
+    type: "registeropplysning",
+    label: "Mellomnavn",
+  },
+  {
+    id: etternavnFraPdl,
+    type: "registeropplysning",
+    label: "Etternavn",
+  },
+  {
+    id: fødselsnummerFraPdl,
+    type: "registeropplysning",
+    label: "Fødselsnummer",
+  },
+  {
+    id: adresselinje1FraPdl,
+    type: "registeropplysning",
+    label: "Adresselinje 1",
+  },
+  {
+    id: adresselinje2FraPdl,
+    type: "registeropplysning",
+    label: "Adresselinje 2",
+  },
+  {
+    id: adresselinje3FraPdl,
+    type: "registeropplysning",
+    label: "Adresselinje 3",
+  },
+  {
+    id: postnummerFraPdl,
+    type: "registeropplysning",
+    label: "Postnummer",
+  },
+  {
+    id: poststedFraPdl,
+    type: "registeropplysning",
+    label: "Poststed",
+  },
+  {
+    id: landKodeFraPdl,
+    type: "registeropplysning",
+    label: "Landkode",
+  },
+  {
+    id: landFraPdl,
+    type: "registeropplysning",
+    label: "Land",
+  },
+  {
+    id: kontonummerFraKontoregister,
+    type: "registeropplysning",
+    label: "Kontonummer",
+  },
   {
     id: "viHarRegistretAtDuErOver67VarselMelding",
     type: "varselmelding",
@@ -62,9 +130,9 @@ export const personaliaFolkeregistrertAdresseErNorgeSpørsmål: KomponentType[] 
     ],
     visHvis: (svar: PersonaliaSvar) => svar[landFraPdl] === "NORGE",
   },
-]
+];
 
-export const personaliaSpørsmål: KomponentType[] = [
+export const personaliaBostedslandSpørsmål: KomponentType[] = [
   {
     id: bostedsland,
     type: "land",
@@ -72,8 +140,7 @@ export const personaliaSpørsmål: KomponentType[] = [
     description:
       "Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge.",
     visHvis: (svar: PersonaliaSvar) =>
-      svar[landFraPdl] !== "NORGE" ||
-      svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
+      svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
   {
     id: "bostedslandLesMer",
