@@ -22,10 +22,6 @@ export function BarnLagtManuelt({ barn }: IProps) {
     setDokumentasjonskrav,
   } = useBarnetilleggContext();
 
-  useEffect(() => {
-    console.log(dokumentasjonskrav);
-  }, [dokumentasjonskrav]);
-
   function fjernBarn() {
     setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
 
