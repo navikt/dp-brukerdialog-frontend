@@ -10,6 +10,8 @@ import {
 import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   Barn,
+  etternavn,
+  fornavnOgMellomnavn,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
@@ -56,7 +58,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
         const nyttDokumentkrav: DokumentasjonskravType = {
           id: dokumentasjonskravId,
           spørsmålId: spørsmålId,
-          tittel: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+          tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
           type: "Barn",
         };
 
@@ -76,7 +78,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
             krav.id === modalData.barn?.dokumentasjonskravId
               ? {
                   ...krav,
-                  tittel: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
+                  tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
                 }
               : krav
         );

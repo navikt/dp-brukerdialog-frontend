@@ -10,7 +10,8 @@ export function valider(
   const erSpørsmål =
     spørsmål.type !== "lesMer" &&
     spørsmål.type !== "varselmelding" &&
-    spørsmål.type !== "dokumentasjonskravindikator";
+    spørsmål.type !== "dokumentasjonskravindikator" &&
+    spørsmål.type !== "registeropplysning";
 
   if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
     context.addIssue({

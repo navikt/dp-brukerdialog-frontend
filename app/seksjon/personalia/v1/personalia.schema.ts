@@ -7,13 +7,17 @@ import {
   avreiseDatoFra,
   avreiseDatoTil,
   bostedsland,
+  etternavnFraPdl,
   folkeregistrertAdresseErNorgeStemmerDet,
+  fornavnFraPdl,
   fødselsnummerFraPdl,
   hvorforReistDuFraNorge,
   kontonummerFraKontoregister,
   landFraPdl,
-  navnFraPdl,
-  personaliaFolkeregistrertAdresseErNorgeSpørsmål,
+  landKodeFraPdl,
+  mellomnavnFraPdl,
+  pdfGrunnlag,
+  personaliaBostedslandSpørsmål,
   personaliaSpørsmål,
   PersonaliaSvar,
   postnummerFraPdl,
@@ -21,12 +25,17 @@ import {
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
+  seksjonsvar,
 } from "./personalia.spørsmål";
 import { valider } from "~/utils/validering.utils";
 
 export const personaliaSchema = z
   .object({
-    [navnFraPdl]: z.string().optional(),
+    [seksjonsvar]: z.string().optional(),
+    [pdfGrunnlag]: z.string().optional(),
+    [fornavnFraPdl]: z.string().optional(),
+    [mellomnavnFraPdl]: z.string().optional(),
+    [etternavnFraPdl]: z.string().optional(),
     [fødselsnummerFraPdl]: z.string().optional(),
     [alderFraPdl]: z.string().optional(),
     [adresselinje1FraPdl]: z.string().optional(),
@@ -34,6 +43,7 @@ export const personaliaSchema = z
     [adresselinje3FraPdl]: z.string().optional(),
     [postnummerFraPdl]: z.string().optional(),
     [poststedFraPdl]: z.string().optional(),
+    [landKodeFraPdl]: z.string().optional(),
     [landFraPdl]: z.string().optional(),
     [kontonummerFraKontoregister]: z.string().optional(),
     [folkeregistrertAdresseErNorgeStemmerDet]: z.string().optional(),
@@ -47,11 +57,9 @@ export const personaliaSchema = z
     versjon: z.number().optional(),
   })
   .superRefine((data, context) => {
-    personaliaFolkeregistrertAdresseErNorgeSpørsmål
-      .concat(personaliaSpørsmål)
-      .forEach((spørsmål) => {
-        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const svar = data[spørsmål.id as keyof PersonaliaSvar];
-        valider(spørsmål, svar, synlig, context);
-      });
+    personaliaSpørsmål.concat(personaliaBostedslandSpørsmål).forEach((spørsmål) => {
+      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+      const svar = data[spørsmål.id as keyof PersonaliaSvar];
+      valider(spørsmål, svar, synlig, context);
+    });
   });

@@ -9,10 +9,12 @@ import {
   fødselsnummerFraPdl,
   kontonummerFraKontoregister,
   landFraPdl,
-  navnFraPdl,
-  personaliaSpørsmål,
+  fornavnFraPdl,
+  personaliaBostedslandSpørsmål,
   postnummerFraPdl,
   poststedFraPdl,
+  mellomnavnFraPdl,
+  etternavnFraPdl,
 } from "~/seksjon/personalia/v1/personalia.spørsmål";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
@@ -36,7 +38,11 @@ export default function PersonaliaOppsummeringV1({
       <FormSummary.Answers>
         <FormSummary.Answer>
           <FormSummary.Label>Navn</FormSummary.Label>
-          <FormSummary.Value>{finnRegisterverdi(navnFraPdl, seksjonSvar)}</FormSummary.Value>
+          <FormSummary.Value>
+            {`${finnRegisterverdi(fornavnFraPdl, seksjonSvar)} `}
+            {`${finnRegisterverdi(mellomnavnFraPdl, seksjonSvar)} `}
+            {finnRegisterverdi(etternavnFraPdl, seksjonSvar)}
+          </FormSummary.Value>
         </FormSummary.Answer>
         <FormSummary.Answer>
           <FormSummary.Label>Fødselsnummer</FormSummary.Label>
@@ -73,7 +79,7 @@ export default function PersonaliaOppsummeringV1({
         {!seksjonSvar.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
 
         {seksjonSvar.map(([key, value]) => {
-          const spørsmål = personaliaSpørsmål.find((s) => s.id === key);
+          const spørsmål = personaliaBostedslandSpørsmål.find((s) => s.id === key);
           if (spørsmål && !erInformasjonsFelt(spørsmål)) {
             return (
               <FormSummary.Answer key={key}>

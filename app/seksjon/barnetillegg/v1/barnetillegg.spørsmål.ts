@@ -23,7 +23,7 @@ export const barnetilleggSpørsmål: KomponentType[] = [
   {
     id: forsørgerDuBarnSomIkkeVisesHer,
     type: "envalg",
-    label: "Forsørger du barnet som ikke vises her?",
+    label: "Forsørger du barn som ikke vises her?",
     options: [
       { value: "ja", label: "Ja" },
       { value: "nei", label: "Nei" },

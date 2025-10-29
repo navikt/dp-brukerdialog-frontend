@@ -9,8 +9,9 @@ import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { PersonaliaSvar } from "~/seksjon/personalia/v1/personalia.spørsmål";
+import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
 
@@ -80,15 +81,22 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonId = "personalia";
   const nesteSeksjonId = "din-situasjon";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon"
+    ([key, value]) =>
+      value !== undefined && value !== "undefined" && key !== "versjon" && key !== "pdfGrunnlag"
   );
   const seksjonsData = Object.fromEntries(filtrertEntries);
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
-  const payload = {
-    versjon: Number(versjon),
-    seksjon: seksjonsData,
+
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjon: normaliserFormData(seksjonsData),
+      versjon: Number(versjon),
+    }),
+    pdfGrunnlag: pdfGrunnlag,
   };
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
+
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
     return {
