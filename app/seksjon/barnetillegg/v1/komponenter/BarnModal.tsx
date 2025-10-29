@@ -45,6 +45,35 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
       }
 
       if (modalData.operasjon === ModalOperasjonEnum.LeggTil) {
+        /*
+        Barnetillegg-modalen burde hatt en dokumentasjonskravindikator (den er lagt til nå, se
+        barnetillegg.spørsmål.ts). Den kan brukes for å finne ut om det er noen dokumentasjonskrav som er trigget som følge
+        at bruker har svart på et tidligere spørsmål. I noen tilfeller vil det alltid være et
+        dokumentasjonkrav (som feks i BarnModal), men da ligger den i spørsmål-arrayen uten "visHvis"
+        definert.
+
+        Forslag til endring her som kanskje gjør dokumentasjonskrav-logikken litt mer generisk:
+        Traverser over arrayen med spørsmål for seksjonen/modalen (i dette
+        tilfellet leggTilBarnManueltSpørsmål) og bruk svarene til å sjekke om komponenter av typen
+        "dokumentasjonskravindikator" får sin "visHvis" evaluert til "true" (tipper det kan
+        gjøres på samme måte som vi gjør det for genrering av PDF-grunnlaget.
+
+        For hver "dokumentasjonskravindikator" som får "visHvis" evaluert til "true", kjøre koden
+        under som oppretter DokumentasjonskravType og linker barnet og dokumentasjonskravet.
+
+        Men i stedet for å sette "type"-propertyen, og bruke denne i Dokumentasjonkrav-seksjonen,
+        hent ut "description"-verdien fra "dokumentasjonskravindikator" og lagre den i en property
+        i DokumentasjonskravType. Det kan det hende at vi ikke trenger å versjonere
+        Dokumentasjonkrav-seksjonen, men at den bare forholder seg til verdier som ligger i
+        "dokumentasjonskrav"-JSON som lagres på server.
+
+        Ideelt sett hadde koden som generer dokumentasjonskrav vært kjørt i "onSubmit", og
+        håndtert både at dokumentasjonskrav kan oppstå i modaler (feks barn lagt til manuelt og
+        arbeidsforhold), og på seksjonsnivå (feks i Annen Pengestøtte). Men det blir kanskje
+        vanskelig å koble gitte dokumentasjonskrav til riktig "modal-objekt" (feks et gitt
+        arbeidsforhold) når det gjøres på onSubmit? :thinking_face:
+         */
+
         const dokumentasjonskravId = crypto.randomUUID();
 
         const nyttBarn = {
@@ -57,7 +86,8 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           id: dokumentasjonskravId,
           spørsmålId: spørsmålId,
           tittel: `Dokumentasjon for ${barn.fornavnOgMellomnavn} ${barn.etternavn}`,
-          type: "Barn",
+          // beskrivelse: Ny property, "description"-feltet fra "barnLagtTilManueltDokumentasjonskravindikator" i barnetillegg.spørsmål.ts
+          type: "Barn", // Fjerne denne
         };
 
         setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);

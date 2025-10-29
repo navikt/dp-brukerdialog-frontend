@@ -81,4 +81,14 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
     label: "Les mer om barnets bosted",
     description: "Her kan du lese mer om hvordan vi behandler informasjon om barnets bosted.",
   },
+  {
+    id: "barnLagtTilManueltDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Fødselsattest",
+    description:
+      "Her kommer en lang beskrivelse av hva som må være med i dokumentasjonen. Denne trenger " +
+      "vi ikke å vise til bruker i søknaden, men vi kan vise den i Dokumentopplasting-seksjonen. " +
+      "Nødvendige hjelpetekster er også tett knyttet til seksjonen hvor dokumentasjonskravet oppstår." +
+      "<strong>HTML</strong> kan brukes",
+  },
 ];
