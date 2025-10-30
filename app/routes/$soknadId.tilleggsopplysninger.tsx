@@ -1,10 +1,4 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjon } from "~/models/lagreSeksjon.server";
@@ -54,12 +48,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
       key !== erTilbakenavigering
   );
   const seksjonData = Object.fromEntries(filtrertEntries);
-
-  console.log("filtrertEntries:", filtrertEntries);
-
-  // const brutto = lagSeksjonPayload(tilleggsopplysningerSpørsmål, filtrertEntries);
-
-  // console.log(JSON.stringify(brutto));
 
   const versjon = formData.get("versjon");
   const seksjonDataMedVersjon = {

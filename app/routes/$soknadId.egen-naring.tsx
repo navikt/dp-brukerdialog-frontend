@@ -53,8 +53,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  console.info(putSeksjonRequest);
-
   const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
