@@ -5,7 +5,7 @@ import {
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
-  Barn,
+  BarnLagtManueltType,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -15,7 +15,7 @@ import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
-  barn: Barn;
+  barn: BarnLagtManueltType;
 }
 
 export function BarnLagtManuelt({ barn: barnProps }: IProps) {

@@ -9,7 +9,7 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
-  Barn,
+  BarnLagtManueltType,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -77,7 +77,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
       id: crypto.randomUUID(),
       dokumentasjonskrav: [dokumentasjonskravId],
       ...barn,
-    } as Barn;
+    } as BarnLagtManueltType;
 
     const nyttDokumentkrav: DokumentasjonskravType = {
       id: dokumentasjonskravId,
@@ -95,7 +95,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
       b.id === modalData?.barn?.id
         ? { ...barn, id: b.id, dokumentasjonskrav: b.dokumentasjonskrav }
         : b
-    ) as Barn[];
+    ) as BarnLagtManueltType[];
 
     const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: DokumentasjonskravType) =>
       Array.isArray(modalData?.barn?.dokumentasjonskrav) &&

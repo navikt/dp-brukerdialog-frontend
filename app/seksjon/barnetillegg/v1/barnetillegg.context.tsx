@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
-import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import {
+  BarnLagtManueltType,
+  BarnFraPdlType,
+} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 export enum ModalOperasjonEnum {
@@ -9,14 +12,14 @@ export enum ModalOperasjonEnum {
 
 type ModalData = {
   operasjon: ModalOperasjonEnum;
-  barn?: Barn;
+  barn?: BarnLagtManueltType;
 };
 
 type BarnetilleggContextType = {
-  barnFraPdl: Barn[];
-  setbarnFraPdl: (barnFraPdl: Barn[]) => void;
-  barnLagtManuelt: Barn[];
-  setBarnLagtManuelt: (barnLagtManuelt: Barn[]) => void;
+  barnFraPdl: BarnFraPdlType[];
+  setBarnFraPdl: (barnFraPdl: BarnFraPdlType[]) => void;
+  barnLagtManuelt: BarnLagtManueltType[];
+  setBarnLagtManuelt: (barnLagtManuelt: BarnLagtManueltType[]) => void;
   validerBarnFraPdl: boolean;
   setValiderBarnFraPdl: (valider: boolean) => void;
   modalData?: ModalData;
@@ -26,8 +29,8 @@ type BarnetilleggContextType = {
 };
 
 type BarnetilleggProviderProps = {
-  barnFraPdl: Barn[];
-  barnLagtManuelt: Barn[];
+  barnFraPdl: BarnLagtManueltType[];
+  barnLagtManuelt: BarnLagtManueltType[];
   dokumentasjonskrav: DokumentasjonskravType[];
   children: React.ReactNode;
 };
@@ -49,14 +52,14 @@ function useBarnetilleggContext() {
 }
 
 function BarnetilleggProvider({
-  barnFraPdl: barnFraPdlProps,
+  barnFraPdl: barnFraProps,
   barnLagtManuelt: barnLagtManueltProps,
   dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: BarnetilleggProviderProps) {
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
-  const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
+  const [barnFraPdl, setBarnFraPdl] = useState(barnFraProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
 
@@ -67,7 +70,7 @@ function BarnetilleggProvider({
         barnLagtManuelt,
         validerBarnFraPdl,
         setValiderBarnFraPdl,
-        setbarnFraPdl,
+        setBarnFraPdl,
         dokumentasjonskrav,
         setDokumentasjonskrav,
         setBarnLagtManuelt,

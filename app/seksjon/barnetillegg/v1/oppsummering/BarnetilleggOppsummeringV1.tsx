@@ -8,7 +8,7 @@ import {
   fødselsdato,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnetilleggSeksjon } from "~/routes/$soknadId.barnetillegg";
+import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
@@ -23,7 +23,7 @@ export default function BarnetilleggOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
-  const barnetilleggSvar = seksjonSvarene as BarnetilleggSeksjon;
+  const barnetilleggSvar = seksjonSvarene as SeksjonSvar;
   const entries = Object.entries(barnetilleggSvar);
   const forsørgerDuBarnSomIkkeVisesHerSvar = barnetilleggSvar[forsørgerDuBarnSomIkkeVisesHer];
 
@@ -57,10 +57,12 @@ export default function BarnetilleggOppsummeringV1({
             />
           </FormSummary.Answer>
         }
-        {alleBarna?.map((barn, index) => {
+        {alleBarna?.map((barn) => {
           return (
             <FormSummary.Answer>
-              <FormSummary.Label key={index}>Barn {index + 1}</FormSummary.Label>
+              <FormSummary.Label key={barn.id}>
+                Barn: {barn[fornavnOgMellomnavn]} {barn[etternavn]}
+              </FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   <FormSummary.Answer>

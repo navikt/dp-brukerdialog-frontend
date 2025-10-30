@@ -6,7 +6,7 @@ import { mockPersonaliaFraOrkestrator } from "./mock-data/mock-personalia-fra-or
 import { mockUtdanning } from "./mock-data/mock-utdanning";
 import { mockVerneplikt } from "~/mocks/mock-data/mock-verneplikt";
 import { mockBarnetillegg } from "./mock-data/mock-barnetillegg";
-import { mockBarnFraPdl } from "./mock-data/mock-barnFraPdl";
+import { mockBarnFraPdl } from "./mock-data/mock-pdlBarn";
 import { mockEgenNæring } from "~/mocks/mock-data/mock-egen-næring";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockProgress } from "~/mocks/mock-data/mock-progress";

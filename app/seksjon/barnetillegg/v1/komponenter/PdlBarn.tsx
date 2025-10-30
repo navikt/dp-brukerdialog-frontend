@@ -3,10 +3,11 @@ import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import { barnFraPdlSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
+import { pdlBarnSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
-  Barn,
-  barnFraPdlSpørsmål,
+  BarnLagtManueltType,
+  pdlBarnSpørsmål,
+  BarnFraPdlType,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -16,21 +17,19 @@ import {
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { BarnFraPdl } from "~/routes/$soknadId.barnetillegg";
 
 interface IProps {
-  barn: Barn;
+  barn: BarnFraPdlType;
 }
 
 export function BarnFraPdl({ barn: barnProps }: IProps) {
-  const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
+  const { barnFraPdl, setBarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
 
   const form = useForm({
     submitSource: "state",
-    schema: barnFraPdlSchema,
+    schema: pdlBarnSchema,
     defaultValues: {
       ...barnProps,
-      [forsørgerDuBarnet]: barnProps[forsørgerDuBarnet] ?? undefined,
     },
   });
 
@@ -44,15 +43,12 @@ export function BarnFraPdl({ barn: barnProps }: IProps) {
     const forsørgerDuBarnetSvar = form.value("forsørger-du-barnet");
 
     if (form.formState.isDirty && forsørgerDuBarnetSvar !== undefined) {
-      console.log("dirty");
-      // const oppdatertBarnFraPdl = barnFraPdl.map((barn) =>
-      //   barn.id === barnProps.id ? { ...barn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar } : barn
-      // );
-      // setbarnFraPdl(oppdatertBarnFraPdl);
+      const oppdatertBarnFraPdl = barnFraPdl.map((barn) =>
+        barn.id === barnProps.id ? { ...barn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar } : barn
+      );
+      setBarnFraPdl(oppdatertBarnFraPdl);
     }
   }, [form]);
-
-  console.log();
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
@@ -71,7 +67,7 @@ export function BarnFraPdl({ barn: barnProps }: IProps) {
       )}
 
       <Form {...form.getFormProps()}>
-        {barnFraPdlSpørsmål.map((spørsmål) => {
+        {pdlBarnSpørsmål.map((spørsmål) => {
           if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
             return null;
           }
@@ -80,7 +76,7 @@ export function BarnFraPdl({ barn: barnProps }: IProps) {
             <Spørsmål
               key={spørsmål.id}
               spørsmål={spørsmål}
-              formScope={form.scope(spørsmål.id as keyof BarnFraPdl)}
+              formScope={form.scope(spørsmål.id as keyof BarnLagtManueltType)}
             />
           );
         })}

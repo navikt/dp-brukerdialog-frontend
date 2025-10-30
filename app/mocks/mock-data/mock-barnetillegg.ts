@@ -1,4 +1,4 @@
-import { BarnetilleggSeksjon } from "~/routes/$soknadId.barnetillegg";
+import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   bostedsland,
   etternavn,
@@ -6,7 +6,7 @@ import {
   fødselsdato,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 
-export const mockBarnetillegg: BarnetilleggSeksjon = {
+export const mockBarnetillegg: SeksjonSvar = {
   barnFraPdl: [
     {
       id: "b2f1e8c7-3a4d-4e2b-9c1f-7a8b6d5e4c3f",

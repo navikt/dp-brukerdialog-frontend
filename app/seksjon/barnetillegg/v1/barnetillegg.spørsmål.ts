@@ -4,14 +4,24 @@ export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const forsørgerDuBarnSomIkkeVisesHer = "forsørger-du-barn-som-ikke-vises-her";
 export const erTilbakenavigering = "erTilbakenavigering";
+export const dokumentasjonskrav = "dokumentasjonskrav";
+export const versjon = "versjon";
 
-export type Barn = {
+export type BarnLagtManueltType = {
   id: string;
   [fornavnOgMellomnavn]: string;
   [etternavn]: string;
   [fødselsdato]: string;
   [bostedsland]: string;
-  dokumentasjonskrav?: string[];
+  [dokumentasjonskrav]?: string[];
+};
+
+export type BarnFraPdlType = {
+  id: string;
+  [fornavnOgMellomnavn]: string;
+  [etternavn]: string;
+  [fødselsdato]: string;
+  [bostedsland]: string;
   [forsørgerDuBarnet]?: "ja" | "nei";
 };
 
@@ -37,7 +47,7 @@ export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";
 export const forsørgerDuBarnet = "forsørger-du-barnet";
 
-export const barnFraPdlSpørsmål: KomponentType[] = [
+export const pdlBarnSpørsmål: KomponentType[] = [
   {
     id: fornavnOgMellomnavn,
     type: "registeropplysning",

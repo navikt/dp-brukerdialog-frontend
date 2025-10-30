@@ -1,12 +1,12 @@
 import {
-  Barn,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
   fødselsdato,
+  BarnFraPdlType,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 
-export const mockBarnFraPdl: Barn[] = [
+export const mockBarnFraPdl: BarnFraPdlType[] = [
   {
     id: "1",
     [fornavnOgMellomnavn]: "FIOLETT",

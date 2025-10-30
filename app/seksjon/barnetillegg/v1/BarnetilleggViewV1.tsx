@@ -5,34 +5,35 @@ import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, BarnetilleggSeksjon, loader } from "~/routes/$soknadId.barnetillegg";
+import { action, SeksjonSvar, loader } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
-  Barn,
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  barnFraPdlSpørsmål,
+  pdlBarnSpørsmål,
+  BarnFraPdlType,
   erTilbakenavigering,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
   seksjonsvar,
+  BarnLagtManueltType,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdl";
-import { BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManuelt";
+import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/PdlBarn";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { BarnLagtManuelt } from "./komponenter/BarnLagtManuelt";
 
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
-  const { seksjon, versjon } = useLoaderData<typeof loader>();
-  const { state } = useNavigation();
+  const { svar, versjon } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { state } = useNavigation();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
   const {
@@ -53,7 +54,7 @@ export function BarnetilleggViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...seksjon, versjon },
+    defaultValues: { ...svar, versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -78,16 +79,16 @@ export function BarnetilleggViewV1() {
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
 
-    const barnetilleggResponse: BarnetilleggSeksjon = {
+    const barnetilleggResponse: SeksjonSvar = {
       barnFraPdl: barnFraPdl,
-      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
       barnLagtManuelt: barnLagtManuelt,
+      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
     };
 
     const pdfPayload = {
       navn: "Barnetillegg",
       spørsmål: [
-        ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
+        ...barnFraPdl.map((barn) => lagSeksjonPayload(pdlBarnSpørsmål, barn)),
         ...lagSeksjonPayload(barnetilleggSpørsmål, form.transient.value()),
         ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
           lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
@@ -95,9 +96,11 @@ export function BarnetilleggViewV1() {
       ],
     };
 
+    const dokumentasjonskravJson = JSON.stringify(dokumentasjonskrav);
+
     form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
     form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-    form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
+    form.setValue("dokumentasjonskrav", dokumentasjonskravJson);
     form.submit();
   }
 
@@ -108,11 +111,13 @@ export function BarnetilleggViewV1() {
       return;
     }
 
-    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn[forsørgerDuBarnet]);
+    const harUbesvartBarnFraPdl = barnFraPdl.some(
+      (barn: BarnFraPdlType) => !barn[forsørgerDuBarnet]
+    );
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      const barnetilleggResponse: BarnetilleggSeksjon = {
+      const barnetilleggResponse: SeksjonSvar = {
         barnFraPdl: barnFraPdl,
         [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
         barnLagtManuelt: barnLagtManuelt,
@@ -121,7 +126,7 @@ export function BarnetilleggViewV1() {
       const pdfPayload = {
         navn: "Barnetillegg",
         spørsmål: [
-          ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
+          ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(pdlBarnSpørsmål, etBarnFraPdl)),
           ...lagSeksjonPayload(barnetilleggSpørsmål, form.transient.value()),
           ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
             lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
@@ -153,7 +158,7 @@ export function BarnetilleggViewV1() {
       </BodyLong>
       <VStack gap="10">
         <VStack gap="space-16">
-          {barnFraPdl.map((barn: Barn) => (
+          {barnFraPdl.map((barn: BarnFraPdlType) => (
             <BarnFraPdl key={barn.id} barn={barn} />
           ))}
         </VStack>
@@ -182,7 +187,7 @@ export function BarnetilleggViewV1() {
           </VStack>
         </Form>
         <VStack gap="space-16">
-          {barnLagtManuelt?.map((barn: Barn) => (
+          {barnLagtManuelt?.map((barn: BarnLagtManueltType) => (
             <BarnLagtManuelt key={barn.id} barn={barn} />
           ))}
         </VStack>
