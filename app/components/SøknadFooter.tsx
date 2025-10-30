@@ -1,6 +1,6 @@
 import { Button, HStack } from "@navikt/ds-react";
 import { FloppydiskIcon } from "@navikt/aksel-icons";
-import { SlettSøknadSpørsmålModal } from "~/components/SlettSøknadSpørsmålModal";
+import { SlettSøknadModal } from "~/components/SlettSøknadModal";
 
 interface SøknadFooterProps {
   soknadId: string;
@@ -17,7 +17,7 @@ export function SøknadFooter({ soknadId }: SøknadFooterProps) {
         >
           Fortsett senere
         </Button>
-        <SlettSøknadSpørsmålModal søknadId={soknadId} />
+        <SlettSøknadModal søknadId={soknadId} />
       </HStack>
     </div>
   );
