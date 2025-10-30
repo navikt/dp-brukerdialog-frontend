@@ -12,7 +12,6 @@ import {
 import { useForm } from "@rvf/react-router";
 import { Form, useParams } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import {
   dokumentasjonskravSpørsmål,
@@ -27,6 +26,7 @@ import {
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.spørsmål";
 import { FilOpplasting } from "./FilOpplasting";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
 export type DokumentasjonskravType = {
   id: string;

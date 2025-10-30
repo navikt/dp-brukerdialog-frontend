@@ -55,11 +55,10 @@ function BarnetilleggProvider({
   children,
 }: BarnetilleggProviderProps) {
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
+  const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
-  const [dokumentasjonskrav, setDokumentasjonskrav] =
-    useState<DokumentasjonskravType[]>(dokumentasjonskravProps);
-  const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
+  const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
 
   return (
     <BarnetilleggContext.Provider

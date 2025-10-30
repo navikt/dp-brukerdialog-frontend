@@ -1,6 +1,12 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
-import { hentBarn } from "~/models/hent-barn.server";
+import { hentPdlBarn as hentBarnFraPdl } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
@@ -18,55 +24,68 @@ import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
-export type BarnetilleggResponse = BarnetilleggSvar & {
+export type BarnFraPdl = {
+  id: string;
+  fornavnOgMellomnavn: string;
+  etternavn: string;
+  fødselsdato: string;
+  bostedsland: string;
+};
+
+export type BarnetilleggSeksjon = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
   barnLagtManuelt?: Barn[];
 };
 
-type BarnetilleggResponseType = {
-  seksjonsId?: string;
-  seksjon?: BarnetilleggResponse;
+type BarnetilleggResponse = {
+  seksjonsId: string;
+  seksjon?: BarnetilleggSeksjon;
   dokumentasjonskrav?: DokumentasjonskravType[];
   versjon: number;
 };
 
 const NYESTE_VERSJON = 1;
+const SEKSJON_ID = "barnetillegg";
+const NESTE_SEKSJON_ID = "reell-arbeidssoker";
+const FORRIGE_SEKSJON_ID = "utdanning";
 
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<BarnetilleggResponseType> {
+}: LoaderFunctionArgs): Promise<BarnetilleggResponse> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "barnetillegg");
+  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
   if (!response.ok) {
-    const barnFraPdlResponse = await hentBarn(request);
+    const barnFraPdlResponse = await hentBarnFraPdl(request);
 
     if (!barnFraPdlResponse.ok) {
       return {
+        seksjonsId: SEKSJON_ID,
         versjon: NYESTE_VERSJON,
         seksjon: undefined,
       };
     }
 
-    const barnFraPdl = await barnFraPdlResponse.json();
-
-    const barn = barnFraPdl.map((etBarnFraPdl: any) => {
+    const barnFraPdlData: BarnFraPdl[] = await barnFraPdlResponse.json();
+    const barnFraPdl: Barn[] = barnFraPdlData.map((barn) => {
       return {
-        [fornavnOgMellomnavn]: etBarnFraPdl.fornavnOgMellomnavn,
-        [etternavn]: etBarnFraPdl.etternavn,
-        [fødselsdato]: etBarnFraPdl.fødselsdato,
-        [bostedsland]: etBarnFraPdl.bostedsland,
-      } as Barn;
+        id: barn.id,
+        [fornavnOgMellomnavn]: barn.fornavnOgMellomnavn,
+        [etternavn]: barn.etternavn,
+        [fødselsdato]: barn.fødselsdato,
+        [bostedsland]: barn.bostedsland,
+      };
     });
 
     return {
+      seksjonsId: SEKSJON_ID,
       versjon: NYESTE_VERSJON,
       seksjon: {
         [forsørgerDuBarnSomIkkeVisesHer]: undefined,
         barnLagtManuelt: [],
-        barnFraPdl: barn,
+        barnFraPdl: barnFraPdl,
       },
     };
   }
@@ -79,25 +98,22 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
-  const seksjonId = "barnetillegg";
-  const nesteSeksjonId = "reell-arbeidssoker";
-  const forrigeSeksjonId = "utdanning";
+  const versjon = formData.get("versjon");
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
-  const versjon = formData.get("versjon");
   const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
   const putSeksjonRequest = {
     seksjonsvar: JSON.stringify({
-      seksjonId,
+      seksjonId: SEKSJON_ID,
       seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
-      dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string)
+      dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
     }),
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
+  const response = await lagreSeksjonV2(request, params.soknadId, SEKSJON_ID, putSeksjonRequest);
 
   if (response.status !== 200) {
     return {
@@ -106,36 +122,37 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 
   if (erTilbakeknapp) {
-    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function BarntilleggRoute() {
-  const loaderData: BarnetilleggResponseType = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
+  const { versjon, seksjon, dokumentasjonskrav } = useLoaderData<typeof loader>();
 
-  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+  const loaderData = useLoaderData<typeof loader>();
+  // console.log(`🔥 loaderData :`, loaderData);
+
+  switch (versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData?.seksjon?.barnFraPdl || []}
-          barnLagtManuelt={loaderData?.seksjon?.barnLagtManuelt || []}
-          dokumentasjonskrav={loaderData?.dokumentasjonskrav || []}
+          barnFraPdl={seksjon?.barnFraPdl || []}
+          barnLagtManuelt={seksjon?.barnLagtManuelt || []}
+          dokumentasjonskrav={dokumentasjonskrav || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>
       );
     default:
-      console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for barnetillegg for søknaden ${soknadId}`
-      );
+      console.error(`Ukjent versjonsnummer: ${versjon} for barnetillegg for søknaden ${soknadId}`);
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData?.seksjon?.barnFraPdl || []}
-          barnLagtManuelt={loaderData?.seksjon?.barnLagtManuelt || []}
-          dokumentasjonskrav={loaderData?.dokumentasjonskrav || []}
+          barnFraPdl={seksjon?.barnFraPdl || []}
+          barnLagtManuelt={seksjon?.barnLagtManuelt || []}
+          dokumentasjonskrav={dokumentasjonskrav || []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>

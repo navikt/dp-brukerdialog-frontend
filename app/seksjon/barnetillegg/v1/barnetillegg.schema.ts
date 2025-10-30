@@ -18,7 +18,7 @@ import { valider } from "~/utils/validering.utils";
 
 export const barnetilleggSchema = z
   .object({
-    dokumentasjonskrav: z.string().optional(),
+    dokumentasjonskrav: z.array(z.string()).optional(),
     versjon: z.number().optional(),
     [seksjonsvar]: z.string().optional(),
     [pdfGrunnlag]: z.string().optional(),
@@ -44,7 +44,7 @@ export const barnFraPdlSchema = z
     [etternavn]: z.string().optional(),
     [fødselsdato]: z.string().optional(),
     [bostedsland]: z.string().optional(),
-    dokumentasjonskravId: z.string().optional(),
+    dokumentasjonskrav: z.array(z.string()).optional(),
     [forsørgerDuBarnet]: z.enum(["ja", "nei"]).optional(),
   })
   .superRefine((data, ctx) => {
