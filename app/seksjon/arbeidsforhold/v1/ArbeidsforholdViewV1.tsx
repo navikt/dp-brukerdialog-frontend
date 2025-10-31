@@ -8,6 +8,8 @@ import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
   Arbeidsforhold,
+  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
+  arbeidsforholdModalSpørsmål,
   ArbeidsforholdResponse,
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
@@ -17,7 +19,8 @@ import {
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDuJobbet,
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
-  payload,
+  pdfGrunnlag,
+  seksjonsvar,
   varierendeArbeidstidDeSiste12Månedene,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
@@ -25,8 +28,30 @@ import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsfor
 import { useEffect, useRef, useState } from "react";
 import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
+import { arbeidsforholdModalJegHarSagtOppSelvSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
+import {
+  arbeidsforholdModalJegHarFåttAvskjedSpørsmål
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
+import {
+  arbeidsforholdModalKontraktenErUgåttSpørsmål
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
+import {
+  arbeidsforholdModalArbeidstidenErRedusertSpørsmål
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
+import {
+  arbeidsforholdModalArbeidsgiverErKonkursSpørsmål
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
+import {
+  arbeidsforholdModalJegErPermittertSpørsmål
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
+import {
+  arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 
 export function ArbeidsforholdViewV1() {
+  const seksjonnavn = "Arbeidsforhold";
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -109,11 +134,37 @@ export function ArbeidsforholdViewV1() {
     };
   }
 
-  function handleTilbakenavigering() {
-    form.setValue(erTilbakenavigering, true);
+  const genererPdfGrunnlag = () => {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(arbeidsforholdSpørsmål, form.transient.value()),
+        ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
+          lagSeksjonPayload(
+            arbeidsforholdModalSpørsmål
+              .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål)
+              .concat(arbeidsforholdModalJegHarSagtOppSelvSpørsmål)
+              .concat(arbeidsforholdModalJegHarFåttAvskjedSpørsmål)
+              .concat(arbeidsforholdModalKontraktenErUgåttSpørsmål)
+              .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
+              .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
+              .concat(arbeidsforholdModalJegErPermittertSpørsmål)
+              .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
+              .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål),
+            etArbeidsforhold
+          )
+        ),
+      ],
+    };
 
+    return JSON.stringify(pdfPayload);
+  };
+
+  function handleTilbakenavigering() {
     const arbeidsforholdResponse = lagArbeidsforholdResponse();
-    form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
+    form.setValue(erTilbakenavigering, true);
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(seksjonsvar, JSON.stringify(arbeidsforholdResponse));
 
     form.submit();
   }
@@ -132,15 +183,14 @@ export function ArbeidsforholdViewV1() {
       return;
     }
 
-    const arbeidsforholdResponse = lagArbeidsforholdResponse();
-    form.setValue(payload, JSON.stringify(arbeidsforholdResponse));
-
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
     form.submit();
   }
 
   return (
     <div className="innhold">
-      <h2>Arbeidsforhold</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
@@ -215,7 +265,7 @@ export function ArbeidsforholdViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
                 onClick={handleSubmit}

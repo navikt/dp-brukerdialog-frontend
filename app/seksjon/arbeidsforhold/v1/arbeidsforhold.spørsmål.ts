@@ -70,7 +70,8 @@ import {
   ikkeEndretVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 
-export const payload = "payload";
+export const seksjonsvar = "seksjonsvar";
+export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
 export const hvordanHarDuJobbet = "hvordan-har-du-jobbet";
 export const fastArbeidstidIMindreEnn6Måneder = "fast-arbeidstid-i-mindre-enn-6-måneder";
@@ -103,9 +104,9 @@ export const harDuJobbetSkiftTurnusEllerRotasjon = "har-du-jobbet-skift-turnus-e
 export const hvilkenTypeRotasjonsordningJobbetDu = "hvilken-type-rotasjonsordning-jobbet-du";
 export const annenRotasjonBeskrivelse = "annen-rotasjon-beskrivelse";
 export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed =
-  "oppgi-siste-arbeidsperiode-iden-siste-rotasjonen-din-dato-fra-og-med";
+  "oppgi-siste-arbeidsperiode-i-den-siste-rotasjonen-din-dato-fra-og-med";
 export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed =
-  "oppgi-siste-arbeidsperiode-iden-siste-rotasjonen-din-dato-til-og-med";
+  "oppgi-siste-arbeidsperiode-i-den-siste-rotasjonen-din-dato-til-og-med";
 
 export type Arbeidsforhold = {
   [navnetPåBedriften]?: string;
