@@ -1,12 +1,19 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerView";
 import {
   erTilbakenavigering,
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
 type TilleggsopplysningerSvarType = {
@@ -45,16 +52,22 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erTilbakenavigering
+      key !== erTilbakenavigering &&
+      key !== "pdfGrunnlag"
   );
-  const seksjonData = Object.fromEntries(filtrertEntries);
-
+  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
-  const seksjonDataMedVersjon = {
-    seksjon: seksjonData,
-    versjon: Number(versjon),
+
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjon: normaliserFormData(seksjonsData),
+      versjon: Number(versjon),
+    }),
+    pdfGrunnlag: pdfGrunnlag,
   };
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
+
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
     return {
