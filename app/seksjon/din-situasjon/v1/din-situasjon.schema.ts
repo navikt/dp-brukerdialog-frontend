@@ -4,6 +4,7 @@ import {
   DinSituasjonSvar,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
   hvilkenDatoSøkerDuDagpengerFra,
+  pdfGrunnlag,
   årsakTilAtDagpengeneBleStanset,
 } from "./din-situasjon.spørsmål";
 import { valider } from "~/utils/validering.utils";
@@ -11,6 +12,7 @@ import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggso
 
 export const dinSituasjonSchema = z
   .object({
+    [pdfGrunnlag]: z.string().optional(),
     [harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene]: z
       .enum(["ja", "nei", "vetikke"])
       .optional(),

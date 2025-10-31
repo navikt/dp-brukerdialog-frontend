@@ -1,6 +1,7 @@
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
+export const pdfGrunnlag = "pdfGrunnlag";
 export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene =
   "har-du-mottatt-dagpenger-fra-nav-iløpet-av-de-siste-52-ukene";
 export const årsakTilAtDagpengeneBleStanset = "årsak-til-at-dagpengene-ble-stanset";

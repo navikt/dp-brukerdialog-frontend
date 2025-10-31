@@ -8,9 +8,10 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
 
@@ -47,17 +48,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erTilbakenavigering
+      key !== erTilbakenavigering &&
+      key !== "pdfGrunnlag"
   );
-  const seksjonData = Object.fromEntries(filtrertEntries);
-
+  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
-  const payload = {
-    versjon: Number(versjon),
-    seksjon: seksjonData,
+
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjon: normaliserFormData(seksjonsData),
+      versjon: Number(versjon),
+    }),
+    pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, payload);
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
+
   if (response.status !== 200) {
     return {
       error: "Noe gikk galt ved lagring av din situasjon",
