@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
-import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerView";
+import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
   erTilbakenavigering,
   TilleggsopplysningerSvar,
