@@ -6,7 +6,13 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
-import { dinSituasjonSpørsmål, DinSituasjonSvar, erTilbakenavigering, } from "./din-situasjon.spørsmål";
+import {
+  dinSituasjonSpørsmål,
+  DinSituasjonSvar,
+  erTilbakenavigering,
+  pdfGrunnlag,
+} from "./din-situasjon.spørsmål";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function DinSituasjonViewV1() {
   const loaderData = useLoaderData<typeof loader>();
@@ -26,14 +32,33 @@ export function DinSituasjonViewV1() {
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
 
+  const genererPdfPayload = () => {
+    const pdfPayload = {
+      navn: "Din situasjon",
+      spørsmål: [
+        ...lagSeksjonPayload(dinSituasjonSpørsmål, form.transient.value()),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
   function handleTilbakenavigering() {
+    form.setValue(pdfGrunnlag, genererPdfPayload());
     form.setValue(erTilbakenavigering, true);
     form.submit();
   }
 
+  async function handleSubmit() {
+    if (Object.values(await form.validate()).length === 0) {
+      form.setValue(pdfGrunnlag, genererPdfPayload());
+      form.submit();
+    }
+  }
+
   return (
     <div className="innhold">
-      <h2>Din situasjon</h2>
+      <h2>'Din situ'asjon</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
@@ -70,7 +95,8 @@ export function DinSituasjonViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
               >
