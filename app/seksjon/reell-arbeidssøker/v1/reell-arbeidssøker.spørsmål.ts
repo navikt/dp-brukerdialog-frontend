@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
+export const pdfGrunnlag = "pdfGrunnlag";
 export const kanDuJobbeBådeHeltidOgDeltid = "kan-du-jobbe-både-heltid-og-deltid";
 export const kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg =
   "kan-ikke-jobbe-heltid-og-deltid-situasjonen-som-gjelder-deg";

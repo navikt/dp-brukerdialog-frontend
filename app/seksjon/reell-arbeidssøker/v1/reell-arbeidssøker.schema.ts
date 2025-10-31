@@ -25,6 +25,7 @@ import {
   kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
   kanIkkeJobbeIHeleNorgeRedusertHelse,
   kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+  pdfGrunnlag,
   reellArbeidssøkerSpørsmål,
   ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.spørsmål";
@@ -33,6 +34,7 @@ import { valider } from "~/utils/validering.utils";
 
 export const reellArbeidssøkerSchema = z
   .object({
+    [pdfGrunnlag]: z.string().optional(),
     [kanDuJobbeBådeHeltidOgDeltid]: z.enum(["ja", "nei"]).optional(),
     [kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]: z
       .array(
