@@ -21,7 +21,8 @@ import {
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
-  payload,
+  seksjonsvar,
+  pdfGrunnlag,
   varierendeArbeidstidDeSiste12Månedene,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
@@ -108,7 +109,8 @@ import { valider } from "~/utils/validering.utils";
 
 export const arbeidsforholdSchema = z
   .object({
-    [payload]: z.string().optional(),
+    [seksjonsvar]: z.string().optional(),
+    [pdfGrunnlag]: z.string().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
     [hvordanHarDuJobbet]: z
       .enum([

@@ -9,7 +9,7 @@ export const permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSlut
   "permittert-er-dette-et-midlertidig-arbeidsforhold-med-en-kontraktfestet-sluttdato";
 export const permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet =
   "permittert-oppgi-den-kontraktsfestede-sluttdatoen-på-dette-arbeidsforholdet";
-export const permittertNårStartetDuIDenneJobben = "permittert-når-startet-du-idenne-jobben";
+export const permittertNårStartetDuIDenneJobben = "permittert-når-startet-du-i-denne-jobben";
 export const permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien =
   "permittert-er-du-permittert-fra-fiskeforedlings-eller-fiskeoljeindustrien";
 export const permittertVetDuHvorMangeTimerDuJobbetIUka =
