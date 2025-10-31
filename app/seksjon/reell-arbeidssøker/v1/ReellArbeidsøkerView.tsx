@@ -9,9 +9,11 @@ import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import {
   erTilbakenavigering,
+  pdfGrunnlag,
   reellArbeidssøkerSpørsmål,
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function ReellArbeidssøkerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
@@ -31,9 +33,26 @@ export function ReellArbeidssøkerViewV1() {
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
 
+  const genererPdfGrunnlag = () => {
+    const pdfPayload = {
+      navn: "Reell Arbeidssøker",
+      spørsmål: [
+        ...lagSeksjonPayload(reellArbeidssøkerSpørsmål, form.transient.value()),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
   function handleTilbakenavigering() {
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(erTilbakenavigering, true);
     form.submit();
+  }
+
+  async function handleSubmit() {
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.submit()
   }
 
   return (
@@ -84,7 +103,8 @@ export function ReellArbeidssøkerViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
               >
