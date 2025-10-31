@@ -8,9 +8,11 @@ import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import {
   erTilbakenavigering,
+  pdfGrunnlag,
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function TilleggsopplysningerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
@@ -30,9 +32,28 @@ export function TilleggsopplysningerViewV1() {
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);
 
+  const genererPdfPayload = () => {
+    const pdfPayload = {
+      navn: "Tilleggsopplysninger",
+      spørsmål: [
+        ...lagSeksjonPayload(tilleggsopplysningerSpørsmål, form.transient.value()),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
   function handleTilbakenavigering() {
+    form.setValue(pdfGrunnlag, genererPdfPayload());
     form.setValue(erTilbakenavigering, true);
     form.submit();
+  }
+
+  async function handleSubmit() {
+    if (Object.values(await form.validate()).length === 0) {
+      form.setValue(pdfGrunnlag, genererPdfPayload());
+      form.submit();
+    }
   }
 
   return (
@@ -73,7 +94,8 @@ export function TilleggsopplysningerViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
               >

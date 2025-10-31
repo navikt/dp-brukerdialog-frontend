@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   erTilbakenavigering,
   harTilleggsopplysninger,
+  pdfGrunnlag,
   tilleggsopplysninger,
   tilleggsopplysningerSpørsmål,
   TilleggsopplysningerSvar,
@@ -10,6 +11,7 @@ import { valider } from "~/utils/validering.utils";
 
 export const tilleggsopplysningerSchema = z
   .object({
+    [pdfGrunnlag]: z.string().optional(),
     [harTilleggsopplysninger]: z.enum(["ja", "nei"]).optional(),
     [tilleggsopplysninger]: z.string().optional(),
     versjon: z.number().optional(),
