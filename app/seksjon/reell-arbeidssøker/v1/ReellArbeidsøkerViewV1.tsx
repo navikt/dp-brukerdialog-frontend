@@ -35,7 +35,7 @@ export function ReellArbeidssøkerViewV1() {
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
-      navn: "Reell Arbeidssøker",
+      navn: "Reell arbeidssøker",
       spørsmål: [
         ...lagSeksjonPayload(reellArbeidssøkerSpørsmål, form.transient.value()),
       ],
