@@ -7,9 +7,10 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { erTilbakenavigering, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
 import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
+import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
 
@@ -41,17 +42,27 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const nesteSeksjonId = "utdanning";
   const forrigeSeksjonId = "egen-naring";
   const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) => value !== undefined && value !== "undefined" && key !== "versjon" && key !== erTilbakenavigering
+    ([key, value]) =>
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erTilbakenavigering &&
+      key !== "pdfGrunnlag"
   );
-  const seksjonData = Object.fromEntries(filtrertEntries);
+  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
 
-  const seksjonDataMedVersjon = {
-    versjon: Number(versjon),
-    seksjon: seksjonData,
-  } as VernepliktSvar;
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjon: normaliserFormData(seksjonsData),
+      versjon: Number(versjon),
+    }),
+    pdfGrunnlag: pdfGrunnlag,
+  };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
+
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av verneplikt" };
   }

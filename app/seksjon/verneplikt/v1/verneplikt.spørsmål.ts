@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
+export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
 export const avtjentVerneplikt = "avtjent-verneplikt";
 export const dokumenterAvtjentVernepliktNå = "dokumenter-avtjent-verneplikt-nå";
