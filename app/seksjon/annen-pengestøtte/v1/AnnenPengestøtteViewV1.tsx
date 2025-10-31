@@ -38,9 +38,9 @@ import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
-const seksjonnavn = "Annen pengestøtte";
 
 export function AnnenPengestøtteViewV1() {
+  const seksjonnavn = "Annen pengestøtte";
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
