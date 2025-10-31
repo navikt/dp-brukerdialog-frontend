@@ -2,10 +2,10 @@ import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-ico
 import { Alert, BodyLong, BodyShort, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
+import { action, BarnetilleggSeksjon, loader } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
@@ -30,7 +30,8 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
-  const loaderData = useLoaderData<typeof loader>();
+  const { seksjon, versjon } = useLoaderData<typeof loader>();
+  const { state } = useNavigation();
   const actionData = useActionData<typeof action>();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
@@ -52,7 +53,7 @@ export function BarnetilleggViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...seksjon, versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
@@ -77,7 +78,7 @@ export function BarnetilleggViewV1() {
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
 
-    const barnetilleggResponse: BarnetilleggResponse = {
+    const barnetilleggResponse: BarnetilleggSeksjon = {
       barnFraPdl: barnFraPdl,
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
       barnLagtManuelt: barnLagtManuelt,
@@ -111,7 +112,7 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      const barnetilleggResponse: BarnetilleggResponse = {
+      const barnetilleggResponse: BarnetilleggSeksjon = {
         barnFraPdl: barnFraPdl,
         [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
         barnLagtManuelt: barnLagtManuelt,
@@ -158,7 +159,7 @@ export function BarnetilleggViewV1() {
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
+            <input type="hidden" name="versjon" value={versjon} />
             {barnetilleggSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
@@ -190,7 +191,7 @@ export function BarnetilleggViewV1() {
             <Button
               variant="secondary"
               type="submit"
-              icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
+              icon={<PersonPlusIcon title="a11y-title" aria-hidden />}
               onClick={() => {
                 setModalData({ operasjon: ModalOperasjonEnum.LeggTil });
               }}
@@ -217,8 +218,9 @@ export function BarnetilleggViewV1() {
           <Button
             variant="secondary"
             type="button"
-            icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+            icon={<ArrowLeftIcon title="a11y-title" aria-hidden />}
             onClick={handleTilbakenavigering}
+            loading={state === "submitting" || state === "loading"}
           >
             Forrige steg
           </Button>
@@ -227,7 +229,8 @@ export function BarnetilleggViewV1() {
             type="submit"
             onClick={handleSubmit}
             iconPosition="right"
-            icon={<ArrowRightIcon />}
+            icon={<ArrowRightIcon aria-hidden />}
+            loading={state === "submitting" || state === "loading"}
           >
             Neste steg
           </Button>

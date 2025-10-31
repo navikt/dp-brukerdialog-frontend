@@ -8,7 +8,7 @@ import {
   fødselsdato,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
+import { BarnetilleggSeksjon } from "~/routes/$soknadId.barnetillegg";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { formaterNorskDato } from "~/utils/formattering.utils";
@@ -23,7 +23,7 @@ export default function BarnetilleggOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
-  const barnetilleggSvar = seksjonSvarene as BarnetilleggResponse;
+  const barnetilleggSvar = seksjonSvarene as BarnetilleggSeksjon;
   const entries = Object.entries(barnetilleggSvar);
   const forsørgerDuBarnSomIkkeVisesHerSvar = barnetilleggSvar[forsørgerDuBarnSomIkkeVisesHer];
 

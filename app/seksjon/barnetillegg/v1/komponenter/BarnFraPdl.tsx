@@ -16,19 +16,21 @@ import {
 import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { BarnFraPdl } from "~/routes/$soknadId.barnetillegg";
 
 interface IProps {
   barn: Barn;
 }
 
-export function BarnFraPdl({ barn }: IProps) {
+export function BarnFraPdl({ barn: barnProps }: IProps) {
   const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
 
   const form = useForm({
     submitSource: "state",
     schema: barnFraPdlSchema,
     defaultValues: {
-      ...barn,
+      ...barnProps,
+      [forsørgerDuBarnet]: barnProps[forsørgerDuBarnet] ?? undefined,
     },
   });
 
@@ -42,27 +44,29 @@ export function BarnFraPdl({ barn }: IProps) {
     const forsørgerDuBarnetSvar = form.value("forsørger-du-barnet");
 
     if (form.formState.isDirty && forsørgerDuBarnetSvar !== undefined) {
-      const oppdatertListe = barnFraPdl.map((etBarn) =>
-        etBarn.id === barn.id ? { ...etBarn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar, } : etBarn
-      );
-
-      setbarnFraPdl(oppdatertListe);
+      console.log("dirty");
+      // const oppdatertBarnFraPdl = barnFraPdl.map((barn) =>
+      //   barn.id === barnProps.id ? { ...barn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar } : barn
+      // );
+      // setbarnFraPdl(oppdatertBarnFraPdl);
     }
-  }, [form.formState]);
+  }, [form]);
+
+  console.log();
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <Heading size="small" spacing>
-        {barn[fornavnOgMellomnavn]} {barn[etternavn]}
+        {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
-      {barn[fødselsdato] && (
+      {barnProps[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barn[fødselsdato]))}
+          Født {formaterNorskDato(new Date(barnProps[fødselsdato]))}
         </BodyShort>
       )}
-      {barn[bostedsland] && (
+      {barnProps[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barn[bostedsland]).toUpperCase()}
+          BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
 
@@ -76,7 +80,7 @@ export function BarnFraPdl({ barn }: IProps) {
             <Spørsmål
               key={spørsmål.id}
               spørsmål={spørsmål}
-              formScope={form.scope(spørsmål.id as keyof Barn)}
+              formScope={form.scope(spørsmål.id as keyof BarnFraPdl)}
             />
           );
         })}
