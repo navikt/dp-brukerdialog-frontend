@@ -6,7 +6,13 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
-import { erTilbakenavigering, vernepliktSpørsmål, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+import {
+  erTilbakenavigering,
+  pdfGrunnlag,
+  vernepliktSpørsmål,
+  VernepliktSvar,
+} from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export default function VernepliktViewV1() {
   const actionData = useActionData<typeof action>();
@@ -26,9 +32,28 @@ export default function VernepliktViewV1() {
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
 
+  const genererPdfGrunnlag = () => {
+    const pdfPayload = {
+      navn: "Verneplikt",
+      spørsmål: [
+        ...lagSeksjonPayload(vernepliktSpørsmål, form.transient.value()),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
   function handleTilbakenavigering() {
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(erTilbakenavigering, true);
     form.submit();
+  }
+
+  async function handleSubmit() {
+    if (Object.values(await form.validate()).length === 0) {
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.submit();
+    }
   }
 
   return (
@@ -71,7 +96,8 @@ export default function VernepliktViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
               >
