@@ -12,7 +12,8 @@ import {
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
 
-export const payload = "payload"
+export const seksjonsvar = "seksjonsvar"
+export const pdfGrunnlag = "pdfGrunnlag"
 export const erTilbakenavigering = "erTilbakenavigering";
 
 export type AnnenPengestøtteSvar = {
