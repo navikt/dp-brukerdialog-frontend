@@ -6,7 +6,13 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.utdanning";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
-import { erTilbakenavigering, utdanningSpørsmål, UtdanningSvar, } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import {
+  erTilbakenavigering,
+  pdfGrunnlag,
+  utdanningSpørsmål,
+  UtdanningSvar,
+} from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function UtdanningViewV1() {
   const loaderData = useLoaderData<typeof loader>();
@@ -26,9 +32,29 @@ export function UtdanningViewV1() {
 
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSpørsmål);
 
+  const genererPdfGrunnlag = () => {
+    const pdfPayload = {
+      navn: "Utdanning",
+      spørsmål: [
+        ...lagSeksjonPayload(utdanningSpørsmål, form.transient.value()),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
   function handleTilbakenavigering() {
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(erTilbakenavigering, true);
     form.submit();
+  }
+
+  async function handleSubmit() {
+    if (Object.values(await form.validate()).length === 0) {
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.submit();
+    }
+
   }
 
   return (
@@ -70,7 +96,8 @@ export function UtdanningViewV1() {
               </Button>
               <Button
                 variant="primary"
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon />}
               >
