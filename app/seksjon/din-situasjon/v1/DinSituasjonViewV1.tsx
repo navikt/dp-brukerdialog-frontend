@@ -58,7 +58,7 @@ export function DinSituasjonViewV1() {
 
   return (
     <div className="innhold">
-      <h2>'Din situ'asjon</h2>
+      <h2>Din situasjon</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
