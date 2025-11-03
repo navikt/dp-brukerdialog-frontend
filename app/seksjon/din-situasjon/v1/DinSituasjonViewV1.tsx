@@ -15,6 +15,7 @@ import {
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function DinSituasjonViewV1() {
+  const seksjonnavn = "Din situasjon";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
@@ -34,7 +35,7 @@ export function DinSituasjonViewV1() {
 
   const genererPdfPayload = () => {
     const pdfPayload = {
-      navn: "Din situasjon",
+      navn: seksjonnavn,
       spørsmål: [
         ...lagSeksjonPayload(dinSituasjonSpørsmål, form.transient.value()),
       ],
@@ -58,7 +59,7 @@ export function DinSituasjonViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Din situasjon</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>

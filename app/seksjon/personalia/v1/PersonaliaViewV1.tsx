@@ -29,6 +29,7 @@ import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function PersonaliaViewV1() {
+  const seksjonnavn = "Personalia";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
@@ -76,7 +77,7 @@ export function PersonaliaViewV1() {
   async function handleSubmit() {
     if (Object.values(await form.validate()).length === 0) {
       const pdfPayload = {
-        navn: "Personalia",
+        navn: seksjonnavn,
         spørsmål: [
           ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
           ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
@@ -90,7 +91,7 @@ export function PersonaliaViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Personalia</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <VStack gap="4">
           <BodyLong>
