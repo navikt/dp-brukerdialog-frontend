@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, SeksjonSvar, loader } from "~/routes/$soknadId.barnetillegg";
+import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjonEnum,
   useBarnetilleggContext,
@@ -14,17 +14,17 @@ import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schem
 import {
   barnetilleggSpørsmål,
   BarnetilleggSvar,
-  pdlBarnSpørsmål,
   BarnFraPdlType,
+  BarnLagtManueltType,
   erTilbakenavigering,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
+  pdlBarnSpørsmål,
   seksjonsvar,
-  BarnLagtManueltType,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/PdlBarn";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
+import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/PdlBarn";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { BarnLagtManuelt } from "./komponenter/BarnLagtManuelt";
@@ -32,10 +32,10 @@ import { BarnLagtManuelt } from "./komponenter/BarnLagtManuelt";
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
   const { svar, versjon } = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const [harEnFeil, setHarEnFeil] = useState(false);
   const [harEtVarsel, setHarEtVarsel] = useState(false);
+  const actionData = useActionData<typeof action>();
   const {
     barnFraPdl,
     barnLagtManuelt,

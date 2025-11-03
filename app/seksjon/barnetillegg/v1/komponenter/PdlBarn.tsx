@@ -40,7 +40,7 @@ export function BarnFraPdl({ barn: barnProps }: IProps) {
   }, [validerBarnFraPdl]);
 
   useEffect(() => {
-    const forsørgerDuBarnetSvar = form.value("forsørger-du-barnet");
+    const forsørgerDuBarnetSvar = form.value(forsørgerDuBarnet);
 
     if (form.formState.isDirty && forsørgerDuBarnetSvar !== undefined) {
       const oppdatertBarnFraPdl = barnFraPdl.map((barn) =>

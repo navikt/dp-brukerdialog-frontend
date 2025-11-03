@@ -2,7 +2,7 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
-export const forsørgerDuBarnSomIkkeVisesHer = "forsørger-du-barn-som-ikke-vises-her";
+export const forsørgerDuBarnSomIkkeVisesHer = "forsørgerDuBarnSomIkkeVisesHer";
 export const erTilbakenavigering = "erTilbakenavigering";
 export const dokumentasjonskrav = "dokumentasjonskrav";
 export const versjon = "versjon";
@@ -41,11 +41,11 @@ export const barnetilleggSpørsmål: KomponentType[] = [
   },
 ];
 
-export const fornavnOgMellomnavn = "fornavn-og-mellomnavn";
+export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
 export const etternavn = "etternavn";
 export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";
-export const forsørgerDuBarnet = "forsørger-du-barnet";
+export const forsørgerDuBarnet = "forsørgerDuBarnet";
 
 export const pdlBarnSpørsmål: KomponentType[] = [
   {

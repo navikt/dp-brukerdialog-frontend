@@ -32,8 +32,8 @@ export type SeksjonSvar = BarnetilleggSvar & {
 
 type BarnetilleggSeksjon = {
   id: string;
-  dokumentasjonskrav?: DokumentasjonskravType[];
   svar?: SeksjonSvar;
+  dokumentasjonskrav?: DokumentasjonskravType[];
   versjon: number;
 };
 
@@ -69,16 +69,7 @@ export async function loader({
       };
     }
 
-    const barnFraPdlData: PdlBarnResponse[] = await barnFraPdlResponse.json();
-    const barnFraPdl: BarnLagtManueltType[] = barnFraPdlData.map((barn) => {
-      return {
-        id: barn.id,
-        [fornavnOgMellomnavn]: barn.fornavnOgMellomnavn,
-        [etternavn]: barn.etternavn,
-        [fødselsdato]: barn.fødselsdato,
-        [bostedsland]: barn.bostedsland,
-      };
-    });
+    const barnFraPdl: BarnFraPdlType[] = await barnFraPdlResponse.json();
 
     return {
       id: SEKSJON_ID,
@@ -106,13 +97,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequest = {
     seksjonsvar: JSON.stringify({
-      seksjonId: SEKSJON_ID,
-      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
-      versjon: Number(versjon),
+      id: SEKSJON_ID,
+      svar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
+      versjon: Number(versjon),
     }),
     pdfGrunnlag: pdfGrunnlag,
   };
+
+  console.log(putSeksjonRequest);
 
   const response = await lagreSeksjonV2(request, params.soknadId, SEKSJON_ID, putSeksjonRequest);
 
