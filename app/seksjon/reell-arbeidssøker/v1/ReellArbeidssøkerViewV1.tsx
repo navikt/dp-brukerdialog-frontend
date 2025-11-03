@@ -16,6 +16,7 @@ import {
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function ReellArbeidssøkerViewV1() {
+  const seksjonnavn = "Reell arbeidssøker";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
@@ -35,7 +36,7 @@ export function ReellArbeidssøkerViewV1() {
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
-      navn: "Reell arbeidssøker",
+      navn: seksjonnavn,
       spørsmål: [
         ...lagSeksjonPayload(reellArbeidssøkerSpørsmål, form.transient.value()),
       ],
@@ -57,7 +58,7 @@ export function ReellArbeidssøkerViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Reell arbeidssøker</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />

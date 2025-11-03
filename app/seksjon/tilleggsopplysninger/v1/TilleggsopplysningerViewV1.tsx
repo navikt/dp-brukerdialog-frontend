@@ -15,6 +15,7 @@ import {
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function TilleggsopplysningerViewV1() {
+  const seksjonnavn = "Tilleggsopplysninger";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
@@ -34,7 +35,7 @@ export function TilleggsopplysningerViewV1() {
 
   const genererPdfPayload = () => {
     const pdfPayload = {
-      navn: "Tilleggsopplysninger",
+      navn: seksjonnavn,
       spørsmål: [
         ...lagSeksjonPayload(tilleggsopplysningerSpørsmål, form.transient.value()),
       ],
@@ -58,7 +59,7 @@ export function TilleggsopplysningerViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Tilleggsopplysninger</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
           <VStack gap="8">

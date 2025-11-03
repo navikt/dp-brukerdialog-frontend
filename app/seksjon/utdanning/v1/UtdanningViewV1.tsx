@@ -15,6 +15,7 @@ import {
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function UtdanningViewV1() {
+  const seksjonnavn = "Utdanning";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
@@ -34,7 +35,7 @@ export function UtdanningViewV1() {
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
-      navn: "Utdanning",
+      navn: seksjonnavn,
       spørsmål: [
         ...lagSeksjonPayload(utdanningSpørsmål, form.transient.value()),
       ],
@@ -59,7 +60,7 @@ export function UtdanningViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Utdanning</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>

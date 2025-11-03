@@ -15,6 +15,7 @@ import {
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export default function VernepliktViewV1() {
+  const seksjonnavn = "Verneplikt";
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
 
@@ -34,7 +35,7 @@ export default function VernepliktViewV1() {
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
-      navn: "Verneplikt",
+      navn: seksjonnavn,
       spørsmål: [
         ...lagSeksjonPayload(vernepliktSpørsmål, form.transient.value()),
       ],
@@ -58,7 +59,7 @@ export default function VernepliktViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Verneplikt</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
