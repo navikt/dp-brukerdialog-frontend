@@ -1,4 +1,10 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData, useParams, } from "react-router";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
@@ -92,7 +98,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       seksjonId,
       seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
-      dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string)
+      dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
     }),
     pdfGrunnlag: pdfGrunnlag,
   };
@@ -100,9 +106,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
-    return {
-      error: "Noe gikk galt ved lagring av barnetillegg",
-    };
+    return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
   if (erTilbakeknapp) {

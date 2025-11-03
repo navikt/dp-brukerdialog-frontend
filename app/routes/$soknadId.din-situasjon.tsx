@@ -66,9 +66,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
-    return {
-      error: "Noe gikk galt ved lagring av din situasjon",
-    };
+    return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
   if (erTilbakeknapp) {
