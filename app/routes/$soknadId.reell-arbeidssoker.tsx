@@ -7,12 +7,12 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjon } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import {
   erTilbakenavigering,
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
-import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidsøkerView";
+import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidssøkerViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
@@ -52,17 +52,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erTilbakenavigering
+      key !== erTilbakenavigering &&
+      value !== "pdfGrunnlag"
   );
 
-  const seksjonData = normaliserFormData(Object.fromEntries(filtrertEntries));
+  const seksjonsData = normaliserFormData(Object.fromEntries(filtrertEntries));
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
-  const seksjonDataMedVersjon = {
-    seksjon: seksjonData,
-    versjon: Number(versjon),
+
+  const putSeksjonRequest = {
+    seksjonsvar: JSON.stringify({
+      seksjon: normaliserFormData(seksjonsData),
+      versjon: Number(versjon),
+    }),
+    pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, seksjonDataMedVersjon);
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
 
   if (response.status !== 200) {
     return {

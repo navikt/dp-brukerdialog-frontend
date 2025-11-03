@@ -5,6 +5,7 @@ import {
   erTilbakenavigering,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
+  pdfGrunnlag,
   senderIkkeDokumentasjonBegrunnelse,
   vernepliktSpørsmål,
   VernepliktSvar,
@@ -13,6 +14,7 @@ import { valider } from "~/utils/validering.utils";
 
 export const vernepliktSchema = z
   .object({
+    [pdfGrunnlag]: z.string().optional(),
     [avtjentVerneplikt]: z.enum(["ja", "nei"]).optional(),
     [dokumenterAvtjentVernepliktNå]: z
       .enum(["ja", "nei", "lastOppIEtterkant", "lastetOppTidligere"])

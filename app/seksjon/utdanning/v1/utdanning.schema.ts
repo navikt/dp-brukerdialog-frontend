@@ -5,6 +5,7 @@ import {
   erTilbakenavigering,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
+  pdfGrunnlag,
   planleggerÅStarteEllerFullføreStudierSamtidig,
   senderIkkeDokumentasjonBegrunnelse,
   tarUtdanningEllerOpplæring,
@@ -15,6 +16,7 @@ import { valider } from "~/utils/validering.utils";
 
 export const utdanningSchema = z
   .object({
+    [pdfGrunnlag]: z.string().optional(),
     [tarUtdanningEllerOpplæring]: z.enum(["ja", "nei"]).optional(),
     [avsluttetUtdanningSiste6Måneder]: z.enum(["ja", "nei"]).optional(),
     [dokumenterAvsluttetUtdanningSiste6MånederNå]: z.string().optional(),

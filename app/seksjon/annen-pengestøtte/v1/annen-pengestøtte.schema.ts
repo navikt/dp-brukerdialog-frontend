@@ -3,7 +3,8 @@ import {
   annenPengestøtteSpørsmål,
   AnnenPengestøtteSvar,
   erTilbakenavigering,
-  payload,
+  seksjonsvar,
+  pdfGrunnlag,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import {
   dagpengerEllerArbeidsledighetstrygd,
@@ -40,7 +41,8 @@ const kortTekstMaksLengde = 200;
 
 export const annenPengestøtteSchema = z
   .object({
-    [payload]: z.string().optional(),
+    [seksjonsvar]: z.string().optional(),
+    [pdfGrunnlag]: z.string().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
     [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: z.enum(["ja", "nei"]).optional(),
     [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),

@@ -33,6 +33,7 @@ import {
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function EgenNæringViewV1() {
+  const seksjonnavn = "Egen næring";
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
@@ -142,7 +143,7 @@ export function EgenNæringViewV1() {
       };
 
       const pdfPayload = {
-        navn: "Egen næring",
+        navn: seksjonnavn,
         spørsmål: [
           ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, form.transient.value()),
           ...næringsvirksomheter.map((enVirksomhet) =>
@@ -163,7 +164,7 @@ export function EgenNæringViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Egen næring</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>

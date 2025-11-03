@@ -10,6 +10,7 @@ import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+  pengestøtteFraNorgeModalSpørsmål,
   PengestøtteFraNorgeModalSvar,
   pengestøtteFraNorgeSpørsmål,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
@@ -20,12 +21,14 @@ import {
   annenPengestøtteSpørsmål,
   AnnenPengestøtteSvar,
   erTilbakenavigering,
-  payload,
+  pdfGrunnlag,
+  seksjonsvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import { useEffect, useRef, useState } from "react";
 import { ModalOperasjonEnum, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
+  pengestøtteFraAndreEøsLandModalSpørsmål,
   PengestøtteFraAndreEøsLandModalSvar,
   pengestøtteFraAndreEøsLandSpørsmål,
 } from "./annen-pengestøtte-eøs.spørsmål";
@@ -33,8 +36,11 @@ import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøt
 import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+
 
 export function AnnenPengestøtteViewV1() {
+  const seksjonnavn = "Annen pengestøtte";
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
@@ -126,12 +132,33 @@ export function AnnenPengestøtteViewV1() {
     };
   }
 
+  const genererPdfGrunnlag = () => {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandSpørsmål, form.transient.value()),
+        ...pengestøtteFraAndreEøsLand.map((enPengestøtte) =>
+          lagSeksjonPayload(pengestøtteFraAndreEøsLandModalSpørsmål, enPengestøtte)
+        ),
+        ...lagSeksjonPayload(pengestøtteFraNorgeSpørsmål, form.transient.value()),
+        ...pengestøtteFraNorge.map((enPengestøtte) =>
+          lagSeksjonPayload(pengestøtteFraNorgeModalSpørsmål, enPengestøtte)
+        ),
+        ...lagSeksjonPayload(
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+          form.transient.value()
+        ),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  };
+
   function handleTilbakenavigering() {
-    form.setValue(erTilbakenavigering, true);
-
     const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
-    form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
-
+    form.setValue(erTilbakenavigering, true);
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
     form.submit();
   }
 
@@ -165,8 +192,8 @@ export function AnnenPengestøtteViewV1() {
       !manglerPengestøtteFraNorge
     ) {
       const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
-      form.setValue(payload, JSON.stringify(annenPengestøtteResponse));
-
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
       form.submit();
     }
   }
@@ -187,7 +214,7 @@ export function AnnenPengestøtteViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Annen pengstøtte</h2>
+      <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
@@ -302,7 +329,7 @@ export function AnnenPengestøtteViewV1() {
             </Button>
             <Button
               variant="primary"
-              type="submit"
+              type="button"
               iconPosition="right"
               icon={<ArrowRightIcon />}
               onClick={handleSubmit}
