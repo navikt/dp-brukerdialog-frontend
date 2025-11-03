@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentPdlBarn as hentPdlBarn } from "~/models/hent-barnPdlBarn.server";
+import { hentPdlBarn } from "~/models/hent-barnPdlBarn.server";
 import { hentSeksjon } from "~/models/hentSeksjon.server";
 import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
@@ -14,12 +14,8 @@ import {
   BarnetilleggSvar,
   BarnFraPdlType,
   BarnLagtManueltType,
-  bostedsland,
   erTilbakenavigering,
-  etternavn,
-  fornavnOgMellomnavn,
   forsørgerDuBarnSomIkkeVisesHer,
-  fødselsdato,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
@@ -37,7 +33,7 @@ type BarnetilleggSeksjon = {
   versjon: number;
 };
 
-export type PdlBarnResponse = {
+export type BarnFraPdlResponse = {
   id: string;
   fornavnOgMellomnavn: string;
   etternavn: string;
@@ -104,8 +100,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
     }),
     pdfGrunnlag: pdfGrunnlag,
   };
-
-  console.log(putSeksjonRequest);
 
   const response = await lagreSeksjonV2(request, params.soknadId, SEKSJON_ID, putSeksjonRequest);
 

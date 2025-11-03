@@ -72,8 +72,10 @@ export function BarnetilleggViewV1() {
       return;
     }
 
-    setHarEtVarsel(forsørgerDuBarnSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
-    setHarEnFeil(forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+    if (forsørgerDuBarnSomIkkeVisesHerSvar) {
+      setHarEtVarsel(forsørgerDuBarnSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
+      setHarEnFeil(forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+    }
   }, [forsørgerDuBarnSomIkkeVisesHerSvar, barnLagtManuelt.length]);
 
   function handleTilbakenavigering() {
@@ -81,8 +83,8 @@ export function BarnetilleggViewV1() {
 
     const barnetilleggResponse: SeksjonSvar = {
       barnFraPdl: barnFraPdl,
-      barnLagtManuelt: barnLagtManuelt,
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+      barnLagtManuelt: barnLagtManuelt,
     };
 
     const pdfPayload = {
