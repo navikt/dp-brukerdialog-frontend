@@ -33,7 +33,7 @@ export type Dokumentasjonskrav = {
   id: string;
   spørsmålId: string;
   tittel?: string;
-  type: DokumentasjonskravTypeEnum;
+  type: DokumentasjonskravType;
   gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
   begrunnelse?: string;
@@ -42,7 +42,7 @@ export type Dokumentasjonskrav = {
   bundleFilsti?: string;
 };
 
-export enum DokumentasjonskravTypeEnum {
+export enum DokumentasjonskravType {
   Barn = "Barn",
   Arbeidsforhold = "Arbeidsforhold",
 }
@@ -67,9 +67,9 @@ export function DokumentasjonskravKomponent({
     dokumentasjonskrav.filer ?? []
   );
 
-  function hentBeskrivelse(type: DokumentasjonskravTypeEnum) {
+  function hentBeskrivelse(type: DokumentasjonskravType) {
     switch (type) {
-      case DokumentasjonskravTypeEnum.Barn:
+      case DokumentasjonskravType.Barn:
         return (
           <ReadMore header="Dette må dokumentasjonen inneholde">
             <VStack gap="2">
@@ -89,7 +89,7 @@ export function DokumentasjonskravKomponent({
             </VStack>
           </ReadMore>
         );
-      case DokumentasjonskravTypeEnum.Arbeidsforhold:
+      case DokumentasjonskravType.Arbeidsforhold:
         return "Dokumentasjon for arbeidsforhold lagt til i søknaden";
       default:
         return "Dokumentasjon";

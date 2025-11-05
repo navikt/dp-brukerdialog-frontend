@@ -17,7 +17,7 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import {
   Dokumentasjonskrav,
-  DokumentasjonskravTypeEnum,
+  DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 interface IProps {
@@ -62,7 +62,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
           id: dokumentasjonskravId,
           spørsmålId: spørsmålId,
           tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
-          type: DokumentasjonskravTypeEnum.Barn,
+          type: DokumentasjonskravType.Barn,
         };
 
         setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
