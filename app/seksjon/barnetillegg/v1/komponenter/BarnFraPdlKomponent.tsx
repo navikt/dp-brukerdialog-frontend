@@ -5,7 +5,7 @@ import { Form } from "react-router";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
-  Barn,
+  BarnFraPdl,
   barnFraPdlSpørsmål,
   bostedsland,
   etternavn,
@@ -18,10 +18,10 @@ import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 
 interface IProps {
-  barn: Barn;
+  barn: BarnFraPdl;
 }
 
-export function BarnFraPdl({ barn }: IProps) {
+export function BarnFraPdlKomponent({ barn }: IProps) {
   const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
 
   const form = useForm({
@@ -39,11 +39,11 @@ export function BarnFraPdl({ barn }: IProps) {
   }, [validerBarnFraPdl]);
 
   useEffect(() => {
-    const forsørgerDuBarnetSvar = form.value("forsørger-du-barnet");
+    const forsørgerDuBarnetSvar = form.value(forsørgerDuBarnet);
 
     if (form.formState.isDirty && forsørgerDuBarnetSvar !== undefined) {
       const oppdatertListe = barnFraPdl.map((etBarn) =>
-        etBarn.id === barn.id ? { ...etBarn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar, } : etBarn
+        etBarn.id === barn.id ? { ...etBarn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar } : etBarn
       );
 
       setbarnFraPdl(oppdatertListe);
@@ -76,7 +76,7 @@ export function BarnFraPdl({ barn }: IProps) {
             <Spørsmål
               key={spørsmål.id}
               spørsmål={spørsmål}
-              formScope={form.scope(spørsmål.id as keyof Barn)}
+              formScope={form.scope(spørsmål.id as keyof BarnFraPdl)}
             />
           );
         })}

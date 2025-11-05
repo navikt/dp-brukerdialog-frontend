@@ -2,16 +2,26 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
-export const forsørgerDuBarnSomIkkeVisesHer = "forsørger-du-barn-som-ikke-vises-her";
+export const forsørgerDuBarnSomIkkeVisesHer = "forsørgerDuBarnSomIkkeVisesHer";
 export const erTilbakenavigering = "erTilbakenavigering";
+export const dokumentasjonskrav = "dokumentasjonskrav";
+export const versjon = "versjon";
 
-export type Barn = {
+export type BarnLagtManuelt = {
   id: string;
   [fornavnOgMellomnavn]: string;
   [etternavn]: string;
   [fødselsdato]: string;
   [bostedsland]: string;
-  dokumentasjonskravId?: string;
+  [dokumentasjonskrav]?: string[];
+};
+
+export type BarnFraPdl = {
+  id: string;
+  [fornavnOgMellomnavn]: string;
+  [etternavn]: string;
+  [fødselsdato]: string;
+  [bostedsland]: string;
   [forsørgerDuBarnet]?: "ja" | "nei";
 };
 
@@ -19,7 +29,7 @@ export type BarnetilleggSvar = {
   [forsørgerDuBarnSomIkkeVisesHer]?: "ja" | "nei";
 };
 
-export const barnetilleggSpørsmål: KomponentType[] = [
+export const barnetilleggKomponenter: KomponentType[] = [
   {
     id: forsørgerDuBarnSomIkkeVisesHer,
     type: "envalg",
@@ -31,32 +41,28 @@ export const barnetilleggSpørsmål: KomponentType[] = [
   },
 ];
 
-export const fornavnOgMellomnavn = "fornavn-og-mellomnavn";
+export const fornavnOgMellomnavn = "fornavnOgmellomnavn";
 export const etternavn = "etternavn";
 export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";
-export const forsørgerDuBarnet = "forsørger-du-barnet";
+export const forsørgerDuBarnet = "forsørgerDuBarnet";
 
 export const barnFraPdlSpørsmål: KomponentType[] = [
   {
     id: fornavnOgMellomnavn,
     type: "registeropplysning",
-    label: "",
   },
   {
     id: etternavn,
     type: "registeropplysning",
-    label: "",
   },
   {
     id: fødselsdato,
     type: "registeropplysning",
-    label: "",
   },
   {
     id: bostedsland,
     type: "registeropplysning",
-    label: "",
   },
   {
     id: forsørgerDuBarnet,

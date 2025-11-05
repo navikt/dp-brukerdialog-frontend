@@ -1,12 +1,11 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import { useEffect } from "react";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
-  Barn,
+  BarnLagtManuelt,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -16,10 +15,10 @@ import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
-  barn: Barn;
+  barn: BarnLagtManuelt;
 }
 
-export function BarnLagtManuelt({ barn }: IProps) {
+export function BarnLagtManueltKomponent({ barn }: IProps) {
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -32,7 +31,7 @@ export function BarnLagtManuelt({ barn }: IProps) {
     setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
 
     setDokumentasjonskrav(
-      dokumentasjonskrav.filter((krav) => krav.id !== barn.dokumentasjonskravId)
+      dokumentasjonskrav.filter((krav) => krav.id !== barn?.dokumentasjonskrav?.[0])
     );
   }
 

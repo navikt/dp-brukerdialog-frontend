@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  barnetilleggSpørsmål,
+  barnetilleggKomponenter,
   BarnetilleggSvar,
   bostedsland,
   erTilbakenavigering,
@@ -30,7 +30,7 @@ export const barnetilleggSchema = z
       return;
     }
 
-    barnetilleggSpørsmål.forEach((spørsmål) => {
+    barnetilleggKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof BarnetilleggSvar];
       valider(spørsmål, svar, synlig, context);

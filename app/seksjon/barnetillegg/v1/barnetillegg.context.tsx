@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import { BarnFraPdl, BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export enum ModalOperasjon {
@@ -9,14 +9,14 @@ export enum ModalOperasjon {
 
 type ModalData = {
   operasjon: ModalOperasjon;
-  barn?: Barn;
+  barn?: BarnLagtManuelt;
 };
 
 type BarnetilleggContextType = {
-  barnFraPdl: Barn[];
-  setbarnFraPdl: (barnFraPdl: Barn[]) => void;
-  barnLagtManuelt: Barn[];
-  setBarnLagtManuelt: (barnLagtManuelt: Barn[]) => void;
+  barnFraPdl: BarnFraPdl[];
+  setbarnFraPdl: (barnFraPdl: BarnFraPdl[]) => void;
+  barnLagtManuelt: BarnLagtManuelt[];
+  setBarnLagtManuelt: (barnLagtManuelt: BarnLagtManuelt[]) => void;
   validerBarnFraPdl: boolean;
   setValiderBarnFraPdl: (valider: boolean) => void;
   modalData?: ModalData;
@@ -26,8 +26,8 @@ type BarnetilleggContextType = {
 };
 
 type BarnetilleggProviderProps = {
-  barnFraPdl: Barn[];
-  barnLagtManuelt: Barn[];
+  barnFraPdl: BarnFraPdl[];
+  barnLagtManuelt: BarnLagtManuelt[];
   dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
 };

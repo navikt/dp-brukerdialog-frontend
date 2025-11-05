@@ -36,7 +36,7 @@ export const INFO_KOMPONENTER: InfoType[] = [
 
 export type KomponentBase = {
   id: string;
-  label: string;
+  label?: string;
   description?: string;
   type: SpørsmålType | InfoType;
   visHvis?: (svar: Record<string, any>) => boolean;
