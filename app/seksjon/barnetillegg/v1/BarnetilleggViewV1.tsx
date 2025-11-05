@@ -81,7 +81,7 @@ export function BarnetilleggViewV1() {
 
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
-    form.setValue(seksjonsvar, JSON.stringify(lagSeksjonSvar()));
+    form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
     form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
     form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
     form.submit();
@@ -98,14 +98,14 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      form.setValue(seksjonsvar, JSON.stringify(lagSeksjonSvar()));
+      form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
       form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
       form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
       form.submit();
     }
   }
 
-  function lagSeksjonSvar(): SeksjonSvar {
+  function lagSeksjonsvar(): SeksjonSvar {
     return {
       barnFraPdl: barnFraPdl,
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
