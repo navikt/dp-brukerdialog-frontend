@@ -7,7 +7,7 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
@@ -192,7 +192,7 @@ export function BarnetilleggViewV1() {
               type="submit"
               icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
               onClick={() => {
-                setModalData({ operasjon: ModalOperasjonEnum.LeggTil });
+                setModalData({ operasjon: ModalOperasjon.LeggTil });
               }}
             >
               Legg til barn

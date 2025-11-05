@@ -1,19 +1,19 @@
 import { Gårdsbruk, Næringsvirksomhet } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import React, { createContext, useContext, useState } from "react";
 
-export enum ModalOperasjonEnum {
+export enum ModalOperasjon {
   LeggTil = "leggTil",
   Rediger = "rediger",
 }
 
 type NæringsvirksomhetModalData = {
-  operasjon: ModalOperasjonEnum;
+  operasjon: ModalOperasjon;
   næringsvirksomhetIndex?: number;
   næringsvirksomhet?: Næringsvirksomhet;
 };
 
 type GårdsbrukModalData = {
-  operasjon: ModalOperasjonEnum;
+  operasjon: ModalOperasjon;
   gårdsbrukIndex?: number;
   etGårdsbruk?: Gårdsbruk;
 };

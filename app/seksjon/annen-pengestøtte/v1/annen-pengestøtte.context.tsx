@@ -2,19 +2,19 @@ import React, { createContext, useContext, useState } from "react";
 import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
 
-export enum ModalOperasjonEnum {
+export enum ModalOperasjon {
   LeggTil = "leggTil",
   Rediger = "rediger",
 }
 
 type PengestøtteFraAndreEøsLandModalData = {
-  operasjon: ModalOperasjonEnum;
+  operasjon: ModalOperasjon;
   pengestøtteFraAndreEøsLandSvar?: PengestøtteFraAndreEøsLandModalSvar;
   pengestøtteFraAndreEøsLandSvarIndex?: number;
 };
 
 type PengestøtteFraNorgeModalData = {
-  operasjon: ModalOperasjonEnum;
+  operasjon: ModalOperasjon;
   pengestøtteFraNorgeSvar?: PengestøtteFraNorgeModalSvar;
   pengestøtteFraNorgeSvarIndex?: number;
 };

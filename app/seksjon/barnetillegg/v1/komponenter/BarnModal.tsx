@@ -4,7 +4,7 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
@@ -41,15 +41,15 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (barn) => {
       const ugyldigModalOperasjon =
-        modalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        modalData?.operasjon !== ModalOperasjonEnum.Rediger;
+        modalData?.operasjon !== ModalOperasjon.LeggTil &&
+        modalData?.operasjon !== ModalOperasjon.Rediger;
 
       if (ugyldigModalOperasjon) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
 
-      if (modalData.operasjon === ModalOperasjonEnum.LeggTil) {
+      if (modalData.operasjon === ModalOperasjon.LeggTil) {
         const dokumentasjonskravId = crypto.randomUUID();
 
         const nyttBarn = {
@@ -69,7 +69,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
         setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
       }
 
-      if (modalData.operasjon === ModalOperasjonEnum.Rediger && modalData?.barn?.id) {
+      if (modalData.operasjon === ModalOperasjon.Rediger && modalData?.barn?.id) {
         const oppdatertListe = barnLagtManuelt.map((b) =>
           b.id === modalData.barn?.id
             ? { ...barn, id: b.id, dokumentasjonskravId: b.dokumentasjonskravId }
@@ -97,14 +97,14 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
   });
 
   const modalIkon =
-    modalData?.operasjon === ModalOperasjonEnum.LeggTil ? (
+    modalData?.operasjon === ModalOperasjon.LeggTil ? (
       <PersonPlusIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
     ) : (
       <PersonPencilIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
     );
 
   const modalTittel =
-    modalData?.operasjon === ModalOperasjonEnum.LeggTil ? "Legg til barn" : "Rediger barn";
+    modalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til barn" : "Rediger barn";
 
   return (
     <Modal

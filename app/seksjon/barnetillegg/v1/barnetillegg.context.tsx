@@ -2,13 +2,13 @@ import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
-export enum ModalOperasjonEnum {
+export enum ModalOperasjon {
   LeggTil = "leggTil",
   Rediger = "rediger",
 }
 
 type ModalData = {
-  operasjon: ModalOperasjonEnum;
+  operasjon: ModalOperasjon;
   barn?: Barn;
 };
 

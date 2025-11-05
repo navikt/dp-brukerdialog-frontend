@@ -2,7 +2,7 @@ import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
 import { useEffect } from "react";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
@@ -58,7 +58,7 @@ export function BarnLagtManuelt({ barn }: IProps) {
           size="small"
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
-            setModalData({ operasjon: ModalOperasjonEnum.Rediger, barn });
+            setModalData({ operasjon: ModalOperasjon.Rediger, barn });
           }}
         >
           Endre svar

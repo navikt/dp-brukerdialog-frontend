@@ -9,7 +9,7 @@ import {
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { ModalOperasjonEnum } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 interface IProps {
@@ -30,20 +30,20 @@ export function NæringsvirksomhetModal({ ref }: Readonly<IProps>) {
     defaultValues: næringsvirksomhetModalData?.næringsvirksomhet ?? {},
     handleSubmit: (næringsvirksomhet) => {
       if (
-        næringsvirksomhetModalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        næringsvirksomhetModalData?.operasjon !== ModalOperasjonEnum.Rediger
+        næringsvirksomhetModalData?.operasjon !== ModalOperasjon.LeggTil &&
+        næringsvirksomhetModalData?.operasjon !== ModalOperasjon.Rediger
       ) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
 
-      if (næringsvirksomhetModalData?.operasjon === ModalOperasjonEnum.LeggTil) {
+      if (næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil) {
         setNæringsvirksomheter([...næringsvirksomheter, næringsvirksomhet as Næringsvirksomhet]);
       }
 
       if (
         næringsvirksomhetModalData?.næringsvirksomhetIndex !== undefined &&
-        næringsvirksomhetModalData?.operasjon === ModalOperasjonEnum.Rediger
+        næringsvirksomhetModalData?.operasjon === ModalOperasjon.Rediger
       ) {
         const oppdatertListe = [...næringsvirksomheter];
         oppdatertListe[næringsvirksomhetModalData.næringsvirksomhetIndex] =

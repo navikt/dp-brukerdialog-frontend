@@ -4,7 +4,7 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import {
@@ -32,14 +32,14 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
     defaultValues: pengestøtteFraNorgeModalData?.pengestøtteFraNorgeSvar ?? {},
     handleSubmit: (enPengestøtteFraNorge) => {
       if (
-        pengestøtteFraNorgeModalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        pengestøtteFraNorgeModalData?.operasjon !== ModalOperasjonEnum.Rediger
+        pengestøtteFraNorgeModalData?.operasjon !== ModalOperasjon.LeggTil &&
+        pengestøtteFraNorgeModalData?.operasjon !== ModalOperasjon.Rediger
       ) {
         console.error("Ugyldig operasjonstype for PengestøtteFraNorgeModal");
         return;
       }
 
-      if (pengestøtteFraNorgeModalData?.operasjon === ModalOperasjonEnum.LeggTil) {
+      if (pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil) {
         setPengestøtteFraNorge([
           ...pengestøtteFraNorge,
           enPengestøtteFraNorge as PengestøtteFraNorgeModalSvar,
@@ -48,7 +48,7 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
 
       if (
         pengestøtteFraNorgeModalData?.pengestøtteFraNorgeSvarIndex !== undefined &&
-        pengestøtteFraNorgeModalData?.operasjon === ModalOperasjonEnum.Rediger
+        pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.Rediger
       ) {
         const oppdatertListe = [...pengestøtteFraNorge];
         oppdatertListe[pengestøtteFraNorgeModalData.pengestøtteFraNorgeSvarIndex] =
@@ -66,7 +66,7 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
   useNullstillSkjulteFelter<PengestøtteFraNorgeModalSvar>(form, pengestøtteFraNorgeModalSpørsmål);
 
   const modalTittel =
-    pengestøtteFraNorgeModalData?.operasjon === ModalOperasjonEnum.LeggTil
+    pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil
       ? "Legg til pengestøtte fra Norge"
       : "Rediger pengestøtte fra Norge";
 

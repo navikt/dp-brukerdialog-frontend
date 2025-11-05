@@ -26,10 +26,7 @@ import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukDetaljer";
 import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
 import { GårdsbrukModal } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukModal";
-import {
-  ModalOperasjonEnum,
-  useEgenNæringContext,
-} from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function EgenNæringViewV1() {
@@ -203,7 +200,7 @@ export function EgenNæringViewV1() {
                       type={"button"}
                       variant={"secondary"}
                       onClick={() => {
-                        setNæringsvirksomhetModalData({ operasjon: ModalOperasjonEnum.LeggTil });
+                        setNæringsvirksomhetModalData({ operasjon: ModalOperasjon.LeggTil });
                       }}
                       icon={<PlusIcon />}
                       iconPosition={"left"}
@@ -246,7 +243,7 @@ export function EgenNæringViewV1() {
                       type={"button"}
                       variant={"secondary"}
                       onClick={() => {
-                        setGårdsbrukModalData({ operasjon: ModalOperasjonEnum.LeggTil });
+                        setGårdsbrukModalData({ operasjon: ModalOperasjon.LeggTil });
                       }}
                       icon={<PlusIcon />}
                       iconPosition={"left"}

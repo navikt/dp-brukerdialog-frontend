@@ -4,12 +4,13 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useArbeidsforholdContext,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
-  Arbeidsforhold, arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
+  Arbeidsforhold,
+  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdModalSvar,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
@@ -48,14 +49,14 @@ export function ArbeidsforholdModal({ ref }: Readonly<IProps>) {
     defaultValues: modalData?.arbeidsforhold ?? {},
     handleSubmit: (arbeidsforhold) => {
       if (
-        modalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        modalData?.operasjon !== ModalOperasjonEnum.Rediger
+        modalData?.operasjon !== ModalOperasjon.LeggTil &&
+        modalData?.operasjon !== ModalOperasjon.Rediger
       ) {
         console.error("Ugyldig operasjonstype for arbeidsforholdmodal");
         return;
       }
 
-      if (modalData?.operasjon === ModalOperasjonEnum.LeggTil) {
+      if (modalData?.operasjon === ModalOperasjon.LeggTil) {
         setRegistrerteArbeidsforhold([
           ...registrerteArbeidsforhold,
           arbeidsforhold as Arbeidsforhold,
@@ -64,7 +65,7 @@ export function ArbeidsforholdModal({ ref }: Readonly<IProps>) {
 
       if (
         modalData?.arbeidsforholdIndex !== undefined &&
-        modalData?.operasjon === ModalOperasjonEnum.Rediger
+        modalData?.operasjon === ModalOperasjon.Rediger
       ) {
         const oppdatertListe = [...registrerteArbeidsforhold];
         oppdatertListe[modalData.arbeidsforholdIndex] = arbeidsforhold as Arbeidsforhold;
@@ -81,7 +82,7 @@ export function ArbeidsforholdModal({ ref }: Readonly<IProps>) {
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalSpørsmål);
 
   const modalTittel =
-    modalData?.operasjon === ModalOperasjonEnum.LeggTil
+    modalData?.operasjon === ModalOperasjon.LeggTil
       ? "Legg til arbeidsforhold"
       : "Rediger arbeidsforhold";
   return (

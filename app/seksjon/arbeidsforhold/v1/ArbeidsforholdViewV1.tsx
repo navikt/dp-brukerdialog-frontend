@@ -26,29 +26,17 @@ import {
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import { useEffect, useRef, useState } from "react";
-import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
 import { arbeidsforholdModalJegHarSagtOppSelvSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
-import {
-  arbeidsforholdModalJegHarFåttAvskjedSpørsmål
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
-import {
-  arbeidsforholdModalKontraktenErUgåttSpørsmål
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
-import {
-  arbeidsforholdModalArbeidstidenErRedusertSpørsmål
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
-import {
-  arbeidsforholdModalArbeidsgiverErKonkursSpørsmål
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
-import {
-  arbeidsforholdModalJegErPermittertSpørsmål
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
-import {
-  arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
+import { arbeidsforholdModalJegHarFåttAvskjedSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
+import { arbeidsforholdModalKontraktenErUgåttSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
+import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
+import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
+import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
+import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -233,7 +221,7 @@ export function ArbeidsforholdViewV1() {
                       icon={<BriefcaseIcon />}
                       onClick={() => {
                         setModalData({
-                          operasjon: ModalOperasjonEnum.LeggTil,
+                          operasjon: ModalOperasjon.LeggTil,
                           ledetekst: getLedetekstDineArbeidsforhold(form),
                         });
                       }}
