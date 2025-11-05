@@ -1,6 +1,5 @@
 import { Box, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useState } from "react";
 import { useParams } from "react-router";
 import {
   hentMaksFilStørrelseMB,
@@ -21,10 +20,10 @@ export type DokumentkravFil = {
   filsti?: string;
   lasterOpp?: boolean;
   file?: File;
-  feil?: FeilTypeEnum;
+  feil?: LastOppFeil;
 };
 
-export enum FeilTypeEnum {
+export enum LastOppFeil {
   FIL_FOR_STOR = "FIL_FOR_STOR",
   UGYLDIG_FORMAT = "UGYLDIG_FORMAT",
   TEKNISK_FEIL = "TEKNISK_FEIL",
@@ -57,19 +56,19 @@ export function FilOpplasting({
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FeilTypeEnum.DUPLIKAT_FIL,
+          feil: LastOppFeil.DUPLIKAT_FIL,
         });
       } else if (!erGyldigFormat) {
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FeilTypeEnum.UGYLDIG_FORMAT,
+          feil: LastOppFeil.UGYLDIG_FORMAT,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FeilTypeEnum.FIL_FOR_STOR,
+          feil: LastOppFeil.FIL_FOR_STOR,
         });
       } else {
         filerKlarTilOpplasting.push({
@@ -102,7 +101,7 @@ export function FilOpplasting({
               filnavn: fil.file.name,
               storrelse: fil.file.size,
               lasterOpp: false,
-              feil: FeilTypeEnum.TEKNISK_FEIL,
+              feil: LastOppFeil.TEKNISK_FEIL,
               id: fil.id,
             };
           }
@@ -152,17 +151,17 @@ export function FilOpplasting({
     return await response.text();
   }
 
-  function hentFilFeilmelding(feilType: FeilTypeEnum) {
+  function hentFilFeilmelding(feilType: LastOppFeil) {
     switch (feilType) {
-      case FeilTypeEnum.FIL_FOR_STOR:
+      case LastOppFeil.FIL_FOR_STOR:
         return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
-      case FeilTypeEnum.UGYLDIG_FORMAT:
+      case LastOppFeil.UGYLDIG_FORMAT:
         return "Ugyldig filformat";
-      case FeilTypeEnum.TEKNISK_FEIL:
+      case LastOppFeil.TEKNISK_FEIL:
         return "Det oppstod en teknisk feil";
-      case FeilTypeEnum.DUPLIKAT_FIL:
+      case LastOppFeil.DUPLIKAT_FIL:
         return "Filene er duplikater";
-      case FeilTypeEnum.UKJENT_FEIL:
+      case LastOppFeil.UKJENT_FEIL:
         return "Det oppstod en ukjent feil";
       default:
         return "Det oppstod en ukjent feil";
