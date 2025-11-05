@@ -40,11 +40,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (barn) => {
-      const ugyldigModalOperasjon =
-        modalData?.operasjon !== ModalOperasjon.LeggTil &&
-        modalData?.operasjon !== ModalOperasjon.Rediger;
-
-      if (ugyldigModalOperasjon) {
+      if (modalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
@@ -53,7 +49,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
         leggTilEtBarn(barn);
       }
 
-      if (modalData.operasjon === ModalOperasjon.Rediger && modalData?.barn?.id) {
+      if (modalData.operasjon === ModalOperasjon.Rediger) {
         oppdatereEtBarn(barn);
       }
     },
@@ -64,19 +60,19 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     resetAfterSubmit: true,
   });
 
-  function leggTilEtBarn(barn: LeggTilBarnManueltSvar) {
+  function leggTilEtBarn(barnProps: LeggTilBarnManueltSvar) {
     const dokumentasjonskravId = crypto.randomUUID();
 
     const nyttBarn = {
       id: crypto.randomUUID(),
       dokumentasjonskrav: [dokumentasjonskravId],
-      ...barn,
+      ...barnProps,
     } as BarnLagtManuelt;
 
     const nyttDokumentkrav: Dokumentasjonskrav = {
       id: dokumentasjonskravId,
       spørsmålId: spørsmålId,
-      tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
+      tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
       type: DokumentasjonskravType.Barn,
     };
 
@@ -84,25 +80,24 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
   }
 
-  function oppdatereEtBarn(barn: LeggTilBarnManueltSvar) {
-    const oppdatertListe = barnLagtManuelt?.map((b) =>
-      b.id === modalData?.barn?.id
-        ? { ...barn, id: b.id, dokumentasjonskrav: b.dokumentasjonskrav }
-        : b
+  function oppdatereEtBarn(barnProps: LeggTilBarnManueltSvar) {
+    const oppdatertBarnLagtManuelt = barnLagtManuelt?.map((barn) =>
+      barn.id === modalData?.barn?.id
+        ? { ...barnProps, id: barn.id, dokumentasjonskrav: barn.dokumentasjonskrav }
+        : barn
     ) as BarnLagtManuelt[];
 
-    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-      Array.isArray(modalData?.barn?.dokumentasjonskrav) &&
-      modalData?.barn.dokumentasjonskrav.includes(krav.id)
+    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav) =>
+      modalData?.barn?.dokumentasjonskrav?.includes(krav.id)
         ? {
             ...krav,
-            tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
+            tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
           }
         : krav
     );
 
     setDokumentasjonskrav(oppdatertDokumentasjonskrav);
-    setBarnLagtManuelt(oppdatertListe);
+    setBarnLagtManuelt(oppdatertBarnLagtManuelt);
   }
 
   const modalIkon =
