@@ -10,7 +10,7 @@ import {
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
-import { ModalOperasjonEnum } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -26,20 +26,20 @@ export function GårdsbrukModal({ ref }: Readonly<IProps>) {
     defaultValues: gårdsbrukModalData?.etGårdsbruk ?? {},
     handleSubmit: (etGårdsbruk) => {
       if (
-        gårdsbrukModalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        gårdsbrukModalData?.operasjon !== ModalOperasjonEnum.Rediger
+        gårdsbrukModalData?.operasjon !== ModalOperasjon.LeggTil &&
+        gårdsbrukModalData?.operasjon !== ModalOperasjon.Rediger
       ) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
 
-      if (gårdsbrukModalData?.operasjon === ModalOperasjonEnum.LeggTil) {
+      if (gårdsbrukModalData?.operasjon === ModalOperasjon.LeggTil) {
         setGårdsbruk([...gårdsbruk, etGårdsbruk as Gårdsbruk]);
       }
 
       if (
         gårdsbrukModalData?.gårdsbrukIndex !== undefined &&
-        gårdsbrukModalData?.operasjon === ModalOperasjonEnum.Rediger
+        gårdsbrukModalData?.operasjon === ModalOperasjon.Rediger
       ) {
         const oppdatertListe = [...gårdsbruk];
         oppdatertListe[gårdsbrukModalData.gårdsbrukIndex] = etGårdsbruk as Gårdsbruk;

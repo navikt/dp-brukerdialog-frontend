@@ -1,7 +1,7 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import {
@@ -82,7 +82,7 @@ export function PengestøtteFraNorgeDetaljer({
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
             setPengestøtteFraNorgeModalData({
-              operasjon: ModalOperasjonEnum.Rediger,
+              operasjon: ModalOperasjon.Rediger,
               pengestøtteFraNorgeSvarIndex: pengestøtteFraNorgeSvarIndex,
               pengestøtteFraNorgeSvar: pengestøtteFraNorgeSvar,
             });

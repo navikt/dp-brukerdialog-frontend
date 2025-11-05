@@ -10,7 +10,7 @@ import {
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { formaterNorskDato } from "~/utils/formattering.utils";
@@ -96,7 +96,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
             setPengestøtteFraAndreEøsLandModalData({
-              operasjon: ModalOperasjonEnum.Rediger,
+              operasjon: ModalOperasjon.Rediger,
               pengestøtteFraAndreEøsLandSvarIndex: pengestøtteFraAndreEøsLandSvarIndex,
               pengestøtteFraAndreEøsLandSvar: pengestøtteFraAndreEøsLandSvar,
             });

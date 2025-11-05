@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useState } from "react";
 import { Arbeidsforhold } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 
-export enum ModalOperasjonEnum {
+export enum ModalOperasjon {
   LeggTil = "leggTil",
   Rediger = "rediger",
 }
 
 type ModalData = {
   ledetekst: string;
-  operasjon: ModalOperasjonEnum;
+  operasjon: ModalOperasjon;
   arbeidsforholdIndex?: number;
   arbeidsforhold?: Arbeidsforhold;
 };

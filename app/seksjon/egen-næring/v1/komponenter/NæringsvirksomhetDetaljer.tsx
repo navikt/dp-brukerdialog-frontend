@@ -6,10 +6,7 @@ import {
   Næringsvirksomhet,
   organisasjonsnummer,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
-import {
-  ModalOperasjonEnum,
-  useEgenNæringContext,
-} from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 interface IProps {
   næringsvirksomhet: Næringsvirksomhet;
@@ -44,7 +41,7 @@ export function NæringsvirksomhetDetaljer({
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
             setNæringsvirksomhetModalData({
-              operasjon: ModalOperasjonEnum.Rediger,
+              operasjon: ModalOperasjon.Rediger,
               næringsvirksomhet,
               næringsvirksomhetIndex,
             });

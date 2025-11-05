@@ -7,10 +7,7 @@ import {
   hvorMangeProsentAvInntektenGårTilDeg,
   organisasjonsnummer,
 } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
-import {
-  ModalOperasjonEnum,
-  useEgenNæringContext,
-} from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 interface IProps {
   etGårdsbruk: Gårdsbruk;
@@ -43,7 +40,7 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
             setGårdsbrukModalData({
-              operasjon: ModalOperasjonEnum.Rediger,
+              operasjon: ModalOperasjon.Rediger,
               etGårdsbruk,
               gårdsbrukIndex,
             });

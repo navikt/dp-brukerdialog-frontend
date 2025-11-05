@@ -4,7 +4,7 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
-  ModalOperasjonEnum,
+  ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
@@ -37,14 +37,14 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
     defaultValues: pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLandSvar ?? {},
     handleSubmit: (enPengestøtteFraAndreEøsLand) => {
       if (
-        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjonEnum.LeggTil &&
-        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjonEnum.Rediger
+        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjon.LeggTil &&
+        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjon.Rediger
       ) {
         console.error("Ugyldig operasjonstype for PengestøtteFraAndreEøsLandModal");
         return;
       }
 
-      if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjonEnum.LeggTil) {
+      if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil) {
         setPengestøtteFraAndreEøsLand([
           ...pengestøtteFraAndreEøsLand,
           enPengestøtteFraAndreEøsLand as PengestøtteFraAndreEøsLandModalSvar,
@@ -53,7 +53,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
 
       if (
         pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLandSvarIndex !== undefined &&
-        pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjonEnum.Rediger
+        pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.Rediger
       ) {
         const oppdatertListe = [...pengestøtteFraAndreEøsLand];
         oppdatertListe[pengestøtteFraAndreEøsLandModalData.pengestøtteFraAndreEøsLandSvarIndex] =
@@ -83,7 +83,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
   }, [form.value(mottarDuFortsattPengestøttenFraAndreEøsLand)]);
 
   const modalTittel =
-    pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjonEnum.LeggTil
+    pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil
       ? "Legg til pengestøtte fra andre EØS-land"
       : "Rediger pengestøtte fra andre EØS-land";
 

@@ -1,6 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
-import { ModalOperasjonEnum } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import {
   Arbeidsforhold,
   arbeidsforholdModalSpørsmål,
@@ -59,7 +59,7 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: 
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
             setModalData({
-              operasjon: ModalOperasjonEnum.Rediger,
+              operasjon: ModalOperasjon.Rediger,
               ledetekst: "",
               arbeidsforhold,
               arbeidsforholdIndex,

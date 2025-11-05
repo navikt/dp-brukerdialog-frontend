@@ -25,7 +25,7 @@ import {
   seksjonsvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 import { useEffect, useRef, useState } from "react";
-import { ModalOperasjonEnum, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalSpørsmål,
@@ -37,7 +37,6 @@ import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/ko
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-
 
 export function AnnenPengestøtteViewV1() {
   const seksjonnavn = "Annen pengestøtte";
@@ -251,7 +250,7 @@ export function AnnenPengestøtteViewV1() {
                     variant={"secondary"}
                     onClick={() => {
                       setPengestøtteFraAndreEøsLandModalData({
-                        operasjon: ModalOperasjonEnum.LeggTil,
+                        operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
                     icon={<PlusIcon />}
@@ -293,7 +292,7 @@ export function AnnenPengestøtteViewV1() {
                     variant={"secondary"}
                     onClick={() => {
                       setPengestøtteFraNorgeModalData({
-                        operasjon: ModalOperasjonEnum.LeggTil,
+                        operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
                     icon={<PlusIcon />}
