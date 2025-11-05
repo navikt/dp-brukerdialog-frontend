@@ -41,7 +41,7 @@ export const barnetilleggKomponenter: KomponentType[] = [
   },
 ];
 
-export const fornavnOgMellomnavn = "fornavnOgmellomnavn";
+export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
 export const etternavn = "etternavn";
 export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";

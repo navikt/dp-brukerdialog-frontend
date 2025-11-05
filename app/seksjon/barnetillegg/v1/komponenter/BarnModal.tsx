@@ -2,12 +2,16 @@ import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
+import { z } from "zod";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
+import {
+  validertLeggTilBarnManueltSchema,
+  leggTilBarnManueltSchema,
+} from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   BarnLagtManuelt,
   etternavn,
@@ -25,6 +29,8 @@ interface IProps {
   spørsmålId: string;
 }
 
+type ValidertLeggTilBarnManuelt = z.infer<typeof validertLeggTilBarnManueltSchema>;
+
 export function BarnModal({ ref, spørsmålId }: IProps) {
   const {
     barnLagtManuelt,
@@ -39,18 +45,25 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
-    handleSubmit: (barn) => {
+    handleSubmit: (skjemaData) => {
+      const { success, data, error } = validertLeggTilBarnManueltSchema.safeParse(skjemaData);
+
+      if (!success) {
+        console.error("Valideringsfeil i barnetilleggmodal:", error);
+        return;
+      }
+
       if (modalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
 
       if (modalData.operasjon === ModalOperasjon.LeggTil) {
-        leggTilEtBarn(barn);
+        leggTilEtBarn(data);
       }
 
       if (modalData.operasjon === ModalOperasjon.Rediger) {
-        oppdatereEtBarn(barn);
+        oppdatereEtBarn(data);
       }
     },
     onSubmitSuccess() {
@@ -60,14 +73,14 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     resetAfterSubmit: true,
   });
 
-  function leggTilEtBarn(barnProps: LeggTilBarnManueltSvar) {
+  function leggTilEtBarn(barnProps: ValidertLeggTilBarnManuelt) {
     const dokumentasjonskravId = crypto.randomUUID();
 
-    const nyttBarn = {
+    const nyttBarn: BarnLagtManuelt = {
       id: crypto.randomUUID(),
       dokumentasjonskrav: [dokumentasjonskravId],
       ...barnProps,
-    } as BarnLagtManuelt;
+    };
 
     const nyttDokumentkrav: Dokumentasjonskrav = {
       id: dokumentasjonskravId,
@@ -80,12 +93,12 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
   }
 
-  function oppdatereEtBarn(barnProps: LeggTilBarnManueltSvar) {
-    const oppdatertBarnLagtManuelt = barnLagtManuelt?.map((barn) =>
+  function oppdatereEtBarn(barnProps: ValidertLeggTilBarnManuelt) {
+    const oppdatertBarnLagtManuelt: BarnLagtManuelt[] = barnLagtManuelt?.map((barn) =>
       barn.id === modalData?.barn?.id
         ? { ...barnProps, id: barn.id, dokumentasjonskrav: barn.dokumentasjonskrav }
         : barn
-    ) as BarnLagtManuelt[];
+    );
 
     const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav) =>
       modalData?.barn?.dokumentasjonskrav?.includes(krav.id)

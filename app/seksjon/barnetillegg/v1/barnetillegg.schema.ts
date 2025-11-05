@@ -71,3 +71,10 @@ export const leggTilBarnManueltSchema = z
       valider(spørsmål, svar, synlig, context);
     });
   });
+
+export const validertLeggTilBarnManueltSchema = z.object({
+  [fornavnOgMellomnavn]: z.string(),
+  [etternavn]: z.string(),
+  [fødselsdato]: z.string(),
+  [bostedsland]: z.string(),
+});
