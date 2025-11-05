@@ -16,7 +16,7 @@ import {
   fødselsnummerFraPdl,
   kontonummerFraKontoregister,
   landFraPdl,
-  landKodeFraPdl,
+  landkodeFraPdl,
   mellomnavnFraPdl,
   pdfGrunnlag,
   personaliaBostedslandSpørsmål,
@@ -67,7 +67,7 @@ export function PersonaliaViewV1() {
   form.setValue(adresselinje3FraPdl, folkeregistrertAdresse.adresselinje3 || "");
   form.setValue(postnummerFraPdl, folkeregistrertAdresse.postnummer || "");
   form.setValue(poststedFraPdl, folkeregistrertAdresse.poststed || "");
-  form.setValue(landKodeFraPdl, folkeregistrertAdresse.landkode || "");
+  form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
   form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, loaderData.personalia.kontonummer || "");

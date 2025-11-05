@@ -10,8 +10,26 @@ import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { PersonaliaSvar } from "~/seksjon/personalia/v1/personalia.spørsmål";
+import {
+  adresselinje1FraPdl,
+  adresselinje2FraPdl,
+  adresselinje3FraPdl,
+  alderFraPdl,
+  etternavnFraPdl,
+  fornavnFraPdl,
+  kontonummerFraKontoregister,
+  landFraPdl,
+  landkodeFraPdl,
+  mellomnavnFraPdl,
+  PersonaliaSvar,
+  postnummerFraPdl,
+  poststedFraPdl,
+} from "~/seksjon/personalia/v1/personalia.spørsmål";
 import { normaliserFormData } from "~/utils/action.utils.server";
+import {
+  lagreSøknadPersonalia,
+  PutSøknadPersonaliaRequestBody,
+} from "~/models/lagre-søknad-personalia.server";
 
 const NYESTE_VERSJON = 1;
 
@@ -96,10 +114,40 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const lagreSeksjonResponse = await lagreSeksjon(
+    request,
+    params.soknadId,
+    seksjonId,
+    putSeksjonRequestBody
+  );
 
-  if (response.status !== 200) {
+  if (lagreSeksjonResponse.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
+  }
+
+  const putSøknadPersonaliaRequestBody: PutSøknadPersonaliaRequestBody = {
+    fornavn: formData.get(fornavnFraPdl)?.toString() || "Ukjent fornavn",
+    mellomnavn: formData.get(mellomnavnFraPdl)?.toString(),
+    etternavn: formData.get(etternavnFraPdl)?.toString() || "Ukjent etternavn",
+    alder: formData.get(alderFraPdl)?.toString() || "0",
+    adresselinje1: formData.get(adresselinje1FraPdl)?.toString(),
+    adresselinje2: formData.get(adresselinje2FraPdl)?.toString(),
+    adresselinje3: formData.get(adresselinje3FraPdl)?.toString(),
+    postnummer: formData.get(postnummerFraPdl)?.toString(),
+    poststed: formData.get(poststedFraPdl)?.toString(),
+    landkode: formData.get(landkodeFraPdl)?.toString(),
+    land: formData.get(landFraPdl)?.toString(),
+    kontonummer: formData.get(kontonummerFraKontoregister)?.toString(),
+  };
+
+  const lagreSøknadPersonaliaResponse = await lagreSøknadPersonalia(
+    request,
+    params.soknadId,
+    putSøknadPersonaliaRequestBody
+  );
+
+  if (lagreSøknadPersonaliaResponse.status !== 200) {
+    return { error: "Noe gikk galt ved lagring av personalia" };
   }
 
   return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
