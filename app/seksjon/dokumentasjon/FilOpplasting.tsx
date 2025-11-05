@@ -1,6 +1,5 @@
 import { Box, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useState } from "react";
 import { useParams } from "react-router";
 import {
   hentMaksFilStørrelseMB,
@@ -10,7 +9,7 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { DokumentasjonskravType } from "./Dokumentasjonskrav";
+import { Dokumentasjonskrav } from "./DokumentasjonskravKomponent";
 
 export type DokumentkravFil = {
   id: string;
@@ -21,18 +20,29 @@ export type DokumentkravFil = {
   filsti?: string;
   lasterOpp?: boolean;
   file?: File;
-  feil?: FeilType;
+  feil?: LastOppFeil;
 };
 
-type FeilType = "FIL_FOR_STOR" | "UGYLDIG_FORMAT" | "TEKNISK_FEIL" | "DUPLIKAT_FIL" | "UKJENT_FEIL";
-
-interface IProps {
-  dokumentasjonskrav: DokumentasjonskravType;
+export enum LastOppFeil {
+  FIL_FOR_STOR = "FIL_FOR_STOR",
+  UGYLDIG_FORMAT = "UGYLDIG_FORMAT",
+  TEKNISK_FEIL = "TEKNISK_FEIL",
+  DUPLIKAT_FIL = "DUPLIKAT_FIL",
+  UKJENT_FEIL = "UKJENT_FEIL",
 }
 
-export function FilOpplasting({ dokumentasjonskrav }: IProps) {
+interface IProps {
+  dokumentasjonskrav: Dokumentasjonskrav;
+  dokumentkravFiler: DokumentkravFil[];
+  setDokumentkravFiler: React.Dispatch<React.SetStateAction<DokumentkravFil[]>>;
+}
+
+export function FilOpplasting({
+  dokumentasjonskrav,
+  dokumentkravFiler,
+  setDokumentkravFiler,
+}: IProps) {
   const { soknadId } = useParams();
-  const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedEnFeil: DokumentkravFil[] = [];
@@ -46,19 +56,19 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: "DUPLIKAT_FIL",
+          feil: LastOppFeil.DUPLIKAT_FIL,
         });
       } else if (!erGyldigFormat) {
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: "UGYLDIG_FORMAT",
+          feil: LastOppFeil.UGYLDIG_FORMAT,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: "FIL_FOR_STOR",
+          feil: LastOppFeil.FIL_FOR_STOR,
         });
       } else {
         filerKlarTilOpplasting.push({
@@ -73,64 +83,43 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
     setDokumentkravFiler((prev) => [...prev, ...filerMedEnFeil, ...filerKlarTilOpplasting]);
 
     if (filerKlarTilOpplasting.length > 0) {
-      try {
-        const responser = await Promise.all(
-          filerKlarTilOpplasting.map(async (fil) => {
-            if (!fil.file) {
-              console.error("Mangler fil data");
-              return;
-            }
+      const responser = await Promise.all(
+        filerKlarTilOpplasting.map(async (fil) => {
+          if (!fil.file) {
+            console.error("Mangler fil data");
+            return;
+          }
 
-            const formData = new FormData();
-            formData.append("file", fil.file);
+          const formData = new FormData();
+          formData.append("file", fil.file);
 
-            const url = `/api/dokument/last-opp/${soknadId}/${dokumentasjonskrav.id}`;
-            const respons = await fetch(url, { method: "POST", body: formData });
+          const url = `/api/dokument/last-opp/${soknadId}/${dokumentasjonskrav.id}`;
+          const respons = await fetch(url, { method: "POST", body: formData });
 
-            if (!respons.ok) {
-              return {
-                filnavn: fil.file.name,
-                storrelse: fil.file.size,
-                lasterOpp: false,
-                feil: "TEKNISK_FEIL",
-                id: fil.id,
-              };
-            }
-
-            const filer = await respons.json();
-
+          if (!respons.ok) {
             return {
-              ...filer[0], // Mellomlagring returnerer en liste
+              filnavn: fil.file.name,
+              storrelse: fil.file.size,
               lasterOpp: false,
-              feil: undefined,
+              feil: LastOppFeil.TEKNISK_FEIL,
               id: fil.id,
             };
-          })
-        );
+          }
 
-        setDokumentkravFiler((prev) =>
-          prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
+          const filer = await respons.json();
 
-  function hentFilFeilmelding(feilType: FeilType) {
-    switch (feilType) {
-      case "FIL_FOR_STOR":
-        return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
-      case "UGYLDIG_FORMAT":
-        return "Ugyldig filformat";
-      case "TEKNISK_FEIL":
-        return "Det oppstod en teknisk feil";
-      case "DUPLIKAT_FIL":
-        return "Filene er duplikater";
-      case "UKJENT_FEIL":
-        return "Det oppstod en ukjent feil";
-      default:
-        return "Det oppstod en ukjent feil";
+          return {
+            ...filer[0], // Mellomlagring returnerer en liste
+            lasterOpp: false,
+            feil: undefined,
+            id: fil.id,
+          };
+        })
+      );
+
+      setDokumentkravFiler((prev) =>
+        prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
+      );
     }
   }
 
@@ -145,25 +134,37 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
       return;
     }
 
-    try {
-      const formData = new FormData();
-      formData.append("filsti", fil.filsti);
+    const formData = new FormData();
+    formData.append("filsti", fil.filsti);
 
-      const response = await fetch(`/api/dokument/slett/${soknadId}/1014.1`, {
-        method: "POST",
-        body: formData,
-      });
+    const response = await fetch(`/api/dokument/slett/${soknadId}/${dokumentasjonskrav.id}`, {
+      method: "POST",
+      body: formData,
+    });
 
-      if (!response.ok) {
-        return;
-      }
+    if (!response.ok) {
+      return;
+    }
 
-      setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
+    setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
 
-      return await response.text();
-    } catch (error) {
-      console.error(error);
-    } finally {
+    return await response.text();
+  }
+
+  function hentFilFeilmelding(feilType: LastOppFeil) {
+    switch (feilType) {
+      case LastOppFeil.FIL_FOR_STOR:
+        return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
+      case LastOppFeil.UGYLDIG_FORMAT:
+        return "Ugyldig filformat";
+      case LastOppFeil.TEKNISK_FEIL:
+        return "Det oppstod en teknisk feil";
+      case LastOppFeil.DUPLIKAT_FIL:
+        return "Filene er duplikater";
+      case LastOppFeil.UKJENT_FEIL:
+        return "Det oppstod en ukjent feil";
+      default:
+        return "Det oppstod en ukjent feil";
     }
   }
 

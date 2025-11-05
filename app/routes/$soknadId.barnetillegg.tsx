@@ -21,8 +21,8 @@ import {
   fødselsdato,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { normaliserFormData } from "~/utils/action.utils.server";
-import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
 
 export type BarnetilleggResponse = BarnetilleggSvar & {
   barnFraPdl?: Barn[];
@@ -32,7 +32,7 @@ export type BarnetilleggResponse = BarnetilleggSvar & {
 type BarnetilleggResponseType = {
   seksjonsId?: string;
   seksjon?: BarnetilleggResponse;
-  dokumentasjonskrav?: DokumentasjonskravType[];
+  dokumentasjonskrav?: Dokumentasjonskrav[];
   versjon: number;
 };
 

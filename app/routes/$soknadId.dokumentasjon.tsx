@@ -1,8 +1,8 @@
-import { DokumentasjonView } from "~/seksjon/dokumentasjon/DokumentasjonView";
-import { LoaderFunctionArgs, useLoaderData } from "react-router";
+import { LoaderFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
-import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { DokumentasjonView } from "~/seksjon/dokumentasjon/DokumentasjonView";
 
 type Seksjon = {
   seksjonId: string;
@@ -12,7 +12,7 @@ type Seksjon = {
 type SeksjonsResponseType = {
   versjon: number;
   seksjon?: object;
-  dokumentasjonskrav?: DokumentasjonskravType[];
+  dokumentasjonskrav?: Dokumentasjonskrav[];
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
