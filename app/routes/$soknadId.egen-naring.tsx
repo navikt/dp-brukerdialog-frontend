@@ -45,7 +45,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
 
-  const putSeksjonRequest = {
+  const putSeksjonRequestBody = {
     seksjonsvar: JSON.stringify({
       seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
@@ -53,7 +53,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequest);
+  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };

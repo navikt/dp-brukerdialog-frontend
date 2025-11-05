@@ -26,7 +26,7 @@ export async function lagreSeksjonV2<T>(
   request: Request,
   soknadId: string,
   seksjonId: string,
-  putSeksjonRequest: T
+  putSeksjonRequestBody: T
 ) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/v2/${soknadId}/${seksjonId}`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
@@ -39,6 +39,6 @@ export async function lagreSeksjonV2<T>(
       connection: "keep-alive",
       "Content-Type": "application/json; charset=UTF-8",
     },
-    body: JSON.stringify(putSeksjonRequest),
+    body: JSON.stringify(putSeksjonRequestBody),
   });
 }
