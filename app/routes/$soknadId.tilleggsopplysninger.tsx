@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
-import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
+import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
   erTilbakenavigering,
@@ -67,7 +67,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };

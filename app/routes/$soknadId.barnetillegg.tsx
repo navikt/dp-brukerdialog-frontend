@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentBarn } from "~/models/hent-barn.server";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
-import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
+import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
   Barn,
@@ -103,7 +103,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };

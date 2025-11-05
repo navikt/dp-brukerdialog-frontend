@@ -1,7 +1,7 @@
 import { parseFormData } from "@remix-run/form-data-parser";
 import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
-import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
+import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
 export async function action({ params, request }: ActionFunctionArgs) {
@@ -20,5 +20,5 @@ export async function action({ params, request }: ActionFunctionArgs) {
     pdfGrunnlag: "{}",
   };
 
-  return await lagreSeksjonV2(request, søknadId, seksjonId, putSeksjonRequestBody);
+  return await lagreSeksjon(request, søknadId, seksjonId, putSeksjonRequestBody);
 }
