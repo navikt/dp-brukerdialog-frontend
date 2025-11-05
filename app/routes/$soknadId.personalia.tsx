@@ -8,8 +8,8 @@ import {
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
 import { PersonaliaSvar } from "~/seksjon/personalia/v1/personalia.spørsmål";
 import { normaliserFormData } from "~/utils/action.utils.server";
 

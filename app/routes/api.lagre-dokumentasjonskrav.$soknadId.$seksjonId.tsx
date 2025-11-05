@@ -1,7 +1,7 @@
 import { parseFormData } from "@remix-run/form-data-parser";
 import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
-import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
 export async function action({ params, request }: ActionFunctionArgs) {

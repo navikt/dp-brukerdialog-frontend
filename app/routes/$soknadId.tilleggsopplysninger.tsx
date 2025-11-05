@@ -6,8 +6,8 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hentSeksjon.server";
-import { lagreSeksjonV2 } from "~/models/lagreSeksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
   erTilbakenavigering,
