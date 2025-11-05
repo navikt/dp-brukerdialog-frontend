@@ -81,26 +81,8 @@ export function BarnetilleggViewV1() {
 
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
-
-    const barnetilleggResponse: SeksjonSvar = {
-      barnFraPdl: barnFraPdl,
-      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-      barnLagtManuelt: barnLagtManuelt,
-    };
-
-    const pdfPayload = {
-      navn: "Barnetillegg",
-      spørsmål: [
-        ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
-        ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
-        ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
-          lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
-        ),
-      ],
-    };
-
-    form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
-    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+    form.setValue(seksjonsvar, JSON.stringify(lagSeksjonSvar()));
+    form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
     form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
     form.submit();
   }
@@ -116,28 +98,30 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      const barnetilleggResponse: SeksjonSvar = {
-        barnFraPdl: barnFraPdl,
-        [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-        barnLagtManuelt: barnLagtManuelt,
-      };
-
-      const pdfPayload = {
-        navn: "Barnetillegg",
-        spørsmål: [
-          ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
-          ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
-          ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
-            lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
-          ),
-        ],
-      };
-
-      form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
-      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+      form.setValue(seksjonsvar, JSON.stringify(lagSeksjonSvar()));
+      form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
       form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
       form.submit();
     }
+  }
+
+  function lagSeksjonSvar(): SeksjonSvar {
+    return {
+      barnFraPdl: barnFraPdl,
+      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+      barnLagtManuelt: barnLagtManuelt,
+    };
+  }
+
+  function lagPdfGrunnlag() {
+    return {
+      navn: "Barnetillegg",
+      spørsmål: [
+        ...barnFraPdl.map((barn) => lagSeksjonPayload(barnFraPdlSpørsmål, barn)),
+        ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
+        ...barnLagtManuelt.map((barn) => lagSeksjonPayload(leggTilBarnManueltSpørsmål, barn)),
+      ],
+    };
   }
 
   function hentVarselTekst(varsel: BarnLagtManueltVarsel) {
@@ -168,7 +152,7 @@ export function BarnetilleggViewV1() {
       </BodyLong>
       <VStack gap="10">
         <VStack gap="space-16">
-          {barnFraPdl.map((barn: BarnFraPdl) => (
+          {barnFraPdl?.map((barn: BarnFraPdl) => (
             <BarnFraPdlKomponent key={barn.id} barn={barn} />
           ))}
         </VStack>
