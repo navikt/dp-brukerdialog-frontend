@@ -6,10 +6,6 @@ import {
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 
 export const jegErOppsagtHvaVarÅrsaken = "jeg-er-oppsagt-hva-var-årsaken";
-export const jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka =
-  "jeg-er-oppsagt-vet-du-hvor-mange-timer-du-jobbet-i-uka";
-export const jegErOppsagtHvorMangeTimerHarDuJobbetIUka =
-  "jeg-er-oppsagt-hvor-mange-timer-har-du-jobbet-i-uka";
 export const jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge =
   "jeg-er-oppsagt-har-du-fått-tilbud-om-å-fortsette-hos-arbeidsgiveren-din-i-annen-stilling-eller-et-annet-sted-i-norge";
 export const jegErOppsagtHvaHarDuSvartPåTilbudet = "jeg-er-oppsagt-hva-har-du-svart-på-tilbudet";
@@ -51,40 +47,6 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål: Kompon
     maxLength: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
-  },
-  {
-    id: jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka,
-    type: "envalg",
-    label: "Vet du hvor mange timer du har jobbet i uka før du ble sagt opp?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label:
-          "Nei, jeg er usikker, bruk opplysninger fra skatteetaten.no/mine inntekter for å beregne min vanlige arbeidstid.",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
-  },
-  {
-    id: jegErOppsagtHvorMangeTimerHarDuJobbetIUka,
-    type: "tall",
-    label: "Skriv inn hvor mange timer du har jobbet per uke før du ble oppsagt",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka] === "ja",
-  },
-  {
-    id: "oppsagtHvorMangeTimerHarDuJobbetIUkaLesMer",
-    type: "lesMer",
-    label: "Dette skal du oppgi som arbeidstid",
-    description:
-      "Har du jobbet like mye hver uke, oppgir du denne arbeidstiden. Hvis du ikke har jobbet like mye hver uke, oppgir du det antall timer du har jobbet i snitt de seks siste månedene.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka] === "ja",
   },
   {
     id: jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
