@@ -4,25 +4,17 @@ import {
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
-  jegErOppsagtHvorMangeTimerHarDuJobbetIUka,
-  jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
 import {
   jegHarSagtOppHvaVarÅrsaken,
-  jegHarSagtOppHvorMangeTimerHarDuJobbetIUka,
-  jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
 import {
   avskjedigetHvaVarÅrsaken,
-  avskjedigetHvorMangeTimerHarDuJobbetIUka,
-  avskjedigetVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
 import {
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttHvorMangeTimerHarDuJobbetIUka,
-  kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
 import {
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
@@ -31,8 +23,6 @@ import {
   arbeidstidenErRedusertHvaErÅrsaken,
   arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-  arbeidstidenErRedusertHvorMangeTimerHarDuJobbetIUka,
-  arbeidstidenErRedusertVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
 import {
   konkursDekkerLønnsgarantiordningenKravetDitt,
@@ -42,10 +32,8 @@ import {
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
   konkursHarDuSøktOmLønnsgarantimidler,
-  konkursHvorMangeTimerHarDuJobbetIUka,
   konkursNårStartetDuIDenneJobben,
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-  konkursVetDuHvorMangeTimerDuJobbetIUka,
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
@@ -53,21 +41,17 @@ import {
   permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
   permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
   permittertHvorMangeProsentErDuPermittert,
-  permittertHvorMangeTimerHarDuJobbetIUka,
   permittertLønnsperiodeFraOgMedDato,
   permittertLønnsperiodeTilOgMedDato,
   permittertNårErDuPermittertFraOgMedDato,
   permittertNårErDuPermittertTilOgMedDato,
   permittertNårStartetDuIDenneJobben,
   permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-  permittertVetDuHvorMangeTimerDuJobbetIUka,
   permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
 import {
   ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
-  ikkeEndretHvorMangeTimerHarDuJobbetIUka,
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
-  ikkeEndretVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 
 export const seksjonsvar = "seksjonsvar";
@@ -116,32 +100,20 @@ export type Arbeidsforhold = {
   [varighetPåArbeidsforholdetTilOgMedDato]?: string;
   [hvordanHarDetteArbeidsforholdetEndretSeg]?: string;
   [jegErOppsagtHvaVarÅrsaken]?: string;
-  [jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [jegErOppsagtHvorMangeTimerHarDuJobbetIUka]?: string;
   [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
   [jegErOppsagtHvaHarDuSvartPåTilbudet]?: string;
   [jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
   [jegHarSagtOppHvaVarÅrsaken]?: string;
-  [jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [jegHarSagtOppHvorMangeTimerHarDuJobbetIUka]?: string;
   [avskjedigetHvaVarÅrsaken]?: string;
-  [avskjedigetVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [avskjedigetHvorMangeTimerHarDuJobbetIUka]?: string;
   [arbeidstidenErRedusertHvaErÅrsaken]?: string;
   [arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet]?: string;
   [arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert]?: string;
-  [arbeidstidenErRedusertVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [arbeidstidenErRedusertHvorMangeTimerHarDuJobbetIUka]?: string;
   [arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
   [arbeidstidenErRedusertHvaHarDuSvartPåTilbudet]?: string;
   [arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [kontraktenErUtgåttHvorMangeTimerHarDuJobbetIUka]?: string;
   [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]?: string;
   [kontraktenErUgåttHvaHarDuSvartPåTilbudet]?: string;
   [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [konkursVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [konkursHvorMangeTimerHarDuJobbetIUka]?: string;
   [konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato]?: string;
   [konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
   [konkursNårStartetDuIDenneJobben]?: string;
@@ -157,16 +129,12 @@ export type Arbeidsforhold = {
   [permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
   [permittertNårStartetDuIDenneJobben]?: string;
   [permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien]?: string;
-  [permittertVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [permittertHvorMangeTimerHarDuJobbetIUka]?: string;
   [permittertNårErDuPermittertFraOgMedDato]?: string;
   [permittertNårErDuPermittertTilOgMedDato]?: string;
   [permittertHvorMangeProsentErDuPermittert]?: string;
   [permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr]?: string;
   [permittertLønnsperiodeFraOgMedDato]?: string;
   [permittertLønnsperiodeTilOgMedDato]?: string;
-  [ikkeEndretVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [ikkeEndretHvorMangeTimerHarDuJobbetIUka]?: string;
   [ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
   [ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
   [harDuJobbetSkiftTurnusEllerRotasjon]?: string;
@@ -184,32 +152,20 @@ export type ArbeidsforholdModalSvar = {
   [varighetPåArbeidsforholdetTilOgMedDato]?: string;
   [hvordanHarDetteArbeidsforholdetEndretSeg]?: string;
   [jegErOppsagtHvaVarÅrsaken]?: string;
-  [jegErOppsagtVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [jegErOppsagtHvorMangeTimerHarDuJobbetIUka]?: string;
   [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
   [jegErOppsagtHvaHarDuSvartPåTilbudet]?: string;
   [jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
   [jegHarSagtOppHvaVarÅrsaken]?: string;
-  [jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [jegHarSagtOppHvorMangeTimerHarDuJobbetIUka]?: string;
   [avskjedigetHvaVarÅrsaken]?: string;
-  [avskjedigetVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [avskjedigetHvorMangeTimerHarDuJobbetIUka]?: string;
   [arbeidstidenErRedusertHvaErÅrsaken]?: string;
   [arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet]?: string;
   [arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert]?: string;
-  [arbeidstidenErRedusertVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [arbeidstidenErRedusertHvorMangeTimerHarDuJobbetIUka]?: string;
   [arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
   [arbeidstidenErRedusertHvaHarDuSvartPåTilbudet]?: string;
   [arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [kontraktenErUtgåttHvorMangeTimerHarDuJobbetIUka]?: string;
   [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]?: string;
   [kontraktenErUgåttHvaHarDuSvartPåTilbudet]?: string;
   [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [konkursVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [konkursHvorMangeTimerHarDuJobbetIUka]?: string;
   [konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato]?: string;
   [konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
   [konkursNårStartetDuIDenneJobben]?: string;
@@ -225,16 +181,12 @@ export type ArbeidsforholdModalSvar = {
   [permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
   [permittertNårStartetDuIDenneJobben]?: string;
   [permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien]?: string;
-  [permittertVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [permittertHvorMangeTimerHarDuJobbetIUka]?: string;
   [permittertNårErDuPermittertFraOgMedDato]?: string;
   [permittertNårErDuPermittertTilOgMedDato]?: string;
   [permittertHvorMangeProsentErDuPermittert]?: string;
   [permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr]?: string;
   [permittertLønnsperiodeFraOgMedDato]?: string;
   [permittertLønnsperiodeTilOgMedDato]?: string;
-  [ikkeEndretVetDuHvorMangeTimerDuJobbetIUka]?: string;
-  [ikkeEndretHvorMangeTimerHarDuJobbetIUka]?: string;
   [ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
   [ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
   [harDuJobbetSkiftTurnusEllerRotasjon]?: string;

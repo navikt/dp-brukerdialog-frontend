@@ -12,10 +12,6 @@ export const permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforhold
 export const permittertNårStartetDuIDenneJobben = "permittert-når-startet-du-i-denne-jobben";
 export const permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien =
   "permittert-er-du-permittert-fra-fiskeforedlings-eller-fiskeoljeindustrien";
-export const permittertVetDuHvorMangeTimerDuJobbetIUka =
-  "permittert-vet-du-hvor-mange-timer-du-jobbet-iuka";
-export const permittertHvorMangeTimerHarDuJobbetIUka =
-  "permittert-hvor-mange-timer-har-du-jobbet-iuka";
 export const permittertNårErDuPermittertFraOgMedDato =
   "permittert-når-er-du-permittert-fra-og-med-dato";
 export const permittertNårErDuPermittertTilOgMedDato =
@@ -104,40 +100,6 @@ export const arbeidsforholdModalJegErPermittertSpørsmål: KomponentType[] = [
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
-  },
-  {
-    id: permittertVetDuHvorMangeTimerDuJobbetIUka,
-    type: "envalg",
-    label: "Vet du hvor mange timer du har jobbet i uka før du ble permittert?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label:
-          "Nei, jeg er usikker, bruk opplysninger fra skatteetaten.no/mine inntekter for å beregne min vanlige arbeidstid.",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
-  },
-  {
-    id: permittertHvorMangeTimerHarDuJobbetIUka,
-    type: "tall",
-    label: "Skriv inn hvor mange timer du har jobbet per uke før du ble permittert?",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[permittertVetDuHvorMangeTimerDuJobbetIUka] === "ja",
-  },
-  {
-    id: "permittertHvorMangeTimerHarDuJobbetIUkaLesMer",
-    type: "lesMer",
-    label: "Dette skal du oppgi som arbeidstid",
-    description:
-      "Har du jobbet like mye hver uke, oppgir du denne arbeidstiden. Hvis du ikke har jobbet like mye hver uke, oppgir du det antall timer du har jobbet i snitt de seks siste månedene.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[permittertVetDuHvorMangeTimerDuJobbetIUka] === "ja",
   },
   {
     id: permittertNårErDuPermittertFraOgMedDato,
