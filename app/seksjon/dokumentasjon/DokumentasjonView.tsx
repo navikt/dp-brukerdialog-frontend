@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.dokumentasjon";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
+import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export function DokumentasjonView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -49,7 +49,7 @@ export function DokumentasjonView() {
       <VStack gap="4">
         {loaderData.map((seksjon) =>
           seksjon?.dokumentasjonskrav?.map((dokumentasjonskrav) => (
-            <Dokumentasjonskrav
+            <DokumentasjonskravKomponent
               key={dokumentasjonskrav.id}
               dokumentasjonskrav={dokumentasjonskrav}
               seksjon={seksjon}

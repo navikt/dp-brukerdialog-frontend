@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { Barn } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/Dokumentasjonskrav";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",
@@ -21,14 +21,14 @@ type BarnetilleggContextType = {
   setValiderBarnFraPdl: (valider: boolean) => void;
   modalData?: ModalData;
   setModalData: (modalData?: ModalData) => void;
-  dokumentasjonskrav: DokumentasjonskravType[];
-  setDokumentasjonskrav: (dokumentasjonskrav: DokumentasjonskravType[]) => void;
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
 };
 
 type BarnetilleggProviderProps = {
   barnFraPdl: Barn[];
   barnLagtManuelt: Barn[];
-  dokumentasjonskrav: DokumentasjonskravType[];
+  dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
@@ -58,7 +58,7 @@ function BarnetilleggProvider({
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
   const [dokumentasjonskrav, setDokumentasjonskrav] =
-    useState<DokumentasjonskravType[]>(dokumentasjonskravProps);
+    useState<Dokumentasjonskrav[]>(dokumentasjonskravProps);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (

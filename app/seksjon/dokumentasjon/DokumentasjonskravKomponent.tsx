@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useState } from "react";
 import { Form, useParams } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -26,19 +27,25 @@ import {
   nårSendteDuDokumentet,
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.spørsmål";
-import { FilOpplasting } from "./FilOpplasting";
+import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
 
-export type DokumentasjonskravType = {
+export type Dokumentasjonskrav = {
   id: string;
   spørsmålId: string;
   tittel?: string;
-  type: "Barn" | "Arbeidsforhold";
+  type: DokumentasjonskravTypeEnum;
   gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
   begrunnelse?: string;
+  filer?: DokumentkravFil[];
   bundle?: string;
   bundleFilsti?: string;
 };
+
+export enum DokumentasjonskravTypeEnum {
+  Barn = "Barn",
+  Arbeidsforhold = "Arbeidsforhold",
+}
 
 export type GyldigDokumentkravSvar =
   | typeof DOKUMENTKRAV_SVAR_SEND_NAA
@@ -47,16 +54,22 @@ export type GyldigDokumentkravSvar =
   | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
 
 interface DokumentasjonskravProps {
-  dokumentasjonskrav: DokumentasjonskravType;
+  dokumentasjonskrav: Dokumentasjonskrav;
   seksjon: any;
 }
 
-export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: DokumentasjonskravProps) {
+export function DokumentasjonskravKomponent({
+  dokumentasjonskrav,
+  seksjon,
+}: DokumentasjonskravProps) {
   const { soknadId } = useParams();
+  const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
+    dokumentasjonskrav.filer ?? []
+  );
 
-  function hentBeskrivelse(type: string) {
+  function hentBeskrivelse(type: DokumentasjonskravTypeEnum) {
     switch (type) {
-      case "Barn":
+      case DokumentasjonskravTypeEnum.Barn:
         return (
           <ReadMore header="Dette må dokumentasjonen inneholde">
             <VStack gap="2">
@@ -76,7 +89,7 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
             </VStack>
           </ReadMore>
         );
-      case "Arbeidsforhold":
+      case DokumentasjonskravTypeEnum.Arbeidsforhold:
         return "Dokumentasjon for arbeidsforhold lagt til i søknaden";
       default:
         return "Dokumentasjon";
@@ -118,6 +131,10 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
         ...dokumentasjonskrav,
         svar: dokumentasjonskravSvar[velgHvaDuVilGjøre],
         begrunnelse: begrunnelse,
+        filer:
+          dokumentasjonskravSvar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SEND_NAA
+            ? dokumentkravFiler
+            : undefined,
       };
 
       lagreDokumentasjonskravSvar(svar);
@@ -126,9 +143,9 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
 
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravSpørsmål);
 
-  async function lagreDokumentasjonskravSvar(svar: DokumentasjonskravType) {
-    const dokumentasjonskrav: DokumentasjonskravType[] = seksjon.dokumentasjonskrav;
-    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: DokumentasjonskravType) =>
+  async function lagreDokumentasjonskravSvar(svar: Dokumentasjonskrav) {
+    const dokumentasjonskrav: Dokumentasjonskrav[] = seksjon.dokumentasjonskrav;
+    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
       krav.id === svar.id ? svar : krav
     );
 
@@ -182,7 +199,11 @@ export function Dokumentasjonskrav({ dokumentasjonskrav, seksjon }: Dokumentasjo
           </VStack>
 
           {form.value(velgHvaDuVilGjøre) === DOKUMENTKRAV_SVAR_SEND_NAA && (
-            <FilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
+            <FilOpplasting
+              dokumentasjonskrav={dokumentasjonskrav}
+              dokumentkravFiler={dokumentkravFiler}
+              setDokumentkravFiler={setDokumentkravFiler}
+            />
           )}
 
           <Button

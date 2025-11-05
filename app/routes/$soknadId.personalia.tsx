@@ -9,7 +9,7 @@ import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
-import { lagreSeksjonV2 } from "~/models/lagre-seksjon.server";
+import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { PersonaliaSvar } from "~/seksjon/personalia/v1/personalia.spørsmål";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
@@ -96,7 +96,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjonV2(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
