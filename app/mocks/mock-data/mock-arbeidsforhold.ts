@@ -12,14 +12,11 @@ import {
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import {
   jegHarSagtOppHvaVarÅrsaken,
-  jegHarSagtOppHvorMangeTimerHarDuJobbetIUka,
-  jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
 import {
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
 
 export const mockArbeidsforhold: ArbeidsforholdResponse = {
@@ -32,8 +29,6 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [varighetPåArbeidsforholdetTilOgMedDato]: "2025-09-24",
       [hvordanHarDetteArbeidsforholdetEndretSeg]: "jeg-har-sagt-opp-selv",
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
-      [jegHarSagtOppHvorMangeTimerHarDuJobbetIUka]: "93",
-      [jegHarSagtOppVetDuHvorMangeTimerDuJobbetIUka]: "ja",
       [harDuJobbetSkiftTurnusEllerRotasjon]: "hverken-skift-turnus-eller-rotasjon",
     },
     {
@@ -42,7 +37,6 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [varighetPåArbeidsforholdetFraOgMedDato]: "2023-01-01",
       [varighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
       [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontrakten-er-ugått",
-      [kontraktenErUtgåttVetDuHvorMangeTimerDuJobbetIUka]: "nei",
       [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
         "ja",
       [kontraktenErUgåttHvaHarDuSvartPåTilbudet]: "nei",
