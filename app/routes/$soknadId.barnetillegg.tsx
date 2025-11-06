@@ -80,17 +80,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
   const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
-  const putSeksjonRequestBody = {
+  const seksjonData = {
     seksjonsvar: JSON.stringify({
-      SEKSJON_ID,
-      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
-      versjon: Number(versjon),
+      id: SEKSJON_ID,
+      svar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
+      versjon: Number(versjon),
     }),
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, seksjonData);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
@@ -105,27 +105,28 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function BarntilleggRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const { svar, dokumentasjonskrav, versjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (versjon ?? NYESTE_VERSJON) {
+  switch (loaderData.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <BarnetilleggProvider
-          barnFraPdl={svar?.barnFraPdl ?? []}
-          barnLagtManuelt={svar?.barnLagtManuelt ?? []}
-          dokumentasjonskrav={dokumentasjonskrav ?? []}
+          barnFraPdl={loaderData.svar?.barnFraPdl ?? []}
+          barnLagtManuelt={loaderData.svar?.barnLagtManuelt ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>
       );
     default:
-      console.error(`Ukjent versjonsnummer: ${versjon} for barnetillegg for søknaden ${soknadId}`);
+      console.error(
+        `Ukjent versjonsnummer: ${loaderData.versjon} for barnetillegg for søknaden ${soknadId}`
+      );
       return (
         <BarnetilleggProvider
-          barnFraPdl={svar?.barnFraPdl ?? []}
-          barnLagtManuelt={svar?.barnLagtManuelt ?? []}
-          dokumentasjonskrav={dokumentasjonskrav ?? []}
+          barnFraPdl={loaderData.svar?.barnFraPdl ?? []}
+          barnLagtManuelt={loaderData.svar?.barnLagtManuelt ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>
