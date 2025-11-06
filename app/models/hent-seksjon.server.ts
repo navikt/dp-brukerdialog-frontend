@@ -15,3 +15,18 @@ export async function hentSeksjon(request: Request, soknadId: string, seksjonId:
     },
   });
 }
+
+export async function hentSeksjonV2(request: Request, soknadId: string, seksjonId: string) {
+  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/v2/${soknadId}/${seksjonId}`;
+  const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
+
+  return await fetch(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${onBehalfOfToken}`,
+      connection: "keep-alive",
+      "Content-Type": "application/json",
+    },
+  });
+}
