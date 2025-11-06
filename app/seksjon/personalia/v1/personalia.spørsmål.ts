@@ -15,7 +15,7 @@ export const poststedFraPdl = "poststed-fra-pdl";
 export const kontonummerFraKontoregister = "kontonummer-fra-kontoregister";
 export const folkeregistrertAdresseErNorgeStemmerDet =
   "folkeregistrert-adresse-er-norge-stemmer-det";
-export const landKodeFraPdl = "landkode-fra-pdl";
+export const landkodeFraPdl = "landkode-fra-pdl";
 export const landFraPdl = "land-fra-pdl";
 export const bostedsland = "bostedsland";
 export const reistTilbakeTilBostedslandet = "reist-tilbake-til-bostedslandet";
@@ -38,7 +38,7 @@ export type PersonaliaSvar = {
   [postnummerFraPdl]?: string;
   [poststedFraPdl]?: string;
   [kontonummerFraKontoregister]?: string;
-  [landKodeFraPdl]?: string;
+  [landkodeFraPdl]?: string;
   [landFraPdl]?: string;
   [folkeregistrertAdresseErNorgeStemmerDet]?: string;
   [bostedsland]?: string;
@@ -97,7 +97,7 @@ export const personaliaSpørsmål: KomponentType[] = [
     label: "Poststed",
   },
   {
-    id: landKodeFraPdl,
+    id: landkodeFraPdl,
     type: "registeropplysning",
     label: "Landkode",
   },
