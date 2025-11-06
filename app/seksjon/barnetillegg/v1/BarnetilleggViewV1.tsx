@@ -131,7 +131,8 @@ export function BarnetilleggViewV1() {
       case BarnLagtManueltVarsel.MÅ_FJERNE_BARN:
         return "Du må fjerne barnet for å kunne gå videre i søknaden.";
       default:
-        return "";
+        console.error("Ukjent varseltype:", varsel);
+        return null;
     }
   }
 
