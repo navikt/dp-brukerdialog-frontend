@@ -21,14 +21,14 @@ interface IProps {
   barn: BarnFraPdl;
 }
 
-export function BarnFraPdlKomponent({ barn }: IProps) {
+export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
   const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
 
   const form = useForm({
     submitSource: "state",
     schema: barnFraPdlSchema,
     defaultValues: {
-      ...barn,
+      ...barnProps,
     },
   });
 
@@ -42,8 +42,8 @@ export function BarnFraPdlKomponent({ barn }: IProps) {
     const forsørgerDuBarnetSvar = form.value(forsørgerDuBarnet);
 
     if (form.formState.isDirty && forsørgerDuBarnetSvar !== undefined) {
-      const oppdatertListe = barnFraPdl.map((etBarn) =>
-        etBarn.id === barn.id ? { ...etBarn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar } : etBarn
+      const oppdatertListe = barnFraPdl.map((barn) =>
+        barn.id === barnProps.id ? { ...barn, [forsørgerDuBarnet]: forsørgerDuBarnetSvar } : barn
       );
 
       setbarnFraPdl(oppdatertListe);
@@ -53,16 +53,16 @@ export function BarnFraPdlKomponent({ barn }: IProps) {
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <Heading size="small" spacing>
-        {barn[fornavnOgMellomnavn]} {barn[etternavn]}
+        {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
-      {barn[fødselsdato] && (
+      {barnProps[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barn[fødselsdato]))}
+          Født {formaterNorskDato(new Date(barnProps[fødselsdato]))}
         </BodyShort>
       )}
-      {barn[bostedsland] && (
+      {barnProps[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barn[bostedsland]).toUpperCase()}
+          BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
 
