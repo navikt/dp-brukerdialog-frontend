@@ -211,7 +211,7 @@ export function BarnetilleggViewV1() {
           <Button
             variant="secondary"
             type="button"
-            icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+            icon={<ArrowLeftIcon aria-hidden />}
             onClick={handleTilbakenavigering}
           >
             Forrige steg
@@ -221,7 +221,7 @@ export function BarnetilleggViewV1() {
             type="submit"
             onClick={handleSubmit}
             iconPosition="right"
-            icon={<ArrowRightIcon />}
+            icon={<ArrowRightIcon aria-hidden />}
           >
             Neste steg
           </Button>

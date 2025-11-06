@@ -46,7 +46,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (skjemaData) => {
-      const { success, data, error } = validertLeggTilBarnManueltSchema.safeParse(skjemaData);
+      const { success, data: barn, error } = validertLeggTilBarnManueltSchema.safeParse(skjemaData);
 
       if (!success) {
         console.error("Valideringsfeil i barnetilleggmodal:", error);
@@ -59,11 +59,11 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
       }
 
       if (modalData.operasjon === ModalOperasjon.LeggTil) {
-        leggTilEtBarn(data);
+        leggTilEtBarn(barn);
       }
 
       if (modalData.operasjon === ModalOperasjon.Rediger) {
-        oppdatereEtBarn(data);
+        oppdatereEtBarn(barn);
       }
     },
     onSubmitSuccess() {
@@ -115,9 +115,9 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
 
   const modalIkon =
     modalData?.operasjon === ModalOperasjon.LeggTil ? (
-      <PersonPlusIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+      <PersonPlusIcon aria-hidden />
     ) : (
-      <PersonPencilIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+      <PersonPencilIcon aria-hidden />
     );
 
   const modalTittel =
@@ -156,10 +156,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
             })}
 
             <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
+              <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                 Lagre og lukk
               </Button>
             </HStack>
