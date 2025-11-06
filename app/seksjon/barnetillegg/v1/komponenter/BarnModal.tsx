@@ -8,10 +8,7 @@ import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import {
-  validertLeggTilBarnManueltSchema,
-  leggTilBarnManueltSchema,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
+import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   BarnLagtManuelt,
   etternavn,
@@ -29,8 +26,6 @@ interface IProps {
   spørsmålId: string;
 }
 
-type ValidertLeggTilBarnManuelt = z.infer<typeof validertLeggTilBarnManueltSchema>;
-
 export function BarnModal({ ref, spørsmålId }: IProps) {
   const {
     barnLagtManuelt,
@@ -46,12 +41,13 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (skjemaData) => {
-      const { success, data: barn, error } = validertLeggTilBarnManueltSchema.safeParse(skjemaData);
-
-      if (!success) {
-        console.error("Valideringsfeil i barnetilleggmodal:", error);
-        return;
-      }
+      const barn: BarnLagtManuelt = {
+        id: crypto.randomUUID(),
+        fornavnOgMellomnavn: skjemaData.fornavnOgMellomnavn || "",
+        etternavn: skjemaData.etternavn || "",
+        fødselsdato: skjemaData.fødselsdato || "",
+        bostedsland: skjemaData.bostedsland || "",
+      };
 
       if (modalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
@@ -73,11 +69,10 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     resetAfterSubmit: true,
   });
 
-  function leggTilEtBarn(barnProps: ValidertLeggTilBarnManuelt) {
+  function leggTilEtBarn(barnProps: BarnLagtManuelt) {
     const dokumentasjonskravId = crypto.randomUUID();
 
     const nyttBarn: BarnLagtManuelt = {
-      id: crypto.randomUUID(),
       dokumentasjonskrav: [dokumentasjonskravId],
       ...barnProps,
     };
@@ -93,7 +88,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
     setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
   }
 
-  function oppdatereEtBarn(barnProps: ValidertLeggTilBarnManuelt) {
+  function oppdatereEtBarn(barnProps: BarnLagtManuelt) {
     const oppdatertBarnLagtManuelt: BarnLagtManuelt[] = barnLagtManuelt?.map((barn) =>
       barn.id === modalData?.barn?.id
         ? { ...barnProps, id: barn.id, dokumentasjonskrav: barn.dokumentasjonskrav }

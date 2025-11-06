@@ -27,10 +27,12 @@ export type SeksjonSvar = BarnetilleggSvar & {
 };
 
 export type BarnetilleggSeksjon = {
-  id?: string;
-  svar?: SeksjonSvar;
+  seksjonsvar: {
+    id: string;
+    versjon: number;
+    svar?: SeksjonSvar;
+  };
   dokumentasjonskrav?: Dokumentasjonskrav[];
-  versjon?: number;
 };
 
 const NYESTE_VERSJON = 1;
@@ -54,18 +56,24 @@ export async function loader({
 
   if (!barnFraPdlResponse.ok) {
     return {
-      versjon: NYESTE_VERSJON,
+      seksjonsvar: {
+        id: SEKSJON_ID,
+        versjon: NYESTE_VERSJON,
+      },
     };
   }
 
   const barnFraPdl: BarnFraPdl[] = await barnFraPdlResponse.json();
 
   return {
-    versjon: NYESTE_VERSJON,
-    svar: {
-      [forsørgerDuBarnSomIkkeVisesHer]: undefined,
-      barnLagtManuelt: [],
-      barnFraPdl: barnFraPdl,
+    seksjonsvar: {
+      id: SEKSJON_ID,
+      versjon: NYESTE_VERSJON,
+      svar: {
+        [forsørgerDuBarnSomIkkeVisesHer]: undefined,
+        barnLagtManuelt: [],
+        barnFraPdl: barnFraPdl,
+      },
     },
   };
 }
@@ -80,17 +88,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
   const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
-  const seksjonData = {
+  const putSeksjonRequestBody = {
     seksjonsvar: JSON.stringify({
       id: SEKSJON_ID,
-      svar: normaliserFormData(JSON.parse(seksjonsvar as string)),
-      dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
       versjon: Number(versjon),
+      svar: normaliserFormData(JSON.parse(seksjonsvar as string)),
     }),
+    dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, seksjonData);
+  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
@@ -107,12 +115,12 @@ export default function BarntilleggRoute() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
-  switch (loaderData.versjon ?? NYESTE_VERSJON) {
+  switch (loaderData.seksjonsvar?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData.svar?.barnFraPdl ?? []}
-          barnLagtManuelt={loaderData.svar?.barnLagtManuelt ?? []}
+          barnFraPdl={loaderData.seksjonsvar?.svar?.barnFraPdl ?? []}
+          barnLagtManuelt={loaderData.seksjonsvar?.svar?.barnLagtManuelt ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />
@@ -120,12 +128,12 @@ export default function BarntilleggRoute() {
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for barnetillegg for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.seksjonsvar?.versjon} for barnetillegg for søknaden ${soknadId}`
       );
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData.svar?.barnFraPdl ?? []}
-          barnLagtManuelt={loaderData.svar?.barnLagtManuelt ?? []}
+          barnFraPdl={loaderData.seksjonsvar?.svar?.barnFraPdl ?? []}
+          barnLagtManuelt={loaderData.seksjonsvar?.svar?.barnLagtManuelt ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />

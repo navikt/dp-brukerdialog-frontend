@@ -52,7 +52,7 @@ export function BarnetilleggViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: barnetilleggSchema,
-    defaultValues: { ...loaderData.svar, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjonsvar?.svar, versjon: loaderData.seksjonsvar?.versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggKomponenter);
@@ -159,7 +159,7 @@ export function BarnetilleggViewV1() {
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
+            <input type="hidden" name="versjon" value={loaderData.seksjonsvar?.versjon} />
             {barnetilleggKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;

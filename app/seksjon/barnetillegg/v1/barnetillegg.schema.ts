@@ -30,10 +30,10 @@ export const barnetilleggSchema = z
       return;
     }
 
-    barnetilleggKomponenter.forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof BarnetilleggSvar];
-      valider(spørsmål, svar, synlig, context);
+    barnetilleggKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof BarnetilleggSvar];
+      valider(komponent, svar, synlig, context);
     });
   });
 
@@ -71,10 +71,3 @@ export const leggTilBarnManueltSchema = z
       valider(spørsmål, svar, synlig, context);
     });
   });
-
-export const validertLeggTilBarnManueltSchema = z.object({
-  [fornavnOgMellomnavn]: z.string(),
-  [etternavn]: z.string(),
-  [fødselsdato]: z.string(),
-  [bostedsland]: z.string(),
-});
