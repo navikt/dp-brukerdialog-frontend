@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarnFraPdl } from "~/models/hent-barn-fra-pdl.server";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjon, hentSeksjonV2 } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
@@ -19,7 +19,6 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import { normaliserFormData } from "~/utils/action.utils.server";
 
 export type SeksjonSvar = BarnetilleggSvar & {
   barnFraPdl?: BarnFraPdl[];
@@ -46,10 +45,21 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<BarnetilleggSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const seksjonResponse = await hentSeksjonV2(request, params.soknadId, SEKSJON_ID);
 
-  if (response.ok) {
-    return response.json();
+  if (seksjonResponse.ok) {
+    // Todo: Kan backend returnere riktig objekt istedenfor seksjonsvar: string slik at vi slipper å mappe om data her her?
+    const responseData = await seksjonResponse.json();
+
+    console.log(`🔥 responseData :`, responseData);
+
+    return {
+      ...responseData,
+      seksjonsvar: responseData.seksjonsvar ? JSON.parse(responseData.seksjonsvar) : undefined,
+      dokumentasjonskrav: responseData.dokumentasjonskrav
+        ? JSON.parse(responseData.dokumentasjonskrav)
+        : undefined,
+    };
   }
 
   const barnFraPdlResponse = await hentBarnFraPdl(request);
@@ -92,9 +102,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
     seksjonsvar: JSON.stringify({
       id: SEKSJON_ID,
       versjon: Number(versjon),
-      svar: normaliserFormData(JSON.parse(seksjonsvar as string)),
+      svar: seksjonsvar ? JSON.parse(seksjonsvar as string) : undefined,
     }),
-    dokumentasjonskrav: JSON.parse(dokumentasjonskrav as string),
+    dokumentasjonskrav: dokumentasjonskrav,
     pdfGrunnlag: pdfGrunnlag,
   };
 
@@ -114,6 +124,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function BarntilleggRoute() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
+
+  console.log(loaderData);
 
   switch (loaderData.seksjonsvar?.versjon ?? NYESTE_VERSJON) {
     case 1:
