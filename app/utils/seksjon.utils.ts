@@ -1,4 +1,8 @@
-import { FlervalgSpørsmål, KomponentType } from "~/components/spørsmål/spørsmål.types";
+import {
+  FlervalgSpørsmål,
+  KomponentType,
+  SpørsmålBase,
+} from "~/components/spørsmål/spørsmål.types";
 
 export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: string, svar: string) {
   return (
@@ -23,7 +27,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
         return {
           id: spørsmål?.id,
           type: spørsmål?.type,
-          label: spørsmål?.label,
+          label: (spørsmål as SpørsmålBase).optional ? `${spørsmål.label} (valgfritt)` : `${spørsmål.label}`,
           description: spørsmål?.description,
           options: (spørsmål as any)?.options,
           svar: svar?.[1],
