@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarnFraPdl } from "~/models/hent-barn-fra-pdl.server";
-import { hentSeksjon, hentSeksjonV2 } from "~/models/hent-seksjon.server";
+import { hentSeksjonV2 } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
@@ -15,7 +15,6 @@ import {
   BarnFraPdl,
   BarnLagtManuelt,
   erTilbakenavigering,
-  forsørgerDuBarnSomIkkeVisesHer,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
@@ -48,17 +47,11 @@ export async function loader({
   const seksjonResponse = await hentSeksjonV2(request, params.soknadId, SEKSJON_ID);
 
   if (seksjonResponse.ok) {
-    // Todo: Kan backend returnere riktig objekt istedenfor seksjonsvar: string slik at vi slipper å mappe om data her her?
-    const responseData = await seksjonResponse.json();
-
-    console.log(`🔥 responseData :`, responseData);
+    const { seksjonsvar, dokumentasjonskrav } = await seksjonResponse.json();
 
     return {
-      ...responseData,
-      seksjonsvar: responseData.seksjonsvar ? JSON.parse(responseData.seksjonsvar) : undefined,
-      dokumentasjonskrav: responseData.dokumentasjonskrav
-        ? JSON.parse(responseData.dokumentasjonskrav)
-        : undefined,
+      seksjonsvar: seksjonsvar ? JSON.parse(seksjonsvar) : undefined,
+      dokumentasjonskrav: dokumentasjonskrav ? JSON.parse(dokumentasjonskrav) : undefined,
     };
   }
 
@@ -80,8 +73,6 @@ export async function loader({
       id: SEKSJON_ID,
       versjon: NYESTE_VERSJON,
       svar: {
-        [forsørgerDuBarnSomIkkeVisesHer]: undefined,
-        barnLagtManuelt: [],
         barnFraPdl: barnFraPdl,
       },
     },
@@ -124,8 +115,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 export default function BarntilleggRoute() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
-
-  console.log(loaderData);
 
   switch (loaderData.seksjonsvar?.versjon ?? NYESTE_VERSJON) {
     case 1:
