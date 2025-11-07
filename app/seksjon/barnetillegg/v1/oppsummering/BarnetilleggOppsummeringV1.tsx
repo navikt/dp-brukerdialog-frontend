@@ -11,9 +11,10 @@ import {
   fødselsdato,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
-import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { formaterNorskDato } from "~/utils/formattering.utils";
+
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export default function BarnetilleggOppsummeringV1({
   seksjonSvarene,

@@ -13,7 +13,7 @@ import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
-import { formaterNorskDato } from "~/utils/formattering.utils";
+import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 

@@ -3,6 +3,7 @@ import {
   KomponentType,
   SpørsmålBase,
 } from "~/components/spørsmål/spørsmål.types";
+import { formaterDatoSvar } from "./formatering.utils";
 
 export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: string, svar: string) {
   return (
@@ -30,7 +31,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
           label: (spørsmål as SpørsmålBase).optional ? `${spørsmål.label} (valgfritt)` : `${spørsmål.label}`,
           description: spørsmål?.description,
           options: (spørsmål as any)?.options,
-          svar: svar?.[1],
+          svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
         };
       }
     })
