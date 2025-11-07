@@ -1,5 +1,8 @@
+import { FormSummary } from "@navikt/ds-react";
+import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
-  barnetilleggSpørsmål,
+  barnetilleggKomponenter,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -8,13 +11,9 @@ import {
   fødselsdato,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnetilleggResponse } from "~/routes/$soknadId.barnetillegg";
-import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { formaterNorskDato } from "~/utils/formattering.utils";
-
-import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import { formaterNorskDato } from "~/utils/formattering.utils";
 
 export default function BarnetilleggOppsummeringV1({
   seksjonSvarene,
@@ -23,7 +22,7 @@ export default function BarnetilleggOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
-  const barnetilleggSvar = seksjonSvarene as BarnetilleggResponse;
+  const barnetilleggSvar = seksjonSvarene as SeksjonSvar;
   const entries = Object.entries(barnetilleggSvar);
   const forsørgerDuBarnSomIkkeVisesHerSvar = barnetilleggSvar[forsørgerDuBarnSomIkkeVisesHer];
 
@@ -31,7 +30,7 @@ export default function BarnetilleggOppsummeringV1({
     return null;
   }
 
-  const forsørgerDuBarnetSpørsmål = barnetilleggSpørsmål.find(
+  const forsørgerDuBarnetSpørsmål = barnetilleggKomponenter.find(
     (s) => s.id === forsørgerDuBarnSomIkkeVisesHer
   )!;
 

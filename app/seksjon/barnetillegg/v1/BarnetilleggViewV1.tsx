@@ -1,39 +1,44 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, BodyShort, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { Alert, BodyLong, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, BarnetilleggResponse, loader } from "~/routes/$soknadId.barnetillegg";
+import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
-  Barn,
-  barnetilleggSpørsmål,
+  barnetilleggKomponenter,
   BarnetilleggSvar,
+  BarnFraPdl,
   barnFraPdlSpørsmål,
+  BarnLagtManuelt,
   erTilbakenavigering,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
   seksjonsvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { BarnFraPdl } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdl";
-import { BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManuelt";
+import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdlKomponent";
+import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+
+enum BarnLagtManueltVarsel {
+  MÅ_LEGGE_TIL_BARN = "må-legge-til-barn",
+  MÅ_FJERNE_BARN = "må-fjerne-barn",
+}
 
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const [harEnFeil, setHarEnFeil] = useState(false);
-  const [harEtVarsel, setHarEtVarsel] = useState(false);
+  const [varsel, setVarsel] = useState<BarnLagtManueltVarsel | undefined>(undefined);
   const {
     barnFraPdl,
     barnLagtManuelt,
@@ -47,15 +52,10 @@ export function BarnetilleggViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: barnetilleggSchema,
-    validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
-    },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjonsvar?.svar, versjon: loaderData.seksjonsvar?.versjon },
   });
 
-  useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggSpørsmål);
+  useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggKomponenter);
 
   useEffect(() => {
     if (modalData) {
@@ -66,36 +66,23 @@ export function BarnetilleggViewV1() {
   const forsørgerDuBarnSomIkkeVisesHerSvar = form.value(forsørgerDuBarnSomIkkeVisesHer);
 
   useEffect(() => {
-    if (forsørgerDuBarnSomIkkeVisesHerSvar === undefined) {
+    if (forsørgerDuBarnSomIkkeVisesHerSvar === "nei") {
+      setVarsel(barnLagtManuelt.length > 0 ? BarnLagtManueltVarsel.MÅ_FJERNE_BARN : undefined);
       return;
     }
 
-    setHarEtVarsel(forsørgerDuBarnSomIkkeVisesHerSvar === "nei" && barnLagtManuelt.length > 0);
-    setHarEnFeil(forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0);
+    if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
+      setVarsel(BarnLagtManueltVarsel.MÅ_LEGGE_TIL_BARN);
+      return;
+    }
+
+    setVarsel(undefined);
   }, [forsørgerDuBarnSomIkkeVisesHerSvar, barnLagtManuelt.length]);
 
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
-
-    const barnetilleggResponse: BarnetilleggResponse = {
-      barnFraPdl: barnFraPdl,
-      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-      barnLagtManuelt: barnLagtManuelt,
-    };
-
-    const pdfPayload = {
-      navn: "Barnetillegg",
-      spørsmål: [
-        ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
-        ...lagSeksjonPayload(barnetilleggSpørsmål, form.transient.value()),
-        ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
-          lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
-        ),
-      ],
-    };
-
-    form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
-    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+    form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
+    form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
     form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
     form.submit();
   }
@@ -103,35 +90,49 @@ export function BarnetilleggViewV1() {
   function handleSubmit() {
     form.validate();
 
-    if (harEnFeil || harEtVarsel) {
+    if (varsel) {
       return;
     }
 
-    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: Barn) => !barn[forsørgerDuBarnet]);
+    const harUbesvartBarnFraPdl = barnFraPdl.some((barn: BarnFraPdl) => !barn[forsørgerDuBarnet]);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
-      const barnetilleggResponse: BarnetilleggResponse = {
-        barnFraPdl: barnFraPdl,
-        [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-        barnLagtManuelt: barnLagtManuelt,
-      };
-
-      const pdfPayload = {
-        navn: "Barnetillegg",
-        spørsmål: [
-          ...barnFraPdl.map((etBarnFraPdl) => lagSeksjonPayload(barnFraPdlSpørsmål, etBarnFraPdl)),
-          ...lagSeksjonPayload(barnetilleggSpørsmål, form.transient.value()),
-          ...barnLagtManuelt.map((etBarnLagtTilManuelt) =>
-            lagSeksjonPayload(leggTilBarnManueltSpørsmål, etBarnLagtTilManuelt)
-          ),
-        ],
-      };
-
-      form.setValue(seksjonsvar, JSON.stringify(barnetilleggResponse));
-      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+      form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
+      form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
       form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
       form.submit();
+    }
+  }
+
+  function lagSeksjonsvar(): SeksjonSvar {
+    return {
+      barnFraPdl: barnFraPdl,
+      [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
+      barnLagtManuelt: barnLagtManuelt,
+    };
+  }
+
+  function lagPdfGrunnlag() {
+    return {
+      navn: "Barnetillegg",
+      spørsmål: [
+        ...barnFraPdl.map((barn) => lagSeksjonPayload(barnFraPdlSpørsmål, barn)),
+        ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
+        ...barnLagtManuelt.map((barn) => lagSeksjonPayload(leggTilBarnManueltSpørsmål, barn)),
+      ],
+    };
+  }
+
+  function hentVarselTekst(varsel: BarnLagtManueltVarsel) {
+    switch (varsel) {
+      case BarnLagtManueltVarsel.MÅ_LEGGE_TIL_BARN:
+        return "Du må legge til et barn for å kunne gå videre i søknaden.";
+      case BarnLagtManueltVarsel.MÅ_FJERNE_BARN:
+        return "Du må fjerne barnet for å kunne gå videre i søknaden.";
+      default:
+        console.error("Ukjent varseltype:", varsel);
+        return null;
     }
   }
 
@@ -152,14 +153,14 @@ export function BarnetilleggViewV1() {
       </BodyLong>
       <VStack gap="10">
         <VStack gap="space-16">
-          {barnFraPdl.map((barn: Barn) => (
-            <BarnFraPdl key={barn.id} barn={barn} />
+          {barnFraPdl?.map((barn: BarnFraPdl) => (
+            <BarnFraPdlKomponent key={barn.id} barn={barn} />
           ))}
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
-            {barnetilleggSpørsmål.map((spørsmål) => {
+            <input type="hidden" name="versjon" value={loaderData.seksjonsvar?.versjon} />
+            {barnetilleggKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }
@@ -181,8 +182,8 @@ export function BarnetilleggViewV1() {
           </VStack>
         </Form>
         <VStack gap="space-16">
-          {barnLagtManuelt?.map((barn: Barn) => (
-            <BarnLagtManuelt key={barn.id} barn={barn} />
+          {barnLagtManuelt?.map((barn: BarnLagtManuelt) => (
+            <BarnLagtManueltKomponent key={barn.id} barn={barn} />
           ))}
         </VStack>
         {forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && (
@@ -199,25 +200,18 @@ export function BarnetilleggViewV1() {
             </Button>
           </HStack>
         )}
-        {harEnFeil && (
-          <VStack gap="space-20">
-            <ErrorMessage showIcon>Du må legge til et barn</ErrorMessage>
-          </VStack>
-        )}
-        {harEtVarsel && (
+
+        {varsel && (
           <Alert variant="warning" className="mt-4">
-            <BodyShort className="validation--warning">
-              Du har lagt til barn manuelt, men du har svar nei på spørsmålet om du forsørger
-              barnet. Du må enten fjerne barnet eller endre svaret til ja for å kunne gå videre i
-              søknaden.
-            </BodyShort>
+            <BodyShort className="validation--warning">{hentVarselTekst(varsel)}</BodyShort>
           </Alert>
         )}
+
         <HStack gap="4" className="mt-8">
           <Button
             variant="secondary"
             type="button"
-            icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+            icon={<ArrowLeftIcon aria-hidden />}
             onClick={handleTilbakenavigering}
           >
             Forrige steg
@@ -227,7 +221,7 @@ export function BarnetilleggViewV1() {
             type="submit"
             onClick={handleSubmit}
             iconPosition="right"
-            icon={<ArrowRightIcon />}
+            icon={<ArrowRightIcon aria-hidden />}
           >
             Neste steg
           </Button>

@@ -1,12 +1,11 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import { useEffect } from "react";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
-  Barn,
+  BarnLagtManuelt,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -16,10 +15,10 @@ import { formaterNorskDato } from "~/utils/formattering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
-  barn: Barn;
+  barn: BarnLagtManuelt;
 }
 
-export function BarnLagtManuelt({ barn }: IProps) {
+export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -29,26 +28,26 @@ export function BarnLagtManuelt({ barn }: IProps) {
   } = useBarnetilleggContext();
 
   function fjernBarn() {
-    setBarnLagtManuelt(barnLagtManuelt.filter((b) => b.id !== barn.id));
+    setBarnLagtManuelt(barnLagtManuelt.filter((barn) => barn.id !== barnProps.id));
 
     setDokumentasjonskrav(
-      dokumentasjonskrav.filter((krav) => krav.id !== barn.dokumentasjonskravId)
+      dokumentasjonskrav.filter((krav) => krav.id !== barnProps?.dokumentasjonskrav?.[0])
     );
   }
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <Heading size="small" spacing>
-        {barn[fornavnOgMellomnavn]} {barn[etternavn]}
+        {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
-      {barn[fødselsdato] && (
+      {barnProps[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barn[fødselsdato]))}
+          Født {formaterNorskDato(new Date(barnProps[fødselsdato]))}
         </BodyShort>
       )}
-      {barn[bostedsland] && (
+      {barnProps[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barn[bostedsland]).toUpperCase()}
+          BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
 
@@ -58,7 +57,7 @@ export function BarnLagtManuelt({ barn }: IProps) {
           size="small"
           icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
           onClick={() => {
-            setModalData({ operasjon: ModalOperasjon.Rediger, barn });
+            setModalData({ operasjon: ModalOperasjon.Rediger, barn: barnProps });
           }}
         >
           Endre svar

@@ -2,6 +2,7 @@ import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
+import { z } from "zod";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import {
   ModalOperasjon,
@@ -9,7 +10,7 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
-  Barn,
+  BarnLagtManuelt,
   etternavn,
   fornavnOgMellomnavn,
   leggTilBarnManueltSpørsmål,
@@ -25,7 +26,7 @@ interface IProps {
   spørsmålId: string;
 }
 
-export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
+export function BarnModal({ ref, spørsmålId }: IProps) {
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -39,54 +40,26 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
     defaultValues: modalData?.barn ?? {},
-    handleSubmit: (barn) => {
-      const ugyldigModalOperasjon =
-        modalData?.operasjon !== ModalOperasjon.LeggTil &&
-        modalData?.operasjon !== ModalOperasjon.Rediger;
+    handleSubmit: (skjemaData) => {
+      const barn: BarnLagtManuelt = {
+        id: crypto.randomUUID(),
+        fornavnOgMellomnavn: skjemaData.fornavnOgMellomnavn || "",
+        etternavn: skjemaData.etternavn || "",
+        fødselsdato: skjemaData.fødselsdato || "",
+        bostedsland: skjemaData.bostedsland || "",
+      };
 
-      if (ugyldigModalOperasjon) {
+      if (modalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for barnetilleggmodal");
         return;
       }
 
       if (modalData.operasjon === ModalOperasjon.LeggTil) {
-        const dokumentasjonskravId = crypto.randomUUID();
-
-        const nyttBarn = {
-          id: crypto.randomUUID(),
-          dokumentasjonskravId: dokumentasjonskravId,
-          ...barn,
-        } as Barn;
-
-        const nyttDokumentkrav: Dokumentasjonskrav = {
-          id: dokumentasjonskravId,
-          spørsmålId: spørsmålId,
-          tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
-          type: DokumentasjonskravType.Barn,
-        };
-
-        setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
-        setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
+        leggTilEtBarn(barn);
       }
 
-      if (modalData.operasjon === ModalOperasjon.Rediger && modalData?.barn?.id) {
-        const oppdatertListe = barnLagtManuelt.map((b) =>
-          b.id === modalData.barn?.id
-            ? { ...barn, id: b.id, dokumentasjonskravId: b.dokumentasjonskravId }
-            : b
-        ) as Barn[];
-
-        const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-          krav.id === modalData.barn?.dokumentasjonskravId
-            ? {
-                ...krav,
-                tittel: `Dokumentasjon for ${barn[fornavnOgMellomnavn]} ${barn[etternavn]}`,
-              }
-            : krav
-        );
-
-        setDokumentasjonskrav(oppdatertDokumentasjonskrav);
-        setBarnLagtManuelt(oppdatertListe);
+      if (modalData.operasjon === ModalOperasjon.Rediger) {
+        oppdatereEtBarn(barn);
       }
     },
     onSubmitSuccess() {
@@ -96,11 +69,50 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
     resetAfterSubmit: true,
   });
 
+  function leggTilEtBarn(barnProps: BarnLagtManuelt) {
+    const dokumentasjonskravId = crypto.randomUUID();
+
+    const nyttBarn: BarnLagtManuelt = {
+      dokumentasjonskrav: [dokumentasjonskravId],
+      ...barnProps,
+    };
+
+    const nyttDokumentkrav: Dokumentasjonskrav = {
+      id: dokumentasjonskravId,
+      spørsmålId: spørsmålId,
+      tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+      type: DokumentasjonskravType.Barn,
+    };
+
+    setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
+    setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
+  }
+
+  function oppdatereEtBarn(barnProps: BarnLagtManuelt) {
+    const oppdatertBarnLagtManuelt: BarnLagtManuelt[] = barnLagtManuelt?.map((barn) =>
+      barn.id === modalData?.barn?.id
+        ? { ...barnProps, id: barn.id, dokumentasjonskrav: barn.dokumentasjonskrav }
+        : barn
+    );
+
+    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav) =>
+      modalData?.barn?.dokumentasjonskrav?.includes(krav.id)
+        ? {
+            ...krav,
+            tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+          }
+        : krav
+    );
+
+    setDokumentasjonskrav(oppdatertDokumentasjonskrav);
+    setBarnLagtManuelt(oppdatertBarnLagtManuelt);
+  }
+
   const modalIkon =
     modalData?.operasjon === ModalOperasjon.LeggTil ? (
-      <PersonPlusIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+      <PersonPlusIcon aria-hidden />
     ) : (
-      <PersonPencilIcon title="a11y-title" fontSize="1.5rem" aria-hidden />
+      <PersonPencilIcon aria-hidden />
     );
 
   const modalTittel =
@@ -139,10 +151,7 @@ export function BarnModal({ ref, spørsmålId }: Readonly<IProps>) {
             })}
 
             <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
+              <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                 Lagre og lukk
               </Button>
             </HStack>

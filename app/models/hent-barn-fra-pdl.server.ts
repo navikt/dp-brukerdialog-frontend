@@ -1,7 +1,7 @@
 import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 
-export async function hentBarn(request: Request) {
+export async function hentBarnFraPdl(request: Request) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/barn`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 
