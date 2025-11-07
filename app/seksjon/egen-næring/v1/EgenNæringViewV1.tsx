@@ -91,6 +91,24 @@ export function EgenNæringViewV1() {
     }
   }, [gårdsbrukModalData]);
 
+  function genererPdfGrunnlag() {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, form.transient.value()),
+        ...næringsvirksomheter.map((enVirksomhet) =>
+          lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, enVirksomhet)
+        ),
+        ...lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, form.transient.value()),
+        ...gårdsbruk.map((etGårdsbruk) =>
+          lagSeksjonPayload(leggTilGårdsbrukSpørsmål, etGårdsbruk)
+        ),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
 
@@ -101,6 +119,7 @@ export function EgenNæringViewV1() {
       gårdsbruk: gårdsbruk,
     };
 
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(seksjonsvar, JSON.stringify(egenNæringResponse));
     form.submit();
   }
@@ -139,22 +158,10 @@ export function EgenNæringViewV1() {
         gårdsbruk: gårdsbruk,
       };
 
-      const pdfPayload = {
-        navn: seksjonnavn,
-        spørsmål: [
-          ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, form.transient.value()),
-          ...næringsvirksomheter.map((enVirksomhet) =>
-            lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, enVirksomhet)
-          ),
-          ...lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, form.transient.value()),
-          ...gårdsbruk.map((etGårdsbruk) =>
-            lagSeksjonPayload(leggTilGårdsbrukSpørsmål, etGårdsbruk)
-          ),
-        ],
-      };
 
+
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue(seksjonsvar, JSON.stringify(egenNæringResponse));
-      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
       form.submit();
     }
   }
