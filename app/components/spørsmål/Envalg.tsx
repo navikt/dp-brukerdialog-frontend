@@ -17,7 +17,7 @@ export function Envalg({ spørsmål, formScope, horisontal }: Readonly<IProps>) 
       {...field.getInputProps()}
       legend={spørsmål.label}
       key={spørsmål.id}
-      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={parse(spørsmål?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
     >
       {horisontal && (

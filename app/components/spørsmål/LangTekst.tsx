@@ -15,7 +15,8 @@ export function LangTekst({ spørsmål, formScope }: Readonly<IProps>) {
     <Textarea
       {...field.getInputProps()}
       label={spørsmål.label}
-      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      defaultValue={(field.value() as string) ?? undefined}
+      description={parse(spørsmål?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={spørsmål.id}
       maxLength={spørsmål.maxLength}
       error={field.error()}

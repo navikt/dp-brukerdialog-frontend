@@ -15,6 +15,7 @@ export function Tall({ spørsmål, formScope }: Readonly<IProps>) {
     <TextField
       {...field.getInputProps()}
       inputMode="decimal"
+      defaultValue={(field.value() as string) ?? undefined}
       label={spørsmål.label}
       description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={spørsmål.id}

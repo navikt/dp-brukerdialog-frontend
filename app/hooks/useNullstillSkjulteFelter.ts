@@ -8,7 +8,7 @@ export function useNullstillSkjulteFelter<T extends Record<string, any>>(
   form: FormApi<T>,
   spørsmål: KomponentType[]
 ) {
-  const formValues = form.transient.value();
+  const formValues = form.value();
 
   useEffect(() => {
     spørsmål.forEach((spørsmål) => {
