@@ -4,6 +4,7 @@ import {
   SpørsmålBase,
 } from "~/components/spørsmål/spørsmål.types";
 import { formaterDatoSvar } from "./formatering.utils";
+import { FLERE_LAND, OFTE_VALGTE_LAND } from "./land.utils";
 
 export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: string, svar: string) {
   return (
@@ -28,12 +29,25 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
         return {
           id: spørsmål?.id,
           type: spørsmål?.type,
-          label: (spørsmål as SpørsmålBase).optional ? `${spørsmål.label} (valgfritt)` : `${spørsmål.label}`,
+          label: (spørsmål as SpørsmålBase).optional
+            ? `${spørsmål.label} (valgfritt)`
+            : `${spørsmål.label}`,
           description: spørsmål?.description,
-          options: (spørsmål as any)?.options,
+          options: getOptions(spørsmål),
           svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
         };
       }
     })
     .filter((item) => item !== undefined);
+}
+
+function getOptions(spørsmål: KomponentType): { value: string; label: string }[] {
+  if (spørsmål.type == "land") {
+    return OFTE_VALGTE_LAND.concat(FLERE_LAND).map((land) => ({
+      value: land.value,
+      label: land.label,
+    }));
+  } else {
+    return (spørsmål as any)?.options;
+  }
 }
