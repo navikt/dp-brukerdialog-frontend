@@ -33,6 +33,7 @@ export type Dokumentasjonskrav = {
   id: string;
   spørsmålId: string;
   tittel?: string;
+  seksjonId: string;
   type: DokumentasjonskravType;
   gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
@@ -55,12 +56,12 @@ export type GyldigDokumentkravSvar =
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
-  seksjon: any;
+  alleDokumentasjonskrav: Dokumentasjonskrav[];
 }
 
 export function DokumentasjonskravKomponent({
   dokumentasjonskrav,
-  seksjon,
+  alleDokumentasjonskrav,
 }: DokumentasjonskravProps) {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
@@ -144,27 +145,20 @@ export function DokumentasjonskravKomponent({
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravSpørsmål);
 
   async function lagreDokumentasjonskravSvar(svar: Dokumentasjonskrav) {
-    const dokumentasjonskrav: Dokumentasjonskrav[] = seksjon.dokumentasjonskrav;
-    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
+    const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
       krav.id === svar.id ? svar : krav
     );
 
-    const seksjonsdata = {
-      ...seksjon,
-      dokumentasjonskrav: oppdatertDokumentasjonskrav,
-    };
-
     const formData = new FormData();
-    formData.append("seksjonsdata", JSON.stringify(seksjonsdata));
+    formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
 
     const response = await fetch(
-      `/api/lagre-dokumentasjonskrav/${soknadId}/${seksjon.seksjonId}/`,
+      `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
       {
-        method: "POST",
+        method: "PUT",
         body: formData,
       }
     );
-
     if (!response.ok) {
       console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
     }

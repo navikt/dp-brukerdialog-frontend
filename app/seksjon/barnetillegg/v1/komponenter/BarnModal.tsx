@@ -24,9 +24,10 @@ import {
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
   spørsmålId: string;
+  seksjonId: string;
 }
 
-export function BarnModal({ ref, spørsmålId }: IProps) {
+export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -79,6 +80,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
 
     const nyttDokumentkrav: Dokumentasjonskrav = {
       id: dokumentasjonskravId,
+      seksjonId: seksjonId,
       spørsmålId: spørsmålId,
       tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
       type: DokumentasjonskravType.Barn,

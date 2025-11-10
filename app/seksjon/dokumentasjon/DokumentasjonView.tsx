@@ -47,15 +47,13 @@ export function DokumentasjonView() {
         Dokumenter du skal sende inn
       </Heading>
       <VStack gap="4">
-        {loaderData.map((seksjon) =>
-          seksjon?.dokumentasjonskrav?.map((dokumentasjonskrav) => (
-            <DokumentasjonskravKomponent
-              key={dokumentasjonskrav.id}
-              dokumentasjonskrav={dokumentasjonskrav}
-              seksjon={seksjon}
-            />
-          ))
-        )}
+        {loaderData.map((dokumentasjonskrav) => (
+          <DokumentasjonskravKomponent
+            key={dokumentasjonskrav.id}
+            dokumentasjonskrav={dokumentasjonskrav}
+            alleDokumentasjonskrav={loaderData}
+          />
+        ))}
       </VStack>
 
       <HStack gap="4" className="mt-14">
