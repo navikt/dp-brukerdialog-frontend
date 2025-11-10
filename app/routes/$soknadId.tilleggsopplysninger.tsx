@@ -12,7 +12,7 @@ import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/Ti
 import {
   erTilbakenavigering,
   TilleggsopplysningerSvar,
-} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;

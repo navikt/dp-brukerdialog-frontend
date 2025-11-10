@@ -1,4 +1,4 @@
-import { vernepliktSpørsmål } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+import { vernepliktKomponenter } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
@@ -22,7 +22,7 @@ export default function VernepliktOppsummeringV1({
       </FormSummary.Header>
       <FormSummary.Answers>
         {!vernepliktSvar.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
-        {vernepliktSpørsmål.map((spørsmål) => {
+        {vernepliktKomponenter.map((spørsmål) => {
           const svar = vernepliktSvar.find((svar) => svar[0] === spørsmål.id);
           if (svar && !erInformasjonsFelt(spørsmål)) {
             return (

@@ -1,7 +1,7 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
-export const harTilleggsopplysninger = "har-tilleggsopplysninger";
+export const harTilleggsopplysninger = "harTilleggsopplysninger";
 export const tilleggsopplysninger = "tilleggsopplysninger";
 export const erTilbakenavigering = "erTilbakenavigering";
 
@@ -10,7 +10,7 @@ export type TilleggsopplysningerSvar = {
   [tilleggsopplysninger]?: string;
 };
 
-export const tilleggsopplysningerSpørsmål: KomponentType[] = [
+export const tilleggsopplysningerKomponenter: KomponentType[] = [
   {
     id: harTilleggsopplysninger,
     type: "envalg",

@@ -8,7 +8,10 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { erTilbakenavigering, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+import {
+  erTilbakenavigering,
+  VernepliktSvar,
+} from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
