@@ -22,7 +22,7 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
   seksjonsvar,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdlKomponent";
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";

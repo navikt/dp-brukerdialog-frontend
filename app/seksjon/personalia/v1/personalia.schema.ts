@@ -26,7 +26,7 @@ import {
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
   seksjonsvar,
-} from "./personalia.spørsmål";
+} from "./personalia.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 export const personaliaSchema = z

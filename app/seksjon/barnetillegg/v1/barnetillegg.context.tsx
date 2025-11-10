@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { BarnFraPdl, BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+import { BarnFraPdl, BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export enum ModalOperasjon {

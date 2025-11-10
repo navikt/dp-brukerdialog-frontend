@@ -1,13 +1,14 @@
 import {
   avreiseDatoFra,
   avreiseDatoTil,
-  bostedsland, folkeregistrertAdresseErNorgeStemmerDet,
+  bostedsland,
+  folkeregistrertAdresseErNorgeStemmerDet,
   hvorforReistDuFraNorge,
   PersonaliaSvar,
   reisteDuHjemTilLandetDuBorI,
   reisteDuITaktMedRotasjon,
   reistTilbakeTilBostedslandet,
-} from "~/seksjon/personalia/v1/personalia.spørsmål";
+} from "~/seksjon/personalia/v1/personalia.komponenter";
 
 export const mockPersonalia: PersonaliaSvar = {
   [folkeregistrertAdresseErNorgeStemmerDet]: "nei",

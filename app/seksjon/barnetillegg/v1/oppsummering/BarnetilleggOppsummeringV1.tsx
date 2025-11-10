@@ -10,7 +10,7 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
   leggTilBarnManueltSpørsmål,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { formaterNorskDato } from "~/utils/formattering.utils";

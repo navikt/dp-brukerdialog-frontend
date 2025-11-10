@@ -24,7 +24,7 @@ import {
   PersonaliaSvar,
   postnummerFraPdl,
   poststedFraPdl,
-} from "~/seksjon/personalia/v1/personalia.spørsmål";
+} from "~/seksjon/personalia/v1/personalia.komponenter";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
