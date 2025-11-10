@@ -12,6 +12,7 @@ import { LesMer } from "./LesMer";
 import { Dokumentasjonskravindikator } from "~/components/spørsmål/Dokumentasjonskravindikator";
 import { Tall } from "~/components/spørsmål/Tall";
 import { Nedtrekksliste } from "~/components/spørsmål/Nedtrekksliste";
+import { ForklarendeTekst } from "~/components/spørsmål/ForklarendeTekst";
 
 interface IProps {
   spørsmål: KomponentType;
@@ -59,6 +60,9 @@ export function Spørsmål({ spørsmål, formScope }: Readonly<IProps>) {
 
     case "registeropplysning":
       return null;
+
+    case "forklarendeTekst":
+      return <ForklarendeTekst spørsmål={spørsmål} />;
 
     default:
       console.warn(`Ukjent spørsmålstype: ${spørsmål}`);

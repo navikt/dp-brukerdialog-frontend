@@ -1,4 +1,10 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import {
+  ArbeidsforholdSvar,
+  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  hvordanHarDuJobbet,
+  jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -28,6 +34,17 @@ export type BarnFraPdl = {
 export type BarnetilleggSvar = {
   [forsørgerDuBarnSomIkkeVisesHer]?: "ja" | "nei";
 };
+
+export const barnetilleggForklarendeTekst: KomponentType[] = [
+  {
+    id: "barnetilleggForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.<br /><br />" +
+      "Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12 måneder.<br /><br />" +
+      "Hvis vi har registrert noen barn på deg vises de under.<br/><br/>",
+  },
+];
 
 export const barnetilleggKomponenter: KomponentType[] = [
   {
