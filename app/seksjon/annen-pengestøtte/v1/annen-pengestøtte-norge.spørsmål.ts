@@ -1,5 +1,8 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+import {
+  harMottattEllerSøktOmPengestøtteFraAndreEøsLand
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 
 export const mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav =
   "mottar-du-eller-har-du-søkt-om-pengestøtte-fra-andre-enn-nav";
@@ -47,6 +50,15 @@ export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
     description:
       "På grunnlag av en sømløs tidshorisont tas det høyde for relasjonene i tillegg til forholdene.",
   },
+  {
+    id: "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine pengestøtter fra Norge</strong><br />"+
+      "Du må legge til alle pengestøtter du mottar eller har søkt om som ikke er fra Nav.",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav] === "ja",
+  }
 ];
 
 export const pengestøtteFraNorgeModalSpørsmål: KomponentType[] = [
