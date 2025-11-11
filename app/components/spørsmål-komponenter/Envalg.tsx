@@ -1,7 +1,7 @@
 import { HStack, Radio, RadioGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
-import { EnvalgSpørsmål } from "./Komponent.types";
+import { EnvalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: EnvalgSpørsmål;

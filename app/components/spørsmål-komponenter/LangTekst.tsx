@@ -1,6 +1,6 @@
 import { Textarea } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { LangTekstSpørsmål } from "./Komponent.types";
+import { LangTekstSpørsmål } from "../Komponent.types";
 import parse from "html-react-parser";
 
 interface IProps {

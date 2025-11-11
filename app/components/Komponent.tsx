@@ -1,18 +1,18 @@
 import { FormScope } from "@rvf/react-router";
-import { Dokumentasjonskravindikator } from "~/components/Dokumentasjonskravindikator";
-import { ForklarendeTekst } from "~/components/ForklarendeTekst";
-import { Nedtrekksliste } from "~/components/Nedtrekksliste";
-import { Tall } from "~/components/Tall";
-import { Dato } from "./Dato";
-import { Envalg } from "./Envalg";
-import { Flervalg } from "./Flervalg";
+import { Dokumentasjonskravindikator } from "~/components/informasjon-komponenter/Dokumentasjonskravindikator";
+import { ForklarendeTekst } from "~/components/informasjon-komponenter/ForklarendeTekst";
+import { Nedtrekksliste } from "~/components/spørsmål-komponenter/Nedtrekksliste";
+import { Tall } from "~/components/spørsmål-komponenter/Tall";
+import { Dato } from "./spørsmål-komponenter/Dato";
+import { Envalg } from "./spørsmål-komponenter/Envalg";
+import { Flervalg } from "./spørsmål-komponenter/Flervalg";
 import { KomponentType } from "./Komponent.types";
-import { KortTekst } from "./KortTekst";
-import { Land } from "./Land";
-import { LangTekst } from "./LangTekst";
-import { LesMer } from "./LesMer";
-import { Periode } from "./Periode";
-import { Varselmelding } from "./Varselmelding";
+import { KortTekst } from "./spørsmål-komponenter/KortTekst";
+import { Land } from "./spørsmål-komponenter/Land";
+import { LangTekst } from "./spørsmål-komponenter/LangTekst";
+import { LesMer } from "./informasjon-komponenter/LesMer";
+import { Periode } from "./spørsmål-komponenter/Periode";
+import { Varselmelding } from "./informasjon-komponenter/Varselmelding";
 
 interface IProps {
   props: KomponentType;

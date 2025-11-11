@@ -1,7 +1,7 @@
 import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
-import { NedtrekkslisteSpørsmål } from "./Komponent.types";
+import { NedtrekkslisteSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: NedtrekkslisteSpørsmål;

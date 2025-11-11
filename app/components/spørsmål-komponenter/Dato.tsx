@@ -1,7 +1,7 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
-import { DatoSpørsmål } from "./Komponent.types";
+import { DatoSpørsmål } from "../Komponent.types";
 import { useState } from "react";
 
 interface IProps {

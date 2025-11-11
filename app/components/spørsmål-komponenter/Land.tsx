@@ -2,7 +2,7 @@ import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
 import { FLERE_LAND, OFTE_VALGTE_LAND } from "~/utils/land.utils";
-import { LandSpørsmål } from "./Komponent.types";
+import { LandSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: LandSpørsmål;

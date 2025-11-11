@@ -1,6 +1,6 @@
 import { Checkbox, CheckboxGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { FlervalgSpørsmål } from "./Komponent.types";
+import { FlervalgSpørsmål } from "../Komponent.types";
 import { useEffect } from "react";
 import parse from "html-react-parser";
 

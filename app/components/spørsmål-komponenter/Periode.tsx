@@ -3,7 +3,7 @@ import { FormScope, useField } from "@rvf/react-router";
 import classNames from "classnames";
 import { formatISO } from "date-fns";
 import { useState } from "react";
-import { PeriodeSpørsmål } from "./Komponent.types";
+import { PeriodeSpørsmål } from "../Komponent.types";
 
 import styles from "./Periode.module.css";
 
