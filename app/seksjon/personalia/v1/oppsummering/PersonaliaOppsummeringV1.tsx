@@ -15,7 +15,7 @@ import {
   poststedFraPdl,
   mellomnavnFraPdl,
   etternavnFraPdl,
-} from "~/seksjon/personalia/v1/personalia.spørsmål";
+} from "~/seksjon/personalia/v1/personalia.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";

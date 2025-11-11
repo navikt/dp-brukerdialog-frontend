@@ -13,7 +13,7 @@ import {
   LeggTilBarnManueltSvar,
   pdfGrunnlag,
   seksjonsvar,
-} from "./barnetillegg.spørsmål";
+} from "./barnetillegg.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 export const barnetilleggSchema = z

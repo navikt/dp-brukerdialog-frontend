@@ -12,7 +12,7 @@ import {
   fornavnOgMellomnavn,
   forsørgerDuBarnet,
   fødselsdato,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";

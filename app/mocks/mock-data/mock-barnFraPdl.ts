@@ -4,7 +4,7 @@ import {
   etternavn,
   fornavnOgMellomnavn,
   fødselsdato,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 
 export const mockBarnFraPdl: BarnFraPdl[] = [
   {

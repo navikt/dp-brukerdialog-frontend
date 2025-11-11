@@ -1,5 +1,5 @@
 import { FormSummary } from "@navikt/ds-react";
-import { dinSituasjonSpørsmål } from "~/seksjon/din-situasjon/v1/din-situasjon.spørsmål";
+import { dinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
@@ -25,7 +25,7 @@ export default function DinSituasjonOppsummeringV1({
         )}
 
         {dinSituasjonEntries.map(([key, value]) => {
-          const spørsmål = dinSituasjonSpørsmål.find((s) => s.id === key);
+          const spørsmål = dinSituasjonKomponenter.find((s) => s.id === key);
 
           if (spørsmål && !erInformasjonsFelt(spørsmål)) {
             return (
