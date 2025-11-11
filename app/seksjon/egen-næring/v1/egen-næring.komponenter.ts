@@ -3,30 +3,30 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
-export const driverDuEgenNæringsvirksomhet = "driver-du-egen-næringsvirksomhet";
+export const driverDuEgenNæringsvirksomhet = "driverDuEgenNæringsvirksomhet";
 export const næringsvirksomheter = "næringsvirksomheter";
 export const gårdsbruk = "gårdsbruk";
-export const driverDuEgetGårdsbruk = "driver-du-eget-gårdsbruk";
+export const driverDuEgetGårdsbruk = "driverDuEgetGårdsbruk";
 export const organisasjonsnummer = "organisasjonsnummer";
 export const hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert =
-  "hvor-mange-timer-jobbet-per-uke-før-arbeidstiden-ble-redusert";
-export const hvorMangeTimerJobbetPerUkeNå = "hvor-mange-timer-jobbet-per-uke-nå";
-export const hvilkeTypeGårdsbrukDriverDu = "hvilke-type-gårdsbruk-driver-du";
+  "hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert";
+export const hvorMangeTimerJobbetPerUkeNå = "hvorMangeTimerJobbetPerUkeNå";
+export const hvilkeTypeGårdsbrukDriverDu = "hvilkeTypeGårdsbrukDriverDu";
 export const dyr = "dyr";
 export const jord = "jord";
 export const skog = "skog";
 export const annet = "annet";
-export const hvemEierGårdsbruket = "hvem-eier-gårdsbruket";
+export const hvemEierGårdsbruket = "hvemEierGårdsbruket";
 export const jeg = "jeg";
-export const samboerEktefelle = "samboer-ektefelle";
+export const samboerEktefelle = "samboerEktefelle";
 export const andre = "andre";
-export const hvorMangeProsentAvInntektenGårTilDeg = "hvor-mange-prosent-av-inntekten-går-til-deg";
+export const hvorMangeProsentAvInntektenGårTilDeg = "hvorMangeProsentAvInntektenGårTilDeg";
 export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr =
-  "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-i-løpet-av-et-år-valgt-år";
+  "hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr";
 export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer =
-  "hvor-mange-arbeidstimer-blir-brukt-på-gårdsbruket-totalt-i-løpet-av-et-år-antall-timer";
+  "hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer";
 export const hvordanHarDuBeregnetAntallArbeidstimerTotalt =
-  "hvordan-har-du-beregnet-antall-arbeidstimer-totalt";
+  "hvordanHarDuBeregnetAntallArbeidstimerTotalt";
 
 export function genererÅrstallOptions() {
   const iÅr = new Date().getFullYear();
@@ -46,7 +46,7 @@ export type Næringsvirksomhet = {
 export type Gårdsbruk = {
   [organisasjonsnummer]: string;
   [hvilkeTypeGårdsbrukDriverDu]: ("dyr" | "jord" | "skog" | "annet")[];
-  [hvemEierGårdsbruket]: ("jeg" | "samboer-ektefelle" | "andre")[];
+  [hvemEierGårdsbruket]: ("jeg" | "samboerEktefelle" | "andre")[];
   [hvorMangeProsentAvInntektenGårTilDeg]: string;
   [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]: string;
   [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]: string;
@@ -63,7 +63,7 @@ export type EgenNæringResponse = EgenNæringSvar & {
   [gårdsbruk]?: Array<Gårdsbruk> | [];
 };
 
-export const egenNæringEgenNæringsvirksomhetSpørsmål: KomponentType[] = [
+export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
   {
     id: driverDuEgenNæringsvirksomhet,
     type: "envalg",

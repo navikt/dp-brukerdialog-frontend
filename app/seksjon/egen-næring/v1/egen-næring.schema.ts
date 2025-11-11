@@ -5,7 +5,7 @@ import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
   dyr,
-  egenNæringEgenNæringsvirksomhetSpørsmål,
+  egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringSvar,
   erTilbakenavigering,
@@ -28,7 +28,7 @@ import {
   pdfGrunnlag,
   samboerEktefelle,
   skog,
-} from "./egen-næring.spørsmål";
+} from "./egen-næring.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 export const egenNæringSchema = z
@@ -45,7 +45,7 @@ export const egenNæringSchema = z
       return;
     }
 
-    egenNæringEgenNæringsvirksomhetSpørsmål
+    egenNæringEgenNæringsvirksomhetKomponenter
       .concat(egenNæringEgetGårdsbrukSpørsmål)
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);

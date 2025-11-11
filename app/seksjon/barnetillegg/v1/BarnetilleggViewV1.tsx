@@ -27,7 +27,7 @@ import {
 import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdlKomponent";
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
-import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 enum BarnLagtManueltVarsel {

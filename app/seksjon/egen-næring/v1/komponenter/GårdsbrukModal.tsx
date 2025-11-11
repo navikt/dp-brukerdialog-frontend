@@ -7,7 +7,7 @@ import {
   Gårdsbruk,
   leggTilGårdsbrukSpørsmål,
   LeggTilGårdsbrukSvar,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";

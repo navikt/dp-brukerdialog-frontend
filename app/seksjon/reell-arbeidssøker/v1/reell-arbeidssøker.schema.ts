@@ -26,9 +26,9 @@ import {
   kanIkkeJobbeIHeleNorgeRedusertHelse,
   kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
   pdfGrunnlag,
-  reellArbeidssøkerSpørsmål,
+  reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
-} from "./reell-arbeidssøker.spørsmål";
+} from "./reell-arbeidssøker.komponenter";
 import { z } from "zod";
 import { valider } from "~/utils/validering.utils";
 
@@ -78,7 +78,7 @@ export const reellArbeidssøkerSchema = z
       return;
     }
 
-    reellArbeidssøkerSpørsmål.forEach((spørsmål) => {
+    reellArbeidssøkerKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof ReellArbeidssøkerSvar];
       valider(spørsmål, svar, synlig, context);

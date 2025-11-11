@@ -7,7 +7,7 @@ import {
   leggTilNæringsvirksomhetSpørsmål,
   LeggTilNæringsvirksomhetSvar,
   Næringsvirksomhet,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";

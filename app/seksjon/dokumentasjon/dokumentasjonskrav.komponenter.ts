@@ -1,41 +1,40 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
-export const velgHvaDuVilGjøre = "velg-hva-du-vil-gjøre";
+export const velgHvaDuVilGjøre = "velgHvaDuVilGjøre";
 export const hvaErGrunnenTilAtDuSenderDokumentetSenere =
-  "hva-er-grunnen-til-at-du-sender-dokumentet-senere";
-export const nårSendteDuDokumentet = "når-sendte-du-dokumentet";
-export const hvaErGrunnenTilAtDuIkkeSenderDokumentet =
-  "hva-er-grunnen-til-at-du-ikke-sender-dokumentet";
+  "hvaErGrunnenTilAtDuSenderDokumentetSenere";
+export const nårSendteDuDokumentet = "nårSendteDuDokumentet";
+export const hvaErGrunnenTilAtDuIkkeSenderDokumentet = "hvaErGrunnenTilAtDuIkkeSenderDokumentet";
 
-export const DOKUMENTKRAV_SVAR_SEND_NAA = "dokumentkrav.svar.send.naa";
-export const DOKUMENTKRAV_SVAR_SENDER_IKKE = "dokumentkrav.svar.sender.ikke";
-export const DOKUMENTKRAV_SVAR_SENDER_SENERE = "dokumentkrav.svar.send.senere";
-export const DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE = "dokumentkrav.svar.sendt.tidligere";
+export const dokumentkravSvarSendNå = "dokumentkravSvarSendNå";
+export const dokumentkravSvarSenderIkke = "dokumentkravSvarSenderIkke";
+export const dokumentkravSvarSenderSenere = "dokumentkravSvarSenderSenere";
+export const dokumentkravSvarSendtTidligere = "dokumentkravSvarSendtTidligere";
 
 export type DokumentasjonskravSvar = {
   [velgHvaDuVilGjøre]?:
-    | typeof DOKUMENTKRAV_SVAR_SEND_NAA
-    | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
-    | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
-    | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
+    | typeof dokumentkravSvarSendNå
+    | typeof dokumentkravSvarSenderIkke
+    | typeof dokumentkravSvarSenderSenere
+    | typeof dokumentkravSvarSendtTidligere;
   [hvaErGrunnenTilAtDuSenderDokumentetSenere]?: string;
   [nårSendteDuDokumentet]?: string;
   [hvaErGrunnenTilAtDuIkkeSenderDokumentet]?: string;
 };
 
-export const dokumentasjonskravSpørsmål: KomponentType[] = [
+export const dokumentasjonskravKomponenter: KomponentType[] = [
   {
     id: velgHvaDuVilGjøre,
     type: "envalg",
     label: "Velg hva du vil gjøre",
     options: [
-      { value: DOKUMENTKRAV_SVAR_SEND_NAA, label: "Jeg vil laste opp nå" },
-      { value: DOKUMENTKRAV_SVAR_SENDER_SENERE, label: "Jeg sender det senere" },
+      { value: dokumentkravSvarSendNå, label: "Jeg vil laste opp nå" },
+      { value: dokumentkravSvarSenderSenere, label: "Jeg sender det senere" },
       {
-        value: DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+        value: dokumentkravSvarSendtTidligere,
         label: "Jeg har sendt det i en tidligere søknad om dagpenger",
       },
-      { value: DOKUMENTKRAV_SVAR_SENDER_IKKE, label: "Jeg sender det ikke" },
+      { value: dokumentkravSvarSenderIkke, label: "Jeg sender det ikke" },
     ],
   },
   {
@@ -44,7 +43,7 @@ export const dokumentasjonskravSpørsmål: KomponentType[] = [
     label: "Hva er grunnen til at du sender dokumentet senere?",
     maxLength: 200,
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SENDER_SENERE,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderSenere,
   },
   {
     id: nårSendteDuDokumentet,
@@ -54,7 +53,7 @@ export const dokumentasjonskravSpørsmål: KomponentType[] = [
       "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt.",
     maxLength: 200,
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSendtTidligere,
   },
   {
     id: "test",
@@ -63,7 +62,7 @@ export const dokumentasjonskravSpørsmål: KomponentType[] = [
     description:
       "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet.",
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SENDER_IKKE,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
   },
   {
     id: hvaErGrunnenTilAtDuIkkeSenderDokumentet,
@@ -71,6 +70,6 @@ export const dokumentasjonskravSpørsmål: KomponentType[] = [
     label: "Hva er grunnen til at du ikke sender dokumentet?",
     maxLength: 200,
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SENDER_IKKE,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
   },
 ];

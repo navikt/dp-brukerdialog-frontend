@@ -1,12 +1,12 @@
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetSpørsmål,
+  egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringResponse,
   leggTilGårdsbrukSpørsmål,
   leggTilNæringsvirksomhetSpørsmål,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
@@ -24,7 +24,7 @@ export default function EgenNæringOppsummeringV1({
 
   const egenNæringSvar = seksjonSvarene as EgenNæringResponse;
 
-  const driverDuEgenNæringsvirksomhetSpørsmål = egenNæringEgenNæringsvirksomhetSpørsmål.find(
+  const driverDuEgenNæringsvirksomhetSpørsmål = egenNæringEgenNæringsvirksomhetKomponenter.find(
     (s) => s.id === driverDuEgenNæringsvirksomhet
   );
 
@@ -46,13 +46,13 @@ export default function EgenNæringOppsummeringV1({
           {driverDuEgenNæringsvirksomhetSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenNæringsvirksomhetSpørsmål}
-              svar={egenNæringSvar["driver-du-egen-næringsvirksomhet"] ?? "Ikke besvart"}
+              svar={egenNæringSvar[driverDuEgenNæringsvirksomhet] ?? "Ikke besvart"}
             />
           ) : (
             "Ikke besvart"
           )}
         </FormSummary.Answer>
-        {egenNæringSvar["driver-du-egen-næringsvirksomhet"] === "ja" &&
+        {egenNæringSvar[driverDuEgenNæringsvirksomhet] === "ja" &&
           egenNæringSvar["næringsvirksomheter"]?.map((næringsvirksomhet, index) => (
             <FormSummary.Answer key={index}>
               <FormSummary.Label>Egen næringsvirksomhet {index + 1}</FormSummary.Label>
@@ -84,13 +84,13 @@ export default function EgenNæringOppsummeringV1({
           {driverDuEgenGårdsbrukSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenGårdsbrukSpørsmål}
-              svar={egenNæringSvar["driver-du-eget-gårdsbruk"] ?? "Ikke besvart"}
+              svar={egenNæringSvar[driverDuEgetGårdsbruk] ?? "Ikke besvart"}
             />
           ) : (
             "Ikke besvart"
           )}
         </FormSummary.Answer>
-        {egenNæringSvar["driver-du-eget-gårdsbruk"] === "ja" &&
+        {egenNæringSvar[driverDuEgetGårdsbruk] === "ja" &&
           egenNæringSvar["gårdsbruk"]?.map((gårdsbruk, index) => (
             <FormSummary.Answer key={index}>
               <FormSummary.Label>Eget gårdsbruk {index + 1}</FormSummary.Label>

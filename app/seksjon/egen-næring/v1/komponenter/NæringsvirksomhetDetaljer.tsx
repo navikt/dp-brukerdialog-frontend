@@ -5,7 +5,7 @@ import {
   hvorMangeTimerJobbetPerUkeNå,
   Næringsvirksomhet,
   organisasjonsnummer,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 interface IProps {

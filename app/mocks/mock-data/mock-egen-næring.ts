@@ -11,7 +11,7 @@ import {
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
   hvorMangeTimerJobbetPerUkeNå,
   organisasjonsnummer,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 export const mockEgenNæring: EgenNæringResponse = {
   [driverDuEgenNæringsvirksomhet]: "ja",
@@ -27,7 +27,7 @@ export const mockEgenNæring: EgenNæringResponse = {
     {
       [organisasjonsnummer]: "830904441",
       [hvilkeTypeGårdsbrukDriverDu]: ["dyr", "skog"],
-      [hvemEierGårdsbruket]: ["jeg", "samboer-ektefelle"],
+      [hvemEierGårdsbruket]: ["jeg", "samboerEktefelle"],
       [hvorMangeProsentAvInntektenGårTilDeg]: "65",
       [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]: "2024",
       [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]: "21",
