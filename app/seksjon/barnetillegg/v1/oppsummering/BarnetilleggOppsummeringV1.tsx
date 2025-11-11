@@ -10,10 +10,11 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
   leggTilBarnManueltSpørsmål,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
+
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import { formaterNorskDato } from "~/utils/formattering.utils";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export default function BarnetilleggOppsummeringV1({
   seksjonSvarene,

@@ -5,12 +5,8 @@ import {
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
-import {
-  jegHarSagtOppHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
-import {
-  avskjedigetHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
+import { jegHarSagtOppHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
+import { avskjedigetHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
 import {
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
@@ -280,12 +276,94 @@ export const arbeidsforholdSpørsmål: KomponentType[] = [
     id: "harIkkeJobbetDeSiste36MånedeneVarselMelding",
     type: "varselmelding",
     variant: "warning",
-    label: "",
     description:
       "Hvis du ikke har vært i arbeid, har du i utgangspunktet ikke rett til dagpenger. Du må derfor regne med å få avslag på søknaden din.<br/><br/>" +
       "<strong>Unntaket er hvis du har avtjent verneplikt</strong> i minst tre av de siste tolv månedene. Du legger ved dokumentasjon på at du har avtjent verneplikt senere i søknaden.",
     visHvis: (svar: ArbeidsforholdSvar) =>
       svar[hvordanHarDuJobbet] === harIkkeJobbetDeSiste36Månedene,
+  },
+];
+
+export const arbeidsforholdForklarendeTekstKomponenter: KomponentType[] = [
+  {
+    id: "harJobbetIEøsOgFastArbeidstidIMindreEnn6MånederForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
+      svar[hvordanHarDuJobbet] === fastArbeidstidIMindreEnn6Måneder,
+  },
+  {
+    id: "harJobbetIEøsOgFastArbeidstidI6MånederEllerMerForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 6 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
+      svar[hvordanHarDuJobbet] === fastArbeidstidI6MånederEllerMer,
+  },
+  {
+    id: "harJobbetIEøsOgVarierendeArbeidstidDeSiste12MånedeneForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
+      svar[hvordanHarDuJobbet] === varierendeArbeidstidDeSiste12Månedene,
+  },
+  {
+    id: "harJobbetIEøsOgJobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12MånedeneForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits, Storbritannia og Norge de siste 36 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
+      svar[hvordanHarDuJobbet] === jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+  },
+  {
+    id: "harIkkeJobbetIEøsOgfastArbeidstidIMindreEnn6MånederForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforholdene du har hatt de siste 12 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
+      svar[hvordanHarDuJobbet] === fastArbeidstidIMindreEnn6Måneder,
+  },
+  {
+    id: "harIkkeJobbetIEøsOgfastArbeidstidI6MånederEllerMerForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforholdene du har hatt de siste 6 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
+      svar[hvordanHarDuJobbet] === fastArbeidstidI6MånederEllerMer,
+  },
+  {
+    id: "harIkkeJobbetIEøsOgVarierendeArbeidstidDeSiste12MånedeneForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforhold du har hatt i løpet av de siste 12 månedene.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
+      svar[hvordanHarDuJobbet] === varierendeArbeidstidDeSiste12Månedene,
+  },
+  {
+    id: "harIkkeJobbetIEøsOgJobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12MånedeneForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine arbeidsforhold</strong><br/>" +
+      "Du må legge til alle arbeidsforhold du har hatt i løpet av de siste 36 månedene. Har du ikke jobbet i løpet av de siste 12 månedene, må du legge til dine siste arbeidsforhold.",
+    visHvis: (svar: ArbeidsforholdSvar) =>
+      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
+      svar[hvordanHarDuJobbet] === jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
   },
 ];
 

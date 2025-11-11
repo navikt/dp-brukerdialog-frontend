@@ -63,16 +63,6 @@ export function ReellArbeidssøkerViewV1() {
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
-            <VStack>
-              For å få dagpenger må du være reell arbeidssøker. Dette betyr at du som hovedregel
-              <List>
-                <ListItem>må være registrert som arbeidssøker</ListItem>
-                <ListItem>
-                  er frisk nok til å jobbe minst 50 prosent, som tilsvarer 18,75 timer i uka
-                </ListItem>
-                <ListItem>kan ta ethvert arbeid hvor som helst i Norge</ListItem>
-              </List>
-            </VStack>
             {reellArbeidssøkerSpørsmål.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;

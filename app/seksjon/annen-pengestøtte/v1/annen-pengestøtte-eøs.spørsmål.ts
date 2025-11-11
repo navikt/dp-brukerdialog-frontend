@@ -1,6 +1,8 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 
-export const harMottattEllerSøktOmPengestøtteFraAndreEøsLand = "har-mottatt-eller-søkt-om-pengestøtte-fra-andre-eøs-land";
+export const harMottattEllerSøktOmPengestøtteFraAndreEøsLand =
+  "har-mottatt-eller-søkt-om-pengestøtte-fra-andre-eøs-land";
 export const hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand =
   "hvilken-pengestøtte-har-du-mottatt-eller-søkt-om-fra-andre-eøs-land";
 export const fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte =
@@ -10,7 +12,8 @@ export const foreldrepengerEllerSvangerskapspenger = "foreldrepenger-eller-svang
 export const dagpengerEllerArbeidsledighetstrygd = "dagpenger-eller-arbeidsledighetstrygd";
 export const pleiepengerOmsorgspengerEllerOpplæringspenger =
   "pleiepenger-omsorgspenger-eller-opplæringspenger";
-export const mottarDuFortsattPengestøttenFraAndreEøsLand = "mottar-du-fortsatt-pengestøtten-fra-andre-eøs-land";
+export const mottarDuFortsattPengestøttenFraAndreEøsLand =
+  "mottar-du-fortsatt-pengestøtten-fra-andre-eøs-land";
 export const fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed =
   "fra-når-har-du-mottatt-pengestøtte-fra-andre-eøs-land-fra-og-med";
 export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed =
@@ -51,6 +54,15 @@ export const pengestøtteFraAndreEøsLandSpørsmål: KomponentType[] = [
     description:
       "Med utgangspunkt i en vedvarende agenda dokumenteres oppfølgingen som en følge av resultatoppnåelsen.",
   },
+  {
+    id: "harMottattEllerSøktOmPengestøtteFraAndreEøsLandForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine pengestøtter fra EØS land</strong><br/>" +
+      "Du må legge til alle trygdeytelser fra EØS-land, Sveits eller Storbritannia du har mottatt eller søkt på de siste 36 måneder",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] === "ja",
+  },
 ];
 
 export const pengestøtteFraAndreEøsLandModalSpørsmål: KomponentType[] = [
@@ -67,14 +79,15 @@ export const pengestøtteFraAndreEøsLandModalSpørsmål: KomponentType[] = [
       { value: dagpengerEllerArbeidsledighetstrygd, label: "Dagpenger / arbeidsledighetstrygd" },
       {
         value: pleiepengerOmsorgspengerEllerOpplæringspenger,
-        label: "Pleiepenger, omsorgspenger eller opplæringspenger ",
+        label: "Pleiepenger, omsorgspenger eller opplæringspenger",
       },
     ],
   },
   {
     id: "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLandVarsel",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon på hvilken periode du har hatt, mottatt eller har søkt om pengestøtte fra et EØS-land, Sveits eller Storbritannia",
+    label:
+      "Dokumentasjon på hvilken periode du har hatt, mottatt eller har søkt om pengestøtte fra et EØS-land, Sveits eller Storbritannia",
   },
   {
     id: fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
@@ -94,19 +107,22 @@ export const pengestøtteFraAndreEøsLandModalSpørsmål: KomponentType[] = [
     id: fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
     type: "dato",
     label: "Fra og med hvilken dato har du mottatt pengestøtten?",
-    visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) => svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "ja",
+    visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
+      svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "ja",
   },
   {
     id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
     type: "periodeFra",
     periodeLabel: "I hvilken periode har du mottatt eller søkt om pengestøtten?",
     label: "Fra og med",
-    visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) => svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
+    visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
+      svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },
   {
     id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
     type: "periodeTil",
     label: "Til og med",
-    visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) => svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
+    visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
+      svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },
 ];

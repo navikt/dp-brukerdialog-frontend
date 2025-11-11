@@ -1,14 +1,14 @@
 import { z } from "zod";
 import {
-  dinSituasjonSpørsmål,
+  dinSituasjonKomponenter,
   DinSituasjonSvar,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
   hvilkenDatoSøkerDuDagpengerFra,
   pdfGrunnlag,
   årsakTilAtDagpengeneBleStanset,
-} from "./din-situasjon.spørsmål";
+} from "./din-situasjon.komponenter";
 import { valider } from "~/utils/validering.utils";
-import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 
 export const dinSituasjonSchema = z
   .object({
@@ -26,7 +26,7 @@ export const dinSituasjonSchema = z
       return;
     }
 
-    dinSituasjonSpørsmål.forEach((spørsmål) => {
+    dinSituasjonKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof DinSituasjonSvar];
       valider(spørsmål, svar, synlig, context);

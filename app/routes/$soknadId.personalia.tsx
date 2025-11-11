@@ -24,7 +24,7 @@ import {
   PersonaliaSvar,
   postnummerFraPdl,
   poststedFraPdl,
-} from "~/seksjon/personalia/v1/personalia.spørsmål";
+} from "~/seksjon/personalia/v1/personalia.komponenter";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import {
   lagreSøknadPersonalia,

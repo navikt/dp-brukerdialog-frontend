@@ -3,9 +3,9 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene =
-  "har-du-mottatt-dagpenger-fra-nav-iløpet-av-de-siste-52-ukene";
-export const årsakTilAtDagpengeneBleStanset = "årsak-til-at-dagpengene-ble-stanset";
-export const hvilkenDatoSøkerDuDagpengerFra = "hvilken-dato-søker-du-dagpenger-fra";
+  "harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene";
+export const årsakTilAtDagpengeneBleStanset = "årsakTilAtDagpengeneBleStanset";
+export const hvilkenDatoSøkerDuDagpengerFra = "hvilkenDatoSøkerDuDagpengerFra";
 export const erTilbakenavigering = "erTilbakenavigering";
 
 export type DinSituasjonSvar = {
@@ -14,7 +14,7 @@ export type DinSituasjonSvar = {
   [hvilkenDatoSøkerDuDagpengerFra]?: string;
 };
 
-export const dinSituasjonSpørsmål: KomponentType[] = [
+export const dinSituasjonKomponenter: KomponentType[] = [
   {
     id: harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
     type: "envalg",

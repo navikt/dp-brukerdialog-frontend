@@ -12,6 +12,7 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
+  barnetilleggForklarendeTekst,
   barnetilleggKomponenter,
   BarnetilleggSvar,
   BarnFraPdl,
@@ -22,7 +23,7 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
   seksjonsvar,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdlKomponent";
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
@@ -139,18 +140,19 @@ export function BarnetilleggViewV1() {
   return (
     <div className="innhold">
       <h2>Barnetillegg</h2>
-      <BodyLong spacing>
-        Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg
-        uavhengig av om barnet bor hos deg.
-        <br />
-        <br />
-        Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke
-        barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12
-        måneder.
-        <br />
-        <br />
-        Hvis vi har registrert noen barn på deg vises de under.
-      </BodyLong>
+      {barnetilleggForklarendeTekst.map((spørsmål) => {
+        if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+          return null;
+        }
+
+        return (
+          <Spørsmål
+            key={spørsmål.id}
+            spørsmål={spørsmål}
+            formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
+          />
+        );
+      })}
       <VStack gap="10">
         <VStack gap="space-16">
           {barnFraPdl?.map((barn: BarnFraPdl) => (

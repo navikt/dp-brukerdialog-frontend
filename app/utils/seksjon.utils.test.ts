@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lagSeksjonPayload } from "../utils/seksjon.utils";
+import { lagSeksjonPayload } from "./seksjon.utils";
 import {
   egenNæringEgenNæringsvirksomhetSpørsmål,
   egenNæringEgetGårdsbrukSpørsmål,

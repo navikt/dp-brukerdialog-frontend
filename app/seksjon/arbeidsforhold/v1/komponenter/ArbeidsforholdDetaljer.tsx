@@ -10,7 +10,7 @@ import {
   varighetPåArbeidsforholdetTilOgMedDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
-import { formaterNorskDato } from "~/utils/formattering.utils";
+import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
@@ -60,7 +60,6 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: 
           onClick={() => {
             setModalData({
               operasjon: ModalOperasjon.Rediger,
-              ledetekst: "",
               arbeidsforhold,
               arbeidsforholdIndex,
             });

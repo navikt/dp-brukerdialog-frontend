@@ -1,4 +1,4 @@
-import { utdanningSpørsmål } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import { utdanningKomponenter } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
@@ -21,7 +21,7 @@ export default function UtdanningOppsummeringV1({
       </FormSummary.Header>
       <FormSummary.Answers>
         {!utdanningSvar.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
-        {utdanningSpørsmål.map((spørsmål) => {
+        {utdanningKomponenter.map((spørsmål) => {
           const svar = utdanningSvar.find((svar) => svar[0] === spørsmål.id);
           if (svar && !erInformasjonsFelt(spørsmål)) {
             return (

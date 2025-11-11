@@ -6,13 +6,13 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
-  dinSituasjonSpørsmål,
+  dinSituasjonKomponenter,
   DinSituasjonSvar,
   erTilbakenavigering,
   pdfGrunnlag,
-} from "./din-situasjon.spørsmål";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+} from "./din-situasjon.komponenter";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
@@ -31,18 +31,16 @@ export function DinSituasjonViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonSpørsmål);
+  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
 
   const genererPdfPayload = () => {
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(dinSituasjonSpørsmål, form.transient.value()),
-      ],
+      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  }
+  };
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfPayload());
@@ -65,7 +63,7 @@ export function DinSituasjonViewV1() {
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              {dinSituasjonSpørsmål.map((spørsmål) => {
+              {dinSituasjonKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }

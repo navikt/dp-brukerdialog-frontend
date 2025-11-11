@@ -2,15 +2,15 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
-export const tarUtdanningEllerOpplæring = "tar-utdanning-eller-opplæring";
-export const avsluttetUtdanningSiste6Måneder = "avsluttet-utdanning-siste-6-måneder";
+export const tarUtdanningEllerOpplæring = "tarUtdanningEllerOpplæring";
+export const avsluttetUtdanningSiste6Måneder = "avsluttetUtdanningSiste6Måneder";
 export const dokumenterAvsluttetUtdanningSiste6MånederNå =
-  "dokumenter-avsluttet-utdanning-siste-6-måneder-nå";
-export const lasteOppSenereBegrunnelse = "laste-opp-senere-begrunnelse";
-export const naarSendtDokumentasjonTidligere = "naar-sendt-dokumentasjon-tidligere";
-export const senderIkkeDokumentasjonBegrunnelse = "sender-ikke-dokumentasjon-begrunnelse";
+  "dokumenterAvsluttetUtdanningSiste6MånederNå";
+export const lasteOppSenereBegrunnelse = "lasteOppSenereBegrunnelse";
+export const naarSendtDokumentasjonTidligere = "naarSendtDokumentasjonTidligere";
+export const senderIkkeDokumentasjonBegrunnelse = "senderIkkeDokumentasjonBegrunnelse";
 export const planleggerÅStarteEllerFullføreStudierSamtidig =
-  "planlegger-åstarte-eller-fullføre-studier-samtidig";
+  "planleggerÅStarteEllerFullføreStudierSamtidig";
 
 export type UtdanningSvar = {
   [tarUtdanningEllerOpplæring]?: "ja" | "nei";
@@ -22,7 +22,7 @@ export type UtdanningSvar = {
   [planleggerÅStarteEllerFullføreStudierSamtidig]?: "ja" | "nei";
 };
 
-export const utdanningSpørsmål: KomponentType[] = [
+export const utdanningKomponenter: KomponentType[] = [
   {
     id: tarUtdanningEllerOpplæring,
     type: "envalg",
@@ -48,7 +48,6 @@ export const utdanningSpørsmål: KomponentType[] = [
     id: "avsluttetUtdanningSiste6MånederVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Du må dokumentere sluttdatoen. Du kan legge ved bekreftelse på når du avla siste avsluttende eksamen eller aktivitet. Hvis du har avbrutt skolegangen, kan du legge ved bekreftelse fra skolen på dette.",
     visHvis: (svar: UtdanningSvar) => svar[avsluttetUtdanningSiste6Måneder] === "ja",
@@ -74,7 +73,6 @@ export const utdanningSpørsmål: KomponentType[] = [
     id: "måSendeInnSøknadNav04-06.05Varselmelding",
     type: "varselmelding",
     variant: "warning",
-    label: "",
     description:
       'For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href="https://www.nav.no/fyllut/nav040605">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - NAV 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.' +
       "<br /><br />Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan vi avslå søknaden din om dagpenger.",

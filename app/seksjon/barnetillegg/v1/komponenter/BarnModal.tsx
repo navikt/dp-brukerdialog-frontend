@@ -15,7 +15,7 @@ import {
   fornavnOgMellomnavn,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,

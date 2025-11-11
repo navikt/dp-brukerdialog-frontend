@@ -4,9 +4,9 @@ import {
   harTilleggsopplysninger,
   pdfGrunnlag,
   tilleggsopplysninger,
-  tilleggsopplysningerSpørsmål,
+  tilleggsopplysningerKomponenter,
   TilleggsopplysningerSvar,
-} from "./tilleggsopplysninger.spørsmål";
+} from "./tilleggsopplysninger.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 export const tilleggsopplysningerSchema = z
@@ -22,7 +22,7 @@ export const tilleggsopplysningerSchema = z
       return;
     }
 
-    tilleggsopplysningerSpørsmål.forEach((spørsmål) => {
+    tilleggsopplysningerKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof TilleggsopplysningerSvar];
       valider(spørsmål, svar, synlig, context);

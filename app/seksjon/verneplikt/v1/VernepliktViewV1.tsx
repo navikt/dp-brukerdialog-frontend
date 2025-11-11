@@ -9,9 +9,9 @@ import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import {
   erTilbakenavigering,
   pdfGrunnlag,
-  vernepliktSpørsmål,
+  vernepliktKomponenter,
   VernepliktSvar,
-} from "~/seksjon/verneplikt/v1/verneplikt.spørsmål";
+} from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export default function VernepliktViewV1() {
@@ -31,18 +31,16 @@ export default function VernepliktViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktSpørsmål);
+  useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktKomponenter);
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(vernepliktSpørsmål, form.transient.value()),
-      ],
+      spørsmål: [...lagSeksjonPayload(vernepliktKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  }
+  };
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -65,7 +63,7 @@ export default function VernepliktViewV1() {
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              {vernepliktSpørsmål.map((spørsmål) => {
+              {vernepliktKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }

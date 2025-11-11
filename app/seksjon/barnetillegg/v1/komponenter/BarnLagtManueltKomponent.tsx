@@ -10,8 +10,8 @@ import {
   etternavn,
   fornavnOgMellomnavn,
   fødselsdato,
-} from "~/seksjon/barnetillegg/v1/barnetillegg.spørsmål";
-import { formaterNorskDato } from "~/utils/formattering.utils";
+} from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
+import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {

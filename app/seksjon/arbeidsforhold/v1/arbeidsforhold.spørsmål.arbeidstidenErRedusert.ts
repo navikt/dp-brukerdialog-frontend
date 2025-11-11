@@ -22,7 +22,6 @@ export const arbeidsforholdModalArbeidstidenErRedusertSpørsmål: KomponentType[
     id: "arbeidstidenErRedusertVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Hvis arbeidstiden din er redusert med minst 50 prosent, kan du søke om dagpenger for den reduserte arbeidstiden.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
