@@ -3,27 +3,24 @@ import {
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegErPermitert,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato =
-  "permittert-er-dette-et-midlertidig-arbeidsforhold-med-en-kontraktfestet-sluttdato";
+  "permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato";
 export const permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet =
-  "permittert-oppgi-den-kontraktsfestede-sluttdatoen-på-dette-arbeidsforholdet";
-export const permittertNårStartetDuIDenneJobben = "permittert-når-startet-du-i-denne-jobben";
+  "permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet";
+export const permittertNårStartetDuIDenneJobben = "permittertNårStartetDuIDenneJobben";
 export const permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien =
-  "permittert-er-du-permittert-fra-fiskeforedlings-eller-fiskeoljeindustrien";
-export const permittertNårErDuPermittertFraOgMedDato =
-  "permittert-når-er-du-permittert-fra-og-med-dato";
-export const permittertNårErDuPermittertTilOgMedDato =
-  "permittert-når-er-du-permittert-til-og-med-dato";
-export const permittertHvorMangeProsentErDuPermittert =
-  "permittert-hvor-mange-prosent-er-du-permittert";
+  "permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien";
+export const permittertNårErDuPermittertFraOgMedDato = "permittertNårErDuPermittertFraOgMedDato";
+export const permittertNårErDuPermittertTilOgMedDato = "permittertNårErDuPermittertTilOgMedDato";
+export const permittertHvorMangeProsentErDuPermittert = "permittertHvorMangeProsentErDuPermittert";
 export const permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr =
-  "permittert-vet-du-når-lønnspliktperioden-til-arbeidsgiveren-din-er";
-export const permittertLønnsperiodeFraOgMedDato = "permittert-lønnsperiode-fra-og-med-dato";
-export const permittertLønnsperiodeTilOgMedDato = "permittert-lønnsperiode-til-og-med-dato";
+  "permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr";
+export const permittertLønnsperiodeFraOgMedDato = "permittertLønnsperiodeFraOgMedDato";
+export const permittertLønnsperiodeTilOgMedDato = "permittertLønnsperiodeTilOgMedDato";
 
-export const arbeidsforholdModalJegErPermittertSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: "permittertVarselMelding",
     type: "varselmelding",

@@ -3,14 +3,14 @@ import {
   arbeidsforholdetErIkkeEndret,
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet =
-  "ikke-endret-har-du-tilleggsopplysninger-til-dette-arbeidsforholdet";
+  "ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet";
 export const ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet =
-  "ikke-endret-tilleggsopplysninger-til-dette-arbeidsforholdet";
+  "ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet";
 
-export const arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter: KomponentType[] = [
   {
     id: ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
     type: "envalg",

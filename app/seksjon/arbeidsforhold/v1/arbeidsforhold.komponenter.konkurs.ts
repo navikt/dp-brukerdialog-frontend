@@ -3,30 +3,30 @@ import {
   ArbeidsforholdModalSvar,
   arbeidsgiverErKonkurs,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato =
-  "konkurs-er-dette-et-midlertidig-arbeidsforhold-med-kontraktsfestet-sluttdato";
+  "konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato";
 export const konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet =
-  "konkurs-oppgi-den-kontraktsfestede-sluttdatoen-på-dette-arbeidsforholdet";
-export const konkursNårStartetDuIDenneJobben = "konkurs-når-startet-du-i-denne-jobben";
+  "konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet";
+export const konkursNårStartetDuIDenneJobben = "konkursNårStartetDuIDenneJobben";
 export const konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler =
-  "konkurs-ønsker-du-åsøke-om-forskudd-på-lønnsgarantimidler";
+  "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler";
 export const konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet =
-  "konkurs-godtar-du-at-nav-trekker-penger-direkte-fra-konkursboet";
+  "konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet";
 export const konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler =
-  "konkurs-ønsker-du-åsøke-om-dagpenger-i-tillegg-forskudd-på-lønnsgarantimidler";
+  "konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler";
 export const konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen =
-  "konkurs-godtar-du-at-nav-trekker-forskuddet-om-lønnsgarantimidler-direkte-fra-lønnsgarantiordningen";
-export const konkursHarDuSøktOmLønnsgarantimidler = "konkurs-har-du-søkt-om-lønnsgarantimidler";
+  "konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen";
+export const konkursHarDuSøktOmLønnsgarantimidler = "konkursHarDuSøktOmLønnsgarantimidler";
 export const konkursDekkerLønnsgarantiordningenKravetDitt =
-  "konkurs-dekker-lønnsgarantiordningen-kravet-ditt";
+  "konkursDekkerLønnsgarantiordningenKravetDitt";
 export const konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet =
-  "konkurs-har-du-fått-utbetalt-lønn-for-dager-etter-datoen-arbeidsgiveren-din-gikk-konkurs-eller-ble-tvangsavviklet";
+  "konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet";
 export const konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn =
-  "konkurs-har-du-fått-utbetalt-lønn-for-dager-etter-datoen-arbeidsgiveren-din-gikk-konkurs-eller-ble-tvangsavviklet-siste-dag-det-ble-utbetalt-lønn";
+  "konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn";
 
-export const arbeidsforholdModalArbeidsgiverErKonkursSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[] = [
   {
     id: "konkursArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",

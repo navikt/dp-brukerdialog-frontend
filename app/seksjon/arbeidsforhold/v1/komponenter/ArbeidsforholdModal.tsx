@@ -15,16 +15,16 @@ import {
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { arbeidsforholdModalJegHarSagtOppSelvSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
-import { arbeidsforholdModalJegHarFåttAvskjedSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
-import { arbeidsforholdModalKontraktenErUgåttSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
-import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
-import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
-import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
+import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -35,14 +35,14 @@ export function ArbeidsforholdModal({ ref }: Readonly<IProps>) {
     useArbeidsforholdContext();
 
   const alleModalSpørsmål = arbeidsforholdModalSpørsmål
-    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål)
-    .concat(arbeidsforholdModalJegHarSagtOppSelvSpørsmål)
-    .concat(arbeidsforholdModalJegHarFåttAvskjedSpørsmål)
-    .concat(arbeidsforholdModalKontraktenErUgåttSpørsmål)
-    .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
-    .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
-    .concat(arbeidsforholdModalJegErPermittertSpørsmål)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
+    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
+    .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
+    .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
+    .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+    .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
+    .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
+    .concat(arbeidsforholdModalJegErPermittertKomponenter)
+    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
     .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål);
 
   const form = useForm({

@@ -3,11 +3,11 @@ import {
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegHarFåttAvskjed,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
-export const avskjedigetHvaVarÅrsaken = "avskjediget-hva-var-årsaken";
+export const avskjedigetHvaVarÅrsaken = "avskjedigetHvaVarÅrsaken";
 
-export const arbeidsforholdModalJegHarFåttAvskjedSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] = [
   {
     id: "jegHarFåttAvskjedVarselmelding",
     type: "varselmelding",

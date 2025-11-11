@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { Arbeidsforhold } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+import { Arbeidsforhold } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { FormApi } from "@rvf/react-router";
 
 export enum ModalOperasjon {
@@ -8,7 +8,7 @@ export enum ModalOperasjon {
 }
 
 type ModalData = {
-  form?: FormApi<any>
+  form?: FormApi<any>;
   operasjon: ModalOperasjon;
   arbeidsforholdIndex?: number;
   arbeidsforhold?: Arbeidsforhold;

@@ -4,14 +4,14 @@ import {
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
-import { jegHarSagtOppHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
-import { avskjedigetHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { jegHarSagtOppHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { avskjedigetHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
 import {
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
 import {
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
   arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
@@ -19,7 +19,7 @@ import {
   arbeidstidenErRedusertHvaErÅrsaken,
   arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import {
   konkursDekkerLønnsgarantiordningenKravetDitt,
   konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
@@ -32,7 +32,7 @@ import {
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
 import {
   permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
   permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
@@ -44,49 +44,46 @@ import {
   permittertNårStartetDuIDenneJobben,
   permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
   permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import {
   ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
-export const hvordanHarDuJobbet = "hvordan-har-du-jobbet";
-export const fastArbeidstidIMindreEnn6Måneder = "fast-arbeidstid-i-mindre-enn-6-måneder";
-export const fastArbeidstidI6MånederEllerMer = "fast-arbeidstid-i-6-måneder-eller-mer";
-export const varierendeArbeidstidDeSiste12Månedene = "varierende-arbeidstid-de-siste-12-månedene";
+export const hvordanHarDuJobbet = "hvordanHarDuJobbet";
+export const fastArbeidstidIMindreEnn6Måneder = "fastArbeidstidIMindreEnn6Måneder";
+export const fastArbeidstidI6MånederEllerMer = "fastArbeidstidI6MånederEllerMer";
+export const varierendeArbeidstidDeSiste12Månedene = "varierendeArbeidstidDeSiste12Månedene";
 export const jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene =
-  "jobbet-mer-igjennomsnitt-de-siste-36-månedene-enn-de-siste-12-månedenen";
-export const harIkkeJobbetDeSiste36Månedene = "har-ikke-jobbet-de-siste-36-månedene";
+  "jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene";
+export const harIkkeJobbetDeSiste36Månedene = "harIkkeJobbetDeSiste36Månedene";
 export const harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene =
-  "har-du-jobbet-i-et-annet-eøs-land-sveits-eller-storbritannia-i-løpet-av-de-siste-36-månedene";
-export const navnetPåBedriften = "navn-på-bedriften";
-export const hvilketLandJobbetDuI = "hvilket-land-jobbet-du-i";
+  "harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene";
+export const navnetPåBedriften = "navnetPåBedriften";
+export const hvilketLandJobbetDuI = "hvilketLandJobbetDuI";
 export const oppgiPersonnummeretPinDuHaddeIDetteLandet =
-  "oppgi-personnummeret-pin-du-hadde-i-dette-landet";
-export const varighetPåArbeidsforholdetFraOgMedDato =
-  "varighet-på-arbeidsforholdet-fra-og-med-dato";
-export const varighetPåArbeidsforholdetTilOgMedDato =
-  "varighet-på-arbeidsforholdet-til-og-med-dato";
-export const hvordanHarDetteArbeidsforholdetEndretSeg =
-  "hvordan-har-dette-arbeidsforholdet-endret-seg";
+  "oppgiPersonnummeretPinDuHaddeIDetteLandet";
+export const varighetPåArbeidsforholdetFraOgMedDato = "varighetPåArbeidsforholdetFraOgMedDato";
+export const varighetPåArbeidsforholdetTilOgMedDato = "varighetPåArbeidsforholdetTilOgMedDato";
+export const hvordanHarDetteArbeidsforholdetEndretSeg = "hvordanHarDetteArbeidsforholdetEndretSeg";
 export const arbeidsgiverenMinHarSagtMegOpp = "arbeidsgiverenMinHarSagtMegOpp";
-export const jegHarSagtOppSelv = "jeg-har-sagt-opp-selv";
-export const jegHarFåttAvskjed = "jeg-har-fått-avskjed";
-export const kontraktenErUgått = "kontrakten-er-ugått";
-export const arbeidstidenErRedusert = "arbeidstiden-er-redusert";
-export const arbeidsgiverErKonkurs = "arbeidsgiver-er-konkurs";
-export const jegErPermitert = "jeg-er-permitert";
-export const arbeidsforholdetErIkkeEndret = "arbeidsforholdet-er-ikke-endret";
-export const harDuJobbetSkiftTurnusEllerRotasjon = "har-du-jobbet-skift-turnus-eller-rotasjon";
-export const hvilkenTypeRotasjonsordningJobbetDu = "hvilken-type-rotasjonsordning-jobbet-du";
-export const annenRotasjonBeskrivelse = "annen-rotasjon-beskrivelse";
+export const jegHarSagtOppSelv = "jegHarSagtOppSelv";
+export const jegHarFåttAvskjed = "jegHarFåttAvskjed";
+export const kontraktenErUgått = "kontraktenErUgått";
+export const arbeidstidenErRedusert = "arbeidstidenErRedusert";
+export const arbeidsgiverErKonkurs = "arbeidsgiverErKonkurs";
+export const jegErPermitert = "jegErPermitert";
+export const arbeidsforholdetErIkkeEndret = "arbeidsforholdetErIkkeEndret";
+export const harDuJobbetSkiftTurnusEllerRotasjon = "harDuJobbetSkiftTurnusEllerRotasjon";
+export const hvilkenTypeRotasjonsordningJobbetDu = "hvilkenTypeRotasjonsordningJobbetDu";
+export const annenRotasjonBeskrivelse = "annenRotasjonBeskrivelse";
 export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed =
-  "oppgi-siste-arbeidsperiode-i-den-siste-rotasjonen-din-dato-fra-og-med";
+  "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed";
 export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed =
-  "oppgi-siste-arbeidsperiode-i-den-siste-rotasjonen-din-dato-til-og-med";
+  "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed";
 
 export type Arbeidsforhold = {
   [navnetPåBedriften]?: string;
@@ -206,7 +203,7 @@ export type ArbeidsforholdResponse = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: ArbeidsforholdModalSvar[];
 };
 
-export const arbeidsforholdSpørsmål: KomponentType[] = [
+export const arbeidsforholdKomponenter: KomponentType[] = [
   {
     id: hvordanHarDuJobbet,
     type: "envalg",

@@ -9,15 +9,13 @@ import {
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
-import {
-  jegHarSagtOppHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { jegHarSagtOppHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
 
 export const mockArbeidsforhold: ArbeidsforholdResponse = {
   registrerteArbeidsforhold: [
@@ -27,23 +25,23 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [oppgiPersonnummeretPinDuHaddeIDetteLandet]: "916253511",
       [varighetPåArbeidsforholdetFraOgMedDato]: "2025-09-23",
       [varighetPåArbeidsforholdetTilOgMedDato]: "2025-09-24",
-      [hvordanHarDetteArbeidsforholdetEndretSeg]: "jeg-har-sagt-opp-selv",
+      [hvordanHarDetteArbeidsforholdetEndretSeg]: "jegHarSagtOppSelv",
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
-      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverken-skift-turnus-eller-rotasjon",
+      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverkenSkiftTurnusEllerRotasjon",
     },
     {
       [navnetPåBedriften]: "VAKKER TØNNE AS",
       [hvilketLandJobbetDuI]: "NOR",
       [varighetPåArbeidsforholdetFraOgMedDato]: "2023-01-01",
       [varighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
-      [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontrakten-er-ugått",
+      [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontraktenErUgått",
       [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
         "ja",
       [kontraktenErUgåttHvaHarDuSvartPåTilbudet]: "nei",
       [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie.",
-      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverken-skift-turnus-eller-rotasjon",
+      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverkenSkiftTurnusEllerRotasjon",
     },
   ],
-  [hvordanHarDuJobbet]: "fast-arbeidstid-i-6-måneder-eller-mer",
+  [hvordanHarDuJobbet]: "fastArbeidstidI6MånederEllerMer",
   [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: "ja",
 };

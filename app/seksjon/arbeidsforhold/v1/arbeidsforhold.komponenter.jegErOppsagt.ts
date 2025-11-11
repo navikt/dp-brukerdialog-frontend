@@ -3,16 +3,16 @@ import {
   ArbeidsforholdModalSvar,
   arbeidsgiverenMinHarSagtMegOpp,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
-export const jegErOppsagtHvaVarÅrsaken = "jeg-er-oppsagt-hva-var-årsaken";
+export const jegErOppsagtHvaVarÅrsaken = "jegErOppsagtHvaVarÅrsaken";
 export const jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge =
-  "jeg-er-oppsagt-har-du-fått-tilbud-om-å-fortsette-hos-arbeidsgiveren-din-i-annen-stilling-eller-et-annet-sted-i-norge";
-export const jegErOppsagtHvaHarDuSvartPåTilbudet = "jeg-er-oppsagt-hva-har-du-svart-på-tilbudet";
+  "jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge";
+export const jegErOppsagtHvaHarDuSvartPåTilbudet = "jegErOppsagtHvaHarDuSvartPåTilbudet";
 export const jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
-  "jeg-er-oppsagt-hva-er-grunnen-til-at-du-ikke-har-tatt-imot-tilbudet";
+  "jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: KomponentType[] = [
   {
     id: "oppsagtVarselmelding",
     type: "varselmelding",

@@ -3,16 +3,15 @@ import {
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   kontraktenErUgått,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver =
-  "kontrakten-er-ugått-har-du-fått-tilbud-om-forlengelse-av-arbeidskontrakten-eller-tilbud-om-en-annen-stilling-hos-arbeidsgiver";
-export const kontraktenErUgåttHvaHarDuSvartPåTilbudet =
-  "kontrakten-er-ugått-hva-har-du-svart-på-tilbudet";
+  "kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver";
+export const kontraktenErUgåttHvaHarDuSvartPåTilbudet = "kontraktenErUgåttHvaHarDuSvartPåTilbudet";
 export const kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
-  "kontrakten-er-ugått-hva-er-grunnen-til-at-du-ikke-har-tatt-imot-tilbudet";
+  "kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalKontraktenErUgåttSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalKontraktenErUgåttKomponenter: KomponentType[] = [
   {
     id: "kontraktenErGåttUtArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
