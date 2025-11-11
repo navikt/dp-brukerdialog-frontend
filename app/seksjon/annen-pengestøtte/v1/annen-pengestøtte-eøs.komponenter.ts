@@ -2,24 +2,24 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
 
 export const harMottattEllerSøktOmPengestøtteFraAndreEøsLand =
-  "har-mottatt-eller-søkt-om-pengestøtte-fra-andre-eøs-land";
+  "harMottattEllerSøktOmPengestøtteFraAndreEøsLand";
 export const hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand =
-  "hvilken-pengestøtte-har-du-mottatt-eller-søkt-om-fra-andre-eøs-land";
+  "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand";
 export const fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte =
-  "fra-hvilket-eøs-land-har-du-mottatt-eller-søkt-om-pengestøtte";
+  "fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte";
 export const sykepenger = "sykepenger";
-export const foreldrepengerEllerSvangerskapspenger = "foreldrepenger-eller-svangerskapspenger";
-export const dagpengerEllerArbeidsledighetstrygd = "dagpenger-eller-arbeidsledighetstrygd";
+export const foreldrepengerEllerSvangerskapspenger = "foreldrepengerEllerSvangerskapspenger";
+export const dagpengerEllerArbeidsledighetstrygd = "dagpengerEllerArbeidsledighetstrygd";
 export const pleiepengerOmsorgspengerEllerOpplæringspenger =
-  "pleiepenger-omsorgspenger-eller-opplæringspenger";
+  "pleiepengerOmsorgspengerEllerOpplæringspenger";
 export const mottarDuFortsattPengestøttenFraAndreEøsLand =
-  "mottar-du-fortsatt-pengestøtten-fra-andre-eøs-land";
+  "mottarDuFortsattPengestøttenFraAndreEøsLand";
 export const fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed =
-  "fra-når-har-du-mottatt-pengestøtte-fra-andre-eøs-land-fra-og-med";
+  "fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed";
 export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed =
-  "i-hvilken-periode-har-du-mottatt-eller-søkt-om-pengestøtte-fra-andre-eøs-land-fra-og-med";
+  "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed";
 export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed =
-  "i-hvilken-periode-har-du-mottatt-eller-søkt-om-pengestøtte-fra-andre-eøs-land-til-og-med";
+  "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed";
 
 export type PengestøtteFraAndreEøsLandModalSvar = {
   [hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]?:
@@ -34,7 +34,7 @@ export type PengestøtteFraAndreEøsLandModalSvar = {
   [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed]?: string;
 };
 
-export const pengestøtteFraAndreEøsLandSpørsmål: KomponentType[] = [
+export const pengestøtteFraAndreEøsLandKomponenter: KomponentType[] = [
   {
     id: harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
     type: "envalg",

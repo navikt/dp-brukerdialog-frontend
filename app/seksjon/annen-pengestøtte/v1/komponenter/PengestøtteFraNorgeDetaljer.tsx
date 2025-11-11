@@ -11,7 +11,7 @@ import {
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
   pengestøtteFraNorgeModalSpørsmål,
   PengestøtteFraNorgeModalSvar,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 

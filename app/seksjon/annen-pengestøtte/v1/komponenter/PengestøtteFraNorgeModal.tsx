@@ -10,7 +10,7 @@ import {
 import {
   pengestøtteFraNorgeModalSpørsmål,
   PengestøtteFraNorgeModalSvar,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 

@@ -1,25 +1,23 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
-import {
-  harMottattEllerSøktOmPengestøtteFraAndreEøsLand
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
 
 export const mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav =
-  "mottar-du-eller-har-du-søkt-om-pengestøtte-fra-andre-enn-nav";
+  "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav";
 export const hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm =
-  "hvilke-pengestøtte-fra-andre-enn-nav-mottar-du-eller-har-du-søkt-om";
+  "hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm";
 export const pensjonFraAndreEnnNav = "pensjonFraAndreEnnNav";
-export const pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere = "garantiLottForFiskere";
+export const pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere =
+  "pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere";
 export const etterlønnFraArbeidsgiver = "etterlønnFraArbeidsgiver";
-export const hvemUtbetalerPengestøtten = "hvem-utbetaler-pengestøtten";
+export const hvemUtbetalerPengestøtten = "hvemUtbetalerPengestøtten";
 export const iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed =
-  "i-hvilken-periode-mottar-du-eller-har-du-søkt-om-pengestøtte-fra-norge-fra-og-med";
+  "iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed";
 export const iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed =
-  "i-hvilken-periode-mottar-du-eller-har-du-søkt-om-pengestøtte-fra-norge-til-og-med";
+  "iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed";
 export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver =
-  "får-eller-kommer-til-å-få-lønn-eller-andre-goder-fra-tidligere-arbeidsgiver";
+  "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver";
 export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
-  "skriv-inn-hva-du-får-beholde-fra-tidligere-arbeidsgiver";
+  "skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver";
 
 export type PengestøtteFraNorgeModalSvar = {
   [hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]?:
@@ -31,7 +29,7 @@ export type PengestøtteFraNorgeModalSvar = {
   [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]?: string;
 };
 
-export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
+export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
   {
     id: mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
     type: "envalg",
@@ -54,11 +52,11 @@ export const pengestøtteFraNorgeSpørsmål: KomponentType[] = [
     id: "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst",
     type: "forklarendeTekst",
     description:
-      "<strong>Dine pengestøtter fra Norge</strong><br />"+
+      "<strong>Dine pengestøtter fra Norge</strong><br />" +
       "Du må legge til alle pengestøtter du mottar eller har søkt om som ikke er fra Nav.",
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav] === "ja",
-  }
+  },
 ];
 
 export const pengestøtteFraNorgeModalSpørsmål: KomponentType[] = [
