@@ -41,7 +41,9 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
     .filter((item) => item !== undefined);
 }
 
-function getOptions(spørsmål: KomponentType): { value: string; label: string }[] {
+type Option = { value: string; label: string };
+
+function getOptions(spørsmål: KomponentType): Option[] {
   if (spørsmål.type == "land") {
     return OFTE_VALGTE_LAND.concat(FLERE_LAND).map((land) => ({
       value: land.value,
