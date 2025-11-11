@@ -1,48 +1,43 @@
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
-export const kanDuJobbeBådeHeltidOgDeltid = "kan-du-jobbe-både-heltid-og-deltid";
+export const kanDuJobbeBådeHeltidOgDeltid = "kanDuJobbeBådeHeltidOgDeltid";
 export const kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg =
-  "kan-ikke-jobbe-heltid-og-deltid-situasjonen-som-gjelder-deg";
-export const kanIkkeJobbeHeltidOgDeltidRedusertHelse =
-  "kan-ikke-jobbe-heltid-og-deltid-redusert-helse";
+  "kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg";
+export const kanIkkeJobbeHeltidOgDeltidRedusertHelse = "kanIkkeJobbeHeltidOgDeltidRedusertHelse";
 export const kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr =
-  "kan-ikke-jobbe-heltid-og-deltid-omsorg-for-barn-under-ett-år";
+  "kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr";
 export const kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse =
-  "kan-ikke-jobbe-heltid-og-deltid-eneansvar-eller-delt-ansvar-for-barn-til-og-med-7-klasse";
+  "kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse";
 export const kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov =
-  "kan-ikke-jobbe-heltid-og-deltid-eneansvar-eller-delt-ansvar-for-barn-under-18-år-med-spesielle-behov";
+  "kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov";
 export const kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov =
-  "kan-ikke-jobbe-heltid-og-deltid-den-andre-foreldren-jobber-skift-eller-lignende-og-ansvar-for-barn-til-og-med-7-klasse-eller-med-spesielle-behov";
-export const kanIkkeJobbeHeltidOgDeltidJegErPermitert =
-  "kan-ikke-jobbe-heltid-og-deltid-jeg-er-permitert";
-export const kanIkkeJobbeHeltidOgDeltidHarFylt60 = "kan-ikke-jobbe-heltid-og-deltid-har-fylt-60";
-export const kanIkkeJobbeHeltidOgDeltidAnnenSituasjon =
-  "kan-ikke-jobbe-heltid-og-deltid-annen-situasjon";
+  "kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov";
+export const kanIkkeJobbeHeltidOgDeltidJegErPermitert = "kanIkkeJobbeHeltidOgDeltidJegErPermitert";
+export const kanIkkeJobbeHeltidOgDeltidHarFylt60 = "kanIkkeJobbeHeltidOgDeltidHarFylt60";
+export const kanIkkeJobbeHeltidOgDeltidAnnenSituasjon = "kanIkkeJobbeHeltidOgDeltidAnnenSituasjon";
 export const kanIkkeJobbeBådeHeltidOgDeltidAntallTimer =
-  "kan-ikke-jobbe-både-heltid-og-deltid-antall-timer";
+  "kanIkkeJobbeBådeHeltidOgDeltidAntallTimer";
 export const kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen =
-  "kan-ikke-jobbe-heltid-og-deltid-kort-om-sitasjonen";
-export const kanDuJobbeIHeleNorge = "kan-du-jobbe-i-hele-norge";
+  "kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen";
+export const kanDuJobbeIHeleNorge = "kanDuJobbeIHeleNorge";
 export const kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg =
-  "kan-ikke-jobbe-i-hele-norge-situasjonen-som-gjelder-deg";
-export const kanIkkeJobbeIHeleNorgeRedusertHelse = "kan-ikke-jobbe-i-hele-norge-redusert-helse";
+  "kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg";
+export const kanIkkeJobbeIHeleNorgeRedusertHelse = "kanIkkeJobbeIHeleNorgeRedusertHelse";
 export const kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr =
-  "kan-ikke-jobbe-i-hele-norge-omsorg-for-barn-under-ett-år";
+  "kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr";
 export const kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse =
-  "kan-ikke-jobbe-i-hele-norge-eneansvar-eller-delt-ansvar-for-barn-til-og-med-7-klasse";
+  "kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse";
 export const kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov =
-  "kan-ikke-jobbe-i-hele-norge-eneansvar-eller-delt-ansvar-for-barn-under-18-år-med-spesielle-behov";
+  "kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov";
 export const kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov =
-  "kan-ikke-jobbe-i-hele-norge-den-andre-foreldren-jobber-skift-eller-lignende-og-ansvar-for-barn-til-og-med-7-klasse-eller-med-spesielle-behov";
-export const kanIkkeJobbeIHeleNorgeJegErPermitert = "kan-ikke-jobbe-i-hele-norge-jeg-er-permitert";
-export const kanIkkeJobbeIHeleNorgeHarFylt60 = "kan-ikke-jobbe-i-hele-norge-har-fylt-60";
-export const kanIkkeJobbeIHeleNorgeAnnenSituasjon = "kan-ikke-jobbe-i-hele-norge-annen-situasjon";
-export const kanIkkeJobbeIHeleNorgeKortOmSituasjonen =
-  "kan-ikke-jobbe-i-hele-norge-kort-om-sitasjonen";
-export const kanDuTaAlleTyperArbeid = "kan-du-ta-alle-typer-arbeid";
-export const erDuVilligTilÅBytteYrkeEllerGåNedILønn =
-  "er-du-villig-til-å-bytte-yrke-eller-gå-ned-i-lønn";
+  "kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov";
+export const kanIkkeJobbeIHeleNorgeJegErPermitert = "kanIkkeJobbeIHeleNorgeJegErPermitert";
+export const kanIkkeJobbeIHeleNorgeHarFylt60 = "kanIkkeJobbeIHeleNorgeHarFylt60";
+export const kanIkkeJobbeIHeleNorgeAnnenSituasjon = "kanIkkeJobbeIHeleNorgeAnnenSituasjon";
+export const kanIkkeJobbeIHeleNorgeKortOmSituasjonen = "kanIkkeJobbeIHeleNorgeKortOmSituasjonen";
+export const kanDuTaAlleTyperArbeid = "kanDuTaAlleTyperArbeid";
+export const erDuVilligTilÅBytteYrkeEllerGåNedILønn = "erDuVilligTilÅBytteYrkeEllerGåNedILønn";
 export const erTilbakenavigering = "erTilbakenavigering";
 
 export type ReellArbeidssøkerSvar = {
@@ -74,7 +69,7 @@ export type ReellArbeidssøkerSvar = {
   [erDuVilligTilÅBytteYrkeEllerGåNedILønn]?: "ja" | "nei";
 };
 
-export const reellArbeidssøkerSpørsmål: KomponentType[] = [
+export const reellArbeidssøkerKomponenter: KomponentType[] = [
   {
     id: "reellArbeidssøkerForklarendeTekst",
     type: "forklarendeTekst",

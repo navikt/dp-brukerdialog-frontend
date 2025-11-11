@@ -10,9 +10,9 @@ import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell
 import {
   erTilbakenavigering,
   pdfGrunnlag,
-  reellArbeidssøkerSpørsmål,
+  reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
-} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function ReellArbeidssøkerViewV1() {
@@ -32,18 +32,16 @@ export function ReellArbeidssøkerViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
+  useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(reellArbeidssøkerSpørsmål, form.transient.value()),
-      ],
+      spørsmål: [...lagSeksjonPayload(reellArbeidssøkerKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  }
+  };
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -53,7 +51,7 @@ export function ReellArbeidssøkerViewV1() {
 
   async function handleSubmit() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.submit()
+    form.submit();
   }
 
   return (
@@ -63,7 +61,7 @@ export function ReellArbeidssøkerViewV1() {
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
-            {reellArbeidssøkerSpørsmål.map((spørsmål) => {
+            {reellArbeidssøkerKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }

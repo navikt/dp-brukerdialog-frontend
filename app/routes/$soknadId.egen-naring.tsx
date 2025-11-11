@@ -14,7 +14,7 @@ import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.cont
 import {
   EgenNæringResponse,
   erTilbakenavigering,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 const NYESTE_VERSJON = 1;
 

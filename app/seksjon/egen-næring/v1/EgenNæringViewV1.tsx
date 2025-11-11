@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetSpørsmål,
+  egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukSpørsmål,
   EgenNæringResponse,
   EgenNæringSvar,
@@ -17,7 +17,7 @@ import {
   Næringsvirksomhet,
   seksjonsvar,
   pdfGrunnlag,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
@@ -61,7 +61,7 @@ export function EgenNæringViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetSpørsmål);
+  useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetKomponenter);
 
   useEffect(() => {
     setVisNæringsvirksomhetFeilmelding(
@@ -95,14 +95,12 @@ export function EgenNæringViewV1() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
-        ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetKomponenter, form.transient.value()),
         ...næringsvirksomheter.map((enVirksomhet) =>
           lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, enVirksomhet)
         ),
         ...lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, form.transient.value()),
-        ...gårdsbruk.map((etGårdsbruk) =>
-          lagSeksjonPayload(leggTilGårdsbrukSpørsmål, etGårdsbruk)
-        ),
+        ...gårdsbruk.map((etGårdsbruk) => lagSeksjonPayload(leggTilGårdsbrukSpørsmål, etGårdsbruk)),
       ],
     };
 
@@ -158,8 +156,6 @@ export function EgenNæringViewV1() {
         gårdsbruk: gårdsbruk,
       };
 
-
-
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue(seksjonsvar, JSON.stringify(egenNæringResponse));
       form.submit();
@@ -174,7 +170,7 @@ export function EgenNæringViewV1() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.versjon} />
-              {egenNæringEgenNæringsvirksomhetSpørsmål.map((spørsmål) => {
+              {egenNæringEgenNæringsvirksomhetKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
