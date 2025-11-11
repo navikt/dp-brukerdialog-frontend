@@ -22,7 +22,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
       });
 
       if (
-        svar?.[1] !== undefined ||
+        (svar?.[1] !== undefined && (svar?.[1] !== "" && !(spørsmål as SpørsmålBase).optional)) ||
         (!!spørsmål.visHvis && spørsmål.visHvis(alleSvar)) ||
         (svar === undefined && !spørsmål.visHvis)
       ) {
