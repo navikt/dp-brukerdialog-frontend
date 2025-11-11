@@ -25,7 +25,7 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [oppgiPersonnummeretPinDuHaddeIDetteLandet]: "916253511",
       [varighetPåArbeidsforholdetFraOgMedDato]: "2025-09-23",
       [varighetPåArbeidsforholdetTilOgMedDato]: "2025-09-24",
-      [hvordanHarDetteArbeidsforholdetEndretSeg]: "jeg-har-sagt-opp-selv",
+      [hvordanHarDetteArbeidsforholdetEndretSeg]: "jegHarSagtOppSelv",
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
       [harDuJobbetSkiftTurnusEllerRotasjon]: "hverkenSkiftTurnusEllerRotasjon",
     },
@@ -34,7 +34,7 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [hvilketLandJobbetDuI]: "NOR",
       [varighetPåArbeidsforholdetFraOgMedDato]: "2023-01-01",
       [varighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
-      [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontrakten-er-ugått",
+      [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontraktenErUgått",
       [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
         "ja",
       [kontraktenErUgåttHvaHarDuSvartPåTilbudet]: "nei",
