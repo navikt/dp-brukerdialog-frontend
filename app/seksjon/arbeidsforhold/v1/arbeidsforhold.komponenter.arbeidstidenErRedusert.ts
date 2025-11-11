@@ -3,21 +3,21 @@ import {
   ArbeidsforholdModalSvar,
   arbeidstidenErRedusert,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
-export const arbeidstidenErRedusertHvaErÅrsaken = "arbeidstiden-er-redusert-hva-er-årsaken";
+export const arbeidstidenErRedusertHvaErÅrsaken = "arbeidstidenErRedusertHvaErÅrsaken";
 export const arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet =
-  "arbeidstiden-er-redusert-hvilken-dato-startet-arbeidsforholdet";
+  "arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet";
 export const arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert =
-  "arbeidstiden-er-redusert-fra-hvilken-dato-er-arbeidstiden-redusert";
+  "arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert";
 export const arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge =
-  "arbeidstiden-er-redusert-har-du-fått-tilbud-om-å-fortsette-hos-arbeidsgiveren-din-i-annen-stilling-eller-et-annet-sted-i-norge";
+  "arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge";
 export const arbeidstidenErRedusertHvaHarDuSvartPåTilbudet =
-  "arbeidstiden-er-redusert-hva-har-du-svart-på-tilbudet";
+  "arbeidstidenErRedusertHvaHarDuSvartPåTilbudet";
 export const arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
-  "arbeidstiden-er-redusert-hva-er-grunnen-til-at-du-ikke-har-tatt-imot-tilbudet";
+  "arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalArbeidstidenErRedusertSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType[] = [
   {
     id: "arbeidstidenErRedusertVarselmelding",
     type: "varselmelding",
