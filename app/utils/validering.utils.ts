@@ -14,11 +14,11 @@ export function valider(
     spørsmål.type === "registeropplysning" ||
     spørsmål.type === "forklarendeTekst";
 
-  if (erInformasjonKomponent) {
+  if (erInformasjonKomponent || !synlig) {
     return;
   }
 
-  if (synlig && !svar && !spørsmål.optional) {
+  if (!svar && !spørsmål.optional) {
     context.addIssue({
       path: [spørsmål.id],
       code: "custom",
