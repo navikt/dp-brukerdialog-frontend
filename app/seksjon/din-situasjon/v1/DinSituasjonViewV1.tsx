@@ -36,13 +36,11 @@ export function DinSituasjonViewV1() {
   const genererPdfPayload = () => {
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(dinSituasjonSpørsmål, form.transient.value()),
-      ],
+      spørsmål: [...lagSeksjonPayload(dinSituasjonSpørsmål, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  }
+  };
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfPayload());
