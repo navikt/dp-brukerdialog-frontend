@@ -12,7 +12,6 @@ export const arbeidsforholdModalJegHarSagtOppSelvSpørsmål: KomponentType[] = [
     id: "jegHarSagtOppSelvVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Hvis du har sagt opp selv, må vi vite hvorfor.<br/><br/>" +
       "Derfor må du dokumentere grunnen og datoen du sa opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.<br/><br/>" +

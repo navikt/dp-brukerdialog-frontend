@@ -76,6 +76,17 @@ export type ReellArbeidssøkerSvar = {
 
 export const reellArbeidssøkerSpørsmål: KomponentType[] = [
   {
+    id: "reellArbeidssøkerForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "For å få dagpenger må du være reell arbeidssøker. Dette betyr at du som hovedregel" +
+      "<ul>" +
+      "<li>må være registrert som arbeidssøker</li>" +
+      "<li>er frisk nok til å jobbe minst 50 prosent, som tilsvarer 18,75 timer i uka</li>" +
+      "<li>kan ta ethvert arbeid hvor som helst i Norge</li>" +
+      "</ul>",
+  },
+  {
     id: kanDuJobbeBådeHeltidOgDeltid,
     type: "envalg",
     label: "Kan du jobbe både heltid og deltid?",
@@ -148,7 +159,6 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     id: "kanIkkeJobbeHeltidOgDeltidHarFylt60Varselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Siden du er over 60 år, kan du søke om dagpenger selv om du bare ønsker å jobbe deltid. Du trenger ikke begrunne valget ditt, men du må føre opp hvor mange timer du vil arbeide per uke. Dette antallet vil anses som full arbeidstid for deg, og vil bli lagt til grunn ved beregning av dagpengene.",
     visHvis: (svar: ReellArbeidssøkerSvar) =>
@@ -160,7 +170,6 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     id: "kanIkkeJobbeHeltidOgDeltidAnnenSituasjonVarselmelding",
     type: "varselmelding",
     variant: "warning",
-    label: "",
     description:
       "Hvis du svarer &quot;annen situasjon&quot; og du ikke kan dokumentere svært gode grunner til at du ikke kan jobbe heltid, vil du sannsynligvis få avslag på søknaden din om dagpenger.<br/><br/>" +
       "Annen situasjon kan for eksempel være hvis du har pleietrengende familie, eller den andre forelderen ikke kan delta i den daglige omsorgen for barn på grunn av sykdom eller institusjonsopphold.",
@@ -289,7 +298,6 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     id: "kanIkkeJobbeIHeleNorgeHarFylt60Varselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Siden du er over 60 år, kan du søke om dagpenger selv om du ikke ønsker å ta jobb i hele Norge. Du trenger ikke begrunne valget ditt.",
     visHvis: (svar: ReellArbeidssøkerSvar) =>
@@ -301,7 +309,6 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     id: "kanIkkeJobbeIHeleNorgeAnnenSituasjonVarselmelding",
     type: "varselmelding",
     variant: "warning",
-    label: "",
     description:
       "Hvis du svarer &quot;annen situasjon&quot; og du ikke kan dokumentere svært gode grunner til at du ikke kan jobbe i hele Norge, vil du sannsynligvis få avslag på søknaden din om dagpenger.<br/><br/>" +
       "Annen situasjon kan for eksempel være hvis du har pleietrengende familie, eller den andre forelderen ikke kan delta i den daglige omsorgen for barn på grunn av sykdom eller institusjonsopphold.",
@@ -377,7 +384,6 @@ export const reellArbeidssøkerSpørsmål: KomponentType[] = [
     id: "erDuVilligTilÅBytteYrkeEllerGåNedILønnVarselmelding",
     type: "varselmelding",
     variant: "warning",
-    label: "",
     description:
       "For å ha rett til dagpenger må du være villig til å bytte yrke eller gå ned i lønn. Hvis du svarer “Nei” på spørsmålet vil du mest sannsynlig få avslag på søknaden din om dagpenger.",
     visHvis: (svar: ReellArbeidssøkerSvar) =>

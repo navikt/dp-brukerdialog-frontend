@@ -15,6 +15,7 @@ export function Nedtrekksliste({ spørsmål, formScope }: Readonly<IProps>) {
   return (
     <Select
       {...field.getInputProps()}
+      defaultValue={field.value() ?? undefined}
       label={spørsmål.label}
       key={spørsmål.id}
       description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?

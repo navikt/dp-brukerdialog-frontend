@@ -48,7 +48,6 @@ export const utdanningKomponenter: KomponentType[] = [
     id: "avsluttetUtdanningSiste6MånederVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Du må dokumentere sluttdatoen. Du kan legge ved bekreftelse på når du avla siste avsluttende eksamen eller aktivitet. Hvis du har avbrutt skolegangen, kan du legge ved bekreftelse fra skolen på dette.",
     visHvis: (svar: UtdanningSvar) => svar[avsluttetUtdanningSiste6Måneder] === "ja",
@@ -74,7 +73,6 @@ export const utdanningKomponenter: KomponentType[] = [
     id: "måSendeInnSøknadNav04-06.05Varselmelding",
     type: "varselmelding",
     variant: "warning",
-    label: "",
     description:
       'For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href="https://www.nav.no/fyllut/nav040605">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - NAV 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.' +
       "<br /><br />Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan vi avslå søknaden din om dagpenger.",

@@ -84,7 +84,6 @@ export const egenNæringEgenNæringsvirksomhetSpørsmål: KomponentType[] = [
     id: "driverDuEgenNæringsvirksomhetVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.",
     visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
@@ -105,7 +104,6 @@ export const egenNæringEgetGårdsbrukSpørsmål: KomponentType[] = [
     id: "driverDuEgetGårdsbrukVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Selv om du driver et eget gårdsbruk må du være villig til å ta annet arbeid.<br/><br/>Hvis du jobber mer enn 50 prosent av tidligere arbeidstid har du ikke rett til dagpenger.<br/><br/>Når du driver gårdsbruk tar Nav utgangspunkt i størrelsen på bruket, arbeidsomfang, mekaniseringsgrad og beliggenhet.",
     visHvis: (svar: EgenNæringSvar) => svar[driverDuEgetGårdsbruk] === "ja",
