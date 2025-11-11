@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
-import { FormApi, useForm } from "@rvf/react-router";
+import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -8,20 +8,18 @@ import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
   Arbeidsforhold,
+  arbeidsforholdForklarendeTekstKomponenter,
   arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdResponse,
   arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
   erTilbakenavigering,
-  fastArbeidstidI6MånederEllerMer,
-  fastArbeidstidIMindreEnn6Måneder,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
-  jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
   pdfGrunnlag,
   seksjonsvar,
-  varierendeArbeidstidDeSiste12Månedene,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
@@ -62,39 +60,6 @@ export function ArbeidsforholdViewV1() {
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdSpørsmål);
 
-  function getLedetekstDineArbeidsforhold(form: FormApi<any>): string {
-    if (
-      form.value(harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene) ===
-      "ja"
-    ) {
-      switch (form.value(hvordanHarDuJobbet)) {
-        case fastArbeidstidIMindreEnn6Måneder:
-          return "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.";
-        case fastArbeidstidI6MånederEllerMer:
-          return "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 6 månedene.";
-        case varierendeArbeidstidDeSiste12Månedene:
-          return "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.";
-        case jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene:
-          return "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits, Storbritannia og Norge de siste 36 månedene.";
-      }
-    } else if (
-      form.value(harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene) ===
-      "nei"
-    ) {
-      switch (form.value(hvordanHarDuJobbet)) {
-        case fastArbeidstidIMindreEnn6Måneder:
-          return "Du må legge til alle arbeidsforholdene du har hatt de siste 12 månedene.";
-        case fastArbeidstidI6MånederEllerMer:
-          return "Du må legge til alle arbeidsforholdene du har hatt de siste 6 månedene.";
-        case varierendeArbeidstidDeSiste12Månedene:
-          return "Du må legge til alle arbeidsforhold du har hatt i løpet av de siste 12 månedene.";
-        case jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene:
-          return "Du må legge til alle arbeidsforhold du har hatt i løpet av de siste 36 månedene. Har du ikke jobbet i løpet av de siste 12 månedene, må du legge til dine siste arbeidsforhold.";
-      }
-    }
-    return "";
-  }
-
   useEffect(() => {
     if (modalData) {
       ref.current?.showModal();
@@ -127,6 +92,7 @@ export function ArbeidsforholdViewV1() {
       navn: seksjonnavn,
       spørsmål: [
         ...lagSeksjonPayload(arbeidsforholdSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
         ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
           lagSeksjonPayload(
             arbeidsforholdModalSpørsmål
@@ -198,42 +164,54 @@ export function ArbeidsforholdViewV1() {
                 );
               })}
 
-              {getLedetekstDineArbeidsforhold(form) !== "" && (
-                <VStack gap="space-16">
-                  <BodyLong>
-                    <strong>Dine arbeidsforhold</strong>
-                    <br />
-                    {getLedetekstDineArbeidsforhold(form)}
-                  </BodyLong>
-                  {registrerteArbeidsforhold?.map(
-                    (arbeidsforhold: Arbeidsforhold, index: number) => (
-                      <ArbeidsforholdDetaljer
-                        key={index}
-                        arbeidsforholdIndex={index}
-                        arbeidsforhold={arbeidsforhold}
-                      />
-                    )
-                  )}
-                  <HStack>
-                    <Button
-                      variant="secondary"
-                      type="button"
-                      icon={<BriefcaseIcon />}
-                      onClick={() => {
-                        setModalData({
-                          operasjon: ModalOperasjon.LeggTil,
-                          ledetekst: getLedetekstDineArbeidsforhold(form),
-                        });
-                      }}
-                    >
-                      Legg til arbeidsforhold
-                    </Button>
-                  </HStack>
-                  {visManglerArbeidsforholdFeilmelding && (
-                    <ErrorMessage showIcon>Du må legge til minst et arbeidsforhold</ErrorMessage>
-                  )}
-                </VStack>
-              )}
+              {form.value(hvordanHarDuJobbet) &&
+                form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
+                form.value(
+                  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+                ) && (
+                  <VStack gap="space-16">
+                    {arbeidsforholdForklarendeTekstKomponenter.map((spørsmål) => {
+                      if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                        return null;
+                      }
+
+                      return (
+                        <Spørsmål
+                          key={spørsmål.id}
+                          spørsmål={spørsmål}
+                          formScope={form.scope(spørsmål.id as keyof ArbeidsforholdSvar)}
+                        />
+                      );
+                    })}
+                    {registrerteArbeidsforhold?.map(
+                      (arbeidsforhold: Arbeidsforhold, index: number) => (
+                        <ArbeidsforholdDetaljer
+                          key={index}
+                          arbeidsforholdIndex={index}
+                          arbeidsforhold={arbeidsforhold}
+                        />
+                      )
+                    )}
+                    <HStack>
+                      <Button
+                        variant="secondary"
+                        type="button"
+                        icon={<BriefcaseIcon />}
+                        onClick={() => {
+                          setModalData({
+                            operasjon: ModalOperasjon.LeggTil,
+                            form: form,
+                          });
+                        }}
+                      >
+                        Legg til arbeidsforhold
+                      </Button>
+                    </HStack>
+                    {visManglerArbeidsforholdFeilmelding && (
+                      <ErrorMessage showIcon>Du må legge til minst et arbeidsforhold</ErrorMessage>
+                    )}
+                  </VStack>
+                )}
 
               {actionData && (
                 <Alert variant="error" className="mt-4">

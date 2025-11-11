@@ -76,6 +76,17 @@ export type ReellArbeidssøkerSvar = {
 
 export const reellArbeidssøkerSpørsmål: KomponentType[] = [
   {
+    id: "reellArbeidssøkerForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "For å få dagpenger må du være reell arbeidssøker. Dette betyr at du som hovedregel" +
+      "<ul>" +
+      "<li>må være registrert som arbeidssøker</li>" +
+      "<li>er frisk nok til å jobbe minst 50 prosent, som tilsvarer 18,75 timer i uka</li>" +
+      "<li>kan ta ethvert arbeid hvor som helst i Norge</li>" +
+      "</ul>",
+  },
+  {
     id: kanDuJobbeBådeHeltidOgDeltid,
     type: "envalg",
     label: "Kan du jobbe både heltid og deltid?",

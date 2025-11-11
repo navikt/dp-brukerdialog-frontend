@@ -11,7 +11,8 @@ export function valider(
     spørsmål.type !== "lesMer" &&
     spørsmål.type !== "varselmelding" &&
     spørsmål.type !== "dokumentasjonskravindikator" &&
-    spørsmål.type !== "registeropplysning";
+    spørsmål.type !== "registeropplysning" &&
+    spørsmål.type !== "forklarendeTekst";
 
   if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
     context.addIssue({

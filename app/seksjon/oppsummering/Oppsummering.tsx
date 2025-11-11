@@ -166,7 +166,7 @@ export default function Oppsummering({
         case 1:
           return (
             <BarnetilleggOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjon}
+              seksjonSvarene={seksjonSvarene.svar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -174,7 +174,7 @@ export default function Oppsummering({
         default:
           return (
             <BarnetilleggOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjon}
+              seksjonSvarene={seksjonSvarene.svar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />

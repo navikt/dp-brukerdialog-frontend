@@ -276,12 +276,12 @@ export const FLERE_LANDKODER = [
   "IMN",
 ];
 
-export const OFTE_VALGTE_LANLISTE = OFTE_VALGTE_LANDKODER.map((landkode) => ({
+export const OFTE_VALGTE_LAND = OFTE_VALGTE_LANDKODER.map((landkode) => ({
   value: landkode,
   label: finnLandnavnMedLocale(landkode),
 }));
 
-export const FLERE_LANDLISTE = FLERE_LANDKODER.map((landkode) => ({
+export const FLERE_LAND = FLERE_LANDKODER.map((landkode) => ({
   value: landkode,
   label: finnLandnavnMedLocale(landkode),
 })).sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));

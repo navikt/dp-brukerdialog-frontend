@@ -225,12 +225,6 @@ export function AnnenPengestøtteViewV1() {
 
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
               <VStack gap="space-16">
-                <BodyLong>
-                  <strong>Dine pengestøtter fra EØS land</strong>
-                  <br />
-                  Du må legge til alle trygdeytelser fra EØS-land, Sveits eller Storbritannia du har
-                  mottatt eller søkt på de siste 36 måneder
-                </BodyLong>
                 {pengestøtteFraAndreEøsLand?.map(
                   (
                     pengestøtteFraAndreEøsLandSvar: PengestøtteFraAndreEøsLandModalSvar,
@@ -272,11 +266,6 @@ export function AnnenPengestøtteViewV1() {
 
             {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
-                <BodyLong>
-                  <strong>Dine pengestøtter fra Norge</strong>
-                  <br />
-                  Du må legge til alle pengestøtter du mottar eller har søkt om som ikke er fra Nav.
-                </BodyLong>
                 {pengestøtteFraNorge?.map(
                   (pengestøtteFraNorgeSvar: PengestøtteFraNorgeModalSvar, index: number) => (
                     <PengestøtteFraNorgeDetaljer
