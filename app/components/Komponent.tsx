@@ -1,18 +1,18 @@
 import { FormScope } from "@rvf/react-router";
-import { Dokumentasjonskravindikator } from "~/components/informasjon-komponenter/Dokumentasjonskravindikator";
-import { ForklarendeTekst } from "~/components/informasjon-komponenter/ForklarendeTekst";
-import { Nedtrekksliste } from "~/components/spørsmål-komponenter/Nedtrekksliste";
-import { Tall } from "~/components/spørsmål-komponenter/Tall";
-import { LesMer } from "./informasjon-komponenter/LesMer";
-import { Varselmelding } from "./informasjon-komponenter/Varselmelding";
+import { Dokumentasjonskravindikator } from "~/components/informasjon-komponent/Dokumentasjonskravindikator";
+import { ForklarendeTekst } from "~/components/informasjon-komponent/ForklarendeTekst";
+import { Nedtrekksliste } from "~/components/spørsmål-komponent/Nedtrekksliste";
+import { Tall } from "~/components/spørsmål-komponent/Tall";
+import { LesMer } from "./informasjon-komponent/LesMer";
+import { Varselmelding } from "./informasjon-komponent/Varselmelding";
 import { KomponentType } from "./Komponent.types";
-import { Dato } from "./spørsmål-komponenter/Dato";
-import { Envalg } from "./spørsmål-komponenter/Envalg";
-import { Flervalg } from "./spørsmål-komponenter/Flervalg";
-import { KortTekst } from "./spørsmål-komponenter/KortTekst";
-import { Land } from "./spørsmål-komponenter/Land";
-import { LangTekst } from "./spørsmål-komponenter/LangTekst";
-import { Periode } from "./spørsmål-komponenter/Periode";
+import { Dato } from "./spørsmål-komponent/Dato";
+import { Envalg } from "./spørsmål-komponent/Envalg";
+import { Flervalg } from "./spørsmål-komponent/Flervalg";
+import { KortTekst } from "./spørsmål-komponent/KortTekst";
+import { Land } from "./spørsmål-komponent/Land";
+import { LangTekst } from "./spørsmål-komponent/LangTekst";
+import { Periode } from "./spørsmål-komponent/Periode";
 
 interface IProps {
   props: KomponentType;
