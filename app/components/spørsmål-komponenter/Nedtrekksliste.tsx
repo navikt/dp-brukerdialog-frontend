@@ -9,7 +9,7 @@ interface IProps {
   horisontal?: boolean;
 }
 
-export function Nedtrekksliste({ props, formScope }: Readonly<IProps>) {
+export function Nedtrekksliste({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (

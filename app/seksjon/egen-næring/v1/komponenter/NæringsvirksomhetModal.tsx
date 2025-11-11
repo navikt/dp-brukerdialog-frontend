@@ -3,20 +3,20 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
+import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   leggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function NæringsvirksomhetModal({ ref }: Readonly<IProps>) {
+export function NæringsvirksomhetModal({ ref }: IProps) {
   const {
     næringsvirksomheter,
     setNæringsvirksomheter,

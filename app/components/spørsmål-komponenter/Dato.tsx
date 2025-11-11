@@ -9,7 +9,7 @@ interface IProps {
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Dato({ props, formScope }: Readonly<IProps>) {
+export function Dato({ props, formScope }: IProps) {
   const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
 

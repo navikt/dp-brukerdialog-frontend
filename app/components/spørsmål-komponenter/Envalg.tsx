@@ -9,7 +9,7 @@ interface IProps {
   horisontal?: boolean;
 }
 
-export function Envalg({ props, formScope, horisontal }: Readonly<IProps>) {
+export function Envalg({ props, formScope, horisontal }: IProps) {
   const field = useField(formScope);
 
   return (

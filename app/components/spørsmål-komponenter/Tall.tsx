@@ -1,14 +1,14 @@
 import { TextField } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { TallSpørsmål } from "~/components/Komponent.types";
 import parse from "html-react-parser";
+import { TallSpørsmål } from "~/components/Komponent.types";
 
 interface IProps {
   props: TallSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Tall({ props, formScope }: Readonly<IProps>) {
+export function Tall({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (

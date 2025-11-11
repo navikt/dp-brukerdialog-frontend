@@ -8,7 +8,7 @@ interface IProps {
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function KortTekst({ props, formScope }: Readonly<IProps>) {
+export function KortTekst({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (

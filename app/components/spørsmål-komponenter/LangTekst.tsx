@@ -8,7 +8,7 @@ interface IProps {
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function LangTekst({ props, formScope }: Readonly<IProps>) {
+export function LangTekst({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (

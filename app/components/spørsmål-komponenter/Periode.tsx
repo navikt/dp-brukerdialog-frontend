@@ -12,7 +12,7 @@ interface IProps {
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Periode({ props, formScope }: Readonly<IProps>) {
+export function Periode({ props, formScope }: IProps) {
   const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
 

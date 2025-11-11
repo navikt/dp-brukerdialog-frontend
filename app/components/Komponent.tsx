@@ -3,23 +3,23 @@ import { Dokumentasjonskravindikator } from "~/components/informasjon-komponente
 import { ForklarendeTekst } from "~/components/informasjon-komponenter/ForklarendeTekst";
 import { Nedtrekksliste } from "~/components/spørsmål-komponenter/Nedtrekksliste";
 import { Tall } from "~/components/spørsmål-komponenter/Tall";
+import { LesMer } from "./informasjon-komponenter/LesMer";
+import { Varselmelding } from "./informasjon-komponenter/Varselmelding";
+import { KomponentType } from "./Komponent.types";
 import { Dato } from "./spørsmål-komponenter/Dato";
 import { Envalg } from "./spørsmål-komponenter/Envalg";
 import { Flervalg } from "./spørsmål-komponenter/Flervalg";
-import { KomponentType } from "./Komponent.types";
 import { KortTekst } from "./spørsmål-komponenter/KortTekst";
 import { Land } from "./spørsmål-komponenter/Land";
 import { LangTekst } from "./spørsmål-komponenter/LangTekst";
-import { LesMer } from "./informasjon-komponenter/LesMer";
 import { Periode } from "./spørsmål-komponenter/Periode";
-import { Varselmelding } from "./informasjon-komponenter/Varselmelding";
 
 interface IProps {
   props: KomponentType;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Komponent({ props, formScope }: Readonly<IProps>) {
+export function Komponent({ props, formScope }: IProps) {
   switch (props.type) {
     case "dato":
       return <Dato props={props} formScope={formScope} />;

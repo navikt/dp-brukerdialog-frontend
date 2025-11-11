@@ -9,7 +9,7 @@ interface IProps {
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Flervalg({ props, formScope }: Readonly<IProps>) {
+export function Flervalg({ props, formScope }: IProps) {
   const field = useField(formScope);
   const value = (field.value() as string[]) ?? undefined;
 

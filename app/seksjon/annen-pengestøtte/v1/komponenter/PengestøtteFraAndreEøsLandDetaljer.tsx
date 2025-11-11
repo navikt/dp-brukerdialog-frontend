@@ -25,7 +25,7 @@ interface IProps {
 export function PengestøtteFraAndreEøsLandDetaljer({
   pengestøtteFraAndreEøsLandSvar,
   pengestøtteFraAndreEøsLandSvarIndex,
-}: Readonly<IProps>) {
+}: IProps) {
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,

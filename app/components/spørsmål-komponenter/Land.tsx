@@ -9,7 +9,7 @@ interface IProps {
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Land({ props, formScope }: Readonly<IProps>) {
+export function Land({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (

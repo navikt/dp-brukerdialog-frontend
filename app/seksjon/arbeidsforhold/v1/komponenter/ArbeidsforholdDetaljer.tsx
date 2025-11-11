@@ -18,7 +18,7 @@ interface IProps {
   arbeidsforholdIndex: number;
 }
 
-export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: Readonly<IProps>) {
+export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: IProps) {
   const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, setModalData } =
     useArbeidsforholdContext();
 

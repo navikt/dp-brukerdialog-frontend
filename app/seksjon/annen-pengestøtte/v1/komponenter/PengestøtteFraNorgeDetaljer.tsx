@@ -1,10 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
-import {
   hvemUtbetalerPengestøtten,
   hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
@@ -12,6 +8,10 @@ import {
   pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
+import {
+  ModalOperasjon,
+  useAnnenPengestøtteContext,
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 
@@ -23,7 +23,7 @@ interface IProps {
 export function PengestøtteFraNorgeDetaljer({
   pengestøtteFraNorgeSvar,
   pengestøtteFraNorgeSvarIndex,
-}: Readonly<IProps>) {
+}: IProps) {
   const { pengestøtteFraNorge, setPengestøtteFraNorge, setPengestøtteFraNorgeModalData } =
     useAnnenPengestøtteContext();
 
