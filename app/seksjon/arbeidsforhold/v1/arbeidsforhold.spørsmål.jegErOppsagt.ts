@@ -17,7 +17,6 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål: Kompon
     id: "oppsagtVarselmelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Hvis du har blitt sagt opp av arbeidsgiveren din, må vi vite hvorfor.<br/><br/>" +
       "Derfor må du dokumentere grunnen og datoen du ble sagt opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.<br/><br/>" +
@@ -78,7 +77,6 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål: Kompon
     id: "oppsagtHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorgeVarselMelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "Takket du nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du normalt ikke få dagpenger de første 18 ukene. Denne ventetiden løper først fra den datoen dagpengeperioden starter.<br/><br/>" +
       "Det er viktig at du ikke venter med å søke om dagpenger. Du må sende søknaden din nå, selv om du kan få en ventetid på 18 uker.<br/><br/>" +

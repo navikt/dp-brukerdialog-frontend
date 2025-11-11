@@ -11,7 +11,6 @@ import {
   adresselinje3FraPdl,
   alderFraPdl,
   etternavnFraPdl,
-  folkeregistrertAdresseErNorgeStemmerDet,
   fornavnFraPdl,
   fødselsnummerFraPdl,
   kontonummerFraKontoregister,
@@ -163,9 +162,6 @@ export function PersonaliaViewV1() {
                   />
                 );
               })}
-
-              {(form.value(folkeregistrertAdresseErNorgeStemmerDet) === "nei" ||
-                form.value(landFraPdl) !== "NORGE") && <h2>Bostedsland</h2>}
 
               {personaliaBostedslandSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

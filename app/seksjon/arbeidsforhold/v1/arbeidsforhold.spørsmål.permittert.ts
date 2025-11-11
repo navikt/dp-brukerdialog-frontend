@@ -28,7 +28,6 @@ export const arbeidsforholdModalJegErPermittertSpørsmål: KomponentType[] = [
     id: "permittertVarselMelding",
     type: "varselmelding",
     variant: "info",
-    label: "",
     description:
       "For å ha rett til dagpenger under permittering, må arbeidstiden din være redusert med minst 50 prosent. Årsaken til permitteringen må være mangel på arbeid eller andre forhold som arbeidsgiver ikke kan påvirke.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>

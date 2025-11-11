@@ -11,13 +11,14 @@ export function valider(
     spørsmål.type === "lesMer" ||
     spørsmål.type === "varselmelding" ||
     spørsmål.type === "dokumentasjonskravindikator" ||
-    spørsmål.type === "registeropplysning";
+    spørsmål.type === "registeropplysning" ||
+    spørsmål.type === "forklarendeTekst";
 
   if (erInformasjonKomponent) {
     return;
   }
 
-  if (synlig && !svar && !spørsmål.optional) {
+  if (synlig && !svar && !erInformasjonKomponent && !spørsmål.optional) {
     context.addIssue({
       path: [spørsmål.id],
       code: "custom",

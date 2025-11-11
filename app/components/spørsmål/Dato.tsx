@@ -15,8 +15,8 @@ export function Dato({ spørsmål, formScope }: Readonly<IProps>) {
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
-    fromDate: spørsmål.fraOgMed || undefined,
-    toDate: spørsmål.tilOgMed || undefined,
+    fromDate: spørsmål.fraOgMed ?? undefined,
+    toDate: spørsmål.tilOgMed ?? undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
     },
