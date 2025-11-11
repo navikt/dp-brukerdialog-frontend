@@ -60,7 +60,6 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: 
           onClick={() => {
             setModalData({
               operasjon: ModalOperasjon.Rediger,
-              ledetekst: "",
               arbeidsforhold,
               arbeidsforholdIndex,
             });

@@ -1,5 +1,5 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
-import { BodyShort, Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
+import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Spørsmål } from "~/components/spørsmål/Spørsmål";
@@ -10,9 +10,11 @@ import {
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
   Arbeidsforhold,
+  arbeidsforholdForklarendeTekstKomponenter,
   arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
   arbeidsforholdModalSpørsmål,
   ArbeidsforholdModalSvar,
+  ArbeidsforholdSvar,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { arbeidsforholdModalJegHarSagtOppSelvSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
@@ -98,7 +100,22 @@ export function ArbeidsforholdModal({ ref }: Readonly<IProps>) {
         </Heading>
       </Modal.Header>
       <Modal.Body>
-        <BodyShort>{modalData?.ledetekst}</BodyShort>
+        {modalData?.form &&
+          arbeidsforholdForklarendeTekstKomponenter.map((spørsmål) => {
+            if (spørsmål.visHvis && !spørsmål.visHvis(modalData.form?.value())) {
+              return null;
+            }
+
+            if (modalData?.form) {
+              return (
+                <Spørsmål
+                  key={spørsmål.id}
+                  spørsmål={spørsmål}
+                  formScope={modalData.form.scope(spørsmål.id as keyof ArbeidsforholdSvar)}
+                />
+              );
+            }
+          })}
         <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
             {alleModalSpørsmål.map((spørsmål) => {
