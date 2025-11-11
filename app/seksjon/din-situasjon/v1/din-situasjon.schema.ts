@@ -8,7 +8,7 @@ import {
   årsakTilAtDagpengeneBleStanset,
 } from "./din-situasjon.komponenter";
 import { valider } from "~/utils/validering.utils";
-import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 
 export const dinSituasjonSchema = z
   .object({

@@ -9,9 +9,9 @@ import {
   planleggerÅStarteEllerFullføreStudierSamtidig,
   senderIkkeDokumentasjonBegrunnelse,
   tarUtdanningEllerOpplæring,
-  utdanningSpørsmål,
+  utdanningKomponenter,
   UtdanningSvar,
-} from "./utdanning.spørsmål";
+} from "./utdanning.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 export const utdanningSchema = z
@@ -32,7 +32,7 @@ export const utdanningSchema = z
       return;
     }
 
-    utdanningSpørsmål.forEach((spørsmål) => {
+    utdanningKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof UtdanningSvar];
       valider(spørsmål, svar, synlig, context);

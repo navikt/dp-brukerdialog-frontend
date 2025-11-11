@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { erTilbakenavigering, UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+import { erTilbakenavigering, UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { UtdanningViewV1 } from "~/seksjon/utdanning/v1/UtdanningViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
