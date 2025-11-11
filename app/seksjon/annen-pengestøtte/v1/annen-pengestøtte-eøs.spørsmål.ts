@@ -79,7 +79,7 @@ export const pengestøtteFraAndreEøsLandModalSpørsmål: KomponentType[] = [
       { value: dagpengerEllerArbeidsledighetstrygd, label: "Dagpenger / arbeidsledighetstrygd" },
       {
         value: pleiepengerOmsorgspengerEllerOpplæringspenger,
-        label: "Pleiepenger, omsorgspenger eller opplæringspenger ",
+        label: "Pleiepenger, omsorgspenger eller opplæringspenger",
       },
     ],
   },
