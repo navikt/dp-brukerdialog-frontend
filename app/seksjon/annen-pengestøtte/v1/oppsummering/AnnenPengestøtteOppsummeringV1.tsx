@@ -2,16 +2,16 @@ import { FormSummary } from "@navikt/ds-react";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalSpørsmål,
-  pengestøtteFraAndreEøsLandSpørsmål,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+  pengestøtteFraAndreEøsLandKomponenter,
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeModalSpørsmål,
-  pengestøtteFraNorgeSpørsmål,
+  pengestøtteFraNorgeKomponenter,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
@@ -32,12 +32,12 @@ export default function AnnenPengestøtteOppsummeringV1({
     spørsmålListe.find((spørsmål) => spørsmål.id === id);
 
   const mottattEllerSøktOmPengestøtteFraAndreEøsLand = finnSpørsmål(
-    pengestøtteFraAndreEøsLandSpørsmål,
+    pengestøtteFraAndreEøsLandKomponenter,
     harMottattEllerSøktOmPengestøtteFraAndreEøsLand
   );
 
   const mottarPengestøtteFraNorge = finnSpørsmål(
-    pengestøtteFraNorgeSpørsmål,
+    pengestøtteFraNorgeKomponenter,
     mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
   );
 

@@ -8,7 +8,7 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   pengestøtteFraAndreEøsLandModalSpørsmål,
   PengestøtteFraAndreEøsLandModalSvar,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,

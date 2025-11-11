@@ -20,7 +20,7 @@ import {
   PengestøtteFraAndreEøsLandModalSvar,
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   sykepenger,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   etterlønnFraArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
@@ -34,7 +34,7 @@ import {
   pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
   pensjonFraAndreEnnNav,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 const kortTekstMaksLengde = 200;

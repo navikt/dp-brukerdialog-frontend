@@ -1,19 +1,19 @@
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   PengestøtteFraAndreEøsLandModalSvar,
-  pengestøtteFraAndreEøsLandSpørsmål,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+  pengestøtteFraAndreEøsLandKomponenter,
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   PengestøtteFraNorgeModalSvar,
-  pengestøtteFraNorgeSpørsmål,
+  pengestøtteFraNorgeKomponenter,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 
-export const seksjonsvar = "seksjonsvar"
-export const pdfGrunnlag = "pdfGrunnlag"
+export const seksjonsvar = "seksjonsvar";
+export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
 
 export type AnnenPengestøtteSvar = {
@@ -28,6 +28,6 @@ export type AnnenPengestøtteResponse = AnnenPengestøtteSvar & {
   pengestøtteFraNorge?: PengestøtteFraNorgeModalSvar[];
 };
 
-export const annenPengestøtteSpørsmål = pengestøtteFraAndreEøsLandSpørsmål
-  .concat(pengestøtteFraNorgeSpørsmål)
+export const annenPengestøtteSpørsmål = pengestøtteFraAndreEøsLandKomponenter
+  .concat(pengestøtteFraNorgeKomponenter)
   .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål);

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
-import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
-import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
+import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",

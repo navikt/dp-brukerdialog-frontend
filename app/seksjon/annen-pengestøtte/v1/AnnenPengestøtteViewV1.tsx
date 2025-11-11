@@ -12,9 +12,9 @@ import {
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeModalSpørsmål,
   PengestøtteFraNorgeModalSvar,
-  pengestøtteFraNorgeSpørsmål,
+  pengestøtteFraNorgeKomponenter,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import {
   AnnenPengestøtteResponse,
@@ -30,8 +30,8 @@ import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalSpørsmål,
   PengestøtteFraAndreEøsLandModalSvar,
-  pengestøtteFraAndreEøsLandSpørsmål,
-} from "./annen-pengestøtte-eøs.spørsmål";
+  pengestøtteFraAndreEøsLandKomponenter,
+} from "./annen-pengestøtte-eøs.komponenter";
 import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandDetaljer";
 import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
@@ -135,11 +135,11 @@ export function AnnenPengestøtteViewV1() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
-        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandKomponenter, form.transient.value()),
         ...pengestøtteFraAndreEøsLand.map((enPengestøtte) =>
           lagSeksjonPayload(pengestøtteFraAndreEøsLandModalSpørsmål, enPengestøtte)
         ),
-        ...lagSeksjonPayload(pengestøtteFraNorgeSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(pengestøtteFraNorgeKomponenter, form.transient.value()),
         ...pengestøtteFraNorge.map((enPengestøtte) =>
           lagSeksjonPayload(pengestøtteFraNorgeModalSpørsmål, enPengestøtte)
         ),
@@ -219,7 +219,7 @@ export function AnnenPengestøtteViewV1() {
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
-            {pengestøtteFraAndreEøsLandSpørsmål.map((spørsmål) => {
+            {pengestøtteFraAndreEøsLandKomponenter.map((spørsmål) => {
               return render(spørsmål);
             })}
 
@@ -262,7 +262,7 @@ export function AnnenPengestøtteViewV1() {
             )}
 
             <h3>Pengestøtte fra Norge</h3>
-            {pengestøtteFraNorgeSpørsmål.map((spørsmål) => render(spørsmål))}
+            {pengestøtteFraNorgeKomponenter.map((spørsmål) => render(spørsmål))}
 
             {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
