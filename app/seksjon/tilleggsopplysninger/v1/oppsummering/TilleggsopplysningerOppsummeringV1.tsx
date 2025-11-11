@@ -1,4 +1,4 @@
-import { tilleggsopplysningerSpørsmål } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+import { tilleggsopplysningerKomponenter } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
@@ -23,7 +23,7 @@ export default function TilleggsopplysningerOppsummeringV1({
         {!tilleggsopplysningerSvar.length && (
           <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
         )}
-        {tilleggsopplysningerSpørsmål.map((spørsmål) => {
+        {tilleggsopplysningerKomponenter.map((spørsmål) => {
           const svar = tilleggsopplysningerSvar.find((svar) => svar[0] === spørsmål.id);
           if (svar && !erInformasjonsFelt(spørsmål)) {
             return (

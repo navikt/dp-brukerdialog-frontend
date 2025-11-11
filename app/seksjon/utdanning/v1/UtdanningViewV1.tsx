@@ -9,9 +9,9 @@ import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import {
   erTilbakenavigering,
   pdfGrunnlag,
-  utdanningSpørsmål,
+  utdanningKomponenter,
   UtdanningSvar,
-} from "~/seksjon/utdanning/v1/utdanning.spørsmål";
+} from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function UtdanningViewV1() {
@@ -31,18 +31,16 @@ export function UtdanningViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningSpørsmål);
+  useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningKomponenter);
 
   const genererPdfGrunnlag = () => {
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(utdanningSpørsmål, form.transient.value()),
-      ],
+      spørsmål: [...lagSeksjonPayload(utdanningKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  }
+  };
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -55,7 +53,6 @@ export function UtdanningViewV1() {
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.submit();
     }
-
   }
 
   return (
@@ -66,7 +63,7 @@ export function UtdanningViewV1() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.versjon} />
-              {utdanningSpørsmål.map((spørsmål) => {
+              {utdanningKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }

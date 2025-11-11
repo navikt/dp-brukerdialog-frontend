@@ -2,21 +2,13 @@ import { KomponentType } from "~/components/spørsmål/spørsmål.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const erTilbakenavigering = "erTilbakenavigering";
-export const avtjentVerneplikt = "avtjent-verneplikt";
-export const dokumenterAvtjentVernepliktNå = "dokumenter-avtjent-verneplikt-nå";
-export const lasteOppSenereBegrunnelse = "laste-opp-senere-begrunnelse";
-export const naarSendtDokumentasjonTidligere = "naar-sendt-dokumentasjon-tidligere";
-export const senderIkkeDokumentasjonBegrunnelse = "sender-ikke-dokumentasjon-begrunnelse";
+export const avtjentVerneplikt = "avtjentVerneplikt";
 
 export type VernepliktSvar = {
   [avtjentVerneplikt]?: "ja" | "nei";
-  [dokumenterAvtjentVernepliktNå]?: "ja" | "lastOppIEtterkant" | "lastetOppTidligere" | "nei";
-  [lasteOppSenereBegrunnelse]?: string;
-  [naarSendtDokumentasjonTidligere]?: string;
-  [senderIkkeDokumentasjonBegrunnelse]?: string;
 };
 
-export const vernepliktSpørsmål: KomponentType[] = [
+export const vernepliktKomponenter: KomponentType[] = [
   {
     id: avtjentVerneplikt,
     type: "envalg",

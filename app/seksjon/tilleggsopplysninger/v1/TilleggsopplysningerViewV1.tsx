@@ -9,9 +9,9 @@ import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/ti
 import {
   erTilbakenavigering,
   pdfGrunnlag,
-  tilleggsopplysningerSpørsmål,
+  tilleggsopplysningerKomponenter,
   TilleggsopplysningerSvar,
-} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.spørsmål";
+} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function TilleggsopplysningerViewV1() {
@@ -31,18 +31,16 @@ export function TilleggsopplysningerViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerSpørsmål);
+  useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerKomponenter);
 
   const genererPdfPayload = () => {
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(tilleggsopplysningerSpørsmål, form.transient.value()),
-      ],
+      spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  }
+  };
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfPayload());
@@ -64,7 +62,7 @@ export function TilleggsopplysningerViewV1() {
         <Form {...form.getFormProps()}>
           <VStack gap="8">
             <input type="hidden" name="versjon" value={loaderData.versjon} />
-            {tilleggsopplysningerSpørsmål.map((spørsmål) => {
+            {tilleggsopplysningerKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }
