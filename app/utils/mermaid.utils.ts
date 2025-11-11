@@ -1,8 +1,8 @@
-import { KomponentType, INFO_KOMPONENTER } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType, INFO_KOMPONENTER } from "~/components/Komponent.types";
 
-export function generateMermaidFlow(spørsmål: KomponentType[]): string {
+export function generateMermaidFlow(komponenter: KomponentType[]): string {
   let lines: string[] = ["flowchart TD"];
-  const main = spørsmål[0];
+  const main = komponenter[0];
   if (!main) return "";
 
   // Sett type foran teksten
@@ -15,10 +15,10 @@ export function generateMermaidFlow(spørsmål: KomponentType[]): string {
     lines.push(`  ${main.id as any}["${mainTekst}"]`);
   }
 
-  spørsmål.forEach((q) => {
+  komponenter.forEach((q) => {
     if (q.type === "envalg" && q.options) {
       q.options.forEach((opt) => {
-        spørsmål.forEach((next) => {
+        komponenter.forEach((next) => {
           if (next.visHvis && next.visHvis({ [q.id]: opt.value })) {
             // Sett type foran teksten
             const nextTekst =

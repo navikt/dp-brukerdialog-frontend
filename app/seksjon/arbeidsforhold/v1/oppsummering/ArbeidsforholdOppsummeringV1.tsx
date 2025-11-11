@@ -1,9 +1,9 @@
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import {
-  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  arbeidsforholdModalKomponenter,
   ArbeidsforholdResponse,
   arbeidsforholdKomponenter,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -42,7 +42,7 @@ export default function ArbeidsforholdOppsummeringV1({
       harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
     );
 
-  const alleArbeidsforholdModalSpørsmål = arbeidsforholdModalSpørsmål
+  const alleArbeidsforholdModalSpørsmål = arbeidsforholdModalKomponenter
     .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
     .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
     .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
@@ -51,7 +51,7 @@ export default function ArbeidsforholdOppsummeringV1({
     .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
     .concat(arbeidsforholdModalJegErPermittertKomponenter)
     .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-    .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål);
+    .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter);
 
   return (
     <FormSummary>

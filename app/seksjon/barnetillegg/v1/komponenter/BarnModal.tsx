@@ -3,7 +3,7 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { z } from "zod";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
@@ -142,9 +142,9 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
                 />
               );

@@ -1,20 +1,20 @@
 import { FormSummary } from "@navikt/ds-react";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalSpørsmål,
+  pengestøtteFraAndreEøsLandModalKomponenter,
   pengestøtteFraAndreEøsLandKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeModalSpørsmål,
+  pengestøtteFraNorgeModalKomponenter,
   pengestøtteFraNorgeKomponenter,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
-import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+import { KomponentType } from "~/components/Komponent.types";
+import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -42,12 +42,12 @@ export default function AnnenPengestøtteOppsummeringV1({
   );
 
   const mottaLønnEllerAndreGoderFraTidligereArbeidsgiver = finnSpørsmål(
-    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
     fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
   );
 
   const hvaDuFårBeholdeFraTidligereArbeidsgiverSpørsmål = finnSpørsmål(
-    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
     skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
   );
 
@@ -75,7 +75,7 @@ export default function AnnenPengestøtteOppsummeringV1({
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
                     const spørsmål = finnSpørsmål(
-                      pengestøtteFraAndreEøsLandModalSpørsmål,
+                      pengestøtteFraAndreEøsLandModalKomponenter,
                       enPengestøtte[0]
                     );
                     if (
@@ -110,7 +110,7 @@ export default function AnnenPengestøtteOppsummeringV1({
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
                     const spørsmål = finnSpørsmål(
-                      pengestøtteFraNorgeModalSpørsmål,
+                      pengestøtteFraNorgeModalKomponenter,
                       enPengestøtte[0]
                     );
                     if (

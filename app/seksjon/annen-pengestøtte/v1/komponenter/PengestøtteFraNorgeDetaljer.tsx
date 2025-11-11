@@ -9,7 +9,7 @@ import {
   hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
-  pengestøtteFraNorgeModalSpørsmål,
+  pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { formaterNorskDato } from "~/utils/formatering.utils";
@@ -37,7 +37,7 @@ export function PengestøtteFraNorgeDetaljer({
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <h3 style={{ marginTop: "0" }}>
         {finnOptionLabel(
-          pengestøtteFraNorgeModalSpørsmål,
+          pengestøtteFraNorgeModalKomponenter,
           hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
           pengestøtteFraNorgeSvar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
         )}

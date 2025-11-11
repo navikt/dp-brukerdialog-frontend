@@ -5,7 +5,7 @@ import {
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   PengestøtteFraNorgeModalSvar,
   pengestøtteFraNorgeKomponenter,
@@ -28,6 +28,6 @@ export type AnnenPengestøtteResponse = AnnenPengestøtteSvar & {
   pengestøtteFraNorge?: PengestøtteFraNorgeModalSvar[];
 };
 
-export const annenPengestøtteSpørsmål = pengestøtteFraAndreEøsLandKomponenter
+export const annenPengestøtteKomponenter = pengestøtteFraAndreEøsLandKomponenter
   .concat(pengestøtteFraNorgeKomponenter)
-  .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål);
+  .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter);

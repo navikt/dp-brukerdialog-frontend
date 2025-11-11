@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { lagSeksjonPayload } from "./seksjon.utils";
 import {
   egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukSpørsmål,
-  leggTilGårdsbrukSpørsmål,
-  leggTilNæringsvirksomhetSpørsmål,
+  egenNæringEgetGårdsbrukKomponenter,
+  leggTilGårdsbrukKomponenter,
+  leggTilNæringsvirksomhetKomponenter,
 } from "../seksjon/egen-næring/v1/egen-næring.komponenter";
 
 describe("lagSeksjonPayload", () => {
@@ -49,21 +49,21 @@ describe("lagSeksjonPayload", () => {
 
   it("should create del2Payload for each næringsvirksomhet", () => {
     const del2Payload = formData.næringsvirksomheter.flatMap((virksomhet) =>
-      lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, virksomhet)
+      lagSeksjonPayload(leggTilNæringsvirksomhetKomponenter, virksomhet)
     );
     expect(del2Payload.length).toBeGreaterThan(0);
     expect(del2Payload.some((item) => item.id === "organisasjonsnummer")).toBe(true);
   });
 
   it("should create del3Payload for egenNæringEgetGårdsbrukSpørsmål", () => {
-    const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, formData);
+    const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukKomponenter, formData);
     expect(del3Payload.length).toBeGreaterThan(0);
     expect(del3Payload.some((item) => item.id === "driverDuEgetGårdsbruk")).toBe(true);
   });
 
   it("should create del4Payload for each gårdsbruk", () => {
     const del4Payload = formData.gårdsbruk.flatMap((gårdsbruket) =>
-      lagSeksjonPayload(leggTilGårdsbrukSpørsmål, gårdsbruket)
+      lagSeksjonPayload(leggTilGårdsbrukKomponenter, gårdsbruket)
     );
     expect(del4Payload.length).toBeGreaterThan(0);
     expect(del4Payload.some((item) => item.id === "organisasjonsnummer")).toBe(true);
@@ -72,11 +72,11 @@ describe("lagSeksjonPayload", () => {
   it("should create brutto payload with all parts", () => {
     const del1Payload = lagSeksjonPayload(egenNæringEgenNæringsvirksomhetKomponenter, formData);
     const del2Payload = formData.næringsvirksomheter.flatMap((virksomhet) =>
-      lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, virksomhet)
+      lagSeksjonPayload(leggTilNæringsvirksomhetKomponenter, virksomhet)
     );
-    const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, formData);
+    const del3Payload = lagSeksjonPayload(egenNæringEgetGårdsbrukKomponenter, formData);
     const del4Payload = formData.gårdsbruk.flatMap((gårdsbruket) =>
-      lagSeksjonPayload(leggTilGårdsbrukSpørsmål, gårdsbruket)
+      lagSeksjonPayload(leggTilGårdsbrukKomponenter, gårdsbruket)
     );
     const brutto = [...del1Payload, ...del2Payload, ...del3Payload, ...del4Payload];
     expect(brutto.length).toBe(

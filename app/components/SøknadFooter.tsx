@@ -3,10 +3,10 @@ import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { SlettSøknadModal } from "~/components/SlettSøknadModal";
 
 interface SøknadFooterProps {
-  soknadId: string;
+  søknadId: string;
 }
 
-export function SøknadFooter({ soknadId }: SøknadFooterProps) {
+export function SøknadFooter({ søknadId }: SøknadFooterProps) {
   return (
     <div className="innhold">
       <HStack>
@@ -17,7 +17,7 @@ export function SøknadFooter({ soknadId }: SøknadFooterProps) {
         >
           Fortsett senere
         </Button>
-        <SlettSøknadModal søknadId={soknadId} />
+        <SlettSøknadModal søknadId={søknadId} />
       </HStack>
     </div>
   );

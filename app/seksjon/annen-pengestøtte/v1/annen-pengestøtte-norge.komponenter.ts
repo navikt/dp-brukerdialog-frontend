@@ -1,5 +1,5 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
-import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+import { KomponentType } from "~/components/Komponent.types";
+import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 
 export const mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav =
   "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav";
@@ -59,7 +59,7 @@ export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
   },
 ];
 
-export const pengestøtteFraNorgeModalSpørsmål: KomponentType[] = [
+export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
   {
     id: hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
     type: "envalg",
@@ -101,7 +101,7 @@ export const pengestøtteFraNorgeModalSpørsmål: KomponentType[] = [
   },
 ];
 
-export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål: KomponentType[] =
+export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] =
   [
     {
       id: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,

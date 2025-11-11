@@ -12,7 +12,7 @@ import {
 import { useForm } from "@rvf/react-router";
 import { useState } from "react";
 import { Form, useParams } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   dokumentasjonskravKomponenter,
@@ -189,9 +189,9 @@ export function DokumentasjonskravKomponent({
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof DokumentasjonskravSvar)}
                 />
               );
