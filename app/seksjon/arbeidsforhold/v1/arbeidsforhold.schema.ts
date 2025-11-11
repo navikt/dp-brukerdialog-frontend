@@ -110,27 +110,14 @@ export const arbeidsforholdSchema = z
       .optional(),
     versjon: z.number().optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (data[erTilbakenavigering]) {
       return;
     }
     arbeidsforholdSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const spørsmålId = spørsmål.id as keyof ArbeidsforholdSvar;
-      const svar = data[spørsmålId];
-
-      const erSpørsmål =
-        spørsmål.type !== "lesMer" &&
-        spørsmål.type !== "varselmelding" &&
-        spørsmål.type !== "dokumentasjonskravindikator";
-
-      if (synlig && !svar && erSpørsmål && !spørsmål.optional) {
-        ctx.addIssue({
-          path: [spørsmål.id],
-          code: "custom",
-          message: "Du må svare på dette spørsmålet",
-        });
-      }
+      const svar = data[spørsmål.id as keyof ArbeidsforholdSvar];
+      valider(spørsmål, svar, synlig, context);
     });
   });
 

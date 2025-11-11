@@ -6,13 +6,13 @@ import { Spørsmål } from "~/components/spørsmål/Spørsmål";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
   dinSituasjonKomponenter,
   DinSituasjonSvar,
   erTilbakenavigering,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
