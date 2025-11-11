@@ -18,7 +18,7 @@ export function valider(
     return;
   }
 
-  if (synlig && !svar && !erInformasjonKomponent && !spørsmål.optional) {
+  if (synlig && !svar && !spørsmål.optional) {
     context.addIssue({
       path: [spørsmål.id],
       code: "custom",
