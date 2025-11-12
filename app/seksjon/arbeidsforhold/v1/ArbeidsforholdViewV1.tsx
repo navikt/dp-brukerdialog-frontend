@@ -227,7 +227,7 @@ export function ArbeidsforholdViewV1() {
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
                 onClick={handleTilbakenavigering}
-                loading={state === "submitting" || state === "loading"}
+                disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
               </Button>
@@ -237,7 +237,7 @@ export function ArbeidsforholdViewV1() {
                 iconPosition="right"
                 icon={<ArrowRightIcon aria-hidden />}
                 onClick={handleSubmit}
-                loading={state === "submitting" || state === "loading"}
+                disabled={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>

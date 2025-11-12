@@ -87,7 +87,7 @@ export function ReellArbeidssøkerViewV1() {
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
                 onClick={handleTilbakenavigering}
-                loading={state === "submitting" || state === "loading"}
+                disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
               </Button>
@@ -97,7 +97,7 @@ export function ReellArbeidssøkerViewV1() {
                 onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon aria-hidden />}
-                loading={state === "submitting" || state === "loading"}
+                disabled={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>

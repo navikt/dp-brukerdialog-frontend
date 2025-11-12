@@ -189,10 +189,10 @@ export function PersonaliaViewV1() {
               <Button
                 variant="primary"
                 type="button"
-                loading={state === "submitting" || state === "loading"}
                 onClick={handleSubmit}
                 iconPosition="right"
                 icon={<ArrowRightIcon aria-hidden />}
+                disabled={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>
