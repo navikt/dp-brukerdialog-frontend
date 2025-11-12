@@ -7,7 +7,7 @@ export async function lagreDokumentasjonskrav(
   seksjonId: string,
   oppdatertDokumentasjonskrav: string
 ) {
-  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/${soknadId}/${seksjonId}/dokumentasjonskrav`;
+  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}/${seksjonId}/dokumentasjonskrav`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 
   return await fetch(url, {
