@@ -26,9 +26,9 @@ export type SeksjonSvar = BarnetilleggSvar & {
 
 export type BarnetilleggSeksjon = {
   seksjonsvar: {
-    id: string;
+    seksjonId: string;
     versjon: number;
-    svar?: SeksjonSvar;
+    seksjon?: SeksjonSvar;
   };
   dokumentasjonskrav?: Dokumentasjonskrav[];
 };
@@ -60,7 +60,7 @@ export async function loader({
   if (!barnFraPdlResponse.ok) {
     return {
       seksjonsvar: {
-        id: SEKSJON_ID,
+        seksjonId: SEKSJON_ID,
         versjon: NYESTE_VERSJON,
       },
     };
@@ -70,9 +70,9 @@ export async function loader({
 
   return {
     seksjonsvar: {
-      id: SEKSJON_ID,
+      seksjonId: SEKSJON_ID,
       versjon: NYESTE_VERSJON,
-      svar: {
+      seksjon: {
         barnFraPdl: barnFraPdl,
       },
     },
@@ -91,9 +91,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjonsvar: JSON.stringify({
-      id: SEKSJON_ID,
+      seksjonId: SEKSJON_ID,
       versjon: Number(versjon),
-      svar: seksjonsvar ? JSON.parse(seksjonsvar as string) : undefined,
+      seksjon: seksjonsvar ? JSON.parse(seksjonsvar as string) : undefined,
     }),
     dokumentasjonskrav: dokumentasjonskrav,
     pdfGrunnlag: pdfGrunnlag,
@@ -120,8 +120,8 @@ export default function BarntilleggRoute() {
     case 1:
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData.seksjonsvar?.svar?.barnFraPdl ?? []}
-          barnLagtManuelt={loaderData.seksjonsvar?.svar?.barnLagtManuelt ?? []}
+          barnFraPdl={loaderData.seksjonsvar?.seksjon?.barnFraPdl ?? []}
+          barnLagtManuelt={loaderData.seksjonsvar?.seksjon?.barnLagtManuelt ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />
@@ -133,8 +133,8 @@ export default function BarntilleggRoute() {
       );
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData.seksjonsvar?.svar?.barnFraPdl ?? []}
-          barnLagtManuelt={loaderData.seksjonsvar?.svar?.barnLagtManuelt ?? []}
+          barnFraPdl={loaderData.seksjonsvar?.seksjon?.barnFraPdl ?? []}
+          barnLagtManuelt={loaderData.seksjonsvar?.seksjon?.barnLagtManuelt ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />

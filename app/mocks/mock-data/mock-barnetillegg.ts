@@ -8,9 +8,9 @@ import {
 
 export const mockBarnetillegg: BarnetilleggSeksjon = {
   seksjonsvar: {
-    id: "barnetillegg",
+    seksjonId: "barnetillegg",
     versjon: 1,
-    svar: {
+    seksjon: {
       barnFraPdl: [
         {
           id: "b2f1e8c7-3a4d-4e2b-9c1f-7a8b6d5e4c3f",
