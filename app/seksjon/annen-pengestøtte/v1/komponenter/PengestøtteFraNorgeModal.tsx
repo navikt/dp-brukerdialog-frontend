@@ -2,13 +2,13 @@ import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import {
-  pengestøtteFraNorgeModalSpørsmål,
+  pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
@@ -63,7 +63,10 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
-  useNullstillSkjulteFelter<PengestøtteFraNorgeModalSvar>(form, pengestøtteFraNorgeModalSpørsmål);
+  useNullstillSkjulteFelter<PengestøtteFraNorgeModalSvar>(
+    form,
+    pengestøtteFraNorgeModalKomponenter
+  );
 
   const modalTittel =
     pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil
@@ -85,16 +88,16 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
       <Modal.Body>
         <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
-            {pengestøtteFraNorgeModalSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {pengestøtteFraNorgeModalKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
-                  key={spørsmål.id}
-                  spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof PengestøtteFraNorgeModalSvar)}
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof PengestøtteFraNorgeModalSvar)}
                 />
               );
             })}

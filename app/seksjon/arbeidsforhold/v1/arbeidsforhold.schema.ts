@@ -1,8 +1,8 @@
 import { z } from "zod";
 import {
   annenRotasjonBeskrivelse,
-  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  arbeidsforholdModalKomponenter,
   ArbeidsforholdModalSvar,
   arbeidsforholdKomponenter,
   ArbeidsforholdSvar,
@@ -114,10 +114,10 @@ export const arbeidsforholdSchema = z
     if (data[erTilbakenavigering]) {
       return;
     }
-    arbeidsforholdKomponenter.forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof ArbeidsforholdSvar];
-      valider(spørsmål, svar, synlig, context);
+    arbeidsforholdKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof ArbeidsforholdSvar];
+      valider(komponent, svar, synlig, context);
     });
   });
 
@@ -183,7 +183,7 @@ export const arbeidsforholdModalSchema = z
     [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    arbeidsforholdModalSpørsmål
+    arbeidsforholdModalKomponenter
       .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
       .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
       .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
@@ -192,10 +192,10 @@ export const arbeidsforholdModalSchema = z
       .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
       .concat(arbeidsforholdModalJegErPermittertKomponenter)
       .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-      .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål)
-      .forEach((spørsmål) => {
-        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const svar = data[spørsmål.id as keyof ArbeidsforholdModalSvar];
-        valider(spørsmål, svar, synlig, context);
+      .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter)
+      .forEach((komponent) => {
+        const synlig = !komponent.visHvis || komponent.visHvis(data);
+        const svar = data[komponent.id as keyof ArbeidsforholdModalSvar];
+        valider(komponent, svar, synlig, context);
       });
   });

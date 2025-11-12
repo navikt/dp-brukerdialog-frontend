@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import {
   jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
@@ -364,7 +364,7 @@ export const arbeidsforholdForklarendeTekstKomponenter: KomponentType[] = [
   },
 ];
 
-export const arbeidsforholdModalSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalKomponenter: KomponentType[] = [
   {
     id: navnetPåBedriften,
     type: "kortTekst",
@@ -411,7 +411,7 @@ export const arbeidsforholdModalSpørsmål: KomponentType[] = [
   },
 ];
 
-export const arbeidsforholdModalSkiftTurnusRotasjonSpørsmål: KomponentType[] = [
+export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] = [
   {
     id: harDuJobbetSkiftTurnusEllerRotasjon,
     type: "envalg",

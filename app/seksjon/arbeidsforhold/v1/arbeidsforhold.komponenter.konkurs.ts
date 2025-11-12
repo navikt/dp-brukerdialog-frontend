@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import {
   ArbeidsforholdModalSvar,
   arbeidsgiverErKonkurs,

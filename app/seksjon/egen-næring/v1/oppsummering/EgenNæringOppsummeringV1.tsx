@@ -2,17 +2,17 @@ import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
   egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukSpørsmål,
+  egenNæringEgetGårdsbrukKomponenter,
   EgenNæringResponse,
-  leggTilGårdsbrukSpørsmål,
-  leggTilNæringsvirksomhetSpørsmål,
+  leggTilGårdsbrukKomponenter,
+  leggTilNæringsvirksomhetKomponenter,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export default function EgenNæringOppsummeringV1({
@@ -28,7 +28,7 @@ export default function EgenNæringOppsummeringV1({
     (s) => s.id === driverDuEgenNæringsvirksomhet
   );
 
-  const driverDuEgenGårdsbrukSpørsmål = egenNæringEgetGårdsbrukSpørsmål.find(
+  const driverDuEgenGårdsbrukSpørsmål = egenNæringEgetGårdsbrukKomponenter.find(
     (s) => s.id === driverDuEgetGårdsbruk
   );
 
@@ -60,7 +60,7 @@ export default function EgenNæringOppsummeringV1({
                 <FormSummary.Answers>
                   {Object.entries(næringsvirksomhet).map((arbeidsforholdModalSvar) => {
                     const spørsmål = finnSpørsmål(
-                      leggTilNæringsvirksomhetSpørsmål,
+                      leggTilNæringsvirksomhetKomponenter,
                       arbeidsforholdModalSvar[0]
                     );
                     if (spørsmål && !erInformasjonsFelt(spørsmål))
@@ -98,7 +98,7 @@ export default function EgenNæringOppsummeringV1({
                 <FormSummary.Answers>
                   {Object.entries(gårdsbruk).map((arbeidsforholdModalSvar) => {
                     const spørsmål = finnSpørsmål(
-                      leggTilGårdsbrukSpørsmål,
+                      leggTilGårdsbrukKomponenter,
                       arbeidsforholdModalSvar[0]
                     );
                     if (spørsmål && !erInformasjonsFelt(spørsmål))

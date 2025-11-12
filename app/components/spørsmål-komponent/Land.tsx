@@ -2,24 +2,24 @@ import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
 import { FLERE_LAND, OFTE_VALGTE_LAND } from "~/utils/land.utils";
-import { LandSpørsmål } from "./spørsmål.types";
+import { LandSpørsmål } from "../Komponent.types";
 
 interface IProps {
-  spørsmål: LandSpørsmål;
+  props: LandSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Land({ spørsmål, formScope }: Readonly<IProps>) {
+export function Land({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (
     <Select
       {...field.getInputProps()}
       defaultValue={field.value() ?? undefined}
-      label={spørsmål.label}
-      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      label={props.label}
+      description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
-      key={spørsmål.id}
+      key={props.id}
     >
       <option value="">Velg et land</option>
       <optgroup label="Ofte valgte land">

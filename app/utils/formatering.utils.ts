@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { nb } from "date-fns/locale";
-import { SpørsmålBase } from "~/components/spørsmål/spørsmål.types";
+import { SpørsmålBase } from "~/components/Komponent.types";
 
 export function formaterNorskDato(dato: Date) {
   const formattertDato = format(dato, "dd. MMMM yyyy", { locale: nb });
@@ -8,9 +8,12 @@ export function formaterNorskDato(dato: Date) {
 }
 
 export const formaterDatoSvar = (spørsmål: SpørsmålBase, svar: string) => {
-  if ((spørsmål.type == "dato" || spørsmål.type == "periodeFra" || spørsmål.type == "periodeTil") && svar) {
+  if (
+    (spørsmål.type == "dato" || spørsmål.type == "periodeFra" || spørsmål.type == "periodeTil") &&
+    svar
+  ) {
     return formaterNorskDato(new Date(svar));
   } else {
     return svar;
   }
-}
+};

@@ -2,21 +2,21 @@ import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
+import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
+import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   Gårdsbruk,
-  leggTilGårdsbrukSpørsmål,
+  leggTilGårdsbrukKomponenter,
   LeggTilGårdsbrukSvar,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
-import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function GårdsbrukModal({ ref }: Readonly<IProps>) {
+export function GårdsbrukModal({ ref }: IProps) {
   const { gårdsbruk, setGårdsbruk, gårdsbrukModalData, setGårdsbrukModalData } =
     useEgenNæringContext();
 
@@ -68,15 +68,15 @@ export function GårdsbrukModal({ ref }: Readonly<IProps>) {
       <Modal.Body>
         <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
-            {leggTilGårdsbrukSpørsmål.map((spørsmål) => {
+            {leggTilGårdsbrukKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof LeggTilGårdsbrukSvar)}
                 />
               );

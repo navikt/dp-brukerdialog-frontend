@@ -3,7 +3,7 @@ import { Alert, BodyLong, BodyShort, Button, HStack, VStack } from "@navikt/ds-r
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
@@ -53,7 +53,7 @@ export function BarnetilleggViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: barnetilleggSchema,
-    defaultValues: { ...loaderData.seksjonsvar?.svar, versjon: loaderData.seksjonsvar?.versjon },
+    defaultValues: { ...loaderData.seksjonsvar?.seksjon, versjon: loaderData.seksjonsvar?.versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggKomponenter);
@@ -140,16 +140,16 @@ export function BarnetilleggViewV1() {
   return (
     <div className="innhold">
       <h2>Barnetillegg</h2>
-      {barnetilleggForklarendeTekst.map((spørsmål) => {
-        if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+      {barnetilleggForklarendeTekst.map((komponent) => {
+        if (komponent.visHvis && !komponent.visHvis(form.value())) {
           return null;
         }
 
         return (
-          <Spørsmål
-            key={spørsmål.id}
-            spørsmål={spørsmål}
-            formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
+          <Komponent
+            key={komponent.id}
+            props={komponent}
+            formScope={form.scope(komponent.id as keyof BarnetilleggSvar)}
           />
         );
       })}
@@ -168,9 +168,9 @@ export function BarnetilleggViewV1() {
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
                 />
               );
@@ -228,7 +228,13 @@ export function BarnetilleggViewV1() {
             Neste steg
           </Button>
         </HStack>
-        {modalData && <BarnModal ref={ref} spørsmålId={forsørgerDuBarnSomIkkeVisesHer} />}
+        {modalData && (
+          <BarnModal
+            ref={ref}
+            seksjonId={loaderData.seksjonsvar?.seksjonId}
+            spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
+          />
+        )}
       </VStack>
     </div>
   );

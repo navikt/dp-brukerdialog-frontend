@@ -1,4 +1,4 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -90,7 +90,7 @@ export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
   },
 ];
 
-export const egenNæringEgetGårdsbrukSpørsmål: KomponentType[] = [
+export const egenNæringEgetGårdsbrukKomponenter: KomponentType[] = [
   {
     id: driverDuEgetGårdsbruk,
     type: "envalg",
@@ -116,7 +116,7 @@ export type LeggTilNæringsvirksomhetSvar = {
   [hvorMangeTimerJobbetPerUkeNå]?: number;
 };
 
-export const leggTilNæringsvirksomhetSpørsmål: KomponentType[] = [
+export const leggTilNæringsvirksomhetKomponenter: KomponentType[] = [
   {
     id: organisasjonsnummer,
     type: "kortTekst",
@@ -148,7 +148,7 @@ export type LeggTilGårdsbrukSvar = {
   [hvordanHarDuBeregnetAntallArbeidstimerTotalt]?: string;
 };
 
-export const leggTilGårdsbrukSpørsmål: KomponentType[] = [
+export const leggTilGårdsbrukKomponenter: KomponentType[] = [
   {
     id: organisasjonsnummer,
     type: "kortTekst",

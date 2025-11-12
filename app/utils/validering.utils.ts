@@ -1,35 +1,35 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import { $RefinementCtx } from "zod/v4/core";
 
 export function valider(
-  spørsmål: KomponentType,
+  komponent: KomponentType,
   svar: string | string[] | undefined,
   synlig: boolean,
   context: $RefinementCtx<any>
 ) {
   const erInformasjonKomponent =
-    spørsmål.type === "lesMer" ||
-    spørsmål.type === "varselmelding" ||
-    spørsmål.type === "dokumentasjonskravindikator" ||
-    spørsmål.type === "registeropplysning" ||
-    spørsmål.type === "forklarendeTekst";
+    komponent.type === "lesMer" ||
+    komponent.type === "varselmelding" ||
+    komponent.type === "dokumentasjonskravindikator" ||
+    komponent.type === "registeropplysning" ||
+    komponent.type === "forklarendeTekst";
 
   if (erInformasjonKomponent || !synlig) {
     return;
   }
 
-  if (!svar && !spørsmål.optional) {
+  if (!svar && !komponent.optional) {
     context.addIssue({
-      path: [spørsmål.id],
+      path: [komponent.id],
       code: "custom",
       message: "Du må svare på dette spørsmålet",
     });
   }
 
-  if (svar && spørsmål.type === "tall") {
+  if (svar && komponent.type === "tall") {
     if (Number.isNaN(+(svar as string).replace(",", "."))) {
       context.addIssue({
-        path: [spørsmål.id],
+        path: [komponent.id],
         code: "custom",
         message: "Svaret må være et tall",
       });
@@ -37,7 +37,7 @@ export function valider(
 
     if ((svar as string).startsWith("-")) {
       context.addIssue({
-        path: [spørsmål.id],
+        path: [komponent.id],
         code: "custom",
         message: "Tallet kan ikke være negativt",
       });

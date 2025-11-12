@@ -15,7 +15,7 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 
 interface IProps {
   barn: BarnFraPdl;
@@ -73,9 +73,9 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
           }
 
           return (
-            <Spørsmål
+            <Komponent
               key={spørsmål.id}
-              spørsmål={spørsmål}
+              props={spørsmål}
               formScope={form.scope(spørsmål.id as keyof BarnFraPdl)}
             />
           );

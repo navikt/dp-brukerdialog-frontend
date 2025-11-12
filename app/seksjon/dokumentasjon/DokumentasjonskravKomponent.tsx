@@ -12,7 +12,7 @@ import {
 import { useForm } from "@rvf/react-router";
 import { useState } from "react";
 import { Form, useParams } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   dokumentasjonskravKomponenter,
@@ -33,6 +33,7 @@ export type Dokumentasjonskrav = {
   id: string;
   spørsmålId: string;
   tittel?: string;
+  seksjonId: string;
   type: DokumentasjonskravType;
   gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
@@ -55,12 +56,12 @@ export type GyldigDokumentkravSvar =
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
-  seksjon: any;
+  alleDokumentasjonskrav: Dokumentasjonskrav[];
 }
 
 export function DokumentasjonskravKomponent({
   dokumentasjonskrav,
-  seksjon,
+  alleDokumentasjonskrav,
 }: DokumentasjonskravProps) {
   const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
@@ -144,27 +145,20 @@ export function DokumentasjonskravKomponent({
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   async function lagreDokumentasjonskravSvar(svar: Dokumentasjonskrav) {
-    const dokumentasjonskrav: Dokumentasjonskrav[] = seksjon.dokumentasjonskrav;
-    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
+    const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
       krav.id === svar.id ? svar : krav
     );
 
-    const seksjonsdata = {
-      ...seksjon,
-      dokumentasjonskrav: oppdatertDokumentasjonskrav,
-    };
-
     const formData = new FormData();
-    formData.append("seksjonsdata", JSON.stringify(seksjonsdata));
+    formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
 
     const response = await fetch(
-      `/api/lagre-dokumentasjonskrav/${soknadId}/${seksjon.seksjonId}/`,
+      `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
       {
-        method: "POST",
+        method: "PUT",
         body: formData,
       }
     );
-
     if (!response.ok) {
       console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
     }
@@ -189,9 +183,9 @@ export function DokumentasjonskravKomponent({
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof DokumentasjonskravSvar)}
                 />
               );

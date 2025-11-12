@@ -3,23 +3,23 @@ import { FormScope, useField } from "@rvf/react-router";
 import classNames from "classnames";
 import { formatISO } from "date-fns";
 import { useState } from "react";
-import { PeriodeSpørsmål } from "./spørsmål.types";
+import { PeriodeSpørsmål } from "../Komponent.types";
 
-import styles from "./spørsmål.module.css";
+import styles from "./Periode.module.css";
 
 interface IProps {
-  spørsmål: PeriodeSpørsmål;
+  props: PeriodeSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
+export function Periode({ props, formScope }: IProps) {
   const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const { datepickerProps, inputProps } = useDatepicker({
     defaultSelected: field.value() ? new Date(field.value() as string) : undefined,
-    fromDate: spørsmål.fraOgMed ? new Date(spørsmål.fraOgMed.toString()) : undefined,
-    toDate: spørsmål.tilOgMed ? new Date(spørsmål.tilOgMed.toString()) : undefined,
+    fromDate: props.fraOgMed ? new Date(props.fraOgMed.toString()) : undefined,
+    toDate: props.tilOgMed ? new Date(props.tilOgMed.toString()) : undefined,
     onDateChange: (date) => {
       field.setValue(date ? formatISO(date, { representation: "date" }) : undefined);
     },
@@ -33,16 +33,14 @@ export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
     },
   });
 
-  const periodeFraSpørsmal = spørsmål.type === "periodeFra";
-  const periodeTilSpørsmal = spørsmål.type === "periodeTil";
+  const periodeFraSpørsmal = props.type === "periodeFra";
+  const periodeTilSpørsmal = props.type === "periodeTil";
 
   return (
     <VStack gap="4">
-      {spørsmål.type === "periodeFra" && (
-        <BodyShort weight="semibold">{spørsmål.periodeLabel}</BodyShort>
-      )}
-      {spørsmål.type === "periodeFra" && spørsmål.description && (
-        <BodyShort>{spørsmål.description}</BodyShort>
+      {props.type === "periodeFra" && <BodyShort weight="semibold">{props.periodeLabel}</BodyShort>}
+      {props.type === "periodeFra" && props.description && (
+        <BodyShort>{props.description}</BodyShort>
       )}
       <VStack
         className={classNames(styles.periodeVenstreBorder, {
@@ -53,13 +51,11 @@ export function Periode({ spørsmål, formScope }: Readonly<IProps>) {
         <DatePicker {...datepickerProps}>
           <DatePicker.Input
             {...inputProps}
-            key={spørsmål.id}
+            key={props.id}
             placeholder="DD.MM.ÅÅÅÅ"
             error={error || field.error()}
             label={
-              periodeTilSpørsmal && spørsmål.optional
-                ? `${spørsmål.label} (valgfritt)`
-                : spørsmål.label
+              periodeTilSpørsmal && props.optional ? `${props.label} (valgfritt)` : props.label
             }
           />
         </DatePicker>

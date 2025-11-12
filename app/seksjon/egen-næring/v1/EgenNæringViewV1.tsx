@@ -7,20 +7,20 @@ import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
   egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukSpørsmål,
+  egenNæringEgetGårdsbrukKomponenter,
   EgenNæringResponse,
   EgenNæringSvar,
   erTilbakenavigering,
   Gårdsbruk,
-  leggTilGårdsbrukSpørsmål,
-  leggTilNæringsvirksomhetSpørsmål,
+  leggTilGårdsbrukKomponenter,
+  leggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
   seksjonsvar,
   pdfGrunnlag,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukDetaljer";
@@ -97,10 +97,12 @@ export function EgenNæringViewV1() {
       spørsmål: [
         ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetKomponenter, form.transient.value()),
         ...næringsvirksomheter.map((enVirksomhet) =>
-          lagSeksjonPayload(leggTilNæringsvirksomhetSpørsmål, enVirksomhet)
+          lagSeksjonPayload(leggTilNæringsvirksomhetKomponenter, enVirksomhet)
         ),
-        ...lagSeksjonPayload(egenNæringEgetGårdsbrukSpørsmål, form.transient.value()),
-        ...gårdsbruk.map((etGårdsbruk) => lagSeksjonPayload(leggTilGårdsbrukSpørsmål, etGårdsbruk)),
+        ...lagSeksjonPayload(egenNæringEgetGårdsbrukKomponenter, form.transient.value()),
+        ...gårdsbruk.map((etGårdsbruk) =>
+          lagSeksjonPayload(leggTilGårdsbrukKomponenter, etGårdsbruk)
+        ),
       ],
     };
 
@@ -170,15 +172,15 @@ export function EgenNæringViewV1() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.versjon} />
-              {egenNæringEgenNæringsvirksomhetKomponenter.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              {egenNæringEgenNæringsvirksomhetKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
                 }
                 return (
-                  <Spørsmål
-                    key={spørsmål.id}
-                    spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof EgenNæringSvar)}
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof EgenNæringSvar)}
                   />
                 );
               })}
@@ -214,15 +216,15 @@ export function EgenNæringViewV1() {
                 </>
               )}
 
-              {egenNæringEgetGårdsbrukSpørsmål.map((spørsmål) => {
+              {egenNæringEgetGårdsbrukKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
-                  <Spørsmål
+                  <Komponent
                     key={spørsmål.id}
-                    spørsmål={spørsmål}
+                    props={spørsmål}
                     formScope={form.scope(spørsmål.id as keyof EgenNæringSvar)}
                   />
                 );

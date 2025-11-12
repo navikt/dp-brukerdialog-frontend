@@ -1,8 +1,4 @@
-import {
-  FlervalgSpørsmål,
-  KomponentType,
-  SpørsmålBase,
-} from "~/components/spørsmål/spørsmål.types";
+import { FlervalgSpørsmål, KomponentType, SpørsmålBase } from "~/components/Komponent.types";
 import { formaterDatoSvar } from "./formatering.utils";
 import { FLERE_LAND, OFTE_VALGTE_LAND } from "./land.utils";
 
@@ -22,7 +18,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
       });
 
       if (
-        (svar?.[1] !== undefined && (svar?.[1] !== "" && !(spørsmål as SpørsmålBase).optional)) ||
+        (svar?.[1] !== undefined && svar?.[1] !== "" && !(spørsmål as SpørsmålBase).optional) ||
         (!!spørsmål.visHvis && spørsmål.visHvis(alleSvar)) ||
         (svar === undefined && !spørsmål.visHvis)
       ) {

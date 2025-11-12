@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { erTilbakenavigering } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+import { erTilbakenavigering } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
 import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { normaliserFormData } from "~/utils/action.utils.server";

@@ -3,7 +3,7 @@ import { Alert, Button, HStack, List, VStack } from "@navikt/ds-react";
 import { ListItem } from "@navikt/ds-react/List";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
@@ -34,15 +34,6 @@ export function ReellArbeidssøkerViewV1() {
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
-  const genererPdfGrunnlag = () => {
-    const pdfPayload = {
-      navn: seksjonnavn,
-      spørsmål: [...lagSeksjonPayload(reellArbeidssøkerKomponenter, form.transient.value())],
-    };
-
-    return JSON.stringify(pdfPayload);
-  };
-
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(erTilbakenavigering, true);
@@ -54,6 +45,14 @@ export function ReellArbeidssøkerViewV1() {
     form.submit();
   }
 
+  function genererPdfGrunnlag() {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [...lagSeksjonPayload(reellArbeidssøkerKomponenter, form.transient.value())],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
   return (
     <div className="innhold">
       <h2>{seksjonnavn}</h2>
@@ -61,16 +60,16 @@ export function ReellArbeidssøkerViewV1() {
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
-            {reellArbeidssøkerKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {reellArbeidssøkerKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
-                  key={spørsmål.id}
-                  spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSvar)}
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
                 />
               );
             })}

@@ -1,14 +1,14 @@
 import { TextField } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import { TallSpørsmål } from "~/components/spørsmål/spørsmål.types";
 import parse from "html-react-parser";
+import { TallSpørsmål } from "~/components/Komponent.types";
 
 interface IProps {
-  spørsmål: TallSpørsmål;
+  props: TallSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
 }
 
-export function Tall({ spørsmål, formScope }: Readonly<IProps>) {
+export function Tall({ props, formScope }: IProps) {
   const field = useField(formScope);
 
   return (
@@ -16,9 +16,9 @@ export function Tall({ spørsmål, formScope }: Readonly<IProps>) {
       {...field.getInputProps()}
       inputMode="decimal"
       defaultValue={(field.value() as string) ?? undefined}
-      label={spørsmål.label}
-      description={parse(spørsmål?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
-      key={spørsmål.id}
+      label={props.label}
+      description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      key={props.id}
       onInput={(event) => {
         field.setValue(event.currentTarget.value?.replace(".", ","));
       }}

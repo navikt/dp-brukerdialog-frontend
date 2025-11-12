@@ -3,7 +3,7 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { z } from "zod";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
@@ -24,9 +24,10 @@ import {
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
   spørsmålId: string;
+  seksjonId: string;
 }
 
-export function BarnModal({ ref, spørsmålId }: IProps) {
+export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -79,6 +80,7 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
 
     const nyttDokumentkrav: Dokumentasjonskrav = {
       id: dokumentasjonskravId,
+      seksjonId: seksjonId,
       spørsmålId: spørsmålId,
       tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
       type: DokumentasjonskravType.Barn,
@@ -142,9 +144,9 @@ export function BarnModal({ ref, spørsmålId }: IProps) {
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
                 />
               );
