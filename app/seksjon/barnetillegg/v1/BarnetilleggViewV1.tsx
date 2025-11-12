@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-ico
 import { Alert, BodyLong, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
@@ -39,6 +39,7 @@ export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { state } = useNavigation();
   const [varsel, setVarsel] = useState<BarnLagtManueltVarsel | undefined>(undefined);
   const {
     barnFraPdl,
@@ -215,6 +216,7 @@ export function BarnetilleggViewV1() {
             type="button"
             icon={<ArrowLeftIcon aria-hidden />}
             onClick={handleTilbakenavigering}
+            loading={state === "submitting" || state === "loading"}
           >
             Forrige steg
           </Button>
@@ -224,6 +226,7 @@ export function BarnetilleggViewV1() {
             onClick={handleSubmit}
             iconPosition="right"
             icon={<ArrowRightIcon aria-hidden />}
+            loading={state === "submitting" || state === "loading"}
           >
             Neste steg
           </Button>

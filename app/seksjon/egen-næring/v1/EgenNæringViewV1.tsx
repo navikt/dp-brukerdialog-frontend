@@ -1,6 +1,6 @@
 import { useForm } from "@rvf/react-router";
 import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { action, loader } from "~/routes/$soknadId.egen-naring";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -33,6 +33,7 @@ export function EgenNæringViewV1() {
   const seksjonnavn = "Egen næring";
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
+  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const {
@@ -270,8 +271,9 @@ export function EgenNæringViewV1() {
               <Button
                 variant="secondary"
                 type="button"
-                icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+                icon={<ArrowLeftIcon aria-hidden />}
                 onClick={handleTilbakenavigering}
+                loading={state === "submitting" || state === "loading"}
               >
                 Forrige steg
               </Button>
@@ -280,7 +282,8 @@ export function EgenNæringViewV1() {
                 variant="primary"
                 onClick={handleSubmit}
                 iconPosition="right"
-                icon={<ArrowRightIcon />}
+                icon={<ArrowRightIcon aria-hidden />}
+                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>

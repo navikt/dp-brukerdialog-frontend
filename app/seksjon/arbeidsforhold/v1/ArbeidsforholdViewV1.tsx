@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icon
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
@@ -39,6 +39,7 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
   const ref = useRef<HTMLDialogElement>(null);
+  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [visManglerArbeidsforholdFeilmelding, setVisManglerArbeidsforholdFeilmelding] =
@@ -224,8 +225,9 @@ export function ArbeidsforholdViewV1() {
               <Button
                 variant="secondary"
                 type="button"
-                icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+                icon={<ArrowLeftIcon aria-hidden />}
                 onClick={handleTilbakenavigering}
+                loading={state === "submitting" || state === "loading"}
               >
                 Forrige steg
               </Button>
@@ -233,8 +235,9 @@ export function ArbeidsforholdViewV1() {
                 variant="primary"
                 type="button"
                 iconPosition="right"
-                icon={<ArrowRightIcon />}
+                icon={<ArrowRightIcon aria-hidden />}
                 onClick={handleSubmit}
+                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>

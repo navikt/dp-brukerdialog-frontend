@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -42,6 +42,7 @@ export function AnnenPengestøtteViewV1() {
   const seksjonnavn = "Annen pengestøtte";
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
+  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [
@@ -310,8 +311,9 @@ export function AnnenPengestøtteViewV1() {
             <Button
               variant="secondary"
               type="button"
-              icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+              icon={<ArrowLeftIcon aria-hidden />}
               onClick={handleTilbakenavigering}
+              loading={state === "submitting" || state === "loading"}
             >
               Forrige steg
             </Button>
@@ -319,8 +321,9 @@ export function AnnenPengestøtteViewV1() {
               variant="primary"
               type="button"
               iconPosition="right"
-              icon={<ArrowRightIcon />}
+              icon={<ArrowRightIcon aria-hidden />}
               onClick={handleSubmit}
+              loading={state === "submitting" || state === "loading"}
             >
               Neste steg
             </Button>

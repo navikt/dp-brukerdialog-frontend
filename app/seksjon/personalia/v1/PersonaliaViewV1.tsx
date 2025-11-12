@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, BodyShort, Button, HStack, Label, VStack } from "@navikt/ds-react";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { action, loader } from "~/routes/$soknadId.personalia";
 import { Komponent } from "~/components/Komponent";
 import { useForm } from "@rvf/react-router";
@@ -29,6 +29,7 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
+  const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
@@ -188,9 +189,10 @@ export function PersonaliaViewV1() {
               <Button
                 variant="primary"
                 type="button"
+                loading={state === "submitting" || state === "loading"}
                 onClick={handleSubmit}
                 iconPosition="right"
-                icon={<ArrowRightIcon />}
+                icon={<ArrowRightIcon aria-hidden />}
               >
                 Neste steg
               </Button>

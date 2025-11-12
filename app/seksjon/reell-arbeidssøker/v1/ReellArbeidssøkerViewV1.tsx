@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, List, VStack } from "@navikt/ds-react";
 import { ListItem } from "@navikt/ds-react/List";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
@@ -19,6 +19,7 @@ export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { state } = useNavigation();
 
   const form = useForm({
     method: "PUT",
@@ -84,8 +85,9 @@ export function ReellArbeidssøkerViewV1() {
               <Button
                 variant="secondary"
                 type="button"
-                icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+                icon={<ArrowLeftIcon aria-hidden />}
                 onClick={handleTilbakenavigering}
+                loading={state === "submitting" || state === "loading"}
               >
                 Forrige steg
               </Button>
@@ -94,7 +96,8 @@ export function ReellArbeidssøkerViewV1() {
                 type="button"
                 onClick={handleSubmit}
                 iconPosition="right"
-                icon={<ArrowRightIcon />}
+                icon={<ArrowRightIcon aria-hidden />}
+                loading={state === "submitting" || state === "loading"}
               >
                 Neste steg
               </Button>
