@@ -1,11 +1,12 @@
 import { Alert, BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigation } from "react-router";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
+  const { state } = useNavigation();
 
   if (!loaderData) {
     return null;
@@ -40,7 +41,7 @@ export default function OppsummeringView() {
           })}
           <HStack className="mt-4">
             <form method="POST">
-              <Button>Send søknad</Button>
+              <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
             </form>
           </HStack>
         </VStack>
