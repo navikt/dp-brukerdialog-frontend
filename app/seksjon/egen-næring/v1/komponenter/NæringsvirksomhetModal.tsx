@@ -73,16 +73,16 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
       <Modal.Body>
         <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
-            {leggTilNæringsvirksomhetKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
                 <Komponent
-                  key={spørsmål.id}
-                  props={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof LeggTilNæringsvirksomhetSvar)}
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof LeggTilNæringsvirksomhetSvar)}
                 />
               );
             })}
