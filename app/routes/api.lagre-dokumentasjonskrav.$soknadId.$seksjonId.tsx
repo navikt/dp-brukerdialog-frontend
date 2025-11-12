@@ -1,7 +1,8 @@
-import { parseFormData } from "@remix-run/form-data-parser";
+import { parseFormData } from "node_modules/@remix-run/form-data-parser/dist/lib/form-data";
 import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
-import { lagreDokumentasjonskrav } from "~/models/lagre-dokumentasjonskrav.server";
+import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
+import { getEnv } from "~/utils/env.utils";
 
 export async function action({ params, request }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -11,5 +12,17 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const formData = await parseFormData(request);
   const oppdatertDokumentasjonskrav = formData.get("oppdatertDokumentasjonskrav") as string;
 
-  return await lagreDokumentasjonskrav(request, søknadId, seksjonId, oppdatertDokumentasjonskrav);
+  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${søknadId}/${seksjonId}/dokumentasjonskrav`;
+  const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
+
+  return await fetch(url, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${onBehalfOfToken}`,
+      connection: "keep-alive",
+      "Content-Type": "application/json",
+    },
+    body: oppdatertDokumentasjonskrav,
+  });
 }
