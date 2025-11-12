@@ -1,29 +1,29 @@
 import { HStack, Radio, RadioGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
-import { EnvalgSpørsmål } from "./spørsmål.types";
+import { EnvalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
-  spørsmål: EnvalgSpørsmål;
+  props: EnvalgSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
   horisontal?: boolean;
 }
 
-export function Envalg({ spørsmål, formScope, horisontal }: Readonly<IProps>) {
+export function Envalg({ props, formScope, horisontal }: IProps) {
   const field = useField(formScope);
 
   return (
     <RadioGroup
       {...field.getInputProps()}
-      legend={spørsmål.label}
-      key={spørsmål.id}
+      legend={props.label}
+      key={props.id}
       defaultValue={(field.value() as string) ?? undefined}
-      description={parse(spørsmål?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
     >
       {horisontal && (
         <HStack gap="6">
-          {spørsmål.options?.map((opt) => (
+          {props.options?.map((opt) => (
             <Radio key={opt.value} value={opt.value}>
               {opt.label}
             </Radio>
@@ -31,7 +31,7 @@ export function Envalg({ spørsmål, formScope, horisontal }: Readonly<IProps>) 
         </HStack>
       )}
       {!horisontal &&
-        spørsmål.options?.map((opt) => (
+        props.options?.map((opt) => (
           <Radio key={opt.value} value={opt.value}>
             {opt.label}
           </Radio>

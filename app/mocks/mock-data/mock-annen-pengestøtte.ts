@@ -1,4 +1,4 @@
-import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import {
   foreldrepengerEllerSvangerskapspenger,
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,

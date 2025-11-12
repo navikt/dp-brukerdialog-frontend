@@ -1,5 +1,5 @@
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene =

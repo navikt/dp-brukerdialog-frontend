@@ -4,7 +4,7 @@ import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
-import { SoknadIkon } from "~/components/soknadIkon";
+import { SøknadIkon } from "~/components/SøknadIkon";
 import { useSanity } from "~/hooks/useSanity";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { SanityReadMore } from "~/sanity/components/SanityReadMore";
@@ -52,7 +52,7 @@ export default function OpprettSoknadRoute() {
   return (
     <main id="maincontent" tabIndex={-1}>
       <div className="soknad-header">
-        <SoknadIkon />
+        <SøknadIkon />
         <h1>Søknad om dagpenger</h1>
       </div>
 

@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, Outlet, redirect, useLoaderData, useParams } from "react-router";
-import { SoknadIkon } from "~/components/soknadIkon";
+import { SøknadIkon } from "~/components/SøknadIkon";
 import { FormProgress } from "@navikt/ds-react";
 import invariant from "tiny-invariant";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
@@ -90,7 +90,7 @@ export default function SoknadIdIndex() {
   return (
     <main id="maincontent" tabIndex={-1}>
       <div className="soknad-header">
-        <SoknadIkon />
+        <SøknadIkon />
         <h1>Søknad om dagpenger</h1>
       </div>
       <div className="innhold">
@@ -104,7 +104,7 @@ export default function SoknadIdIndex() {
         </FormProgress>
       </div>
       <Outlet />
-      <SøknadFooter soknadId={soknadId} />
+      <SøknadFooter søknadId={soknadId} />
     </main>
   );
 }

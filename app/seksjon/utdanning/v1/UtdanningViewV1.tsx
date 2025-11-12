@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.utdanning";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
@@ -63,15 +63,15 @@ export function UtdanningViewV1() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.versjon} />
-              {utdanningKomponenter.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              {utdanningKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
                 }
                 return (
-                  <Spørsmål
-                    key={spørsmål.id}
-                    spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof UtdanningSvar)}
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof UtdanningSvar)}
                   />
                 );
               })}

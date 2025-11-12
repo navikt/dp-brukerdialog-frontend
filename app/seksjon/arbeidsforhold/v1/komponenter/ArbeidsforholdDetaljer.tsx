@@ -3,7 +3,7 @@ import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import {
   Arbeidsforhold,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdModalKomponenter,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   navnetPåBedriften,
   varighetPåArbeidsforholdetFraOgMedDato,
@@ -18,7 +18,7 @@ interface IProps {
   arbeidsforholdIndex: number;
 }
 
-export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: Readonly<IProps>) {
+export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: IProps) {
   const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, setModalData } =
     useArbeidsforholdContext();
 
@@ -44,7 +44,7 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: 
           <br />
           <span>
             {finnOptionLabel(
-              arbeidsforholdModalSpørsmål,
+              arbeidsforholdModalKomponenter,
               hvordanHarDetteArbeidsforholdetEndretSeg,
               arbeidsforhold[hvordanHarDetteArbeidsforholdetEndretSeg]!
             )}

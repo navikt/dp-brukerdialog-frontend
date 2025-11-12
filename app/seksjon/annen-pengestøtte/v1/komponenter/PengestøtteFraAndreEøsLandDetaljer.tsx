@@ -6,7 +6,7 @@ import {
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
-  pengestøtteFraAndreEøsLandModalSpørsmål,
+  pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
@@ -25,7 +25,7 @@ interface IProps {
 export function PengestøtteFraAndreEøsLandDetaljer({
   pengestøtteFraAndreEøsLandSvar,
   pengestøtteFraAndreEøsLandSvarIndex,
-}: Readonly<IProps>) {
+}: IProps) {
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,
@@ -42,7 +42,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
       <h3 style={{ marginTop: "0" }}>
         {finnOptionLabel(
-          pengestøtteFraAndreEøsLandModalSpørsmål,
+          pengestøtteFraAndreEøsLandModalKomponenter,
           hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
           pengestøtteFraAndreEøsLandSvar[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]!
         )}

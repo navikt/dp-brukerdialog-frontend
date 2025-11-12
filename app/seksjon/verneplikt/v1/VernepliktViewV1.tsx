@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
@@ -63,16 +63,16 @@ export default function VernepliktViewV1() {
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              {vernepliktKomponenter.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              {vernepliktKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
-                  <Spørsmål
-                    key={spørsmål.id}
-                    spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof VernepliktSvar)}
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof VernepliktSvar)}
                   />
                 );
               })}

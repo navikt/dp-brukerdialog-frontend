@@ -3,7 +3,7 @@ import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
@@ -12,8 +12,8 @@ import {
   Arbeidsforhold,
   arbeidsforholdForklarendeTekstKomponenter,
   arbeidsforholdKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  arbeidsforholdModalKomponenter,
   ArbeidsforholdResponse,
   ArbeidsforholdSvar,
   erTilbakenavigering,
@@ -95,7 +95,7 @@ export function ArbeidsforholdViewV1() {
         ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
         ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
           lagSeksjonPayload(
-            arbeidsforholdModalSpørsmål
+            arbeidsforholdModalKomponenter
               .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
               .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
               .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
@@ -104,7 +104,7 @@ export function ArbeidsforholdViewV1() {
               .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
               .concat(arbeidsforholdModalJegErPermittertKomponenter)
               .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-              .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål),
+              .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter),
             etArbeidsforhold
           )
         ),
@@ -150,16 +150,16 @@ export function ArbeidsforholdViewV1() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.versjon} />
-              {arbeidsforholdKomponenter.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              {arbeidsforholdKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
-                  <Spørsmål
-                    key={spørsmål.id}
-                    spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof ArbeidsforholdSvar)}
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                   />
                 );
               })}
@@ -170,16 +170,16 @@ export function ArbeidsforholdViewV1() {
                   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
                 ) && (
                   <VStack gap="space-16">
-                    {arbeidsforholdForklarendeTekstKomponenter.map((spørsmål) => {
-                      if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                    {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+                      if (komponent.visHvis && !komponent.visHvis(form.value())) {
                         return null;
                       }
 
                       return (
-                        <Spørsmål
-                          key={spørsmål.id}
-                          spørsmål={spørsmål}
-                          formScope={form.scope(spørsmål.id as keyof ArbeidsforholdSvar)}
+                        <Komponent
+                          key={komponent.id}
+                          props={komponent}
+                          formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                         />
                       );
                     })}

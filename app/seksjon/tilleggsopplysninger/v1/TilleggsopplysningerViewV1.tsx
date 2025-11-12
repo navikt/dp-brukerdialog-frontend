@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
@@ -62,16 +62,16 @@ export function TilleggsopplysningerViewV1() {
         <Form {...form.getFormProps()}>
           <VStack gap="8">
             <input type="hidden" name="versjon" value={loaderData.versjon} />
-            {tilleggsopplysningerKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {tilleggsopplysningerKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
-                  key={spørsmål.id}
-                  spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof TilleggsopplysningerSvar)}
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof TilleggsopplysningerSvar)}
                 />
               );
             })}
