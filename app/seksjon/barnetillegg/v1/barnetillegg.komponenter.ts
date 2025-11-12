@@ -1,10 +1,10 @@
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import {
   ArbeidsforholdSvar,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDuJobbet,
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";

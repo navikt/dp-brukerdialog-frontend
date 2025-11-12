@@ -2,21 +2,21 @@ import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import {
-  leggTilNæringsvirksomhetSpørsmål,
-  LeggTilNæringsvirksomhetSvar,
-  Næringsvirksomhet,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
-import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
+import { Komponent } from "~/components/Komponent";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import {
+  leggTilNæringsvirksomhetKomponenter,
+  LeggTilNæringsvirksomhetSvar,
+  Næringsvirksomhet,
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
-export function NæringsvirksomhetModal({ ref }: Readonly<IProps>) {
+export function NæringsvirksomhetModal({ ref }: IProps) {
   const {
     næringsvirksomheter,
     setNæringsvirksomheter,
@@ -73,16 +73,16 @@ export function NæringsvirksomhetModal({ ref }: Readonly<IProps>) {
       <Modal.Body>
         <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
-            {leggTilNæringsvirksomhetSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
-                  key={spørsmål.id}
-                  spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof LeggTilNæringsvirksomhetSvar)}
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof LeggTilNæringsvirksomhetSvar)}
                 />
               );
             })}

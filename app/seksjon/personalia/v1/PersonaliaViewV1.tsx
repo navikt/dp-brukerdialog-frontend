@@ -2,7 +2,7 @@ import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, BodyShort, Button, HStack, Label, VStack } from "@navikt/ds-react";
 import { Form, useActionData, useLoaderData } from "react-router";
 import { action, loader } from "~/routes/$soknadId.personalia";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useForm } from "@rvf/react-router";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
@@ -149,16 +149,16 @@ export function PersonaliaViewV1() {
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.versjon} />
             <VStack gap="8">
-              {personaliaSpørsmål.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              {personaliaSpørsmål.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
-                  <Spørsmål
-                    key={spørsmål.id}
-                    spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof PersonaliaSvar)}
                   />
                 );
               })}
@@ -169,9 +169,9 @@ export function PersonaliaViewV1() {
                 }
 
                 return (
-                  <Spørsmål
+                  <Komponent
                     key={spørsmål.id}
-                    spørsmål={spørsmål}
+                    props={spørsmål}
                     formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
                   />
                 );

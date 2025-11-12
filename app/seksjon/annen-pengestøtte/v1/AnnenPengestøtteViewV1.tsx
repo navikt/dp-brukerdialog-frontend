@@ -2,36 +2,36 @@ import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { Komponent } from "~/components/Komponent";
+import { KomponentType } from "~/components/Komponent.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
 import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeModalSpørsmål,
+  pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
-  pengestøtteFraNorgeSpørsmål,
+  pengestøtteFraNorgeKomponenter,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import {
   AnnenPengestøtteResponse,
-  annenPengestøtteSpørsmål,
+  annenPengestøtteKomponenter,
   AnnenPengestøtteSvar,
   erTilbakenavigering,
   pdfGrunnlag,
   seksjonsvar,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { useEffect, useRef, useState } from "react";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalSpørsmål,
+  pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
-  pengestøtteFraAndreEøsLandSpørsmål,
-} from "./annen-pengestøtte-eøs.spørsmål";
+  pengestøtteFraAndreEøsLandKomponenter,
+} from "./annen-pengestøtte-eøs.komponenter";
 import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandDetaljer";
 import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
@@ -75,7 +75,7 @@ export function AnnenPengestøtteViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteSpørsmål);
+  useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteKomponenter);
 
   useEffect(() => {
     if (pengestøtteFraAndreEøsLandModalData) {
@@ -135,16 +135,16 @@ export function AnnenPengestøtteViewV1() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
-        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandKomponenter, form.transient.value()),
         ...pengestøtteFraAndreEøsLand.map((enPengestøtte) =>
-          lagSeksjonPayload(pengestøtteFraAndreEøsLandModalSpørsmål, enPengestøtte)
+          lagSeksjonPayload(pengestøtteFraAndreEøsLandModalKomponenter, enPengestøtte)
         ),
-        ...lagSeksjonPayload(pengestøtteFraNorgeSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(pengestøtteFraNorgeKomponenter, form.transient.value()),
         ...pengestøtteFraNorge.map((enPengestøtte) =>
-          lagSeksjonPayload(pengestøtteFraNorgeModalSpørsmål, enPengestøtte)
+          lagSeksjonPayload(pengestøtteFraNorgeModalKomponenter, enPengestøtte)
         ),
         ...lagSeksjonPayload(
-          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål,
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
           form.transient.value()
         ),
       ],
@@ -197,16 +197,16 @@ export function AnnenPengestøtteViewV1() {
     }
   }
 
-  const render = (spørsmål: KomponentType) => {
-    if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+  const render = (komponent: KomponentType) => {
+    if (komponent.visHvis && !komponent.visHvis(form.value())) {
       return null;
     }
 
     return (
-      <Spørsmål
-        key={spørsmål.id}
-        spørsmål={spørsmål}
-        formScope={form.scope(spørsmål.id as keyof AnnenPengestøtteSvar)}
+      <Komponent
+        key={komponent.id}
+        props={komponent}
+        formScope={form.scope(komponent.id as keyof AnnenPengestøtteSvar)}
       />
     );
   };
@@ -219,8 +219,8 @@ export function AnnenPengestøtteViewV1() {
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
-            {pengestøtteFraAndreEøsLandSpørsmål.map((spørsmål) => {
-              return render(spørsmål);
+            {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {
+              return render(komponent);
             })}
 
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
@@ -262,7 +262,7 @@ export function AnnenPengestøtteViewV1() {
             )}
 
             <h3>Pengestøtte fra Norge</h3>
-            {pengestøtteFraNorgeSpørsmål.map((spørsmål) => render(spørsmål))}
+            {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
 
             {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
@@ -296,8 +296,8 @@ export function AnnenPengestøtteViewV1() {
               </VStack>
             )}
 
-            {fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverSpørsmål.map(
-              (spørsmål) => render(spørsmål)
+            {fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter.map(
+              (komponent) => render(komponent)
             )}
           </VStack>
           {actionData && (

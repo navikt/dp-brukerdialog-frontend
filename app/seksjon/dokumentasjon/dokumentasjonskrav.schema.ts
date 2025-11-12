@@ -2,17 +2,17 @@ import { z } from "zod";
 
 import { valider } from "~/utils/validering.utils";
 import {
-  dokumentasjonskravSpørsmål,
+  dokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
-  DOKUMENTKRAV_SVAR_SEND_NAA,
-  DOKUMENTKRAV_SVAR_SENDER_IKKE,
-  DOKUMENTKRAV_SVAR_SENDER_SENERE,
-  DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+  dokumentkravSvarSendNå,
+  dokumentkravSvarSenderIkke,
+  dokumentkravSvarSenderSenere,
+  dokumentkravSvarSendtTidligere,
   hvaErGrunnenTilAtDuIkkeSenderDokumentet,
   hvaErGrunnenTilAtDuSenderDokumentetSenere,
   nårSendteDuDokumentet,
   velgHvaDuVilGjøre,
-} from "./dokumentasjonskrav.spørsmål";
+} from "./dokumentasjonskrav.komponenter";
 
 const kortTekstMaksLengde = 200;
 
@@ -20,10 +20,10 @@ export const dokumentasjonskravSchema = z
   .object({
     [velgHvaDuVilGjøre]: z
       .enum([
-        DOKUMENTKRAV_SVAR_SEND_NAA,
-        DOKUMENTKRAV_SVAR_SENDER_IKKE,
-        DOKUMENTKRAV_SVAR_SENDER_SENERE,
-        DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+        dokumentkravSvarSendNå,
+        dokumentkravSvarSenderIkke,
+        dokumentkravSvarSenderSenere,
+        dokumentkravSvarSendtTidligere,
       ])
       .optional(),
     [hvaErGrunnenTilAtDuSenderDokumentetSenere]: z
@@ -40,7 +40,7 @@ export const dokumentasjonskravSchema = z
       .optional(),
   })
   .superRefine((data, context) => {
-    dokumentasjonskravSpørsmål.forEach((spørsmål) => {
+    dokumentasjonskravKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof DokumentasjonskravSvar];
       valider(spørsmål, svar, synlig, context);

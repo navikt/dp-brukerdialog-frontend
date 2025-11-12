@@ -1,15 +1,13 @@
 import { FormSummary } from "@navikt/ds-react";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
-export default function OppsummeringsSvar({
-  spørsmål,
-  svar,
-}: {
+interface IProps {
   spørsmål: KomponentType;
   svar: string | string[];
-}) {
+}
+export default function OppsummeringsSvar({ spørsmål, svar }: IProps) {
   if (svar === "" || svar === undefined || !spørsmål) {
     return <FormSummary.Value>Ubesvart</FormSummary.Value>;
   }
@@ -18,6 +16,16 @@ export default function OppsummeringsSvar({
     case "kortTekst":
       return <FormSummary.Value>{svar}</FormSummary.Value>;
     case "langTekst":
+      return <FormSummary.Value>{svar}</FormSummary.Value>;
+    case "land":
+      return <FormSummary.Value>{finnLandnavnMedLocale(svar as string)}</FormSummary.Value>;
+    case "dato":
+      return <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>;
+    case "periodeFra":
+      return <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>;
+    case "periodeTil":
+      return <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>;
+    case "tall":
       return <FormSummary.Value>{svar}</FormSummary.Value>;
     case "envalg":
       return (
@@ -35,18 +43,6 @@ export default function OppsummeringsSvar({
             .join(", ")}
         </FormSummary.Value>
       );
-    case "land":
-      return <FormSummary.Value>{finnLandnavnMedLocale(svar as string)}</FormSummary.Value>;
-    case "dato":
-      return (
-        <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>
-      );
-    case "periodeFra":
-      return <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>;
-    case "periodeTil":
-      return <FormSummary.Value>{formaterNorskDato(new Date(svar as string))}</FormSummary.Value>;
-    case "tall":
-      return <FormSummary.Value>{svar}</FormSummary.Value>;
     default:
       return <>Ukjent spørsmålstype</>;
   }

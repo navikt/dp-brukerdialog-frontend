@@ -12,21 +12,21 @@ import {
 import { useForm } from "@rvf/react-router";
 import { useState } from "react";
 import { Form, useParams } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import {
-  dokumentasjonskravSpørsmål,
+  dokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
-  DOKUMENTKRAV_SVAR_SEND_NAA,
-  DOKUMENTKRAV_SVAR_SENDER_IKKE,
-  DOKUMENTKRAV_SVAR_SENDER_SENERE,
-  DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE,
+  dokumentkravSvarSenderIkke,
+  dokumentkravSvarSenderSenere,
+  dokumentkravSvarSendNå,
+  dokumentkravSvarSendtTidligere,
   hvaErGrunnenTilAtDuIkkeSenderDokumentet,
   hvaErGrunnenTilAtDuSenderDokumentetSenere,
   nårSendteDuDokumentet,
   velgHvaDuVilGjøre,
-} from "./dokumentasjonskrav.spørsmål";
+} from "./dokumentasjonskrav.komponenter";
+import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
 
 export type Dokumentasjonskrav = {
@@ -49,10 +49,10 @@ export enum DokumentasjonskravType {
 }
 
 export type GyldigDokumentkravSvar =
-  | typeof DOKUMENTKRAV_SVAR_SEND_NAA
-  | typeof DOKUMENTKRAV_SVAR_SENDER_SENERE
-  | typeof DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
-  | typeof DOKUMENTKRAV_SVAR_SENDER_IKKE;
+  | typeof dokumentkravSvarSendNå
+  | typeof dokumentkravSvarSenderSenere
+  | typeof dokumentkravSvarSendtTidligere
+  | typeof dokumentkravSvarSenderIkke;
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -104,15 +104,15 @@ export function DokumentasjonskravKomponent({
     defaultValues: {
       [velgHvaDuVilGjøre]: dokumentasjonskrav.svar,
       [hvaErGrunnenTilAtDuSenderDokumentetSenere]:
-        dokumentasjonskrav.svar === DOKUMENTKRAV_SVAR_SENDER_SENERE
+        dokumentasjonskrav.svar === dokumentkravSvarSenderSenere
           ? dokumentasjonskrav.begrunnelse
           : undefined,
       [nårSendteDuDokumentet]:
-        dokumentasjonskrav.svar === DOKUMENTKRAV_SVAR_SENDT_TIDLIGERE
+        dokumentasjonskrav.svar === dokumentkravSvarSendtTidligere
           ? dokumentasjonskrav.begrunnelse
           : undefined,
       [hvaErGrunnenTilAtDuIkkeSenderDokumentet]:
-        dokumentasjonskrav.svar === DOKUMENTKRAV_SVAR_SENDER_IKKE
+        dokumentasjonskrav.svar === dokumentkravSvarSenderIkke
           ? dokumentasjonskrav.begrunnelse
           : undefined,
     },
@@ -133,7 +133,7 @@ export function DokumentasjonskravKomponent({
         svar: dokumentasjonskravSvar[velgHvaDuVilGjøre],
         begrunnelse: begrunnelse,
         filer:
-          dokumentasjonskravSvar[velgHvaDuVilGjøre] === DOKUMENTKRAV_SVAR_SEND_NAA
+          dokumentasjonskravSvar[velgHvaDuVilGjøre] === dokumentkravSvarSendNå
             ? dokumentkravFiler
             : undefined,
       };
@@ -142,7 +142,7 @@ export function DokumentasjonskravKomponent({
     },
   });
 
-  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravSpørsmål);
+  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   async function lagreDokumentasjonskravSvar(svar: Dokumentasjonskrav) {
     const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
@@ -177,22 +177,22 @@ export function DokumentasjonskravKomponent({
               <BodyLong>{hentBeskrivelse(dokumentasjonskrav.type)}</BodyLong>
             )}
 
-            {dokumentasjonskravSpørsmål.map((spørsmål) => {
+            {dokumentasjonskravKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof DokumentasjonskravSvar)}
                 />
               );
             })}
           </VStack>
 
-          {form.value(velgHvaDuVilGjøre) === DOKUMENTKRAV_SVAR_SEND_NAA && (
+          {form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå && (
             <FilOpplasting
               dokumentasjonskrav={dokumentasjonskrav}
               dokumentkravFiler={dokumentkravFiler}

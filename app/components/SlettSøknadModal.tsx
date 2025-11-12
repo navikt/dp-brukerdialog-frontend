@@ -3,11 +3,11 @@ import { BodyLong, Box, Button, HStack, Link, Modal, VStack } from "@navikt/ds-r
 import { useRef } from "react";
 import { useNavigate } from "react-router";
 
-interface SlettSøknadModalProps {
+interface IProps {
   søknadId?: string;
 }
 
-export function SlettSøknadModal({ søknadId }: SlettSøknadModalProps) {
+export function SlettSøknadModal({ søknadId }: IProps) {
   const sletteSøknadSpørsmålModal = useRef<HTMLDialogElement>(null);
   const slettetSøknadBekreftelseModal = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();

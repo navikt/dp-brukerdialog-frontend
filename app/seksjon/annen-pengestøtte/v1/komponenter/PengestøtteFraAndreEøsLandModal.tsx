@@ -2,7 +2,7 @@ import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
@@ -13,9 +13,9 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalSpørsmål,
+  pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import { useEffect } from "react";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
@@ -70,7 +70,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
 
   useNullstillSkjulteFelter<PengestøtteFraAndreEøsLandModalSvar>(
     form,
-    pengestøtteFraAndreEøsLandModalSpørsmål
+    pengestøtteFraAndreEøsLandModalKomponenter
   );
 
   useEffect(() => {
@@ -102,16 +102,16 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
       <Modal.Body>
         <Form {...form.getFormProps()}>
           <VStack gap="4" className="mt-4">
-            {pengestøtteFraAndreEøsLandModalSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {pengestøtteFraAndreEøsLandModalKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
-                  key={spørsmål.id}
-                  spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof PengestøtteFraAndreEøsLandModalSvar)}
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof PengestøtteFraAndreEøsLandModalSvar)}
                 />
               );
             })}

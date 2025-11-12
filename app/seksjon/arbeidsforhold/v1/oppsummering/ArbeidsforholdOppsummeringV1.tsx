@@ -1,23 +1,23 @@
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import {
-  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  arbeidsforholdModalKomponenter,
   ArbeidsforholdResponse,
-  arbeidsforholdSpørsmål,
+  arbeidsforholdKomponenter,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
-import { arbeidsforholdModalJegHarFåttAvskjedSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
-import { arbeidsforholdModalKontraktenErUgåttSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
-import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
-import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
-import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -34,24 +34,24 @@ export default function ArbeidsforholdOppsummeringV1({
   const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
     spørsmålListe.find((spørsmål) => spørsmål.id === id);
 
-  const hvordanHarDuJobbetSpørsmål = finnSpørsmål(arbeidsforholdSpørsmål, hvordanHarDuJobbet);
+  const hvordanHarDuJobbetSpørsmål = finnSpørsmål(arbeidsforholdKomponenter, hvordanHarDuJobbet);
 
   const harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneSpørsmål =
     finnSpørsmål(
-      arbeidsforholdSpørsmål,
+      arbeidsforholdKomponenter,
       harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
     );
 
-  const alleArbeidsforholdModalSpørsmål = arbeidsforholdModalSpørsmål
-    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål)
-    .concat(arbeidsforholdModalJegHarSagtOppSelvSpørsmål)
-    .concat(arbeidsforholdModalJegHarFåttAvskjedSpørsmål)
-    .concat(arbeidsforholdModalKontraktenErUgåttSpørsmål)
-    .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
-    .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
-    .concat(arbeidsforholdModalJegErPermittertSpørsmål)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
-    .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål);
+  const alleArbeidsforholdModalSpørsmål = arbeidsforholdModalKomponenter
+    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
+    .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
+    .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
+    .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+    .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
+    .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
+    .concat(arbeidsforholdModalJegErPermittertKomponenter)
+    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
+    .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter);
 
   return (
     <FormSummary>

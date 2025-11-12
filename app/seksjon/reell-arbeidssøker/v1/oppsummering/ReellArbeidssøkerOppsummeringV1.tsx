@@ -1,4 +1,4 @@
-import { reellArbeidssøkerSpørsmål } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+import { reellArbeidssøkerKomponenter } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
@@ -24,7 +24,7 @@ export default function ReellArbeidssøkerOppsummeringV1({
           <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
         )}
 
-        {reellArbeidssøkerSpørsmål.map((spørsmål) => {
+        {reellArbeidssøkerKomponenter.map((spørsmål) => {
           const svar = reellArbeidssøkerSvar.find((svar) => svar[0] === spørsmål.id);
           if (svar && !erInformasjonsFelt(spørsmål)) {
             return (

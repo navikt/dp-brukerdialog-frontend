@@ -5,8 +5,8 @@ import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
   dyr,
-  egenNæringEgenNæringsvirksomhetSpørsmål,
-  egenNæringEgetGårdsbrukSpørsmål,
+  egenNæringEgenNæringsvirksomhetKomponenter,
+  egenNæringEgetGårdsbrukKomponenter,
   EgenNæringSvar,
   erTilbakenavigering,
   hvemEierGårdsbruket,
@@ -19,16 +19,16 @@ import {
   hvorMangeTimerJobbetPerUkeNå,
   jeg,
   jord,
-  leggTilGårdsbrukSpørsmål,
+  leggTilGårdsbrukKomponenter,
   LeggTilGårdsbrukSvar,
-  leggTilNæringsvirksomhetSpørsmål,
+  leggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
   organisasjonsnummer,
   seksjonsvar,
   pdfGrunnlag,
   samboerEktefelle,
   skog,
-} from "./egen-næring.spørsmål";
+} from "./egen-næring.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 export const egenNæringSchema = z
@@ -45,8 +45,8 @@ export const egenNæringSchema = z
       return;
     }
 
-    egenNæringEgenNæringsvirksomhetSpørsmål
-      .concat(egenNæringEgetGårdsbrukSpørsmål)
+    egenNæringEgenNæringsvirksomhetKomponenter
+      .concat(egenNæringEgetGårdsbrukKomponenter)
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
         const svar = data[spørsmål.id as keyof EgenNæringSvar];
@@ -61,7 +61,7 @@ export const leggTilNæringsvirksomhetSchema = z
     [hvorMangeTimerJobbetPerUkeNå]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    leggTilNæringsvirksomhetSpørsmål.forEach((spørsmål) => {
+    leggTilNæringsvirksomhetKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilNæringsvirksomhetSvar];
       valider(spørsmål, svar, synlig, context);
@@ -81,7 +81,7 @@ export const leggTilGårdsbrukSchema = z
     [hvordanHarDuBeregnetAntallArbeidstimerTotalt]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    leggTilGårdsbrukSpørsmål.forEach((spørsmål) => {
+    leggTilGårdsbrukKomponenter.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilGårdsbrukSvar];
       valider(spørsmål, svar, synlig, context);

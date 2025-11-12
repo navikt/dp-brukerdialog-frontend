@@ -11,7 +11,7 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import {
   erTilbakenavigering,
   ReellArbeidssøkerSvar,
-} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { ReellArbeidssøkerViewV1 } from "~/seksjon/reell-arbeidssøker/v1/ReellArbeidssøkerViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 

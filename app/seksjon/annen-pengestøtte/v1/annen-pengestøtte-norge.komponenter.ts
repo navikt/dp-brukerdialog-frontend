@@ -1,0 +1,139 @@
+import { KomponentType } from "~/components/Komponent.types";
+import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+
+export const mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav =
+  "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav";
+export const hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm =
+  "hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm";
+export const pensjonFraAndreEnnNav = "pensjonFraAndreEnnNav";
+export const pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere =
+  "pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere";
+export const etterlønnFraArbeidsgiver = "etterlønnFraArbeidsgiver";
+export const hvemUtbetalerPengestøtten = "hvemUtbetalerPengestøtten";
+export const iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed =
+  "iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed";
+export const iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed =
+  "iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed";
+export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver =
+  "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver";
+export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
+  "skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver";
+
+export type PengestøtteFraNorgeModalSvar = {
+  [hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]?:
+    | typeof pensjonFraAndreEnnNav
+    | typeof pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere
+    | typeof etterlønnFraArbeidsgiver;
+  [hvemUtbetalerPengestøtten]?: string;
+  [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed]?: string;
+  [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]?: string;
+};
+
+export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
+  {
+    id: mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+    type: "envalg",
+    label: "Mottar du eller har du søkt om pengestøtte fra andre enn Nav?",
+    description:
+      "<ul><li>Pensjon fra andre enn NAV</li><li>Etterlønn</li><li>Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)</li></ul>",
+    options: [
+      { value: "ja", label: "Ja" },
+      { value: "nei", label: "Nei" },
+    ],
+  },
+  {
+    id: "mottarEllerHarSøktOmPengestøtteFraAndreEnnNavLesMer",
+    type: "lesMer",
+    label: "Grunnen til at vi spør om dette",
+    description:
+      "På grunnlag av en sømløs tidshorisont tas det høyde for relasjonene i tillegg til forholdene.",
+  },
+  {
+    id: "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine pengestøtter fra Norge</strong><br />" +
+      "Du må legge til alle pengestøtter du mottar eller har søkt om som ikke er fra Nav.",
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav] === "ja",
+  },
+];
+
+export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
+  {
+    id: hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
+    type: "envalg",
+    label: "Hvilke pengestøtte fra andre enn Nav har du mottatt eller søkt om?",
+    options: [
+      { value: pensjonFraAndreEnnNav, label: "Pensjon fra andre enn Nav" },
+      { value: etterlønnFraArbeidsgiver, label: "Etterlønn fra arbeidsgiver" },
+      {
+        value: pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
+        label:
+          "Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)",
+      },
+    ],
+  },
+  {
+    id: "hvilkePengestøtteFraAndreEnnNavHarDuMottattEllerSøktOmVarselMelding",
+    type: "dokumentasjonskravindikator",
+    label: "Dokumentasjon på hvem som utbetaler pengestøtten, og hvilken periode den gjelder for",
+  },
+  {
+    id: hvemUtbetalerPengestøtten,
+    type: "kortTekst",
+    label: "Hvem utbetaler pengestøtten?",
+    visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
+      svar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm] === "pensjonFraAndreEnnNav" ||
+      svar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm] === "etterlønnFraArbeidsgiver",
+  },
+  {
+    id: iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
+    type: "periodeFra",
+    periodeLabel: "I hvilken periode har du mottatt eller søkt om pengestøtten?",
+    label: "Fra og med",
+  },
+  {
+    id: iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
+    type: "periodeTil",
+    label: "Til og med",
+    optional: true,
+  },
+];
+
+export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] =
+  [
+    {
+      id: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+      type: "envalg",
+      label:
+        "Får du eller kommer du til å få lønn eller andre økonomiske goder fra tidligere arbeidsgiver?",
+      description:
+        "Du må gi oss beskjed hvis du får lønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om feriepenger.",
+      options: [
+        { value: "ja", label: "Ja" },
+        { value: "nei", label: "Nei" },
+      ],
+    },
+    {
+      id: "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverLesMer",
+      type: "lesMer",
+      label: "Grunnen til at vi spør om dette?",
+      description:
+        "Under forutsetning av en inkluderende overveielse realiseres incitamentet for så vidt gjelder ressurssituasjonen.",
+    },
+    {
+      id: "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: "Avtale om økonomiske goder fra arbeidsgiver",
+      visHvis: (svar: AnnenPengestøtteSvar) =>
+        svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
+    },
+    {
+      id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+      type: "kortTekst",
+      label: "Skriv inn hva du får beholde",
+      visHvis: (svar: AnnenPengestøtteSvar) =>
+        svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
+    },
+  ];

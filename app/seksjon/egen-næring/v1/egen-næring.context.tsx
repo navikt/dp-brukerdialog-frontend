@@ -1,4 +1,4 @@
-import { Gårdsbruk, Næringsvirksomhet } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+import { Gårdsbruk, Næringsvirksomhet } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import React, { createContext, useContext, useState } from "react";
 
 export enum ModalOperasjon {

@@ -1,18 +1,20 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
-import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
+import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   Arbeidsforhold,
   arbeidsforholdForklarendeTekstKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdKomponenter,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  arbeidsforholdModalKomponenter,
   ArbeidsforholdResponse,
-  arbeidsforholdSpørsmål,
   ArbeidsforholdSvar,
   erTilbakenavigering,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -20,21 +22,19 @@ import {
   hvordanHarDuJobbet,
   pdfGrunnlag,
   seksjonsvar,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
-import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
-import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
-import { useEffect, useRef, useState } from "react";
-import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
+import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
-import { arbeidsforholdModalJegHarFåttAvskjedSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
-import { arbeidsforholdModalKontraktenErUgåttSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
-import { arbeidsforholdModalArbeidstidenErRedusertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
-import { arbeidsforholdModalArbeidsgiverErKonkursSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
-import { arbeidsforholdModalJegErPermittertSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -58,7 +58,7 @@ export function ArbeidsforholdViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdSpørsmål);
+  useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
 
   useEffect(() => {
     if (modalData) {
@@ -71,7 +71,7 @@ export function ArbeidsforholdViewV1() {
   }, [registrerteArbeidsforhold.length]);
 
   useEffect(() => {
-    if (form.value(hvordanHarDuJobbet) === "har-ikke-jobbet-de-siste-36-månedene") {
+    if (form.value(hvordanHarDuJobbet) === harIkkeJobbetDeSiste36Månedene) {
       setRegistrerteArbeidsforhold([]);
     }
   }, [form.value(hvordanHarDuJobbet)]);
@@ -91,20 +91,20 @@ export function ArbeidsforholdViewV1() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
-        ...lagSeksjonPayload(arbeidsforholdSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(arbeidsforholdKomponenter, form.transient.value()),
         ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
         ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
           lagSeksjonPayload(
-            arbeidsforholdModalSpørsmål
-              .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål)
-              .concat(arbeidsforholdModalJegHarSagtOppSelvSpørsmål)
-              .concat(arbeidsforholdModalJegHarFåttAvskjedSpørsmål)
-              .concat(arbeidsforholdModalKontraktenErUgåttSpørsmål)
-              .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
-              .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
-              .concat(arbeidsforholdModalJegErPermittertSpørsmål)
-              .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
-              .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål),
+            arbeidsforholdModalKomponenter
+              .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
+              .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
+              .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
+              .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+              .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
+              .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
+              .concat(arbeidsforholdModalJegErPermittertKomponenter)
+              .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
+              .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter),
             etArbeidsforhold
           )
         ),
@@ -129,7 +129,7 @@ export function ArbeidsforholdViewV1() {
 
     const manglerArbeidsforhold =
       form.value(hvordanHarDuJobbet) &&
-      form.value(hvordanHarDuJobbet) !== "har-ikke-jobbet-de-siste-36-månedene" &&
+      form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
       registrerteArbeidsforhold.length === 0;
 
     if (manglerArbeidsforhold) {
@@ -150,16 +150,16 @@ export function ArbeidsforholdViewV1() {
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.versjon} />
-              {arbeidsforholdSpørsmål.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              {arbeidsforholdKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
                 }
 
                 return (
-                  <Spørsmål
-                    key={spørsmål.id}
-                    spørsmål={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof ArbeidsforholdSvar)}
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                   />
                 );
               })}
@@ -170,16 +170,16 @@ export function ArbeidsforholdViewV1() {
                   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
                 ) && (
                   <VStack gap="space-16">
-                    {arbeidsforholdForklarendeTekstKomponenter.map((spørsmål) => {
-                      if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                    {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+                      if (komponent.visHvis && !komponent.visHvis(form.value())) {
                         return null;
                       }
 
                       return (
-                        <Spørsmål
-                          key={spørsmål.id}
-                          spørsmål={spørsmål}
-                          formScope={form.scope(spørsmål.id as keyof ArbeidsforholdSvar)}
+                        <Komponent
+                          key={komponent.id}
+                          props={komponent}
+                          formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                         />
                       );
                     })}

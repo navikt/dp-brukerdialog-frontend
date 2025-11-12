@@ -1,18 +1,18 @@
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetSpørsmål,
-  egenNæringEgetGårdsbrukSpørsmål,
+  egenNæringEgenNæringsvirksomhetKomponenter,
+  egenNæringEgetGårdsbrukKomponenter,
   EgenNæringResponse,
-  leggTilGårdsbrukSpørsmål,
-  leggTilNæringsvirksomhetSpørsmål,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+  leggTilGårdsbrukKomponenter,
+  leggTilNæringsvirksomhetKomponenter,
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
-import { KomponentType } from "~/components/spørsmål/spørsmål.types";
+import { KomponentType } from "~/components/Komponent.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export default function EgenNæringOppsummeringV1({
@@ -24,11 +24,11 @@ export default function EgenNæringOppsummeringV1({
 
   const egenNæringSvar = seksjonSvarene as EgenNæringResponse;
 
-  const driverDuEgenNæringsvirksomhetSpørsmål = egenNæringEgenNæringsvirksomhetSpørsmål.find(
+  const driverDuEgenNæringsvirksomhetSpørsmål = egenNæringEgenNæringsvirksomhetKomponenter.find(
     (s) => s.id === driverDuEgenNæringsvirksomhet
   );
 
-  const driverDuEgenGårdsbrukSpørsmål = egenNæringEgetGårdsbrukSpørsmål.find(
+  const driverDuEgenGårdsbrukSpørsmål = egenNæringEgetGårdsbrukKomponenter.find(
     (s) => s.id === driverDuEgetGårdsbruk
   );
 
@@ -46,13 +46,13 @@ export default function EgenNæringOppsummeringV1({
           {driverDuEgenNæringsvirksomhetSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenNæringsvirksomhetSpørsmål}
-              svar={egenNæringSvar["driver-du-egen-næringsvirksomhet"] ?? "Ikke besvart"}
+              svar={egenNæringSvar[driverDuEgenNæringsvirksomhet] ?? "Ikke besvart"}
             />
           ) : (
             "Ikke besvart"
           )}
         </FormSummary.Answer>
-        {egenNæringSvar["driver-du-egen-næringsvirksomhet"] === "ja" &&
+        {egenNæringSvar[driverDuEgenNæringsvirksomhet] === "ja" &&
           egenNæringSvar["næringsvirksomheter"]?.map((næringsvirksomhet, index) => (
             <FormSummary.Answer key={index}>
               <FormSummary.Label>Egen næringsvirksomhet {index + 1}</FormSummary.Label>
@@ -60,7 +60,7 @@ export default function EgenNæringOppsummeringV1({
                 <FormSummary.Answers>
                   {Object.entries(næringsvirksomhet).map((arbeidsforholdModalSvar) => {
                     const spørsmål = finnSpørsmål(
-                      leggTilNæringsvirksomhetSpørsmål,
+                      leggTilNæringsvirksomhetKomponenter,
                       arbeidsforholdModalSvar[0]
                     );
                     if (spørsmål && !erInformasjonsFelt(spørsmål))
@@ -84,13 +84,13 @@ export default function EgenNæringOppsummeringV1({
           {driverDuEgenGårdsbrukSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenGårdsbrukSpørsmål}
-              svar={egenNæringSvar["driver-du-eget-gårdsbruk"] ?? "Ikke besvart"}
+              svar={egenNæringSvar[driverDuEgetGårdsbruk] ?? "Ikke besvart"}
             />
           ) : (
             "Ikke besvart"
           )}
         </FormSummary.Answer>
-        {egenNæringSvar["driver-du-eget-gårdsbruk"] === "ja" &&
+        {egenNæringSvar[driverDuEgetGårdsbruk] === "ja" &&
           egenNæringSvar["gårdsbruk"]?.map((gårdsbruk, index) => (
             <FormSummary.Answer key={index}>
               <FormSummary.Label>Eget gårdsbruk {index + 1}</FormSummary.Label>
@@ -98,7 +98,7 @@ export default function EgenNæringOppsummeringV1({
                 <FormSummary.Answers>
                   {Object.entries(gårdsbruk).map((arbeidsforholdModalSvar) => {
                     const spørsmål = finnSpørsmål(
-                      leggTilGårdsbrukSpørsmål,
+                      leggTilGårdsbrukKomponenter,
                       arbeidsforholdModalSvar[0]
                     );
                     if (spørsmål && !erInformasjonsFelt(spørsmål))

@@ -1,22 +1,19 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
+import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
   hvorMangeTimerJobbetPerUkeNå,
   Næringsvirksomhet,
   organisasjonsnummer,
-} from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
-import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 interface IProps {
   næringsvirksomhet: Næringsvirksomhet;
   næringsvirksomhetIndex: number;
 }
 
-export function NæringsvirksomhetDetaljer({
-  næringsvirksomhet,
-  næringsvirksomhetIndex,
-}: Readonly<IProps>) {
+export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksomhetIndex }: IProps) {
   const { næringsvirksomheter, setNæringsvirksomheter, setNæringsvirksomhetModalData } =
     useEgenNæringContext();
 

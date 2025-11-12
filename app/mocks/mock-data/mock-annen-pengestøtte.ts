@@ -1,4 +1,4 @@
-import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import {
   foreldrepengerEllerSvangerskapspenger,
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
@@ -9,7 +9,7 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
   pleiepengerOmsorgspengerEllerOpplæringspenger,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   etterlønnFraArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
@@ -20,7 +20,7 @@ import {
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 
 export const mockAnnenPengestøtte: AnnenPengestøtteResponse = {
   [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: "ja",

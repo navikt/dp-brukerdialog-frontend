@@ -3,7 +3,7 @@ import { Alert, BodyLong, BodyShort, Button, HStack, VStack } from "@navikt/ds-r
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
@@ -27,7 +27,7 @@ import {
 import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdlKomponent";
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
-import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.spørsmål";
+import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 enum BarnLagtManueltVarsel {
@@ -140,16 +140,16 @@ export function BarnetilleggViewV1() {
   return (
     <div className="innhold">
       <h2>Barnetillegg</h2>
-      {barnetilleggForklarendeTekst.map((spørsmål) => {
-        if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+      {barnetilleggForklarendeTekst.map((komponent) => {
+        if (komponent.visHvis && !komponent.visHvis(form.value())) {
           return null;
         }
 
         return (
-          <Spørsmål
-            key={spørsmål.id}
-            spørsmål={spørsmål}
-            formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
+          <Komponent
+            key={komponent.id}
+            props={komponent}
+            formScope={form.scope(komponent.id as keyof BarnetilleggSvar)}
           />
         );
       })}
@@ -168,9 +168,9 @@ export function BarnetilleggViewV1() {
               }
 
               return (
-                <Spørsmål
+                <Komponent
                   key={spørsmål.id}
-                  spørsmål={spørsmål}
+                  props={spørsmål}
                   formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
                 />
               );

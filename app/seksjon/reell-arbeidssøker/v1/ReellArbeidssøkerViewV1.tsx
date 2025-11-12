@@ -3,16 +3,16 @@ import { Alert, Button, HStack, List, VStack } from "@navikt/ds-react";
 import { ListItem } from "@navikt/ds-react/List";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData } from "react-router";
-import { Spørsmål } from "~/components/spørsmål/Spørsmål";
+import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import {
   erTilbakenavigering,
   pdfGrunnlag,
-  reellArbeidssøkerSpørsmål,
+  reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
-} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.spørsmål";
+} from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function ReellArbeidssøkerViewV1() {
@@ -32,18 +32,7 @@ export function ReellArbeidssøkerViewV1() {
     defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
   });
 
-  useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerSpørsmål);
-
-  const genererPdfGrunnlag = () => {
-    const pdfPayload = {
-      navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(reellArbeidssøkerSpørsmål, form.transient.value()),
-      ],
-    };
-
-    return JSON.stringify(pdfPayload);
-  }
+  useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -53,9 +42,17 @@ export function ReellArbeidssøkerViewV1() {
 
   async function handleSubmit() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.submit()
+    form.submit();
   }
 
+  function genererPdfGrunnlag() {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [...lagSeksjonPayload(reellArbeidssøkerKomponenter, form.transient.value())],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
   return (
     <div className="innhold">
       <h2>{seksjonnavn}</h2>
@@ -63,16 +60,16 @@ export function ReellArbeidssøkerViewV1() {
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.versjon} />
           <VStack gap="8">
-            {reellArbeidssøkerSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            {reellArbeidssøkerKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
 
               return (
-                <Spørsmål
-                  key={spørsmål.id}
-                  spørsmål={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof ReellArbeidssøkerSvar)}
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
                 />
               );
             })}

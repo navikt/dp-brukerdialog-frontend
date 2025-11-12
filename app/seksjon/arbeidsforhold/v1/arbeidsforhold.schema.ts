@@ -1,10 +1,10 @@
 import { z } from "zod";
 import {
   annenRotasjonBeskrivelse,
-  arbeidsforholdModalSkiftTurnusRotasjonSpørsmål,
-  arbeidsforholdModalSpørsmål,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  arbeidsforholdModalKomponenter,
   ArbeidsforholdModalSvar,
-  arbeidsforholdSpørsmål,
+  arbeidsforholdKomponenter,
   ArbeidsforholdSvar,
   erTilbakenavigering,
   fastArbeidstidI6MånederEllerMer,
@@ -26,39 +26,39 @@ import {
   varierendeArbeidstidDeSiste12Månedene,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
-} from "./arbeidsforhold.spørsmål";
+} from "./arbeidsforhold.komponenter";
 import {
-  arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål,
+  arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter,
   jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegErOppsagt";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import {
-  arbeidsforholdModalJegHarSagtOppSelvSpørsmål,
+  arbeidsforholdModalJegHarSagtOppSelvKomponenter,
   jegHarSagtOppHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.jegHarSagtOpp";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
-  arbeidsforholdModalJegHarFåttAvskjedSpørsmål,
+  arbeidsforholdModalJegHarFåttAvskjedKomponenter,
   avskjedigetHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.avskjediget";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
 import {
-  arbeidsforholdModalKontraktenErUgåttSpørsmål,
+  arbeidsforholdModalKontraktenErUgåttKomponenter,
   kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.kontraktenErUgått";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
 import {
-  arbeidsforholdModalArbeidstidenErRedusertSpørsmål,
+  arbeidsforholdModalArbeidstidenErRedusertKomponenter,
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
   arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
   arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   arbeidstidenErRedusertHvaErÅrsaken,
   arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.arbeidstidenErRedusert";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import {
-  arbeidsforholdModalArbeidsgiverErKonkursSpørsmål,
+  arbeidsforholdModalArbeidsgiverErKonkursKomponenter,
   konkursDekkerLønnsgarantiordningenKravetDitt,
   konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
   konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
@@ -70,9 +70,9 @@ import {
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.konkurs";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
 import {
-  arbeidsforholdModalJegErPermittertSpørsmål,
+  arbeidsforholdModalJegErPermittertKomponenter,
   permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
   permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
   permittertHvorMangeProsentErDuPermittert,
@@ -83,12 +83,12 @@ import {
   permittertNårStartetDuIDenneJobben,
   permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
   permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.permittert";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import {
-  arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål,
+  arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
   ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål.ikkeEndret";
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 import { valider } from "~/utils/validering.utils";
 
 export const arbeidsforholdSchema = z
@@ -114,10 +114,10 @@ export const arbeidsforholdSchema = z
     if (data[erTilbakenavigering]) {
       return;
     }
-    arbeidsforholdSpørsmål.forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof ArbeidsforholdSvar];
-      valider(spørsmål, svar, synlig, context);
+    arbeidsforholdKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof ArbeidsforholdSvar];
+      valider(komponent, svar, synlig, context);
     });
   });
 
@@ -183,19 +183,19 @@ export const arbeidsforholdModalSchema = z
     [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    arbeidsforholdModalSpørsmål
-      .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppSpørsmål)
-      .concat(arbeidsforholdModalJegHarSagtOppSelvSpørsmål)
-      .concat(arbeidsforholdModalJegHarFåttAvskjedSpørsmål)
-      .concat(arbeidsforholdModalKontraktenErUgåttSpørsmål)
-      .concat(arbeidsforholdModalArbeidstidenErRedusertSpørsmål)
-      .concat(arbeidsforholdModalArbeidsgiverErKonkursSpørsmål)
-      .concat(arbeidsforholdModalJegErPermittertSpørsmål)
-      .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretSpørsmål)
-      .concat(arbeidsforholdModalSkiftTurnusRotasjonSpørsmål)
-      .forEach((spørsmål) => {
-        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-        const svar = data[spørsmål.id as keyof ArbeidsforholdModalSvar];
-        valider(spørsmål, svar, synlig, context);
+    arbeidsforholdModalKomponenter
+      .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
+      .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
+      .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
+      .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+      .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
+      .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
+      .concat(arbeidsforholdModalJegErPermittertKomponenter)
+      .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
+      .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter)
+      .forEach((komponent) => {
+        const synlig = !komponent.visHvis || komponent.visHvis(data);
+        const svar = data[komponent.id as keyof ArbeidsforholdModalSvar];
+        valider(komponent, svar, synlig, context);
       });
   });

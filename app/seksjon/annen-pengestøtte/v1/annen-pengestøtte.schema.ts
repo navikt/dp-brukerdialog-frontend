@@ -1,11 +1,11 @@
 import { z } from "zod";
 import {
-  annenPengestøtteSpørsmål,
+  annenPengestøtteKomponenter,
   AnnenPengestøtteSvar,
   erTilbakenavigering,
   seksjonsvar,
   pdfGrunnlag,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import {
   dagpengerEllerArbeidsledighetstrygd,
   foreldrepengerEllerSvangerskapspenger,
@@ -16,11 +16,11 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalSpørsmål,
+  pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   sykepenger,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   etterlønnFraArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
@@ -29,12 +29,12 @@ import {
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeModalSpørsmål,
+  pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
   pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
   pensjonFraAndreEnnNav,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.spørsmål";
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
 
 const kortTekstMaksLengde = 200;
@@ -60,10 +60,10 @@ export const annenPengestøtteSchema = z
       return;
     }
 
-    annenPengestøtteSpørsmål.forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof AnnenPengestøtteSvar];
-      valider(spørsmål, svar, synlig, context);
+    annenPengestøtteKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof AnnenPengestøtteSvar];
+      valider(komponent, svar, synlig, context);
     });
   });
 
@@ -88,10 +88,10 @@ export const pengestøtteFraAndreEøsLandSchema = z
       .optional(),
   })
   .superRefine((data, context) => {
-    pengestøtteFraAndreEøsLandModalSpørsmål.forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof PengestøtteFraAndreEøsLandModalSvar];
-      valider(spørsmål, svar, synlig, context);
+    pengestøtteFraAndreEøsLandModalKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof PengestøtteFraAndreEøsLandModalSvar];
+      valider(komponent, svar, synlig, context);
     });
   });
 
@@ -109,9 +109,9 @@ export const pengestøtteFraNorgeSchema = z
     [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    pengestøtteFraNorgeModalSpørsmål.forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof PengestøtteFraNorgeModalSvar];
-      valider(spørsmål, svar, synlig, context);
+    pengestøtteFraNorgeModalKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof PengestøtteFraNorgeModalSvar];
+      valider(komponent, svar, synlig, context);
     });
   });

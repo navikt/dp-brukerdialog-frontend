@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { erTilbakenavigering } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.spørsmål";
+import { erTilbakenavigering } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
 import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import { normaliserFormData } from "~/utils/action.utils.server";
