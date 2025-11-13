@@ -17,7 +17,7 @@ export function DokumentasjonView() {
 
     if (dokumentasjonskravTilBundling.length === 0) {
       console.error("Ingen dokumentasjonskrav å bundle");
-      return;
+      navigate(`/${soknadId}/oppsummering`);
     }
 
     const bundlePromises = dokumentasjonskravTilBundling.map((krav) => {
@@ -48,7 +48,7 @@ export function DokumentasjonView() {
 
     if (alleBundlingOk) {
       console.log("Alle bundles behandlet - redirecter til oppsummering");
-      navigate(`/soknad/${soknadId}/oppsummering`);
+      navigate(`/${soknadId}/oppsummering`);
     } else {
       console.error("Noen bundles feilet - kan ikke fortsette");
     }
@@ -102,12 +102,11 @@ export function DokumentasjonView() {
         ))}
       </VStack>
 
-      {/* todo */}
-      {/* Finn ut hva må må gjøre her */}
       <HStack gap="4" className="mt-14">
         <Button
           variant="secondary"
           type="button"
+          onClick={() => navigate("../tilleggsopplysninger")}
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
         >
           Forrige steg
