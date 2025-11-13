@@ -43,11 +43,5 @@ export async function loader({
 }
 
 export default function DokumentasjonRoute() {
-  const loaderData = useLoaderData<typeof loader>();
-
-  return (
-    <DokumentasjonskravProvider dokumentasjonskrav={loaderData.dokumentasjonskrav || []}>
-      <DokumentasjonView />
-    </DokumentasjonskravProvider>
-  );
+  return <DokumentasjonView />;
 }

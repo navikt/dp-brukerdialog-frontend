@@ -1,14 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
+import { Alert, BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 import { useNavigate, useParams } from "react-router";
+import { useState } from "react";
 
 export function DokumentasjonView() {
   const navigate = useNavigate();
   const { soknadId } = useParams();
   const { dokumentasjonskrav } = useDokumentasjonskravContext();
+  const [bundlingFeilet, setBundlingFeilet] = useState(false);
 
   async function bundleDokumentasjonskrav() {
     const dokumentasjonskravTilBundling = dokumentasjonskrav.filter(
@@ -47,10 +49,12 @@ export function DokumentasjonView() {
     const alleBundlingOk = bundlingResponser.every((response) => response.ok);
 
     if (alleBundlingOk) {
+      setBundlingFeilet(false);
       console.log("Alle bundles behandlet - redirecter til oppsummering");
       navigate(`/${soknadId}/oppsummering`);
     } else {
       console.error("Noen bundles feilet - kan ikke fortsette");
+      setBundlingFeilet(true);
     }
   }
 
@@ -101,6 +105,10 @@ export function DokumentasjonView() {
           />
         ))}
       </VStack>
+
+      {bundlingFeilet && (
+        <Alert variant="error">Feil ved lagring av dokumenter. Vennligst prøv igjen.</Alert>
+      )}
 
       <HStack gap="4" className="mt-14">
         <Button
