@@ -38,9 +38,6 @@ export async function action({ params, request }: ActionFunctionArgs) {
     filer: dokumentasjonskravFilerUrn,
   };
 
-  console.log("Sender følgende body til mellomlagring for å lage bundle:");
-  console.log(body);
-
   const url = `${getEnv("DP_MELLOMLAGRING_URL")}/pdf/bundle`;
   const onBehalfOfToken = await hentMellomlagringOboToken(request);
 
