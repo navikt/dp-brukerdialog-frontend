@@ -26,8 +26,6 @@ export async function loader({
 
   // Sjekk FØRST om data er gyldig
   // Todo: finn ut hva backend returnerer. Her kan frontend lagre feil info til backend også
-
-  console.log(`🔥 dokumentasjonskravData :`, dokumentasjonskravData);
   if (
     !dokumentasjonskravData ||
     dokumentasjonskravData.length === 0 ||
