@@ -34,7 +34,7 @@ COPY --from=app-build /app/build /
 
 
 # runtime
-FROM gcr.io/distroless/nodejs22-debian12 AS runtime
+FROM gcr.io/distroless/nodejs24-debian12 AS runtime
 WORKDIR /app
 
 ARG NODE_ENV=production
