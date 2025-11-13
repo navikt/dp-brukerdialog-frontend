@@ -21,11 +21,10 @@ export function DokumentasjonView() {
     );
 
     if (dokumentasjonskravTilBundling.length === 0) {
-      console.error("Ingen dokumentasjonskrav å bundle");
       navigate(`/${soknadId}/oppsummering`);
     }
 
-    const bundlePromises = dokumentasjonskravTilBundling.map((dokumentkrav) => {
+    const promises = dokumentasjonskravTilBundling.map((dokumentkrav) => {
       const formData = new FormData();
       formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkrav.filer));
 
@@ -35,10 +34,10 @@ export function DokumentasjonView() {
       });
     });
 
-    const bundlingResponser = await Promise.all(bundlePromises);
+    const respons = await Promise.all(promises);
 
     await Promise.all(
-      bundlingResponser.map((response, index) => {
+      respons.map((response, index) => {
         if (response.ok) {
           console.log(`Bundle opprettet for ${dokumentasjonskravTilBundling[index].id}`);
           return response.json();
@@ -49,9 +48,9 @@ export function DokumentasjonView() {
       })
     );
 
-    const alleBundlingOk = bundlingResponser.every((response) => response.ok);
+    const alleDokumentasjonskravBundletOgLagret = respons.every((response) => response.ok);
 
-    if (alleBundlingOk) {
+    if (alleDokumentasjonskravBundletOgLagret) {
       setBundleFeilet(false);
       navigate(`/${soknadId}/oppsummering`);
     } else {
