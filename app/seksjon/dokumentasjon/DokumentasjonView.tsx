@@ -10,9 +10,9 @@ export function DokumentasjonView() {
   const navigate = useNavigate();
   const { soknadId } = useParams();
   const { dokumentasjonskrav } = useDokumentasjonskravContext();
-  const [bundlingFeilet, setBundlingFeilet] = useState(false);
+  const [bundleFeilet, setBundleFeilet] = useState(false);
 
-  async function bundleDokumentasjonskrav() {
+  async function bundleOgLagreDokumentasjonskrav() {
     const dokumentasjonskravTilBundling = dokumentasjonskrav.filter(
       (dokumentkrav) =>
         dokumentkrav.svar === dokumentkravSvarSendNå &&
@@ -52,12 +52,10 @@ export function DokumentasjonView() {
     const alleBundlingOk = bundlingResponser.every((response) => response.ok);
 
     if (alleBundlingOk) {
-      setBundlingFeilet(false);
-      console.log("Alle bundles behandlet - redirecter til oppsummering");
+      setBundleFeilet(false);
       navigate(`/${soknadId}/oppsummering`);
     } else {
-      console.error("Noen bundles feilet - kan ikke fortsette");
-      setBundlingFeilet(true);
+      setBundleFeilet(true);
     }
   }
 
@@ -109,7 +107,7 @@ export function DokumentasjonView() {
         ))}
       </VStack>
 
-      {bundlingFeilet && (
+      {bundleFeilet && (
         <Alert variant="error">Feil ved lagring av dokumenter. Vennligst prøv igjen.</Alert>
       )}
 
@@ -127,7 +125,7 @@ export function DokumentasjonView() {
           type="button"
           iconPosition="right"
           icon={<ArrowRightIcon />}
-          onClick={bundleDokumentasjonskrav}
+          onClick={bundleOgLagreDokumentasjonskrav}
         >
           Til oppsummering
         </Button>
