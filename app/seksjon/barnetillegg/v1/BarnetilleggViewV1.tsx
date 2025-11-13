@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
@@ -10,7 +10,6 @@ import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   barnetilleggForklarendeTekst,
   barnetilleggKomponenter,
@@ -24,6 +23,7 @@ import {
   leggTilBarnManueltSpørsmål,
   seksjonsvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
+import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnFraPdlKomponent";
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
@@ -38,6 +38,7 @@ enum BarnLagtManueltVarsel {
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
+
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const [varsel, setVarsel] = useState<BarnLagtManueltVarsel | undefined>(undefined);

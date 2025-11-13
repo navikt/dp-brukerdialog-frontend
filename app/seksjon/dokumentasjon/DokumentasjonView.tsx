@@ -26,7 +26,7 @@ export function DokumentasjonView() {
       const formData = new FormData();
       formData.append("dokumentasjonskravFiler", JSON.stringify(krav.filer));
 
-      return fetch(`/api/bundle-dokumentasjonskrav/${soknadId}/${krav.id}/`, {
+      return fetch(`/api/dokumentasjonskrav/${soknadId}/${krav.id}/bundle`, {
         method: "POST",
         body: formData,
       });

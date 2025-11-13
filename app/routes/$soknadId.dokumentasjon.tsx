@@ -18,6 +18,7 @@ export async function loader({
   const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
 
   if (!dokumentasjonskravResponse.ok) {
+    console.log("ingenting");
     return redirect(`/${params.soknadId}/oppsummering`);
   }
 
@@ -25,6 +26,8 @@ export async function loader({
 
   // Sjekk FØRST om data er gyldig
   // Todo: finn ut hva backend returnerer. Her kan frontend lagre feil info til backend også
+
+  console.log(`🔥 dokumentasjonskravData :`, dokumentasjonskravData);
   if (
     !dokumentasjonskravData ||
     dokumentasjonskravData.length === 0 ||
@@ -44,6 +47,8 @@ export async function loader({
 
 export default function DokumentasjonRoute() {
   const loaderData = useLoaderData<typeof loader>();
+
+  console.log(`🔥 loaderData :`, loaderData);
 
   return (
     <DokumentasjonskravProvider dokumentasjonskrav={loaderData.dokumentasjonskrav || []}>
