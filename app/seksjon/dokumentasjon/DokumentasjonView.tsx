@@ -1,11 +1,58 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
-import { useLoaderData } from "react-router";
-import { loader } from "~/routes/$soknadId.dokumentasjon";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
+import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
+import { useNavigate, useParams } from "react-router";
 
 export function DokumentasjonView() {
-  const loaderData = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const { soknadId } = useParams();
+  const { dokumentasjonskrav } = useDokumentasjonskravContext();
+
+  async function bundleDokumentasjonskrav() {
+    const dokumentasjonskravTilBundling = dokumentasjonskrav.filter(
+      (krav) => krav.svar === dokumentkravSvarSendNå && krav.filer && krav.filer.length > 0
+    );
+
+    if (dokumentasjonskravTilBundling.length === 0) {
+      console.error("Ingen dokumentasjonskrav å bundle");
+      return;
+    }
+
+    const bundlePromises = dokumentasjonskravTilBundling.map((krav) => {
+      const formData = new FormData();
+      formData.append("dokumentasjonskravFiler", JSON.stringify(krav.filer));
+
+      return fetch(`/api/bundle-dokumentasjonskrav/${soknadId}/${krav.id}/`, {
+        method: "POST",
+        body: formData,
+      });
+    });
+
+    const bundlingResponser = await Promise.all(bundlePromises);
+
+    await Promise.all(
+      bundlingResponser.map((response, index) => {
+        if (response.ok) {
+          console.log(`Bundle opprettet for ${dokumentasjonskravTilBundling[index].id}`);
+          return response.json();
+        }
+
+        console.error(`Bundle feil for ${dokumentasjonskravTilBundling[index].id}`);
+        return null;
+      })
+    );
+
+    const alleBundlingOk = bundlingResponser.every((response) => response.ok);
+
+    if (alleBundlingOk) {
+      console.log("Alle bundles behandlet - redirecter til oppsummering");
+      navigate(`/soknad/${soknadId}/oppsummering`);
+    } else {
+      console.error("Noen bundles feilet - kan ikke fortsette");
+    }
+  }
 
   return (
     <div className="innhold">
@@ -47,15 +94,16 @@ export function DokumentasjonView() {
         Dokumenter du skal sende inn
       </Heading>
       <VStack gap="4">
-        {loaderData.map((dokumentasjonskrav) => (
+        {dokumentasjonskrav.map((dokumentasjonskrav) => (
           <DokumentasjonskravKomponent
             key={dokumentasjonskrav.id}
             dokumentasjonskrav={dokumentasjonskrav}
-            alleDokumentasjonskrav={loaderData}
           />
         ))}
       </VStack>
 
+      {/* todo */}
+      {/* Finn ut hva må må gjøre her */}
       <HStack gap="4" className="mt-14">
         <Button
           variant="secondary"
@@ -64,8 +112,14 @@ export function DokumentasjonView() {
         >
           Forrige steg
         </Button>
-        <Button variant="primary" type="submit" iconPosition="right" icon={<ArrowRightIcon />}>
-          Neste steg
+        <Button
+          variant="primary"
+          type="button"
+          iconPosition="right"
+          icon={<ArrowRightIcon />}
+          onClick={bundleDokumentasjonskrav}
+        >
+          Til oppsummering
         </Button>
       </HStack>
     </div>

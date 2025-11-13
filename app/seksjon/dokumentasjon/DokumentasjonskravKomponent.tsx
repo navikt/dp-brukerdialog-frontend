@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -28,6 +28,7 @@ import {
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
+import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 
 export type Dokumentasjonskrav = {
   id: string;
@@ -56,17 +57,17 @@ export type GyldigDokumentkravSvar =
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
-  alleDokumentasjonskrav: Dokumentasjonskrav[];
 }
 
-export function DokumentasjonskravKomponent({
-  dokumentasjonskrav,
-  alleDokumentasjonskrav,
-}: DokumentasjonskravProps) {
+export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
   const { soknadId } = useParams();
+  const [lagrer, setLagrer] = useState(false);
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
     dokumentasjonskrav.filer ?? []
   );
+
+  const { dokumentasjonskrav: alleDokumentasjonskrav, setDokumentasjonskrav } =
+    useDokumentasjonskravContext();
 
   function hentBeskrivelse(type: DokumentasjonskravType) {
     switch (type) {
@@ -142,6 +143,12 @@ export function DokumentasjonskravKomponent({
     },
   });
 
+  useEffect(() => {
+    if (form.value(velgHvaDuVilGjøre) !== dokumentkravSvarSendNå) {
+      setDokumentkravFiler([]);
+    }
+  }, [form]);
+
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   async function lagreDokumentasjonskravSvar(svar: Dokumentasjonskrav) {
@@ -152,6 +159,7 @@ export function DokumentasjonskravKomponent({
     const formData = new FormData();
     formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
 
+    setLagrer(true);
     const response = await fetch(
       `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
       {
@@ -159,9 +167,16 @@ export function DokumentasjonskravKomponent({
         body: formData,
       }
     );
+
+    if (response.ok) {
+      setDokumentasjonskrav(oppdatertDokumentasjonskrav);
+    }
+
     if (!response.ok) {
       console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
     }
+
+    setLagrer(false);
   }
 
   return (
@@ -206,6 +221,7 @@ export function DokumentasjonskravKomponent({
             icon={<FloppydiskIcon aria-hidden />}
             iconPosition="right"
             className="mt-8"
+            loading={lagrer}
           >
             Lagre
           </Button>
