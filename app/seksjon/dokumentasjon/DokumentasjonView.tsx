@@ -29,7 +29,7 @@ export function DokumentasjonView() {
       const formData = new FormData();
       formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkrav.filer));
 
-      return fetch(`/api/dokumentasjonskrav/${soknadId}/${dokumentkrav.id}/bundle`, {
+      return fetch(`/api/dokumentasjonskrav/${soknadId}/${dokumentkrav.id}/bundle-filer`, {
         method: "POST",
         body: formData,
       });
