@@ -37,7 +37,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     return { urn: fil.urn };
   });
 
-  const body: MellomlagringBundle = {
+  const bundleBody: MellomlagringBundle = {
     soknadId: søknadId,
     bundleNavn: dokumentkravId,
     filer: dokumentasjonskravFilerUrn,
@@ -53,7 +53,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
       Accept: "application/json",
       Authorization: `Bearer ${mellomlagringOboToken}`,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(bundleBody),
   });
 
   if (!bundlingResponse.ok) {
