@@ -39,7 +39,7 @@ export function DokumentasjonView() {
     await Promise.all(
       respons.map((response, index) => {
         if (response.ok) {
-          console.log(`Bundle opprettet for ${dokumentasjonskravTilBundling[index].id}`);
+          console.info(`Bundle opprettet for ${dokumentasjonskravTilBundling[index].id}`);
           return response.json();
         }
 
