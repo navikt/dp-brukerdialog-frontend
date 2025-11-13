@@ -16,7 +16,6 @@ type Urn = {
   urn: string;
 };
 
-// Dette er hva bundle endepunkt returnerer
 type MellomlagringBundleResponse = {
   filnavn: string;
   urn: string;
@@ -62,7 +61,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     return new Response("Feil ved bundling av dokumentasjonskrav filer", { status: 500 });
   }
 
-  const { urn } = await bundlingResponse.json();
+  const { urn }: MellomlagringBundleResponse = await bundlingResponse.json();
 
   const lagreBundleUrl = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/${søknadId}/dokumentasjonskravb/${dokumentkravId}/bundle`;
   const orkestratorOboToken = await hentSoknadOrkestratorOboToken(request);
