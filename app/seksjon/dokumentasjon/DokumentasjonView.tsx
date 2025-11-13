@@ -14,7 +14,10 @@ export function DokumentasjonView() {
 
   async function bundleDokumentasjonskrav() {
     const dokumentasjonskravTilBundling = dokumentasjonskrav.filter(
-      (krav) => krav.svar === dokumentkravSvarSendNå && krav.filer && krav.filer.length > 0
+      (dokumentkrav) =>
+        dokumentkrav.svar === dokumentkravSvarSendNå &&
+        dokumentkrav.filer &&
+        dokumentkrav.filer.length > 0
     );
 
     if (dokumentasjonskravTilBundling.length === 0) {
@@ -22,11 +25,11 @@ export function DokumentasjonView() {
       navigate(`/${soknadId}/oppsummering`);
     }
 
-    const bundlePromises = dokumentasjonskravTilBundling.map((krav) => {
+    const bundlePromises = dokumentasjonskravTilBundling.map((dokumentkrav) => {
       const formData = new FormData();
-      formData.append("dokumentasjonskravFiler", JSON.stringify(krav.filer));
+      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkrav.filer));
 
-      return fetch(`/api/dokumentasjonskrav/${soknadId}/${krav.id}/bundle`, {
+      return fetch(`/api/dokumentasjonskrav/${soknadId}/${dokumentkrav.id}/bundle`, {
         method: "POST",
         body: formData,
       });
