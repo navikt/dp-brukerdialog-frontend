@@ -63,7 +63,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
 
   const { urn }: MellomlagringBundleResponse = await bundlingResponse.json();
 
-  const lagreBundleUrl = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/${søknadId}/dokumentasjonskravb/${dokumentkravId}/bundle`;
+  const lagreBundleUrl = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/${søknadId}/dokumentasjonskrav/${dokumentkravId}/bundle`;
   const orkestratorOboToken = await hentSoknadOrkestratorOboToken(request);
 
   return await fetch(lagreBundleUrl, {
