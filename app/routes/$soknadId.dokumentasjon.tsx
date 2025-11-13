@@ -14,7 +14,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   const dokumentasjonskravData = await dokumentasjonskravResponse.json();
-  console.log("Dokumentasjonskrav data:", dokumentasjonskravData);
   const dokumentasjonskrav: Dokumentasjonskrav[] = JSON.parse(dokumentasjonskravData);
 
   return dokumentasjonskrav;
