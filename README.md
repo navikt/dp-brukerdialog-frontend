@@ -4,8 +4,10 @@ Brukerdialog er et frontend-applikasjon for dagpengersøknad.
 
 ## Kom i gang
 
-1. Kjør `npm install` for å installere avhengigheter.
-2. Kjør `npm run copy-env` for å kopiere `.env.example` til `.env`.
+1. Kjør `nvm install` for å installere riktig node versjon.
+2. Kjør `nvm use` for å bruke node versjon du har installert.
+3. Kjør `npm install` for å installere avhengigheter.
+4. Kjør `npm run copy-env` for å kopiere `.env.example` til `.env`.
 
 ## Starte dev server:
 
