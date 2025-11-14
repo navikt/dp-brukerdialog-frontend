@@ -151,7 +151,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
   {
     id: "bostedslandLesMer",
     type: "lesMer",
-    label: "For deg som her pendlet mellom EØS-Land og Sveits",
+    label: "For deg som har pendlet mellom EØS-Land og Sveits",
     description:
       "Hvis du bor i et EØS-land og jobber i et annet, er du en EØS-pendler. Det er egne regler for hvor du skal søke om penger hvis du blir arbeidsledig eller permittert og du har tilknytning til flere EØS-land.<br/><br/>" +
       "Hvilket land du skal søke om penger fra avhenger av" +

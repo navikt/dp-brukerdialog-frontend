@@ -25,9 +25,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
         return {
           id: spørsmål?.id,
           type: spørsmål?.type,
-          label: (spørsmål as SpørsmålBase).optional
-            ? `${spørsmål.label} (valgfritt)`
-            : `${spørsmål.label}`,
+          label: getLabel(spørsmål),
           description: spørsmål?.description,
           options: getOptions(spørsmål),
           svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
@@ -38,6 +36,12 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
 }
 
 type Option = { value: string; label: string };
+
+function getLabel(spørsmål: KomponentType): string | undefined {
+  return spørsmål?.label && (spørsmål as SpørsmålBase).optional
+    ? `${spørsmål.label} (valgfritt)`
+    : spørsmål.label
+ }
 
 function getOptions(spørsmål: KomponentType): Option[] {
   if (spørsmål.type == "land") {

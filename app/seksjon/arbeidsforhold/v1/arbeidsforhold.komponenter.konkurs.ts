@@ -241,7 +241,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
       svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
   },
   {
-    id: "konkursHarDuSøktOmLønnsgarantimidler",
+    id: "konkursHarDuSøktOmLønnsgarantimidlerVarselmelding",
     type: "varselmelding",
     variant: "warning",
     description:
