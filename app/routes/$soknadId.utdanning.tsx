@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { erTilbakenavigering, UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { UtdanningViewV1 } from "~/seksjon/utdanning/v1/UtdanningViewV1";
@@ -21,7 +21,7 @@ type UtdanningSvarType = {
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "utdanning");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "utdanning");
 
   if (response.status !== 200) {
     return {

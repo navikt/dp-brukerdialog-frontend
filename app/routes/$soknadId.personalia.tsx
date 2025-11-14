@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import {
   adresselinje1FraPdl,
@@ -69,7 +69,7 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<a
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const personaliaResponse = await hentPersonalia(request);
-  const seksjonResponse = await hentSeksjon(request, params.soknadId, "personalia");
+  const seksjonResponse = await hentSeksjonDeprecated(request, params.soknadId, "personalia");
 
   if (!personaliaResponse.ok) {
     return {

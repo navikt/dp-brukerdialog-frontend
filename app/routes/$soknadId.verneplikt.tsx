@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import {
   erTilbakenavigering,
@@ -25,7 +25,7 @@ type VernepliktLoaderDataType = {
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "verneplikt");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "verneplikt");
   if (!response.ok) {
     return {
       seksjon: undefined,

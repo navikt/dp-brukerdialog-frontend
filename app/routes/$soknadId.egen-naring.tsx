@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { EgenNæringViewV1 } from "~/seksjon/egen-næring/v1/EgenNæringViewV1";
@@ -21,7 +21,7 @@ const NYESTE_VERSJON = 1;
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "egen-naring");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "egen-naring");
 
   if (!response.ok) {
     return {

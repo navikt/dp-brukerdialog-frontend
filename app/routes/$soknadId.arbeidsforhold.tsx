@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { erTilbakenavigering } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
@@ -18,7 +18,7 @@ const NYESTE_VERSJON = 1;
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "arbeidsforhold");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "arbeidsforhold");
 
   if (!response.ok) {
     return {
