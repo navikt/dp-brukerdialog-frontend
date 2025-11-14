@@ -18,14 +18,14 @@
     "@elastic/ecs-pino-format": "^1.5.0",
     "@grafana/faro-web-sdk": "^1.19.0",
     "@grafana/faro-web-tracing": "^1.19.0",
-    "@navikt/aksel-icons": "^7.33.2",
-    "@navikt/ds-css": "^7.33.2",
-    "@navikt/ds-react": "^7.33.2",
+    "@navikt/aksel-icons": "^7.33.3",
+    "@navikt/ds-css": "^7.33.3",
+    "@navikt/ds-react": "^7.33.3",
     "@navikt/nav-dekoratoren-moduler": "^3.5.0",
     "@navikt/oasis": "^4.1.0",
     "@portabletext/react": "^5.0.0",
     "@portabletext/types": "^3.0.0",
-    "@react-router/fs-routes": "^7.9.5",
+    "@react-router/fs-routes": "^7.9.6",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
     "@remix-run/form-data-parser": "^0.14.0",
@@ -70,7 +70,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.2.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.9"
   },
   "engines": {
     "node": ">=24.11.0"
