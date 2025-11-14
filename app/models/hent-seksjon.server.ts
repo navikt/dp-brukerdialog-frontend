@@ -1,7 +1,7 @@
 import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 
-export async function hentSeksjon(request: Request, soknadId: string, seksjonId: string) {
+export async function hentSeksjonDeprecated(request: Request, soknadId: string, seksjonId: string) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}/${seksjonId}`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 
@@ -16,7 +16,7 @@ export async function hentSeksjon(request: Request, soknadId: string, seksjonId:
   });
 }
 
-export async function hentSeksjonV2(request: Request, soknadId: string, seksjonId: string) {
+export async function hentSeksjon(request: Request, soknadId: string, seksjonId: string) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${soknadId}/${seksjonId}`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 

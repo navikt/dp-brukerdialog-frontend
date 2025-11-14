@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarnFraPdl } from "~/models/hent-barn-fra-pdl.server";
-import { hentSeksjonV2 } from "~/models/hent-seksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { BarnetilleggProvider } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
@@ -30,7 +30,7 @@ export type BarnetilleggSeksjon = {
     versjon: number;
     seksjon?: SeksjonSvar;
   };
-  dokumentasjonskrav?: Dokumentasjonskrav[];
+  dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
 const NYESTE_VERSJON = 1;
@@ -44,7 +44,7 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<BarnetilleggSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const seksjonResponse = await hentSeksjonV2(request, params.soknadId, SEKSJON_ID);
+  const seksjonResponse = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
   if (seksjonResponse.ok) {
     const { seksjonsvar, dokumentasjonskrav } = await seksjonResponse.json();
@@ -63,6 +63,7 @@ export async function loader({
         seksjonId: SEKSJON_ID,
         versjon: NYESTE_VERSJON,
       },
+      dokumentasjonskrav: null,
     };
   }
 
@@ -76,6 +77,7 @@ export async function loader({
         barnFraPdl: barnFraPdl,
       },
     },
+    dokumentasjonskrav: null,
   };
 }
 
@@ -114,14 +116,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function BarntilleggRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  const { seksjonsvar, dokumentasjonskrav } = loaderData;
   const { soknadId } = useParams();
 
-  switch (loaderData.seksjonsvar?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjonsvar?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData.seksjonsvar?.seksjon?.barnFraPdl ?? []}
-          barnLagtManuelt={loaderData.seksjonsvar?.seksjon?.barnLagtManuelt ?? []}
+          barnFraPdl={seksjonsvar?.seksjon?.barnFraPdl ?? []}
+          barnLagtManuelt={seksjonsvar?.seksjon?.barnLagtManuelt ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />
@@ -129,13 +132,13 @@ export default function BarntilleggRoute() {
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.seksjonsvar?.versjon} for barnetillegg for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjonsvar?.versjon} for barnetillegg for søknaden ${soknadId}`
       );
       return (
         <BarnetilleggProvider
-          barnFraPdl={loaderData.seksjonsvar?.seksjon?.barnFraPdl ?? []}
-          barnLagtManuelt={loaderData.seksjonsvar?.seksjon?.barnLagtManuelt ?? []}
-          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+          barnFraPdl={seksjonsvar?.seksjon?.barnFraPdl ?? []}
+          barnLagtManuelt={seksjonsvar?.seksjon?.barnLagtManuelt ?? []}
+          dokumentasjonskrav={dokumentasjonskrav ?? []}
         >
           <BarnetilleggViewV1 />
         </BarnetilleggProvider>

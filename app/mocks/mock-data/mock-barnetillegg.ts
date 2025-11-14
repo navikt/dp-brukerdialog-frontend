@@ -29,4 +29,5 @@ export const mockBarnetillegg: BarnetilleggSeksjon = {
       ],
     },
   },
+  dokumentasjonskrav: null,
 };

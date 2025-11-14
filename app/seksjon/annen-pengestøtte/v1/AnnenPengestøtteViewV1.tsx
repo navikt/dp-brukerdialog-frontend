@@ -73,7 +73,7 @@ export function AnnenPengestøtteViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjonsvar.seksjon, versjon: loaderData.seksjonsvar.versjon },
   });
 
   useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteKomponenter);
@@ -217,7 +217,7 @@ export function AnnenPengestøtteViewV1() {
       <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
-          <input type="hidden" name="versjon" value={loaderData.versjon} />
+          <input type="hidden" name="versjon" value={loaderData.seksjonsvar.versjon} />
           <VStack gap="8">
             <h3>Pengestøtte fra andre EØS land</h3>
             {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {

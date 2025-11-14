@@ -7,7 +7,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
@@ -18,7 +18,7 @@ const NYESTE_VERSJON = 1;
 export async function loader({ request, params }: LoaderFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "din-situasjon");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "din-situasjon");
 
   if (!response.ok) {
     if (response.status === 404) {

@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
@@ -27,7 +27,7 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<TilleggsopplysningerSvarType> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "tilleggsopplysninger");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "tilleggsopplysninger");
 
   if (response.status !== 200) {
     return {

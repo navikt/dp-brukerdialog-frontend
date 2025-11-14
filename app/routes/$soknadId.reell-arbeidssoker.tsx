@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjon } from "~/models/hent-seksjon.server";
+import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import {
   erTilbakenavigering,
@@ -27,7 +27,7 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<ReellArbeidssøkerSvarType> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, "reell-arbeidssoker");
+  const response = await hentSeksjonDeprecated(request, params.soknadId, "reell-arbeidssoker");
 
   if (!response.ok) {
     return {
