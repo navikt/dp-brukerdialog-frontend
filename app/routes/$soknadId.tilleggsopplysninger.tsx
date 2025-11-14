@@ -45,7 +45,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonId = "tilleggsopplysninger";
-  const nesteSeksjonId = "oppsummering";
+  const nesteSeksjonId = "dokumentasjon";
   const forrigeSeksjonId = "reell-arbeidssoker";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>

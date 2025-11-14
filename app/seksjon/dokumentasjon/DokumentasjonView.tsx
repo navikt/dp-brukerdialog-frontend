@@ -1,11 +1,62 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
-import { useLoaderData } from "react-router";
-import { loader } from "~/routes/$soknadId.dokumentasjon";
+import { Alert, BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
+import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
+import { useNavigate, useParams } from "react-router";
+import { useState } from "react";
 
 export function DokumentasjonView() {
-  const loaderData = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const { soknadId } = useParams();
+  const { dokumentasjonskrav } = useDokumentasjonskravContext();
+  const [bundleFeilet, setBundleFeilet] = useState(false);
+
+  async function bundleOgLagreDokumentasjonskrav() {
+    const dokumentasjonskravTilBundling = dokumentasjonskrav.filter(
+      (dokumentkrav) =>
+        dokumentkrav.svar === dokumentkravSvarSendNå &&
+        dokumentkrav.filer &&
+        dokumentkrav.filer.length > 0
+    );
+
+    if (dokumentasjonskravTilBundling.length === 0) {
+      navigate(`/${soknadId}/oppsummering`);
+    }
+
+    const promises = dokumentasjonskravTilBundling.map((dokumentkrav) => {
+      const formData = new FormData();
+      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkrav.filer));
+
+      return fetch(`/api/dokumentasjonskrav/${soknadId}/${dokumentkrav.id}/bundle-og-lagre`, {
+        method: "POST",
+        body: formData,
+      });
+    });
+
+    const respons = await Promise.all(promises);
+
+    await Promise.all(
+      respons.map((response, index) => {
+        if (response.ok) {
+          console.info(`Bundle opprettet for ${dokumentasjonskravTilBundling[index].id}`);
+          return response.json();
+        }
+
+        console.error(`Bundle feil for ${dokumentasjonskravTilBundling[index].id}`);
+        return null;
+      })
+    );
+
+    const alleDokumentasjonskravBundletOgLagret = respons.every((response) => response.ok);
+
+    if (alleDokumentasjonskravBundletOgLagret) {
+      setBundleFeilet(false);
+      navigate(`/${soknadId}/oppsummering`);
+    } else {
+      setBundleFeilet(true);
+    }
+  }
 
   return (
     <div className="innhold">
@@ -47,25 +98,35 @@ export function DokumentasjonView() {
         Dokumenter du skal sende inn
       </Heading>
       <VStack gap="4">
-        {loaderData.map((dokumentasjonskrav) => (
+        {dokumentasjonskrav.map((dokumentasjonskrav) => (
           <DokumentasjonskravKomponent
             key={dokumentasjonskrav.id}
             dokumentasjonskrav={dokumentasjonskrav}
-            alleDokumentasjonskrav={loaderData}
           />
         ))}
       </VStack>
+
+      {bundleFeilet && (
+        <Alert variant="error">Feil ved lagring av dokumenter. Vennligst prøv igjen.</Alert>
+      )}
 
       <HStack gap="4" className="mt-14">
         <Button
           variant="secondary"
           type="button"
+          onClick={() => navigate("../tilleggsopplysninger")}
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
         >
           Forrige steg
         </Button>
-        <Button variant="primary" type="submit" iconPosition="right" icon={<ArrowRightIcon />}>
-          Neste steg
+        <Button
+          variant="primary"
+          type="button"
+          iconPosition="right"
+          icon={<ArrowRightIcon />}
+          onClick={bundleOgLagreDokumentasjonskrav}
+        >
+          Til oppsummering
         </Button>
       </HStack>
     </div>

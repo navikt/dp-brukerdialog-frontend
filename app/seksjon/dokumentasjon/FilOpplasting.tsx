@@ -93,7 +93,7 @@ export function FilOpplasting({
           const formData = new FormData();
           formData.append("file", fil.file);
 
-          const url = `/api/dokument/last-opp/${soknadId}/${dokumentasjonskrav.id}`;
+          const url = `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/last-opp-fil`;
           const respons = await fetch(url, { method: "POST", body: formData });
 
           if (!respons.ok) {
@@ -137,10 +137,13 @@ export function FilOpplasting({
     const formData = new FormData();
     formData.append("filsti", fil.filsti);
 
-    const response = await fetch(`/api/dokument/slett/${soknadId}/${dokumentasjonskrav.id}`, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/slett-fil`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
       return;
