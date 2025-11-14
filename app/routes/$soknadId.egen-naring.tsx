@@ -6,31 +6,56 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { normaliserFormData } from "~/utils/action.utils.server";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { EgenNæringViewV1 } from "~/seksjon/egen-næring/v1/EgenNæringViewV1";
 import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
-  EgenNæringResponse,
+  EgenNæringSvar,
   erTilbakenavigering,
+  gårdsbruk,
+  Gårdsbruk,
+  Næringsvirksomhet,
+  næringsvirksomheter,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { normaliserFormData } from "~/utils/action.utils.server";
+
+export type SeksjonSvar = EgenNæringSvar & {
+  [næringsvirksomheter]?: Næringsvirksomhet[] | null;
+  [gårdsbruk]?: Gårdsbruk[] | null;
+};
+
+export type EgenNæringSeksjon = {
+  seksjon: {
+    seksjonId: string;
+    versjon: number;
+    seksjonsvar?: SeksjonSvar;
+  };
+  dokumentasjonskrav: Dokumentasjonskrav[] | null;
+};
 
 const NYESTE_VERSJON = 1;
+const SEKSJON_ID = "egen-naring";
+const NESTE_SEKSJON_ID = "verneplikt";
+const FORRIGE_SEKSJON_ID = "annen-pengestotte";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs): Promise<EgenNæringSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjonDeprecated(request, params.soknadId, "egen-naring");
+  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
-  if (!response.ok) {
-    return {
-      seksjon: undefined,
-      versjon: NYESTE_VERSJON,
-    };
+  if (response.ok) {
+    return await response.json();
   }
 
-  return await response.json();
+  return {
+    seksjon: {
+      seksjonId: SEKSJON_ID,
+      versjon: NYESTE_VERSJON,
+    },
+    dokumentasjonskrav: null,
+  };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -38,57 +63,56 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
-  const seksjonId = "egen-naring";
-  const nesteSeksjonId = "verneplikt";
-  const forrigeSeksjonId = "annen-pengestotte";
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
-      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
+    seksjon: JSON.stringify({
+      seksjonId: SEKSJON_ID,
+      seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
+    dokumentasjonskrav: null,
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
   if (erTilbakeknapp) {
-    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function EgenNæringRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const seksjon: EgenNæringResponse = loaderData?.seksjon ?? {};
+  const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <EgenNæringProvider
-          næringsvirksomheter={seksjon?.næringsvirksomheter || []}
-          gårdsbruk={seksjon?.gårdsbruk || []}
+          næringsvirksomheter={seksjon.seksjonsvar?.næringsvirksomheter ?? []}
+          gårdsbruk={seksjon.seksjonsvar?.gårdsbruk ?? []}
         >
           <EgenNæringViewV1 />
         </EgenNæringProvider>
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for egen-næring for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon.versjon} for egen-næring for søknaden ${soknadId}`
       );
       return (
         <EgenNæringProvider
-          næringsvirksomheter={seksjon?.næringsvirksomheter || []}
-          gårdsbruk={seksjon?.gårdsbruk || []}
+          næringsvirksomheter={seksjon.seksjonsvar?.næringsvirksomheter ?? []}
+          gårdsbruk={seksjon.seksjonsvar?.gårdsbruk ?? []}
         >
           <EgenNæringViewV1 />
         </EgenNæringProvider>

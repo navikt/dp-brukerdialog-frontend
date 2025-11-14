@@ -20,8 +20,8 @@ import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export type SeksjonSvar = BarnetilleggSvar & {
-  barnFraPdl?: BarnFraPdl[];
-  barnLagtManuelt?: BarnLagtManuelt[];
+  barnFraPdl?: BarnFraPdl[] | null;
+  barnLagtManuelt?: BarnLagtManuelt[] | null;
 };
 
 export type BarnetilleggSeksjon = {
@@ -81,18 +81,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
-  const seksjonsvar = formData.get("seksjonsvar");
-  const pdfGrunnlag = formData.get("pdfGrunnlag");
-  const versjon = formData.get("versjon");
-  const dokumentasjonskrav = formData.get("dokumentasjonskrav");
+  const seksjonsvar = formData.get("seksjonsvar") as string;
+  const pdfGrunnlag = formData.get("pdfGrunnlag") as string;
+  const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
+  const versjon = formData.get("versjon") as string;
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
       versjon: Number(versjon),
-      seksjonsvar: seksjonsvar ? JSON.parse(seksjonsvar as string) : undefined,
+      seksjonsvar: JSON.parse(seksjonsvar),
     }),
-    dokumentasjonskrav: dokumentasjonskrav,
+    dokumentasjonskrav: dokumentasjonskrav === "null" ? null : dokumentasjonskrav,
     pdfGrunnlag: pdfGrunnlag,
   };
 

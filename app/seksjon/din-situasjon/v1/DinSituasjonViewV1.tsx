@@ -29,7 +29,7 @@ export function DinSituasjonViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
@@ -62,7 +62,7 @@ export function DinSituasjonViewV1() {
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
+            <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             <VStack gap="8">
               {dinSituasjonKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

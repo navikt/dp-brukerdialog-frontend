@@ -38,7 +38,6 @@ enum BarnLagtManueltVarsel {
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
-
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const [varsel, setVarsel] = useState<BarnLagtManueltVarsel | undefined>(undefined);
@@ -86,7 +85,10 @@ export function BarnetilleggViewV1() {
     form.setValue(erTilbakenavigering, true);
     form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
     form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
-    form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
+    form.setValue(
+      "dokumentasjonskrav",
+      JSON.stringify(dokumentasjonskrav.length > 0 ? dokumentasjonskrav : null)
+    );
     form.submit();
   }
 
@@ -103,16 +105,20 @@ export function BarnetilleggViewV1() {
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
       form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
       form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
-      form.setValue("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
+      form.setValue(
+        "dokumentasjonskrav",
+        JSON.stringify(dokumentasjonskrav.length > 0 ? dokumentasjonskrav : null)
+      );
+
       form.submit();
     }
   }
 
   function lagSeksjonsvar(): SeksjonSvar {
     return {
-      barnFraPdl: barnFraPdl,
+      barnFraPdl: barnFraPdl.length > 0 ? barnFraPdl : null,
       [forsørgerDuBarnSomIkkeVisesHer]: forsørgerDuBarnSomIkkeVisesHerSvar,
-      barnLagtManuelt: barnLagtManuelt,
+      barnLagtManuelt: barnLagtManuelt.length > 0 ? barnLagtManuelt : null,
     };
   }
 
@@ -177,12 +183,6 @@ export function BarnetilleggViewV1() {
                 />
               );
             })}
-
-            {actionData && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
           </VStack>
         </Form>
         <VStack gap="space-16">
@@ -208,6 +208,12 @@ export function BarnetilleggViewV1() {
         {varsel && (
           <Alert variant="warning" className="mt-4">
             <BodyShort className="validation--warning">{hentVarselTekst(varsel)}</BodyShort>
+          </Alert>
+        )}
+
+        {actionData && (
+          <Alert variant="error" className="mt-4">
+            {actionData.error}
           </Alert>
         )}
 

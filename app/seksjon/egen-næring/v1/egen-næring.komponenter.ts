@@ -58,11 +58,6 @@ export type EgenNæringSvar = {
   [driverDuEgetGårdsbruk]?: "ja" | "nei";
 };
 
-export type EgenNæringResponse = EgenNæringSvar & {
-  [næringsvirksomheter]?: Array<Næringsvirksomhet> | [];
-  [gårdsbruk]?: Array<Gårdsbruk> | [];
-};
-
 export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
   {
     id: driverDuEgenNæringsvirksomhet,

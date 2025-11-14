@@ -7,31 +7,47 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
+import { DinSituasjonSvar } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
-const NYESTE_VERSJON = 1;
+export type DinSituasjonSeksjon = {
+  seksjon: {
+    seksjonId: string;
+    versjon: number;
+    seksjonsvar?: DinSituasjonSvar;
+  };
+  dokumentasjonskrav: Dokumentasjonskrav[] | null;
+};
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+const NYESTE_VERSJON = 1;
+const SEKSJON_ID = "din-situasjon";
+const NESTE_SEKSJON_ID = "arbeidsforhold";
+const FORRIGE_SEKSJON_ID = "personalia";
+
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<DinSituasjonSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjonDeprecated(request, params.soknadId, "din-situasjon");
+  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
-  if (!response.ok) {
-    if (response.status === 404) {
-      return {
-        versjon: NYESTE_VERSJON,
-        seksjon: undefined,
-      };
-    }
-
-    throw data(response.statusText, { status: response.status });
+  if (response.ok) {
+    return await response.json();
   }
 
-  return await response.json();
+  return {
+    seksjon: {
+      seksjonId: SEKSJON_ID,
+      versjon: NYESTE_VERSJON,
+    },
+    dokumentasjonskrav: null,
+  };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -39,9 +55,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
-  const seksjonId = "din-situasjon";
-  const nesteSeksjonId = "arbeidsforhold";
-  const forrigeSeksjonId = "personalia";
 
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
@@ -51,41 +64,44 @@ export async function action({ request, params }: ActionFunctionArgs) {
       key !== erTilbakenavigering &&
       key !== "pdfGrunnlag"
   );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const seksjonsvar = Object.fromEntries(filtrertEntries);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
-      seksjon: normaliserFormData(seksjonsData),
+    seksjon: JSON.stringify({
+      seksjonId: SEKSJON_ID,
+      seksjonsvar: seksjonsvar,
       versjon: Number(versjon),
     }),
+    dokumentasjonskrav: null,
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
   if (erTilbakeknapp) {
-    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function DinSituasjonRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <DinSituasjonViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for din situasjon for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for din situasjon for søknaden ${soknadId}`
       );
       return <DinSituasjonViewV1 />;
   }

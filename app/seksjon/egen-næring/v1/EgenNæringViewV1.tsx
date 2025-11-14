@@ -1,32 +1,31 @@
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
+import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
-import { action, loader } from "~/routes/$soknadId.egen-naring";
 import { useEffect, useRef, useState } from "react";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Komponent } from "~/components/Komponent";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
+import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
   egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukKomponenter,
-  EgenNæringResponse,
   EgenNæringSvar,
   erTilbakenavigering,
   Gårdsbruk,
   leggTilGårdsbrukKomponenter,
   leggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
-  seksjonsvar,
   pdfGrunnlag,
+  seksjonsvar,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
-import { Komponent } from "~/components/Komponent";
-import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
-import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
+import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukDetaljer";
-import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
 import { GårdsbrukModal } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukModal";
-import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
+import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function EgenNæringViewV1() {
@@ -59,7 +58,7 @@ export function EgenNæringViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetKomponenter);
@@ -113,11 +112,11 @@ export function EgenNæringViewV1() {
   function handleTilbakenavigering() {
     form.setValue(erTilbakenavigering, true);
 
-    const egenNæringResponse: EgenNæringResponse = {
+    const egenNæringResponse: SeksjonSvar = {
       [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
-      næringsvirksomheter: næringsvirksomheter,
+      næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
       [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-      gårdsbruk: gårdsbruk,
+      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
     };
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -152,11 +151,11 @@ export function EgenNæringViewV1() {
       !manglerRegistrertNæringsvirksomhet &&
       !manglerRegistrertGårdsbruk
     ) {
-      const egenNæringResponse: EgenNæringResponse = {
+      const egenNæringResponse: SeksjonSvar = {
         [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
-        næringsvirksomheter: næringsvirksomheter,
+        næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
         [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-        gårdsbruk: gårdsbruk,
+        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
       };
 
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -172,7 +171,7 @@ export function EgenNæringViewV1() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              <input type="hidden" name="versjon" value={loaderData.versjon} />
+              <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
               {egenNæringEgenNæringsvirksomhetKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
