@@ -56,7 +56,7 @@ export function ArbeidsforholdViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjonsvar.seksjon, versjon: loaderData.seksjonsvar.versjon },
   });
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
@@ -150,7 +150,7 @@ export function ArbeidsforholdViewV1() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              <input type="hidden" name="versjon" value={loaderData.versjon} />
+              <input type="hidden" name="versjon" value={loaderData.seksjonsvar.versjon} />
               {arbeidsforholdKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
