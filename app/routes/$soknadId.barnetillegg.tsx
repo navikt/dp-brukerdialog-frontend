@@ -50,8 +50,8 @@ export async function loader({
     const { seksjonsvar, dokumentasjonskrav } = await seksjonResponse.json();
 
     return {
-      seksjonsvar: seksjonsvar ? JSON.parse(seksjonsvar) : undefined,
-      dokumentasjonskrav: dokumentasjonskrav ? JSON.parse(dokumentasjonskrav) : undefined,
+      seksjonsvar: seksjonsvar,
+      dokumentasjonskrav: dokumentasjonskrav,
     };
   }
 
