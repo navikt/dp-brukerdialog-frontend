@@ -55,7 +55,7 @@ export function BarnetilleggViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: barnetilleggSchema,
-    defaultValues: { ...loaderData.seksjonsvar?.seksjon, versjon: loaderData.seksjonsvar?.versjon },
+    defaultValues: { ...loaderData.seksjon?.seksjonsvar, versjon: loaderData.seksjon?.versjon },
   });
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggKomponenter);
@@ -163,7 +163,7 @@ export function BarnetilleggViewV1() {
         </VStack>
         <Form {...form.getFormProps()}>
           <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.seksjonsvar?.versjon} />
+            <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
             {barnetilleggKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                 return null;
@@ -235,7 +235,7 @@ export function BarnetilleggViewV1() {
         {modalData && (
           <BarnModal
             ref={ref}
-            seksjonId={loaderData.seksjonsvar?.seksjonId}
+            seksjonId={loaderData.seksjon?.seksjonId}
             spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
           />
         )}

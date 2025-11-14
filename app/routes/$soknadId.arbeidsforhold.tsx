@@ -23,10 +23,10 @@ export type SeksjonSvar = ArbeidsforholdSvar & {
 };
 
 export type ArbeidsforholdSeksjon = {
-  seksjonsvar: {
+  seksjon: {
     seksjonId: string;
     versjon: number;
-    seksjon?: SeksjonSvar;
+    seksjonsvar?: SeksjonSvar;
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
@@ -46,10 +46,10 @@ export async function loader({
 
   if (!response.ok) {
     return {
-      seksjonsvar: {
+      seksjon: {
         seksjonId: SEKSJON_ID,
         versjon: NYESTE_VERSJON,
-        seksjon: undefined,
+        seksjonsvar: undefined,
       },
       dokumentasjonskrav: null,
     };
@@ -68,9 +68,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
+    seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
-      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
+      seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
     dokumentasjonskrav: null,
@@ -92,25 +92,25 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function ArbeidsforholdRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const { seksjonsvar } = loaderData;
+  const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjonsvar?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <ArbeidsforholdProvider
-          registrerteArbeidsforhold={seksjonsvar?.seksjon?.registrerteArbeidsforhold ?? []}
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
         >
           <ArbeidsforholdViewV1 />
         </ArbeidsforholdProvider>
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${seksjonsvar.versjon} for arbeidsforhold for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon.versjon} for arbeidsforhold for søknaden ${soknadId}`
       );
       return (
         <ArbeidsforholdProvider
-          registrerteArbeidsforhold={seksjonsvar?.seksjon?.registrerteArbeidsforhold ?? []}
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
         >
           <ArbeidsforholdViewV1 />
         </ArbeidsforholdProvider>

@@ -7,10 +7,10 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 
 export const mockBarnetillegg: BarnetilleggSeksjon = {
-  seksjonsvar: {
+  seksjon: {
     seksjonId: "barnetillegg",
     versjon: 1,
-    seksjon: {
+    seksjonsvar: {
       barnFraPdl: [
         {
           id: "b2f1e8c7-3a4d-4e2b-9c1f-7a8b6d5e4c3f",

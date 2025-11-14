@@ -30,10 +30,10 @@ export type SeksjonSvar = AnnenPengestøtteSvar & {
 };
 
 export type AnnenPengestøtteSeksjon = {
-  seksjonsvar: {
+  seksjon: {
     seksjonId: string;
     versjon: number;
-    seksjon?: SeksjonSvar;
+    seksjonsvar?: SeksjonSvar;
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
@@ -48,7 +48,7 @@ export async function loader({
 
   if (!response.ok) {
     return {
-      seksjonsvar: {
+      seksjon: {
         seksjonId: SEKSJON_ID,
         versjon: NYESTE_VERSJON,
       },
@@ -69,9 +69,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
+    seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
-      seksjon: normaliserFormData(JSON.parse(seksjonsvar as string)),
+      seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
     dokumentasjonskrav: null,
@@ -93,27 +93,27 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function AnnenPengestøtteRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const { seksjonsvar } = loaderData;
+  const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjonsvar?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
         <AnnenPengestøtteProvider
-          pengestøtteFraAndreEøsLand={seksjonsvar?.seksjon?.pengestøtteFraAndreEøsLand ?? []}
-          pengestøtteFraNorge={seksjonsvar?.seksjon?.pengestøtteFraNorge ?? []}
+          pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
+          pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.seksjonsvar?.versjon} for annen-pengestøtte for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.seksjon?.versjon} for annen-pengestøtte for søknaden ${soknadId}`
       );
       return (
         <AnnenPengestøtteProvider
-          pengestøtteFraAndreEøsLand={seksjonsvar?.seksjon?.pengestøtteFraAndreEøsLand ?? []}
-          pengestøtteFraNorge={seksjonsvar?.seksjon?.pengestøtteFraNorge ?? []}
+          pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
+          pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>
