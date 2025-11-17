@@ -36,12 +36,17 @@ export type Dokumentasjonskrav = {
   tittel?: string;
   seksjonId: string;
   type: DokumentasjonskravType;
-  gyldigeValg?: GyldigDokumentkravSvar[];
   svar?: GyldigDokumentkravSvar;
   begrunnelse?: string;
-  filer?: DokumentkravFil[];
-  bundle?: string;
-  bundleFilsti?: string;
+  filer?: DokumentkravFil[] | null;
+};
+
+export type Bundle = {
+  filnavn: string;
+  urn: string;
+  filsti: string;
+  storrelse: number;
+  tidspunkt: string;
 };
 
 export enum DokumentasjonskravType {
@@ -122,24 +127,31 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       whenTouched: "onSubmit",
       whenSubmitted: "onSubmit",
     },
-    handleSubmit: (dokumentasjonskravSvar) => {
+    handleSubmit: async (dokumentasjonskravskjema) => {
+      let bundle: Bundle | null = null;
+
+      if (dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå) {
+        bundle = await bundleFiler();
+      }
+
       const begrunnelse =
-        dokumentasjonskravSvar[nårSendteDuDokumentet] ||
-        dokumentasjonskravSvar[hvaErGrunnenTilAtDuIkkeSenderDokumentet] ||
-        dokumentasjonskravSvar[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
+        dokumentasjonskravskjema[nårSendteDuDokumentet] ||
+        dokumentasjonskravskjema[hvaErGrunnenTilAtDuIkkeSenderDokumentet] ||
+        dokumentasjonskravskjema[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
         undefined;
 
-      const svar = {
+      const dokumentasjonskravsvar = {
         ...dokumentasjonskrav,
-        svar: dokumentasjonskravSvar[velgHvaDuVilGjøre],
+        svar: dokumentasjonskravskjema[velgHvaDuVilGjøre],
         begrunnelse: begrunnelse,
         filer:
-          dokumentasjonskravSvar[velgHvaDuVilGjøre] === dokumentkravSvarSendNå
+          dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå
             ? dokumentkravFiler
-            : undefined,
+            : null,
+        bundle: bundle,
       };
 
-      lagreDokumentasjonskravSvar(svar);
+      await lagreDokumentasjonskravsvar(dokumentasjonskravsvar);
     },
   });
 
@@ -151,7 +163,26 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
-  async function lagreDokumentasjonskravSvar(svar: Dokumentasjonskrav) {
+  async function bundleFiler(): Promise<Bundle | null> {
+    const formData = new FormData();
+    formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
+
+    const response = await fetch(
+      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    if (response.ok) {
+      return await response.json();
+    }
+
+    return null;
+  }
+
+  async function lagreDokumentasjonskravsvar(svar: Dokumentasjonskrav) {
     const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
       krav.id === svar.id ? svar : krav
     );

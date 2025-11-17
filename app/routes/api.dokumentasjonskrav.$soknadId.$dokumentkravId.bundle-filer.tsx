@@ -1,9 +1,6 @@
 import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
-import {
-  hentMellomlagringOboToken,
-  hentSoknadOrkestratorOboToken,
-} from "~/utils/auth.utils.server";
+import { hentMellomlagringOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";
 
 type MellomlagringBundle = {
@@ -14,14 +11,6 @@ type MellomlagringBundle = {
 
 type Urn = {
   urn: string;
-};
-
-type MellomlagringBundleResponse = {
-  filnavn: string;
-  urn: string;
-  filsti: string;
-  storrelse: number;
-  tidspunkt: string;
 };
 
 export async function action({ params, request }: ActionFunctionArgs) {
@@ -46,7 +35,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const mellomlagringBundleUrl = `${getEnv("DP_MELLOMLAGRING_URL")}/pdf/bundle`;
   const mellomlagringOboToken = await hentMellomlagringOboToken(request);
 
-  const bundlingResponse = await fetch(mellomlagringBundleUrl, {
+  return await fetch(mellomlagringBundleUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,25 +43,5 @@ export async function action({ params, request }: ActionFunctionArgs) {
       Authorization: `Bearer ${mellomlagringOboToken}`,
     },
     body: JSON.stringify(bundleBody),
-  });
-
-  if (!bundlingResponse.ok) {
-    console.error("Feil ved bundling av dokumentasjonskrav filer");
-    return new Response("Feil ved bundling av dokumentasjonskrav filer", { status: 500 });
-  }
-
-  const { urn }: MellomlagringBundleResponse = await bundlingResponse.json();
-
-  const lagreBundleUrl = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/${søknadId}/dokumentasjonskrav/${dokumentkravId}/bundle`;
-  const orkestratorOboToken = await hentSoknadOrkestratorOboToken(request);
-
-  return await fetch(lagreBundleUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${orkestratorOboToken}`,
-    },
-    body: JSON.stringify({ urn }),
   });
 }
