@@ -34,6 +34,7 @@ export default function OppsummeringView() {
             if (!seksjonsData) return null;
             return (
               <Oppsummering
+                key={seksjon.path}
                 seksjonsId={seksjon.path}
                 seksjonsUrl={`/${soknadId}/${seksjon.path}`}
                 seksjonsData={seksjonsData.data}

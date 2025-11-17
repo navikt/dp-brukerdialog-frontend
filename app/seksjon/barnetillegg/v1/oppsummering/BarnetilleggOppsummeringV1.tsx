@@ -59,8 +59,8 @@ export default function BarnetilleggOppsummeringV1({
         }
         {alleBarna?.map((barn, index) => {
           return (
-            <FormSummary.Answer>
-              <FormSummary.Label key={index}>Barn {index + 1}</FormSummary.Label>
+            <FormSummary.Answer key={index}>
+              <FormSummary.Label>Barn {index + 1}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   <FormSummary.Answer>
