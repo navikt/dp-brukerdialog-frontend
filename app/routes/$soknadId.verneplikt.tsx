@@ -94,8 +94,6 @@ export default function VernepliktRoute() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
-  console.log(`🔥 loaderData :`, loaderData);
-
   switch (loaderData?.seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <VernepliktViewV1 />;

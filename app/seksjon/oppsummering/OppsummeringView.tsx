@@ -1,11 +1,12 @@
 import { Alert, BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
-import { useLoaderData, useNavigation } from "react-router";
+import { useLoaderData, useNavigation, useParams } from "react-router";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
   const { state } = useNavigation();
 
   if (!loaderData) {
@@ -34,7 +35,7 @@ export default function OppsummeringView() {
             return (
               <Oppsummering
                 seksjonsId={seksjon.path}
-                seksjonsUrl={seksjonsData.seksjonsUrl}
+                seksjonsUrl={`/${soknadId}/${seksjon.path}`}
                 seksjonsData={seksjonsData.data}
               />
             );

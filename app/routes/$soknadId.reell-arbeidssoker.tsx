@@ -62,7 +62,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== "undefined" &&
       key !== "versjon" &&
       key !== erTilbakenavigering &&
-      value !== "pdfGrunnlag"
+      key !== "pdfGrunnlag"
   );
 
   const seksjonsData = normaliserFormData(Object.fromEntries(filtrertEntries));

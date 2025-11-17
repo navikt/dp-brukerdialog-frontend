@@ -1,28 +1,23 @@
 import { FormSummary } from "@navikt/ds-react";
-
+import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,
   adresselinje3FraPdl,
   alderFraPdl,
+  etternavnFraPdl,
+  fornavnFraPdl,
   fødselsnummerFraPdl,
   kontonummerFraKontoregister,
   landFraPdl,
-  fornavnFraPdl,
+  mellomnavnFraPdl,
   personaliaBostedslandSpørsmål,
   postnummerFraPdl,
   poststedFraPdl,
-  mellomnavnFraPdl,
-  etternavnFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
-
-function finnRegisterverdi(key: string, registerverdier: [string, string][]) {
-  return registerverdier.find((verdi) => verdi[0] === key)?.[1];
-}
 
 export default function PersonaliaOppsummeringV1({
   seksjonSvarene,
@@ -30,6 +25,11 @@ export default function PersonaliaOppsummeringV1({
   redigerbar,
 }: SeksjonProps) {
   const seksjonSvar = Object.entries(seksjonSvarene);
+
+  function finnRegisterverdi(key: string, registerverdier: [string, string][]) {
+    return registerverdier.find((verdi) => verdi[0] === key)?.[1];
+  }
+
   return (
     <FormSummary>
       <FormSummary.Header>

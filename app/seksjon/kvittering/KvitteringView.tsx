@@ -12,17 +12,16 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import DokumentasjonsBox from "~/seksjon/kvittering/DokumentasjonsBox";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import { stegISøknaden } from "~/routes/$soknadId";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 import { ComponentIcon } from "@navikt/aksel-icons";
 
 export default function KvitteringView() {
+  const { soknadId } = useParams();
   const loaderData = useLoaderData<typeof loader>();
-  if (!loaderData) {
-    return null;
-  }
+
   var listeMedMangledeDokumentasjoner = [
     {
       type: "Arbeidsavtale",
@@ -46,6 +45,7 @@ export default function KvitteringView() {
       status: "Ikke sendt",
     },
   ];
+
   return (
     <div className="innhold">
       <VStack gap="20">
@@ -100,6 +100,7 @@ export default function KvitteringView() {
           {listeMedMangledeDokumentasjoner.map((dokumentasjon, index) => {
             return (
               <DokumentasjonsBox
+                key={index}
                 type={dokumentasjon.type}
                 beskrivelse={dokumentasjon.beskrivelse}
                 sendesAv={dokumentasjon.sendesAv}
@@ -112,9 +113,10 @@ export default function KvitteringView() {
           </HStack>
 
           <Heading size="medium">Dokumenter du ikke skal sende</Heading>
-          {listeMedMangledeDokumentasjonerSomIkkeSkalSendes.map((dokumentasjon) => {
+          {listeMedMangledeDokumentasjonerSomIkkeSkalSendes.map((dokumentasjon, index) => {
             return (
               <DokumentasjonsBox
+                key={index}
                 type={dokumentasjon.type}
                 beskrivelse={dokumentasjon.beskrivelse}
                 sendesAv={dokumentasjon.sendesAv}
@@ -130,12 +132,13 @@ export default function KvitteringView() {
             <ExpansionCard.Content>
               <VStack gap="6">
                 {stegISøknaden.map((seksjon) => {
-                  const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
+                  const seksjonsData = loaderData?.find((s) => s.seksjonId === seksjon.path);
                   if (!seksjonsData) return null;
                   return (
                     <Oppsummering
+                      key={seksjonsData.seksjonId}
                       seksjonsId={seksjon.path}
-                      seksjonsUrl={seksjonsData.seksjonsUrl}
+                      seksjonsUrl={`/${soknadId}/${seksjonsData.seksjonId}`}
                       seksjonsData={seksjonsData.data}
                       redigerbar={false}
                     />

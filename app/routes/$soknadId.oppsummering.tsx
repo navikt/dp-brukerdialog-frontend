@@ -1,11 +1,10 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, redirect } from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
 import { sendSøknad } from "~/models/send-søknad.server";
 
 type OppsummeringSeksjon = {
-  seksjonsUrl: string;
   seksjonId: string;
   data: string;
 };
@@ -13,22 +12,16 @@ type OppsummeringSeksjon = {
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<OppsummeringSeksjon[] | undefined> {
+}: LoaderFunctionArgs): Promise<OppsummeringSeksjon[] | null> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
-  let oppsummering = undefined;
 
   const response = await hentAlleSeksjoner(request, params.soknadId);
 
-  if (response.status === 200) {
-    oppsummering = await response.json();
-    oppsummering = oppsummering.map((seksjon: any) => ({
-      seksjonsUrl: `/${params.soknadId}/${seksjon.seksjonId}`,
-      seksjonId: seksjon.seksjonId,
-      data: seksjon.data,
-    }));
+  if (response.ok) {
+    return await response.json();
   }
 
-  return oppsummering;
+  return null;
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -47,5 +40,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function Oppsummering() {
+  const loaderData = useLoaderData<typeof loader>();
+
+  if (!loaderData) {
+    return <div>Kunne ikke hente seksjoner</div>;
+  }
+
   return <OppsummeringView />;
 }
