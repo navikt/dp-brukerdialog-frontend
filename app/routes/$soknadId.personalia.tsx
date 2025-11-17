@@ -1,3 +1,4 @@
+import { id } from "date-fns/locale";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -7,9 +8,13 @@ import {
 } from "react-router";
 import invariant from "tiny-invariant";
 import { hentPersonalia } from "~/models/hent-personalia.server";
-import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
-import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
+import {
+  lagreSøknadPersonalia,
+  PutSøknadPersonaliaRequestBody,
+} from "~/models/lagre-søknad-personalia.server";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,
@@ -25,13 +30,12 @@ import {
   postnummerFraPdl,
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
+import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
-import {
-  lagreSøknadPersonalia,
-  PutSøknadPersonaliaRequestBody,
-} from "~/models/lagre-søknad-personalia.server";
 
 const NYESTE_VERSJON = 1;
+const SEKSJON_ID = "personalia";
+const NESTE_SEKSJON_ID = "din-situasjon";
 
 export type Personalia = {
   person: Person;
@@ -59,65 +63,79 @@ type Adresse = {
   land: string;
 };
 
-type PersonaliaLoaderDataType = {
-  versjon: number;
-  personalia?: Personalia;
-  seksjon?: PersonaliaSvar;
+export type PersonaliaSeksjon = {
+  seksjon: {
+    seksjonId: string;
+    versjon: number;
+    seksjonsvar?: PersonaliaSvar;
+  };
+  personalia?: Personalia | null;
+  dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-export async function loader({ params, request }: LoaderFunctionArgs): Promise<any> {
+export async function loader({ params, request }: LoaderFunctionArgs): Promise<PersonaliaSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const personaliaResponse = await hentPersonalia(request);
-  const seksjonResponse = await hentSeksjonDeprecated(request, params.soknadId, "personalia");
+  const seksjonResponse = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
   if (!personaliaResponse.ok) {
     return {
-      error: "Noe gikk under uthenting av personalia.",
+      seksjon: {
+        seksjonId: SEKSJON_ID,
+        versjon: NYESTE_VERSJON,
+      },
+      personalia: null,
+      dokumentasjonskrav: null,
     };
   }
 
   if (!seksjonResponse.ok) {
     return {
-      versjon: NYESTE_VERSJON,
+      seksjon: {
+        seksjonId: SEKSJON_ID,
+        versjon: NYESTE_VERSJON,
+      },
       personalia: await personaliaResponse.json(),
-      seksjon: {},
+      dokumentasjonskrav: null,
     };
   }
 
-  const personaliaSeksjonData = await seksjonResponse.json();
+  const seksjonsdata = await seksjonResponse.json();
+
   return {
-    versjon: personaliaSeksjonData.versjon,
+    ...seksjonsdata,
     personalia: await personaliaResponse.json(),
-    seksjon: personaliaSeksjonData.seksjon,
+    dokumentasjonskrav: null,
   };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadId er påkrevd");
   const formData = await request.formData();
-  const seksjonId = "personalia";
-  const nesteSeksjonId = "din-situasjon";
+
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
       value !== undefined && value !== "undefined" && key !== "versjon" && key !== "pdfGrunnlag"
   );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const seksjonsvar = Object.fromEntries(filtrertEntries);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
-      seksjon: normaliserFormData(seksjonsData),
+    seksjon: JSON.stringify({
+      id: SEKSJON_ID,
+      seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
+    dokumentasjonskrav: null,
     pdfGrunnlag: pdfGrunnlag,
   };
 
   const lagreSeksjonResponse = await lagreSeksjon(
     request,
     params.soknadId,
-    seksjonId,
+    SEKSJON_ID,
     putSeksjonRequestBody
   );
 
@@ -150,19 +168,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av personalia" };
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function PersonaliaRoute() {
-  const loaderData: PersonaliaLoaderDataType = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
-  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+  switch (loaderData?.seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <PersonaliaViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for din situasjon for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.seksjon?.versjon} for din situasjon for søknaden ${soknadId}`
       );
       return <PersonaliaViewV1 />;
   }

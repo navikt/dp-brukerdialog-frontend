@@ -31,20 +31,19 @@ export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+
+  const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
 
-  if (!loaderData.personalia) {
+  if (!personalia) {
     return <h1>Ingen personalia funnet</h1>;
   }
 
   const { fornavn, mellomnavn, etternavn, ident, alder, folkeregistrertAdresse } =
-    loaderData.personalia.person;
+    personalia.person;
 
   const formattertIdent = ident.replace(/(.{6})(.{5})/, `$1 $2`);
-  const formattertKontonummer = loaderData.personalia.kontonummer?.replace(
-    /(.{4})(.{2})(.{5})/,
-    "$1 $2 $3"
-  );
+  const formattertKontonummer = personalia.kontonummer?.replace(/(.{4})(.{2})(.{5})/, "$1 $2 $3");
 
   const form = useForm({
     method: "PUT",
@@ -55,7 +54,7 @@ export function PersonaliaViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   form.setValue(fornavnFraPdl, fornavn || "");
@@ -70,7 +69,7 @@ export function PersonaliaViewV1() {
   form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
   form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
   form.setValue(alderFraPdl, alder?.toString() || "");
-  form.setValue(kontonummerFraKontoregister, loaderData.personalia.kontonummer || "");
+  form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
@@ -81,6 +80,7 @@ export function PersonaliaViewV1() {
         spørsmål: [
           ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
           ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+          ,
         ],
       };
 
@@ -148,7 +148,7 @@ export function PersonaliaViewV1() {
             </div>
           </VStack>
           <Form {...form.getFormProps()}>
-            <input type="hidden" name="versjon" value={loaderData.versjon} />
+            <input type="hidden" name="versjon" value={seksjon.versjon} />
             <VStack gap="8">
               {personaliaSpørsmål.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
