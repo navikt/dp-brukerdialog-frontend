@@ -23,13 +23,7 @@ export async function loader({
 
   const dokumentasjonskravData = await dokumentasjonskravResponse.json();
 
-  // Sjekk FØRST om data er gyldig
-  // Todo: finn ut hva backend returnerer. Her kan frontend lagre feil info til backend også
-  if (
-    !dokumentasjonskravData ||
-    dokumentasjonskravData.length === 0 ||
-    dokumentasjonskravData[0] === null
-  ) {
+  if (dokumentasjonskravData === null) {
     return redirect(`/${params.soknadId}/oppsummering`);
   }
 

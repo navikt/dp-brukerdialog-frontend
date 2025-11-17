@@ -1,60 +1,35 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
+import { useNavigate } from "react-router";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
-import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
-import { useNavigate, useParams } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const NESTE_SEKSJON_ID = "oppsummering";
+const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
 
 export function DokumentasjonView() {
   const navigate = useNavigate();
-  const { soknadId } = useParams();
   const { dokumentasjonskrav } = useDokumentasjonskravContext();
-  const [bundleFeilet, setBundleFeilet] = useState(false);
+  const [harUbesvartDokumentasjonskrav, setHarUbesvartDokumentasjonskrav] = useState(false);
+  const [harForsøktÅGåVidere, setHarForsøktÅGåVidere] = useState(false);
 
-  async function bundleOgLagreDokumentasjonskrav() {
-    const dokumentasjonskravTilBundling = dokumentasjonskrav.filter(
-      (dokumentkrav) =>
-        dokumentkrav.svar === dokumentkravSvarSendNå &&
-        dokumentkrav.filer &&
-        dokumentkrav.filer.length > 0
-    );
+  useEffect(() => {
+    const alleBesvart = dokumentasjonskrav.every((krav) => krav.svar !== undefined);
 
-    if (dokumentasjonskravTilBundling.length === 0) {
-      navigate(`/${soknadId}/oppsummering`);
+    if (alleBesvart && harUbesvartDokumentasjonskrav) {
+      setHarUbesvartDokumentasjonskrav(false);
     }
+  }, [dokumentasjonskrav, harUbesvartDokumentasjonskrav]);
 
-    const promises = dokumentasjonskravTilBundling.map((dokumentkrav) => {
-      const formData = new FormData();
-      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkrav.filer));
+  function ValiderDokumentasjonskrav() {
+    const alleBesvart = dokumentasjonskrav.every((krav) => krav.svar !== undefined);
+    setHarForsøktÅGåVidere(true);
 
-      return fetch(`/api/dokumentasjonskrav/${soknadId}/${dokumentkrav.id}/bundle-og-lagre`, {
-        method: "POST",
-        body: formData,
-      });
-    });
-
-    const respons = await Promise.all(promises);
-
-    await Promise.all(
-      respons.map((response, index) => {
-        if (response.ok) {
-          console.info(`Bundle opprettet for ${dokumentasjonskravTilBundling[index].id}`);
-          return response.json();
-        }
-
-        console.error(`Bundle feil for ${dokumentasjonskravTilBundling[index].id}`);
-        return null;
-      })
-    );
-
-    const alleDokumentasjonskravBundletOgLagret = respons.every((response) => response.ok);
-
-    if (alleDokumentasjonskravBundletOgLagret) {
-      setBundleFeilet(false);
-      navigate(`/${soknadId}/oppsummering`);
+    if (alleBesvart) {
+      navigate(`../${NESTE_SEKSJON_ID}`);
     } else {
-      setBundleFeilet(true);
+      setHarUbesvartDokumentasjonskrav(true);
     }
   }
 
@@ -106,15 +81,17 @@ export function DokumentasjonView() {
         ))}
       </VStack>
 
-      {bundleFeilet && (
-        <Alert variant="error">Feil ved lagring av dokumenter. Vennligst prøv igjen.</Alert>
+      {harUbesvartDokumentasjonskrav && harForsøktÅGåVidere && (
+        <Alert variant="error" className="mt-8">
+          Du må svare på alle dokumentasjonskravene før du kan gå videre til oppsummeringen.
+        </Alert>
       )}
 
       <HStack gap="4" className="mt-14">
         <Button
           variant="secondary"
           type="button"
-          onClick={() => navigate("../tilleggsopplysninger")}
+          onClick={() => navigate(`../${FORRIGE_SEKSJON_ID}`)}
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
         >
           Forrige steg
@@ -124,7 +101,7 @@ export function DokumentasjonView() {
           type="button"
           iconPosition="right"
           icon={<ArrowRightIcon />}
-          onClick={bundleOgLagreDokumentasjonskrav}
+          onClick={ValiderDokumentasjonskrav}
         >
           Til oppsummering
         </Button>

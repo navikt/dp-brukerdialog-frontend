@@ -9,9 +9,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   const response = await hentAlleSeksjoner(request, params.soknadId);
 
   if (response.ok) {
-    const test = await response.json();
-    console.log("kvittering loader", test);
-    return test;
+    return await response.json();
   }
 
   return null;
