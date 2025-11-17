@@ -5,6 +5,9 @@ import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/Dokumentasj
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { useEffect, useState } from "react";
 
+const NESTE_SEKSJON_ID = "oppsummering";
+const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
+
 export function DokumentasjonView() {
   const navigate = useNavigate();
   const { dokumentasjonskrav } = useDokumentasjonskravContext();
@@ -24,7 +27,7 @@ export function DokumentasjonView() {
     setHarForsøktÅGåVidere(true);
 
     if (alleBesvart) {
-      navigate("../oppsummering");
+      navigate(`../${NESTE_SEKSJON_ID}`);
     } else {
       setHarUbesvartDokumentasjonskrav(true);
     }
@@ -88,7 +91,7 @@ export function DokumentasjonView() {
         <Button
           variant="secondary"
           type="button"
-          onClick={() => navigate("../tilleggsopplysninger")}
+          onClick={() => navigate(`../${FORRIGE_SEKSJON_ID}`)}
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
         >
           Forrige steg
