@@ -29,7 +29,7 @@ export function UtdanningViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningKomponenter);
@@ -63,7 +63,7 @@ export function UtdanningViewV1() {
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
-              <input type="hidden" name="versjon" value={loaderData.versjon} />
+              <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
               {utdanningKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;

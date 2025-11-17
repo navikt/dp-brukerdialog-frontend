@@ -1,6 +1,5 @@
 import {
   ActionFunctionArgs,
-  data,
   LoaderFunctionArgs,
   redirect,
   useLoaderData,
@@ -13,7 +12,6 @@ import { DinSituasjonSvar } from "~/seksjon/din-situasjon/v1/din-situasjon.kompo
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
-import { normaliserFormData } from "~/utils/action.utils.server";
 
 export type DinSituasjonSeksjon = {
   seksjon: {

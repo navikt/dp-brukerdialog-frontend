@@ -6,8 +6,9 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
   erTilbakenavigering,
@@ -16,27 +17,38 @@ import {
 import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
-type TilleggsopplysningerSvarType = {
-  seksjon: TilleggsopplysningerSvar | undefined;
-  versjon: number;
+const SEKSJON_ID = "tilleggsopplysninger";
+const NESTE_SEKSJON_ID = "dokumentasjon";
+const FORRIGE_SEKSJON_ID = "reell-arbeidssoker";
+
+type TilleggsopplysningerSeksjon = {
+  seksjon: {
+    seksjonId: string;
+    versjon: number;
+    seksjonsvar?: TilleggsopplysningerSvar;
+  };
+  dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<TilleggsopplysningerSvarType> {
+}: LoaderFunctionArgs): Promise<TilleggsopplysningerSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjonDeprecated(request, params.soknadId, "tilleggsopplysninger");
+  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
-  if (response.status !== 200) {
-    return {
-      versjon: NYESTE_VERSJON,
-      seksjon: undefined,
-    };
+  if (response.ok) {
+    return await response.json();
   }
 
-  return await response.json();
+  return {
+    seksjon: {
+      seksjonId: SEKSJON_ID,
+      versjon: NYESTE_VERSJON,
+    },
+    dokumentasjonskrav: null,
+  };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -44,9 +56,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
-  const seksjonId = "tilleggsopplysninger";
-  const nesteSeksjonId = "dokumentasjon";
-  const forrigeSeksjonId = "reell-arbeidssoker";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
       value !== undefined &&
@@ -60,36 +69,38 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
-      seksjon: normaliserFormData(seksjonsData),
+    seksjon: JSON.stringify({
+      seksjonId: SEKSJON_ID,
+      seksjonsvar: normaliserFormData(seksjonsData),
       versjon: Number(versjon),
     }),
+    dokumentasjonskrav: null,
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
   if (erTilbakeknapp) {
-    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function TilleggsopplysningerRoute() {
-  const loaderData: TilleggsopplysningerSvarType = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
-  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+  switch (loaderData?.seksjon.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <TilleggsopplysningerViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for tilleggsopplysninger for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.seksjon.versjon} for tilleggsopplysninger for søknaden ${soknadId}`
       );
       return <TilleggsopplysningerViewV1 />;
   }

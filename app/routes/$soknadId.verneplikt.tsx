@@ -6,8 +6,9 @@ import {
   useParams,
 } from "react-router";
 import invariant from "tiny-invariant";
-import { hentSeksjonDeprecated } from "~/models/hent-seksjon.server";
+import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import {
   erTilbakenavigering,
   VernepliktSvar,
@@ -16,24 +17,38 @@ import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 
 const NYESTE_VERSJON = 1;
+const SEKSJON_ID = "verneplikt";
+const NESTE_SEKSJON_ID = "utdanning";
+const FORRIGE_SEKSJON_ID = "egen-naring";
 
-type VernepliktLoaderDataType = {
-  versjon: number;
-  seksjon: VernepliktSvar | undefined;
+export type BarnetilleggSeksjon = {
+  seksjon: {
+    seksjonId: string;
+    versjon: number;
+    seksjonsvar?: VernepliktSvar;
+  };
+  dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<BarnetilleggSeksjon> {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
-  const response = await hentSeksjonDeprecated(request, params.soknadId, "verneplikt");
-  if (!response.ok) {
-    return {
-      seksjon: undefined,
-      versjon: NYESTE_VERSJON,
-    };
+  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+
+  if (response.ok) {
+    return await response.json();
   }
 
-  return await response.json();
+  return {
+    seksjon: {
+      seksjonId: SEKSJON_ID,
+      versjon: NYESTE_VERSJON,
+    },
+    dokumentasjonskrav: null,
+  };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -41,9 +56,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const formData = await request.formData();
   const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
-  const seksjonId = "verneplikt";
-  const nesteSeksjonId = "utdanning";
-  const forrigeSeksjonId = "egen-naring";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
       value !== undefined &&
@@ -57,36 +69,39 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
-    seksjonsvar: JSON.stringify({
-      seksjon: normaliserFormData(seksjonsData),
+    seksjon: JSON.stringify({
+      seksjonId: SEKSJON_ID,
+      seksjonsvar: normaliserFormData(seksjonsData),
       versjon: Number(versjon),
     }),
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
   if (erTilbakeknapp) {
-    return redirect(`/${params.soknadId}/${forrigeSeksjonId}`);
+    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
-  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
+  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function VernepliktRoute() {
-  const loaderData: VernepliktLoaderDataType = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
-  switch (loaderData?.versjon ?? NYESTE_VERSJON) {
+  console.log(`🔥 loaderData :`, loaderData);
+
+  switch (loaderData?.seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <VernepliktViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.versjon} for verneplikt for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${loaderData.seksjon?.versjon} for verneplikt for søknaden ${soknadId}`
       );
       return <VernepliktViewV1 />;
   }

@@ -1,18 +1,17 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, List, VStack } from "@navikt/ds-react";
-import { ListItem } from "@navikt/ds-react/List";
+import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
-import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import {
   erTilbakenavigering,
   pdfGrunnlag,
   reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
+import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function ReellArbeidssøkerViewV1() {
@@ -30,7 +29,7 @@ export function ReellArbeidssøkerViewV1() {
       whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
-    defaultValues: { ...loaderData.seksjon, versjon: loaderData.versjon },
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
@@ -59,7 +58,7 @@ export function ReellArbeidssøkerViewV1() {
       <h2>{seksjonnavn}</h2>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
-          <input type="hidden" name="versjon" value={loaderData.versjon} />
+          <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="8">
             {reellArbeidssøkerKomponenter.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(form.value())) {
