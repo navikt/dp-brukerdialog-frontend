@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   dinSituasjonKomponenter,
   DinSituasjonSvar,
+  handling,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
   hvilkenDatoSøkerDuDagpengerFra,
   pdfGrunnlag,
@@ -20,9 +21,10 @@ export const dinSituasjonSchema = z
     [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (data.handling === "tilbakenavigering" || data.handling === "fortsettSenere") {
       return;
     }
 

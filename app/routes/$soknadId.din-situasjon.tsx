@@ -8,10 +8,11 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { DinSituasjonSvar } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
+import { GyldigHandling } from "~/utils/GyldigHandling";
 
 export type DinSituasjonSeksjon = {
   seksjon: {
@@ -52,7 +53,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
 
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
@@ -60,6 +60,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== "undefined" &&
       key !== "versjon" &&
       key !== erTilbakenavigering &&
+      key !== handling &&
       key !== "pdfGrunnlag"
   );
   const seksjonsvar = Object.fromEntries(filtrertEntries);
@@ -82,7 +83,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (erTilbakeknapp) {
+  if (formData.get(handling) === GyldigHandling.fortsettSenere) {
+    return null;
+  }
+
+  if (formData.get(handling) === GyldigHandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 

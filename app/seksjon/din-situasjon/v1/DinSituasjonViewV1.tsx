@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
@@ -10,15 +10,20 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
   dinSituasjonKomponenter,
   DinSituasjonSvar,
-  erTilbakenavigering,
+  handling,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
+import { SøknadFooter } from "~/components/SøknadFooter";
+import invariant from "tiny-invariant";
+import { GyldigHandling } from "~/utils/GyldigHandling";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -43,13 +48,14 @@ export function DinSituasjonViewV1() {
     return JSON.stringify(pdfPayload);
   };
 
-  function handleTilbakenavigering() {
+  function handleMellomlagring(ønsketHandling: GyldigHandling) {
     form.setValue(pdfGrunnlag, genererPdfPayload());
-    form.setValue(erTilbakenavigering, true);
+    form.setValue(handling, ønsketHandling);
     form.submit();
   }
 
   async function handleSubmit() {
+    form.setValue(handling, GyldigHandling.neste);
     if (Object.values(await form.validate()).length === 0) {
       form.setValue(pdfGrunnlag, genererPdfPayload());
       form.submit();
@@ -89,7 +95,7 @@ export function DinSituasjonViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={handleTilbakenavigering}
+                onClick={() => handleMellomlagring(GyldigHandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -108,6 +114,11 @@ export function DinSituasjonViewV1() {
           </Form>
         </VStack>
       </VStack>
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(GyldigHandling.fortsettSenere)}
+      />
     </div>
   );
 }

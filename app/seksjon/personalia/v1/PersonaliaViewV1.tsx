@@ -10,10 +10,10 @@ import {
   adresselinje2FraPdl,
   adresselinje3FraPdl,
   alderFraPdl,
-  erFortsettSenere,
   etternavnFraPdl,
   fornavnFraPdl,
   fødselsnummerFraPdl,
+  handling,
   kontonummerFraKontoregister,
   landFraPdl,
   landkodeFraPdl,
@@ -29,6 +29,7 @@ import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import invariant from "tiny-invariant";
+import { GyldigHandling } from "~/utils/GyldigHandling";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
@@ -78,21 +79,8 @@ export function PersonaliaViewV1() {
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
-  function handleFortsettSenere() {
-    const pdfPayload = {
-      navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
-      ],
-    };
-
-    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-    form.setValue(erFortsettSenere, true);
-    form.submit();
-  }
-
   async function handleSubmit() {
+    form.setValue(handling, GyldigHandling.neste);
     if (Object.values(await form.validate()).length === 0) {
       const pdfPayload = {
         navn: seksjonnavn,
@@ -105,6 +93,20 @@ export function PersonaliaViewV1() {
       form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
       form.submit();
     }
+  }
+
+  function handleFortsettSenere() {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+      ],
+    };
+
+    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+    form.setValue(handling, GyldigHandling.fortsettSenere);
+    form.submit();
   }
 
   return (
@@ -219,7 +221,7 @@ export function PersonaliaViewV1() {
         </VStack>
       </VStack>
       <SøknadFooter
-        className="footer-separator"
+        className="footer"
         søknadId={soknadId}
         onFortsettSenere={handleFortsettSenere}
       />

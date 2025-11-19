@@ -6,7 +6,7 @@ export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene =
   "harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene";
 export const årsakTilAtDagpengeneBleStanset = "årsakTilAtDagpengeneBleStanset";
 export const hvilkenDatoSøkerDuDagpengerFra = "hvilkenDatoSøkerDuDagpengerFra";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 
 export type DinSituasjonSvar = {
   [harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene]?: "ja" | "nei" | "vetikke";
