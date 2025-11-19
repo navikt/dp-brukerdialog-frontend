@@ -5,13 +5,18 @@ import { Form, useActionData, useLoaderData, useNavigation } from "react-router"
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
-import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import {
+  avtjentVerneplikt,
   erTilbakenavigering,
   pdfGrunnlag,
   vernepliktKomponenter,
   VernepliktSvar,
 } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
+import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export default function VernepliktViewV1() {
@@ -43,15 +48,31 @@ export default function VernepliktViewV1() {
     return JSON.stringify(pdfPayload);
   };
 
+  function hentDokumentasjonskrav() {
+    const dokumentasjonskrav: Dokumentasjonskrav = {
+      id: crypto.randomUUID(),
+      seksjonId: "verneplikt",
+      spørsmålId: avtjentVerneplikt,
+      tittel: "Tjenestebevis",
+      type: DokumentasjonskravType.Tjenestebevis,
+    };
+
+    return form.transient.value("avtjentVerneplikt") === "ja"
+      ? JSON.stringify([dokumentasjonskrav])
+      : "null";
+  }
+
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(erTilbakenavigering, true);
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.submit();
   }
 
   async function handleSubmit() {
     if (Object.values(await form.validate()).length === 0) {
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
       form.submit();
     }
   }

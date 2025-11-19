@@ -67,6 +67,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonsData = Object.fromEntries(filtrertEntries);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
+  const dokumentasjonskrav = formData.get("dokumentasjonskrav");
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -74,6 +75,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       seksjonsvar: normaliserFormData(seksjonsData),
       versjon: Number(versjon),
     }),
+    dokumentasjonskrav: dokumentasjonskrav === "null" ? null : dokumentasjonskrav,
     pdfGrunnlag: pdfGrunnlag,
   };
 
