@@ -7,11 +7,11 @@ import {
   avreiseDatoFra,
   avreiseDatoTil,
   bostedsland,
-  erFortsettSenere,
   etternavnFraPdl,
   folkeregistrertAdresseErNorgeStemmerDet,
   fornavnFraPdl,
   fødselsnummerFraPdl,
+  handling,
   hvorforReistDuFraNorge,
   kontonummerFraKontoregister,
   landFraPdl,
@@ -55,11 +55,11 @@ export const personaliaSchema = z
     [avreiseDatoFra]: z.string().optional(),
     [avreiseDatoTil]: z.string().optional(),
     [hvorforReistDuFraNorge]: z.string().optional(),
-    [erFortsettSenere]: z.boolean().optional(),
+    [handling]: z.string().optional(),
     versjon: z.number().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erFortsettSenere) {
+    if (data.handling === "tilbakenavigering" || data.handling === "fortsettSenere") {
       return;
     }
 

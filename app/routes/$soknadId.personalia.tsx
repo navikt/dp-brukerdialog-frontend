@@ -19,9 +19,9 @@ import {
   adresselinje2FraPdl,
   adresselinje3FraPdl,
   alderFraPdl,
-  erFortsettSenere,
   etternavnFraPdl,
   fornavnFraPdl,
+  handling,
   kontonummerFraKontoregister,
   landFraPdl,
   landkodeFraPdl,
@@ -32,6 +32,7 @@ import {
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
+import { GyldigHandling } from "~/utils/GyldigHandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "personalia";
@@ -119,7 +120,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erFortsettSenere &&
+      key !== handling &&
       key !== "pdfGrunnlag"
   );
   const seksjonsvar = Object.fromEntries(filtrertEntries);
@@ -172,7 +173,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av personalia" };
   }
 
-  if (formData.get(erFortsettSenere) === "true") {
+  if (formData.get(handling) === GyldigHandling.fortsettSenere) {
     return null;
   }
 
