@@ -15,25 +15,23 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<DokumentasjonskravSeksjon | Response> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
+  const response = await hentDokumentasjonskrav(request, params.soknadId);
 
-  if (!dokumentasjonskravResponse.ok) {
+  if (!response.ok) {
     return redirect(`/${params.soknadId}/oppsummering`);
   }
 
-  const dokumentasjonskravData = await dokumentasjonskravResponse.json();
+  const data = await response.json();
 
-  if (dokumentasjonskravData === null) {
+  if (!data?.length) {
     return redirect(`/${params.soknadId}/oppsummering`);
   }
 
-  const dokumentasjonskrav: Dokumentasjonskrav[] = JSON.parse(dokumentasjonskravData[0]);
+  const dokumentasjonskrav = data.flatMap((jsonString: string) => JSON.parse(jsonString));
 
-  if (dokumentasjonskrav.length === 0) {
-    return redirect(`/${params.soknadId}/oppsummering`);
-  }
-
-  return { dokumentasjonskrav: dokumentasjonskrav };
+  return dokumentasjonskrav.length > 0
+    ? { dokumentasjonskrav }
+    : redirect(`/${params.soknadId}/oppsummering`);
 }
 
 export default function DokumentasjonRoute() {

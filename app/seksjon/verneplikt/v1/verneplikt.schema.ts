@@ -12,7 +12,7 @@ export const vernepliktSchema = z
   .object({
     [pdfGrunnlag]: z.string().optional(),
     [avtjentVerneplikt]: z.enum(["ja", "nei"]).optional(),
-
+    dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })

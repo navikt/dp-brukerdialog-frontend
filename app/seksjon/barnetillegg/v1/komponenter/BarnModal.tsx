@@ -82,7 +82,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       id: dokumentasjonskravId,
       seksjonId: seksjonId,
       spørsmålId: spørsmålId,
-      tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+      tittel: `Fødselsattest/bostedsbevis for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
       type: DokumentasjonskravType.Barn,
     };
 
