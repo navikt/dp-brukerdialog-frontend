@@ -23,15 +23,13 @@ export async function loader({
 
   const data = await response.json();
 
-  if (!data?.length) {
+  if (data === null) {
     return redirect(`/${params.soknadId}/oppsummering`);
   }
 
-  const dokumentasjonskrav = data.flatMap((jsonString: string) => JSON.parse(jsonString));
+  const dokumentasjonskrav = data.flatMap((krav: string) => JSON.parse(krav));
 
-  return dokumentasjonskrav.length > 0
-    ? { dokumentasjonskrav }
-    : redirect(`/${params.soknadId}/oppsummering`);
+  return { dokumentasjonskrav };
 }
 
 export default function DokumentasjonRoute() {
