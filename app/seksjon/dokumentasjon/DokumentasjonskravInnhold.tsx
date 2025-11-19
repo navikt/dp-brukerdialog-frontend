@@ -57,6 +57,40 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </BodyLong>
         );
 
+      case DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid:
+        return (
+          <BodyLong>
+            Du har krysset av for at du kun har mulighet til å ta deltidsjobb. Dette må du
+            dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er
+            fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du
+            dokumentere dette.
+          </BodyLong>
+        );
+
+      case DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeleNorge:
+        return (
+          <BodyLong>
+            Du har krysset av for at du ikke kan ta jobb i hele Norge. Dette må du dokumentere med
+            bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er fordi den andre
+            forelderen jobber skift, turnus eller utenfor nærområdet må du dokumentere dette.
+          </BodyLong>
+        );
+
+      case DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker:
+        return (
+          <>
+            <BodyLong>
+              Du har krysset av for at du ikke har mulighet til å ta arbeid i hele Norge. Dette må
+              du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det
+              er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du
+              dokumentere dette.
+            </BodyLong>
+            <BodyLong>
+              Dokumentasjonen må inneholde begrunnelse for at du ikke kan jobbe i hele Norge.
+            </BodyLong>
+          </>
+        );
+
       default:
         console.error(`Ukjent dokumentasjonskrav type: ${type}`);
         return <p>Ukjent dokumentasjonskrav type.</p>;

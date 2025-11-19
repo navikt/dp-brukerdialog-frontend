@@ -46,6 +46,9 @@ export enum DokumentasjonskravType {
   Arbeidsforhold = "Arbeidsforhold",
   Tjenestebevis = "Tjenestebevis",
   Utdanning = "Utdanning",
+  ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid = "Reell arbeidssøker - Kan du jobbe både heltid og deltid?",
+  ReellArbeidssøkerKanIkkeJobbeHeleNorge = "Reell arbeidssøker - Kan du jobbe i hele Norge?",
+  ReellArbeidssøkerIkkeTaAlleTypeYrker = "Reell arbeidssøker - Kan du ta alle typer arbeid?",
 }
 
 export type GyldigDokumentkravSvar =

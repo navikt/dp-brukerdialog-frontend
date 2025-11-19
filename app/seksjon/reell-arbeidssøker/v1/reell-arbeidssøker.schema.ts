@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { valider } from "~/utils/validering.utils";
 import {
   erDuVilligTilÅBytteYrkeEllerGåNedILønn,
   erTilbakenavigering,
@@ -29,8 +31,6 @@ import {
   reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.komponenter";
-import { z } from "zod";
-import { valider } from "~/utils/validering.utils";
 
 export const reellArbeidssøkerSchema = z
   .object({
@@ -70,6 +70,7 @@ export const reellArbeidssøkerSchema = z
     [kanIkkeJobbeIHeleNorgeKortOmSituasjonen]: z.string().max(500).optional(),
     [kanDuTaAlleTyperArbeid]: z.enum(["ja", "nei"]).optional(),
     [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
+    dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })

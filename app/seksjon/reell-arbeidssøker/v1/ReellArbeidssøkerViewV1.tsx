@@ -6,7 +6,20 @@ import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
 import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import {
   erTilbakenavigering,
+  kanDuTaAlleTyperArbeid,
+  kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+  kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+  kanIkkeJobbeHeltidOgDeltidRedusertHelse,
+  kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
+  kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+  kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+  kanIkkeJobbeIHeleNorgeRedusertHelse,
+  kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
   pdfGrunnlag,
   reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
@@ -35,14 +48,112 @@ export function ReellArbeidssøkerViewV1() {
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
   function handleTilbakenavigering() {
+    const dokumentasjonskrav = hentDokumentasjonskrav();
+
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(
+      "dokumentasjonskrav",
+      dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
+    );
     form.setValue(erTilbakenavigering, true);
     form.submit();
   }
 
   async function handleSubmit() {
+    const dokumentasjonskrav = hentDokumentasjonskrav();
+
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(
+      "dokumentasjonskrav",
+      dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
+    );
     form.submit();
+  }
+
+  function hentDokumentasjonskrav() {
+    const jobbDeltidOgHeltidDokumentasjonskrav = hentJobbHeltidOgDeltidDokumentasjonskrav();
+    const jobbHeleNorgeDokumentasjonskrav = hentJobbHeleNorgeDokumentasjonskrav();
+    const kanTaAlleTyperArbeidDokumentasjonskrav = hentKanTaAlleTyperArbeidDokumentasjonskrav();
+
+    return [
+      ...jobbDeltidOgHeltidDokumentasjonskrav,
+      ...jobbHeleNorgeDokumentasjonskrav,
+      ...kanTaAlleTyperArbeidDokumentasjonskrav,
+    ];
+  }
+
+  function hentKanTaAlleTyperArbeidDokumentasjonskrav(): Dokumentasjonskrav[] {
+    if (form.value(kanDuTaAlleTyperArbeid) === "nei") {
+      const dokumentasjonskrav: Dokumentasjonskrav = {
+        id: crypto.randomUUID(),
+        seksjonId: "reell-arbeidssoker",
+        spørsmålId: kanDuTaAlleTyperArbeid,
+        tittel: "Bekreftelse fra lege eller annen behandler",
+        type: DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker,
+      };
+
+      return [dokumentasjonskrav];
+    }
+
+    return [];
+  }
+
+  function hentJobbHeltidOgDeltidDokumentasjonskrav(): Dokumentasjonskrav[] {
+    const skjemaSvar = form.value(kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg) || [];
+    const skjemaSvarArray = [skjemaSvar].flat().filter(Boolean);
+
+    const svarSomKanTriggesDokumentasjonskrav = [
+      kanIkkeJobbeHeltidOgDeltidRedusertHelse,
+      kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+      kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+    ];
+
+    const dokumentasjonskravTrigges = skjemaSvarArray.some((valgt) =>
+      svarSomKanTriggesDokumentasjonskrav.includes(valgt)
+    );
+
+    if (dokumentasjonskravTrigges) {
+      const dokumentasjonskrav: Dokumentasjonskrav = {
+        id: crypto.randomUUID(),
+        seksjonId: "reell-arbeidssoker",
+        spørsmålId: kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
+        tittel: "Bekreftelse fra relevant fagpersonell fordi du bare kan jobbe deltid",
+        type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid,
+      };
+
+      return [dokumentasjonskrav];
+    }
+
+    return [];
+  }
+
+  function hentJobbHeleNorgeDokumentasjonskrav(): Dokumentasjonskrav[] {
+    const skjemaSvar = form.value(kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg) || [];
+    const skjemaSvarArray = [skjemaSvar].flat().filter(Boolean);
+
+    const svarSomKanTriggesDokumentasjonskrav = [
+      kanIkkeJobbeIHeleNorgeRedusertHelse,
+      kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+      kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+    ];
+
+    const dokumentasjonskravTrigges = skjemaSvarArray.some((valgt) =>
+      svarSomKanTriggesDokumentasjonskrav.includes(valgt)
+    );
+
+    if (dokumentasjonskravTrigges) {
+      const dokumentasjonskrav: Dokumentasjonskrav = {
+        id: crypto.randomUUID(),
+        seksjonId: "reell-arbeidssoker",
+        spørsmålId: kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+        tittel: "Bekreftelse fra relevant fagpersonell fordi du ikke kan jobbe i hele Norge",
+        type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeleNorge,
+      };
+
+      return [dokumentasjonskrav];
+    }
+
+    return [];
   }
 
   function genererPdfGrunnlag() {
