@@ -7,6 +7,7 @@ import {
   avreiseDatoFra,
   avreiseDatoTil,
   bostedsland,
+  erFortsettSenere,
   etternavnFraPdl,
   folkeregistrertAdresseErNorgeStemmerDet,
   fornavnFraPdl,
@@ -54,9 +55,14 @@ export const personaliaSchema = z
     [avreiseDatoFra]: z.string().optional(),
     [avreiseDatoTil]: z.string().optional(),
     [hvorforReistDuFraNorge]: z.string().optional(),
+    [erFortsettSenere]: z.boolean().optional(),
     versjon: z.number().optional(),
   })
   .superRefine((data, context) => {
+    if (data.erFortsettSenere) {
+      return;
+    }
+
     personaliaSpørsmål.concat(personaliaBostedslandSpørsmål).forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof PersonaliaSvar];

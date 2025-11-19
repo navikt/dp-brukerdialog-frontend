@@ -1,4 +1,3 @@
-import { id } from "date-fns/locale";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -20,6 +19,7 @@ import {
   adresselinje2FraPdl,
   adresselinje3FraPdl,
   alderFraPdl,
+  erFortsettSenere,
   etternavnFraPdl,
   fornavnFraPdl,
   kontonummerFraKontoregister,
@@ -116,7 +116,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
-      value !== undefined && value !== "undefined" && key !== "versjon" && key !== "pdfGrunnlag"
+      value !== undefined &&
+      value !== "undefined" &&
+      key !== "versjon" &&
+      key !== erFortsettSenere &&
+      key !== "pdfGrunnlag"
   );
   const seksjonsvar = Object.fromEntries(filtrertEntries);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
@@ -166,6 +170,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   if (lagreSøknadPersonaliaResponse.status !== 200) {
     return { error: "Noe gikk galt ved lagring av personalia" };
+  }
+
+  if (formData.get(erFortsettSenere) === "true") {
+    return null;
   }
 
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
