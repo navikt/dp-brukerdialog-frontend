@@ -5,13 +5,18 @@ import { Form, useActionData, useLoaderData, useNavigation } from "react-router"
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.utdanning";
-import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import {
+  avsluttetUtdanningSiste6Måneder,
   erTilbakenavigering,
   pdfGrunnlag,
   utdanningKomponenter,
   UtdanningSvar,
 } from "~/seksjon/utdanning/v1/utdanning.komponenter";
+import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function UtdanningViewV1() {
@@ -34,17 +39,32 @@ export function UtdanningViewV1() {
 
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningKomponenter);
 
-  const genererPdfGrunnlag = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(utdanningKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
+
+  function hentDokumentasjonskrav() {
+    const dokumentasjonskrav: Dokumentasjonskrav = {
+      id: crypto.randomUUID(),
+      seksjonId: "utdanning",
+      spørsmålId: avsluttetUtdanningSiste6Måneder,
+      tittel: "Dokumentasjon av sluttdato for utdanning",
+      type: DokumentasjonskravType.Utdanning,
+    };
+
+    return form.transient.value(avsluttetUtdanningSiste6Måneder) === "ja"
+      ? JSON.stringify([dokumentasjonskrav])
+      : "null";
+  }
 
   function handleTilbakenavigering() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.setValue(erTilbakenavigering, true);
     form.submit();
   }
@@ -52,6 +72,7 @@ export function UtdanningViewV1() {
   async function handleSubmit() {
     if (Object.values(await form.validate()).length === 0) {
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
       form.submit();
     }
   }

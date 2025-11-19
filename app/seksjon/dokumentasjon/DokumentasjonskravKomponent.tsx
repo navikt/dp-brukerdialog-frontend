@@ -1,19 +1,11 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
-import {
-  BodyLong,
-  BodyShort,
-  Box,
-  Button,
-  Heading,
-  List,
-  ReadMore,
-  VStack,
-} from "@navikt/ds-react";
+import { Box, Button, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
 import { Form, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
   dokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
@@ -27,9 +19,8 @@ import {
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
-import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
-import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
+import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
 
 export type Dokumentasjonskrav = {
   id: string;
@@ -54,6 +45,7 @@ export enum DokumentasjonskravType {
   Barn = "Barn",
   Arbeidsforhold = "Arbeidsforhold",
   Tjenestebevis = "Tjenestebevis",
+  Utdanning = "Utdanning",
 }
 
 export type GyldigDokumentkravSvar =

@@ -24,6 +24,7 @@ export const utdanningSchema = z
     [naarSendtDokumentasjonTidligere]: z.string().optional(),
     [senderIkkeDokumentasjonBegrunnelse]: z.string().optional(),
     [planleggerÅStarteEllerFullføreStudierSamtidig]: z.enum(["ja", "nei"]).optional(),
+    dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
     [erTilbakenavigering]: z.boolean().optional(),
   })

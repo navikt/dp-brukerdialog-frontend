@@ -39,14 +39,14 @@ export default function VernepliktViewV1() {
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktKomponenter);
 
-  const genererPdfGrunnlag = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(vernepliktKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
 
   function hentDokumentasjonskrav() {
     const dokumentasjonskrav: Dokumentasjonskrav = {

@@ -47,6 +47,16 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </BodyLong>
         );
 
+      case DokumentasjonskravType.Utdanning:
+        return (
+          <BodyLong>
+            Du har krysset av for at du har avsluttet utdanning eller opplæring i løpet av de siste
+            seks månedene. Du må dokumentere sluttdatoen for utdanningen eller opplæringen du har
+            gjennomført. Du kan for eksempel sende oss et vitnemål eller en attest fra studiestedet
+            ditt.
+          </BodyLong>
+        );
+
       default:
         console.error(`Ukjent dokumentasjonskrav type: ${type}`);
         return <p>Ukjent dokumentasjonskrav type.</p>;
