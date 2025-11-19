@@ -1,9 +1,8 @@
-import { LoaderFunctionArgs, Outlet, redirect, useLoaderData, useParams } from "react-router";
+import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-router";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { FormProgress } from "@navikt/ds-react";
 import invariant from "tiny-invariant";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
-import { SøknadFooter } from "~/components/SøknadFooter";
 
 type Steg = {
   tittel: string;
@@ -84,8 +83,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function SoknadIdIndex() {
   const loaderData = useLoaderData<typeof loader>();
   const progressData = loaderData?.søknadProgress;
-  const { soknadId } = useParams();
-  invariant(soknadId, "Søknad ID er påkrevd");
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -104,7 +101,6 @@ export default function SoknadIdIndex() {
         </FormProgress>
       </div>
       <Outlet />
-      <SøknadFooter søknadId={soknadId} />
     </main>
   );
 }

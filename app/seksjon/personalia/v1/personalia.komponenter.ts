@@ -23,7 +23,7 @@ export const reisteDuITaktMedRotasjon = "reisteDuITaktMedRotasjon";
 export const avreiseDatoFra = "avreiseDatoFra";
 export const avreiseDatoTil = "avreiseDatoTil";
 export const hvorforReistDuFraNorge = "hvorforReistDuFraNorge";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const erFortsettSenere = "erFortsettSenere";
 
 export type PersonaliaSvar = {
   [fornavnFraPdl]?: string;

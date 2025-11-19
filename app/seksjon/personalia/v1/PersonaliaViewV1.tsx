@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, BodyShort, Button, HStack, Label, VStack } from "@navikt/ds-react";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { action, loader } from "~/routes/$soknadId.personalia";
 import { Komponent } from "~/components/Komponent";
 import { useForm } from "@rvf/react-router";
@@ -10,6 +10,7 @@ import {
   adresselinje2FraPdl,
   adresselinje3FraPdl,
   alderFraPdl,
+  erFortsettSenere,
   etternavnFraPdl,
   fornavnFraPdl,
   fødselsnummerFraPdl,
@@ -26,11 +27,15 @@ import {
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { SøknadFooter } from "~/components/SøknadFooter";
+import invariant from "tiny-invariant";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
@@ -73,6 +78,20 @@ export function PersonaliaViewV1() {
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
+  function handleFortsettSenere() {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+      ],
+    };
+
+    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+    form.setValue(erFortsettSenere, true);
+    form.submit();
+  }
+
   async function handleSubmit() {
     if (Object.values(await form.validate()).length === 0) {
       const pdfPayload = {
@@ -80,7 +99,6 @@ export function PersonaliaViewV1() {
         spørsmål: [
           ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
           ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
-          ,
         ],
       };
 
@@ -200,6 +218,11 @@ export function PersonaliaViewV1() {
           </Form>
         </VStack>
       </VStack>
+      <SøknadFooter
+        className="footer-separator"
+        søknadId={soknadId}
+        onFortsettSenere={handleFortsettSenere}
+      />
     </div>
   );
 }

@@ -70,6 +70,7 @@
 .mt-12 {
   margin-top: var(--a-spacing-12);
 }
+
 .mb-4 {
   margin-bottom: var(--a-spacing-4);
 }
@@ -105,4 +106,8 @@
 
 .inline {
   display: inline;
+}
+
+.footer-separator {
+  margin-top: var(--a-spacing-20);
 }
