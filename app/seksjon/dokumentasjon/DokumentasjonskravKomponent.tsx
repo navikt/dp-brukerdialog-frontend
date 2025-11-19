@@ -193,9 +193,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
             </Heading>
 
             {dokumentasjonskrav.type && (
-              <BodyLong>
-                <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
-              </BodyLong>
+              <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
             )}
 
             {dokumentasjonskravKomponenter.map((spørsmål) => {
