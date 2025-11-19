@@ -48,6 +48,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
         );
 
       default:
+        console.error(`Ukjent dokumentasjonskrav type: ${type}`);
         return <p>Ukjent dokumentasjonskrav type.</p>;
     }
   }
