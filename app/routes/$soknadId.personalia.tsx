@@ -32,7 +32,7 @@ import {
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
-import { GyldigHandling } from "~/utils/GyldigHandling";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "personalia";
@@ -173,7 +173,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av personalia" };
   }
 
-  if (formData.get(handling) === GyldigHandling.fortsettSenere) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
     return null;
   }
 

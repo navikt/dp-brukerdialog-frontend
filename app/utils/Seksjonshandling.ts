@@ -1,5 +1,4 @@
-// TODO: Finn et bedre navn på denne
-export enum GyldigHandling {
+export enum Seksjonshandling {
   tilbakenavigering = "tilbakenavigering",
   fortsettSenere = "fortsettSenere",
   neste = "neste",

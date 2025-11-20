@@ -29,7 +29,7 @@ import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import invariant from "tiny-invariant";
-import { GyldigHandling } from "~/utils/GyldigHandling";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
@@ -80,7 +80,7 @@ export function PersonaliaViewV1() {
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
   async function handleSubmit() {
-    form.setValue(handling, GyldigHandling.neste);
+    form.setValue(handling, Seksjonshandling.neste);
     if (Object.values(await form.validate()).length === 0) {
       const pdfPayload = {
         navn: seksjonnavn,
@@ -105,7 +105,7 @@ export function PersonaliaViewV1() {
     };
 
     form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-    form.setValue(handling, GyldigHandling.fortsettSenere);
+    form.setValue(handling, Seksjonshandling.fortsettSenere);
     form.submit();
   }
 

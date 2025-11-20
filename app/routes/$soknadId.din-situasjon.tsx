@@ -12,7 +12,7 @@ import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situa
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
-import { GyldigHandling } from "~/utils/GyldigHandling";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export type DinSituasjonSeksjon = {
   seksjon: {
@@ -83,11 +83,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (formData.get(handling) === GyldigHandling.fortsettSenere) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
     return null;
   }
 
-  if (formData.get(handling) === GyldigHandling.tilbakenavigering) {
+  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
