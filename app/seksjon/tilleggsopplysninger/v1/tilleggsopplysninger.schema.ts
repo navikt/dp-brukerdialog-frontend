@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  erTilbakenavigering,
+  handling,
   harTilleggsopplysninger,
   pdfGrunnlag,
   tilleggsopplysninger,
@@ -8,6 +8,7 @@ import {
   TilleggsopplysningerSvar,
 } from "./tilleggsopplysninger.komponenter";
 import { valider } from "~/utils/validering.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const tilleggsopplysningerSchema = z
   .object({
@@ -15,10 +16,13 @@ export const tilleggsopplysningerSchema = z
     [harTilleggsopplysninger]: z.enum(["ja", "nei"]).optional(),
     [tilleggsopplysninger]: z.string().optional(),
     versjon: z.number().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 

@@ -11,10 +11,11 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
-  erTilbakenavigering,
+  handling,
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { normaliserFormData } from "~/utils/action.utils.server";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "tilleggsopplysninger";
@@ -55,13 +56,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erTilbakenavigering &&
+      key !== handling &&
       key !== "pdfGrunnlag"
   );
   const seksjonsData = Object.fromEntries(filtrertEntries);
@@ -84,7 +84,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (erTilbakeknapp) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
+    return null;
+  }
+
+  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
