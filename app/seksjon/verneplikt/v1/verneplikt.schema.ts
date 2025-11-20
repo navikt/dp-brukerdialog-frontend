@@ -2,11 +2,12 @@ import { z } from "zod";
 import { valider } from "~/utils/validering.utils";
 import {
   avtjentVerneplikt,
-  erTilbakenavigering,
   pdfGrunnlag,
   vernepliktKomponenter,
   VernepliktSvar,
 } from "./verneplikt.komponenter";
+import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const vernepliktSchema = z
   .object({
@@ -14,10 +15,13 @@ export const vernepliktSchema = z
     [avtjentVerneplikt]: z.enum(["ja", "nei"]).optional(),
     dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 

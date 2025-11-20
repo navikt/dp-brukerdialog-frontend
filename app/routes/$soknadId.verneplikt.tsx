@@ -9,12 +9,10 @@ import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import {
-  erTilbakenavigering,
-  VernepliktSvar,
-} from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
+import { handling, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "verneplikt";
@@ -55,13 +53,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const formData = await request.formData();
-  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const filtrertEntries = Array.from(formData.entries()).filter(
     ([key, value]) =>
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erTilbakenavigering &&
+      key !== handling &&
       key !== "pdfGrunnlag"
   );
   const seksjonsData = Object.fromEntries(filtrertEntries);
@@ -85,7 +82,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (erTilbakeknapp) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
+    return null;
+  }
+
+  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 

@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
@@ -11,19 +11,24 @@ import {
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import {
   avtjentVerneplikt,
-  erTilbakenavigering,
   pdfGrunnlag,
   vernepliktKomponenter,
   VernepliktSvar,
 } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import invariant from "tiny-invariant";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { SøknadFooter } from "~/components/SøknadFooter";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -62,14 +67,16 @@ export default function VernepliktViewV1() {
       : "null";
   }
 
-  function handleTilbakenavigering() {
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.setValue(erTilbakenavigering, true);
+    form.setValue(handling, ønsketHandling);
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.submit();
   }
 
   async function handleSubmit() {
+    form.setValue(handling, Seksjonshandling.neste);
+
     if (Object.values(await form.validate()).length === 0) {
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
@@ -111,7 +118,7 @@ export default function VernepliktViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={handleTilbakenavigering}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -130,6 +137,11 @@ export default function VernepliktViewV1() {
           </Form>
         </VStack>
       </VStack>
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }
