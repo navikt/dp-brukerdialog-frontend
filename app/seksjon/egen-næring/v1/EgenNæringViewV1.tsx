@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
@@ -13,8 +13,8 @@ import {
   egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukKomponenter,
   EgenNæringSvar,
-  erTilbakenavigering,
   Gårdsbruk,
+  handling,
   leggTilGårdsbrukKomponenter,
   leggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
@@ -27,6 +27,9 @@ import { GårdsbrukModal } from "~/seksjon/egen-næring/v1/komponenter/Gårdsbru
 import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
 import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import invariant from "tiny-invariant";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function EgenNæringViewV1() {
   const seksjonnavn = "Egen næring";
@@ -45,6 +48,8 @@ export function EgenNæringViewV1() {
     gårdsbrukModalData,
     setGårdsbrukModalData,
   } = useEgenNæringContext();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const [visNæringsvirksomhetFeilmelding, setVisNæringsvirksomhetFeilmelding] = useState(false);
   const [visGårdsbrukFeilmelding, setVisGårdsbrukFeilmelding] = useState(false);
@@ -109,8 +114,8 @@ export function EgenNæringViewV1() {
     return JSON.stringify(pdfPayload);
   }
 
-  function handleTilbakenavigering() {
-    form.setValue(erTilbakenavigering, true);
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+    form.setValue(handling, ønsketHandling);
 
     const egenNæringResponse: SeksjonSvar = {
       [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
@@ -125,7 +130,7 @@ export function EgenNæringViewV1() {
   }
 
   function handleSubmit() {
-    form.setValue(erTilbakenavigering, false);
+    form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
     const manglerRegistrertNæringsvirksomhet =
@@ -271,7 +276,7 @@ export function EgenNæringViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={handleTilbakenavigering}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -292,6 +297,11 @@ export function EgenNæringViewV1() {
       </VStack>
       {næringsvirksomhetModalData && <NæringsvirksomhetModal ref={næringsvirksomhetModalRef} />}
       {gårdsbrukModalData && <GårdsbrukModal ref={gårdsbrukModalRef} />}
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { KomponentType } from "~/components/Komponent.types";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 export const driverDuEgenNæringsvirksomhet = "driverDuEgenNæringsvirksomhet";
 export const næringsvirksomheter = "næringsvirksomheter";
 export const gårdsbruk = "gårdsbruk";

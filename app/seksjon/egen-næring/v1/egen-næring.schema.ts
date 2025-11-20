@@ -8,7 +8,6 @@ import {
   egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukKomponenter,
   EgenNæringSvar,
-  erTilbakenavigering,
   hvemEierGårdsbruket,
   hvilkeTypeGårdsbrukDriverDu,
   hvordanHarDuBeregnetAntallArbeidstimerTotalt,
@@ -24,12 +23,14 @@ import {
   leggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
   organisasjonsnummer,
-  seksjonsvar,
   pdfGrunnlag,
   samboerEktefelle,
+  seksjonsvar,
   skog,
 } from "./egen-næring.komponenter";
 import { valider } from "~/utils/validering.utils";
+import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const egenNæringSchema = z
   .object({
@@ -38,10 +39,13 @@ export const egenNæringSchema = z
     [driverDuEgenNæringsvirksomhet]: z.enum(["ja", "nei"]).optional(),
     [driverDuEgetGårdsbruk]: z.enum(["ja", "nei"]).optional(),
     versjon: z.number().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 
