@@ -38,7 +38,7 @@ export const kanIkkeJobbeIHeleNorgeAnnenSituasjon = "kanIkkeJobbeIHeleNorgeAnnen
 export const kanIkkeJobbeIHeleNorgeKortOmSituasjonen = "kanIkkeJobbeIHeleNorgeKortOmSituasjonen";
 export const kanDuTaAlleTyperArbeid = "kanDuTaAlleTyperArbeid";
 export const erDuVilligTilÅBytteYrkeEllerGåNedILønn = "erDuVilligTilÅBytteYrkeEllerGåNedILønn";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 
 export type ReellArbeidssøkerSvar = {
   [kanDuJobbeBådeHeltidOgDeltid]?: "ja" | "nei";

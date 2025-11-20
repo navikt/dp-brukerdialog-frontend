@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
@@ -10,7 +10,7 @@ import {
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import {
-  erTilbakenavigering,
+  handling,
   kanDuTaAlleTyperArbeid,
   kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
@@ -26,12 +26,17 @@ import {
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import invariant from "tiny-invariant";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -47,15 +52,15 @@ export function ReellArbeidssøkerViewV1() {
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
-  function handleTilbakenavigering() {
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     const dokumentasjonskrav = hentDokumentasjonskrav();
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(handling, ønsketHandling);
     form.setValue(
       "dokumentasjonskrav",
       dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
     );
-    form.setValue(erTilbakenavigering, true);
     form.submit();
   }
 
@@ -63,6 +68,7 @@ export function ReellArbeidssøkerViewV1() {
     const dokumentasjonskrav = hentDokumentasjonskrav();
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(handling, Seksjonshandling.neste);
     form.setValue(
       "dokumentasjonskrav",
       dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
@@ -196,7 +202,7 @@ export function ReellArbeidssøkerViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={handleTilbakenavigering}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -215,6 +221,11 @@ export function ReellArbeidssøkerViewV1() {
           </VStack>
         </Form>
       </VStack>
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }

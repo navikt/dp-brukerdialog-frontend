@@ -2,7 +2,7 @@ import { z } from "zod";
 import { valider } from "~/utils/validering.utils";
 import {
   erDuVilligTilÅBytteYrkeEllerGåNedILønn,
-  erTilbakenavigering,
+  handling,
   kanDuJobbeBådeHeltidOgDeltid,
   kanDuJobbeIHeleNorge,
   kanDuTaAlleTyperArbeid,
@@ -31,6 +31,7 @@ import {
   reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const reellArbeidssøkerSchema = z
   .object({
@@ -72,10 +73,13 @@ export const reellArbeidssøkerSchema = z
     [erDuVilligTilÅBytteYrkeEllerGåNedILønn]: z.enum(["ja", "nei"]).optional(),
     dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 
