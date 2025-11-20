@@ -15,7 +15,7 @@ import {
 } from "./din-situasjon.komponenter";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import invariant from "tiny-invariant";
-import { GyldigHandling } from "~/utils/GyldigHandling";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
@@ -48,14 +48,14 @@ export function DinSituasjonViewV1() {
     return JSON.stringify(pdfPayload);
   };
 
-  function handleMellomlagring(ønsketHandling: GyldigHandling) {
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     form.setValue(pdfGrunnlag, genererPdfPayload());
     form.setValue(handling, ønsketHandling);
     form.submit();
   }
 
   async function handleSubmit() {
-    form.setValue(handling, GyldigHandling.neste);
+    form.setValue(handling, Seksjonshandling.neste);
     if (Object.values(await form.validate()).length === 0) {
       form.setValue(pdfGrunnlag, genererPdfPayload());
       form.submit();
@@ -95,7 +95,7 @@ export function DinSituasjonViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(GyldigHandling.tilbakenavigering)}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -117,7 +117,7 @@ export function DinSituasjonViewV1() {
       <SøknadFooter
         className="footer"
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(GyldigHandling.fortsettSenere)}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );
