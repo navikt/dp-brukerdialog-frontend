@@ -3,7 +3,7 @@ import { KomponentType } from "~/components/Komponent.types";
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const forsørgerDuBarnSomIkkeVisesHer = "forsørgerDuBarnSomIkkeVisesHer";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 export const dokumentasjonskrav = "dokumentasjonskrav";
 export const versjon = "versjon";
 
@@ -129,5 +129,5 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
       "vi ikke å vise til bruker i søknaden, men vi kan vise den i Dokumentopplasting-seksjonen. " +
       "Nødvendige hjelpetekster er også tett knyttet til seksjonen hvor dokumentasjonskravet oppstår." +
       "<strong>HTML</strong> kan brukes",
-  }
+  },
 ];
