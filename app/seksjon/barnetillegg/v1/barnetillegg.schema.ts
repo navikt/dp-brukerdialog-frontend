@@ -3,18 +3,19 @@ import {
   barnetilleggKomponenter,
   BarnetilleggSvar,
   bostedsland,
-  erTilbakenavigering,
   etternavn,
   fornavnOgMellomnavn,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
+  handling,
   leggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
   pdfGrunnlag,
   seksjonsvar,
 } from "./barnetillegg.komponenter";
 import { valider } from "~/utils/validering.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const barnetilleggSchema = z
   .object({
@@ -23,10 +24,13 @@ export const barnetilleggSchema = z
     [seksjonsvar]: z.string().optional(),
     [pdfGrunnlag]: z.string().optional(),
     [forsørgerDuBarnSomIkkeVisesHer]: z.enum(["ja", "nei"]).optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 

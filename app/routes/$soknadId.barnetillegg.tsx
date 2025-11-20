@@ -14,10 +14,11 @@ import {
   BarnetilleggSvar,
   BarnFraPdl,
   BarnLagtManuelt,
-  erTilbakenavigering,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export type SeksjonSvar = BarnetilleggSvar & {
   barnFraPdl?: BarnFraPdl[] | null;
@@ -80,7 +81,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonsvar = formData.get("seksjonsvar") as string;
   const pdfGrunnlag = formData.get("pdfGrunnlag") as string;
   const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
@@ -102,7 +102,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (erTilbakeknapp) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
+    return null;
+  }
+
+  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 

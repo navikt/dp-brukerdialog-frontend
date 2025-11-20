@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-ico
 import { Alert, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
@@ -17,7 +17,6 @@ import {
   BarnFraPdl,
   barnFraPdlSpørsmål,
   BarnLagtManuelt,
-  erTilbakenavigering,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   leggTilBarnManueltSpørsmål,
@@ -29,6 +28,10 @@ import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
+import { SøknadFooter } from "~/components/SøknadFooter";
+import invariant from "tiny-invariant";
 
 enum BarnLagtManueltVarsel {
   MÅ_LEGGE_TIL_BARN = "må-legge-til-barn",
@@ -49,6 +52,8 @@ export function BarnetilleggViewV1() {
     setModalData,
     dokumentasjonskrav,
   } = useBarnetilleggContext();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -81,8 +86,8 @@ export function BarnetilleggViewV1() {
     setVarsel(undefined);
   }, [forsørgerDuBarnSomIkkeVisesHerSvar, barnLagtManuelt.length]);
 
-  function handleTilbakenavigering() {
-    form.setValue(erTilbakenavigering, true);
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+    form.setValue(handling, ønsketHandling);
     form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
     form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
     form.setValue(
@@ -93,6 +98,7 @@ export function BarnetilleggViewV1() {
   }
 
   function handleSubmit() {
+    form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
     if (varsel) {
@@ -222,7 +228,7 @@ export function BarnetilleggViewV1() {
             variant="secondary"
             type="button"
             icon={<ArrowLeftIcon aria-hidden />}
-            onClick={handleTilbakenavigering}
+            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
             disabled={state === "submitting" || state === "loading"}
           >
             Forrige steg
@@ -246,6 +252,11 @@ export function BarnetilleggViewV1() {
           />
         )}
       </VStack>
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }
