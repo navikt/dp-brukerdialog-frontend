@@ -2,9 +2,9 @@ import { z } from "zod";
 import {
   annenPengestøtteKomponenter,
   AnnenPengestøtteSvar,
-  erTilbakenavigering,
-  seksjonsvar,
+  handling,
   pdfGrunnlag,
+  seksjonsvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import {
   dagpengerEllerArbeidsledighetstrygd,
@@ -36,6 +36,7 @@ import {
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const kortTekstMaksLengde = 200;
 
@@ -43,7 +44,7 @@ export const annenPengestøtteSchema = z
   .object({
     [seksjonsvar]: z.string().optional(),
     [pdfGrunnlag]: z.string().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
     [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: z.enum(["ja", "nei"]).optional(),
     [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),
     [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: z
@@ -56,7 +57,10 @@ export const annenPengestøtteSchema = z
     versjon: z.number().optional(),
   })
   .superRefine((data, context) => {
-    if (data[erTilbakenavigering]) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 

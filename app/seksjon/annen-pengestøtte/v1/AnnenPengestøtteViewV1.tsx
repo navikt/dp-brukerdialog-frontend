@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -10,17 +10,16 @@ import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+  pengestøtteFraNorgeKomponenter,
   pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
-  pengestøtteFraNorgeKomponenter,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import {
-  AnnenPengestøtteResponse,
   annenPengestøtteKomponenter,
+  AnnenPengestøtteResponse,
   AnnenPengestøtteSvar,
-  erTilbakenavigering,
   pdfGrunnlag,
   seksjonsvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
@@ -28,15 +27,19 @@ import { useEffect, useRef, useState } from "react";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
+  pengestøtteFraAndreEøsLandKomponenter,
   pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
-  pengestøtteFraAndreEøsLandKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandDetaljer";
 import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
 import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import invariant from "tiny-invariant";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function AnnenPengestøtteViewV1() {
   const seksjonnavn = "Annen pengestøtte";
@@ -63,6 +66,8 @@ export function AnnenPengestøtteViewV1() {
     pengestøtteFraNorgeModalData,
     setPengestøtteFraNorgeModalData,
   } = useAnnenPengestøtteContext();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -154,16 +159,16 @@ export function AnnenPengestøtteViewV1() {
     return JSON.stringify(pdfPayload);
   };
 
-  function handleTilbakenavigering() {
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
-    form.setValue(erTilbakenavigering, true);
+    form.setValue(handling, ønsketHandling);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
     form.submit();
   }
 
   function handleSubmit() {
-    form.setValue(erTilbakenavigering, false);
+    form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
     const manglerPengestøtteFraAndreEøsLand =
@@ -312,7 +317,7 @@ export function AnnenPengestøtteViewV1() {
               variant="secondary"
               type="button"
               icon={<ArrowLeftIcon aria-hidden />}
-              onClick={handleTilbakenavigering}
+              onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
               disabled={state === "submitting" || state === "loading"}
             >
               Forrige steg
@@ -336,6 +341,11 @@ export function AnnenPengestøtteViewV1() {
       {pengestøtteFraNorgeModalData && (
         <PengestøtteFraNorgeModal ref={pengestøtteFraNorgeModalRef} />
       )}
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }
