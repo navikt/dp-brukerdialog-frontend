@@ -12,11 +12,12 @@ import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/v1/arbeidsforho
 import {
   Arbeidsforhold,
   ArbeidsforholdSvar,
-  erTilbakenavigering,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { normaliserFormData } from "~/utils/action.utils.server";
+import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
@@ -62,7 +63,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
@@ -83,7 +83,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (erTilbakeknapp) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
+    return null;
+  }
+
+  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 

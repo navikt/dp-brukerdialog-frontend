@@ -2,7 +2,7 @@ import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icon
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
@@ -12,11 +12,11 @@ import {
   Arbeidsforhold,
   arbeidsforholdForklarendeTekstKomponenter,
   arbeidsforholdKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   arbeidsforholdModalKomponenter,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdResponse,
   ArbeidsforholdSvar,
-  erTilbakenavigering,
+  handling,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
@@ -35,6 +35,9 @@ import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { SøknadFooter } from "~/components/SøknadFooter";
+import invariant from "tiny-invariant";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -46,6 +49,8 @@ export function ArbeidsforholdViewV1() {
     useState(false);
   const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, modalData, setModalData } =
     useArbeidsforholdContext();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -115,9 +120,9 @@ export function ArbeidsforholdViewV1() {
     return JSON.stringify(pdfPayload);
   };
 
-  function handleTilbakenavigering() {
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     const arbeidsforholdResponse = lagArbeidsforholdResponse();
-    form.setValue(erTilbakenavigering, true);
+    form.setValue(handling, ønsketHandling);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(seksjonsvar, JSON.stringify(arbeidsforholdResponse));
 
@@ -125,7 +130,7 @@ export function ArbeidsforholdViewV1() {
   }
 
   function handleSubmit() {
-    form.setValue(erTilbakenavigering, false);
+    form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
     const manglerArbeidsforhold =
@@ -226,7 +231,7 @@ export function ArbeidsforholdViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={handleTilbakenavigering}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -246,6 +251,11 @@ export function ArbeidsforholdViewV1() {
         </VStack>
         {modalData && <ArbeidsforholdModal ref={ref} />}
       </VStack>
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }
