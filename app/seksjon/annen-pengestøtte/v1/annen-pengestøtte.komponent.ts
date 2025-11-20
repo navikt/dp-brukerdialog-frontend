@@ -1,20 +1,20 @@
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  PengestøtteFraAndreEøsLandModalSvar,
   pengestøtteFraAndreEøsLandKomponenter,
+  PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
   fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  PengestøtteFraNorgeModalSvar,
   pengestøtteFraNorgeKomponenter,
+  PengestøtteFraNorgeModalSvar,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 
 export type AnnenPengestøtteSvar = {
   [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]?: "ja" | "nei";

@@ -11,13 +11,12 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
-import {
-  AnnenPengestøtteSvar,
-  erTilbakenavigering,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { normaliserFormData } from "~/utils/action.utils.server";
+import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "annen-pengestotte";
@@ -63,7 +62,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const erTilbakeknapp = formData.get(erTilbakenavigering) === "true";
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
@@ -84,7 +82,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return { error: "Noe gikk galt ved lagring av seksjonen" };
   }
 
-  if (erTilbakeknapp) {
+  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
+    return null;
+  }
+
+  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
     return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
   }
 
