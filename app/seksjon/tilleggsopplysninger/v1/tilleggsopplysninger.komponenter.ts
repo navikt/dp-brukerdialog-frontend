@@ -3,7 +3,7 @@ import { KomponentType } from "~/components/Komponent.types";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const harTilleggsopplysninger = "harTilleggsopplysninger";
 export const tilleggsopplysninger = "tilleggsopplysninger";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 
 export type TilleggsopplysningerSvar = {
   [harTilleggsopplysninger]?: "ja" | "nei";

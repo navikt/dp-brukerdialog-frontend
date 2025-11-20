@@ -11,7 +11,6 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export type DinSituasjonSeksjon = {
@@ -59,7 +58,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
       value !== undefined &&
       value !== "undefined" &&
       key !== "versjon" &&
-      key !== erTilbakenavigering &&
       key !== handling &&
       key !== "pdfGrunnlag"
   );

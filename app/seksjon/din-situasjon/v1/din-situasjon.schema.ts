@@ -9,7 +9,7 @@ import {
   årsakTilAtDagpengeneBleStanset,
 } from "./din-situasjon.komponenter";
 import { valider } from "~/utils/validering.utils";
-import { erTilbakenavigering } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const dinSituasjonSchema = z
   .object({
@@ -20,11 +20,13 @@ export const dinSituasjonSchema = z
     [årsakTilAtDagpengeneBleStanset]: z.string().max(500, "Maks 500 tegn").optional(),
     [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
     versjon: z.number().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
     [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.handling === "tilbakenavigering" || data.handling === "fortsettSenere") {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 
