@@ -1,14 +1,14 @@
 import { z } from "zod";
 import {
   annenRotasjonBeskrivelse,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
-  arbeidsforholdModalKomponenter,
-  ArbeidsforholdModalSvar,
   arbeidsforholdKomponenter,
+  arbeidsforholdModalKomponenter,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
-  erTilbakenavigering,
   fastArbeidstidI6MånederEllerMer,
   fastArbeidstidIMindreEnn6Måneder,
+  handling,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harDuJobbetSkiftTurnusEllerRotasjon,
   harIkkeJobbetDeSiste36Månedene,
@@ -21,8 +21,8 @@ import {
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
-  seksjonsvar,
   pdfGrunnlag,
+  seksjonsvar,
   varierendeArbeidstidDeSiste12Månedene,
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
@@ -95,7 +95,7 @@ export const arbeidsforholdSchema = z
   .object({
     [seksjonsvar]: z.string().optional(),
     [pdfGrunnlag]: z.string().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
     [hvordanHarDuJobbet]: z
       .enum([
         fastArbeidstidIMindreEnn6Måneder,
@@ -111,7 +111,7 @@ export const arbeidsforholdSchema = z
     versjon: z.number().optional(),
   })
   .superRefine((data, context) => {
-    if (data[erTilbakenavigering]) {
+    if (data.handling === "tilbakenavigering" || data.handling === "fortsettSenere") {
       return;
     }
     arbeidsforholdKomponenter.forEach((komponent) => {

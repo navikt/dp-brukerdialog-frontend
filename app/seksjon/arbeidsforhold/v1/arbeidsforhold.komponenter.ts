@@ -52,7 +52,7 @@ import {
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 export const hvordanHarDuJobbet = "hvordanHarDuJobbet";
 export const fastArbeidstidIMindreEnn6Måneder = "fastArbeidstidIMindreEnn6Måneder";
 export const fastArbeidstidI6MånederEllerMer = "fastArbeidstidI6MånederEllerMer";
