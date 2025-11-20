@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.utdanning";
@@ -11,19 +11,24 @@ import {
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import {
   avsluttetUtdanningSiste6Måneder,
-  erTilbakenavigering,
+  handling,
   pdfGrunnlag,
   utdanningKomponenter,
   UtdanningSvar,
 } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { SøknadFooter } from "~/components/SøknadFooter";
+import invariant from "tiny-invariant";
 
 export function UtdanningViewV1() {
   const seksjonnavn = "Utdanning";
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
+  const { soknadId } = useParams();
+  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -62,14 +67,16 @@ export function UtdanningViewV1() {
       : "null";
   }
 
-  function handleTilbakenavigering() {
+  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue(handling, ønsketHandling);
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
-    form.setValue(erTilbakenavigering, true);
     form.submit();
   }
 
   async function handleSubmit() {
+    form.setValue(handling, Seksjonshandling.neste);
+
     if (Object.values(await form.validate()).length === 0) {
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
@@ -110,7 +117,7 @@ export function UtdanningViewV1() {
                 variant="secondary"
                 type="button"
                 icon={<ArrowLeftIcon aria-hidden />}
-                onClick={handleTilbakenavigering}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
                 disabled={state === "submitting" || state === "loading"}
               >
                 Forrige steg
@@ -129,6 +136,11 @@ export function UtdanningViewV1() {
           </Form>
         </VStack>
       </VStack>
+      <SøknadFooter
+        className="footer"
+        søknadId={soknadId}
+        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+      />
     </div>
   );
 }
