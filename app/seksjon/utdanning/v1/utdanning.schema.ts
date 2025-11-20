@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
   avsluttetUtdanningSiste6Måneder,
   dokumenterAvsluttetUtdanningSiste6MånederNå,
-  erTilbakenavigering,
+  handling,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
   pdfGrunnlag,
@@ -13,6 +13,7 @@ import {
   UtdanningSvar,
 } from "./utdanning.komponenter";
 import { valider } from "~/utils/validering.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const utdanningSchema = z
   .object({
@@ -26,10 +27,13 @@ export const utdanningSchema = z
     [planleggerÅStarteEllerFullføreStudierSamtidig]: z.enum(["ja", "nei"]).optional(),
     dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
-    [erTilbakenavigering]: z.boolean().optional(),
+    [handling]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    if (data.erTilbakenavigering) {
+    if (
+      data.handling === Seksjonshandling.tilbakenavigering ||
+      data.handling === Seksjonshandling.fortsettSenere
+    ) {
       return;
     }
 

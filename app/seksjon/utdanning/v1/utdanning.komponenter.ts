@@ -1,7 +1,7 @@
 import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 export const tarUtdanningEllerOpplæring = "tarUtdanningEllerOpplæring";
 export const avsluttetUtdanningSiste6Måneder = "avsluttetUtdanningSiste6Måneder";
 export const dokumenterAvsluttetUtdanningSiste6MånederNå =
