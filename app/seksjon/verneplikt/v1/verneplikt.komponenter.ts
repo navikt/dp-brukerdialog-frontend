@@ -1,7 +1,7 @@
 import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
-export const erTilbakenavigering = "erTilbakenavigering";
+export const handling = "handling";
 export const avtjentVerneplikt = "avtjentVerneplikt";
 
 export type VernepliktSvar = {
