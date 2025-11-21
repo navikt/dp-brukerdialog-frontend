@@ -101,7 +101,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       modalData?.barn?.dokumentasjonskrav?.includes(krav.id)
         ? {
             ...krav,
-            tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+            tittel: `Fødselsattest/bostedsbevis for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
           }
         : krav
     );

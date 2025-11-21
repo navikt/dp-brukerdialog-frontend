@@ -10,6 +10,7 @@ import {
 import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import {
   fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+  hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
@@ -18,36 +19,66 @@ import {
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import { useEffect } from "react";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
+  spørsmålId: string;
+  seksjonId: string;
 }
 
-export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
+export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId }: IProps) {
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,
     pengestøtteFraAndreEøsLandModalData,
     setPengestøtteFraAndreEøsLandModalData,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraAndreEøsLandSchema,
     defaultValues: pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLandSvar ?? {},
-    handleSubmit: (enPengestøtteFraAndreEøsLand) => {
-      if (
-        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjon.LeggTil &&
-        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjon.Rediger
-      ) {
+    handleSubmit: (skjemaData) => {
+      if (pengestøtteFraAndreEøsLandModalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for PengestøtteFraAndreEøsLandModal");
         return;
       }
 
+      const ytelseType = finnOptionLabel(
+        pengestøtteFraAndreEøsLandModalKomponenter,
+        hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
+        skjemaData.hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand!
+      );
+
+      const dokumentasjonskravTittel = `Dokumentasjon av pengestøtte fra andre EØS-land: ${ytelseType}`;
+
       if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil) {
+        const dokumentasjonskravId = crypto.randomUUID();
+
+        const nyttEnPengestøtteFraAndreEøsLand = {
+          dokumentasjonskravId: dokumentasjonskravId,
+          ...skjemaData,
+        };
+
+        const nyttDokumentkrav: Dokumentasjonskrav = {
+          id: dokumentasjonskravId,
+          seksjonId: seksjonId,
+          spørsmålId: spørsmålId,
+          tittel: dokumentasjonskravTittel,
+          type: DokumentasjonskravType.AnnenPengeStøtteFraEøsLand,
+        };
+
+        setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
         setPengestøtteFraAndreEøsLand([
           ...pengestøtteFraAndreEøsLand,
-          enPengestøtteFraAndreEøsLand as PengestøtteFraAndreEøsLandModalSvar,
+          nyttEnPengestøtteFraAndreEøsLand as PengestøtteFraAndreEøsLandModalSvar,
         ]);
       }
 
@@ -57,7 +88,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
       ) {
         const oppdatertListe = [...pengestøtteFraAndreEøsLand];
         oppdatertListe[pengestøtteFraAndreEøsLandModalData.pengestøtteFraAndreEøsLandSvarIndex] =
-          enPengestøtteFraAndreEøsLand as PengestøtteFraAndreEøsLandModalSvar;
+          skjemaData as PengestøtteFraAndreEøsLandModalSvar;
         setPengestøtteFraAndreEøsLand(oppdatertListe);
       }
     },

@@ -102,6 +102,7 @@ export default function AnnenPengestøtteRoute() {
         <AnnenPengestøtteProvider
           pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>
@@ -114,6 +115,7 @@ export default function AnnenPengestøtteRoute() {
         <AnnenPengestøtteProvider
           pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>

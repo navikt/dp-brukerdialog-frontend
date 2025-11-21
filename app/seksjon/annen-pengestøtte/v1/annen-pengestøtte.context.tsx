@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",
@@ -34,11 +35,14 @@ type AnnenPengestøtteContextType = {
   setPengestøtteFraNorgeModalData: (
     pengestøtteFraNorgeModalData?: PengestøtteFraNorgeModalData
   ) => void;
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
 };
 
 type AnnenPengestøtteProps = {
   pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLandModalSvar[];
   pengestøtteFraNorge: PengestøtteFraNorgeModalSvar[];
+  dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
@@ -61,6 +65,7 @@ function useAnnenPengestøtteContext() {
 function AnnenPengestøtteProvider({
   pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
   pengestøtteFraNorge: pengestøtteFraNorgeProps,
+  dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: AnnenPengestøtteProps) {
   const [pengestøtteFraAndreEøsLand, setPengestøtteFraAndreEøsLand] = useState(
@@ -74,6 +79,8 @@ function AnnenPengestøtteProvider({
     PengestøtteFraNorgeModalData | undefined
   >(undefined);
 
+  const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
+
   return (
     <AnnenPengestøtteContext.Provider
       value={{
@@ -85,6 +92,8 @@ function AnnenPengestøtteProvider({
         setPengestøtteFraNorge,
         pengestøtteFraNorgeModalData,
         setPengestøtteFraNorgeModalData,
+        dokumentasjonskrav,
+        setDokumentasjonskrav,
       }}
     >
       {children}

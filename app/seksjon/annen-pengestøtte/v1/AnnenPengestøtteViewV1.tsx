@@ -62,7 +62,10 @@ export function AnnenPengestøtteViewV1() {
     setPengestøtteFraNorge,
     pengestøtteFraNorgeModalData,
     setPengestøtteFraNorgeModalData,
+    dokumentasjonskrav,
   } = useAnnenPengestøtteContext();
+
+  console.log(`🔥 dokumentasjonskrav :`, dokumentasjonskrav);
 
   const form = useForm({
     method: "PUT",
@@ -223,7 +226,6 @@ export function AnnenPengestøtteViewV1() {
             {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {
               return render(komponent);
             })}
-
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
               <VStack gap="space-16">
                 {pengestøtteFraAndreEøsLand?.map(
@@ -261,10 +263,8 @@ export function AnnenPengestøtteViewV1() {
                 )}
               </VStack>
             )}
-
             <h3>Pengestøtte fra Norge</h3>
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
-
             {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
                 {pengestøtteFraNorge?.map(
@@ -296,7 +296,6 @@ export function AnnenPengestøtteViewV1() {
                 )}
               </VStack>
             )}
-
             {fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter.map(
               (komponent) => render(komponent)
             )}
@@ -331,7 +330,11 @@ export function AnnenPengestøtteViewV1() {
         </Form>
       </VStack>
       {pengestøtteFraAndreEøsLandModalData && (
-        <PengestøtteFraAndreEøsLandModal ref={pengestøtteFraAndreEøsLandModalRef} />
+        <PengestøtteFraAndreEøsLandModal
+          ref={pengestøtteFraAndreEøsLandModalRef}
+          spørsmålId="harMottattEllerSøktOmPengestøtteFraAndreEøsLandForklarendeTekst"
+          seksjonId="annen-pengestotte"
+        />
       )}
       {pengestøtteFraNorgeModalData && (
         <PengestøtteFraNorgeModal ref={pengestøtteFraNorgeModalRef} />
