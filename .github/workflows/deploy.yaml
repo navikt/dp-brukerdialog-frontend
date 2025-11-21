@@ -9,7 +9,7 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -40,7 +40,7 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: "22.x"
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev-gcp
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -91,7 +91,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   environment: prod-gcp
   #   steps:
-  #     - uses: actions/checkout@v5
+  #     - uses: actions/checkout@v6
   #     - uses: nais/deploy/actions/deploy@v2
   #       env:
   #         APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
