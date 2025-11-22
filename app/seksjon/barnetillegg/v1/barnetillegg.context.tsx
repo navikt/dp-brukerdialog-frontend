@@ -57,8 +57,7 @@ function BarnetilleggProvider({
   const [validerBarnFraPdl, setValiderBarnFraPdl] = useState(false);
   const [barnFraPdl, setbarnFraPdl] = useState(barnFraPdlProps);
   const [barnLagtManuelt, setBarnLagtManuelt] = useState(barnLagtManueltProps);
-  const [dokumentasjonskrav, setDokumentasjonskrav] =
-    useState<Dokumentasjonskrav[]>(dokumentasjonskravProps);
+  const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
 
   return (
