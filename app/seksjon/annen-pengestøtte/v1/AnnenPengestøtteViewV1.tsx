@@ -173,7 +173,7 @@ export function AnnenPengestøtteViewV1() {
       id: crypto.randomUUID(),
       seksjonId: "annen-pengestotte",
       spørsmålId: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-      tittel: "Dokumentasjon av sluttdato for utdanning",
+      tittel: "Avtale om økonomiske goder",
       type: DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder,
     };
 
