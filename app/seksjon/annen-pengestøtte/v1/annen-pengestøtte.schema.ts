@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 import {
   annenPengestøtteKomponenter,
   AnnenPengestøtteSvar,
@@ -55,6 +55,7 @@ export const annenPengestøtteSchema = z
       .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
       .optional(),
     versjon: z.number().optional(),
+    dokumentasjonskrav: z.string().optional(),
   })
   .superRefine((data, context) => {
     if (

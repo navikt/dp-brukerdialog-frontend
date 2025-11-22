@@ -8,14 +8,14 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
-import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { AnnenPengestøtteProvider } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
+import { PengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
+import { PengestøtteFraNorge } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
+import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { normaliserFormData } from "~/utils/action.utils.server";
-import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
@@ -24,8 +24,8 @@ const NESTE_SEKSJON_ID = "egen-naring";
 const FORRIGE_SEKSJON_ID = "arbeidsforhold";
 
 export type SeksjonSvar = AnnenPengestøtteSvar & {
-  pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLandModalSvar[];
-  pengestøtteFraNorge?: PengestøtteFraNorgeModalSvar[];
+  pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLand[];
+  pengestøtteFraNorge?: PengestøtteFraNorge[];
 };
 
 export type AnnenPengestøtteSeksjon = {
@@ -64,6 +64,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
+  const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
@@ -72,7 +73,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
-    dokumentasjonskrav: null,
+    dokumentasjonskrav: dokumentasjonskrav === "null" ? null : dokumentasjonskrav,
     pdfGrunnlag: pdfGrunnlag,
   };
 
@@ -104,6 +105,7 @@ export default function AnnenPengestøtteRoute() {
         <AnnenPengestøtteProvider
           pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>
@@ -116,6 +118,7 @@ export default function AnnenPengestøtteRoute() {
         <AnnenPengestøtteProvider
           pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>

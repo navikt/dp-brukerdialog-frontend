@@ -1,64 +1,75 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect } from "react";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
-import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+  hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
-import { useEffect } from "react";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import {
+  ModalOperasjon,
+  useAnnenPengestøtteContext,
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
+import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
+  spørsmålId: string;
+  seksjonId: string;
 }
 
-export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
+export type PengestøtteFraAndreEøsLand = PengestøtteFraAndreEøsLandModalSvar & {
+  id: string;
+  dokumentasjonskrav?: string[];
+};
+
+export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId }: IProps) {
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,
     pengestøtteFraAndreEøsLandModalData,
     setPengestøtteFraAndreEøsLandModalData,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraAndreEøsLandSchema,
-    defaultValues: pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLandSvar ?? {},
-    handleSubmit: (enPengestøtteFraAndreEøsLand) => {
-      if (
-        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjon.LeggTil &&
-        pengestøtteFraAndreEøsLandModalData?.operasjon !== ModalOperasjon.Rediger
-      ) {
+    defaultValues: pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLand ?? {},
+    handleSubmit: (skjemaData) => {
+      if (pengestøtteFraAndreEøsLandModalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for PengestøtteFraAndreEøsLandModal");
         return;
       }
 
+      const støtteType = finnOptionLabel(
+        pengestøtteFraAndreEøsLandModalKomponenter,
+        hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
+        skjemaData[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]!
+      );
+
+      const dokumentasjonskravTittel = `Pengestøtte fra andre EØS-land - ${støtteType}`;
+
       if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil) {
-        setPengestøtteFraAndreEøsLand([
-          ...pengestøtteFraAndreEøsLand,
-          enPengestøtteFraAndreEøsLand as PengestøtteFraAndreEøsLandModalSvar,
-        ]);
+        leggTilPengestøtteFraAndreEøsLand(skjemaData, dokumentasjonskravTittel);
       }
 
-      if (
-        pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLandSvarIndex !== undefined &&
-        pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.Rediger
-      ) {
-        const oppdatertListe = [...pengestøtteFraAndreEøsLand];
-        oppdatertListe[pengestøtteFraAndreEøsLandModalData.pengestøtteFraAndreEøsLandSvarIndex] =
-          enPengestøtteFraAndreEøsLand as PengestøtteFraAndreEøsLandModalSvar;
-        setPengestøtteFraAndreEøsLand(oppdatertListe);
+      if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.Rediger) {
+        redigerPengestøtteFraAndreEøsLand(skjemaData, dokumentasjonskravTittel);
       }
     },
     onSubmitSuccess() {
@@ -67,6 +78,60 @@ export function PengestøtteFraAndreEøsLandModal({ ref }: IProps) {
     },
     resetAfterSubmit: true,
   });
+
+  function leggTilPengestøtteFraAndreEøsLand(
+    pengestøtteProps: PengestøtteFraAndreEøsLandModalSvar,
+    dokumentasjonskravTittel: string
+  ) {
+    const dokumentasjonskravId = crypto.randomUUID();
+
+    const nyttDokumentkrav: Dokumentasjonskrav = {
+      id: dokumentasjonskravId,
+      seksjonId: seksjonId,
+      spørsmålId: spørsmålId,
+      tittel: dokumentasjonskravTittel,
+      type: DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand,
+    };
+
+    const nyPengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand = {
+      ...pengestøtteProps,
+      id: crypto.randomUUID(),
+      dokumentasjonskrav: [dokumentasjonskravId],
+    };
+
+    setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
+    setPengestøtteFraAndreEøsLand([...pengestøtteFraAndreEøsLand, nyPengestøtteFraAndreEøsLand]);
+  }
+
+  function redigerPengestøtteFraAndreEøsLand(
+    pengestøtteProps: PengestøtteFraAndreEøsLandModalSvar,
+    dokumentasjonskravTittel: string
+  ) {
+    const oppdatertPengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[] =
+      pengestøtteFraAndreEøsLand?.map((pengestøtte) =>
+        pengestøtte.id === pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLand?.id
+          ? {
+              ...pengestøtteProps,
+              id: pengestøtte.id,
+              dokumentasjonskrav: pengestøtte.dokumentasjonskrav,
+            }
+          : pengestøtte
+      );
+
+    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav) =>
+      pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLand?.dokumentasjonskrav?.includes(
+        krav.id
+      )
+        ? {
+            ...krav,
+            tittel: dokumentasjonskravTittel,
+          }
+        : krav
+    );
+
+    setDokumentasjonskrav(oppdatertDokumentasjonskrav);
+    setPengestøtteFraAndreEøsLand(oppdatertPengestøtteFraAndreEøsLand);
+  }
 
   useNullstillSkjulteFelter<PengestøtteFraAndreEøsLandModalSvar>(
     form,

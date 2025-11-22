@@ -3,57 +3,68 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import {
+  hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
+  pengestøtteFraNorgeModalKomponenter,
+  PengestøtteFraNorgeModalSvar,
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
-import {
-  pengestøtteFraNorgeModalKomponenter,
-  PengestøtteFraNorgeModalSvar,
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
-import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
+  spørsmålId: string;
+  seksjonId: string;
 }
 
-export function PengestøtteFraNorgeModal({ ref }: IProps) {
+export type PengestøtteFraNorge = PengestøtteFraNorgeModalSvar & {
+  id: string;
+  dokumentasjonskrav?: string[];
+};
+
+export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IProps) {
   const {
     pengestøtteFraNorge,
     setPengestøtteFraNorge,
     pengestøtteFraNorgeModalData,
     setPengestøtteFraNorgeModalData,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraNorgeSchema,
-    defaultValues: pengestøtteFraNorgeModalData?.pengestøtteFraNorgeSvar ?? {},
+    defaultValues: pengestøtteFraNorgeModalData?.pengestøtteFraNorge ?? {},
     handleSubmit: (enPengestøtteFraNorge) => {
-      if (
-        pengestøtteFraNorgeModalData?.operasjon !== ModalOperasjon.LeggTil &&
-        pengestøtteFraNorgeModalData?.operasjon !== ModalOperasjon.Rediger
-      ) {
+      if (pengestøtteFraNorgeModalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for PengestøtteFraNorgeModal");
         return;
       }
 
+      const støtteType = finnOptionLabel(
+        pengestøtteFraNorgeModalKomponenter,
+        hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
+        enPengestøtteFraNorge[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
+      );
+
+      const dokumentasjonskravTittel = `Pengestøtte fra Norge - ${støtteType}`;
+
       if (pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil) {
-        setPengestøtteFraNorge([
-          ...pengestøtteFraNorge,
-          enPengestøtteFraNorge as PengestøtteFraNorgeModalSvar,
-        ]);
+        leggTilPengestøtteFraNorge(enPengestøtteFraNorge, dokumentasjonskravTittel);
       }
 
-      if (
-        pengestøtteFraNorgeModalData?.pengestøtteFraNorgeSvarIndex !== undefined &&
-        pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.Rediger
-      ) {
-        const oppdatertListe = [...pengestøtteFraNorge];
-        oppdatertListe[pengestøtteFraNorgeModalData.pengestøtteFraNorgeSvarIndex] =
-          enPengestøtteFraNorge as PengestøtteFraNorgeModalSvar;
-        setPengestøtteFraNorge(oppdatertListe);
+      if (pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.Rediger) {
+        redigerPengestøtteFraNorge(enPengestøtteFraNorge, dokumentasjonskravTittel);
       }
     },
     onSubmitSuccess() {
@@ -67,6 +78,58 @@ export function PengestøtteFraNorgeModal({ ref }: IProps) {
     form,
     pengestøtteFraNorgeModalKomponenter
   );
+
+  function leggTilPengestøtteFraNorge(
+    pengestøtteProps: PengestøtteFraNorgeModalSvar,
+    dokumentasjonskravTittel: string
+  ) {
+    const dokumentasjonskravId = crypto.randomUUID();
+
+    const nyttDokumentkrav: Dokumentasjonskrav = {
+      id: dokumentasjonskravId,
+      seksjonId: seksjonId,
+      spørsmålId: spørsmålId,
+      tittel: dokumentasjonskravTittel,
+      type: DokumentasjonskravType.AnnenPengestøtteFraNorge,
+    };
+
+    const nyPengestøtteFraNorge: PengestøtteFraNorge = {
+      ...pengestøtteProps,
+      id: crypto.randomUUID(),
+      dokumentasjonskrav: [dokumentasjonskravId],
+    };
+
+    setDokumentasjonskrav([...dokumentasjonskrav, nyttDokumentkrav]);
+    setPengestøtteFraNorge([...pengestøtteFraNorge, nyPengestøtteFraNorge]);
+  }
+
+  function redigerPengestøtteFraNorge(
+    pengestøtteProps: PengestøtteFraNorgeModalSvar,
+    dokumentasjonskravTittel: string
+  ) {
+    const oppdatertPengestøtteFraNorge: PengestøtteFraNorge[] = pengestøtteFraNorge?.map(
+      (pengestøtte) =>
+        pengestøtte.id === pengestøtteFraNorgeModalData?.pengestøtteFraNorge?.id
+          ? {
+              ...pengestøtteProps,
+              id: pengestøtte.id,
+              dokumentasjonskrav: pengestøtte.dokumentasjonskrav,
+            }
+          : pengestøtte
+    );
+
+    const oppdatertDokumentasjonskrav = dokumentasjonskrav.map((krav) =>
+      pengestøtteFraNorgeModalData?.pengestøtteFraNorge?.dokumentasjonskrav?.includes(krav.id)
+        ? {
+            ...krav,
+            tittel: dokumentasjonskravTittel,
+          }
+        : krav
+    );
+
+    setDokumentasjonskrav(oppdatertDokumentasjonskrav);
+    setPengestøtteFraNorge(oppdatertPengestøtteFraNorge);
+  }
 
   const modalTittel =
     pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil

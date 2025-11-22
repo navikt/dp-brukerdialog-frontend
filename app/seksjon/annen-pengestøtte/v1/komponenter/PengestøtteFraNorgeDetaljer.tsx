@@ -6,7 +6,6 @@ import {
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
   iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
   pengestøtteFraNorgeModalKomponenter,
-  PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
   ModalOperasjon,
@@ -14,22 +13,32 @@ import {
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
+import { PengestøtteFraNorge } from "./PengestøtteFraNorgeModal";
 
 interface IProps {
-  pengestøtteFraNorgeSvar: PengestøtteFraNorgeModalSvar;
-  pengestøtteFraNorgeSvarIndex: number;
+  pengestøtteFraNorge: PengestøtteFraNorge;
 }
 
 export function PengestøtteFraNorgeDetaljer({
-  pengestøtteFraNorgeSvar,
-  pengestøtteFraNorgeSvarIndex,
+  pengestøtteFraNorge: pengestøtteFraNorgeProps,
 }: IProps) {
-  const { pengestøtteFraNorge, setPengestøtteFraNorge, setPengestøtteFraNorgeModalData } =
-    useAnnenPengestøtteContext();
+  const {
+    pengestøtteFraNorge,
+    setPengestøtteFraNorge,
+    setPengestøtteFraNorgeModalData,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
+  } = useAnnenPengestøtteContext();
 
   function fjernPengestøtteFraNorge() {
     setPengestøtteFraNorge(
-      pengestøtteFraNorge.filter((_, i) => i !== pengestøtteFraNorgeSvarIndex)
+      pengestøtteFraNorge.filter((støtte) => støtte.id !== pengestøtteFraNorgeProps.id)
+    );
+
+    setDokumentasjonskrav(
+      dokumentasjonskrav.filter(
+        (krav) => krav.id !== pengestøtteFraNorgeProps?.dokumentasjonskrav?.[0]
+      )
     );
   }
 
@@ -39,13 +48,13 @@ export function PengestøtteFraNorgeDetaljer({
         {finnOptionLabel(
           pengestøtteFraNorgeModalKomponenter,
           hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-          pengestøtteFraNorgeSvar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
+          pengestøtteFraNorgeProps[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
         )}
       </h3>
       <BodyShort spacing>
-        {pengestøtteFraNorgeSvar[hvemUtbetalerPengestøtten] && (
+        {pengestøtteFraNorgeProps[hvemUtbetalerPengestøtten] && (
           <>
-            {pengestøtteFraNorgeSvar[hvemUtbetalerPengestøtten]?.toUpperCase()}
+            {pengestøtteFraNorgeProps[hvemUtbetalerPengestøtten]?.toUpperCase()}
             <br />
           </>
         )}
@@ -53,19 +62,19 @@ export function PengestøtteFraNorgeDetaljer({
           Fra og med&nbsp;
           {formaterNorskDato(
             new Date(
-              pengestøtteFraNorgeSvar[
+              pengestøtteFraNorgeProps[
                 iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed
               ]!
             )
           )}
-          {pengestøtteFraNorgeSvar[
+          {pengestøtteFraNorgeProps[
             iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
           ] && (
             <>
               , til og med&nbsp;
               {formaterNorskDato(
                 new Date(
-                  pengestøtteFraNorgeSvar[
+                  pengestøtteFraNorgeProps[
                     iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
                   ]
                 )
@@ -83,8 +92,7 @@ export function PengestøtteFraNorgeDetaljer({
           onClick={() => {
             setPengestøtteFraNorgeModalData({
               operasjon: ModalOperasjon.Rediger,
-              pengestøtteFraNorgeSvarIndex: pengestøtteFraNorgeSvarIndex,
-              pengestøtteFraNorgeSvar: pengestøtteFraNorgeSvar,
+              pengestøtteFraNorge: pengestøtteFraNorgeProps,
             });
           }}
         >

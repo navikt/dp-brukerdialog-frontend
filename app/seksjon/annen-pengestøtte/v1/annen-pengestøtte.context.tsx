@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
-import { PengestøtteFraAndreEøsLandModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
-import { PengestøtteFraNorgeModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { PengestøtteFraAndreEøsLand } from "./komponenter/PengestøtteFraAndreEøsLandModal";
+import { PengestøtteFraNorge } from "./komponenter/PengestøtteFraNorgeModal";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",
@@ -9,36 +10,35 @@ export enum ModalOperasjon {
 
 type PengestøtteFraAndreEøsLandModalData = {
   operasjon: ModalOperasjon;
-  pengestøtteFraAndreEøsLandSvar?: PengestøtteFraAndreEøsLandModalSvar;
-  pengestøtteFraAndreEøsLandSvarIndex?: number;
+  pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLand;
 };
 
 type PengestøtteFraNorgeModalData = {
   operasjon: ModalOperasjon;
-  pengestøtteFraNorgeSvar?: PengestøtteFraNorgeModalSvar;
-  pengestøtteFraNorgeSvarIndex?: number;
+  pengestøtteFraNorge?: PengestøtteFraNorge;
 };
 
 type AnnenPengestøtteContextType = {
-  pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLandModalSvar[];
-  setPengestøtteFraAndreEøsLand: (
-    pengestøtteFraAndreEøsLandSvar: PengestøtteFraAndreEøsLandModalSvar[]
-  ) => void;
+  pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[];
+  setPengestøtteFraAndreEøsLand: (pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[]) => void;
   pengestøtteFraAndreEøsLandModalData?: PengestøtteFraAndreEøsLandModalData;
   setPengestøtteFraAndreEøsLandModalData: (
     pengestøtteFraAndreEøsLandModalData?: PengestøtteFraAndreEøsLandModalData
   ) => void;
-  pengestøtteFraNorge: PengestøtteFraNorgeModalSvar[];
-  setPengestøtteFraNorge: (pengestøtteFraNorgeSvar: PengestøtteFraNorgeModalSvar[]) => void;
+  pengestøtteFraNorge: PengestøtteFraNorge[];
+  setPengestøtteFraNorge: (pengestøtteFraNorge: PengestøtteFraNorge[]) => void;
   pengestøtteFraNorgeModalData?: PengestøtteFraNorgeModalData;
   setPengestøtteFraNorgeModalData: (
     pengestøtteFraNorgeModalData?: PengestøtteFraNorgeModalData
   ) => void;
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
 };
 
 type AnnenPengestøtteProps = {
-  pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLandModalSvar[];
-  pengestøtteFraNorge: PengestøtteFraNorgeModalSvar[];
+  pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[];
+  pengestøtteFraNorge: PengestøtteFraNorge[];
+  dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
@@ -61,18 +61,21 @@ function useAnnenPengestøtteContext() {
 function AnnenPengestøtteProvider({
   pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
   pengestøtteFraNorge: pengestøtteFraNorgeProps,
+  dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: AnnenPengestøtteProps) {
   const [pengestøtteFraAndreEøsLand, setPengestøtteFraAndreEøsLand] = useState(
-    pengestøtteFraAndreEøsLandProps as any
+    pengestøtteFraAndreEøsLandProps
   );
   const [pengestøtteFraAndreEøsLandModalData, setPengestøtteFraAndreEøsLandModalData] = useState<
     PengestøtteFraAndreEøsLandModalData | undefined
   >(undefined);
-  const [pengestøtteFraNorge, setPengestøtteFraNorge] = useState(pengestøtteFraNorgeProps as any);
+  const [pengestøtteFraNorge, setPengestøtteFraNorge] = useState(pengestøtteFraNorgeProps);
   const [pengestøtteFraNorgeModalData, setPengestøtteFraNorgeModalData] = useState<
     PengestøtteFraNorgeModalData | undefined
   >(undefined);
+
+  const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
 
   return (
     <AnnenPengestøtteContext.Provider
@@ -85,6 +88,8 @@ function AnnenPengestøtteProvider({
         setPengestøtteFraNorge,
         pengestøtteFraNorgeModalData,
         setPengestøtteFraNorgeModalData,
+        dokumentasjonskrav,
+        setDokumentasjonskrav,
       }}
     >
       {children}

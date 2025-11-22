@@ -60,7 +60,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       }
 
       if (modalData.operasjon === ModalOperasjon.Rediger) {
-        oppdatereEtBarn(barn);
+        redigerEtBarn(barn);
       }
     },
     onSubmitSuccess() {
@@ -90,7 +90,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
     setBarnLagtManuelt([...barnLagtManuelt, nyttBarn]);
   }
 
-  function oppdatereEtBarn(barnProps: BarnLagtManuelt) {
+  function redigerEtBarn(barnProps: BarnLagtManuelt) {
     const oppdatertBarnLagtManuelt: BarnLagtManuelt[] = barnLagtManuelt?.map((barn) =>
       barn.id === modalData?.barn?.id
         ? { ...barnProps, id: barn.id, dokumentasjonskrav: barn.dokumentasjonskrav }
