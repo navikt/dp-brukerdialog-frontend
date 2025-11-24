@@ -169,17 +169,24 @@ export function AnnenPengestøtteViewV1() {
   };
 
   function hentDokumentasjonskrav() {
-    const lønnEllerAndreØkonomiskeGoderDokumentasjonskrav: Dokumentasjonskrav = {
-      id: crypto.randomUUID(),
-      seksjonId: "annen-pengestotte",
-      spørsmålId: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-      tittel: "Avtale om økonomiske goder",
-      type: DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder,
-    };
+    const fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
 
-    return form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
-      "ja"
-      ? JSON.stringify([...dokumentasjonskrav, lønnEllerAndreØkonomiskeGoderDokumentasjonskrav])
+    if (
+      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) === "ja"
+    ) {
+      const lønnEllerAndreØkonomiskeGoderDokumentasjonskrav: Dokumentasjonskrav = {
+        id: crypto.randomUUID(),
+        seksjonId: "annen-pengestotte",
+        spørsmålId: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+        tittel: "Avtale om økonomiske goder",
+        type: DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder,
+      };
+
+      fullstendigDokumentasjonskrav.push(lønnEllerAndreØkonomiskeGoderDokumentasjonskrav);
+    }
+
+    return fullstendigDokumentasjonskrav.length > 0
+      ? JSON.stringify(fullstendigDokumentasjonskrav)
       : "null";
   }
 
