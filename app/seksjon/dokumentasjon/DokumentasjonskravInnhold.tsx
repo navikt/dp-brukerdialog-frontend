@@ -97,6 +97,111 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </VStack>
         );
 
+      case DokumentasjonskravType.ArbeidsforholdAvskjedigelse:
+        return (
+          <VStack gap="2">
+            <BodyShort>Du har krysset av for at du har blitt avskjediget.</BodyShort>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>datoen du ble avskjediget</List.Item>
+                  <List.Item>årsaken til at du ble avskjediget</List.Item>
+                </List>
+                <BodyLong>
+                  For å dokumentere dette, kan du sende oss avskjedigelsen du har fått fra
+                  arbeidsgiver. Hvis avskjedigelsen ikke inneholder opplysningene vi trenger, kan du
+                  bruke skjemaet{" "}
+                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
+                    Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
+                  </Link>
+                  . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
+                  arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
+                </BodyLong>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
+
+      case DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid:
+        return (
+          <VStack gap="2">
+            <BodyShort>Du har krysset av for at arbeidstiden din er redusert.</BodyShort>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>datoen arbeidstiden din ble redusert</List.Item>
+                  <List.Item>årsaken til at arbeidstiden din ble redusert</List.Item>
+                  <List.Item>hvor mye arbeidstiden din ble redusert</List.Item>
+                </List>
+                <BodyLong>
+                  Du må be arbeidsgiver om denne dokumentasjonen. Hvis dokumentene ikke inneholder
+                  opplysningene vi trenger, kan du bruke skjemaet 
+                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
+                    Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
+                  </Link>
+                  . Arbeidsgiveren din må fylle ut og signere skjemaet.
+                </BodyLong>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
+
+      case DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter:
+        return (
+          <VStack gap="2">
+            <BodyShort>
+              Du har krysset av for at arbeidsgiveren din er konkurs. Du må legge ved brevet du har
+              fått fra bostyreren eller konkursforvalteren.
+            </BodyShort>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>at arbeidsgiveren din er konkurs</List.Item>
+                  <List.Item>datoen konkursen er åpnet</List.Item>
+                  <List.Item>at boet ikke trer inn i arbeidsavtalen din</List.Item>
+                </List>
+                <BodyLong>Brevet må være signert av bostyreren eller konkursforvalteren</BodyLong>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
+
+      case DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter:
+        return (
+          <VStack gap="2">
+            <BodyShort>
+              Du har krysset av for at du er permittert. Du må legge ved permitteringsvarselet som
+              du har fått fra arbeidsgiveren din.
+            </BodyShort>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Permitteringsvarselet må inneholde informasjon om</BodyShort>
+                <List as="ul">
+                  <List.Item>årsaken til at du ble permittert (permitteringsårsak)</List.Item>
+                  <List.Item>hvor mange prosent du er permittert (permitteringsgrad)</List.Item>
+                  <List.Item>startdato og eventuell sluttdato for permitteringen</List.Item>
+                  <List.Item>datoen du fikk permitteringsvarselet</List.Item>
+                  <List.Item>
+                    om partene på arbeidsplassen din er enige om permitteringen (JA/NEI)
+                  </List.Item>
+                </List>
+                <BodyShort>Det må komme frem at permitteringen gjelder deg. skjemaet.</BodyShort>
+                <BodyLong>
+                  Hvis permitteringsvarselet ikke inneholder disse opplysningene kan du bruke
+                  skjemaet{" "}
+                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf">
+                    Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04).
+                  </Link>
+                  Arbeidsgiveren din må fylle ut og signere skjemaet.
+                </BodyLong>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
+
       case DokumentasjonskravType.Tjenestebevis:
         return (
           <BodyLong>
