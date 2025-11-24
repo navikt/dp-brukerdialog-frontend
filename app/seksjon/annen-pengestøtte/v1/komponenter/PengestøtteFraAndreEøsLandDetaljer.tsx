@@ -1,5 +1,5 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
-import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
+import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
 import {
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
   fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
@@ -7,7 +7,6 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
   pengestøtteFraAndreEøsLandModalKomponenter,
-  PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   ModalOperasjon,
@@ -16,53 +15,62 @@ import {
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
+import { PengestøtteFraAndreEøsLand } from "./PengestøtteFraAndreEøsLandModal";
 
 interface IProps {
-  pengestøtteFraAndreEøsLandSvar: PengestøtteFraAndreEøsLandModalSvar;
-  pengestøtteFraAndreEøsLandSvarIndex: number;
+  pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand;
 }
 
 export function PengestøtteFraAndreEøsLandDetaljer({
-  pengestøtteFraAndreEøsLandSvar,
-  pengestøtteFraAndreEøsLandSvarIndex,
+  pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
 }: IProps) {
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLandModalData,
+    dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
   function fjernPengestøtteFraAndreEøsLand() {
     setPengestøtteFraAndreEøsLand(
-      pengestøtteFraAndreEøsLand.filter((_, i) => i !== pengestøtteFraAndreEøsLandSvarIndex)
+      pengestøtteFraAndreEøsLand.filter(
+        (støtte) => støtte.id !== pengestøtteFraAndreEøsLandProps.id
+      )
+    );
+
+    setDokumentasjonskrav(
+      dokumentasjonskrav.filter(
+        (krav) => krav.id !== pengestøtteFraAndreEøsLandProps?.dokumentasjonskrav?.[0]
+      )
     );
   }
 
   return (
     <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
-      <h3 style={{ marginTop: "0" }}>
+      <Heading level="3" size="small" spacing>
         {finnOptionLabel(
           pengestøtteFraAndreEøsLandModalKomponenter,
           hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
-          pengestøtteFraAndreEøsLandSvar[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]!
+          pengestøtteFraAndreEøsLandProps[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]!
         )}
-      </h3>
+      </Heading>
       <BodyShort spacing>
         {finnLandnavnMedLocale(
-          pengestøtteFraAndreEøsLandSvar[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]!
+          pengestøtteFraAndreEøsLandProps[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]!
         ).toUpperCase()}
         <br />
-        {pengestøtteFraAndreEøsLandSvar[
+        {pengestøtteFraAndreEøsLandProps[
           iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
         ] &&
-          pengestøtteFraAndreEøsLandSvar[
+          pengestøtteFraAndreEøsLandProps[
             iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed
           ] && (
             <>
               Mottatt fra og med&nbsp;
               {formaterNorskDato(
                 new Date(
-                  pengestøtteFraAndreEøsLandSvar[
+                  pengestøtteFraAndreEøsLandProps[
                     iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
                   ]
                 )
@@ -70,19 +78,21 @@ export function PengestøtteFraAndreEøsLandDetaljer({
               , til og med&nbsp;
               {formaterNorskDato(
                 new Date(
-                  pengestøtteFraAndreEøsLandSvar[
+                  pengestøtteFraAndreEøsLandProps[
                     iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed
                   ]
                 )
               )}
             </>
           )}
-        {pengestøtteFraAndreEøsLandSvar[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed] && (
+        {pengestøtteFraAndreEøsLandProps[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed] && (
           <>
             Motatt fra og med{" "}
             {formaterNorskDato(
               new Date(
-                pengestøtteFraAndreEøsLandSvar[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]
+                pengestøtteFraAndreEøsLandProps[
+                  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed
+                ]
               )
             )}
           </>
@@ -97,8 +107,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           onClick={() => {
             setPengestøtteFraAndreEøsLandModalData({
               operasjon: ModalOperasjon.Rediger,
-              pengestøtteFraAndreEøsLandSvarIndex: pengestøtteFraAndreEøsLandSvarIndex,
-              pengestøtteFraAndreEøsLandSvar: pengestøtteFraAndreEøsLandSvar,
+              pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
             });
           }}
         >

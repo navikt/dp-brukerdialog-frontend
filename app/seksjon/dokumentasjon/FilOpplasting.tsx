@@ -49,20 +49,22 @@ export function FilOpplasting({
     const filerKlarTilOpplasting: DokumentkravFil[] = [];
 
     filer.forEach((fil: FileObject) => {
-      const erDuplikat = dokumentkravFiler.some((f) => f.filnavn === fil.file.name);
       const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.file.name.endsWith(format));
+      const erDuplikat = dokumentkravFiler.some(
+        (f) => f.filnavn === fil.file.name && f.storrelse === fil.file.size
+      );
 
-      if (erDuplikat) {
-        filerMedEnFeil.push({
-          id: crypto.randomUUID(),
-          filnavn: fil.file.name,
-          feil: LastOppFeil.DUPLIKAT_FIL,
-        });
-      } else if (!erGyldigFormat) {
+      if (!erGyldigFormat) {
         filerMedEnFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
           feil: LastOppFeil.UGYLDIG_FORMAT,
+        });
+      } else if (erDuplikat) {
+        filerMedEnFeil.push({
+          id: crypto.randomUUID(),
+          filnavn: fil.file.name,
+          feil: LastOppFeil.DUPLIKAT_FIL,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedEnFeil.push({
@@ -124,13 +126,8 @@ export function FilOpplasting({
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
-    if (fil.feil) {
+    if (fil.feil || !fil.filsti) {
       setDokumentkravFiler((prev) => prev.filter((f) => !(f.filnavn === fil.filnavn && f.feil)));
-      return;
-    }
-
-    if (!fil.filsti) {
-      console.error("Ingen filsti for fil, kan ikke slette");
       return;
     }
 

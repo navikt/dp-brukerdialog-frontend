@@ -1,9 +1,12 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
 import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
 import {
@@ -12,10 +15,8 @@ import {
   mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeKomponenter,
   pengestøtteFraNorgeModalKomponenter,
-  PengestøtteFraNorgeModalSvar,
   skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
-import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import {
   annenPengestøtteKomponenter,
   AnnenPengestøtteResponse,
@@ -23,23 +24,30 @@ import {
   pdfGrunnlag,
   seksjonsvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
-import { useEffect, useRef, useState } from "react";
-import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
+import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
+import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandDetaljer";
+import {
+  PengestøtteFraAndreEøsLand,
+  PengestøtteFraAndreEøsLandModal,
+} from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
+import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
+import {
+  PengestøtteFraNorge,
+  PengestøtteFraNorgeModal,
+} from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
+import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandKomponenter,
   pengestøtteFraAndreEøsLandModalKomponenter,
-  PengestøtteFraAndreEøsLandModalSvar,
 } from "./annen-pengestøtte-eøs.komponenter";
-import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandDetaljer";
-import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeDetaljer";
-import { PengestøtteFraAndreEøsLandModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
-import { PengestøtteFraNorgeModal } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { SøknadFooter } from "~/components/SøknadFooter";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
 
 export function AnnenPengestøtteViewV1() {
   const seksjonnavn = "Annen pengestøtte";
@@ -65,6 +73,7 @@ export function AnnenPengestøtteViewV1() {
     setPengestøtteFraNorge,
     pengestøtteFraNorgeModalData,
     setPengestøtteFraNorgeModalData,
+    dokumentasjonskrav,
   } = useAnnenPengestøtteContext();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
@@ -159,11 +168,34 @@ export function AnnenPengestøtteViewV1() {
     return JSON.stringify(pdfPayload);
   };
 
+  function hentDokumentasjonskrav() {
+    const fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
+
+    if (
+      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) === "ja"
+    ) {
+      const lønnEllerAndreØkonomiskeGoderDokumentasjonskrav: Dokumentasjonskrav = {
+        id: crypto.randomUUID(),
+        seksjonId: "annen-pengestotte",
+        spørsmålId: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+        tittel: "Avtale om økonomiske goder",
+        type: DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder,
+      };
+
+      fullstendigDokumentasjonskrav.push(lønnEllerAndreØkonomiskeGoderDokumentasjonskrav);
+    }
+
+    return fullstendigDokumentasjonskrav.length > 0
+      ? JSON.stringify(fullstendigDokumentasjonskrav)
+      : "null";
+  }
+
   function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
     form.setValue(handling, ønsketHandling);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.submit();
   }
 
@@ -199,6 +231,7 @@ export function AnnenPengestøtteViewV1() {
       const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
       form.submit();
     }
   }
@@ -231,18 +264,12 @@ export function AnnenPengestøtteViewV1() {
 
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
               <VStack gap="space-16">
-                {pengestøtteFraAndreEøsLand?.map(
-                  (
-                    pengestøtteFraAndreEøsLandSvar: PengestøtteFraAndreEøsLandModalSvar,
-                    index: number
-                  ) => (
-                    <PengestøtteFraAndreEøsLandDetaljer
-                      key={index}
-                      pengestøtteFraAndreEøsLandSvarIndex={index}
-                      pengestøtteFraAndreEøsLandSvar={pengestøtteFraAndreEøsLandSvar}
-                    />
-                  )
-                )}
+                {pengestøtteFraAndreEøsLand?.map((støtte: PengestøtteFraAndreEøsLand) => (
+                  <PengestøtteFraAndreEøsLandDetaljer
+                    key={støtte.id}
+                    pengestøtteFraAndreEøsLand={støtte}
+                  />
+                ))}
 
                 <HStack>
                   <Button
@@ -272,15 +299,9 @@ export function AnnenPengestøtteViewV1() {
 
             {form.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "ja" && (
               <VStack gap="space-16">
-                {pengestøtteFraNorge?.map(
-                  (pengestøtteFraNorgeSvar: PengestøtteFraNorgeModalSvar, index: number) => (
-                    <PengestøtteFraNorgeDetaljer
-                      key={index}
-                      pengestøtteFraNorgeSvarIndex={index}
-                      pengestøtteFraNorgeSvar={pengestøtteFraNorgeSvar}
-                    />
-                  )
-                )}
+                {pengestøtteFraNorge?.map((støtte: PengestøtteFraNorge) => (
+                  <PengestøtteFraNorgeDetaljer key={støtte.id} pengestøtteFraNorge={støtte} />
+                ))}
                 <HStack>
                   <Button
                     type={"button"}
@@ -336,10 +357,18 @@ export function AnnenPengestøtteViewV1() {
         </Form>
       </VStack>
       {pengestøtteFraAndreEøsLandModalData && (
-        <PengestøtteFraAndreEøsLandModal ref={pengestøtteFraAndreEøsLandModalRef} />
+        <PengestøtteFraAndreEøsLandModal
+          ref={pengestøtteFraAndreEøsLandModalRef}
+          spørsmålId="harMottattEllerSøktOmPengestøtteFraAndreEøsLandForklarendeTekst"
+          seksjonId="annen-pengestotte"
+        />
       )}
       {pengestøtteFraNorgeModalData && (
-        <PengestøtteFraNorgeModal ref={pengestøtteFraNorgeModalRef} />
+        <PengestøtteFraNorgeModal
+          ref={pengestøtteFraNorgeModalRef}
+          spørsmålId="mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst"
+          seksjonId="annen-pengestotte"
+        />
       )}
       <SøknadFooter
         className="footer"

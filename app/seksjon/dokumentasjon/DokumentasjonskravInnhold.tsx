@@ -91,6 +91,21 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </>
         );
 
+      case DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder:
+        return (
+          <BodyLong>
+            Du har krysset av for at du får eller kommer til å få en utbetaling eller andre
+            økonomiske goder fra arbeidsgiver. Du må sende inn sluttavtale eller annen dokumentasjon
+            som beskriver hva du får.
+          </BodyLong>
+        );
+
+      case DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand:
+        return <BodyLong>Du har krysset av for at du mottar støtte fra andre EØS-land.</BodyLong>;
+
+      case DokumentasjonskravType.AnnenPengestøtteFraNorge:
+        return <BodyLong>Du har krysset av for at du mottar støtte fra Norge.</BodyLong>;
+
       default:
         console.error(`Ukjent dokumentasjonskrav type: ${type}`);
         return <p>Ukjent dokumentasjonskrav type.</p>;
