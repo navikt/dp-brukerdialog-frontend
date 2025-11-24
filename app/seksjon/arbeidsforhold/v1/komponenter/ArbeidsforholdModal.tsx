@@ -78,9 +78,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       }
 
       if (modalData?.operasjon === ModalOperasjon.Rediger) {
-        // const oppdatertListe = [...registrerteArbeidsforhold];
-        // oppdatertListe[modalData.arbeidsforholdIndex] = arbeidsforhold as Arbeidsforhold;
-        // setRegistrerteArbeidsforhold(oppdatertListe);
+        redigerArbeidsforhold(skjemaData);
       }
     },
     onSubmitSuccess() {
@@ -105,6 +103,36 @@ export function ArbeidsforholdModal({ ref }: IProps) {
 
     setDokumentasjonskrav([...dokumentasjonskrav, ...nyttDokumentkrav]);
     setRegistrerteArbeidsforhold([...registrerteArbeidsforhold, nyttArbeidsforhold]);
+  }
+
+  function redigerArbeidsforhold(skjemaData: ArbeidsforholdModalSvar) {
+    if (!modalData?.arbeidsforhold) {
+      console.error("Mangler arbeidsforhold for redigering");
+      return;
+    }
+
+    const gammeltArbeidsforhold = modalData.arbeidsforhold;
+    const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
+    const bedriftNavn = skjemaData[navnetPåBedriften] || "";
+
+    const oppdaterteDokumentasjonskrav = dokumentasjonskrav.filter(
+      (krav) => !gammeltArbeidsforhold.dokumentasjonskrav?.includes(krav.id)
+    );
+
+    const nyeDokumentkrav = lagDokumentasjonskrav(arbeidsforholdSituasjon, bedriftNavn);
+
+    const oppdatertArbeidsforhold = {
+      ...skjemaData,
+      id: gammeltArbeidsforhold.id,
+      dokumentasjonskrav: nyeDokumentkrav.map((krav) => krav.id),
+    };
+
+    const oppdatertArbeidsforholdListe = registrerteArbeidsforhold.map((arbeidsforhold) =>
+      arbeidsforhold.id === gammeltArbeidsforhold.id ? oppdatertArbeidsforhold : arbeidsforhold
+    );
+
+    setDokumentasjonskrav([...oppdaterteDokumentasjonskrav, ...nyeDokumentkrav]);
+    setRegistrerteArbeidsforhold(oppdatertArbeidsforholdListe);
   }
 
   function lagDokumentasjonskrav(
@@ -152,15 +180,15 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            tittel: `Avskjedigelse - ${bedriftNavn}`,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            tittel: `Oppsigelse - ${bedriftNavn}`,
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+            tittel: `Avskjedigelse - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdAvskjedigelse,
           },
         ];
 
@@ -188,7 +216,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Redusert arbeidstid - ${bedriftNavn}`,
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+            type: DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid,
           },
         ];
       case arbeidsgiverErKonkurs:
@@ -205,7 +233,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+            type: DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter,
           },
         ];
       case jegErPermitert:
@@ -221,8 +249,8 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+            tittel: `Permitteringsvarsel - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel,
           },
         ];
 

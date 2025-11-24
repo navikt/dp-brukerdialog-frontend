@@ -100,6 +100,8 @@ export default function ArbeidsforholdRoute() {
   const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
+  console.log(loaderData);
+
   switch (seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return (
