@@ -31,8 +31,6 @@ export enum LastOppFeil {
   UKJENT_FEIL = "UKJENT_FEIL",
 }
 
-// Test verify commit
-
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
   dokumentkravFiler: DokumentkravFil[];
