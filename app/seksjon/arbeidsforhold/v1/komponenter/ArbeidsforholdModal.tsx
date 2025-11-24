@@ -30,6 +30,8 @@ interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
+// Test verif commit uten local ssh nøkkel
+
 export function ArbeidsforholdModal({ ref }: IProps) {
   const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, modalData, setModalData } =
     useArbeidsforholdContext();
