@@ -43,9 +43,9 @@ export type Bundle = {
 
 export enum DokumentasjonskravType {
   Barn = "Barn",
-  Arbeidsforhold = "Arbeidsforhold",
   ArbeidsforholdArbeidsavtale = "ArbeidsforholdArbeidsavtale",
-  ArbeidsforholdHarBlittSagtOpp = "ArbeidsforholdHarBlittSagtOpp",
+  ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp = "ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp",
+  ArbeidsforholdJegHarSagtOppSelv = "ArbeidsforholdJegHarSagtOppSelv",
   Tjenestebevis = "Tjenestebevis",
   Utdanning = "Utdanning",
   ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid = "ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid",

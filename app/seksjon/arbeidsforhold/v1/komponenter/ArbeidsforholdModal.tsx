@@ -126,7 +126,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse - ${bedriftNavn}`,
-            type: DokumentasjonskravType.ArbeidsforholdHarBlittSagtOpp,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp,
           },
         ];
       case jegHarSagtOppSelv:
@@ -136,14 +136,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv,
           },
         ];
       case jegHarFåttAvskjed:
@@ -153,14 +153,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Avskjedigelse - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
         ];
 
@@ -171,7 +171,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
         ];
       case arbeidstidenErRedusert:
@@ -181,14 +181,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Redusert arbeidstid - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
         ];
       case arbeidsgiverErKonkurs:
@@ -198,14 +198,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
         ];
       case jegErPermitert:
@@ -215,14 +215,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
         ];
 
