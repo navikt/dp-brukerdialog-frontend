@@ -30,8 +30,30 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-  build:
+  test:
     needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: node_modules
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22.x"
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci --ignore-scripts
+        if: steps.node_modules.outputs.cache-hit != 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - run: npm run test
+
+  build:
+    needs: [test]
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
