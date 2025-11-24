@@ -119,14 +119,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             tittel: `Oppsigelse - ${bedriftNavn}`,
-            type: DokumentasjonskravType.Arbeidsforhold,
+            type: DokumentasjonskravType.ArbeidsforholdHarBlittSagtOpp,
           },
         ];
       case jegHarSagtOppSelv:
