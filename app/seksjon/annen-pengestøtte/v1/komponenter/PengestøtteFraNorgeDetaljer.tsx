@@ -37,7 +37,7 @@ export function PengestøtteFraNorgeDetaljer({
 
     setDokumentasjonskrav(
       dokumentasjonskrav.filter(
-        (krav) => krav.id !== pengestøtteFraNorgeProps?.dokumentasjonskrav?.[0]
+        (krav) => !pengestøtteFraNorgeProps.dokumentasjonskrav?.includes(krav.id)
       )
     );
   }

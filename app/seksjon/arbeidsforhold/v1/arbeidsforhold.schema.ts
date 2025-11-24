@@ -1,5 +1,68 @@
 import { z } from "zod";
 import {
+  arbeidsforholdModalArbeidstidenErRedusertKomponenter,
+  arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
+  arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
+  arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
+  arbeidstidenErRedusertHvaErÅrsaken,
+  arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
+  arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import {
+  arbeidsforholdModalJegHarFåttAvskjedKomponenter,
+  avskjedigetHvaVarÅrsaken,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import {
+  arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
+  ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
+  ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import {
+  arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter,
+  jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
+  jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
+  jegErOppsagtHvaHarDuSvartPåTilbudet,
+  jegErOppsagtHvaVarÅrsaken,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import {
+  arbeidsforholdModalJegHarSagtOppSelvKomponenter,
+  jegHarSagtOppHvaVarÅrsaken,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import {
+  arbeidsforholdModalArbeidsgiverErKonkursKomponenter,
+  konkursDekkerLønnsgarantiordningenKravetDitt,
+  konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
+  konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
+  konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet,
+  konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
+  konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
+  konkursHarDuSøktOmLønnsgarantimidler,
+  konkursNårStartetDuIDenneJobben,
+  konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
+  konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
+  konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import {
+  arbeidsforholdModalKontraktenErUgåttKomponenter,
+  kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
+  kontraktenErUgåttHvaHarDuSvartPåTilbudet,
+  kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import {
+  arbeidsforholdModalJegErPermittertKomponenter,
+  permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
+  permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
+  permittertHvorMangeProsentErDuPermittert,
+  permittertLønnsperiodeFraOgMedDato,
+  permittertLønnsperiodeTilOgMedDato,
+  permittertNårErDuPermittertFraOgMedDato,
+  permittertNårErDuPermittertTilOgMedDato,
+  permittertNårStartetDuIDenneJobben,
+  permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
+  permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { valider } from "~/utils/validering.utils";
+import {
   annenRotasjonBeskrivelse,
   arbeidsforholdKomponenter,
   arbeidsforholdModalKomponenter,
@@ -27,69 +90,6 @@ import {
   varighetPåArbeidsforholdetFraOgMedDato,
   varighetPåArbeidsforholdetTilOgMedDato,
 } from "./arbeidsforhold.komponenter";
-import {
-  arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter,
-  jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
-  jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
-  jegErOppsagtHvaHarDuSvartPåTilbudet,
-  jegErOppsagtHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
-import {
-  arbeidsforholdModalJegHarSagtOppSelvKomponenter,
-  jegHarSagtOppHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
-import {
-  arbeidsforholdModalJegHarFåttAvskjedKomponenter,
-  avskjedigetHvaVarÅrsaken,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import {
-  arbeidsforholdModalKontraktenErUgåttKomponenter,
-  kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
-  kontraktenErUgåttHvaHarDuSvartPåTilbudet,
-  kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
-import {
-  arbeidsforholdModalArbeidstidenErRedusertKomponenter,
-  arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
-  arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
-  arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
-  arbeidstidenErRedusertHvaErÅrsaken,
-  arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
-  arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import {
-  arbeidsforholdModalArbeidsgiverErKonkursKomponenter,
-  konkursDekkerLønnsgarantiordningenKravetDitt,
-  konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
-  konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
-  konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet,
-  konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
-  konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
-  konkursHarDuSøktOmLønnsgarantimidler,
-  konkursNårStartetDuIDenneJobben,
-  konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-  konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
-  konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import {
-  arbeidsforholdModalJegErPermittertKomponenter,
-  permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
-  permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
-  permittertHvorMangeProsentErDuPermittert,
-  permittertLønnsperiodeFraOgMedDato,
-  permittertLønnsperiodeTilOgMedDato,
-  permittertNårErDuPermittertFraOgMedDato,
-  permittertNårErDuPermittertTilOgMedDato,
-  permittertNårStartetDuIDenneJobben,
-  permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-  permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
-import {
-  arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
-  ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
-  ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
-import { valider } from "~/utils/validering.utils";
 
 export const arbeidsforholdSchema = z
   .object({
@@ -108,6 +108,7 @@ export const arbeidsforholdSchema = z
     [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: z
       .enum(["ja", "nei"])
       .optional(),
+    dokumentasjonskrav: z.string().optional(),
     versjon: z.number().optional(),
   })
   .superRefine((data, context) => {

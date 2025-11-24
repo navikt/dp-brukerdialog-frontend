@@ -31,7 +31,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
     setBarnLagtManuelt(barnLagtManuelt.filter((barn) => barn.id !== barnProps.id));
 
     setDokumentasjonskrav(
-      dokumentasjonskrav.filter((krav) => krav.id !== barnProps?.dokumentasjonskrav?.[0])
+      dokumentasjonskrav.filter((krav) => !barnProps.dokumentasjonskrav?.includes(krav.id))
     );
   }
 
