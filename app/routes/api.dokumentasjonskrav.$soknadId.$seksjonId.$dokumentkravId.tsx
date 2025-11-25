@@ -14,7 +14,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${params.soknadId}/${params.seksjonId}/dokumentasjonskrav`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 
-  const response = await fetch(url, {
+  return await fetch(url, {
     method: "PUT",
     headers: {
       Accept: "application/json",
@@ -24,6 +24,4 @@ export async function action({ params, request }: ActionFunctionArgs) {
     },
     body: dokumentasjonskrav,
   });
-
-  return response;
 }

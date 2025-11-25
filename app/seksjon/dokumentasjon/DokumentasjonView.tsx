@@ -20,12 +20,12 @@ export function DokumentasjonView() {
   } = useDokumentasjonskravContext();
 
   const [lagrer, setLagrer] = useState(false);
-  const [nåværendeIndex, setNåværendeIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
   async function lagreDokumentasjonskravene() {
     setLagrer(true);
     setHarValideringsFeil(false);
-    setNåværendeIndex(0);
+    setIndex(0);
 
     if (dokumentasjonskrav.length > 0) {
       setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[0].id);
@@ -35,11 +35,11 @@ export function DokumentasjonView() {
   useEffect(() => {
     if (!lagrer || dokumentasjonskravIdTilÅLagre !== null) return;
 
-    const nextIndex = nåværendeIndex + 1;
+    const nesteIndex = index + 1;
 
-    if (nextIndex < dokumentasjonskrav.length) {
-      setNåværendeIndex(nextIndex);
-      setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[nextIndex].id);
+    if (nesteIndex < dokumentasjonskrav.length) {
+      setIndex(nesteIndex);
+      setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[nesteIndex].id);
     } else {
       const alleDokumentasjonskravBesvart = dokumentasjonskrav.every(
         (krav) => krav.svar !== undefined
@@ -53,7 +53,7 @@ export function DokumentasjonView() {
   }, [
     dokumentasjonskravIdTilÅLagre,
     lagrer,
-    nåværendeIndex,
+    index,
     dokumentasjonskrav,
     harTekniskFeil,
     harValideringsFeil,
