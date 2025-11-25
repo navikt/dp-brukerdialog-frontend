@@ -1,9 +1,9 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
-import { useEffect, useState } from "react";
 
 const NESTE_SEKSJON_ID = "oppsummering";
 const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";

@@ -114,6 +114,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       setHarValideringsFeil(true);
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
+      setHarEnFeil(false);
       let bundle: Bundle | null = null;
 
       if (dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå) {
