@@ -1,5 +1,4 @@
-import { FloppydiskIcon } from "@navikt/aksel-icons";
-import { Box, Button, Heading, VStack } from "@navikt/ds-react";
+import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
 import { Form, useParams } from "react-router";
@@ -73,13 +72,24 @@ interface DokumentasjonskravProps {
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
   const { soknadId } = useParams();
-  const [lagrer, setLagrer] = useState(false);
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
     dokumentasjonskrav.filer ?? []
   );
 
-  const { dokumentasjonskrav: alleDokumentasjonskrav, setDokumentasjonskrav } =
-    useDokumentasjonskravContext();
+  const {
+    dokumentasjonskrav: alleDokumentasjonskrav,
+    setHarTekniskFeil,
+    setHarValideringsFeil,
+    oppdaterDokumentasjonskrav,
+    dokumentasjonskravIdTilÅLagre,
+    setDokumentasjonskravIdTilÅLagre,
+  } = useDokumentasjonskravContext();
+
+  useEffect(() => {
+    if (dokumentasjonskravIdTilÅLagre === dokumentasjonskrav.id) {
+      form.submit();
+    }
+  }, [dokumentasjonskravIdTilÅLagre, dokumentasjonskrav.id]);
 
   const form = useForm({
     method: "PUT",
@@ -100,12 +110,11 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           ? dokumentasjonskrav.begrunnelse
           : undefined,
     },
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onSubmit",
+    onInvalidSubmit() {
+      setHarValideringsFeil(true);
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
+      setHarTekniskFeil(false);
       let bundle: Bundle | null = null;
 
       if (dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå) {
@@ -142,50 +151,61 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   async function bundleFiler(): Promise<Bundle | null> {
-    const formData = new FormData();
-    formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
+    try {
+      const formData = new FormData();
+      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
 
-    const response = await fetch(
-      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
-      {
-        method: "POST",
-        body: formData,
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        return await response.json();
       }
-    );
 
-    if (response.ok) {
-      return await response.json();
+      setHarTekniskFeil(true);
+      return null;
+    } catch (error) {
+      console.error("Feil ved bundling av filer:", error);
+      setHarTekniskFeil(true);
+      return null;
     }
-
-    return null;
   }
 
-  async function lagreDokumentasjonskravsvar(svar: Dokumentasjonskrav) {
-    const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-      krav.id === svar.id ? svar : krav
-    );
+  async function lagreDokumentasjonskravsvar(krav: Dokumentasjonskrav) {
+    try {
+      const oppdatertDokumentasjonskravListe = alleDokumentasjonskrav.map((k) =>
+        k.id === krav.id ? krav : k
+      );
 
-    const formData = new FormData();
-    formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
+      const formData = new FormData();
+      formData.append("dokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskravListe));
 
-    setLagrer(true);
-    const response = await fetch(
-      `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
-      {
-        method: "PUT",
-        body: formData,
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${krav.id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        oppdaterDokumentasjonskrav(krav);
+        setDokumentasjonskravIdTilÅLagre(null);
+      } else {
+        console.error("Feil ved lagring av dokumentasjonskrav:", krav.id);
+        setHarTekniskFeil(true);
+        setDokumentasjonskravIdTilÅLagre(null);
       }
-    );
-
-    if (response.ok) {
-      setDokumentasjonskrav(oppdatertDokumentasjonskrav);
+    } catch (error) {
+      console.error("Feil ved lagring av dokumentasjonskrav:", error);
+      setHarTekniskFeil(true);
+      setDokumentasjonskravIdTilÅLagre(null);
     }
-
-    if (!response.ok) {
-      console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
-    }
-
-    setLagrer(false);
   }
 
   return (
@@ -223,17 +243,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
               setDokumentkravFiler={setDokumentkravFiler}
             />
           )}
-
-          <Button
-            type="submit"
-            variant="secondary"
-            icon={<FloppydiskIcon aria-hidden />}
-            iconPosition="right"
-            className="mt-8"
-            loading={lagrer}
-          >
-            Lagre
-          </Button>
         </Form>
       </VStack>
     </Box>

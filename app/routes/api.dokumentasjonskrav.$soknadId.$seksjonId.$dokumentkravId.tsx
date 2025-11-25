@@ -6,13 +6,12 @@ import { parseFormData } from "@remix-run/form-data-parser";
 
 export async function action({ params, request }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
+  invariant(params.seksjonId, "Seksjon ID er påkrevd");
 
-  const søknadId = params.soknadId as string;
-  const seksjonId = params.seksjonId as string;
   const formData = await parseFormData(request);
-  const oppdatertDokumentasjonskrav = formData.get("oppdatertDokumentasjonskrav") as string;
+  const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
 
-  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${søknadId}/${seksjonId}/dokumentasjonskrav`;
+  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${params.soknadId}/${params.seksjonId}/dokumentasjonskrav`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 
   return await fetch(url, {
@@ -23,6 +22,6 @@ export async function action({ params, request }: ActionFunctionArgs) {
       connection: "keep-alive",
       "Content-Type": "application/json",
     },
-    body: oppdatertDokumentasjonskrav,
+    body: dokumentasjonskrav,
   });
 }

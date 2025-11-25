@@ -1,37 +1,63 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
-import { useEffect, useState } from "react";
 
 const NESTE_SEKSJON_ID = "oppsummering";
 const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
 
 export function DokumentasjonView() {
   const navigate = useNavigate();
-  const { dokumentasjonskrav } = useDokumentasjonskravContext();
-  const [harUbesvartDokumentasjonskrav, setHarUbesvartDokumentasjonskrav] = useState(false);
-  const [harForsøktÅGåVidere, setHarForsøktÅGåVidere] = useState(false);
+  const {
+    dokumentasjonskrav,
+    harTekniskFeil,
+    harValideringsFeil,
+    setHarValideringsFeil,
+    dokumentasjonskravIdTilÅLagre,
+    setDokumentasjonskravIdTilÅLagre,
+  } = useDokumentasjonskravContext();
 
-  useEffect(() => {
-    const alleBesvart = dokumentasjonskrav.every((krav) => krav.svar !== undefined);
+  const [lagrer, setLagrer] = useState(false);
+  const [index, setIndex] = useState(0);
 
-    if (alleBesvart && harUbesvartDokumentasjonskrav) {
-      setHarUbesvartDokumentasjonskrav(false);
-    }
-  }, [dokumentasjonskrav, harUbesvartDokumentasjonskrav]);
+  async function lagreDokumentasjonskravene() {
+    setLagrer(true);
+    setHarValideringsFeil(false);
+    setIndex(0);
 
-  function ValiderDokumentasjonskrav() {
-    const alleBesvart = dokumentasjonskrav.every((krav) => krav.svar !== undefined);
-    setHarForsøktÅGåVidere(true);
-
-    if (alleBesvart) {
-      navigate(`../${NESTE_SEKSJON_ID}`);
-    } else {
-      setHarUbesvartDokumentasjonskrav(true);
+    if (dokumentasjonskrav.length > 0) {
+      setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[0].id);
     }
   }
+
+  useEffect(() => {
+    if (!lagrer || dokumentasjonskravIdTilÅLagre !== null) return;
+
+    const nesteIndex = index + 1;
+
+    if (nesteIndex < dokumentasjonskrav.length) {
+      setIndex(nesteIndex);
+      setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[nesteIndex].id);
+    } else {
+      const alleDokumentasjonskravBesvart = dokumentasjonskrav.every(
+        (krav) => krav.svar !== undefined
+      );
+
+      if (alleDokumentasjonskravBesvart && !harTekniskFeil && !harValideringsFeil) {
+        navigate(`../${NESTE_SEKSJON_ID}`);
+      }
+      setLagrer(false);
+    }
+  }, [
+    dokumentasjonskravIdTilÅLagre,
+    lagrer,
+    index,
+    dokumentasjonskrav,
+    harTekniskFeil,
+    harValideringsFeil,
+  ]);
 
   return (
     <div className="innhold">
@@ -81,9 +107,9 @@ export function DokumentasjonView() {
         ))}
       </VStack>
 
-      {harUbesvartDokumentasjonskrav && harForsøktÅGåVidere && (
+      {harTekniskFeil && (
         <Alert variant="error" className="mt-8">
-          Du må svare på alle dokumentasjonskravene før du kan gå videre til oppsummeringen.
+          Teknisk feil har oppstått. Vennligst prøv på nytt.
         </Alert>
       )}
 
@@ -100,8 +126,9 @@ export function DokumentasjonView() {
           variant="primary"
           type="button"
           iconPosition="right"
+          loading={lagrer}
           icon={<ArrowRightIcon />}
-          onClick={ValiderDokumentasjonskrav}
+          onClick={lagreDokumentasjonskravene}
         >
           Til oppsummering
         </Button>
