@@ -14,7 +14,7 @@ export function DokumentasjonView() {
     dokumentasjonskrav,
     lagrer,
     setLagrer,
-    harEnFeil,
+    harTekniskFeil,
     harValideringsFeil,
     setHarValideringsFeil,
   } = useDokumentasjonskravContext();
@@ -31,14 +31,14 @@ export function DokumentasjonView() {
 
     // Vent litt slik at alle forms får submittet
     const timer = setTimeout(() => {
-      if (alleDokumentasjonskravBesvart && !harEnFeil && !harValideringsFeil) {
+      if (alleDokumentasjonskravBesvart && !harTekniskFeil && !harValideringsFeil) {
         navigate(`../${NESTE_SEKSJON_ID}`);
       }
       setLagrer(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [dokumentasjonskrav, lagrer, harEnFeil, harValideringsFeil]);
+  }, [dokumentasjonskrav, lagrer, harTekniskFeil, harValideringsFeil]);
 
   return (
     <div className="innhold">
@@ -88,7 +88,7 @@ export function DokumentasjonView() {
         ))}
       </VStack>
 
-      {harEnFeil && (
+      {harTekniskFeil && (
         <Alert variant="error" className="mt-8">
           Teknisk feil har oppstått. Vennligst prøv på nytt.
         </Alert>

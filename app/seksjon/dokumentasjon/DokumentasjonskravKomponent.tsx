@@ -80,7 +80,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     setDokumentasjonskrav,
     lagrer,
     setLagrer,
-    setHarEnFeil,
+    setHarTekniskFeil,
     setHarValideringsFeil,
   } = useDokumentasjonskravContext();
 
@@ -114,7 +114,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       setHarValideringsFeil(true);
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
-      setHarEnFeil(false);
+      setHarTekniskFeil(false);
       let bundle: Bundle | null = null;
 
       if (dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå) {
@@ -151,48 +151,59 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   async function bundleFiler(): Promise<Bundle | null> {
-    const formData = new FormData();
-    formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
+    try {
+      const formData = new FormData();
+      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
 
-    const response = await fetch(
-      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
-      {
-        method: "POST",
-        body: formData,
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        return await response.json();
       }
-    );
 
-    if (response.ok) {
-      return await response.json();
+      setHarTekniskFeil(true);
+      return null;
+    } catch (error) {
+      console.error("Feil ved bundling av filer:", error);
+      setHarTekniskFeil(true);
+      return null;
     }
-
-    setHarEnFeil(true);
-    return null;
   }
 
   async function lagreDokumentasjonskravsvar(svar: Dokumentasjonskrav) {
-    const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-      krav.id === svar.id ? svar : krav
-    );
+    try {
+      const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
+        krav.id === svar.id ? svar : krav
+      );
 
-    const formData = new FormData();
-    formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
+      const formData = new FormData();
+      formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
 
-    const response = await fetch(
-      `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
-      {
-        method: "PUT",
-        body: formData,
+      const response = await fetch(
+        `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        setDokumentasjonskrav(oppdatertDokumentasjonskrav);
       }
-    );
 
-    if (response.ok) {
-      setDokumentasjonskrav(oppdatertDokumentasjonskrav);
-    }
-
-    if (!response.ok) {
-      console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
-      setHarEnFeil(true);
+      if (!response.ok) {
+        console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
+        setHarTekniskFeil(true);
+      }
+    } catch (error) {
+      console.error("Feil ved lagring av dokumentasjonskrav:", error);
+      setHarTekniskFeil(true);
     }
   }
 

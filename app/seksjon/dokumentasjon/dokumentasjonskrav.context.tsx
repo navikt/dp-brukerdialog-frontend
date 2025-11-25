@@ -6,8 +6,8 @@ type DokumentasjonskravContextType = {
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
-  harEnFeil: boolean;
-  setHarEnFeil: (harEnFeil: boolean) => void;
+  harTekniskFeil: boolean;
+  setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   harValideringsFeil: boolean;
   setHarValideringsFeil: (harValideringsFeil: boolean) => void;
 };
@@ -41,7 +41,7 @@ function DokumentasjonskravProvider({
 }: DokumentasjonskravProviderProps) {
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [lagrer, setLagrer] = useState(false);
-  const [harEnFeil, setHarEnFeil] = useState(false);
+  const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [harValideringsFeil, setHarValideringsFeil] = useState(false);
 
   return (
@@ -51,8 +51,8 @@ function DokumentasjonskravProvider({
         setDokumentasjonskrav,
         lagrer,
         setLagrer,
-        harEnFeil,
-        setHarEnFeil,
+        harTekniskFeil,
+        setHarTekniskFeil,
         harValideringsFeil,
         setHarValideringsFeil,
       }}
