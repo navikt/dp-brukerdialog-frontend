@@ -109,7 +109,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           : undefined,
     },
     onInvalidSubmit() {
-      setLagrer(false);
       setHarValideringsFeil(true);
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
@@ -175,13 +174,13 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     }
   }
 
-  async function lagreDokumentasjonskravsvar(svar: Dokumentasjonskrav) {
+  async function lagreDokumentasjonskravsvar(krav: Dokumentasjonskrav) {
     try {
       const formData = new FormData();
-      formData.append("dokumentasjonskrav", JSON.stringify(svar));
+      formData.append("dokumentasjonskrav", JSON.stringify(krav));
 
       const response = await fetch(
-        `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${svar.id}`,
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${krav.id}`,
         {
           method: "PUT",
           body: formData,
@@ -189,11 +188,10 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       );
 
       if (response.ok) {
-        oppdaterDokumentasjonskrav(svar);
-      }
-
-      if (!response.ok) {
-        console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
+        console.log("✅ API-kall vellykket for:", krav.id, krav.tittel);
+        oppdaterDokumentasjonskrav(krav);
+      } else {
+        console.error("❌ API-kall feilet:", response.status, "for", krav.id);
         setHarTekniskFeil(true);
       }
     } catch (error) {
