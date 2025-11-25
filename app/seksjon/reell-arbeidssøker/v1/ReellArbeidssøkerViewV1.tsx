@@ -94,6 +94,7 @@ export function ReellArbeidssøkerViewV1() {
         id: crypto.randomUUID(),
         seksjonId: "reell-arbeidssoker",
         spørsmålId: kanDuTaAlleTyperArbeid,
+        skjemakode: "T9",
         tittel: "Bekreftelse fra lege eller annen behandler",
         type: DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker,
       };
@@ -123,6 +124,7 @@ export function ReellArbeidssøkerViewV1() {
         id: crypto.randomUUID(),
         seksjonId: "reell-arbeidssoker",
         spørsmålId: kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
+        skjemakode: "T9",
         tittel: "Bekreftelse fra relevant fagpersonell fordi du bare kan jobbe deltid",
         type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid,
       };
@@ -152,6 +154,7 @@ export function ReellArbeidssøkerViewV1() {
         id: crypto.randomUUID(),
         seksjonId: "reell-arbeidssoker",
         spørsmålId: kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+        skjemakode: "T9",
         tittel: "Bekreftelse fra relevant fagpersonell fordi du ikke kan jobbe i hele Norge",
         type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeleNorge,
       };

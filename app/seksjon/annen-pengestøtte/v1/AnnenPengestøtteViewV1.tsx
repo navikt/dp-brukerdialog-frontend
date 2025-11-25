@@ -178,6 +178,7 @@ export function AnnenPengestøtteViewV1() {
         id: crypto.randomUUID(),
         seksjonId: "annen-pengestotte",
         spørsmålId: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+        skjemakode: "K1",
         tittel: "Avtale om økonomiske goder",
         type: DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder,
       };
