@@ -197,7 +197,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         oppdaterDokumentasjonskrav(krav);
         setDokumentasjonskravIdTilÅLagre(null);
       } else {
-        console.error("API-kall feilet:", response.status, "for", krav.id);
+        console.error("Feil ved lagring av dokumentasjonskrav:", krav.id);
         setHarTekniskFeil(true);
         setDokumentasjonskravIdTilÅLagre(null);
       }
