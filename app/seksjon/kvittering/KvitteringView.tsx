@@ -1,3 +1,4 @@
+import { ComponentIcon } from "@navikt/aksel-icons";
 import {
   Alert,
   BodyLong,
@@ -11,40 +12,30 @@ import {
   Tag,
   VStack,
 } from "@navikt/ds-react";
-import DokumentasjonsBox from "~/seksjon/kvittering/DokumentasjonsBox";
 import { useLoaderData, useParams } from "react-router";
-import { loader } from "~/routes/$soknadId.oppsummering";
 import { stegISøknaden } from "~/routes/$soknadId";
+import { loader } from "~/routes/$soknadId.kvittering";
+import DokumentasjonskravIkkeSkalSendes from "~/seksjon/kvittering/DokumentasjonskravIkkeSkalSendes";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
-import { ComponentIcon } from "@navikt/aksel-icons";
+import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
+import {
+  dokumentkravSvarSenderIkke,
+  dokumentkravSvarSenderSenere,
+} from "../dokumentasjon/dokumentasjonskrav.komponenter";
+import DokumentasjonskravSkalSendesAvDeg from "./DokumentasjonskravSkalSendesAvDeg";
 
 export default function KvitteringView() {
   const { soknadId } = useParams();
   const loaderData = useLoaderData<typeof loader>();
+  const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
-  var listeMedMangledeDokumentasjoner = [
-    {
-      type: "Arbeidsavtale",
-      sendesAv: "deg",
-      beskrivelse: "Dokumentasjon på din arbeidsavtale fra din arbeidsgiver.",
-      status: "Mangler",
-    },
-    {
-      type: "Dokumentasjon på redusert arbeidsstid",
-      sendesAv: "deg",
-      beskrivelse: "Dokumentasjon som viser at du har fått redusert arbeidsstid.",
-      status: "Mottatt",
-    },
-  ];
+  const dokumentasjonskravSomSkalSendesAvDeg = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
+  );
 
-  var listeMedMangledeDokumentasjonerSomIkkeSkalSendes = [
-    {
-      type: "Oppsigelsesbrev",
-      sendesAv: "Du har sagt at du ikke sender dette",
-      beskrivelse: "Dokumentasjon på din arbeidsavtale fra din arbeidsgiver.",
-      status: "Ikke sendt",
-    },
-  ];
+  const dokumentasjonskravSomIkkeSkalSendes = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderIkke
+  );
 
   return (
     <div className="innhold">
@@ -55,7 +46,7 @@ export default function KvitteringView() {
               <Heading size="medium">Søknad mottatt</Heading>
             </VStack>
             <Tag icon={<ComponentIcon />} variant={"warning"} size="xsmall">
-              Mangler dokumentasjon
+              Mottatt
             </Tag>
           </HStack>
 
@@ -96,34 +87,28 @@ export default function KvitteringView() {
             </Link>
             .
           </ReadMore>
-          <Heading size="medium">Dokumenter du skal sende inn</Heading>
-          {listeMedMangledeDokumentasjoner.map((dokumentasjon, index) => {
-            return (
-              <DokumentasjonsBox
-                key={index}
-                type={dokumentasjon.type}
-                beskrivelse={dokumentasjon.beskrivelse}
-                sendesAv={dokumentasjon.sendesAv}
-                status={dokumentasjon.status}
-              />
-            );
-          })}
-          <HStack>
-            <Button variant="primary">Send inn dokumenter</Button>
-          </HStack>
+          {dokumentasjonskravSomSkalSendesAvDeg.length > 0 && (
+            <>
+              <Heading size="small" className="mt-4">
+                Dokumenter du skal sende inn
+              </Heading>
+              {dokumentasjonskravSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
+                <DokumentasjonskravSkalSendesAvDeg key={krav.id} dokummentasjonskrav={krav} />
+              ))}
+              <HStack>
+                <Button variant="primary">Send inn dokumenter</Button>
+              </HStack>
+            </>
+          )}
 
-          <Heading size="medium">Dokumenter du ikke skal sende</Heading>
-          {listeMedMangledeDokumentasjonerSomIkkeSkalSendes.map((dokumentasjon, index) => {
-            return (
-              <DokumentasjonsBox
-                key={index}
-                type={dokumentasjon.type}
-                beskrivelse={dokumentasjon.beskrivelse}
-                sendesAv={dokumentasjon.sendesAv}
-                status={dokumentasjon.status}
-              />
-            );
-          })}
+          {dokumentasjonskravSomIkkeSkalSendes.length > 0 && (
+            <>
+              <Heading size="small">Dokumenter du ikke skal sende</Heading>
+              {dokumentasjonskravSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
+                <DokumentasjonskravIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
+              ))}
+            </>
+          )}
 
           <ExpansionCard aria-label="Dine svar">
             <ExpansionCard.Header>
@@ -132,7 +117,9 @@ export default function KvitteringView() {
             <ExpansionCard.Content>
               <VStack gap="6">
                 {stegISøknaden.map((seksjon) => {
-                  const seksjonsData = loaderData?.find((s) => s.seksjonId === seksjon.path);
+                  const seksjonsData = loaderData?.seksjoner?.find(
+                    (s: any) => s.seksjonId === seksjon.path
+                  );
                   if (!seksjonsData) return null;
                   return (
                     <Oppsummering
