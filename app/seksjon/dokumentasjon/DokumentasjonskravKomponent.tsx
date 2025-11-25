@@ -194,7 +194,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       );
 
       if (response.ok) {
-        console.log("API-kall vellykket for:", krav.id, krav.tittel);
         oppdaterDokumentasjonskrav(krav);
         setDokumentasjonskravIdTilÅLagre(null);
       } else {
