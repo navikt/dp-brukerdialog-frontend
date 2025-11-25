@@ -10,28 +10,35 @@ const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
 
 export function DokumentasjonView() {
   const navigate = useNavigate();
-  const { dokumentasjonskrav } = useDokumentasjonskravContext();
-  const [harUbesvartDokumentasjonskrav, setHarUbesvartDokumentasjonskrav] = useState(false);
-  const [harForsøktÅGåVidere, setHarForsøktÅGåVidere] = useState(false);
+  const {
+    dokumentasjonskrav,
+    lagrer,
+    setLagrer,
+    harEnFeil,
+    harValideringsFeil,
+    setHarValideringsFeil,
+  } = useDokumentasjonskravContext();
 
   useEffect(() => {
-    const alleBesvart = dokumentasjonskrav.every((krav) => krav.svar !== undefined);
+    if (!lagrer) return;
 
-    if (alleBesvart && harUbesvartDokumentasjonskrav) {
-      setHarUbesvartDokumentasjonskrav(false);
-    }
-  }, [dokumentasjonskrav, harUbesvartDokumentasjonskrav]);
+    // Reset valideringsfeil før vi starter
+    setHarValideringsFeil(false);
 
-  function ValiderDokumentasjonskrav() {
-    const alleBesvart = dokumentasjonskrav.every((krav) => krav.svar !== undefined);
-    setHarForsøktÅGåVidere(true);
+    const alleDokumentasjonskravBesvart = dokumentasjonskrav.every(
+      (krav) => krav.svar !== undefined
+    );
 
-    if (alleBesvart) {
-      navigate(`../${NESTE_SEKSJON_ID}`);
-    } else {
-      setHarUbesvartDokumentasjonskrav(true);
-    }
-  }
+    // Vent litt slik at alle forms får submittet
+    const timer = setTimeout(() => {
+      if (alleDokumentasjonskravBesvart && !harEnFeil && !harValideringsFeil) {
+        navigate(`../${NESTE_SEKSJON_ID}`);
+      }
+      setLagrer(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [dokumentasjonskrav, lagrer, harEnFeil, harValideringsFeil]);
 
   return (
     <div className="innhold">
@@ -81,9 +88,9 @@ export function DokumentasjonView() {
         ))}
       </VStack>
 
-      {harUbesvartDokumentasjonskrav && harForsøktÅGåVidere && (
+      {harEnFeil && (
         <Alert variant="error" className="mt-8">
-          Du må svare på alle dokumentasjonskravene før du kan gå videre til oppsummeringen.
+          Teknisk feil har oppstått. Vennligst prøv på nytt.
         </Alert>
       )}
 
@@ -100,8 +107,9 @@ export function DokumentasjonView() {
           variant="primary"
           type="button"
           iconPosition="right"
+          loading={lagrer}
           icon={<ArrowRightIcon />}
-          onClick={ValiderDokumentasjonskrav}
+          onClick={() => setLagrer(true)}
         >
           Til oppsummering
         </Button>

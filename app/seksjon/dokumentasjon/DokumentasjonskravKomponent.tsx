@@ -1,5 +1,4 @@
-import { FloppydiskIcon } from "@navikt/aksel-icons";
-import { Box, Button, Heading, VStack } from "@navikt/ds-react";
+import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
 import { Form, useParams } from "react-router";
@@ -72,13 +71,24 @@ interface DokumentasjonskravProps {
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
   const { soknadId } = useParams();
-  const [lagrer, setLagrer] = useState(false);
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
     dokumentasjonskrav.filer ?? []
   );
 
-  const { dokumentasjonskrav: alleDokumentasjonskrav, setDokumentasjonskrav } =
-    useDokumentasjonskravContext();
+  const {
+    dokumentasjonskrav: alleDokumentasjonskrav,
+    setDokumentasjonskrav,
+    lagrer,
+    setLagrer,
+    setHarEnFeil,
+    setHarValideringsFeil,
+  } = useDokumentasjonskravContext();
+
+  useEffect(() => {
+    if (lagrer) {
+      form.submit();
+    }
+  }, [lagrer]);
 
   const form = useForm({
     method: "PUT",
@@ -99,10 +109,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           ? dokumentasjonskrav.begrunnelse
           : undefined,
     },
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onSubmit",
+    onInvalidSubmit() {
+      setLagrer(false);
+      setHarValideringsFeil(true);
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
       let bundle: Bundle | null = null;
@@ -156,6 +165,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       return await response.json();
     }
 
+    setHarEnFeil(true);
     return null;
   }
 
@@ -167,7 +177,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     const formData = new FormData();
     formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
 
-    setLagrer(true);
     const response = await fetch(
       `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
       {
@@ -182,9 +191,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
     if (!response.ok) {
       console.error("Noe gikk galt ved lagring av dokumentasjonskrav");
+      setHarEnFeil(true);
     }
-
-    setLagrer(false);
   }
 
   return (
@@ -222,17 +230,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
               setDokumentkravFiler={setDokumentkravFiler}
             />
           )}
-
-          <Button
-            type="submit"
-            variant="secondary"
-            icon={<FloppydiskIcon aria-hidden />}
-            iconPosition="right"
-            className="mt-8"
-            loading={lagrer}
-          >
-            Lagre
-          </Button>
         </Form>
       </VStack>
     </Box>
