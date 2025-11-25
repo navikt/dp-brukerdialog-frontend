@@ -82,6 +82,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       id: dokumentasjonskravId,
       seksjonId: seksjonId,
       spørsmålId: spørsmålId,
+      skjemakode: "X8",
       tittel: `Fødselsattest/bostedsbevis for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
       type: DokumentasjonskravType.Barn,
     };
