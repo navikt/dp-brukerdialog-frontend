@@ -5,12 +5,12 @@ type DokumentasjonskravContextType = {
   dokumentasjonskrav: Dokumentasjonskrav[];
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   oppdaterDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
-  lagrer: boolean;
-  setLagrer: (lagrer: boolean) => void;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   harValideringsFeil: boolean;
   setHarValideringsFeil: (harValideringsFeil: boolean) => void;
+  dokumentasjonskravIdTilÅLagre: string | null;
+  setDokumentasjonskravIdTilÅLagre: (id: string | null) => void;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -41,9 +41,11 @@ function DokumentasjonskravProvider({
   children,
 }: DokumentasjonskravProviderProps) {
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
-  const [lagrer, setLagrer] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [harValideringsFeil, setHarValideringsFeil] = useState(false);
+  const [dokumentasjonskravIdTilÅLagre, setDokumentasjonskravIdTilÅLagre] = useState<string | null>(
+    null
+  );
 
   function oppdaterDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
@@ -57,12 +59,12 @@ function DokumentasjonskravProvider({
         dokumentasjonskrav,
         setDokumentasjonskrav,
         oppdaterDokumentasjonskrav,
-        lagrer,
-        setLagrer,
         harTekniskFeil,
         setHarTekniskFeil,
         harValideringsFeil,
         setHarValideringsFeil,
+        dokumentasjonskravIdTilÅLagre,
+        setDokumentasjonskravIdTilÅLagre,
       }}
     >
       {children}

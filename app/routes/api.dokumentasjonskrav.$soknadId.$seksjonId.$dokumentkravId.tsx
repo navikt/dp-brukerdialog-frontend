@@ -25,7 +25,5 @@ export async function action({ params, request }: ActionFunctionArgs) {
     body: dokumentasjonskrav,
   });
 
-  console.log(response);
-
   return response;
 }

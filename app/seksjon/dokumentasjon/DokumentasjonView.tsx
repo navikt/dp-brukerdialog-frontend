@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, BodyLong, Button, Heading, HStack, List, ReadMore, VStack } from "@navikt/ds-react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
@@ -12,33 +12,52 @@ export function DokumentasjonView() {
   const navigate = useNavigate();
   const {
     dokumentasjonskrav,
-    lagrer,
-    setLagrer,
     harTekniskFeil,
     harValideringsFeil,
     setHarValideringsFeil,
+    dokumentasjonskravIdTilÅLagre,
+    setDokumentasjonskravIdTilÅLagre,
   } = useDokumentasjonskravContext();
 
-  useEffect(() => {
-    if (!lagrer) return;
+  const [lagrer, setLagrer] = useState(false);
+  const [nåværendeIndex, setNåværendeIndex] = useState(0);
 
-    // Reset valideringsfeil før vi starter
+  async function lagreDokumentasjonskravene() {
+    setLagrer(true);
     setHarValideringsFeil(false);
+    setNåværendeIndex(0);
 
-    const alleDokumentasjonskravBesvart = dokumentasjonskrav.every(
-      (krav) => krav.svar !== undefined
-    );
+    if (dokumentasjonskrav.length > 0) {
+      setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[0].id);
+    }
+  }
 
-    // Vent litt slik at alle forms får submittet
-    const timer = setTimeout(() => {
+  useEffect(() => {
+    if (!lagrer || dokumentasjonskravIdTilÅLagre !== null) return;
+
+    const nextIndex = nåværendeIndex + 1;
+
+    if (nextIndex < dokumentasjonskrav.length) {
+      setNåværendeIndex(nextIndex);
+      setDokumentasjonskravIdTilÅLagre(dokumentasjonskrav[nextIndex].id);
+    } else {
+      const alleDokumentasjonskravBesvart = dokumentasjonskrav.every(
+        (krav) => krav.svar !== undefined
+      );
+
       if (alleDokumentasjonskravBesvart && !harTekniskFeil && !harValideringsFeil) {
         navigate(`../${NESTE_SEKSJON_ID}`);
       }
       setLagrer(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [dokumentasjonskrav, lagrer, harTekniskFeil, harValideringsFeil]);
+    }
+  }, [
+    dokumentasjonskravIdTilÅLagre,
+    lagrer,
+    nåværendeIndex,
+    dokumentasjonskrav,
+    harTekniskFeil,
+    harValideringsFeil,
+  ]);
 
   return (
     <div className="innhold">
@@ -109,7 +128,7 @@ export function DokumentasjonView() {
           iconPosition="right"
           loading={lagrer}
           icon={<ArrowRightIcon />}
-          onClick={() => setLagrer(true)}
+          onClick={lagreDokumentasjonskravene}
         >
           Til oppsummering
         </Button>

@@ -76,18 +76,19 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   );
 
   const {
-    lagrer,
-    setLagrer,
+    dokumentasjonskrav: alleDokumentasjonskrav,
     setHarTekniskFeil,
     setHarValideringsFeil,
     oppdaterDokumentasjonskrav,
+    dokumentasjonskravIdTilÅLagre,
+    setDokumentasjonskravIdTilÅLagre,
   } = useDokumentasjonskravContext();
 
   useEffect(() => {
-    if (lagrer) {
+    if (dokumentasjonskravIdTilÅLagre === dokumentasjonskrav.id) {
       form.submit();
     }
-  }, [lagrer]);
+  }, [dokumentasjonskravIdTilÅLagre, dokumentasjonskrav.id]);
 
   const form = useForm({
     method: "PUT",
@@ -176,8 +177,12 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
   async function lagreDokumentasjonskravsvar(krav: Dokumentasjonskrav) {
     try {
+      const oppdatertDokumentasjonskravListe = alleDokumentasjonskrav.map((k) =>
+        k.id === krav.id ? krav : k
+      );
+
       const formData = new FormData();
-      formData.append("dokumentasjonskrav", JSON.stringify(krav));
+      formData.append("dokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskravListe));
 
       const response = await fetch(
         `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${krav.id}`,
@@ -188,15 +193,18 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       );
 
       if (response.ok) {
-        console.log("✅ API-kall vellykket for:", krav.id, krav.tittel);
+        console.log("API-kall vellykket for:", krav.id, krav.tittel);
         oppdaterDokumentasjonskrav(krav);
+        setDokumentasjonskravIdTilÅLagre(null);
       } else {
-        console.error("❌ API-kall feilet:", response.status, "for", krav.id);
+        console.error("API-kall feilet:", response.status, "for", krav.id);
         setHarTekniskFeil(true);
+        setDokumentasjonskravIdTilÅLagre(null);
       }
     } catch (error) {
       console.error("Feil ved lagring av dokumentasjonskrav:", error);
       setHarTekniskFeil(true);
+      setDokumentasjonskravIdTilÅLagre(null);
     }
   }
 
