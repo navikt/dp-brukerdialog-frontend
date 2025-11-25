@@ -76,12 +76,11 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   );
 
   const {
-    dokumentasjonskrav: alleDokumentasjonskrav,
-    setDokumentasjonskrav,
     lagrer,
     setLagrer,
     setHarTekniskFeil,
     setHarValideringsFeil,
+    oppdaterDokumentasjonskrav,
   } = useDokumentasjonskravContext();
 
   useEffect(() => {
@@ -178,15 +177,11 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
   async function lagreDokumentasjonskravsvar(svar: Dokumentasjonskrav) {
     try {
-      const oppdatertDokumentasjonskrav = alleDokumentasjonskrav.map((krav: Dokumentasjonskrav) =>
-        krav.id === svar.id ? svar : krav
-      );
-
       const formData = new FormData();
-      formData.append("oppdatertDokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskrav));
+      formData.append("dokumentasjonskrav", JSON.stringify(svar));
 
       const response = await fetch(
-        `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/`,
+        `/api/lagre-dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${svar.id}`,
         {
           method: "PUT",
           body: formData,
@@ -194,7 +189,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       );
 
       if (response.ok) {
-        setDokumentasjonskrav(oppdatertDokumentasjonskrav);
+        oppdaterDokumentasjonskrav(svar);
       }
 
       if (!response.ok) {

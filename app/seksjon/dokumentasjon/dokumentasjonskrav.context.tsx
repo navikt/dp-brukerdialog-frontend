@@ -4,6 +4,7 @@ import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKo
 type DokumentasjonskravContextType = {
   dokumentasjonskrav: Dokumentasjonskrav[];
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
+  oppdaterDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
   harTekniskFeil: boolean;
@@ -44,11 +45,18 @@ function DokumentasjonskravProvider({
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [harValideringsFeil, setHarValideringsFeil] = useState(false);
 
+  function oppdaterDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
+    setDokumentasjonskrav((current) =>
+      current.map((krav) => (krav.id === oppdatertKrav.id ? oppdatertKrav : krav))
+    );
+  }
+
   return (
     <DokumentasjonskravContext.Provider
       value={{
         dokumentasjonskrav,
         setDokumentasjonskrav,
+        oppdaterDokumentasjonskrav,
         lagrer,
         setLagrer,
         harTekniskFeil,
