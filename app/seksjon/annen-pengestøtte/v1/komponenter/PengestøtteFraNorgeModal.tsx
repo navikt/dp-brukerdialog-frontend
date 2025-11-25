@@ -89,6 +89,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
       id: dokumentasjonskravId,
       seksjonId: seksjonId,
       spørsmålId: spørsmålId,
+      skjemakode: "K1",
       tittel: dokumentasjonskravTittel,
       type: DokumentasjonskravType.AnnenPengestøtteFraNorge,
     };

@@ -59,6 +59,7 @@ export default function VernepliktViewV1() {
       seksjonId: "verneplikt",
       spørsmålId: avtjentVerneplikt,
       tittel: "Tjenestebevis",
+      skjemakode: "T3",
       type: DokumentasjonskravType.Tjenestebevis,
     };
 

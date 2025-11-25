@@ -25,6 +25,7 @@ export type Dokumentasjonskrav = {
   id: string;
   spørsmålId: string;
   tittel?: string;
+  skjemakode: string;
   seksjonId: string;
   type: DokumentasjonskravType;
   svar?: GyldigDokumentkravSvar;

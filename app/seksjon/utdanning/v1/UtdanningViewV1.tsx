@@ -58,6 +58,7 @@ export function UtdanningViewV1() {
       id: crypto.randomUUID(),
       seksjonId: "utdanning",
       spørsmålId: avsluttetUtdanningSiste6Måneder,
+      skjemakode: "T2",
       tittel: "Dokumentasjon av sluttdato for utdanning",
       type: DokumentasjonskravType.Utdanning,
     };
