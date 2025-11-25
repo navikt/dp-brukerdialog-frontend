@@ -6,6 +6,7 @@ export const harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene =
   "harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene";
 export const årsakTilAtDagpengeneBleStanset = "årsakTilAtDagpengeneBleStanset";
 export const hvilkenDatoSøkerDuDagpengerFra = "hvilkenDatoSøkerDuDagpengerFra";
+export const hvilkenDatoSøkerDuGjenopptakFra = "hvilkenDatoSøkerDuGjenopptakFra";
 export const handling = "handling";
 
 export type DinSituasjonSvar = {
@@ -57,5 +58,25 @@ export const dinSituasjonKomponenter: KomponentType[] = [
     visHvis: (svar: DinSituasjonSvar) =>
       svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
       svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
+  },
+  {
+    id: hvilkenDatoSøkerDuGjenopptakFra,
+    type: "dato",
+    label: "Hvilken dato søker du gjenopptak av dagpenger fra?",
+    description:
+      "Hvis du har jobbet siden sist skal du oppgi den første dagen du ble helt eller delvis arbeidsledig.",
+    visHvis: (svar: DinSituasjonSvar) =>
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
+    fraOgMed: startOfDay(subMonths(new Date(), 6)),
+    tilOgMed: endOfDay(addMonths(new Date(), 3)),
+  },
+  {
+    id: "hvilkenDatoSøkerDuGjenopptakFraLesMer",
+    type: "lesMer",
+    label: "Les om når du tidligst kan få dagpenger fra ",
+    description:
+      "Du kan tidligst få dagpenger fra den dagen du sender inn søknaden om gjenopptak om dagpenger.",
+    visHvis: (svar: DinSituasjonSvar) =>
+      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
   },
 ];
