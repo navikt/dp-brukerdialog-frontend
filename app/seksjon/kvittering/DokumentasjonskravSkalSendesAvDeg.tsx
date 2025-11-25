@@ -21,7 +21,7 @@ export default function DokumentasjonskravSkalSendesAvDeg({ dokummentasjonskrav 
             </Tag>
           </HStack>
 
-          <BodyShort>Skal sende av deg</BodyShort>
+          <BodyShort>Skal sendes av deg</BodyShort>
         </VStack>
 
         <ReadMore header="Dette må dokumentasjonen inneholde">
