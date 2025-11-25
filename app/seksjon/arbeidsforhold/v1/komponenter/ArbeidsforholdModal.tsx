@@ -9,12 +9,20 @@ import {
   useArbeidsforholdContext,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
-  Arbeidsforhold,
   arbeidsforholdForklarendeTekstKomponenter,
   arbeidsforholdModalKomponenter,
   arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
+  arbeidsgiverenMinHarSagtMegOpp,
+  arbeidsgiverErKonkurs,
+  arbeidstidenErRedusert,
+  hvordanHarDetteArbeidsforholdetEndretSeg,
+  jegErPermitert,
+  jegHarFåttAvskjed,
+  jegHarSagtOppSelv,
+  kontraktenErUgått,
+  navnetPåBedriften,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
@@ -25,14 +33,24 @@ import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/a
 import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
 import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function ArbeidsforholdModal({ ref }: IProps) {
-  const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, modalData, setModalData } =
-    useArbeidsforholdContext();
+  const {
+    registrerteArbeidsforhold,
+    setRegistrerteArbeidsforhold,
+    modalData,
+    setModalData,
+    setDokumentasjonskrav,
+    dokumentasjonskrav,
+  } = useArbeidsforholdContext();
 
   const alleModalKomponenter = arbeidsforholdModalKomponenter
     .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
@@ -49,29 +67,18 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     submitSource: "state",
     schema: arbeidsforholdModalSchema,
     defaultValues: modalData?.arbeidsforhold ?? {},
-    handleSubmit: (arbeidsforhold) => {
-      if (
-        modalData?.operasjon !== ModalOperasjon.LeggTil &&
-        modalData?.operasjon !== ModalOperasjon.Rediger
-      ) {
+    handleSubmit: (skjemaData) => {
+      if (modalData?.operasjon === undefined) {
         console.error("Ugyldig operasjonstype for arbeidsforholdmodal");
         return;
       }
 
       if (modalData?.operasjon === ModalOperasjon.LeggTil) {
-        setRegistrerteArbeidsforhold([
-          ...registrerteArbeidsforhold,
-          arbeidsforhold as Arbeidsforhold,
-        ]);
+        leggTilArbeidsforhold(skjemaData);
       }
 
-      if (
-        modalData?.arbeidsforholdIndex !== undefined &&
-        modalData?.operasjon === ModalOperasjon.Rediger
-      ) {
-        const oppdatertListe = [...registrerteArbeidsforhold];
-        oppdatertListe[modalData.arbeidsforholdIndex] = arbeidsforhold as Arbeidsforhold;
-        setRegistrerteArbeidsforhold(oppdatertListe);
+      if (modalData?.operasjon === ModalOperasjon.Rediger) {
+        redigerArbeidsforhold(skjemaData);
       }
     },
     onSubmitSuccess() {
@@ -82,6 +89,175 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   });
 
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
+
+  function leggTilArbeidsforhold(skjemaData: ArbeidsforholdModalSvar) {
+    const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
+    const bedriftNavn = skjemaData[navnetPåBedriften] || "";
+
+    const nyttDokumentkrav = lagDokumentasjonskrav(arbeidsforholdSituasjon, bedriftNavn);
+    const nyttArbeidsforhold = {
+      ...skjemaData,
+      id: crypto.randomUUID(),
+      dokumentasjonskrav: nyttDokumentkrav.map((krav) => krav.id),
+    };
+
+    setDokumentasjonskrav([...dokumentasjonskrav, ...nyttDokumentkrav]);
+    setRegistrerteArbeidsforhold([...registrerteArbeidsforhold, nyttArbeidsforhold]);
+  }
+
+  function redigerArbeidsforhold(skjemaData: ArbeidsforholdModalSvar) {
+    if (!modalData?.arbeidsforhold) {
+      console.error("Mangler arbeidsforhold for redigering");
+      return;
+    }
+
+    const gammeltArbeidsforhold = modalData.arbeidsforhold;
+    const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
+    const bedriftNavn = skjemaData[navnetPåBedriften] || "";
+
+    const oppdaterteDokumentasjonskrav = dokumentasjonskrav.filter(
+      (krav) => !gammeltArbeidsforhold.dokumentasjonskrav?.includes(krav.id)
+    );
+
+    const nyeDokumentkrav = lagDokumentasjonskrav(arbeidsforholdSituasjon, bedriftNavn);
+
+    const oppdatertArbeidsforhold = {
+      ...skjemaData,
+      id: gammeltArbeidsforhold.id,
+      dokumentasjonskrav: nyeDokumentkrav.map((krav) => krav.id),
+    };
+
+    const oppdatertArbeidsforholdListe = registrerteArbeidsforhold.map((arbeidsforhold) =>
+      arbeidsforhold.id === gammeltArbeidsforhold.id ? oppdatertArbeidsforhold : arbeidsforhold
+    );
+
+    setDokumentasjonskrav([...oppdaterteDokumentasjonskrav, ...nyeDokumentkrav]);
+    setRegistrerteArbeidsforhold(oppdatertArbeidsforholdListe);
+  }
+
+  function lagDokumentasjonskrav(
+    arbeidsforholdSituasjon: string,
+    bedriftNavn: string
+  ): Dokumentasjonskrav[] {
+    switch (arbeidsforholdSituasjon) {
+      case arbeidsgiverenMinHarSagtMegOpp:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Oppsigelse - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp,
+          },
+        ];
+      case jegHarSagtOppSelv:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Oppsigelse - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv,
+          },
+        ];
+      case jegHarFåttAvskjed:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Avskjedigelse - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdAvskjedigelse,
+          },
+        ];
+
+      case kontraktenErUgått:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+        ];
+      case arbeidstidenErRedusert:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Redusert arbeidstid - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid,
+          },
+        ];
+      case arbeidsgiverErKonkurs:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter,
+          },
+        ];
+      case jegErPermitert:
+        return [
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+          },
+          {
+            id: crypto.randomUUID(),
+            seksjonId: "arbeidsforhold",
+            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+            tittel: `Permitteringsvarsel - ${bedriftNavn}`,
+            type: DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel,
+          },
+        ];
+
+      default:
+        return [];
+    }
+  }
 
   const modalTittel =
     modalData?.operasjon === ModalOperasjon.LeggTil

@@ -85,56 +85,9 @@ export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed =
 export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed =
   "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed";
 
-export type Arbeidsforhold = {
-  [navnetPåBedriften]?: string;
-  [hvilketLandJobbetDuI]?: string;
-  [oppgiPersonnummeretPinDuHaddeIDetteLandet]?: string;
-  [varighetPåArbeidsforholdetFraOgMedDato]?: string;
-  [varighetPåArbeidsforholdetTilOgMedDato]?: string;
-  [hvordanHarDetteArbeidsforholdetEndretSeg]?: string;
-  [jegErOppsagtHvaVarÅrsaken]?: string;
-  [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
-  [jegErOppsagtHvaHarDuSvartPåTilbudet]?: string;
-  [jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [jegHarSagtOppHvaVarÅrsaken]?: string;
-  [avskjedigetHvaVarÅrsaken]?: string;
-  [arbeidstidenErRedusertHvaErÅrsaken]?: string;
-  [arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet]?: string;
-  [arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert]?: string;
-  [arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
-  [arbeidstidenErRedusertHvaHarDuSvartPåTilbudet]?: string;
-  [arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]?: string;
-  [kontraktenErUgåttHvaHarDuSvartPåTilbudet]?: string;
-  [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato]?: string;
-  [konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
-  [konkursNårStartetDuIDenneJobben]?: string;
-  [konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler]?: string;
-  [konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler]?: string;
-  [konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet]?: string;
-  [konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen]?: string;
-  [konkursHarDuSøktOmLønnsgarantimidler]?: string;
-  [konkursDekkerLønnsgarantiordningenKravetDitt]?: string;
-  [konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet]?: string;
-  [konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn]?: string;
-  [permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato]?: string;
-  [permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
-  [permittertNårStartetDuIDenneJobben]?: string;
-  [permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien]?: string;
-  [permittertNårErDuPermittertFraOgMedDato]?: string;
-  [permittertNårErDuPermittertTilOgMedDato]?: string;
-  [permittertHvorMangeProsentErDuPermittert]?: string;
-  [permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr]?: string;
-  [permittertLønnsperiodeFraOgMedDato]?: string;
-  [permittertLønnsperiodeTilOgMedDato]?: string;
-  [ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
-  [ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet]?: string;
-  [harDuJobbetSkiftTurnusEllerRotasjon]?: string;
-  [hvilkenTypeRotasjonsordningJobbetDu]?: string;
-  [annenRotasjonBeskrivelse]?: string;
-  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]?: string;
-  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]?: string;
+export type Arbeidsforhold = ArbeidsforholdModalSvar & {
+  id: string;
+  dokumentasjonskrav?: string[];
 };
 
 export type ArbeidsforholdModalSvar = {

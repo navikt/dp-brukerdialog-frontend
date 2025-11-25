@@ -47,8 +47,14 @@ export function ArbeidsforholdViewV1() {
   const actionData = useActionData<typeof action>();
   const [visManglerArbeidsforholdFeilmelding, setVisManglerArbeidsforholdFeilmelding] =
     useState(false);
-  const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, modalData, setModalData } =
-    useArbeidsforholdContext();
+  const {
+    registrerteArbeidsforhold,
+    setRegistrerteArbeidsforhold,
+    modalData,
+    setModalData,
+    setDokumentasjonskrav,
+    dokumentasjonskrav,
+  } = useArbeidsforholdContext();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -79,6 +85,7 @@ export function ArbeidsforholdViewV1() {
   useEffect(() => {
     if (form.value(hvordanHarDuJobbet) === harIkkeJobbetDeSiste36Månedene) {
       setRegistrerteArbeidsforhold([]);
+      setDokumentasjonskrav([]);
     }
   }, [form.value(hvordanHarDuJobbet)]);
 
@@ -93,7 +100,7 @@ export function ArbeidsforholdViewV1() {
     };
   }
 
-  const genererPdfGrunnlag = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
@@ -118,12 +125,18 @@ export function ArbeidsforholdViewV1() {
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
+
+  function hentDokumentasjonskrav() {
+    return dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null";
+  }
 
   function handleMellomlagring(ønsketHandling: Seksjonshandling) {
     const arbeidsforholdResponse = lagArbeidsforholdResponse();
+
     form.setValue(handling, ønsketHandling);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.setValue(seksjonsvar, JSON.stringify(arbeidsforholdResponse));
 
     form.submit();
@@ -144,6 +157,7 @@ export function ArbeidsforholdViewV1() {
     }
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
     form.submit();
   }
@@ -189,15 +203,12 @@ export function ArbeidsforholdViewV1() {
                         />
                       );
                     })}
-                    {registrerteArbeidsforhold?.map(
-                      (arbeidsforhold: Arbeidsforhold, index: number) => (
-                        <ArbeidsforholdDetaljer
-                          key={index}
-                          arbeidsforholdIndex={index}
-                          arbeidsforhold={arbeidsforhold}
-                        />
-                      )
-                    )}
+                    {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
+                      <ArbeidsforholdDetaljer
+                        key={arbeidsforhold.id}
+                        arbeidsforhold={arbeidsforhold}
+                      />
+                    ))}
                     <HStack>
                       <Button
                         variant="secondary"

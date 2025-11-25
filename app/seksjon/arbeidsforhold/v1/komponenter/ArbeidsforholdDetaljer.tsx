@@ -15,16 +15,24 @@ import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   arbeidsforhold: Arbeidsforhold;
-  arbeidsforholdIndex: number;
 }
 
-export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: IProps) {
-  const { registrerteArbeidsforhold, setRegistrerteArbeidsforhold, setModalData } =
-    useArbeidsforholdContext();
+export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
+  const {
+    registrerteArbeidsforhold,
+    setRegistrerteArbeidsforhold,
+    setModalData,
+    setDokumentasjonskrav,
+    dokumentasjonskrav,
+  } = useArbeidsforholdContext();
 
   function fjernArbeidsforhold() {
     setRegistrerteArbeidsforhold(
-      registrerteArbeidsforhold.filter((_, i) => i !== arbeidsforholdIndex)
+      registrerteArbeidsforhold.filter((forhold) => forhold.id !== arbeidsforhold.id)
+    );
+
+    setDokumentasjonskrav(
+      dokumentasjonskrav.filter((krav) => !arbeidsforhold?.dokumentasjonskrav?.includes(krav.id))
     );
   }
 
@@ -61,7 +69,6 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, arbeidsforholdIndex }: 
             setModalData({
               operasjon: ModalOperasjon.Rediger,
               arbeidsforhold,
-              arbeidsforholdIndex,
             });
           }}
         >

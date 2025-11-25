@@ -66,6 +66,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
+  const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -73,7 +74,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
-    dokumentasjonskrav: null,
+    dokumentasjonskrav: dokumentasjonskrav === "null" ? null : dokumentasjonskrav,
     pdfGrunnlag: pdfGrunnlag,
   };
 
@@ -104,6 +105,7 @@ export default function ArbeidsforholdRoute() {
       return (
         <ArbeidsforholdProvider
           registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <ArbeidsforholdViewV1 />
         </ArbeidsforholdProvider>
@@ -115,6 +117,7 @@ export default function ArbeidsforholdRoute() {
       return (
         <ArbeidsforholdProvider
           registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
           <ArbeidsforholdViewV1 />
         </ArbeidsforholdProvider>
