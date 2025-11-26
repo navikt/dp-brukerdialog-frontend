@@ -5,6 +5,7 @@ import {
   handling,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
   hvilkenDatoSøkerDuDagpengerFra,
+  hvilkenDatoSøkerDuGjenopptakFra,
   pdfGrunnlag,
   årsakTilAtDagpengeneBleStanset,
 } from "./din-situasjon.komponenter";
@@ -19,6 +20,7 @@ export const dinSituasjonSchema = z
       .optional(),
     [årsakTilAtDagpengeneBleStanset]: z.string().max(500, "Maks 500 tegn").optional(),
     [hvilkenDatoSøkerDuDagpengerFra]: z.string().optional(),
+    [hvilkenDatoSøkerDuGjenopptakFra]: z.string().optional(),
     versjon: z.number().optional(),
     [handling]: z.string().optional(),
   })
