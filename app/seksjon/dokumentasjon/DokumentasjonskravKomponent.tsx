@@ -176,17 +176,24 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     }
   }
 
-  async function lagreDokumentasjonskravsvar(krav: Dokumentasjonskrav) {
+  async function lagreDokumentasjonskravsvar(oppdatertDokumentasjonskrav: Dokumentasjonskrav) {
     try {
-      const oppdatertDokumentasjonskravListe = alleDokumentasjonskrav.map((k) =>
-        k.id === krav.id ? krav : k
-      );
+      const oppdatertDokumentasjonskravListe = alleDokumentasjonskrav
+        .filter(
+          (etDokumentasjonskrav) =>
+            etDokumentasjonskrav.seksjonId === oppdatertDokumentasjonskrav.seksjonId
+        )
+        .map((etDokumentasjonskrav) =>
+          etDokumentasjonskrav.id === oppdatertDokumentasjonskrav.id
+            ? oppdatertDokumentasjonskrav
+            : etDokumentasjonskrav
+        );
 
       const formData = new FormData();
       formData.append("dokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskravListe));
 
       const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${krav.id}`,
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${oppdatertDokumentasjonskrav.id}`,
         {
           method: "PUT",
           body: formData,
@@ -194,10 +201,13 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       );
 
       if (response.ok) {
-        oppdaterDokumentasjonskrav(krav);
+        oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav);
         setDokumentasjonskravIdTilÅLagre(null);
       } else {
-        console.error("Feil ved lagring av dokumentasjonskrav:", krav.id);
+        console.error(
+          "Feil ved lagring av dokumentasjonskrav:",
+          oppdatertDokumentasjonskrav.id
+        );
         setHarTekniskFeil(true);
         setDokumentasjonskravIdTilÅLagre(null);
       }
