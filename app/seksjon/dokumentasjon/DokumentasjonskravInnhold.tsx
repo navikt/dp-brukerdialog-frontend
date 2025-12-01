@@ -169,7 +169,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </VStack>
         );
 
-      case DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter:
+      case DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel:
         return (
           <VStack gap="2">
             <BodyShort>
