@@ -7,8 +7,10 @@ type DokumentasjonskravContextType = {
   oppdaterDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
-  harValideringsFeil: boolean;
-  setHarValideringsFeil: (harValideringsFeil: boolean) => void;
+  harValideringsfeil: boolean;
+  setHarValideringsfeil: (harValideringsfeil: boolean) => void;
+  ingenFilerErLastetOpp: boolean;
+  setIngenFilerErLastetOpp: (ingenFilerErLastetOpp: boolean) => void;
   dokumentasjonskravIdSomSkalLagres: string | null;
   setDokumentasjonskravIdSomSkalLagres: (id: string | null) => void;
 };
@@ -42,7 +44,8 @@ function DokumentasjonskravProvider({
 }: DokumentasjonskravProviderProps) {
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
-  const [harValideringsFeil, setHarValideringsFeil] = useState(false);
+  const [harValideringsfeil, setHarValideringsfeil] = useState(false);
+  const [ingenFilerErLastetOpp, setIngenFilerErLastetOpp] = useState(false);
   const [dokumentasjonskravIdSomSkalLagres, setDokumentasjonskravIdSomSkalLagres] = useState<string | null>(
     null
   );
@@ -61,8 +64,10 @@ function DokumentasjonskravProvider({
         oppdaterDokumentasjonskrav,
         harTekniskFeil,
         setHarTekniskFeil,
-        harValideringsFeil,
-        setHarValideringsFeil,
+        harValideringsfeil,
+        setHarValideringsfeil,
+        ingenFilerErLastetOpp,
+        setIngenFilerErLastetOpp,
         dokumentasjonskravIdSomSkalLagres,
         setDokumentasjonskravIdSomSkalLagres,
       }}

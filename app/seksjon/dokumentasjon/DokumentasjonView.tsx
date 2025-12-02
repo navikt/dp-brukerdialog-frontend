@@ -13,8 +13,8 @@ export function DokumentasjonView() {
   const {
     dokumentasjonskrav,
     harTekniskFeil,
-    harValideringsFeil,
-    setHarValideringsFeil,
+    harValideringsfeil,
+    ingenFilerErLastetOpp,
     dokumentasjonskravIdSomSkalLagres,
     setDokumentasjonskravIdSomSkalLagres,
   } = useDokumentasjonskravContext();
@@ -24,7 +24,6 @@ export function DokumentasjonView() {
 
   async function lagreDokumentasjonskravene() {
     setLagrer(true);
-    setHarValideringsFeil(false);
     setIndex(0);
 
     if (dokumentasjonskrav.length > 0) {
@@ -45,7 +44,12 @@ export function DokumentasjonView() {
         (krav) => krav.svar !== undefined
       );
 
-      if (alleDokumentasjonskravBesvart && !harTekniskFeil && !harValideringsFeil) {
+      if (
+        alleDokumentasjonskravBesvart &&
+        !harTekniskFeil &&
+        !harValideringsfeil &&
+        !ingenFilerErLastetOpp
+      ) {
         navigate(`../${NESTE_SEKSJON_ID}`);
       }
       setLagrer(false);
@@ -56,7 +60,8 @@ export function DokumentasjonView() {
     index,
     dokumentasjonskrav,
     harTekniskFeil,
-    harValideringsFeil,
+    harValideringsfeil,
+    ingenFilerErLastetOpp,
   ]);
 
   return (

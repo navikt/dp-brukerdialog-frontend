@@ -1,4 +1,4 @@
-import { Box, Heading, VStack } from "@navikt/ds-react";
+import { Box, ErrorMessage, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
 import { Form, useParams } from "react-router";
@@ -75,21 +75,22 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
     dokumentasjonskrav.filer ?? []
   );
+  const [antallFilerMedValideringsfeil, setAntallFilerMedValideringsfeil] = useState(0);
+  const [visHarValideringsfeilFeilmelding, setVisHarValideringsfeilFeilmelding] = useState(false);
+  const [ingenFilerErLastetOppForDokumentkravet, setIngenFilerErLastetOppForDokumentkravet] =
+    useState(false);
+  const [visIngenFilerErLastetOppFeilmelding, setVisIngenFilerErLastetOppFeilmelding] =
+    useState(false);
 
   const {
     dokumentasjonskrav: alleDokumentasjonskrav,
     setHarTekniskFeil,
-    setHarValideringsFeil,
+    setHarValideringsfeil,
+    setIngenFilerErLastetOpp,
     oppdaterDokumentasjonskrav,
     dokumentasjonskravIdSomSkalLagres,
     setDokumentasjonskravIdSomSkalLagres,
   } = useDokumentasjonskravContext();
-
-  useEffect(() => {
-    if (dokumentasjonskravIdSomSkalLagres === dokumentasjonskrav.id) {
-      form.submit();
-    }
-  }, [dokumentasjonskravIdSomSkalLagres, dokumentasjonskrav.id]);
 
   const form = useForm({
     method: "PUT",
@@ -111,8 +112,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           : undefined,
     },
     onInvalidSubmit() {
-      setHarValideringsFeil(true);
-      setDokumentasjonskravIdSomSkalLagres(null)
+      setHarValideringsfeil(true);
+      setDokumentasjonskravIdSomSkalLagres(null);
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
       setHarTekniskFeil(false);
@@ -142,6 +143,42 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       await lagreDokumentasjonskravsvar(dokumentasjonskravsvar);
     },
   });
+
+  useEffect(() => {
+    if (dokumentasjonskravIdSomSkalLagres === dokumentasjonskrav.id) {
+      if (
+        form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå &&
+        antallFilerMedValideringsfeil > 0
+      ) {
+        setDokumentasjonskravIdSomSkalLagres(null);
+        setHarValideringsfeil(true);
+        setVisHarValideringsfeilFeilmelding(true);
+      } else if (
+        form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå &&
+        ingenFilerErLastetOppForDokumentkravet
+      ) {
+        setDokumentasjonskravIdSomSkalLagres(null);
+        setIngenFilerErLastetOpp(true);
+        setVisIngenFilerErLastetOppFeilmelding(true);
+      } else {
+        form.submit();
+      }
+    }
+  }, [dokumentasjonskravIdSomSkalLagres, dokumentasjonskrav.id]);
+
+  useEffect(() => {
+    if (antallFilerMedValideringsfeil === 0) {
+      setHarValideringsfeil(false);
+      setVisHarValideringsfeilFeilmelding(false);
+    }
+  }, [antallFilerMedValideringsfeil]);
+
+  useEffect(() => {
+    if (!ingenFilerErLastetOppForDokumentkravet) {
+      setIngenFilerErLastetOpp(false);
+      setVisIngenFilerErLastetOppFeilmelding(false);
+    }
+  }, [ingenFilerErLastetOppForDokumentkravet]);
 
   useEffect(() => {
     if (form.value(velgHvaDuVilGjøre) !== dokumentkravSvarSendNå) {
@@ -205,10 +242,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav);
         setDokumentasjonskravIdSomSkalLagres(null);
       } else {
-        console.error(
-          "Feil ved lagring av dokumentasjonskrav:",
-          oppdatertDokumentasjonskrav.id
-        );
+        console.error("Feil ved lagring av dokumentasjonskrav:", oppdatertDokumentasjonskrav.id);
         setHarTekniskFeil(true);
         setDokumentasjonskravIdSomSkalLagres(null);
       }
@@ -248,11 +282,31 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           </VStack>
 
           {form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå && (
-            <FilOpplasting
-              dokumentasjonskrav={dokumentasjonskrav}
-              dokumentkravFiler={dokumentkravFiler}
-              setDokumentkravFiler={setDokumentkravFiler}
-            />
+            <>
+              <FilOpplasting
+                dokumentasjonskrav={dokumentasjonskrav}
+                dokumentkravFiler={dokumentkravFiler}
+                setDokumentkravFiler={setDokumentkravFiler}
+                setAntallFilerMedFeil={setAntallFilerMedValideringsfeil}
+                setIngenFilerErLastetOppForDokumentkravet={
+                  setIngenFilerErLastetOppForDokumentkravet
+                }
+              />
+              {visHarValideringsfeilFeilmelding && (
+                <VStack gap="4" className="mt-8">
+                  <ErrorMessage>
+                    Du må rette feilen{antallFilerMedValideringsfeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+                  </ErrorMessage>
+                </VStack>
+              )}
+              {visIngenFilerErLastetOppFeilmelding && (
+                <VStack gap="4" className="mt-8">
+                  <ErrorMessage>
+                    Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+                  </ErrorMessage>
+                </VStack>
+              )}
+            </>
           )}
         </Form>
       </VStack>
