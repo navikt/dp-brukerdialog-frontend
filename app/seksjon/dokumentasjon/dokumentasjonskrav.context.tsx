@@ -9,8 +9,8 @@ type DokumentasjonskravContextType = {
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   harValideringsFeil: boolean;
   setHarValideringsFeil: (harValideringsFeil: boolean) => void;
-  dokumentasjonskravIdTilÅLagre: string | null;
-  setDokumentasjonskravIdTilÅLagre: (id: string | null) => void;
+  dokumentasjonskravIdSomSkalLagres: string | null;
+  setDokumentasjonskravIdSomSkalLagres: (id: string | null) => void;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -43,7 +43,7 @@ function DokumentasjonskravProvider({
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [harValideringsFeil, setHarValideringsFeil] = useState(false);
-  const [dokumentasjonskravIdTilÅLagre, setDokumentasjonskravIdTilÅLagre] = useState<string | null>(
+  const [dokumentasjonskravIdSomSkalLagres, setDokumentasjonskravIdSomSkalLagres] = useState<string | null>(
     null
   );
 
@@ -63,8 +63,8 @@ function DokumentasjonskravProvider({
         setHarTekniskFeil,
         harValideringsFeil,
         setHarValideringsFeil,
-        dokumentasjonskravIdTilÅLagre,
-        setDokumentasjonskravIdTilÅLagre,
+        dokumentasjonskravIdSomSkalLagres,
+        setDokumentasjonskravIdSomSkalLagres,
       }}
     >
       {children}

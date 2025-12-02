@@ -81,15 +81,15 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     setHarTekniskFeil,
     setHarValideringsFeil,
     oppdaterDokumentasjonskrav,
-    dokumentasjonskravIdTilÅLagre,
-    setDokumentasjonskravIdTilÅLagre,
+    dokumentasjonskravIdSomSkalLagres,
+    setDokumentasjonskravIdSomSkalLagres,
   } = useDokumentasjonskravContext();
 
   useEffect(() => {
-    if (dokumentasjonskravIdTilÅLagre === dokumentasjonskrav.id) {
+    if (dokumentasjonskravIdSomSkalLagres === dokumentasjonskrav.id) {
       form.submit();
     }
-  }, [dokumentasjonskravIdTilÅLagre, dokumentasjonskrav.id]);
+  }, [dokumentasjonskravIdSomSkalLagres, dokumentasjonskrav.id]);
 
   const form = useForm({
     method: "PUT",
@@ -112,6 +112,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     },
     onInvalidSubmit() {
       setHarValideringsFeil(true);
+      setDokumentasjonskravIdSomSkalLagres(null)
     },
     handleSubmit: async (dokumentasjonskravskjema) => {
       setHarTekniskFeil(false);
@@ -202,19 +203,19 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
       if (response.ok) {
         oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav);
-        setDokumentasjonskravIdTilÅLagre(null);
+        setDokumentasjonskravIdSomSkalLagres(null);
       } else {
         console.error(
           "Feil ved lagring av dokumentasjonskrav:",
           oppdatertDokumentasjonskrav.id
         );
         setHarTekniskFeil(true);
-        setDokumentasjonskravIdTilÅLagre(null);
+        setDokumentasjonskravIdSomSkalLagres(null);
       }
     } catch (error) {
       console.error("Feil ved lagring av dokumentasjonskrav:", error);
       setHarTekniskFeil(true);
-      setDokumentasjonskravIdTilÅLagre(null);
+      setDokumentasjonskravIdSomSkalLagres(null);
     }
   }
 
