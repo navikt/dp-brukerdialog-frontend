@@ -10,6 +10,7 @@ import {
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { Dokumentasjonskrav } from "./DokumentasjonskravKomponent";
+import { useEffect } from "react";
 
 export type DokumentkravFil = {
   id: string;
@@ -35,17 +36,35 @@ interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
   dokumentkravFiler: DokumentkravFil[];
   setDokumentkravFiler: React.Dispatch<React.SetStateAction<DokumentkravFil[]>>;
+  setDokumentasjonskravIdSomSkalLagres: (dokumentasjonskravIdSomSkalLagres: string | null) => void;
+  setAntallFilerMedFeil: (dokumentkravetHarValideringsfeil: number) => void;
+  setIngenFilerErLastetOppForDokumentkravet: (
+    ingenFilerErLastetOppForDokumentkravet: boolean
+  ) => void;
 }
 
 export function FilOpplasting({
   dokumentasjonskrav,
   dokumentkravFiler,
   setDokumentkravFiler,
+  setDokumentasjonskravIdSomSkalLagres,
+  setAntallFilerMedFeil,
+  setIngenFilerErLastetOppForDokumentkravet,
 }: IProps) {
   const { soknadId } = useParams();
 
+  useEffect(() => {
+    setAntallFilerMedFeil(
+      dokumentkravFiler.filter((dokumentkravFil) => dokumentkravFil.feil !== undefined).length
+    );
+  }, [dokumentkravFiler.length]);
+
+  useEffect(() => {
+    setIngenFilerErLastetOppForDokumentkravet(dokumentkravFiler.length === 0);
+  }, [dokumentkravFiler.length]);
+
   async function lastOppfiler(filer: FileObject[]) {
-    const filerMedEnFeil: DokumentkravFil[] = [];
+    const filerMedFeil: DokumentkravFil[] = [];
     const filerKlarTilOpplasting: DokumentkravFil[] = [];
 
     filer.forEach((fil: FileObject) => {
@@ -55,19 +74,19 @@ export function FilOpplasting({
       );
 
       if (!erGyldigFormat) {
-        filerMedEnFeil.push({
+        filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
           feil: LastOppFeil.UGYLDIG_FORMAT,
         });
       } else if (erDuplikat) {
-        filerMedEnFeil.push({
+        filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
           feil: LastOppFeil.DUPLIKAT_FIL,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
-        filerMedEnFeil.push({
+        filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
           feil: LastOppFeil.FIL_FOR_STOR,
@@ -82,7 +101,7 @@ export function FilOpplasting({
       }
     });
 
-    setDokumentkravFiler((prev) => [...prev, ...filerMedEnFeil, ...filerKlarTilOpplasting]);
+    setDokumentkravFiler((prev) => [...prev, ...filerMedFeil, ...filerKlarTilOpplasting]);
 
     if (filerKlarTilOpplasting.length > 0) {
       const responser = await Promise.all(
@@ -147,6 +166,7 @@ export function FilOpplasting({
     }
 
     setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
+    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id)
 
     return await response.text();
   }
