@@ -171,6 +171,20 @@ export function AnnenPengestøtteViewV1() {
   function hentDokumentasjonskrav() {
     let fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
 
+    if (form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
+      fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId !== harMottattEllerSøktOmPengestøtteFraAndreEøsLand
+      );
+    }
+
+    if (form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
+      fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId !== mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
+      );
+    }
+
     if (
       form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
         "ja" &&
@@ -375,14 +389,14 @@ export function AnnenPengestøtteViewV1() {
       {pengestøtteFraAndreEøsLandModalData && (
         <PengestøtteFraAndreEøsLandModal
           ref={pengestøtteFraAndreEøsLandModalRef}
-          spørsmålId="harMottattEllerSøktOmPengestøtteFraAndreEøsLandForklarendeTekst"
+          spørsmålId={harMottattEllerSøktOmPengestøtteFraAndreEøsLand}
           seksjonId="annen-pengestotte"
         />
       )}
       {pengestøtteFraNorgeModalData && (
         <PengestøtteFraNorgeModal
           ref={pengestøtteFraNorgeModalRef}
-          spørsmålId="mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst"
+          spørsmålId={mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav}
           seksjonId="annen-pengestotte"
         />
       )}
