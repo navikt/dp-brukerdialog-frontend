@@ -169,7 +169,7 @@ export function AnnenPengestøtteViewV1() {
   };
 
   function hentDokumentasjonskrav() {
-    const fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
+    let fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
 
     if (
       form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
@@ -190,6 +190,15 @@ export function AnnenPengestøtteViewV1() {
       };
 
       fullstendigDokumentasjonskrav.push(lønnEllerAndreØkonomiskeGoderDokumentasjonskrav);
+    } else if (
+      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
+      "nei"
+    ) {
+      fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId !==
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
+      );
     }
 
     return fullstendigDokumentasjonskrav.length > 0
