@@ -19,20 +19,34 @@ export function DokumentasjonView() {
     setDokumentasjonskravIdSomSkalLagres,
   } = useDokumentasjonskravContext();
 
-  const [lagrer, setLagrer] = useState(false);
+  const [lagrerOgNavigererTilForrigeSeksjon, setLagrerOgNavigererTilForrigeSeksjon] =
+    useState(false);
+  const [lagrerOgNavigererTilNesteSeksjon, setLagrerOgNavigererTilNesteSeksjon] = useState(false);
   const [index, setIndex] = useState(0);
 
-  async function lagreDokumentasjonskravene() {
-    setLagrer(true);
-    setIndex(0);
+  async function lagreDokumentasjonskraveneOgNavigerTilForrigeSeksjon() {
+    setLagrerOgNavigererTilForrigeSeksjon(true);
+    lagreDokumentasjonskravene();
+  }
 
+  async function lagreDokumentasjonskraveneOgNavigerTilNesteSeksjon() {
+    setLagrerOgNavigererTilNesteSeksjon(true);
+    lagreDokumentasjonskravene();
+  }
+
+  const lagreDokumentasjonskravene = () => {
+    setIndex(0);
     if (dokumentasjonskrav.length > 0) {
       setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav[0].id);
     }
-  }
+  };
 
   useEffect(() => {
-    if (!lagrer || dokumentasjonskravIdSomSkalLagres !== null) return;
+    if (
+      (!lagrerOgNavigererTilNesteSeksjon && !lagrerOgNavigererTilForrigeSeksjon) ||
+      dokumentasjonskravIdSomSkalLagres !== null
+    )
+      return;
 
     const nesteIndex = index + 1;
 
@@ -50,13 +64,19 @@ export function DokumentasjonView() {
         !harValideringsfeil &&
         !ingenFilerErLastetOpp
       ) {
-        navigate(`../${NESTE_SEKSJON_ID}`);
+        if (lagrerOgNavigererTilForrigeSeksjon) {
+          navigate(`../${FORRIGE_SEKSJON_ID}`);
+        } else {
+          navigate(`../${NESTE_SEKSJON_ID}`);
+        }
       }
-      setLagrer(false);
+      setLagrerOgNavigererTilForrigeSeksjon(false);
+      setLagrerOgNavigererTilNesteSeksjon(false);
     }
   }, [
     dokumentasjonskravIdSomSkalLagres,
-    lagrer,
+    lagrerOgNavigererTilForrigeSeksjon,
+    lagrerOgNavigererTilNesteSeksjon,
     index,
     dokumentasjonskrav,
     harTekniskFeil,
@@ -122,8 +142,10 @@ export function DokumentasjonView() {
         <Button
           variant="secondary"
           type="button"
-          onClick={() => navigate(`../${FORRIGE_SEKSJON_ID}`)}
+          loading={lagrerOgNavigererTilForrigeSeksjon}
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
+          onClick={lagreDokumentasjonskraveneOgNavigerTilForrigeSeksjon}
+          disabled={lagrerOgNavigererTilForrigeSeksjon || lagrerOgNavigererTilNesteSeksjon}
         >
           Forrige steg
         </Button>
@@ -131,9 +153,10 @@ export function DokumentasjonView() {
           variant="primary"
           type="button"
           iconPosition="right"
-          loading={lagrer}
+          loading={lagrerOgNavigererTilNesteSeksjon}
           icon={<ArrowRightIcon />}
-          onClick={lagreDokumentasjonskravene}
+          onClick={lagreDokumentasjonskraveneOgNavigerTilNesteSeksjon}
+          disabled={lagrerOgNavigererTilForrigeSeksjon || lagrerOgNavigererTilNesteSeksjon}
         >
           Til oppsummering
         </Button>
