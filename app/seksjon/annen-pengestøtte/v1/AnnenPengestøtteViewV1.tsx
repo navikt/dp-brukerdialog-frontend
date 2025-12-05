@@ -172,7 +172,13 @@ export function AnnenPengestøtteViewV1() {
     const fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
 
     if (
-      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) === "ja"
+      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
+        "ja" &&
+      !fullstendigDokumentasjonskrav.some(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId ===
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
+      )
     ) {
       const lønnEllerAndreØkonomiskeGoderDokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
