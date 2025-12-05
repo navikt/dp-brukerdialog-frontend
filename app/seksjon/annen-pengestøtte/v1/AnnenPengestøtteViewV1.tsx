@@ -169,10 +169,30 @@ export function AnnenPengestøtteViewV1() {
   };
 
   function hentDokumentasjonskrav() {
-    const fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
+    let fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
+
+    if (form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
+      fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId !== harMottattEllerSøktOmPengestøtteFraAndreEøsLand
+      );
+    }
+
+    if (form.transient.value(mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav) === "nei") {
+      fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId !== mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
+      );
+    }
 
     if (
-      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) === "ja"
+      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
+        "ja" &&
+      !fullstendigDokumentasjonskrav.some(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId ===
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
+      )
     ) {
       const lønnEllerAndreØkonomiskeGoderDokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
@@ -184,6 +204,15 @@ export function AnnenPengestøtteViewV1() {
       };
 
       fullstendigDokumentasjonskrav.push(lønnEllerAndreØkonomiskeGoderDokumentasjonskrav);
+    } else if (
+      form.transient.value(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver) ===
+      "nei"
+    ) {
+      fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
+        (dokumentasjonskrav) =>
+          dokumentasjonskrav.spørsmålId !==
+          fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
+      );
     }
 
     return fullstendigDokumentasjonskrav.length > 0
@@ -360,14 +389,14 @@ export function AnnenPengestøtteViewV1() {
       {pengestøtteFraAndreEøsLandModalData && (
         <PengestøtteFraAndreEøsLandModal
           ref={pengestøtteFraAndreEøsLandModalRef}
-          spørsmålId="harMottattEllerSøktOmPengestøtteFraAndreEøsLandForklarendeTekst"
+          spørsmålId={harMottattEllerSøktOmPengestøtteFraAndreEøsLand}
           seksjonId="annen-pengestotte"
         />
       )}
       {pengestøtteFraNorgeModalData && (
         <PengestøtteFraNorgeModal
           ref={pengestøtteFraNorgeModalRef}
-          spørsmålId="mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst"
+          spørsmålId={mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav}
           seksjonId="annen-pengestotte"
         />
       )}
