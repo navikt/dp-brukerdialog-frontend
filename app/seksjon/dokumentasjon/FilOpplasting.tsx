@@ -36,6 +36,7 @@ interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
   dokumentkravFiler: DokumentkravFil[];
   setDokumentkravFiler: React.Dispatch<React.SetStateAction<DokumentkravFil[]>>;
+  setDokumentasjonskravIdSomSkalLagres: (dokumentasjonskravIdSomSkalLagres: string | null) => void;
   setAntallFilerMedFeil: (dokumentkravetHarValideringsfeil: number) => void;
   setIngenFilerErLastetOppForDokumentkravet: (
     ingenFilerErLastetOppForDokumentkravet: boolean
@@ -46,6 +47,7 @@ export function FilOpplasting({
   dokumentasjonskrav,
   dokumentkravFiler,
   setDokumentkravFiler,
+  setDokumentasjonskravIdSomSkalLagres,
   setAntallFilerMedFeil,
   setIngenFilerErLastetOppForDokumentkravet,
 }: IProps) {
@@ -164,6 +166,7 @@ export function FilOpplasting({
     }
 
     setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
+    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id)
 
     return await response.text();
   }

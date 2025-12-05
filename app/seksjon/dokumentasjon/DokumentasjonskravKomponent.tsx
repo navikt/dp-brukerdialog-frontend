@@ -119,7 +119,10 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       setHarTekniskFeil(false);
       let bundle: Bundle | null = null;
 
-      if (dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå) {
+      if (
+        dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå &&
+        dokumentkravFiler.length > 0
+      ) {
         bundle = await bundleFiler();
       }
 
@@ -134,7 +137,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         svar: dokumentasjonskravskjema[velgHvaDuVilGjøre],
         begrunnelse: begrunnelse,
         filer:
-          dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå
+          dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå &&
+          dokumentkravFiler.length > 0
             ? dokumentkravFiler
             : null,
         bundle: bundle,
@@ -287,6 +291,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
                 dokumentasjonskrav={dokumentasjonskrav}
                 dokumentkravFiler={dokumentkravFiler}
                 setDokumentkravFiler={setDokumentkravFiler}
+                setDokumentasjonskravIdSomSkalLagres={setDokumentasjonskravIdSomSkalLagres}
                 setAntallFilerMedFeil={setAntallFilerMedValideringsfeil}
                 setIngenFilerErLastetOppForDokumentkravet={
                   setIngenFilerErLastetOppForDokumentkravet
@@ -295,7 +300,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
               {visHarValideringsfeilFeilmelding && (
                 <VStack gap="4" className="mt-8">
                   <ErrorMessage>
-                    Du må rette feilen{antallFilerMedValideringsfeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+                    Du må rette feilen{antallFilerMedValideringsfeil > 1 ? "e" : ""} over før
+                    dokumentasjon kan sendes inn.
                   </ErrorMessage>
                 </VStack>
               )}
