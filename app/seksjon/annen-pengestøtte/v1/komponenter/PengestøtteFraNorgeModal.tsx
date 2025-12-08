@@ -5,6 +5,7 @@ import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
+  hvemUtbetalerPengestøtten,
   hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
   pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
@@ -57,7 +58,12 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
         enPengestøtteFraNorge[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
       );
 
-      const dokumentasjonskravTittel = `Pengestøtte fra Norge - ${støtteType}`;
+      const hvemUtbetalerStøtten =
+        enPengestøtteFraNorge[hvemUtbetalerPengestøtten] === undefined
+          ? ""
+          : ` (${enPengestøtteFraNorge[hvemUtbetalerPengestøtten]})`;
+
+      const dokumentasjonskravTittel = `Pengestøtte fra Norge - ${støtteType}${hvemUtbetalerStøtten}`;
 
       if (pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil) {
         leggTilPengestøtteFraNorge(enPengestøtteFraNorge, dokumentasjonskravTittel);

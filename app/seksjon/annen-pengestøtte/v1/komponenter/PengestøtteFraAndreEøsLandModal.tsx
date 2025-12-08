@@ -6,6 +6,7 @@ import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
+  fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
   fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
@@ -24,6 +25,7 @@ import {
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
+import { finnLandnavnMedLocale } from "~/utils/land.utils";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -62,7 +64,11 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
         skjemaData[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]!
       );
 
-      const dokumentasjonskravTittel = `Pengestøtte fra andre EØS-land - ${støtteType}`;
+      const land = finnLandnavnMedLocale(
+        skjemaData[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]!
+      ).toUpperCase()
+
+      const dokumentasjonskravTittel = `Pengestøtte fra andre EØS-land - ${støtteType} (${land})  `;
 
       if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil) {
         leggTilPengestøtteFraAndreEøsLand(skjemaData, dokumentasjonskravTittel);
