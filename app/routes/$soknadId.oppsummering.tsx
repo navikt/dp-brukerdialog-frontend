@@ -3,6 +3,12 @@ import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
 import { sendSøknad } from "~/models/send-søknad.server";
+import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
+
+type Oppsummering = {
+  seksjoner: OppsummeringSeksjon[];
+  dokumentasjonskrav: string[];
+};
 
 type OppsummeringSeksjon = {
   seksjonId: string;
@@ -12,13 +18,19 @@ type OppsummeringSeksjon = {
 export async function loader({
   request,
   params,
-}: LoaderFunctionArgs): Promise<OppsummeringSeksjon[] | null> {
+}: LoaderFunctionArgs): Promise<Oppsummering | null> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentAlleSeksjoner(request, params.soknadId);
+  const alleSeksjonerResponse = await hentAlleSeksjoner(request, params.soknadId);
 
-  if (response.ok) {
-    return await response.json();
+  if (alleSeksjonerResponse.ok) {
+    const alleDokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
+    return {
+      seksjoner: await alleSeksjonerResponse.json(),
+      dokumentasjonskrav: alleDokumentasjonskravResponse.ok
+        ? await alleDokumentasjonskravResponse.json()
+        : undefined,
+    };
   }
 
   return null;
