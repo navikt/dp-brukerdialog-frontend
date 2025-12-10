@@ -3,6 +3,7 @@ import { useLoaderData, useNavigation, useParams } from "react-router";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.oppsummering";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
 
 export default function OppsummeringView() {
   const loaderData = useLoaderData<typeof loader>();
@@ -30,7 +31,7 @@ export default function OppsummeringView() {
           </BodyLong>
           <h2>Dine svar</h2>
           {stegISøknaden.map((seksjon) => {
-            const seksjonsData = loaderData.find((s) => s.seksjonId === seksjon.path);
+            const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
             return (
               <Oppsummering
@@ -41,6 +42,7 @@ export default function OppsummeringView() {
               />
             );
           })}
+          <DokumentasjonOppsummering søknadId={soknadId} dokumentasjonskrav={loaderData.dokumentasjonskrav}/>
           <HStack className="mt-4">
             <form method="POST">
               <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
