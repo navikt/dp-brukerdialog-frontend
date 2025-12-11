@@ -10,18 +10,21 @@ export type KvitteringSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs<KvitteringSeksjon>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const seksjonerResponse = await hentAlleSeksjoner(request, params.soknadId);
-  const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
+  const alleSeksjonerResponse = await hentAlleSeksjoner(request, params.soknadId);
 
-  if (seksjonerResponse.ok && dokumentasjonskravResponse.ok) {
-    const dokumentasjonskravData = await dokumentasjonskravResponse.json();
+  if (alleSeksjonerResponse.ok) {
+    const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
 
     return {
-      seksjoner: await seksjonerResponse.json(),
-      dokumentasjonskrav: dokumentasjonskravData.flatMap((krav: string) => JSON.parse(krav)),
+      seksjoner: await alleSeksjonerResponse.json(),
+      dokumentasjonskrav: dokumentasjonskravResponse.ok
+        ? (await dokumentasjonskravResponse.json()).flatMap((dokumentasjonskrav: string) =>
+            JSON.parse(dokumentasjonskrav)
+          )
+        : undefined,
     };
   }
 

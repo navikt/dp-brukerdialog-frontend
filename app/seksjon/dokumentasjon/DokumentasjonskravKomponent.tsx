@@ -31,6 +31,7 @@ export type Dokumentasjonskrav = {
   svar?: GyldigDokumentkravSvar;
   begrunnelse?: string;
   filer?: DokumentkravFil[] | null;
+  bundle?: Bundle | null;
 };
 
 export type Bundle = {
