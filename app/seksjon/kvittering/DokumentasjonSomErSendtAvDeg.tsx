@@ -1,13 +1,13 @@
-import { ComponentIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { DokumentasjonskravInnhold } from "../dokumentasjon/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
+import { ComponentIcon } from "@navikt/aksel-icons";
 
 interface IProps {
   dokummentasjonskrav: Dokumentasjonskrav;
 }
 
-export default function DokumentasjonskravSkalSendesAvDeg({ dokummentasjonskrav }: IProps) {
+export default function DokumentasjonskravSomErSendtAvDeg({ dokummentasjonskrav }: IProps) {
   return (
     <Box padding="space-16" background="surface-action-subtle" borderRadius="large">
       <VStack gap="2">
@@ -16,12 +16,15 @@ export default function DokumentasjonskravSkalSendesAvDeg({ dokummentasjonskrav 
             <Heading size="xsmall" level="4">
               {dokummentasjonskrav.tittel}
             </Heading>
-            <Tag icon={<ComponentIcon />} variant="warning" size="xsmall">
-              Mangler
+            <Tag variant="success" size="xsmall">
+              Mottatt
             </Tag>
           </HStack>
 
-          <BodyShort>Skal sendes av deg</BodyShort>
+          <BodyShort>
+            Se opplastet dokument &lt;&lt; TODO dette skal være en link så bruker får lastet ned
+            dokumentet
+          </BodyShort>
         </VStack>
 
         <ReadMore header="Dette må dokumentasjonen inneholde">

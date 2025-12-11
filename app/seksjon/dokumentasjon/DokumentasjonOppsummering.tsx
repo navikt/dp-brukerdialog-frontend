@@ -1,25 +1,16 @@
-import { FormSummary, Link } from "@navikt/ds-react";
+import { FormSummary } from "@navikt/ds-react";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import {
   dokumentasjonskravKomponenter,
   velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 interface IProps {
   søknadId: string | undefined;
   dokumentasjonskrav: string[];
 }
-
-type Dokumentasjonskrav = {
-  id: string;
-  tittel: string;
-  svar: string;
-  begrunnelse?: string;
-  bundle?: {
-    filsti: string;
-  };
-};
 
 export default function DokumentasjonOppsummering({
   søknadId,
@@ -42,18 +33,18 @@ export default function DokumentasjonOppsummering({
             <FormSummary.Answer key={dokumentasjonskrav.id}>
               <FormSummary.Label>{dokumentasjonskrav.tittel}</FormSummary.Label>
               <FormSummary.Value>
-                {finnOptionLabel(
-                  dokumentasjonskravKomponenter,
-                  velgHvaDuVilGjøre,
-                  dokumentasjonskrav.svar
-                )}
+                {(dokumentasjonskrav.svar &&
+                  finnOptionLabel(
+                    dokumentasjonskravKomponenter,
+                    velgHvaDuVilGjøre,
+                    dokumentasjonskrav.svar
+                  )) + ":"}
               </FormSummary.Value>
               {dokumentasjonskrav.begrunnelse && (
                 <FormSummary.Value>{dokumentasjonskrav.begrunnelse}</FormSummary.Value>
               )}
-              {dokumentasjonskrav.bundle && (
-                  "Se opplastet dokument << TODO dette skal være en link så bruker får lastet ned dokumentet"
-              )}
+              {dokumentasjonskrav.bundle &&
+                "Se opplastet dokument << TODO dette skal være en link så bruker får lastet ned dokumentet"}
             </FormSummary.Answer>
           );
         })}

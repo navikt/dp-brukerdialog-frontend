@@ -1,4 +1,3 @@
-import { ComponentIcon } from "@navikt/aksel-icons";
 import {
   Alert,
   BodyLong,
@@ -15,26 +14,34 @@ import {
 import { useLoaderData, useParams } from "react-router";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
-import DokumentasjonskravIkkeSkalSendes from "~/seksjon/kvittering/DokumentasjonskravIkkeSkalSendes";
+import DokumentasjonSomIkkeSkalSendes from "~/seksjon/kvittering/DokumentasjonSomIkkeSkalSendes";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
 import {
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
+  dokumentkravSvarSendNå,
+  dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/dokumentasjonskrav.komponenter";
-import DokumentasjonskravSkalSendesAvDeg from "./DokumentasjonskravSkalSendesAvDeg";
+import DokumentasjonSomSkalSendesAvDeg from "./DokumentasjonSomSkalSendesAvDeg";
+import DokumentasjonskravSomErSendtAvDeg from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
 
 export default function KvitteringView() {
   const { soknadId } = useParams();
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
-  const dokumentasjonskravSomSkalSendesAvDeg = dokumentasjonskrav.filter(
+  const dokumentasjonSomErSendtAvDeg = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
+  );
+
+  const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
-  const dokumentasjonskravSomIkkeSkalSendes = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderIkke
+  const dokumentasjonSomIkkeSkalSendes = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) =>
+      krav.svar === dokumentkravSvarSenderIkke || krav.svar === dokumentkravSvarSendtTidligere
   );
 
   return (
@@ -45,9 +52,11 @@ export default function KvitteringView() {
             <VStack>
               <Heading size="medium">Søknad mottatt</Heading>
             </VStack>
-            <Tag icon={<ComponentIcon />} variant={"warning"} size="xsmall">
-              Mottatt
-            </Tag>
+            {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
+              <Tag variant={"warning"} size="xsmall">
+                Mangler dokumentasjon
+              </Tag>
+            )}
           </HStack>
 
           <BodyLong>
@@ -87,25 +96,36 @@ export default function KvitteringView() {
             </Link>
             .
           </ReadMore>
-          {dokumentasjonskravSomSkalSendesAvDeg.length > 0 && (
+          {dokumentasjonSomErSendtAvDeg.length > 0 && (
             <>
               <Heading size="small" className="mt-4">
-                Dokumenter du skal sende inn
+                Dokumenter du har sendt
               </Heading>
-              {dokumentasjonskravSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonskravSkalSendesAvDeg key={krav.id} dokummentasjonskrav={krav} />
+              {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
+                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokummentasjonskrav={krav} />
+              ))}
+            </>
+          )}
+
+          {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
+            <>
+              <Heading size="small" className="mt-4">
+                Dokumenter du skal sende
+              </Heading>
+              {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
+                <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokummentasjonskrav={krav} />
               ))}
               <HStack>
-                <Button variant="primary">Send inn dokumenter</Button>
+                <Button variant="primary">Send inn dokumenter (fungerer ikke enda)</Button>
               </HStack>
             </>
           )}
 
-          {dokumentasjonskravSomIkkeSkalSendes.length > 0 && (
+          {dokumentasjonSomIkkeSkalSendes.length > 0 && (
             <>
               <Heading size="small">Dokumenter du ikke skal sende</Heading>
-              {dokumentasjonskravSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonskravIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
+              {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
+                <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
               ))}
             </>
           )}
