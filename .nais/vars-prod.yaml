@@ -12,4 +12,4 @@ unleash:
   environment: production
 faro_url: https://telemetry.nav.no/collect
 dp_soknad_orkestrator_url: http://dp-soknad-orkestrator
-dp_mellomlagring_url: http://dp-mellomlagring/v1/obo/mellomlagring
+dp_mellomlagring_url: http://dp-mellomlagring/v1/obo/mellomlagring/v1/obo/mellomlagring
