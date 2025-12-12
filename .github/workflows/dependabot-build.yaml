@@ -30,4 +30,4 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
-      - run: npm run test
+      - run: npm run dependabot
