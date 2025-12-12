@@ -12,7 +12,8 @@
     "typecheck": "react-router typegen && tsc",
     "token": "node ./token-generator.cjs",
     "prepare": "husky",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "dependabot": "react-router typegen && tsc && vitest --run"
   },
   "dependencies": {
     "@elastic/ecs-pino-format": "^1.5.0",
