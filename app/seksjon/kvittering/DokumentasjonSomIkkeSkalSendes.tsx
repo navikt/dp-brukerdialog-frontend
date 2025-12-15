@@ -9,7 +9,7 @@ interface IProps {
 
 export default function DokumentasjonSomIkkeSkalSendes({ dokummentasjonskrav }: IProps) {
   return (
-    <Box padding="space-16" background="surface-action-subtle" borderRadius="large">
+    <Box.New padding="space-16" background="sunken" borderRadius="large">
       <VStack gap="2">
         <VStack gap="2">
           <HStack gap="2" justify="space-between">
@@ -22,7 +22,8 @@ export default function DokumentasjonSomIkkeSkalSendes({ dokummentasjonskrav }: 
             {(dokummentasjonskrav.svar === dokumentkravSvarSendtTidligere &&
               "Du har opplyst at du har sendt dette tidligere:") ||
               "Du har opplyst at du ikke sender dette:"}
-            <br/>{dokummentasjonskrav.begrunnelse}
+            <br />
+            {dokummentasjonskrav.begrunnelse}
           </BodyShort>
         </VStack>
 
@@ -30,6 +31,6 @@ export default function DokumentasjonSomIkkeSkalSendes({ dokummentasjonskrav }: 
           <DokumentasjonskravInnhold type={dokummentasjonskrav.type} />
         </ReadMore>
       </VStack>
-    </Box>
+    </Box.New>
   );
 }

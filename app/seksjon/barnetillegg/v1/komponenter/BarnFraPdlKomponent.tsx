@@ -51,7 +51,7 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
   }, [form.formState]);
 
   return (
-    <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
+    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
       <Heading size="small" spacing>
         {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
@@ -81,6 +81,6 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
           );
         })}
       </Form>
-    </Box>
+    </Box.New>
   );
 }

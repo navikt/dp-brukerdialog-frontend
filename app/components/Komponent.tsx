@@ -4,7 +4,7 @@ import { ForklarendeTekst } from "~/components/informasjon-komponent/Forklarende
 import { Nedtrekksliste } from "~/components/spørsmål-komponent/Nedtrekksliste";
 import { Tall } from "~/components/spørsmål-komponent/Tall";
 import { LesMer } from "./informasjon-komponent/LesMer";
-import { Varselmelding } from "./informasjon-komponent/Varselmelding";
+import { Informasjonskort } from "./informasjon-komponent/Informasjonskort";
 import { KomponentType } from "./Komponent.types";
 import { Dato } from "./spørsmål-komponent/Dato";
 import { Envalg } from "./spørsmål-komponent/Envalg";
@@ -49,8 +49,8 @@ export function Komponent({ props, formScope }: IProps) {
     case "nedtrekksliste":
       return <Nedtrekksliste props={props} formScope={formScope} />;
 
-    case "varselmelding":
-      return <Varselmelding props={props} />;
+    case "informasjonskort":
+      return <Informasjonskort props={props} />;
 
     case "lesMer":
       return <LesMer props={props} />;

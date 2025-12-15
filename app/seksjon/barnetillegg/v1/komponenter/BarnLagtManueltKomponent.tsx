@@ -36,7 +36,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
   }
 
   return (
-    <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
+    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
       <Heading size="small" spacing>
         {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
@@ -71,6 +71,6 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
           Fjern
         </Button>
       </HStack>
-    </Box>
+    </Box.New>
   );
 }

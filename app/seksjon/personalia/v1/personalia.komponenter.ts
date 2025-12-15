@@ -112,8 +112,8 @@ export const personaliaSpørsmål: KomponentType[] = [
   },
   {
     id: "viHarRegistretAtDuErOver67VarselMelding",
-    type: "varselmelding",
-    variant: "warning",
+    type: "informasjonskort",
+    variant: "advarsel",
     label: "Vi har registrert at du er over 67 år",
     description:
       "Du har ikke rett på dagpenger fordi du er over 67 år. Hvis du ikke har søkt om alderspensjon, kan du søke om <a href='https://www.nav.no/soknader'>alderspensjon her</a>.",

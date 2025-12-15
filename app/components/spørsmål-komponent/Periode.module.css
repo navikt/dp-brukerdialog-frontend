@@ -1,13 +1,13 @@
 .periodeVenstreBorder {
-  border-left: 4px solid var(--a-deepblue-600);
-  padding-left: var(--a-spacing-4);
+  border-left: 4px solid var(--ax-brand-blue-700);
+  padding-left: var(--ax-space-16);
 }
 
 .periodeVenstreBorderfra {
-  padding-bottom: var(--a-spacing-8);
+  padding-bottom: var(--ax-space-32);
 }
 
 .periodeVenstreBordertil {
   position: relative;
-  top: calc(-1 * var(--a-spacing-8));
+  top: calc(-1 * var(--ax-space-32));
 }

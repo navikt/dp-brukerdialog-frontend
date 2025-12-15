@@ -22,7 +22,7 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
   }
 
   return (
-    <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
+    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
       <h3 style={{ marginTop: "0" }}>{etGårdsbruk[organisasjonsnummer]}</h3>
       <BodyShort spacing>
         {etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg]}% av inntekten går til meg pr. uke før
@@ -57,6 +57,6 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
           Fjern
         </Button>
       </HStack>
-    </Box>
+    </Box.New>
   );
 }

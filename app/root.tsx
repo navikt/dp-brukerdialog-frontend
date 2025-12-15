@@ -16,7 +16,7 @@ import {
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { logger } from "./utils/logger.utils";
-import akselStyles from "@navikt/ds-css/dist/index.css?url";
+import akselStyles from "@navikt/ds-css/dist/darkside/index.css?url";
 import { useEffect, useState } from "react";
 import { Route } from "./+types/root";
 import indexStyles from "./index.css?url";
@@ -24,6 +24,7 @@ import { sanityClient } from "./sanity/sanity.config";
 import { allTextsQuery } from "./sanity/sanity.query";
 import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
+import { Theme } from "@navikt/ds-react";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -106,7 +107,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <Theme>
+      <Outlet />
+    </Theme>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

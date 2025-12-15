@@ -10,8 +10,8 @@ export const jegHarSagtOppHvaVarÅrsaken = "jegHarSagtOppHvaVarÅrsaken";
 export const arbeidsforholdModalJegHarSagtOppSelvKomponenter: KomponentType[] = [
   {
     id: "jegHarSagtOppSelvVarselmelding",
-    type: "varselmelding",
-    variant: "info",
+    type: "informasjonskort",
+    variant: "informasjon",
     description:
       "Hvis du har sagt opp selv, må vi vite hvorfor.<br/><br/>" +
       "Derfor må du dokumentere grunnen og datoen du sa opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.<br/><br/>" +

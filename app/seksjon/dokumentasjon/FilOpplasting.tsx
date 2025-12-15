@@ -166,7 +166,7 @@ export function FilOpplasting({
     }
 
     setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
-    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id)
+    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
 
     return await response.text();
   }
@@ -189,7 +189,7 @@ export function FilOpplasting({
   }
 
   return (
-    <Box background="surface-subtle" borderRadius="large" className="mt-4">
+    <Box.New borderRadius="large" background="sunken" className="mt-4">
       <VStack gap="8">
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
@@ -217,6 +217,6 @@ export function FilOpplasting({
           />
         ))}
       </VStack>
-    </Box>
+    </Box.New>
   );
 }

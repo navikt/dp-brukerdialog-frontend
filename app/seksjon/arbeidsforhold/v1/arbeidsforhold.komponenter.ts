@@ -224,8 +224,8 @@ export const arbeidsforholdKomponenter: KomponentType[] = [
   },
   {
     id: "harIkkeJobbetDeSiste36MånedeneVarselMelding",
-    type: "varselmelding",
-    variant: "warning",
+    type: "informasjonskort",
+    variant: "advarsel",
     description:
       "Hvis du ikke har vært i arbeid, har du i utgangspunktet ikke rett til dagpenger. Du må derfor regne med å få avslag på søknaden din.<br/><br/>" +
       "<strong>Unntaket er hvis du har avtjent verneplikt</strong> i minst tre av de siste tolv månedene. Du legger ved dokumentasjon på at du har avtjent verneplikt senere i søknaden.",
