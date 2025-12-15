@@ -14,7 +14,7 @@ export function useNullstillSkjulteFelter<T extends Record<string, any>>(
     komponenter.forEach((komponent) => {
       const erInformasjonKomponent =
         komponent.type === "lesMer" ||
-        komponent.type === "varselmelding" ||
+        komponent.type === "informasjonskort" ||
         komponent.type === "dokumentasjonskravindikator" ||
         komponent.type === "registeropplysning" ||
         komponent.type === "forklarendeTekst";

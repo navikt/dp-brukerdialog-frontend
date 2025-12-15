@@ -57,8 +57,8 @@ export const dokumentasjonskravKomponenter: KomponentType[] = [
   },
   {
     id: "test",
-    type: "varselmelding",
-    variant: "warning",
+    type: "informasjonskort",
+    variant: "advarsel",
     description:
       "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet.",
     visHvis: (svar: DokumentasjonskravSvar) =>

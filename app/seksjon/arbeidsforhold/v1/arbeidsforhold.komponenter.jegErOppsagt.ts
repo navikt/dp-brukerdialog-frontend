@@ -15,8 +15,8 @@ export const jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
 export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: KomponentType[] = [
   {
     id: "oppsagtVarselmelding",
-    type: "varselmelding",
-    variant: "info",
+    type: "informasjonskort",
+    variant: "informasjon",
     description:
       "Hvis du har blitt sagt opp av arbeidsgiveren din, må vi vite hvorfor.<br/><br/>" +
       "Derfor må du dokumentere grunnen og datoen du ble sagt opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.<br/><br/>" +
@@ -75,8 +75,8 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
   },
   {
     id: "oppsagtHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorgeVarselMelding",
-    type: "varselmelding",
-    variant: "info",
+    type: "informasjonskort",
+    variant: "informasjon",
     description:
       "Takket du nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du normalt ikke få dagpenger de første 18 ukene. Denne ventetiden løper først fra den datoen dagpengeperioden starter.<br/><br/>" +
       "Det er viktig at du ikke venter med å søke om dagpenger. Du må sende søknaden din nå, selv om du kan få en ventetid på 18 uker.<br/><br/>" +

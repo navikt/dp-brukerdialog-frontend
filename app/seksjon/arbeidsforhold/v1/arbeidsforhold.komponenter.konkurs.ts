@@ -110,8 +110,8 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
   },
   {
     id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerVarselemdling",
-    type: "varselmelding",
-    variant: "info",
+    type: "informasjonskort",
+    variant: "informasjon",
     description:
       'Det er viktig at du i tillegg til denne søknaden sender egen <a href="#">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.',
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -177,8 +177,8 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
   },
   {
     id: "godtarDuAtNavTrekkerPengerDirekteFraKonkursboetVarselMelding",
-    type: "varselmelding",
-    variant: "warning",
+    type: "informasjonskort",
+    variant: "advarsel",
     description:
       "Hvis du ikke godtar at NAV trekker penger direkte fra konkursboet, kan du få krav om tilbakebetaling av dagpenger.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -206,8 +206,8 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
   },
   {
     id: "konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningenVarselMelding",
-    type: "varselmelding",
-    variant: "warning",
+    type: "informasjonskort",
+    variant: "advarsel",
     description:
       "Når du får innvilget lønnsgarantimidler, trekker vi forskuddet fra lønnsgarantimidlene.<br/><br/>" +
       "Hvis du ikke godtar dette, vil du få avslag på søknaden om forskudd på lønnsgarantimidler.<br/><br/>" +
@@ -242,8 +242,8 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
   },
   {
     id: "konkursHarDuSøktOmLønnsgarantimidlerVarselmelding",
-    type: "varselmelding",
-    variant: "warning",
+    type: "informasjonskort",
+    variant: "advarsel",
     description:
       "Hvis du ikke søker om lønnsgarantimidler, har du ikke rett til forskudd, og du vil få avslag på søknaden din om forskudd på lønnsgarantimidler.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
