@@ -47,7 +47,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
   }
 
   return (
-    <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
+    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
       <Heading level="3" size="small" spacing>
         {finnOptionLabel(
           pengestøtteFraAndreEøsLandModalKomponenter,
@@ -122,6 +122,6 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           Fjern
         </Button>
       </HStack>
-    </Box>
+    </Box.New>
   );
 }

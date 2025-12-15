@@ -259,7 +259,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   }
 
   return (
-    <Box padding="space-16" background="surface-subtle" borderRadius="large" className="mt-4">
+    <Box.New padding="space-16" background="sunken" borderRadius="large" className="mt-4">
       <VStack gap="8">
         <Form {...form.getFormProps()}>
           <VStack gap="6">
@@ -317,6 +317,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           )}
         </Form>
       </VStack>
-    </Box>
+    </Box.New>
   );
 }

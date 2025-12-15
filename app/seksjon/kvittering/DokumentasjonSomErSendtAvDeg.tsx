@@ -1,7 +1,6 @@
 import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { DokumentasjonskravInnhold } from "../dokumentasjon/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
-import { ComponentIcon } from "@navikt/aksel-icons";
 
 interface IProps {
   dokummentasjonskrav: Dokumentasjonskrav;
@@ -9,7 +8,7 @@ interface IProps {
 
 export default function DokumentasjonskravSomErSendtAvDeg({ dokummentasjonskrav }: IProps) {
   return (
-    <Box padding="space-16" background="surface-action-subtle" borderRadius="large">
+    <Box.New padding="space-16" background="sunken" borderRadius="large">
       <VStack gap="2">
         <VStack gap="2">
           <HStack gap="2" justify="space-between">
@@ -31,6 +30,6 @@ export default function DokumentasjonskravSomErSendtAvDeg({ dokummentasjonskrav 
           <DokumentasjonskravInnhold type={dokummentasjonskrav.type} />
         </ReadMore>
       </VStack>
-    </Box>
+    </Box.New>
   );
 }

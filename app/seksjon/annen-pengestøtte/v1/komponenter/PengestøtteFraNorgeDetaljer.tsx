@@ -43,7 +43,7 @@ export function PengestøtteFraNorgeDetaljer({
   }
 
   return (
-    <Box padding="space-16" background="surface-alt-3-subtle" borderRadius="xlarge">
+    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
       <h3 style={{ marginTop: "0" }}>
         {finnOptionLabel(
           pengestøtteFraNorgeModalKomponenter,
@@ -107,6 +107,6 @@ export function PengestøtteFraNorgeDetaljer({
           Fjern
         </Button>
       </HStack>
-    </Box>
+    </Box.New>
   );
 }
