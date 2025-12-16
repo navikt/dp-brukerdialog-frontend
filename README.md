@@ -31,3 +31,9 @@ For å starte utviklingsserveren, kjør `npm run dev`
 3. In Settings > Languages & Frameworks > JavaScript > Code Quality Tools > ESLint
    1. Select Automatic ESLint Configuration
    2. Select Run eslint --fix on save
+
+## Testing
+
+1. Unit testing `npm run test`
+2. Test coverage `npm run coverage`
+3. Vitest ui `npx vitest --ui`
