@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["**/*.test.ts"], // Kun filer som slutter på .test.ts
+    include: ["**/*.test.ts"],
     exclude: ["**/node_modules/**", "**/.react-router/**"],
     coverage: {
       include: ["**/*.{ts,tsx}"],
@@ -16,7 +16,7 @@ export default defineConfig({
         "app/entry.client.tsx",
         "app/entry.server.tsx",
       ],
-      provider: 'v8', // or 'istanbul'
+      provider: "v8",
     },
   },
 });
