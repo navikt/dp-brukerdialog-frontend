@@ -13,6 +13,7 @@
     "token": "node ./token-generator.cjs",
     "prepare": "husky",
     "test": "vitest --run",
+    "coverage": "vitest run --coverage",
     "dependabot": "react-router typegen && tsc && vitest --run"
   },
   "dependencies": {
@@ -56,6 +57,8 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
+    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/ui": "^4.0.15",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
