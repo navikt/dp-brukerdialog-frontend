@@ -1,5 +1,6 @@
 import { Box, FileObject, VStack } from "@navikt/ds-react";
-import { FileUpload, FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import {
   hentMaksFilStørrelseMB,
@@ -10,7 +11,6 @@ import {
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { Dokumentasjonskrav } from "./DokumentasjonskravKomponent";
-import { useEffect } from "react";
 
 export type DokumentkravFil = {
   id: string;
@@ -204,7 +204,7 @@ export function FilOpplasting({
       </VStack>
       <VStack gap="4" className="mt-8">
         {dokumentkravFiler?.map((fil) => (
-          <FileUpload.Item
+          <FileUploadItem
             key={fil.id}
             file={fil.file ? fil.file : new File([], fil.filnavn)}
             status={fil.lasterOpp ? "uploading" : "idle"}
