@@ -19,19 +19,18 @@ export function hentTillatteFiltyperTekst() {
   return typer[0];
 }
 
-export async function lastnedDokument(filsti?: string, dokumentTittel?: string) {
+export async function lastnedDokument(filsti?: string, tittel?: string) {
   if (!filsti) {
     console.log("Mangler filsti tilgjengelig for nedlasting");
     return;
   }
 
-  if (!dokumentTittel) {
-    console.log("Mangler dokumenttittel tilgjengelig for nedlasting");
+  if (!tittel) {
+    console.log("Mangler tittel for nedlasting");
     return;
   }
 
   const url = "/api/dokumentasjonskrav/lastned";
-
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -41,7 +40,7 @@ export async function lastnedDokument(filsti?: string, dokumentTittel?: string) 
   });
 
   if (!response.ok) {
-    throw new Response(`Klarte ikke laste ned bundlet dokument ${url}`, {
+    throw new Response("Klarte ikke laste ned dokument", {
       status: response.status,
       statusText: response.statusText,
     });
@@ -52,7 +51,7 @@ export async function lastnedDokument(filsti?: string, dokumentTittel?: string) 
 
   const a = document.createElement("a");
   a.href = blobUrl;
-  a.download = `${dokumentTittel}.pdf`;
+  a.download = `${tittel}.pdf`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
