@@ -50,12 +50,12 @@ function getOptions(spørsmål: KomponentType): Option[] {
         value: land.value,
         label: land.label,
       }));
+    } else {
+      return OFTE_VALGTE_LAND.concat(FLERE_LAND).map((land) => ({
+        value: land.value,
+        label: land.label,
+      }));
     }
-
-    return OFTE_VALGTE_LAND.concat(FLERE_LAND).map((land) => ({
-      value: land.value,
-      label: land.label,
-    }));
   } else {
     return (spørsmål as any)?.options;
   }
