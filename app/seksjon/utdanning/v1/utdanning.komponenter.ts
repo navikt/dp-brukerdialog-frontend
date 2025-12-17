@@ -45,7 +45,7 @@ export const utdanningKomponenter: KomponentType[] = [
     visHvis: (svar: UtdanningSvar) => svar[tarUtdanningEllerOpplæring] === "nei",
   },
   {
-    id: "avsluttetUtdanningSiste6MånederVarselmelding",
+    id: "avsluttetUtdanningSiste6MånederInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     description:
@@ -70,7 +70,7 @@ export const utdanningKomponenter: KomponentType[] = [
     visHvis: (svar: UtdanningSvar) => svar[tarUtdanningEllerOpplæring] === "nei",
   },
   {
-    id: "måSendeInnSøknadNav04-06.05Varselmelding",
+    id: "måSendeInnSøknadNav04-06.05Informasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
     description:

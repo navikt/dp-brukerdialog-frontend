@@ -111,7 +111,7 @@ export const personaliaSpørsmål: KomponentType[] = [
     label: "Kontonummer",
   },
   {
-    id: "viHarRegistretAtDuErOver67VarselMelding",
+    id: "viHarRegistretAtDuErOver67Informasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
     label: "Vi har registrert at du er over 67 år",

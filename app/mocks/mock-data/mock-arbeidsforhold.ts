@@ -2,20 +2,27 @@ import {
   ArbeidsforholdResponse,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harDuJobbetSkiftTurnusEllerRotasjon,
+  hverkenSkiftTurnusEllerRotasjon,
   hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   hvordanHarDuJobbet,
+  jegHarSagtOppSelv,
+  kontraktenErUtgått,
   navnetPåBedriften,
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
-  varighetPåArbeidsforholdetFraOgMedDato,
-  varighetPåArbeidsforholdetTilOgMedDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { jegHarSagtOppHvaVarÅrsaken } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
-  kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
-  kontraktenErUgåttHvaHarDuSvartPåTilbudet,
+  jegHarSagtOppHvaVarÅrsaken,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import {
+  kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
+  kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+  kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 
 export const mockArbeidsforhold: ArbeidsforholdResponse = {
   registrerteArbeidsforhold: [
@@ -23,23 +30,23 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [navnetPåBedriften]: "STORE SKO AB",
       [hvilketLandJobbetDuI]: "SWE",
       [oppgiPersonnummeretPinDuHaddeIDetteLandet]: "916253511",
-      [varighetPåArbeidsforholdetFraOgMedDato]: "2025-09-23",
-      [varighetPåArbeidsforholdetTilOgMedDato]: "2025-09-24",
-      [hvordanHarDetteArbeidsforholdetEndretSeg]: "jegHarSagtOppSelv",
+      [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato]: "2025-09-23",
+      [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato]: "2025-09-24",
+      [hvordanHarDetteArbeidsforholdetEndretSeg]: jegHarSagtOppSelv,
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
-      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverkenSkiftTurnusEllerRotasjon",
+      [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon,
     },
     {
       [navnetPåBedriften]: "VAKKER TØNNE AS",
       [hvilketLandJobbetDuI]: "NOR",
-      [varighetPåArbeidsforholdetFraOgMedDato]: "2023-01-01",
-      [varighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
-      [hvordanHarDetteArbeidsforholdetEndretSeg]: "kontraktenErUgått",
+      [kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato]: "2023-01-01",
+      [kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
+      [hvordanHarDetteArbeidsforholdetEndretSeg]: kontraktenErUtgått,
       [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
         "ja",
-      [kontraktenErUgåttHvaHarDuSvartPåTilbudet]: "nei",
-      [kontraktenErUgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie.",
-      [harDuJobbetSkiftTurnusEllerRotasjon]: "hverkenSkiftTurnusEllerRotasjon",
+      [kontraktenErUtgåttHvaHarDuSvartPåTilbudet]: "nei",
+      [kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie.",
+      [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon,
     },
   ],
   [hvordanHarDuJobbet]: "fastArbeidstidI6MånederEllerMer",

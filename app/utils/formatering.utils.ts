@@ -3,7 +3,7 @@ import { nb } from "date-fns/locale";
 import { SpørsmålBase } from "~/components/Komponent.types";
 
 export function formaterNorskDato(dato: Date) {
-  const formattertDato = format(dato, "dd. MMMM yyyy", { locale: nb });
+  const formattertDato = format(dato, "d. MMMM yyyy", { locale: nb });
   return formattertDato.charAt(0).toUpperCase() + formattertDato.slice(1);
 }
 

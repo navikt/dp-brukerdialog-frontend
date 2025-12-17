@@ -29,10 +29,10 @@ import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/se
 import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
-import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
+import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -112,7 +112,7 @@ export function ArbeidsforholdViewV1() {
               .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
               .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
               .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-              .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+              .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
               .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
               .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
               .concat(arbeidsforholdModalJegErPermittertKomponenter)
