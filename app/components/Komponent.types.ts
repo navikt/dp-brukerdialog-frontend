@@ -33,7 +33,7 @@ export const INFO_KOMPONENTER: InfoType[] = [
   "informasjonskort",
   "lesMer",
   "dokumentasjonskravindikator",
-  "forklarendeTekst"
+  "forklarendeTekst",
 ];
 
 export type KomponentBase = {
@@ -82,6 +82,7 @@ export type PeriodeSpørsmål = SpørsmålBase & {
 
 export type LandSpørsmål = SpørsmålBase & {
   type: "land";
+  erEøsLand?: boolean;
 };
 
 export type TallSpørsmål = SpørsmålBase & {

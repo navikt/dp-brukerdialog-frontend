@@ -92,6 +92,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
   {
     id: fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
     type: "land",
+    erEøsLand: true,
     label: "Fra hvilket land har du mottatt eller søkt om pengestøtten?",
   },
   {
