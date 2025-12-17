@@ -13,7 +13,7 @@ import {
 import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
 import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
@@ -46,7 +46,7 @@ export default function ArbeidsforholdOppsummeringV1({
     .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
     .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
     .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-    .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+    .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
     .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
     .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
     .concat(arbeidsforholdModalJegErPermittertKomponenter)

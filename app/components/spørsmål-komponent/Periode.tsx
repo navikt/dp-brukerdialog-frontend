@@ -39,9 +39,6 @@ export function Periode({ props, formScope }: IProps) {
   return (
     <VStack gap="4">
       {props.type === "periodeFra" && <BodyShort weight="semibold">{props.periodeLabel}</BodyShort>}
-      {props.type === "periodeFra" && props.description && (
-        <BodyShort>{props.description}</BodyShort>
-      )}
       <VStack
         className={classNames(styles.periodeVenstreBorder, {
           [styles.periodeVenstreBorderfra]: periodeFraSpørsmal,
@@ -57,6 +54,7 @@ export function Periode({ props, formScope }: IProps) {
             label={
               periodeTilSpørsmal && props.optional ? `${props.label} (valgfritt)` : props.label
             }
+            description={props.description}
           />
         </DatePicker>
       </VStack>

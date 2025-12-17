@@ -6,18 +6,49 @@ import {
   arbeidsforholdModalKomponenter,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   navnetPåBedriften,
-  varighetPåArbeidsforholdetFraOgMedDato,
-  varighetPåArbeidsforholdetTilOgMedDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
+import {
+  arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
+  arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import {
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import {
+  jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato,
+  jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import {
+  jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato,
+  jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import {
+  kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
+import {
+  konkursVarighetPåArbeidsforholdetFraOgMedDato,
+  konkursVarighetPåArbeidsforholdetTilOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import {
+  permittertHvorMangeProsentErDuPermittert,
+  permittertNårErDuPermittertFraOgMedDato,
+  permittertNårErDuPermittertTilOgMedDato,
+  permittertVarighetPåArbeidsforholdetFraOgMedDato,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import {
+  ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 
 interface IProps {
   arbeidsforhold: Arbeidsforhold;
 }
 
-export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
+function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
   const {
     registrerteArbeidsforhold,
     setRegistrerteArbeidsforhold,
@@ -41,15 +72,6 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
       <h3 style={{ marginTop: "0" }}>{arbeidsforhold[navnetPåBedriften]}</h3>
       <BodyShort spacing>
         <>
-          Fra og med&nbsp;
-          {formaterNorskDato(new Date(arbeidsforhold[varighetPåArbeidsforholdetFraOgMedDato]!))}
-          {arbeidsforhold[varighetPåArbeidsforholdetTilOgMedDato] && (
-            <>
-              , til og med&nbsp;
-              {formaterNorskDato(new Date(arbeidsforhold[varighetPåArbeidsforholdetTilOgMedDato]))}
-            </>
-          )}
-          <br />
           <span>
             {finnOptionLabel(
               arbeidsforholdModalKomponenter,
@@ -57,6 +79,97 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
               arbeidsforhold[hvordanHarDetteArbeidsforholdetEndretSeg]!
             )}
           </span>
+          <br />
+          {arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet varte fra " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
+          {arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato] &&
+            " til " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato])
+              )}
+
+          {arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet varte fra " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
+          {arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato] &&
+            " til " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato])
+              )}
+
+          {arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet varte fra " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
+          {arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato] &&
+            " til " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato])
+              )}
+
+          {arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet varte fra " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
+          {arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato] &&
+            " til " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato])
+              )}
+
+          {arbeidsforhold[arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet] &&
+            "Arbeidsforholdet startet " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet])
+              )}
+          {arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert] && (
+            <div>
+              Arbeidstiden ble redusert{" "}
+              {formaterNorskDato(
+                new Date(arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert])
+              )}
+            </div>
+          )}
+
+          {arbeidsforhold[konkursVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet varte fra " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[konkursVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
+          {arbeidsforhold[konkursVarighetPåArbeidsforholdetTilOgMedDato] &&
+            " til " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[konkursVarighetPåArbeidsforholdetTilOgMedDato])
+              )}
+
+          {arbeidsforhold[permittertVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet startet " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[permittertVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
+          {arbeidsforhold[permittertNårErDuPermittertFraOgMedDato] && (
+            <div>
+              {arbeidsforhold[permittertHvorMangeProsentErDuPermittert]}% permittert fra{" "}
+              {formaterNorskDato(new Date(arbeidsforhold[permittertNårErDuPermittertFraOgMedDato]))}{" "}
+              til{" "}
+              {formaterNorskDato(
+                new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato]!)
+              )}
+            </div>
+          )}
+
+          {arbeidsforhold[ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato] &&
+            "Arbeidsforholdet startet " +
+              formaterNorskDato(
+                new Date(arbeidsforhold[ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato])
+              )}
         </>
       </BodyShort>
       <HStack gap="4">
@@ -86,3 +199,5 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
     </Box.New>
   );
 }
+
+export default ArbeidsforholdDetaljer

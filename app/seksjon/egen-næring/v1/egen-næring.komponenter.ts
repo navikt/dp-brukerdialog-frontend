@@ -76,7 +76,7 @@ export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
       "Hvis du er ansatt i ditt eget aksjeselskap, må du legge til arbeidsforholdet i forrige steg. På dette spørsmålet skal du kun legge til egen næring, som enkeltpersonsforetak.",
   },
   {
-    id: "driverDuEgenNæringsvirksomhetVarselmelding",
+    id: "driverDuEgenNæringsvirksomhetInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     description:
@@ -96,7 +96,7 @@ export const egenNæringEgetGårdsbrukKomponenter: KomponentType[] = [
     ],
   },
   {
-    id: "driverDuEgetGårdsbrukVarselmelding",
+    id: "driverDuEgetGårdsbrukInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     description:

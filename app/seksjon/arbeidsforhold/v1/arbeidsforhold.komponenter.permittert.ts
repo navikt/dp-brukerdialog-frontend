@@ -5,11 +5,12 @@ import {
   jegErPermitert,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
+export const permittertVarighetPåArbeidsforholdetFraOgMedDato =
+  "permittertVarighetPåArbeidsforholdetFraOgMedDato";
 export const permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato =
   "permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato";
-export const permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet =
-  "permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet";
-export const permittertNårStartetDuIDenneJobben = "permittertNårStartetDuIDenneJobben";
+export const permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin =
+  "permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin";
 export const permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien =
   "permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien";
 export const permittertNårErDuPermittertFraOgMedDato = "permittertNårErDuPermittertFraOgMedDato";
@@ -22,7 +23,31 @@ export const permittertLønnsperiodeTilOgMedDato = "permittertLønnsperiodeTilOg
 
 export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
-    id: "permittertVarselMelding",
+    id: permittertVarighetPåArbeidsforholdetFraOgMedDato,
+    type: "dato",
+    label: "Når startet du i dette arbeidsforholdet?",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+  },
+  {
+    id: permittertNårErDuPermittertFraOgMedDato,
+    type: "periodeFra",
+    label: "Fra og med dato",
+    periodeLabel: "Når er du permittert?",
+    description:
+      "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen.",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+  },
+  {
+    id: permittertNårErDuPermittertTilOgMedDato,
+    type: "periodeTil",
+    label: "Til og med dato",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+  },
+  {
+    id: "permittertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     description:
@@ -47,7 +72,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
     type: "envalg",
-    label: "Er dette et midlertidig arbeidsforhold med en kontraktfestet sluttdato?",
+    label: "Er du midlertidig ansatt, og har kontrakt med sluttdato?",
     options: [
       {
         value: "ja",
@@ -66,19 +91,11 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },
   {
-    id: permittertOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
+    id: permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin,
     type: "dato",
-    label: "Oppgi den kontraktsfestede sluttdatoen på dette arbeidsforholdet",
+    label: "Oppgi sluttdatoen i kontrakten din",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato] === "ja",
-  },
-  {
-    id: permittertNårStartetDuIDenneJobben,
-    type: "dato",
-    label: "Når startet du i denne jobben?",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato] === "ja" ||
-      svar[permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato] === "nei",
   },
   {
     id: permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
@@ -98,23 +115,6 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },
   {
-    id: permittertNårErDuPermittertFraOgMedDato,
-    type: "periodeFra",
-    label: "Fra og med dato",
-    periodeLabel: "Når du er permittert?",
-    description:
-      "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
-  },
-  {
-    id: permittertNårErDuPermittertTilOgMedDato,
-    type: "periodeTil",
-    label: "Til og med dato",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
-  },
-  {
     id: permittertHvorMangeProsentErDuPermittert,
     type: "tall",
     label: "Hvor mange prosent er du permittert?",
@@ -125,6 +125,8 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     id: permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
     type: "envalg",
     label: "Vet du når lønnspliktperioden til arbeidsgiveren din er?",
+    description:
+      "Du finner informasjon om arbeidsgivers lønnspliktperiode i permitteringsvarselet. Fra-datoen er den første dagen du ikke arbeider som normalt fordi du er permittert.",
     options: [
       {
         value: "ja",
@@ -141,7 +143,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: permittertLønnsperiodeFraOgMedDato,
     type: "periodeFra",
-    periodeLabel: "Fyll inn lønnsperioden",
+    periodeLabel: "Fyll inn lønnspliktperioden",
     label: "Fra og med dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",

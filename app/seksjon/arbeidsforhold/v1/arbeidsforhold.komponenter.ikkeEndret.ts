@@ -5,12 +5,28 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
+export const ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato =
+  "ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato";
 export const ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet =
   "ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet";
 export const ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet =
   "ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet";
 
 export const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter: KomponentType[] = [
+  {
+    id: ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
+    type: "dato",
+    label: "Når startet du i dette arbeidsforholdet?",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
+  },
+  {
+    id: "ikkeEndretArbeidsavtaleDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Arbeidsavtale",
+    visHvis: (svar: ArbeidsforholdModalSvar) =>
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
+  },
   {
     id: ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
     type: "envalg",
