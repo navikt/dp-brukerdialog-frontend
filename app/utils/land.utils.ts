@@ -27,6 +27,39 @@ export function finnLandnavnMedLocale(code: string, locale?: string) {
 
 export const OFTE_VALGTE_LANDKODER = ["NOR", "SWE", "POL"];
 
+export const EØS_LANDKODER = [
+  "AUT",
+  "HUN",
+  "DEU",
+  "CZE",
+  "SWE",
+  "CHE",
+  "ESP",
+  "SVN",
+  "SVK",
+  "ROU",
+  "PRT",
+  "POL",
+  "NLD",
+  "MLT",
+  "LUX",
+  "LTU",
+  "LIE",
+  "LVA",
+  "CYP",
+  "HRV",
+  "ITA",
+  "ISL",
+  "IRL",
+  "GRC",
+  "FRA",
+  "FIN",
+  "EST",
+  "DNK",
+  "BGR",
+  "BEL",
+];
+
 export const FLERE_LANDKODER = [
   "AFG",
   "ALA",
@@ -275,6 +308,11 @@ export const FLERE_LANDKODER = [
   "JEY",
   "IMN",
 ];
+
+export const EØS_LAND = EØS_LANDKODER.map((landkode) => ({
+  value: landkode,
+  label: finnLandnavnMedLocale(landkode),
+}));
 
 export const OFTE_VALGTE_LAND = OFTE_VALGTE_LANDKODER.map((landkode) => ({
   value: landkode,
