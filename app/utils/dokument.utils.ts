@@ -40,10 +40,8 @@ export async function lastnedDokument(filsti?: string, tittel?: string) {
   });
 
   if (!response.ok) {
-    throw new Response("Klarte ikke laste ned dokument", {
-      status: response.status,
-      statusText: response.statusText,
-    });
+    console.log("Noe gikk galt ved nedlasting av dokument");
+    return;
   }
 
   const blob = await response.blob();
