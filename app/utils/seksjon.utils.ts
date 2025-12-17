@@ -1,6 +1,6 @@
 import { FlervalgSpørsmål, KomponentType, SpørsmålBase } from "~/components/Komponent.types";
 import { formaterDatoSvar } from "./formatering.utils";
-import { FLERE_LAND, OFTE_VALGTE_LAND } from "./land.utils";
+import { EØS_LAND, FLERE_LAND, OFTE_VALGTE_LAND } from "./land.utils";
 
 export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: string, svar: string) {
   return (
@@ -40,11 +40,18 @@ type Option = { value: string; label: string };
 function getLabel(spørsmål: KomponentType): string | undefined {
   return spørsmål?.label && (spørsmål as SpørsmålBase).optional
     ? `${spørsmål.label} (valgfritt)`
-    : spørsmål.label
- }
+    : spørsmål.label;
+}
 
 function getOptions(spørsmål: KomponentType): Option[] {
-  if (spørsmål.type == "land") {
+  if (spørsmål.type === "land") {
+    if (spørsmål.erEøsLand) {
+      return EØS_LAND.map((land) => ({
+        value: land.value,
+        label: land.label,
+      }));
+    }
+
     return OFTE_VALGTE_LAND.concat(FLERE_LAND).map((land) => ({
       value: land.value,
       label: land.label,
