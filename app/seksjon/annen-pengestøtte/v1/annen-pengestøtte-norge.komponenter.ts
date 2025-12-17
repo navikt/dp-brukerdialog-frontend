@@ -75,7 +75,7 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
     ],
   },
   {
-    id: "hvilkePengestøtteFraAndreEnnNavHarDuMottattEllerSøktOmVarselMelding",
+    id: "hvilkePengestøtteFraAndreEnnNavHarDuMottattEllerSøktOmInformasjonskort",
     type: "dokumentasjonskravindikator",
     label: "Dokumentasjon på hvem som utbetaler pengestøtten, og hvilken periode den gjelder for",
   },

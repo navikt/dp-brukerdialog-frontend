@@ -21,7 +21,7 @@ import {
   jegErPermitert,
   jegHarFåttAvskjed,
   jegHarSagtOppSelv,
-  kontraktenErUgått,
+  kontraktenErUtgått,
   navnetPåBedriften,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
@@ -30,7 +30,7 @@ import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/se
 import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalKontraktenErUgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUgått";
+import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
@@ -56,7 +56,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
     .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
     .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-    .concat(arbeidsforholdModalKontraktenErUgåttKomponenter)
+    .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
     .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
     .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
     .concat(arbeidsforholdModalJegErPermittertKomponenter)
@@ -198,7 +198,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           },
         ];
 
-      case kontraktenErUgått:
+      case kontraktenErUtgått:
         return [
           {
             id: crypto.randomUUID(),

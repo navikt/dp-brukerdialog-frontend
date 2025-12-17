@@ -137,7 +137,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
   {
-    id: "kanIkkeJobbeHeltidOgDeltidJegErPermitertVarselmelding",
+    id: "kanIkkeJobbeHeltidOgDeltidJegErPermitertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     label: "Permittert",
@@ -151,7 +151,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       ) || false,
   },
   {
-    id: "kanIkkeJobbeHeltidOgDeltidHarFylt60Varselmelding",
+    id: "kanIkkeJobbeHeltidOgDeltidHarFylt60Informasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     description:
@@ -162,7 +162,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       ) || false,
   },
   {
-    id: "kanIkkeJobbeHeltidOgDeltidAnnenSituasjonVarselmelding",
+    id: "kanIkkeJobbeHeltidOgDeltidAnnenSituasjonInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
     description:
@@ -276,7 +276,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeIHeleNorge] === "nei",
   },
   {
-    id: "kanIkkeJobbeIHeleNorgeJegErPermitertVarselmelding",
+    id: "kanIkkeJobbeIHeleNorgeJegErPermitertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     label: "Permittert",
@@ -290,7 +290,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       ) || false,
   },
   {
-    id: "kanIkkeJobbeIHeleNorgeHarFylt60Varselmelding",
+    id: "kanIkkeJobbeIHeleNorgeHarFylt60Informasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     description:
@@ -301,7 +301,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       ) || false,
   },
   {
-    id: "kanIkkeJobbeIHeleNorgeAnnenSituasjonVarselmelding",
+    id: "kanIkkeJobbeIHeleNorgeAnnenSituasjonInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
     description:
@@ -376,7 +376,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     ],
   },
   {
-    id: "erDuVilligTilÅBytteYrkeEllerGåNedILønnVarselmelding",
+    id: "erDuVilligTilÅBytteYrkeEllerGåNedILønnInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
     description:
