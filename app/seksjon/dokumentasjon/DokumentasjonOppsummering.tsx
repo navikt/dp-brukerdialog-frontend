@@ -6,6 +6,7 @@ import {
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { lastnedDokument } from "~/utils/dokument.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
@@ -22,46 +23,6 @@ export default function DokumentasjonOppsummering({
   const alleDokumentasjonskrav = dokumentasjonskrav.flatMap((alleDokumentasjonskravForSeksjon) => {
     return JSON.parse(alleDokumentasjonskravForSeksjon) as Dokumentasjonskrav;
   });
-
-  async function lastnedDokument(filsti?: string, dokumentTittel?: string) {
-    if (!filsti) {
-      console.log("Mangler filsti tilgjengelig for nedlasting");
-      return;
-    }
-
-    if (!dokumentTittel) {
-      console.log("Mangler dokumenttittel tilgjengelig for nedlasting");
-      return;
-    }
-
-    const url = "/api/dokumentasjonskrav/lastned";
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ filsti }),
-    });
-
-    if (!response.ok) {
-      throw new Response(`Klarte ikke laste ned bundlet dokument ${url}`, {
-        status: response.status,
-        statusText: response.statusText,
-      });
-    }
-
-    const blob = await response.blob();
-    const blobUrl = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = blobUrl;
-    a.download = `${dokumentTittel}.pdf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(blobUrl);
-  }
 
   return (
     <FormSummary>
@@ -89,7 +50,7 @@ export default function DokumentasjonOppsummering({
                   variant="tertiary"
                   className="mt-4"
                   size="small"
-                  icon={<DownloadIcon fontSize="1.5rem" aria-hidden />}
+                  icon={<DownloadIcon />}
                   onClick={() =>
                     lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
                   }

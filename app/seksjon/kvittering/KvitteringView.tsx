@@ -102,7 +102,7 @@ export default function KvitteringView() {
                 Dokumenter du har sendt
               </Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokummentasjonskrav={krav} />
+                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
             </>
           )}
@@ -113,7 +113,7 @@ export default function KvitteringView() {
                 Dokumenter du skal sende
               </Heading>
               {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokummentasjonskrav={krav} />
+                <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
               <HStack>
                 <Button variant="primary">Send inn dokumenter (fungerer ikke enda)</Button>
