@@ -5,7 +5,7 @@ import {
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
   hvorMangeTimerJobbetPerUkeNå,
   Næringsvirksomhet,
-  organisasjonsnummer,
+  virksomhetensNavn,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 interface IProps {
@@ -23,7 +23,7 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
-      <h3 style={{ marginTop: "0" }}>{næringsvirksomhet[organisasjonsnummer]}</h3>
+      <h3 style={{ marginTop: "0" }}>{næringsvirksomhet[virksomhetensNavn]}</h3>
       <BodyShort spacing>
         {næringsvirksomhet[hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]} timer arbeidstid
         pr. uke før reduksjon
