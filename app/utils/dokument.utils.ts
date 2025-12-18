@@ -21,12 +21,12 @@ export function hentTillatteFiltyperTekst() {
 
 export async function lastnedDokument(filsti?: string, tittel?: string) {
   if (!filsti) {
-    console.log("Mangler filsti tilgjengelig for nedlasting");
+    console.error("Mangler filsti tilgjengelig for nedlasting");
     return;
   }
 
   if (!tittel) {
-    console.log("Mangler tittel for nedlasting");
+    console.error("Mangler tittel for nedlasting");
     return;
   }
 
@@ -40,7 +40,7 @@ export async function lastnedDokument(filsti?: string, tittel?: string) {
   });
 
   if (!response.ok) {
-    console.log("Noe gikk galt ved nedlasting av dokument");
+    console.error("Noe gikk galt ved nedlasting av dokument");
     return;
   }
 
