@@ -202,6 +202,15 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </VStack>
         );
 
+      case DokumentasjonskravType.ArbeidsforholdRotasjon:
+        return (
+          <BodyLong>
+            Du har krysset av for at du jobbet rotasjon. Du må dokumentere hvilken rotasjonsordning
+            du har hatt. Den siste rotasjonen må dokumenteres med timeliste eller lignende, som
+            viser når du var på jobb og når du hadde avspasering.
+          </BodyLong>
+        );
+
       case DokumentasjonskravType.Tjenestebevis:
         return (
           <BodyLong>
