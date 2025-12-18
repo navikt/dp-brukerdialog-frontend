@@ -146,7 +146,7 @@ export function FilOpplasting({
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      setDokumentkravFiler((prev) => prev.filter((f) => !(f.filnavn === fil.filnavn && f.feil)));
+      setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
       return;
     }
 
@@ -174,17 +174,17 @@ export function FilOpplasting({
   function hentFilFeilmelding(feilType: LastOppFeil) {
     switch (feilType) {
       case LastOppFeil.FIL_FOR_STOR:
-        return `Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
+        return `Kunne ikke laste opp filen. Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
       case LastOppFeil.UGYLDIG_FORMAT:
-        return "Ugyldig filformat";
+        return "Kunne ikke laste opp filen. Ugyldig filformat";
       case LastOppFeil.TEKNISK_FEIL:
-        return "Det oppstod en teknisk feil";
+        return "Kunne ikke laste opp filen. Det oppstod en teknisk feil";
       case LastOppFeil.DUPLIKAT_FIL:
-        return "Filene er duplikater";
+        return "Kunne ikke laste opp filen. Filen er duplikat";
       case LastOppFeil.UKJENT_FEIL:
-        return "Det oppstod en ukjent feil";
+        return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
       default:
-        return "Det oppstod en ukjent feil";
+        return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
     }
   }
 
