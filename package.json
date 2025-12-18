@@ -33,7 +33,7 @@
     "@remix-run/form-data-parser": "0.14.0",
     "@rvf/react-router": "8.1.0",
     "@rvf/zod": "7.0.4",
-    "@sanity/client": "7.13.1",
+    "@sanity/client": "7.13.2",
     "classnames": "2.5.1",
     "date-fns": "4.1.0",
     "html-react-parser": "5.2.10",
