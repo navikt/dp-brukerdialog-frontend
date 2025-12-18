@@ -180,7 +180,7 @@ export function FilOpplasting({
       case LastOppFeil.TEKNISK_FEIL:
         return "Kunne ikke laste opp filen. Det oppstod en teknisk feil";
       case LastOppFeil.DUPLIKAT_FIL:
-        return "Kunne ikke laste opp filen. Filen er duplikat.";
+        return "Kunne ikke laste opp filen. Filen er duplikat";
       case LastOppFeil.UKJENT_FEIL:
         return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
       default:
