@@ -18,3 +18,40 @@ export function hentTillatteFiltyperTekst() {
   }
   return typer[0];
 }
+
+export async function lastnedDokument(filsti?: string, tittel?: string) {
+  if (!filsti) {
+    console.error("Mangler filsti tilgjengelig for nedlasting");
+    return;
+  }
+
+  if (!tittel) {
+    console.error("Mangler tittel for nedlasting");
+    return;
+  }
+
+  const url = "/api/dokumentasjonskrav/lastned";
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ filsti }),
+  });
+
+  if (!response.ok) {
+    console.error("Noe gikk galt ved nedlasting av dokument");
+    return;
+  }
+
+  const blob = await response.blob();
+  const blobUrl = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = blobUrl;
+  a.download = `${tittel}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(blobUrl);
+}

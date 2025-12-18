@@ -1,11 +1,13 @@
-import { FormSummary } from "@navikt/ds-react";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
-import { finnOptionLabel } from "~/utils/seksjon.utils";
+import { DownloadIcon } from "@navikt/aksel-icons";
+import { Button, FormSummary } from "@navikt/ds-react";
 import {
   dokumentasjonskravKomponenter,
   velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { lastnedDokument } from "~/utils/dokument.utils";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
   søknadId: string | undefined;
@@ -43,8 +45,19 @@ export default function DokumentasjonOppsummering({
               {dokumentasjonskrav.begrunnelse && (
                 <FormSummary.Value>{dokumentasjonskrav.begrunnelse}</FormSummary.Value>
               )}
-              {dokumentasjonskrav.bundle &&
-                "Se opplastet dokument << TODO dette skal være en link så bruker får lastet ned dokumentet"}
+              {dokumentasjonskrav.bundle && (
+                <Button
+                  variant="tertiary"
+                  className="mt-4"
+                  size="small"
+                  icon={<DownloadIcon />}
+                  onClick={() =>
+                    lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
+                  }
+                >
+                  Last ned opplastet dokument
+                </Button>
+              )}
             </FormSummary.Answer>
           );
         })}
