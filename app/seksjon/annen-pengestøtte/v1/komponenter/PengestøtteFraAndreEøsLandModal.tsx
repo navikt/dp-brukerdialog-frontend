@@ -154,11 +154,6 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     }
   }, [form.value(mottarDuFortsattPengestøttenFraAndreEøsLand)]);
 
-  const modalTittel =
-    pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil
-      ? "Legg til pengestøtte fra andre EØS-land"
-      : "Rediger pengestøtte fra andre EØS-land";
-
   return (
     <Modal
       ref={ref}
@@ -168,7 +163,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">{modalTittel}</HStack>
+          <HStack gap="2">Pengestøtte fra andre EØS-land</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>

@@ -6,7 +6,7 @@ import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   hvemUtbetalerPengestøtten,
-  hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
+  hvilkenPengestøtteFraAndreEnnNavMottarDu,
   pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
@@ -54,8 +54,8 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
 
       const støtteType = finnOptionLabel(
         pengestøtteFraNorgeModalKomponenter,
-        hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-        enPengestøtteFraNorge[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
+        hvilkenPengestøtteFraAndreEnnNavMottarDu,
+        enPengestøtteFraNorge[hvilkenPengestøtteFraAndreEnnNavMottarDu]!
       );
 
       const hvemUtbetalerStøtten =
@@ -97,7 +97,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
       spørsmålId: spørsmålId,
       skjemakode: "K1",
       tittel: dokumentasjonskravTittel,
-      type: DokumentasjonskravType.AnnenPengestøtteFraNorge,
+      type: DokumentasjonskravType.AnnenPengestøtteFraNorgePensjonFraAndre,
     };
 
     const nyPengestøtteFraNorge: PengestøtteFraNorge = {
@@ -138,11 +138,6 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     setPengestøtteFraNorge(oppdatertPengestøtteFraNorge);
   }
 
-  const modalTittel =
-    pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil
-      ? "Legg til pengestøtte fra Norge"
-      : "Rediger pengestøtte fra Norge";
-
   return (
     <Modal
       ref={ref}
@@ -152,7 +147,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">{modalTittel}</HStack>
+          <HStack gap="2">Pengestøtte fra Norge</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>

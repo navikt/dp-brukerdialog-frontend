@@ -2,11 +2,17 @@ import React, { createContext, useContext, useState } from "react";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { PengestøtteFraAndreEøsLand } from "./komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorge } from "./komponenter/PengestøtteFraNorgeModal";
+import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",
   Rediger = "rediger",
 }
+
+type PengestøtteFraTidligereArbeidsgiverModalData = {
+  operasjon: ModalOperasjon;
+  pengestøtteFraTidligereArbeidsgiver?: PengestøtteFraTidligereArbeidsgiver;
+};
 
 type PengestøtteFraAndreEøsLandModalData = {
   operasjon: ModalOperasjon;
@@ -19,6 +25,14 @@ type PengestøtteFraNorgeModalData = {
 };
 
 type AnnenPengestøtteContextType = {
+  pengestøtteFraTidligereArbeidsgiver: PengestøtteFraTidligereArbeidsgiver[];
+  setPengestøtteFraTidligereArbeidsgiver: (
+    pengestøtteFraTidligereArbeidsgiver: PengestøtteFraTidligereArbeidsgiver[]
+  ) => void;
+  pengestøtteFraTidligereArbeidsgiverModalData?: PengestøtteFraTidligereArbeidsgiverModalData;
+  setPengestøtteFraTidligereArbeidsgiverModalData: (
+    pengestøtteFraTidligereArbeidsgiverModalData?: PengestøtteFraTidligereArbeidsgiverModalData
+  ) => void;
   pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[];
   setPengestøtteFraAndreEøsLand: (pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[]) => void;
   pengestøtteFraAndreEøsLandModalData?: PengestøtteFraAndreEøsLandModalData;
@@ -36,6 +50,7 @@ type AnnenPengestøtteContextType = {
 };
 
 type AnnenPengestøtteProps = {
+  pengestøtteFraTidligereArbeidsgiver: PengestøtteFraTidligereArbeidsgiver[];
   pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand[];
   pengestøtteFraNorge: PengestøtteFraNorge[];
   dokumentasjonskrav: Dokumentasjonskrav[];
@@ -59,11 +74,19 @@ function useAnnenPengestøtteContext() {
 }
 
 function AnnenPengestøtteProvider({
+  pengestøtteFraTidligereArbeidsgiver: pengestøtteFraTidligereArbeidsgiverProps,
   pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
   pengestøtteFraNorge: pengestøtteFraNorgeProps,
   dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: AnnenPengestøtteProps) {
+  const [pengestøtteFraTidligereArbeidsgiver, setPengestøtteFraTidligereArbeidsgiver] = useState(
+    pengestøtteFraTidligereArbeidsgiverProps
+  );
+  const [
+    pengestøtteFraTidligereArbeidsgiverModalData,
+    setPengestøtteFraTidligereArbeidsgiverModalData,
+  ] = useState<PengestøtteFraNorgeModalData | undefined>(undefined);
   const [pengestøtteFraAndreEøsLand, setPengestøtteFraAndreEøsLand] = useState(
     pengestøtteFraAndreEøsLandProps
   );
@@ -80,6 +103,10 @@ function AnnenPengestøtteProvider({
   return (
     <AnnenPengestøtteContext.Provider
       value={{
+        pengestøtteFraTidligereArbeidsgiver,
+        setPengestøtteFraTidligereArbeidsgiver,
+        pengestøtteFraTidligereArbeidsgiverModalData,
+        setPengestøtteFraTidligereArbeidsgiverModalData,
         pengestøtteFraAndreEøsLand,
         setPengestøtteFraAndreEøsLand,
         pengestøtteFraAndreEøsLandModalData,

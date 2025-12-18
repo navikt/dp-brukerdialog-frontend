@@ -11,15 +11,12 @@ import {
   pleiepengerOmsorgspengerEllerOpplæringspenger,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  etterlønnFraArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+  dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
   hvemUtbetalerPengestøtten,
-  hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
-  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
-  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
-  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+  hvilkenPengestøtteFraAndreEnnNavMottarDu,
+  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
+  mottarDuPengestøtteFraAndreEnnNav,
+  pensjonFraAndreEnnNav,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 
 export const mockAnnenPengestøtte: AnnenPengestøtteResponse = {
@@ -41,21 +38,16 @@ export const mockAnnenPengestøtte: AnnenPengestøtteResponse = {
       [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]: "2024-03-01",
     },
   ],
-  [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: "ja",
+  [mottarDuPengestøtteFraAndreEnnNav]: "ja",
   pengestøtteFraNorge: [
     {
-      [hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]:
-        pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
-      [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed]: "2027-01-01",
-      [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]: "2027-01-05",
+      [hvilkenPengestøtteFraAndreEnnNavMottarDu]:
+        dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
     },
     {
-      [hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]: etterlønnFraArbeidsgiver,
+      [hvilkenPengestøtteFraAndreEnnNavMottarDu]: pensjonFraAndreEnnNav,
       [hvemUtbetalerPengestøtten]: "Tant og Fjas AS",
-      [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed]: "2027-01-01",
-      [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]: "2027-01-05",
     },
   ],
-  [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: "ja",
-  [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: "En mekanisk okse og en sjokoladefontene.",
+  [mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver]: "ja",
 };
