@@ -95,8 +95,8 @@ export function ReellArbeidssøkerViewV1() {
         seksjonId: "reell-arbeidssoker",
         spørsmålId: kanDuTaAlleTyperArbeid,
         skjemakode: "T9",
-        tittel: "Bekreftelse fra lege eller annen behandler",
-        type: DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker,
+        tittel: "Bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid",
+        type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeTaAlleTyperArbeid,
       };
 
       return [dokumentasjonskrav];

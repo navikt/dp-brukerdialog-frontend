@@ -249,17 +249,15 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </BodyLong>
         );
 
-      case DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker:
+      case DokumentasjonskravType.ReellArbeidssøkerKanIkkeTaAlleTyperArbeid:
         return (
           <>
             <BodyLong>
-              Du har krysset av for at du ikke har mulighet til å ta arbeid i hele Norge. Dette må
-              du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det
-              er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du
-              dokumentere dette.
+              Du har krysset av for at du ikke har mulighet til å ta alle typer arbeid. Dette må du
+              dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.
             </BodyLong>
             <BodyLong>
-              Dokumentasjonen må inneholde begrunnelse for at du ikke kan jobbe i hele Norge.
+              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid.
             </BodyLong>
           </>
         );
