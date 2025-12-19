@@ -138,6 +138,9 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     setPengestøtteFraNorge(oppdatertPengestøtteFraNorge);
   }
 
+  const modalOperasjon =
+    pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+
   return (
     <Modal
       ref={ref}
@@ -147,7 +150,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">Pengestøtte fra Norge</HStack>
+          <HStack gap="2">{modalOperasjon} pengestøtte fra Norge</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>

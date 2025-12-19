@@ -66,7 +66,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
 
       const land = finnLandnavnMedLocale(
         skjemaData[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]!
-      ).toUpperCase()
+      ).toUpperCase();
 
       const dokumentasjonskravTittel = `Pengestøtte fra andre EØS-land - ${støtteType} (${land})  `;
 
@@ -154,6 +154,11 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     }
   }, [form.value(mottarDuFortsattPengestøttenFraAndreEøsLand)]);
 
+  const modalOperasjon =
+    pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil
+      ? "Legg til"
+      : "Rediger";
+
   return (
     <Modal
       ref={ref}
@@ -163,7 +168,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">Pengestøtte fra andre EØS-land</HStack>
+          <HStack gap="2">{modalOperasjon} pengestøtte fra andre EØS-land</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>
