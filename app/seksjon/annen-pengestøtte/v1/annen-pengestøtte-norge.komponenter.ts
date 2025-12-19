@@ -1,139 +1,137 @@
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 
-export const mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav =
-  "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav";
-export const hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm =
-  "hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm";
+export const mottarDuPengestøtteFraAndreEnnNav = "mottarDuPengestøtteFraAndreEnnNav";
+export const hvilkenPengestøtteFraAndreEnnNavMottarDu = "hvilkenPengestøtteFraAndreEnnNavMottarDu";
 export const pensjonFraAndreEnnNav = "pensjonFraAndreEnnNav";
-export const pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere =
-  "pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere";
-export const etterlønnFraArbeidsgiver = "etterlønnFraArbeidsgiver";
+export const dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere =
+  "dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere";
 export const hvemUtbetalerPengestøtten = "hvemUtbetalerPengestøtten";
-export const iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed =
-  "iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed";
-export const iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed =
-  "iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed";
-export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver =
-  "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver";
-export const skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver =
-  "skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver";
+export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed =
+  "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed";
+export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed =
+  "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed";
+export const mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver =
+  "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver";
 
 export type PengestøtteFraNorgeModalSvar = {
-  [hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]?:
+  [hvilkenPengestøtteFraAndreEnnNavMottarDu]?:
     | typeof pensjonFraAndreEnnNav
-    | typeof pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere
-    | typeof etterlønnFraArbeidsgiver;
+    | typeof dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere;
   [hvemUtbetalerPengestøtten]?: string;
-  [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed]?: string;
-  [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]?: string;
+  [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed]?: string;
+  [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed]?: string;
 };
 
 export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
   {
-    id: mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+    id: mottarDuPengestøtteFraAndreEnnNav,
     type: "envalg",
-    label: "Mottar du eller har du søkt om pengestøtte fra andre enn Nav?",
+    label: "Mottar du pengestøtte fra andre enn Nav?",
     description:
-      "<ul><li>Pensjon fra andre enn NAV</li><li>Etterlønn</li><li>Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)</li></ul>",
+      "<p><ul>" +
+      "<li>Pensjon fra andre enn Nav</li>" +
+      "<li>Dagpenger for fiskere eller garantilott fra Garantikassen for fiskere (GFF)</li>" +
+      "</ul></p>",
     options: [
       { value: "ja", label: "Ja" },
       { value: "nei", label: "Nei" },
     ],
   },
   {
-    id: "mottarEllerHarSøktOmPengestøtteFraAndreEnnNavLesMer",
+    id: "mottarDuPengestøtteFraAndreEnnNavLesMer",
     type: "lesMer",
     label: "Grunnen til at vi spør om dette",
     description:
-      "På grunnlag av en sømløs tidshorisont tas det høyde for relasjonene i tillegg til forholdene.",
+      "Hvis du mottar pengestøtte fra andre enn Nav, kan det ha betydning for retten din til dagpenger.",
   },
   {
-    id: "mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNavForklarendeTekst",
+    id: "mottarDuPengestøtteFraAndreEnnNavForklarendeTekst",
     type: "forklarendeTekst",
     description:
       "<strong>Dine pengestøtter fra Norge</strong><br />" +
-      "Du må legge til alle pengestøtter du mottar eller har søkt om som ikke er fra Nav.",
-    visHvis: (svar: AnnenPengestøtteSvar) =>
-      svar[mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav] === "ja",
+      "Du må legge til alle pengestøttene du mottar som som ikke er fra Nav.",
+    visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuPengestøtteFraAndreEnnNav] === "ja",
   },
 ];
 
 export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
   {
-    id: hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
+    id: hvilkenPengestøtteFraAndreEnnNavMottarDu,
     type: "envalg",
-    label: "Hvilke pengestøtte fra andre enn Nav har du mottatt eller søkt om?",
+    label: "Hvilken pengestøtte fra andre enn Nav mottar du?",
     options: [
       { value: pensjonFraAndreEnnNav, label: "Pensjon fra andre enn Nav" },
-      { value: etterlønnFraArbeidsgiver, label: "Etterlønn fra arbeidsgiver" },
       {
-        value: pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
+        value: dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
         label:
-          "Pengestøtte under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)",
+          "Dagpenger under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)",
       },
     ],
   },
   {
-    id: "hvilkePengestøtteFraAndreEnnNavHarDuMottattEllerSøktOmInformasjonskort",
+    id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",
+    type: "informasjonskort",
+    variant: "informasjon",
+    label: "Viktig informasjon",
+    description:
+      "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar.",
+  },
+  {
+    id: "hvilkePengestøtteFraAndreEnnNavMottarDuPensjonFraAndreEnnNavDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon på hvem som utbetaler pengestøtten, og hvilken periode den gjelder for",
+    label: "Dokumentasjon av pensjon fra andre enn Nav",
+    visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
+      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === pensjonFraAndreEnnNav,
+  },
+  {
+    id: "hvilkePengestøtteFraAndreEnnNavMottarDuPengestøtteFraGffDokumentasjonskravindikator",
+    type: "dokumentasjonskravindikator",
+    label: "Dokumentasjon av pengestøtte fra Garantikassen for fiskere",
+    visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
+      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] ===
+      dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
   },
   {
     id: hvemUtbetalerPengestøtten,
     type: "kortTekst",
     label: "Hvem utbetaler pengestøtten?",
     visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
-      svar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm] === "pensjonFraAndreEnnNav" ||
-      svar[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm] === "etterlønnFraArbeidsgiver",
+      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === "pensjonFraAndreEnnNav",
   },
   {
-    id: iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
+    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed,
     type: "periodeFra",
     periodeLabel: "I hvilken periode har du mottatt eller søkt om pengestøtten?",
     label: "Fra og med",
   },
   {
-    id: iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
+    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed,
     type: "periodeTil",
     label: "Til og med",
+    description: "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
     optional: true,
   },
 ];
 
-export const fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] =
-  [
-    {
-      id: fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-      type: "envalg",
-      label:
-        "Får du eller kommer du til å få lønn eller andre økonomiske goder fra tidligere arbeidsgiver?",
-      description:
-        "Du må gi oss beskjed hvis du får lønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om feriepenger.",
-      options: [
-        { value: "ja", label: "Ja" },
-        { value: "nei", label: "Nei" },
-      ],
-    },
-    {
-      id: "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverLesMer",
-      type: "lesMer",
-      label: "Grunnen til at vi spør om dette?",
-      description:
-        "Under forutsetning av en inkluderende overveielse realiseres incitamentet for så vidt gjelder ressurssituasjonen.",
-    },
-    {
-      id: "fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverDokumentasjonskravindikator",
-      type: "dokumentasjonskravindikator",
-      label: "Avtale om økonomiske goder fra arbeidsgiver",
-      visHvis: (svar: AnnenPengestøtteSvar) =>
-        svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
-    },
-    {
-      id: skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
-      type: "kortTekst",
-      label: "Skriv inn hva du får beholde",
-      visHvis: (svar: AnnenPengestøtteSvar) =>
-        svar[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja",
-    },
-  ];
+export const mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] = [
+  {
+    id: mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
+    type: "envalg",
+    label:
+      "Mottar du andre utbetalinger eller gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
+    description:
+      "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
+    options: [
+      { value: "ja", label: "Ja" },
+      { value: "nei", label: "Nei" },
+    ],
+  },
+  {
+    id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverLesMer",
+    type: "lesMer",
+    label: "Grunnen til at vi spør om dette",
+    description:
+      "Hvis du mottar økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
+  },
+];

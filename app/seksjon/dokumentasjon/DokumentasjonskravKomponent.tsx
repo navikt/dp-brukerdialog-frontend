@@ -58,7 +58,8 @@ export enum DokumentasjonskravType {
   ReellArbeidssøkerKanIkkeJobbeHeleNorge = "ReellArbeidssøkerKanIkkeJobbeHeleNorge",
   ReellArbeidssøkerIkkeTaAlleTypeYrker = "ReellArbeidssøkerIkkeTaAlleTypeYrker",
   AnnenPengestøtteFraAndreEøsLand = "AnnenPengestøtteFraAndreEøsLand",
-  AnnenPengestøtteFraNorge = "AnnenPengestøtteFraNorge",
+  AnnenPengestøtteFraNorgePensjonFraAndre = "AnnenPengestøtteFraNorgePensjonFraAndre",
+  AnnenPengestøtteFraNorgePengestøtteFraGff = "AnnenPengestøtteFraNorgePengestøtteFraGff",
   AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder = "AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder",
 }
 

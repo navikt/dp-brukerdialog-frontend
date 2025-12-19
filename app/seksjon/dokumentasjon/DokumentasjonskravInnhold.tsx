@@ -276,8 +276,22 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand:
         return <BodyLong>Du har krysset av for at du mottar støtte fra andre EØS-land.</BodyLong>;
 
-      case DokumentasjonskravType.AnnenPengestøtteFraNorge:
-        return <BodyLong>Du har krysset av for at du mottar støtte fra Norge.</BodyLong>;
+      case DokumentasjonskravType.AnnenPengestøtteFraNorgePensjonFraAndre:
+        return (
+          <BodyLong>
+            Du har krysset av for at du mottar pensjon fra andre enn Nav. Du må legge ved dokumentasjon på
+            hvem som utbetaler pensjonen, og hvilken periode den gjelder for.
+          </BodyLong>
+        );
+
+      case DokumentasjonskravType.AnnenPengestøtteFraNorgePengestøtteFraGff:
+        return (
+          <BodyLong>
+            Du har krysset av for at du mottar dagpenger under arbeidsløshet eller garantilott fra
+            Garantikassen for fiskere (GFF). Du må legge ved dokumentasjon på hvilken periode
+            støtten gjelder for.
+          </BodyLong>
+        );
 
       default:
         console.error(`Ukjent dokumentasjonskrav type: ${type}`);

@@ -151,7 +151,7 @@ export function PersonaliaViewV1() {
                   </>
                 )}
                 {!folkeregistrertAdresse && (
-                  <>Det er ikke registert adresse på deg i Folkeregisteret.</>
+                  <>Det er ikke registert en bostedsadresse på deg i Folkeregisteret</>
                 )}
               </BodyShort>
             </div>
