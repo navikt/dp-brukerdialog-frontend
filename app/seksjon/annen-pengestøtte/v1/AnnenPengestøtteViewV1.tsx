@@ -10,8 +10,8 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
 import {
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeKomponenter,
   pengestøtteFraNorgeModalKomponenter,
@@ -35,10 +35,6 @@ import {
   PengestøtteFraNorgeModal,
 } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import {
@@ -126,14 +122,16 @@ export function AnnenPengestøtteViewV1() {
 
   useEffect(() => {
     setVisPengestøtteFraTidligereArbeidsgiverFeilmelding(
-      form.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) !== "ja" &&
+      form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) !== "ja" &&
         pengestøtteFraTidligereArbeidsgiver.length > 0
     );
-    if (form.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) === "nei") {
+    if (
+      form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) === "nei"
+    ) {
       setPengestøtteFraTidligereArbeidsgiver([]);
     }
   }, [
-    form.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver),
+    form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver),
     pengestøtteFraTidligereArbeidsgiver.length,
   ]);
 
@@ -165,8 +163,8 @@ export function AnnenPengestøtteViewV1() {
         harMottattEllerSøktOmPengestøtteFraAndreEøsLand
       ),
       pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLand,
-      [mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver]: form.value(
-        mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver
+      [mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver]: form.value(
+        mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver
       ),
       pengestøtteFraTidligereArbeidsgiver: pengestøtteFraTidligereArbeidsgiver,
       [mottarDuPengestøtteFraAndreEnnNav]: form.transient.value(mottarDuPengestøtteFraAndreEnnNav),
@@ -178,20 +176,20 @@ export function AnnenPengestøtteViewV1() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
-        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandKomponenter, form.transient.value()),
-        ...pengestøtteFraAndreEøsLand.map((enPengestøtte) =>
-          lagSeksjonPayload(pengestøtteFraAndreEøsLandModalKomponenter, enPengestøtte)
+        ...lagSeksjonPayload(
+          mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+          form.transient.value()
+        ),
+        ...pengestøtteFraTidligereArbeidsgiver.map((enPengestøtte) =>
+          lagSeksjonPayload(pengestøtteFraTidligereArbeidsgiverModalKomponenter, enPengestøtte)
         ),
         ...lagSeksjonPayload(pengestøtteFraNorgeKomponenter, form.transient.value()),
         ...pengestøtteFraNorge.map((enPengestøtte) =>
           lagSeksjonPayload(pengestøtteFraNorgeModalKomponenter, enPengestøtte)
         ),
-        ...lagSeksjonPayload(
-          mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter,
-          form.transient.value()
-        ),
-        ...pengestøtteFraTidligereArbeidsgiver.map((enPengestøtte) =>
-          lagSeksjonPayload(pengestøtteFraTidligereArbeidsgiverModalKomponenter, enPengestøtte)
+        ...lagSeksjonPayload(pengestøtteFraAndreEøsLandKomponenter, form.transient.value()),
+        ...pengestøtteFraAndreEøsLand.map((enPengestøtte) =>
+          lagSeksjonPayload(pengestøtteFraAndreEøsLandModalKomponenter, enPengestøtte)
         ),
       ],
     };
@@ -202,10 +200,15 @@ export function AnnenPengestøtteViewV1() {
   function hentDokumentasjonskrav() {
     let fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
 
-    if (form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
+    if (
+      form.transient.value(
+        mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver
+      ) === "nei"
+    ) {
       fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
         (dokumentasjonskrav) =>
-          dokumentasjonskrav.spørsmålId !== harMottattEllerSøktOmPengestøtteFraAndreEøsLand
+          dokumentasjonskrav.spørsmålId !==
+          mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver
       );
     }
 
@@ -215,31 +218,10 @@ export function AnnenPengestøtteViewV1() {
       );
     }
 
-    if (
-      form.transient.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) === "ja" &&
-      !fullstendigDokumentasjonskrav.some(
-        (dokumentasjonskrav) =>
-          dokumentasjonskrav.spørsmålId ===
-          mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver
-      )
-    ) {
-      const lønnEllerAndreØkonomiskeGoderDokumentasjonskrav: Dokumentasjonskrav = {
-        id: crypto.randomUUID(),
-        seksjonId: "annen-pengestotte",
-        spørsmålId: mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
-        skjemakode: "K1",
-        tittel: "Avtale om økonomiske goder",
-        type: DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder,
-      };
-
-      fullstendigDokumentasjonskrav.push(lønnEllerAndreØkonomiskeGoderDokumentasjonskrav);
-    } else if (
-      form.transient.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) === "nei"
-    ) {
+    if (form.transient.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "nei") {
       fullstendigDokumentasjonskrav = fullstendigDokumentasjonskrav.filter(
         (dokumentasjonskrav) =>
-          dokumentasjonskrav.spørsmålId !==
-          mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver
+          dokumentasjonskrav.spørsmålId !== harMottattEllerSøktOmPengestøtteFraAndreEøsLand
       );
     }
 
@@ -262,7 +244,7 @@ export function AnnenPengestøtteViewV1() {
     form.validate();
 
     const manglerPengestøtteFraTidligereArbeidsgiver =
-      form.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) === "ja" &&
+      form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) === "ja" &&
       pengestøtteFraTidligereArbeidsgiver.length === 0;
     const manglerPengestøtteFraAndreEøsLand =
       form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" &&
@@ -291,7 +273,8 @@ export function AnnenPengestøtteViewV1() {
     }
 
     if (
-      form.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) !== undefined &&
+      form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) !==
+        undefined &&
       form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) !== undefined &&
       form.value(mottarDuPengestøtteFraAndreEnnNav) !== undefined &&
       !manglerPengestøtteFraNorge &&
@@ -327,18 +310,21 @@ export function AnnenPengestøtteViewV1() {
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="8">
-            {mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter.map(
+            {mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter.map(
               (komponent) => render(komponent)
             )}
 
-            {form.value(mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver) === "ja" && (
+            {form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) ===
+              "ja" && (
               <VStack gap="space-16">
-                {pengestøtteFraTidligereArbeidsgiver?.map((pengestøtte: PengestøtteFraTidligereArbeidsgiver) => (
-                  <PengestøtteFraTidligereArbeidsgiverDetaljer
-                    key={pengestøtte.id}
-                    pengestøtteFraTidligereArbeidsgiver={pengestøtte}
-                  />
-                ))}
+                {pengestøtteFraTidligereArbeidsgiver?.map(
+                  (pengestøtte: PengestøtteFraTidligereArbeidsgiver) => (
+                    <PengestøtteFraTidligereArbeidsgiverDetaljer
+                      key={pengestøtte.id}
+                      pengestøtteFraTidligereArbeidsgiver={pengestøtte}
+                    />
+                  )
+                )}
                 <HStack>
                   <Button
                     type={"button"}
@@ -355,7 +341,9 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
-                  <ErrorMessage showIcon>Du må legge til utbetalinger eller økonomiske goder</ErrorMessage>
+                  <ErrorMessage showIcon>
+                    Du må legge til utbetalinger eller økonomiske goder
+                  </ErrorMessage>
                 )}
               </VStack>
             )}
@@ -458,7 +446,7 @@ export function AnnenPengestøtteViewV1() {
       {pengestøtteFraTidligereArbeidsgiverModalData && (
         <PengestøtteFraTidligereArbeidsgiverModal
           ref={pengestøtteFraTidligereArbeidsgiverModalRef}
-          spørsmålId={mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver}
+          spørsmålId={mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver}
           seksjonId="annen-pengestotte"
         />
       )}

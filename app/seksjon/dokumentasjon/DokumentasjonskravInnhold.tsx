@@ -264,38 +264,92 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </>
         );
 
-      case DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder:
+      case DokumentasjonskravType.AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver:
         return (
-          <BodyLong>
-            Du har krysset av for at du får eller kommer til å få en utbetaling eller andre
-            økonomiske goder fra arbeidsgiver. Du må sende inn sluttavtale eller annen dokumentasjon
-            som beskriver hva du får.
-          </BodyLong>
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske
+              goder fra arbeidsgiver.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
         );
 
       case DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand:
-        return <BodyLong>Du har krysset av for at du mottar støtte fra andre EØS-land.</BodyLong>;
+        return (
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet
+              EØS-land.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
 
       case DokumentasjonskravType.AnnenPengestøtteFraNorgePensjonFraAndre:
         return (
-          <BodyLong>
-            Du har krysset av for at du mottar pensjon fra andre enn Nav. Du må legge ved dokumentasjon på
-            hvem som utbetaler pensjonen, og hvilken periode den gjelder for.
-          </BodyLong>
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
         );
 
       case DokumentasjonskravType.AnnenPengestøtteFraNorgePengestøtteFraGff:
         return (
-          <BodyLong>
-            Du har krysset av for at du mottar dagpenger under arbeidsløshet eller garantilott fra
-            Garantikassen for fiskere (GFF). Du må legge ved dokumentasjon på hvilken periode
-            støtten gjelder for.
-          </BodyLong>
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar eller har søkt om pengestøtte fra Garantikassen for
+              fiskere.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
         );
 
       default:
-        console.error(`Ukjent dokumentasjonskrav type: ${type}`);
-        return <p>Ukjent dokumentasjonskrav type.</p>;
+        console.error(`Ukjent dokumentasjonskrav: ${type}`);
+        return <p>Ukjent dokumentasjonskrav.</p>;
     }
   }
 

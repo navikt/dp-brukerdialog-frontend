@@ -5,8 +5,8 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeKomponenter,
   pengestøtteFraNorgeModalKomponenter,
@@ -44,8 +44,8 @@ export default function AnnenPengestøtteOppsummeringV1({
   );
 
   const mottaLønnEllerAndreGoderFraTidligereArbeidsgiver = finnSpørsmål(
-    mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter,
-    mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver
+    mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+    mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver
   );
 
   return (
@@ -60,10 +60,10 @@ export default function AnnenPengestøtteOppsummeringV1({
           </FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={mottaLønnEllerAndreGoderFraTidligereArbeidsgiver!}
-            svar={data[mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver] ?? "Ubesvart"}
+            svar={data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] ?? "Ubesvart"}
           />
         </FormSummary.Answer>
-        {data[mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver] === "ja" &&
+        {data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja" &&
           data.pengestøtteFraTidligereArbeidsgiver?.map((pengestøtte, index) => (
             <FormSummary.Answer>
               <FormSummary.Label> {`Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver ${index + 1}`}</FormSummary.Label>
