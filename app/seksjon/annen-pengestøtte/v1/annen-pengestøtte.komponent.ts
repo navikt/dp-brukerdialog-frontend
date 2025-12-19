@@ -4,8 +4,8 @@ import {
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeKomponenter,
   PengestøtteFraNorgeModalSvar,
@@ -17,7 +17,7 @@ export const pdfGrunnlag = "pdfGrunnlag";
 export const handling = "handling";
 
 export type AnnenPengestøtteSvar = {
-  [mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver]?: "ja" | "nei";
+  [mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver]?: "ja" | "nei";
   [mottarDuPengestøtteFraAndreEnnNav]?: "ja" | "nei";
   [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]?: "ja" | "nei";
 };
@@ -29,6 +29,6 @@ export type AnnenPengestøtteResponse = AnnenPengestøtteSvar & {
 };
 
 export const annenPengestøtteKomponenter =
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter
     .concat(pengestøtteFraNorgeKomponenter)
     .concat(pengestøtteFraAndreEøsLandKomponenter);

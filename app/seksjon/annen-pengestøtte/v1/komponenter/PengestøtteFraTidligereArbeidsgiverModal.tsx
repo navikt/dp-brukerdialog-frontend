@@ -52,7 +52,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
         return;
       }
 
-      const dokumentasjonskravTittel = `Avtalen om sluttvederlag, etterlønn eller andre økonomiske goder - ${skjemaData[hvemMottarDuUtbetalingerEllerGoderFra]}  `;
+      const dokumentasjonskravTittel = `Dokumentasjon av sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver - ${skjemaData[hvemMottarDuUtbetalingerEllerGoderFra]}  `;
 
       if (pengestøtteFraTidligereArbeidsgiverModalData?.operasjon === ModalOperasjon.LeggTil) {
         leggTilPengestøtteFraTidligereArbeidsgiver(skjemaData, dokumentasjonskravTittel);
@@ -81,7 +81,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
       spørsmålId: spørsmålId,
       skjemakode: "K1",
       tittel: dokumentasjonskravTittel,
-      type: DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand,
+      type: DokumentasjonskravType.AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
     };
 
     const nyPengestøtteFraAndreEøsLand: PengestøtteFraTidligereArbeidsgiver = {

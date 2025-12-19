@@ -22,7 +22,7 @@ import {
   sykepenger,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
   mottarDuPengestøtteFraAndreEnnNav,
@@ -49,7 +49,7 @@ export const annenPengestøtteSchema = z
     [handling]: z.string().optional(),
     [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: z.enum(["ja", "nei"]).optional(),
     [mottarDuPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),
-    [mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver]: z
+    [mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver]: z
       .enum(["ja", "nei"])
       .optional(),
     versjon: z.number().optional(),

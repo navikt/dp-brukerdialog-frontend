@@ -60,7 +60,7 @@ export enum DokumentasjonskravType {
   AnnenPengestøtteFraAndreEøsLand = "AnnenPengestøtteFraAndreEøsLand",
   AnnenPengestøtteFraNorgePensjonFraAndre = "AnnenPengestøtteFraNorgePensjonFraAndre",
   AnnenPengestøtteFraNorgePengestøtteFraGff = "AnnenPengestøtteFraNorgePengestøtteFraGff",
-  AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder = "AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder",
+  AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver = "AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver",
 }
 
 export type GyldigDokumentkravSvar =

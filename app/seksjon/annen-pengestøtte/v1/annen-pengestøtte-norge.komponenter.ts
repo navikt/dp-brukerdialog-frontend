@@ -11,8 +11,8 @@ export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed =
   "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed";
 export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed =
   "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed";
-export const mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver =
-  "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver";
+export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver =
+  "mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver";
 
 export type PengestøtteFraNorgeModalSvar = {
   [hvilkenPengestøtteFraAndreEnnNavMottarDu]?:
@@ -114,12 +114,12 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
   },
 ];
 
-export const mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] = [
+export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] = [
   {
-    id: mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
+    id: mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
     type: "envalg",
     label:
-      "Mottar du andre utbetalinger eller gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
+      "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
     description:
       "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
     options: [
@@ -140,6 +140,6 @@ export const mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponen
     description:
       "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />" +
       "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver.",
-    visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver] === "ja",
+    visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja",
   },
 ];

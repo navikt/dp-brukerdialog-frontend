@@ -14,7 +14,7 @@ import {
   dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
-  mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   mottarDuPengestøtteFraAndreEnnNav,
   pensjonFraAndreEnnNav,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
@@ -49,5 +49,5 @@ export const mockAnnenPengestøtte: AnnenPengestøtteResponse = {
       [hvemUtbetalerPengestøtten]: "Tant og Fjas AS",
     },
   ],
-  [mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver]: "ja",
+  [mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver]: "ja",
 };
