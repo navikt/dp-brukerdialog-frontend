@@ -206,7 +206,7 @@ export function BarnetilleggViewV1() {
                 setModalData({ operasjon: ModalOperasjon.LeggTil });
               }}
             >
-              Legg til barn
+              Legg til barn du forsørger
             </Button>
           </HStack>
         )}
