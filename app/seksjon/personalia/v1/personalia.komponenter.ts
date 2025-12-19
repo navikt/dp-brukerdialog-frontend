@@ -116,7 +116,7 @@ export const personaliaSpørsmål: KomponentType[] = [
     variant: "advarsel",
     label: "Vi har registrert at du er over 67 år",
     description:
-      "Du har ikke rett på dagpenger fordi du er over 67 år. Hvis du ikke har søkt om alderspensjon, kan du søke om <a href='https://www.nav.no/soknader'>alderspensjon her</a>.",
+      '<p>Du har ikke rett til dagpenger lenger enn ut måneden du fyller 67 år. Hvis du ikke har søkt om alderspensjon, kan du <a href="https://www.nav.no/soknader#alderspensjon">søke om alderspensjon her</a>.</p>',
     visHvis: (svar: PersonaliaSvar) => Number(svar[alderFraPdl]) >= 67,
   },
   {
