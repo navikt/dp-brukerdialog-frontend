@@ -2,7 +2,6 @@ import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
-import { z } from "zod";
 import { Komponent } from "~/components/Komponent";
 import {
   ModalOperasjon,
@@ -118,8 +117,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       <PersonPencilIcon aria-hidden />
     );
 
-  const modalTittel =
-    modalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til barn" : "Rediger barn";
+  const modalOperasjon = modalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
 
   return (
     <Modal
@@ -132,7 +130,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
         <Heading level="1" size="medium" id="modal-heading">
           <HStack gap="2">
             {modalIkon}
-            {modalTittel}
+            {modalOperasjon} barn du forsørger
           </HStack>
         </Heading>
       </Modal.Header>

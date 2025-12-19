@@ -53,6 +53,9 @@ export function GårdsbrukModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const modalOperasjon =
+    gårdsbrukModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+
   return (
     <Modal
       ref={ref}
@@ -62,7 +65,7 @@ export function GårdsbrukModal({ ref }: IProps) {
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">Legg til gårdsbruk</HStack>
+          <HStack gap="2">{modalOperasjon} gårdsbruk</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>

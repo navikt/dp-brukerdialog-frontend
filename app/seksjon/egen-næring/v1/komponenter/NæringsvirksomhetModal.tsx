@@ -58,6 +58,9 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const modalOperasjon =
+    næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+
   return (
     <Modal
       ref={ref}
@@ -67,7 +70,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">Legg til næringsvirksomhet</HStack>
+          <HStack gap="2">{modalOperasjon} næringsvirksomhet</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>
