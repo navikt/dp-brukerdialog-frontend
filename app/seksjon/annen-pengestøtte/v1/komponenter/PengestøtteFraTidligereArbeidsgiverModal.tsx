@@ -142,7 +142,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     >
       <Modal.Header>
         <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">Utbetalinger eller goder fra tidligere arbeidsgiver</HStack>
+          <HStack gap="2">Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver</HStack>
         </Heading>
       </Modal.Header>
       <Modal.Body>

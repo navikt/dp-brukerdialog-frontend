@@ -132,6 +132,14 @@ export const mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverKomponen
     type: "lesMer",
     label: "Grunnen til at vi spør om dette",
     description:
-      "Hvis du mottar økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
+      "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
+  },
+  {
+    id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />" +
+      "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver.",
+    visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver] === "ja",
   },
 ];

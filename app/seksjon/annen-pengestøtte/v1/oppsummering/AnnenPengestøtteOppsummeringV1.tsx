@@ -66,7 +66,7 @@ export default function AnnenPengestøtteOppsummeringV1({
         {data[mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiver] === "ja" &&
           data.pengestøtteFraTidligereArbeidsgiver?.map((pengestøtte, index) => (
             <FormSummary.Answer>
-              <FormSummary.Label> {`Utbetalinger eller goder fra tidligere arbeidsgiver ${index + 1}`}</FormSummary.Label>
+              <FormSummary.Label> {`Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver ${index + 1}`}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
