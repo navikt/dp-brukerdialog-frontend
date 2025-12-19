@@ -36,7 +36,7 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
     id: "jegEroOppsagtInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Hvis du har blitt sagt opp av arbeidsgiveren din, må vi vite når og hvorfor.</p>" +
       "<p>Hvis du selv var skyld i oppsigelsen, vil du ikke få utbetalt dagpenger de 18 første ukene av dagpengeperioden din. Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
@@ -97,7 +97,7 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
     id: "oppsagtHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorgeInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.</p>" +
       "<p>Det er viktig at du ikke venter med å søke om dagpenger.</p>" +

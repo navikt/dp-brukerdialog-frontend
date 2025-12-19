@@ -92,7 +92,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar.",
   },

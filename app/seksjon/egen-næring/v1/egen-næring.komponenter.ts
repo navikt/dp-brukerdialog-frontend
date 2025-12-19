@@ -85,7 +85,7 @@ export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
     id: "driverDuEgenNæringsvirksomhetInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</p>",
     visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
@@ -106,7 +106,7 @@ export const egenNæringEgetGårdsbrukKomponenter: KomponentType[] = [
     id: "driverDuEgetGårdsbrukInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Selv om du driver et eget gårdsbruk må du være villig til å ta annet arbeid.</p>" +
       "<p>Hvis du jobber mer enn 50 prosent av tidligere arbeidstid har du ikke rett til dagpenger.</p>" +
