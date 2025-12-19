@@ -31,7 +31,7 @@ export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] =
     id: "jegHarFåttAvskjedInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Hvis du har fått avskjed fra arbeidsgiver, må vi vite hvorfor.</p>" +
       "<p>Avskjed betyr at du må slutte i jobben din umiddelbart, uten oppsigelsestid.</p>" +

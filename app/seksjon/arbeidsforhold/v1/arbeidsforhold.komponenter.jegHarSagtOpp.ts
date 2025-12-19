@@ -31,7 +31,7 @@ export const arbeidsforholdModalJegHarSagtOppSelvKomponenter: KomponentType[] = 
     id: "jegHarSagtOppSelvInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Hvis du har sagt opp selv, må vi vite når og hvorfor.</p>" +
       "<p>Derfor må du dokumentere grunnen og datoen du sa opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.</p>" +

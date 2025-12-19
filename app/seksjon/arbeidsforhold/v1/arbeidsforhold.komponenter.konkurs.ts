@@ -124,7 +124,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerVarselemdling",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       '<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href="https://www.nav.no/soknader#lonnsgaranti">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>',
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -224,7 +224,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: "konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningenInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag",
+    label: "Du kan få avslag på søknaden",
     description:
       '<p>Hvis du svarer "Nei" vil du få avslag på søknaden om forskudd på lønnsgarantimidler.</p>' +
       "<p>Vi må trekke forskuddet fra lønnsgarantimidlene dine for å hindre at du får dobbelt utbetaling for den første måneden.</p>",
@@ -260,7 +260,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: "konkursHarDuSøktOmLønnsgarantimidlerInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag",
+    label: "Du kan få avslag på søknaden",
     description:
       "Hvis du ikke søker om lønnsgarantimidler, har du ikke rett til forskudd, og du vil få avslag på søknaden din om forskudd på lønnsgarantimidler.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
