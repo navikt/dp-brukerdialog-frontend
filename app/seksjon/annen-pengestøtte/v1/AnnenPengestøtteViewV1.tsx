@@ -355,7 +355,7 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
-                  <ErrorMessage showIcon>Du må legge til utbetalinger eller goder</ErrorMessage>
+                  <ErrorMessage showIcon>Du må legge til utbetalinger eller økonomiske goder</ErrorMessage>
                 )}
               </VStack>
             )}

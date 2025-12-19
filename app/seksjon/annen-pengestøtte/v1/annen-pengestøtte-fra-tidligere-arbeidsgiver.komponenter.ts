@@ -12,12 +12,12 @@ export const pengestøtteFraTidligereArbeidsgiverModalKomponenter: KomponentType
   {
     id: hvemMottarDuUtbetalingerEllerGoderFra,
     type: "kortTekst",
-    label: "Hvem mottar du utbetalinger eller goder fra?",
+    label: "Hvem mottar du utbetalinger eller økonomiske goder fra?",
   },
   {
     id: "hvemMottarDuUtbetalingerEllerGoderFraLesMer",
     type: "lesMer",
-    label: "Dette mener vi med utbetalinger og goder",
+    label: "Dette mener vi med utbetalinger og økonomiske goder",
     description:
       "<p><strong>Utbetalinger</strong><br/>Med utbetalinger mener vi for eksempel:</p>" +
       "<p><ul><li>Sluttvederlag</li>" +
