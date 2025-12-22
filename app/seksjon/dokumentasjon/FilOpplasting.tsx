@@ -124,6 +124,7 @@ export function FilOpplasting({
               lasterOpp: false,
               feil: LastOppFeil.TEKNISK_FEIL,
               id: fil.id,
+              file: fil.file,
             };
           }
 
@@ -134,6 +135,7 @@ export function FilOpplasting({
             lasterOpp: false,
             feil: undefined,
             id: fil.id,
+            file: fil.file,
           };
         })
       );
@@ -206,7 +208,7 @@ export function FilOpplasting({
         {dokumentkravFiler?.map((fil) => (
           <FileUploadItem
             key={fil.id}
-            file={fil.file ? fil.file : new File([], fil.filnavn)}
+            file={fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }}
             status={fil.lasterOpp ? "uploading" : "idle"}
             translations={{ uploading: "Laster opp..." }}
             error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
