@@ -35,11 +35,11 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   Arbeidsavtalen må inneholde datoen du startet i jobben din stillingsprosent eller
                   avtalt arbeidstid avt endt oppsigelsestid sluttdato, hvis du har en midlertidig
                   arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
-                  skjemaet 
+                  skjemaet{" "}
                   <Link href="https://www.nav.no/soknader">
                     "Bekreftelse på sluttårsak/nedsatt arbeidstid" (NAV 04-08.03)
                   </Link>
-                   . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
+                  . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -60,7 +60,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 <BodyLong>
                   For å dokumentere dette, kan du legge ved oppsigelsen du fikk av arbeidsgiveren
                   din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke
-                  skjemaet 
+                  skjemaet.
                   <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
                     Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
                   </Link>
@@ -85,12 +85,12 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 </List>
                 <BodyLong>
                   For å dokumentere dette, kan du legge ved oppsigelsen du ga arbeidsgiveren din.
-                  Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet {" "}
+                  Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet{" "}
                   <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
-                     Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
+                    Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
                   </Link>
-                  Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren
-                  din om å dokumentere opplysningene på en annen måte.
+                  . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
+                  arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -137,7 +137,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 </List>
                 <BodyLong>
                   Du må be arbeidsgiver om denne dokumentasjonen. Hvis dokumentene ikke inneholder
-                  opplysningene vi trenger, kan du bruke skjemaet 
+                  opplysningene vi trenger, kan du bruke skjemaet{" "}
                   <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
                     Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
                   </Link>
@@ -193,9 +193,9 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   Hvis permitteringsvarselet ikke inneholder disse opplysningene kan du bruke
                   skjemaet{" "}
                   <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf">
-                    Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04).
+                    Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04)
                   </Link>
-                  Arbeidsgiveren din må fylle ut og signere skjemaet.
+                  . Arbeidsgiveren din må fylle ut og signere skjemaet.
                 </BodyLong>
               </VStack>
             </ReadMore>
