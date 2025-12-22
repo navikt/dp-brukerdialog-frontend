@@ -51,7 +51,7 @@
     "vite-plugin-devtools-json": "1.0.0"
   },
   "devDependencies": {
-    "@inquirer/prompts": "8.0.2",
+    "@inquirer/prompts": "8.1.0",
     "@react-router/dev": "7.10.1",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
