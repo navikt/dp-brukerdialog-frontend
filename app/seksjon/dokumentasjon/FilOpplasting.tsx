@@ -124,7 +124,6 @@ export function FilOpplasting({
               lasterOpp: false,
               feil: LastOppFeil.TEKNISK_FEIL,
               id: fil.id,
-              file: fil.file,
             };
           }
 
@@ -135,7 +134,6 @@ export function FilOpplasting({
             lasterOpp: false,
             feil: undefined,
             id: fil.id,
-            file: fil.file,
           };
         })
       );
