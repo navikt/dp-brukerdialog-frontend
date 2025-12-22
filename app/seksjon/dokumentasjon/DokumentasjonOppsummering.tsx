@@ -1,7 +1,6 @@
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { Button, FormSummary } from "@navikt/ds-react";
-import {
-  dokumentasjonskravKomponenter,
+import dokumentasjonskravKomponenter, {
   velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
