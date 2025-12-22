@@ -5,8 +5,7 @@ import { Form, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
-import {
-  dokumentasjonskravKomponenter,
+import dokumentasjonskravKomponenter, {
   DokumentasjonskravSvar,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
