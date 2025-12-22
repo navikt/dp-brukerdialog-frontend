@@ -1,11 +1,13 @@
 import {
   BodyLong,
+  BodyShort,
   Button,
   ExpansionCard,
   Heading,
   HStack,
   InfoCard,
   Link,
+  LocalAlert,
   ReadMore,
   Tag,
   VStack,
@@ -83,21 +85,52 @@ export default function KvitteringView() {
             </BodyLong>
           )}
 
-          <InfoCard data-color="warning">
-            <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-              <InfoCard.Title>Du er ikke registrert som arbeidssøker</InfoCard.Title>
-            </InfoCard.Header>
-            <InfoCard.Content>
-              <BodyLong>
-                Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden din.
-                Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
-                <Link href="https://arbeidssokerregistrering.nav.no/" className={""}>
-                  Registrer deg som arbeidssøker
-                </Link>
-                .
-              </BodyLong>
-            </InfoCard.Content>
-          </InfoCard>
+          {loaderData.erRegistrertArbeidssøker === true && (
+            <InfoCard data-color="info">
+              <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
+                <InfoCard.Title>Du er registrert som arbeidssøker</InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <BodyLong>
+                  For å ha rett til dagpenger, må du være registrert som arbeidssøker. Du er allerede registrert som arbeidssøker.
+                </BodyLong>
+              </InfoCard.Content>
+            </InfoCard>
+          )}
+          {loaderData.erRegistrertArbeidssøker === false && (
+            <InfoCard data-color="warning">
+              <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+                <InfoCard.Title>Du er ikke registrert som arbeidssøker</InfoCard.Title>
+              </InfoCard.Header>
+              <InfoCard.Content>
+                <BodyLong>
+                  Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden
+                  din. Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
+                  <Link href="https://arbeidssokerregistrering.nav.no/" className={""}>
+                    Registrer deg som arbeidssøker
+                  </Link>
+                  .
+                </BodyLong>
+              </InfoCard.Content>
+            </InfoCard>
+          )}
+          {loaderData.erRegistrertArbeidssøker === "ERROR" && (
+            <LocalAlert status="error">
+              <LocalAlert.Header>
+                <LocalAlert.Title>Oppslag mot Arbedidssøkerregistreret feilet</LocalAlert.Title>
+              </LocalAlert.Header>
+              <LocalAlert.Content>
+                <BodyShort spacing>
+                  For å ha rett på dagpenger må du være registrert som arbeidssøker. Vi prøvde å
+                  sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi dessverre ikke.
+                </BodyShort>
+                <BodyShort>
+                  Hvis du er usikker på om du er registrert som arbeidssøker, må du{" "}
+                  <Link href="https://arbeidssokerregistrering.nav.no/">registrere deg som arbeidssøker</Link>.
+                </BodyShort>
+              </LocalAlert.Content>
+            </LocalAlert>
+          )}
 
           <Heading size="medium">Dokumentasjon</Heading>
 
