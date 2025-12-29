@@ -26,6 +26,14 @@ export function valider(
     });
   }
 
+  if (svar && komponent.type === "langTekst" && komponent.maxLength && svar.length > komponent.maxLength) {
+    context.addIssue({
+      path: [komponent.id],
+      code: "custom",
+      message: "Svaret er for langt",
+    });
+  }
+
   if (svar && komponent.type === "tall") {
     if (Number.isNaN(+(svar as string).replace(",", "."))) {
       context.addIssue({
