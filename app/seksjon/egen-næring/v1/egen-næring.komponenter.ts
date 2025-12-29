@@ -87,7 +87,7 @@ export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
     variant: "informasjon",
     label: "Informasjon",
     description:
-      "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</p>",
+      "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>",
     visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
   },
 ];
