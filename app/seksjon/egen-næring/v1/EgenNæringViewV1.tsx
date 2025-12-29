@@ -286,7 +286,7 @@ export function EgenNæringViewV1() {
                 Forrige steg
               </Button>
               <Button
-                type="submit"
+                type="button"
                 variant="primary"
                 onClick={handleSubmit}
                 iconPosition="right"

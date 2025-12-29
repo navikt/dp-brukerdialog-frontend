@@ -87,7 +87,7 @@ export function GårdsbrukModal({ ref }: IProps) {
 
             <HStack className="mt-4" justify="end">
               <Button
-                type={"submit"}
+                type="submit"
                 icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
               >
                 Lagre og lukk
