@@ -117,7 +117,7 @@ export default function EgenNæringOppsummeringV1({
             </FormSummary.Answer>
           ))}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Egen næring"/>
     </FormSummary>
   );
 }

@@ -165,7 +165,7 @@ export default function AnnenPengestøtteOppsummeringV1({
             </FormSummary.Answer>
           ))}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Annen pengestøtte"/>
     </FormSummary>
   );
 }
