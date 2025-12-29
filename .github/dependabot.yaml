@@ -36,3 +36,8 @@ updates:
       timezone: "Europe/Oslo"
     cooldown:
       default-days: 7
+    groups:
+      minor-and-patch-bumps:
+        update-types:
+          - "minor"
+          - "patch"
