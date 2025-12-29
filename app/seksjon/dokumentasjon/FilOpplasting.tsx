@@ -1,4 +1,4 @@
-import { Box, FileObject, VStack } from "@navikt/ds-react";
+import { Box, FileObject, Heading, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -11,6 +11,7 @@ import {
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { Dokumentasjonskrav } from "./DokumentasjonskravKomponent";
+import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
 
 export type DokumentkravFil = {
   id: string;
@@ -189,8 +190,14 @@ export function FilOpplasting({
   }
 
   return (
-    <Box.New borderRadius="large" background="sunken" className="mt-4">
-      <VStack gap="8">
+    <Box.New borderRadius="large" background="sunken">
+      <VStack gap="4">
+        <Heading size="small" level="3">
+          {dokumentasjonskrav.tittel || "Dokumentasjon"}
+        </Heading>
+
+        {dokumentasjonskrav.type && <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />}
+
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
             className="mt-4 fileUpload"
