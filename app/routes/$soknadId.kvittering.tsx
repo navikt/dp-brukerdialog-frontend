@@ -4,11 +4,27 @@ import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import KvitteringView from "~/seksjon/kvittering/KvitteringView";
+import {
+  hentArbeidssøkerperioder,
+  IArbeidssokerperioder,
+} from "~/models/hent-arbeidssøkerperioder.server";
 
 export type KvitteringSeksjon = {
   seksjoner: [] | null;
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
+  erRegistrertArbeidssøker: boolean | null | "ERROR";
 };
+
+async function hentArbeidssøkerStatus(request: Request) {
+  const arbeidssøkerregisterResponse = await hentArbeidssøkerperioder(request);
+
+  if (arbeidssøkerregisterResponse.ok) {
+    const data: IArbeidssokerperioder[] = await arbeidssøkerregisterResponse.json();
+    return data.some((periode) => periode.avsluttet === null);
+  } else {
+    return "ERROR";
+  }
+}
 
 export async function loader({ request, params }: LoaderFunctionArgs<KvitteringSeksjon>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
@@ -25,12 +41,14 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
             JSON.parse(dokumentasjonskrav)
           )
         : undefined,
+      erRegistrertArbeidssøker: await hentArbeidssøkerStatus(request),
     };
   }
 
   return {
     seksjoner: null,
     dokumentasjonskrav: null,
+    erRegistrertArbeidssøker: null,
   };
 }
 
