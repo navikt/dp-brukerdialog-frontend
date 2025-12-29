@@ -1,5 +1,14 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, BodyShort, Button, HStack, Label, VStack } from "@navikt/ds-react";
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Button,
+  Heading,
+  HStack,
+  Label,
+  VStack,
+} from "@navikt/ds-react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { action, loader } from "~/routes/$soknadId.personalia";
 import { Komponent } from "~/components/Komponent";
@@ -33,6 +42,7 @@ import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
@@ -111,9 +121,12 @@ export function PersonaliaViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
-        <VStack gap="4">
+        <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <BodyLong>
             Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
             Kontonummer kan du legge til eller endre på <a href="https://www.nav.no/">Min side</a>.

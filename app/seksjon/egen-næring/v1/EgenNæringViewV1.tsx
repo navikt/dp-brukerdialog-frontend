@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -33,6 +33,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function EgenNæringViewV1() {
   const seksjonnavn = "Egen næring";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
@@ -171,9 +172,12 @@ export function EgenNæringViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />

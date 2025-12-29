@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -41,6 +41,7 @@ import invariant from "tiny-invariant";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const ref = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
@@ -164,11 +165,14 @@ export function ArbeidsforholdViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
           <Form {...form.getFormProps()}>
             <VStack gap="8">
+              <Heading size="medium" level="2">
+                {seksjonnavn}
+              </Heading>
               <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
               {arbeidsforholdKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

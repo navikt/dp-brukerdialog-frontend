@@ -30,6 +30,8 @@ import { ExclamationmarkTriangleIcon, InformationSquareIcon } from "@navikt/akse
 import React from "react";
 
 export default function KvitteringView() {
+  const seksjonnavn = "Søknad mottatt";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { soknadId } = useParams();
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
@@ -49,11 +51,12 @@ export default function KvitteringView() {
 
   return (
     <div className="innhold">
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
           <HStack justify="space-between">
             <VStack>
-              <Heading size="medium">Søknad mottatt</Heading>
+              <Heading size="medium">{seksjonnavn}</Heading>
             </VStack>
             {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
               <Tag variant={"warning"} size="xsmall">
@@ -92,7 +95,8 @@ export default function KvitteringView() {
               </InfoCard.Header>
               <InfoCard.Content>
                 <BodyLong>
-                  For å ha rett til dagpenger, må du være registrert som arbeidssøker. Du er allerede registrert som arbeidssøker.
+                  For å ha rett til dagpenger, må du være registrert som arbeidssøker. Du er
+                  allerede registrert som arbeidssøker.
                 </BodyLong>
               </InfoCard.Content>
             </InfoCard>
@@ -122,11 +126,15 @@ export default function KvitteringView() {
               <LocalAlert.Content>
                 <BodyShort spacing>
                   For å ha rett på dagpenger må du være registrert som arbeidssøker. Vi prøvde å
-                  sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi dessverre ikke.
+                  sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi
+                  dessverre ikke.
                 </BodyShort>
                 <BodyShort>
                   Hvis du er usikker på om du er registrert som arbeidssøker, må du{" "}
-                  <Link href="https://arbeidssokerregistrering.nav.no/">registrere deg som arbeidssøker</Link>.
+                  <Link href="https://arbeidssokerregistrering.nav.no/">
+                    registrere deg som arbeidssøker
+                  </Link>
+                  .
                 </BodyShort>
               </LocalAlert.Content>
             </LocalAlert>

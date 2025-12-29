@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, BodyShort, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -39,6 +39,8 @@ enum BarnLagtManueltVarsel {
 }
 
 export function BarnetilleggViewV1() {
+  const seksjonnavn = "Barnetillegg";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -153,7 +155,10 @@ export function BarnetilleggViewV1() {
 
   return (
     <div className="innhold">
-      <h2>Barnetillegg</h2>
+      <title>{seksjonHeadTitle}</title>
+      <Heading size="medium" level="2">
+        {seksjonnavn}
+      </Heading>
       {barnetilleggForklarendeTekst.map((komponent) => {
         if (komponent.visHvis && !komponent.visHvis(form.value())) {
           return null;

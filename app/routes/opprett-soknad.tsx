@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Box, Button, Checkbox, VStack } from "@navikt/ds-react";
+import { Alert, Box, Button, Checkbox, Heading, VStack } from "@navikt/ds-react";
 import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
@@ -51,9 +51,12 @@ export default function OpprettSoknadRoute() {
 
   return (
     <main id="maincontent" tabIndex={-1}>
+      <title>Søknad om dagpenger</title>
       <div className="soknad-header">
         <SøknadIkon />
-        <h1>Søknad om dagpenger</h1>
+        <Heading size="large" level="1">
+          Søknad om dagpenger
+        </Heading>
       </div>
 
       <div className="innhold">
