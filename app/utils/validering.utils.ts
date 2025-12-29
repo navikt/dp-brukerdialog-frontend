@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/Komponent.types";
 import { $RefinementCtx } from "zod/v4/core";
+import { kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 
 export function valider(
   komponent: KomponentType,
@@ -18,7 +19,7 @@ export function valider(
     return;
   }
 
-  if (!svar && !komponent.optional) {
+  if ((!svar || svar.length === 0) && !komponent.optional) {
     context.addIssue({
       path: [komponent.id],
       code: "custom",
