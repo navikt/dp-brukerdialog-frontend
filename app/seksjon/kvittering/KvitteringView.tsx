@@ -1,3 +1,4 @@
+import { ExclamationmarkTriangleIcon, InformationSquareIcon } from "@navikt/aksel-icons";
 import {
   BodyLong,
   Button,
@@ -10,11 +11,13 @@ import {
   Tag,
   VStack,
 } from "@navikt/ds-react";
-import { useLoaderData, useParams } from "react-router";
+import { Link as RouterLink, useLoaderData, useParams } from "react-router";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
+import DokumentasjonskravSomErSendtAvDeg from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
 import DokumentasjonSomIkkeSkalSendes from "~/seksjon/kvittering/DokumentasjonSomIkkeSkalSendes";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
 import {
   dokumentkravSvarSenderIkke,
@@ -23,9 +26,6 @@ import {
   dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 import DokumentasjonSomSkalSendesAvDeg from "./DokumentasjonSomSkalSendesAvDeg";
-import DokumentasjonskravSomErSendtAvDeg from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
-import { ExclamationmarkTriangleIcon, InformationSquareIcon } from "@navikt/aksel-icons";
-import React from "react";
 
 export default function KvitteringView() {
   const { soknadId } = useParams();
@@ -47,60 +47,59 @@ export default function KvitteringView() {
 
   return (
     <div className="innhold">
-      <VStack gap="20">
-        <VStack gap="6">
-          <HStack justify="space-between">
-            <VStack>
-              <Heading size="medium">Søknad mottatt</Heading>
-            </VStack>
-            {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-              <Tag variant={"warning"} size="xsmall">
-                Mangler dokumentasjon
-              </Tag>
-            )}
-          </HStack>
-
+      <VStack gap="8">
+        <HStack justify="space-between">
+          <VStack>
+            <Heading size="medium">Søknad mottatt</Heading>
+          </VStack>
           {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-            <BodyLong>
-              Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
-              du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når
-              svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
-                saksbehandlingstiden
-              </Link>{" "}
-              for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
-              Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
-            </BodyLong>
+            <Tag variant={"warning"} size="xsmall">
+              Mangler dokumentasjon
+            </Tag>
           )}
-          {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
+        </HStack>
+
+        {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
+          <BodyLong>
+            Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
+            du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når svaret
+            er klart. Se hvor lang tid{" "}
+            <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
+              saksbehandlingstiden
+            </Link>{" "}
+            for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
+            Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
+          </BodyLong>
+        )}
+        {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
+          <BodyLong>
+            Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
+            <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
+              saksbehandlingstiden
+            </Link>{" "}
+            for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
+            Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
+          </BodyLong>
+        )}
+
+        <InfoCard data-color="warning">
+          <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+            <InfoCard.Title>Du er ikke registrert som arbeidssøker</InfoCard.Title>
+          </InfoCard.Header>
+          <InfoCard.Content>
             <BodyLong>
-              Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
-                saksbehandlingstiden
-              </Link>{" "}
-              for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
-              Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
+              Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden din.
+              Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
+              <Link href="https://arbeidssokerregistrering.nav.no/" className={""}>
+                Registrer deg som arbeidssøker
+              </Link>
+              .
             </BodyLong>
-          )}
+          </InfoCard.Content>
+        </InfoCard>
 
-          <InfoCard data-color="warning">
-            <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-              <InfoCard.Title>Du er ikke registrert som arbeidssøker</InfoCard.Title>
-            </InfoCard.Header>
-            <InfoCard.Content>
-              <BodyLong>
-                Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden din.
-                Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
-                <Link href="https://arbeidssokerregistrering.nav.no/" className={""}>
-                  Registrer deg som arbeidssøker
-                </Link>
-                .
-              </BodyLong>
-            </InfoCard.Content>
-          </InfoCard>
-
+        <VStack gap="4">
           <Heading size="medium">Dokumentasjon</Heading>
-
           <InfoCard data-color="info">
             <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
               <InfoCard.Title>Sende inn dokumentasjon</InfoCard.Title>
@@ -119,7 +118,7 @@ export default function KvitteringView() {
             </InfoCard.Content>
           </InfoCard>
 
-          <ReadMore header={"Har du fått brev om manglende opplysninger?"}>
+          <ReadMore header="Har du fått brev om manglende opplysninger?">
             Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal sendes
             inn og frist for å sende inn. Brev du har fått ligger i{" "}
             <Link href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste">
@@ -131,40 +130,41 @@ export default function KvitteringView() {
             </Link>
             .
           </ReadMore>
-          {dokumentasjonSomErSendtAvDeg.length > 0 && (
-            <>
-              <Heading size="small" className="mt-4">
-                Dokumenter du har sendt inn
-              </Heading>
-              {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
-              ))}
-            </>
-          )}
+        </VStack>
 
-          {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-            <>
-              <Heading size="small" className="mt-4">
-                Dokumenter du skal sende inn
-              </Heading>
-              {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
-              ))}
-              <HStack>
+        {dokumentasjonSomErSendtAvDeg.length > 0 && (
+          <VStack gap="4">
+            <Heading size="small">Dokumenter du har sendt inn</Heading>
+            {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
+              <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
+            ))}
+          </VStack>
+        )}
+
+        {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
+          <VStack gap="4">
+            <Heading size="small">Dokumenter du skal sende inn</Heading>
+            {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
+              <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
+            ))}
+            <HStack>
+              <RouterLink to={`/${soknadId}/ettersending`}>
                 <Button variant="primary">Send inn dokumenter (fungerer ikke enda)</Button>
-              </HStack>
-            </>
-          )}
+              </RouterLink>
+            </HStack>
+          </VStack>
+        )}
 
-          {dokumentasjonSomIkkeSkalSendes.length > 0 && (
-            <>
-              <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
-              {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
-              ))}
-            </>
-          )}
+        {dokumentasjonSomIkkeSkalSendes.length > 0 && (
+          <VStack gap="4">
+            <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
+            {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
+              <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
+            ))}
+          </VStack>
+        )}
 
+        <VStack gap="4">
           <ExpansionCard aria-label="Dine svar">
             <ExpansionCard.Header>
               <ExpansionCard.Title>Dine svar</ExpansionCard.Title>
@@ -190,7 +190,9 @@ export default function KvitteringView() {
             </ExpansionCard.Content>
           </ExpansionCard>
           <HStack>
-            <Button variant="primary">Gå til mine dagpenger</Button>
+            <Button as="a" href={getEnv("DP_MINE_DAGPENGER_URL")}>
+              Gå til mine dagpenger
+            </Button>
           </HStack>
         </VStack>
       </VStack>
