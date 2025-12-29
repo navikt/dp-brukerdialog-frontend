@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-router";
 import { SøknadIkon } from "~/components/SøknadIkon";
-import { FormProgress } from "@navikt/ds-react";
+import { FormProgress, Heading } from "@navikt/ds-react";
 import invariant from "tiny-invariant";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
 
@@ -88,7 +88,9 @@ export default function SoknadIdIndex() {
     <main id="maincontent" tabIndex={-1}>
       <div className="soknad-header">
         <SøknadIkon />
-        <h1>Søknad om dagpenger</h1>
+        <Heading size="large" level="1">
+          Søknad om dagpenger
+        </Heading>
       </div>
       <div className="innhold">
         <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 1}>

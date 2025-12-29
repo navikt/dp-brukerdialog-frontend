@@ -1,4 +1,4 @@
-import { BodyLong, Button, HStack, InfoCard, VStack } from "@navikt/ds-react";
+import { BodyLong, Button, Heading, HStack, InfoCard, VStack } from "@navikt/ds-react";
 import { useLoaderData, useNavigation, useParams } from "react-router";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.oppsummering";
@@ -8,6 +8,8 @@ import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
 import React from "react";
 
 export default function OppsummeringView() {
+  const seksjonnavn = "Se over før du sender inn";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
   const { state } = useNavigation();
@@ -18,9 +20,12 @@ export default function OppsummeringView() {
 
   return (
     <div className="innhold">
-      <h2>Se over før du sender inn</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <InfoCard data-color="warning">
             <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
               <InfoCard.Title>Søknaden din er ikke sendt enda</InfoCard.Title>
@@ -37,7 +42,9 @@ export default function OppsummeringView() {
             Når du har sendt inn søknaden kommer du til en kvitteringsside med informasjon om veien
             videre. Der kan du også ettersende dokumentasjon som mangler.
           </BodyLong>
-          <h2>Dine svar</h2>
+          <Heading size="medium" level="2">
+            Dine svar
+          </Heading>
           {stegISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;

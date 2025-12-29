@@ -135,7 +135,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
   {
     id: "personaliaBostedslandForklarendeTekst",
     type: "forklarendeTekst",
-    description: "<h2>Bostedsland</h2>",
+    description: "<h3>Bostedsland</h3>",
     visHvis: (svar: PersonaliaSvar) =>
       svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei" && svar[landFraPdl] === "NORGE",
   },
