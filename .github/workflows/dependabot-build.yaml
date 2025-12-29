@@ -31,3 +31,29 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - run: npm run dependabot
+
+  build:
+    needs: [test]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+      packages: write
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.x"
+      - name: docker-build-push
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamdagpenger
+          push_image: true
+          dockerfile: Dockerfile
+          docker_context: .
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          build_secrets: NODE_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
