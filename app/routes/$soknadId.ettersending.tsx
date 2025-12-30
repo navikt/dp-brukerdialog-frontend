@@ -13,33 +13,23 @@ export type EttersendingSeksjon = {
 export async function loader({ request, params }: LoaderFunctionArgs<EttersendingSeksjon>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
-
-  if (dokumentasjonskravResponse.ok) {
-    const dokumentasjonskrav = (await dokumentasjonskravResponse.json()).flatMap(
-      (dokumentasjonskrav: string) => JSON.parse(dokumentasjonskrav)
-    );
-
-    return {
-      dokumentasjonskrav,
-    };
+  const response = await hentDokumentasjonskrav(request, params.soknadId);
+  if (!response.ok) {
+    return { dokumentasjonskrav: null };
   }
 
-  return {
-    dokumentasjonskrav: null,
-  };
+  const data = await response.json();
+  const dokumentasjonskrav = data.flatMap((krav: string) => JSON.parse(krav));
+
+  return { dokumentasjonskrav };
 }
 
 export default function EttersendingRoute() {
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
-  const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
-  );
-
   return (
-    <DokumentasjonskravProvider dokumentasjonskrav={dokumentasjonSomSkalSendesAvDeg || []}>
+    <DokumentasjonskravProvider dokumentasjonskrav={dokumentasjonskrav || []}>
       <EttersendingView />
     </DokumentasjonskravProvider>
   );

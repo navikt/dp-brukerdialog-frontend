@@ -1,4 +1,4 @@
-import { Box, FileObject, Heading, VStack } from "@navikt/ds-react";
+import { Box, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -42,6 +42,7 @@ interface IProps {
   setIngenFilerErLastetOppForDokumentkravet: (
     ingenFilerErLastetOppForDokumentkravet: boolean
   ) => void;
+  erEttersending?: boolean;
 }
 
 export function FilOpplasting({
@@ -51,6 +52,7 @@ export function FilOpplasting({
   setDokumentasjonskravIdSomSkalLagres,
   setAntallFilerMedFeil,
   setIngenFilerErLastetOppForDokumentkravet,
+  erEttersending,
 }: IProps) {
   const { soknadId } = useParams();
 
@@ -192,9 +194,16 @@ export function FilOpplasting({
   return (
     <Box.New borderRadius="large" background="sunken">
       <VStack gap="4">
-        <Heading size="small" level="3">
-          {dokumentasjonskrav.tittel || "Dokumentasjon"}
-        </Heading>
+        <HStack justify="space-between">
+          <Heading size="small" level="3">
+            {dokumentasjonskrav.tittel || "Dokumentasjon"}
+          </Heading>
+          {erEttersending && (
+            <Tag variant="warning" size="xsmall">
+              Mangler
+            </Tag>
+          )}
+        </HStack>
 
         {dokumentasjonskrav.type && <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />}
 

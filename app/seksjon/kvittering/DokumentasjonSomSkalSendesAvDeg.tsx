@@ -14,11 +14,9 @@ export default function DokumentasjonSomSkalSendesAvDeg({ dokumentasjonskrav }: 
           <Heading size="xsmall" level="4">
             {dokumentasjonskrav.tittel}
           </Heading>
-          <BodyShort>
-            <Tag variant="warning" size="xsmall">
-              Mangler
-            </Tag>
-          </BodyShort>
+          <Tag variant="warning" size="xsmall">
+            Mangler
+          </Tag>
         </HStack>
 
         <BodyShort>Skal sendes av deg</BodyShort>

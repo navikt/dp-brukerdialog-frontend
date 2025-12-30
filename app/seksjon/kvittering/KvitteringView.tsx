@@ -149,7 +149,7 @@ export default function KvitteringView() {
             ))}
             <HStack>
               <RouterLink to={`/${soknadId}/ettersending`}>
-                <Button variant="primary">Send inn dokumenter (fungerer ikke enda)</Button>
+                <Button variant="primary">Send inn dokumenter</Button>
               </RouterLink>
             </HStack>
           </VStack>

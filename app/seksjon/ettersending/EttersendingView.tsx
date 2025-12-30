@@ -1,28 +1,13 @@
-import { BodyLong, BodyShort, Box, ErrorMessage, Link, ReadMore, VStack } from "@navikt/ds-react";
-import { useState } from "react";
+import { BodyLong, BodyShort, Link, ReadMore, VStack } from "@navikt/ds-react";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.ettersending";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
-import { DokumentkravFil, FilOpplasting } from "../dokumentasjon/FilOpplasting";
-import { useDokumentasjonskravContext } from "../dokumentasjon/dokumentasjonskrav.context";
 import { dokumentkravSvarSenderSenere } from "../dokumentasjon/dokumentasjonskrav.komponenter";
+import { EttersendingDokumentOpplasting } from "./EttersendingDokumentOpplasting";
 
 export function EttersendingView() {
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
-  const [visHarValideringsfeilFeilmelding, setVisHarValideringsfeilFeilmelding] = useState(false);
-  const [visIngenFilerErLastetOppFeilmelding, setVisIngenFilerErLastetOppFeilmelding] =
-    useState(false);
-
-  const { setDokumentasjonskravIdSomSkalLagres } = useDokumentasjonskravContext();
-  const [antallFilerMedValideringsfeil, setAntallFilerMedValideringsfeil] = useState(0);
-  const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
-    dokumentasjonskrav.filer ?? []
-  );
-
-  const [ingenFilerErLastetOppForDokumentkravet, setIngenFilerErLastetOppForDokumentkravet] =
-    useState(false);
-
   const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
@@ -60,31 +45,7 @@ export function EttersendingView() {
 
       <VStack gap="4" className="mt-8">
         {dokumentasjonSomSkalSendesAvDeg.map((dokumentasjonskrav: Dokumentasjonskrav) => (
-          <Box.New padding="space-16" background="sunken" borderRadius="large">
-            <FilOpplasting
-              dokumentasjonskrav={dokumentasjonskrav}
-              dokumentkravFiler={dokumentkravFiler}
-              setDokumentkravFiler={setDokumentkravFiler}
-              setDokumentasjonskravIdSomSkalLagres={setDokumentasjonskravIdSomSkalLagres}
-              setAntallFilerMedFeil={setAntallFilerMedValideringsfeil}
-              setIngenFilerErLastetOppForDokumentkravet={setIngenFilerErLastetOppForDokumentkravet}
-            />
-            {visHarValideringsfeilFeilmelding && (
-              <VStack gap="4" className="mt-8">
-                <ErrorMessage>
-                  Du må rette feilen{antallFilerMedValideringsfeil > 1 ? "e" : ""} over før
-                  dokumentasjon kan sendes inn.
-                </ErrorMessage>
-              </VStack>
-            )}
-            {visIngenFilerErLastetOppFeilmelding && (
-              <VStack gap="4" className="mt-8">
-                <ErrorMessage>
-                  Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-                </ErrorMessage>
-              </VStack>
-            )}
-          </Box.New>
+          <EttersendingDokumentOpplasting dokumentasjonskrav={dokumentasjonskrav} />
         ))}
       </VStack>
     </div>
