@@ -27,6 +27,11 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilNæringsvirksomhetSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: næringsvirksomhetModalData?.næringsvirksomhet ?? {},
     handleSubmit: (næringsvirksomhet) => {
       if (

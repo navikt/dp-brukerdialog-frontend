@@ -35,9 +35,9 @@ export default function OpprettSoknadRoute() {
     method: "post",
     submitSource: "state",
     validationBehaviorConfig: {
-      initial: "onChange",
-      whenTouched: "onChange",
-      whenSubmitted: "onChange",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
     },
     schema: z.object({
       checkbox: z.boolean().refine((val) => val, {

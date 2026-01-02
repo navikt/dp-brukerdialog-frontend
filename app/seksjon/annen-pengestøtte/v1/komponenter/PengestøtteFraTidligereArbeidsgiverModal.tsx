@@ -44,6 +44,11 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraTidligereArbeidsgiverSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues:
       pengestøtteFraTidligereArbeidsgiverModalData?.pengestøtteFraTidligereArbeidsgiver ?? {},
     handleSubmit: (skjemaData) => {
