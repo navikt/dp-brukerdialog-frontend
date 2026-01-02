@@ -64,18 +64,22 @@ export const barnFraPdlSpørsmål: KomponentType[] = [
   {
     id: fornavnOgMellomnavn,
     type: "registeropplysning",
+    label: "Fornavn og mellomnavn",
   },
   {
     id: etternavn,
     type: "registeropplysning",
+    label: "Etternavn",
   },
   {
     id: fødselsdato,
     type: "registeropplysning",
+    label: "Fødsesldato",
   },
   {
     id: bostedsland,
     type: "registeropplysning",
+    label: "Bostedsland",
   },
   {
     id: forsørgerDuBarnet,
