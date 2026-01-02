@@ -194,21 +194,16 @@ export function EgenNæringViewV1() {
                 );
               })}
               {form.value(driverDuEgenNæringsvirksomhet) === "ja" && (
-                <>
-                  {visNæringsvirksomhetFeilmelding && (
-                    <ErrorMessage showIcon>Du må legge til en næringsvirksomhet</ErrorMessage>
+                <VStack gap="space-16">
+                  {næringsvirksomheter?.map(
+                    (næringsvirksomhet: Næringsvirksomhet, index: number) => (
+                      <NæringsvirksomhetDetaljer
+                        key={index}
+                        næringsvirksomhetIndex={index}
+                        næringsvirksomhet={næringsvirksomhet}
+                      />
+                    )
                   )}
-                  <VStack gap="space-16">
-                    {næringsvirksomheter?.map(
-                      (næringsvirksomhet: Næringsvirksomhet, index: number) => (
-                        <NæringsvirksomhetDetaljer
-                          key={index}
-                          næringsvirksomhetIndex={index}
-                          næringsvirksomhet={næringsvirksomhet}
-                        />
-                      )
-                    )}
-                  </VStack>
                   <HStack>
                     <Button
                       type={"button"}
@@ -222,9 +217,13 @@ export function EgenNæringViewV1() {
                       Legg til næringsvirksomhet
                     </Button>
                   </HStack>
-                </>
+                  {visNæringsvirksomhetFeilmelding && (
+                    <ErrorMessage showIcon aria-live="polite">
+                      Du må legge til en næringsvirksomhet
+                    </ErrorMessage>
+                  )}
+                </VStack>
               )}
-
               {egenNæringEgetGårdsbrukKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
@@ -239,19 +238,10 @@ export function EgenNæringViewV1() {
                 );
               })}
               {form.value(driverDuEgetGårdsbruk) === "ja" && (
-                <>
-                  {visGårdsbrukFeilmelding && (
-                    <ErrorMessage showIcon>Du må legge til et gårdsbruk</ErrorMessage>
-                  )}
-                  <VStack gap="space-16">
-                    {gårdsbruk?.map((gårdsbruk: Gårdsbruk, index: number) => (
-                      <GårdsbrukDetaljer
-                        key={index}
-                        gårdsbrukIndex={index}
-                        etGårdsbruk={gårdsbruk}
-                      />
-                    ))}
-                  </VStack>
+                <VStack gap="space-16">
+                  {gårdsbruk?.map((gårdsbruk: Gårdsbruk, index: number) => (
+                    <GårdsbrukDetaljer key={index} gårdsbrukIndex={index} etGårdsbruk={gårdsbruk} />
+                  ))}
                   <HStack>
                     <Button
                       type={"button"}
@@ -265,7 +255,12 @@ export function EgenNæringViewV1() {
                       Legg til gårdsbruk
                     </Button>
                   </HStack>
-                </>
+                  {visGårdsbrukFeilmelding && (
+                    <ErrorMessage showIcon aria-live="polite">
+                      Du må legge til et gårdsbruk
+                    </ErrorMessage>
+                  )}
+                </VStack>
               )}
 
               {actionData && (
