@@ -22,7 +22,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     id: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
     description: "Når startet du i dette arbeidsforholdet?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
@@ -30,7 +30,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
   {
     id: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     description: "Når ble arbeidstiden din redusert?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,

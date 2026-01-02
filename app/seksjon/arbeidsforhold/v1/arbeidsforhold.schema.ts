@@ -11,8 +11,8 @@ import {
 import {
   arbeidsforholdModalJegHarFåttAvskjedKomponenter,
   jegHarFåttAvskjedHvaVarÅrsaken,
-  jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato,
-  jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato,
+  jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
+  jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
 import {
   arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
@@ -26,14 +26,14 @@ import {
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
-  jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato,
-  jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato,
+  jegErOppsagtVarighetPåArbeidsforholdetFraDato,
+  jegErOppsagtVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import {
   arbeidsforholdModalJegHarSagtOppSelvKomponenter,
   jegHarSagtOppHvaVarÅrsaken,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   arbeidsforholdModalArbeidsgiverErKonkursKomponenter,
@@ -45,8 +45,8 @@ import {
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
   konkursHarDuSøktOmLønnsgarantimidler,
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-  konkursVarighetPåArbeidsforholdetFraOgMedDato,
-  konkursVarighetPåArbeidsforholdetTilOgMedDato,
+  konkursVarighetPåArbeidsforholdetFraDato,
+  konkursVarighetPåArbeidsforholdetTilDato,
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
@@ -55,8 +55,8 @@ import {
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import {
   arbeidsforholdModalJegErPermittertKomponenter,
@@ -92,8 +92,8 @@ import {
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
   navnetPåBedriften,
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
-  oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
-  oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
+  oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
+  oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
   pdfGrunnlag,
   seksjonsvar,
   varierendeArbeidstidDeSiste12Månedene,
@@ -136,18 +136,18 @@ export const arbeidsforholdModalSchema = z
     [hvilketLandJobbetDuI]: z.string().optional(),
     [oppgiPersonnummeretPinDuHaddeIDetteLandet]: z.string().optional(),
     [hvordanHarDetteArbeidsforholdetEndretSeg]: z.string().optional(),
-    [jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato]: z.string().optional(),
-    [jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato]: z.string().optional(),
+    [jegErOppsagtVarighetPåArbeidsforholdetFraDato]: z.string().optional(),
+    [jegErOppsagtVarighetPåArbeidsforholdetTilDato]: z.string().optional(),
     [jegErOppsagtHvaVarÅrsaken]: z.string().optional(),
     [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]:
       z.string().optional(),
     [jegErOppsagtHvaHarDuSvartPåTilbudet]: z.string().optional(),
     [jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: z.string().optional(),
-    [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato]: z.string().optional(),
-    [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato]: z.string().optional(),
+    [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato]: z.string().optional(),
+    [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato]: z.string().optional(),
     [jegHarSagtOppHvaVarÅrsaken]: z.string().optional(),
-    [jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato]: z.string().optional(),
-    [jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato]: z.string().optional(),
+    [jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato]: z.string().optional(),
+    [jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato]: z.string().optional(),
     [jegHarFåttAvskjedHvaVarÅrsaken]: z.string().optional(),
     [arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet]: z.string().optional(),
     [arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert]: z.string().optional(),
@@ -156,14 +156,14 @@ export const arbeidsforholdModalSchema = z
       z.string().optional(),
     [arbeidstidenErRedusertHvaHarDuSvartPåTilbudet]: z.string().optional(),
     [arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: z.string().optional(),
-    [kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato]: z.string().optional(),
-    [kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato]: z.string().optional(),
+    [kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato]: z.string().optional(),
+    [kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato]: z.string().optional(),
     [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
       z.string().optional(),
     [kontraktenErUtgåttHvaHarDuSvartPåTilbudet]: z.string().optional(),
     [kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: z.string().optional(),
-    [konkursVarighetPåArbeidsforholdetFraOgMedDato]: z.string().optional(),
-    [konkursVarighetPåArbeidsforholdetTilOgMedDato]: z.string().optional(),
+    [konkursVarighetPåArbeidsforholdetFraDato]: z.string().optional(),
+    [konkursVarighetPåArbeidsforholdetTilDato]: z.string().optional(),
     [konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato]: z.string().optional(),
     [konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]: z.string().optional(),
     [konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler]: z.string().optional(),
@@ -196,8 +196,8 @@ export const arbeidsforholdModalSchema = z
     [harDuJobbetSkiftTurnusEllerRotasjon]: z.string().optional(),
     [hvilkenTypeRotasjonsordningJobbetDu]: z.string().optional(),
     [annenRotasjonBeskrivelse]: z.string().optional(),
-    [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]: z.string().optional(),
-    [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]: z.string().optional(),
+    [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto]: z.string().optional(),
+    [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato]: z.string().optional(),
   })
   .superRefine((data, context) => {
     arbeidsforholdModalKomponenter

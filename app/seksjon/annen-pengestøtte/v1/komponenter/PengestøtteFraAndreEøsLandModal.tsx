@@ -7,10 +7,10 @@ import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
-  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
@@ -147,10 +147,10 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
 
   useEffect(() => {
     if (form.value(mottarDuFortsattPengestøttenFraAndreEøsLand) === "ja") {
-      form.setValue(iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed, "");
-      form.setValue(iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed, "");
+      form.setValue(iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato, "");
+      form.setValue(iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato, "");
     } else if (form.value(mottarDuFortsattPengestøttenFraAndreEøsLand) === "nei") {
-      form.setValue(fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed, "");
+      form.setValue(fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato, "");
     }
   }, [form.value(mottarDuFortsattPengestøttenFraAndreEøsLand)]);
 

@@ -5,10 +5,10 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
-export const konkursVarighetPåArbeidsforholdetFraOgMedDato =
-  "konkursVarighetPåArbeidsforholdetFraOgMedDato";
-export const konkursVarighetPåArbeidsforholdetTilOgMedDato =
-  "konkursVarighetPåArbeidsforholdetTilOgMedDato";
+export const konkursVarighetPåArbeidsforholdetFraDato =
+  "konkursVarighetPåArbeidsforholdetFraDato";
+export const konkursVarighetPåArbeidsforholdetTilDato =
+  "konkursVarighetPåArbeidsforholdetTilDato";
 export const konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato =
   "konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato";
 export const konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet =
@@ -31,17 +31,17 @@ export const konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinG
 
 export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[] = [
   {
-    id: konkursVarighetPåArbeidsforholdetFraOgMedDato,
+    id: konkursVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
   },
   {
-    id: konkursVarighetPåArbeidsforholdetTilOgMedDato,
+    id: konkursVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
   },

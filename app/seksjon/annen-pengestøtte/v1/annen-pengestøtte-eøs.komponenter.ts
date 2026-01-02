@@ -14,12 +14,12 @@ export const pleiepengerOmsorgspengerEllerOpplæringspenger =
   "pleiepengerOmsorgspengerEllerOpplæringspenger";
 export const mottarDuFortsattPengestøttenFraAndreEøsLand =
   "mottarDuFortsattPengestøttenFraAndreEøsLand";
-export const fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed =
-  "fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed";
-export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed =
-  "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed";
-export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed =
-  "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed";
+export const fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato =
+  "fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato";
+export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato =
+  "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato";
+export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato =
+  "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato";
 
 export type PengestøtteFraAndreEøsLandModalSvar = {
   [hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]?:
@@ -29,9 +29,9 @@ export type PengestøtteFraAndreEøsLandModalSvar = {
     | typeof pleiepengerOmsorgspengerEllerOpplæringspenger;
   [fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]?: string;
   [mottarDuFortsattPengestøttenFraAndreEøsLand]?: string;
-  [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]?: string;
-  [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed]?: string;
-  [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed]?: string;
+  [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato]?: string;
+  [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato]?: string;
+  [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato]?: string;
 };
 
 export const pengestøtteFraAndreEøsLandKomponenter: KomponentType[] = [
@@ -118,24 +118,24 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     ],
   },
   {
-    id: fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+    id: fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
     type: "dato",
-    label: "Fra og med hvilken dato har du mottatt pengestøtten?",
+    label: "Fra hvilken dato har du mottatt pengestøtten?",
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "ja",
   },
   {
-    id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
+    id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
     type: "periodeFra",
     periodeLabel: "I hvilken periode mottok du pengesøtten?",
-    label: "Fra og med",
+    label: "Fra dato",
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },
   {
-    id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
+    id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },

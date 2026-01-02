@@ -65,6 +65,7 @@ export type LangTekstSpørsmål = SpørsmålBase & {
 
 export type KortTekstSpørsmål = SpørsmålBase & {
   type: "kortTekst";
+  maxLength?: number;
 };
 
 export type DatoSpørsmål = SpørsmålBase & {
@@ -87,6 +88,7 @@ export type LandSpørsmål = SpørsmålBase & {
 
 export type TallSpørsmål = SpørsmålBase & {
   type: "tall";
+  maxValue?: number
 };
 
 export type NedtrekkslisteSpørsmål = SpørsmålBase & {
