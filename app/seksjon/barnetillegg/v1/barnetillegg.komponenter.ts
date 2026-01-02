@@ -104,11 +104,13 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
     id: fornavnOgMellomnavn,
     type: "kortTekst",
     label: "Fornavn og mellomnavn",
+    maksLengde: 200,
   },
   {
     id: etternavn,
     type: "kortTekst",
     label: "Etternavn",
+    maksLengde: 200,
   },
   {
     id: fødselsdato,

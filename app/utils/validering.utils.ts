@@ -1,6 +1,5 @@
 import { KomponentType } from "~/components/Komponent.types";
 import { $RefinementCtx } from "zod/v4/core";
-import { kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 
 export function valider(
   komponent: KomponentType,
@@ -27,11 +26,16 @@ export function valider(
     });
   }
 
-  if (svar && komponent.type === "langTekst" && komponent.maxLength && svar.length > komponent.maxLength) {
+  if (
+    svar &&
+    (komponent.type === "langTekst" || komponent.type === "kortTekst") &&
+    komponent.maksLengde &&
+    svar.length > komponent.maksLengde
+  ) {
     context.addIssue({
       path: [komponent.id],
       code: "custom",
-      message: "Svaret er for langt",
+      message: `Svaret kan ikke være lengre enn ${komponent.maksLengde} tegn`,
     });
   }
 
@@ -48,7 +52,15 @@ export function valider(
       context.addIssue({
         path: [komponent.id],
         code: "custom",
-        message: "Tallet kan ikke være negativt",
+        message: "Svaret kan ikke være et negativt tall",
+      });
+    }
+
+    if (komponent.maksVerdi && ((svar as string).replace(",", ".") as unknown as number) > komponent.maksVerdi) {
+      context.addIssue({
+        path: [komponent.id],
+        code: "custom",
+        message: `Svaret kan ikke være høyere enn ${komponent.maksVerdi}`,
       });
     }
   }
