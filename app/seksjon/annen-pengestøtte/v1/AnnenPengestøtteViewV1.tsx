@@ -345,7 +345,7 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
-                  <ErrorMessage showIcon>
+                  <ErrorMessage showIcon aria-live="polite">
                     Du må legge til utbetalinger eller økonomiske goder
                   </ErrorMessage>
                 )}
@@ -378,7 +378,9 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
-                  <ErrorMessage showIcon>Du må legge til pengestøtte fra Norge</ErrorMessage>
+                  <ErrorMessage showIcon aria-live="polite">
+                    Du må legge til pengestøtte fra Norge
+                  </ErrorMessage>
                 )}
               </VStack>
             )}
@@ -415,7 +417,7 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
-                  <ErrorMessage showIcon>
+                  <ErrorMessage showIcon aria-live="polite">
                     Du må legge til pengestøtte fra andre EØS-land
                   </ErrorMessage>
                 )}

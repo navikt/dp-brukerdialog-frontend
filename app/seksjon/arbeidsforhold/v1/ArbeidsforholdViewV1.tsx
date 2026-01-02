@@ -229,7 +229,9 @@ export function ArbeidsforholdViewV1() {
                       </Button>
                     </HStack>
                     {visManglerArbeidsforholdFeilmelding && (
-                      <ErrorMessage showIcon>Du må legge til minst et arbeidsforhold</ErrorMessage>
+                      <ErrorMessage showIcon aria-live="polite">
+                        Du må legge til et arbeidsforhold
+                      </ErrorMessage>
                     )}
                   </VStack>
                 )}
