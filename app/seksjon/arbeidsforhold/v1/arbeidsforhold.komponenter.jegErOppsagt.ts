@@ -5,10 +5,10 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
-export const jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato =
-  "jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato";
-export const jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato =
-  "jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato";
+export const jegErOppsagtVarighetPåArbeidsforholdetFraDato =
+  "jegErOppsagtVarighetPåArbeidsforholdetFraDato";
+export const jegErOppsagtVarighetPåArbeidsforholdetTilDato =
+  "jegErOppsagtVarighetPåArbeidsforholdetTilDato";
 export const jegErOppsagtHvaVarÅrsaken = "jegErOppsagtHvaVarÅrsaken";
 export const jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge =
   "jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge";
@@ -18,17 +18,17 @@ export const jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
 
 export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: KomponentType[] = [
   {
-    id: jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato,
+    id: jegErOppsagtVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
   {
-    id: jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato,
+    id: jegErOppsagtVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },

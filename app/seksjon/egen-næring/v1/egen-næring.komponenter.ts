@@ -126,6 +126,7 @@ export const leggTilNæringsvirksomhetKomponenter: KomponentType[] = [
     id: virksomhetensNavn,
     type: "kortTekst",
     label: "Virksomhetens navn",
+    maxLength: 200,
   },
   {
     id: organisasjonsnummer,
@@ -168,11 +169,13 @@ export const leggTilGårdsbrukKomponenter: KomponentType[] = [
     id: gårdsbruketsNavn,
     type: "kortTekst",
     label: "Gårdsbrukets navn",
+    maxLength: 200,
   },
   {
     id: organisasjonsnummer,
     type: "kortTekst",
     label: "Gårdsbrukets organisasjonsnummer",
+    maxLength: 30,
   },
   {
     id: hvilkeTypeGårdsbrukDriverDu,
@@ -201,6 +204,7 @@ export const leggTilGårdsbrukKomponenter: KomponentType[] = [
     id: hvorMangeProsentAvInntektenGårTilDeg,
     type: "tall",
     label: "Hvor mange prosent av inntekten går til deg?",
+    maxValue: 100
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,

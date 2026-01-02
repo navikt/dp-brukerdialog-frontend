@@ -2,10 +2,10 @@ import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
 import {
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
-  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
@@ -61,17 +61,17 @@ export function PengestøtteFraAndreEøsLandDetaljer({
         ).toUpperCase()}
         <br />
         {pengestøtteFraAndreEøsLandProps[
-          iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
+          iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato
         ] &&
           pengestøtteFraAndreEøsLandProps[
-            iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed
+            iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato
           ] && (
             <>
               Mottatt fra og med&nbsp;
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraAndreEøsLandProps[
-                    iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed
+                    iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato
                   ]
                 )
               )}
@@ -79,19 +79,19 @@ export function PengestøtteFraAndreEøsLandDetaljer({
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraAndreEøsLandProps[
-                    iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed
+                    iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato
                   ]
                 )
               )}
             </>
           )}
-        {pengestøtteFraAndreEøsLandProps[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed] && (
+        {pengestøtteFraAndreEøsLandProps[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato] && (
           <>
             Motatt fra og med{" "}
             {formaterNorskDato(
               new Date(
                 pengestøtteFraAndreEøsLandProps[
-                  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed
+                  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato
                 ]
               )
             )}

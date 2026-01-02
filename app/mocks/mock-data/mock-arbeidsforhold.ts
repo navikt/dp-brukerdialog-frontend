@@ -13,15 +13,15 @@ import {
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import {
   jegHarSagtOppHvaVarÅrsaken,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 
 export const mockArbeidsforhold: ArbeidsforholdResponse = {
@@ -30,8 +30,8 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [navnetPåBedriften]: "STORE SKO AB",
       [hvilketLandJobbetDuI]: "SWE",
       [oppgiPersonnummeretPinDuHaddeIDetteLandet]: "916253511",
-      [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato]: "2025-09-23",
-      [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato]: "2025-09-24",
+      [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato]: "2025-09-23",
+      [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato]: "2025-09-24",
       [hvordanHarDetteArbeidsforholdetEndretSeg]: jegHarSagtOppSelv,
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
       [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon,
@@ -39,8 +39,8 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
     {
       [navnetPåBedriften]: "VAKKER TØNNE AS",
       [hvilketLandJobbetDuI]: "NOR",
-      [kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato]: "2023-01-01",
-      [kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato]: "2024-12-24",
+      [kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato]: "2023-01-01",
+      [kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato]: "2024-12-24",
       [hvordanHarDetteArbeidsforholdetEndretSeg]: kontraktenErUtgått,
       [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]:
         "ja",

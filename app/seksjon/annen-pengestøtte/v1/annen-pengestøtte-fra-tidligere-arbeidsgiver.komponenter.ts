@@ -12,6 +12,7 @@ export const pengestøtteFraTidligereArbeidsgiverModalKomponenter: KomponentType
   {
     id: hvemMottarDuUtbetalingerEllerGoderFra,
     type: "kortTekst",
+    maxLength: 200,
     label: "Hvem mottar du utbetalinger eller økonomiske goder fra?",
   },
   {

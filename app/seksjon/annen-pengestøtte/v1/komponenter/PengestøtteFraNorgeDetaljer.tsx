@@ -3,8 +3,8 @@ import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
-  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed,
-  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
   pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
@@ -63,19 +63,19 @@ export function PengestøtteFraNorgeDetaljer({
           {formaterNorskDato(
             new Date(
               pengestøtteFraNorgeProps[
-                iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed
+                iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato
               ]!
             )
           )}
           {pengestøtteFraNorgeProps[
-            iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed
+            iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato
           ] && (
             <>
               , til og med&nbsp;
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraNorgeProps[
-                    iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed
+                    iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato
                   ]
                 )
               )}
