@@ -45,6 +45,11 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraNorgeSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: pengestøtteFraNorgeModalData?.pengestøtteFraNorge ?? {},
     handleSubmit: (enPengestøtteFraNorge) => {
       if (pengestøtteFraNorgeModalData?.operasjon === undefined) {

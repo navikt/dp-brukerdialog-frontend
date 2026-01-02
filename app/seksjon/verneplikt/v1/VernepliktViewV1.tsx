@@ -36,8 +36,8 @@ export default function VernepliktViewV1() {
     submitSource: "state",
     schema: vernepliktSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
