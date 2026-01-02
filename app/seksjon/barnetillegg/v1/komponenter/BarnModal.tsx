@@ -39,6 +39,11 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (skjemaData) => {
       const barn: BarnLagtManuelt = {

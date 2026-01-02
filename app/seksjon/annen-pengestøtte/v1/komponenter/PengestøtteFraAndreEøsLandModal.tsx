@@ -51,6 +51,11 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraAndreEøsLandSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: pengestøtteFraAndreEøsLandModalData?.pengestøtteFraAndreEøsLand ?? {},
     handleSubmit: (skjemaData) => {
       if (pengestøtteFraAndreEøsLandModalData?.operasjon === undefined) {
