@@ -40,12 +40,14 @@ import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { useEffect } from "react";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function ArbeidsforholdModal({ ref }: IProps) {
+  const MODAL_BODY_ID = "arbeidsforhold-modal-body";
   const {
     registrerteArbeidsforhold,
     setRegistrerteArbeidsforhold,
@@ -95,6 +97,12 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     },
     resetAfterSubmit: true,
   });
+
+  useEffect(() => {
+    if (ref.current) {
+      document.getElementById(MODAL_BODY_ID)!.scrollTop = 0;
+    }
+  }, [ref.current?.open]);
 
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
 
@@ -324,7 +332,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           {modalTittel}
         </Heading>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body id={MODAL_BODY_ID}>
         {modalData?.form &&
           arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
             if (komponent.visHvis && !komponent.visHvis(modalData.form?.value())) {
