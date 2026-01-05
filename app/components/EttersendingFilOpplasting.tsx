@@ -1,7 +1,7 @@
-import { Box, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
+import { Box, ErrorMessage, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useEttersendingContext } from "~/seksjon/ettersending/ettersending.context";
 import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,
@@ -11,8 +11,8 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
+import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export type DokumentkravFil = {
   id: string;
@@ -40,11 +40,8 @@ interface IProps {
 
 export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>([]);
-
-  useEffect(() => {
-    console.log(dokumentkravFiler);
-  }, [dokumentkravFiler]);
+  const { oppdaterDokumentasjonskrav, dokumentkravSomManglerFiler } = useEttersendingContext();
+  const dokumentkravFiler = dokumentasjonskrav.filer || [];
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -84,7 +81,10 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       }
     });
 
-    setDokumentkravFiler((prev) => [...prev, ...filerKlarTilOpplasting, ...filerMedFeil]);
+    oppdaterDokumentasjonskrav({
+      ...dokumentasjonskrav,
+      filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
+    });
 
     if (filerKlarTilOpplasting.length > 0) {
       const responser = await Promise.all(
@@ -121,15 +121,24 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
         })
       );
 
-      setDokumentkravFiler((prev) =>
-        prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
-      );
+      const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
+
+      oppdaterDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler.map((fil) => ({
+          ...fil,
+          ...responser.find((respons) => respons?.id === fil.id),
+        })),
+      });
     }
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
+      oppdaterDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
+      });
       return;
     }
 
@@ -148,7 +157,11 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       return;
     }
 
-    setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
+    oppdaterDokumentasjonskrav({
+      ...dokumentasjonskrav,
+      filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
+    });
+
     return await response.text();
   }
 
@@ -177,21 +190,33 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
           />
         </form>
       </VStack>
-      <VStack gap="4" className="mt-8">
-        {dokumentkravFiler?.map((fil) => (
-          <FileUploadItem
-            key={fil.id}
-            file={fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }}
-            status={fil.lasterOpp ? "uploading" : "idle"}
-            translations={{ uploading: "Laster opp..." }}
-            error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
-            button={{
-              action: "delete",
-              onClick: () => slettEnFil(fil),
-            }}
-          />
-        ))}
-      </VStack>
+
+      {dokumentkravFiler.length > 0 && (
+        <VStack gap="4" className="mt-8">
+          {dokumentkravFiler?.map((fil) => (
+            <FileUploadItem
+              key={fil.id}
+              file={
+                fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }
+              }
+              status={fil.lasterOpp ? "uploading" : "idle"}
+              translations={{ uploading: "Laster opp..." }}
+              error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
+              button={{
+                action: "delete",
+                onClick: () => slettEnFil(fil),
+              }}
+            />
+          ))}
+        </VStack>
+      )}
+
+      {dokumentkravSomManglerFiler.includes(dokumentasjonskrav.id) &&
+        dokumentkravFiler.length === 0 && (
+          <ErrorMessage className="mt-4">
+            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+          </ErrorMessage>
+        )}
     </Box.New>
   );
 }

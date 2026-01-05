@@ -52,8 +52,9 @@ export function DokumentasjonView() {
     if (
       (!lagrerOgNavigererTilNesteSeksjon && !lagrerOgNavigererTilForrigeSeksjon) ||
       dokumentasjonskravIdSomSkalLagres !== null
-    )
+    ) {
       return;
+    }
 
     const nesteIndex = index + 1;
 

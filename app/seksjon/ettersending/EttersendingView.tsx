@@ -1,12 +1,12 @@
-import { BodyLong, BodyShort, Button, HStack, Link, ReadMore, VStack } from "@navikt/ds-react";
-import { useLoaderData } from "react-router";
-import { loader } from "~/routes/$soknadId.ettersending";
+import { BodyLong, BodyShort, Box, Button, HStack, Link, ReadMore, VStack } from "@navikt/ds-react";
+import { useNavigate } from "react-router";
+import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
-import { EttersendingDokumentOpplasting } from "./EttersendingDokumentOpplasting";
+import { useEttersendingContext } from "./ettersending.context";
 
 export function EttersendingView() {
-  const loaderData = useLoaderData<typeof loader>();
-  const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
+  const navigate = useNavigate();
+  const { dokumentasjonskrav, lagrer, validerDokumentasjonskrav } = useEttersendingContext();
 
   return (
     <div className="innhold">
@@ -40,14 +40,28 @@ export function EttersendingView() {
       </VStack>
 
       <VStack gap="4" className="mt-8">
-        {dokumentasjonskrav.map((dokumentasjonskrav: Dokumentasjonskrav) => (
-          <EttersendingDokumentOpplasting dokumentasjonskrav={dokumentasjonskrav} />
+        {dokumentasjonskrav?.map((dokumentasjonskrav: Dokumentasjonskrav) => (
+          <Box.New padding="space-16" background="sunken" borderRadius="large" className="mt-4">
+            <VStack gap="8">
+              <EttersendingFilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
+            </VStack>
+          </Box.New>
         ))}
       </VStack>
 
       <HStack gap="4" className="mt-14">
-        <Button type="button">Send inn dokumenter</Button>
-        <Button variant="secondary" type="button" iconPosition="right">
+        <Button type="button" loading={lagrer} onClick={() => validerDokumentasjonskrav()}>
+          Send inn dokumenter
+        </Button>
+        <Button
+          variant="secondary"
+          type="button"
+          iconPosition="right"
+          disabled={lagrer}
+          onClick={() => {
+            navigate(`../kvittering`);
+          }}
+        >
           Avbryt
         </Button>
       </HStack>

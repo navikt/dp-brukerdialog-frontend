@@ -5,6 +5,11 @@ type EttersendingContextType = {
   dokumentasjonskrav: Dokumentasjonskrav[];
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   oppdaterDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
+  lagrer: boolean;
+  setLagrer: (lagrer: boolean) => void;
+  dokumentkravSomManglerFiler: string[];
+  setDokumentkravSomManglerFiler: (dokumentkravId: string[]) => void;
+  validerDokumentasjonskrav: () => void;
 };
 
 type EttersendingProviderProps = {
@@ -33,10 +38,8 @@ function EttersendingProvider({
   children,
 }: EttersendingProviderProps) {
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
-
-  useEffect(() => {
-    console.log(dokumentasjonskrav);
-  }, [dokumentasjonskrav]);
+  const [dokumentkravSomManglerFiler, setDokumentkravSomManglerFiler] = useState<string[]>([]);
+  const [lagrer, setLagrer] = useState(false);
 
   function oppdaterDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
@@ -44,12 +47,29 @@ function EttersendingProvider({
     );
   }
 
+  function validerDokumentasjonskrav(): void {
+    const kravSomManglerFiler = dokumentasjonskrav
+      .filter((krav) => !krav.filer || krav.filer.length === 0)
+      .map((krav) => krav.id);
+
+    setDokumentkravSomManglerFiler(kravSomManglerFiler);
+  }
+
+  useEffect(() => {
+    console.log(dokumentasjonskrav);
+  }, [dokumentasjonskrav]);
+
   return (
     <EttersendingContext.Provider
       value={{
         dokumentasjonskrav,
         setDokumentasjonskrav,
         oppdaterDokumentasjonskrav,
+        lagrer,
+        setLagrer,
+        dokumentkravSomManglerFiler,
+        setDokumentkravSomManglerFiler,
+        validerDokumentasjonskrav,
       }}
     >
       {children}
