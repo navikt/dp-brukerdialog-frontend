@@ -401,9 +401,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
       { value: hverkenSkiftTurnusEllerRotasjon, label: "Nei, ingen av delene" },
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      (svar[hvordanHarDetteArbeidsforholdetEndretSeg] &&
-        svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== arbeidsforholdetErIkkeEndret) ||
-      false,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== undefined,
   },
   {
     id: "harDuJobbetSkiftTurnusEllerRotasjonLesMer",
