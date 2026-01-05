@@ -18,7 +18,7 @@ import dokumentasjonskravKomponenter, {
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
-import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
+import { DokumentkravFil, FilOpplasting } from "~/components/FilOpplasting";
 
 export type Dokumentasjonskrav = {
   id: string;

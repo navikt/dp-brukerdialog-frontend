@@ -1,16 +1,12 @@
-import { BodyLong, BodyShort, Link, ReadMore, VStack } from "@navikt/ds-react";
+import { BodyLong, BodyShort, Button, HStack, Link, ReadMore, VStack } from "@navikt/ds-react";
 import { useLoaderData } from "react-router";
 import { loader } from "~/routes/$soknadId.ettersending";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
-import { dokumentkravSvarSenderSenere } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 import { EttersendingDokumentOpplasting } from "./EttersendingDokumentOpplasting";
 
 export function EttersendingView() {
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
-  const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
-  );
 
   return (
     <div className="innhold">
@@ -44,10 +40,17 @@ export function EttersendingView() {
       </VStack>
 
       <VStack gap="4" className="mt-8">
-        {dokumentasjonSomSkalSendesAvDeg.map((dokumentasjonskrav: Dokumentasjonskrav) => (
+        {dokumentasjonskrav.map((dokumentasjonskrav: Dokumentasjonskrav) => (
           <EttersendingDokumentOpplasting dokumentasjonskrav={dokumentasjonskrav} />
         ))}
       </VStack>
+
+      <HStack gap="4" className="mt-14">
+        <Button type="button">Send inn dokumenter</Button>
+        <Button variant="secondary" type="button" iconPosition="right">
+          Avbryt
+        </Button>
+      </HStack>
     </div>
   );
 }

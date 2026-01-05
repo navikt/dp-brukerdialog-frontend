@@ -3,6 +3,7 @@ import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload"
 import { useEffect } from "react";
 import { useParams } from "react-router";
 import {
+  hentFilFeilmelding,
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
   hentTillatteFiltyperTekst,
@@ -10,8 +11,8 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { Dokumentasjonskrav } from "./DokumentasjonskravKomponent";
-import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
+import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
+import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export type DokumentkravFil = {
   id: string;
@@ -172,23 +173,6 @@ export function FilOpplasting({
     setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
 
     return await response.text();
-  }
-
-  function hentFilFeilmelding(feilType: LastOppFeil) {
-    switch (feilType) {
-      case LastOppFeil.FIL_FOR_STOR:
-        return `Kunne ikke laste opp filen. Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
-      case LastOppFeil.UGYLDIG_FORMAT:
-        return "Kunne ikke laste opp filen. Ugyldig filformat";
-      case LastOppFeil.TEKNISK_FEIL:
-        return "Kunne ikke laste opp filen. Det oppstod en teknisk feil";
-      case LastOppFeil.DUPLIKAT_FIL:
-        return "Kunne ikke laste opp filen. Filen er duplikat";
-      case LastOppFeil.UKJENT_FEIL:
-        return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
-      default:
-        return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
-    }
   }
 
   return (
