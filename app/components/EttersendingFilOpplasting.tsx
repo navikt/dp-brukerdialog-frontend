@@ -40,7 +40,7 @@ interface IProps {
 
 export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterDokumentasjonskrav, dokumentkravSomManglerFiler } = useEttersendingContext();
+  const { oppdaterEttersendinger, ettersendingManglerFiler } = useEttersendingContext();
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
 
   async function lastOppfiler(filer: FileObject[]) {
@@ -81,7 +81,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       }
     });
 
-    oppdaterDokumentasjonskrav({
+    oppdaterEttersendinger({
       ...dokumentasjonskrav,
       filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
     });
@@ -123,7 +123,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
 
       const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
 
-      oppdaterDokumentasjonskrav({
+      oppdaterEttersendinger({
         ...dokumentasjonskrav,
         filer: oppdaterteFiler.map((fil) => ({
           ...fil,
@@ -135,7 +135,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      oppdaterDokumentasjonskrav({
+      oppdaterEttersendinger({
         ...dokumentasjonskrav,
         filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
       });
@@ -158,7 +158,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       return;
     }
 
-    oppdaterDokumentasjonskrav({
+    oppdaterEttersendinger({
       ...dokumentasjonskrav,
       filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
     });
@@ -212,7 +212,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
         </VStack>
       )}
 
-      {dokumentkravSomManglerFiler.includes(dokumentasjonskrav.id) &&
+      {ettersendingManglerFiler.includes(dokumentasjonskrav.id) &&
         dokumentkravFiler.length === 0 && (
           <ErrorMessage className="mt-4">
             Du må laste opp minst en fil før dokumentasjonen kan sendes inn.

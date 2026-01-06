@@ -237,7 +237,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       formData.append("dokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskravListe));
 
       const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/lagre`,
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}`,
         {
           method: "PUT",
           body: formData,

@@ -6,7 +6,7 @@ import { useEttersendingContext } from "./ettersending.context";
 
 export function EttersendingView() {
   const navigate = useNavigate();
-  const { dokumentasjonskrav, lagrer, validerDokumentasjonskrav } = useEttersendingContext();
+  const { ettersendinger, lagrer, validerEttersending } = useEttersendingContext();
 
   return (
     <div className="innhold">
@@ -40,8 +40,14 @@ export function EttersendingView() {
       </VStack>
 
       <VStack gap="4" className="mt-8">
-        {dokumentasjonskrav?.map((dokumentasjonskrav: Dokumentasjonskrav) => (
-          <Box.New padding="space-16" background="sunken" borderRadius="large" className="mt-4">
+        {ettersendinger.map((dokumentasjonskrav: Dokumentasjonskrav) => (
+          <Box.New
+            key={dokumentasjonskrav.id}
+            padding="space-16"
+            background="sunken"
+            borderRadius="large"
+            className="mt-4"
+          >
             <VStack gap="8">
               <EttersendingFilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
             </VStack>
@@ -50,7 +56,7 @@ export function EttersendingView() {
       </VStack>
 
       <HStack gap="4" className="mt-14">
-        <Button type="button" loading={lagrer} onClick={() => validerDokumentasjonskrav()}>
+        <Button type="button" loading={lagrer} onClick={() => validerEttersending()}>
           Send inn dokumenter
         </Button>
         <Button

@@ -32,9 +32,12 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
 export default function EttersendingRoute() {
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
+  const ettersendinger = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
+  );
 
   return (
-    <EttersendingProvider dokumentasjonskrav={dokumentasjonskrav}>
+    <EttersendingProvider dokumentasjonskrav={dokumentasjonskrav} ettersendinger={ettersendinger}>
       <EttersendingView />
     </EttersendingProvider>
   );

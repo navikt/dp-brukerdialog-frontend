@@ -178,19 +178,6 @@ export function FilOpplasting({
   return (
     <Box.New borderRadius="large" background="sunken">
       <VStack gap="4">
-        <HStack justify="space-between">
-          <Heading size="small" level="3">
-            {dokumentasjonskrav.tittel || "Dokumentasjon"}
-          </Heading>
-          {erEttersending && (
-            <Tag variant="warning" size="xsmall">
-              Mangler
-            </Tag>
-          )}
-        </HStack>
-
-        {dokumentasjonskrav.type && <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />}
-
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
             className="mt-4 fileUpload"
