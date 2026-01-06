@@ -141,7 +141,8 @@ export const leggTilNæringsvirksomhetKomponenter: KomponentType[] = [
   {
     id: hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
     type: "tall",
-    label: "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
+    label:
+      "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert",
   },
   {
     id: hvorMangeTimerJobbetPerUkeNå,

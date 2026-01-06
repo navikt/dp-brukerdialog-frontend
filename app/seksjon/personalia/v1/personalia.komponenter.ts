@@ -122,7 +122,7 @@ export const personaliaSpørsmål: KomponentType[] = [
   {
     id: folkeregistrertAdresseErNorgeStemmerDet,
     type: "envalg",
-    label: "Vi ser fra din folkeregistrete adresse at du bor i Norge. Stemmer dette?",
+    label: "Vi ser fra din folkeregistrerte adresse at du bor i Norge. Stemmer dette?",
     options: [
       { value: "ja", label: "Ja, jeg bor i Norge" },
       { value: "nei", label: "Nei, jeg bor ikke i Norge" },
