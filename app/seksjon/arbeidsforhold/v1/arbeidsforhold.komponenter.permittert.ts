@@ -43,6 +43,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     id: permittertNårErDuPermittertTilOgMedDato,
     type: "periodeTil",
     label: "Til og med dato",
+    optional: true,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },
@@ -119,6 +120,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     id: permittertHvorMangeProsentErDuPermittert,
     type: "tall",
     label: "Hvor mange prosent er du permittert?",
+    maksVerdi: 100,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },

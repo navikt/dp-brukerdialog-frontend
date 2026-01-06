@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
@@ -19,6 +19,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function TilleggsopplysningerViewV1() {
   const seksjonnavn = "Tilleggsopplysninger";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
@@ -65,24 +66,29 @@ export function TilleggsopplysningerViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
-        <Form {...form.getFormProps()}>
-          <VStack gap="8">
+        <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
+          <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-            {tilleggsopplysningerKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                return null;
-              }
+            <VStack gap="8">
+              {tilleggsopplysningerKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                  return null;
+                }
 
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(komponent.id as keyof TilleggsopplysningerSvar)}
-                />
-              );
-            })}
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof TilleggsopplysningerSvar)}
+                  />
+                );
+              })}
+            </VStack>
 
             {actionData && (
               <Alert variant="error" className="mt-4">
@@ -111,8 +117,8 @@ export function TilleggsopplysningerViewV1() {
                 Neste steg
               </Button>
             </HStack>
-          </VStack>
-        </Form>
+          </Form>
+        </VStack>
       </VStack>
       <SøknadFooter
         className="footer"

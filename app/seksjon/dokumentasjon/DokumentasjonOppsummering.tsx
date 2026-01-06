@@ -61,7 +61,7 @@ export default function DokumentasjonOppsummering({
           );
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={`/${søknadId}/dokumentasjon`} redigerbar={true} />
+      <FormSummaryFooter seksjonsUrl={`/${søknadId}/dokumentasjon`} redigerbar={true} seksjonnavn="Dokumentasjon"/>
     </FormSummary>
   );
 }

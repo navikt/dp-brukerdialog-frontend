@@ -4,25 +4,25 @@ import {
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
-  jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato,
-  jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato,
+  jegErOppsagtVarighetPåArbeidsforholdetFraDato,
+  jegErOppsagtVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import {
   jegHarSagtOppHvaVarÅrsaken,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   jegHarFåttAvskjedHvaVarÅrsaken,
-  jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato,
-  jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato,
+  jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
+  jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
 import {
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
+  kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import {
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
@@ -41,8 +41,8 @@ import {
   konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
   konkursHarDuSøktOmLønnsgarantimidler,
   konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-  konkursVarighetPåArbeidsforholdetFraOgMedDato,
-  konkursVarighetPåArbeidsforholdetTilOgMedDato,
+  konkursVarighetPåArbeidsforholdetFraDato,
+  konkursVarighetPåArbeidsforholdetTilDato,
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
@@ -96,10 +96,10 @@ export const hverkenSkiftTurnusEllerRotasjon = "hverkenSkiftTurnusEllerRotasjon"
 export const annenRotasjon = "annenRotasjon";
 export const hvilkenTypeRotasjonsordningJobbetDu = "hvilkenTypeRotasjonsordningJobbetDu";
 export const annenRotasjonBeskrivelse = "annenRotasjonBeskrivelse";
-export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed =
-  "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed";
-export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed =
-  "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed";
+export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto =
+  "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDato";
+export const oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato =
+  "oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato";
 
 export type Arbeidsforhold = ArbeidsforholdModalSvar & {
   id: string;
@@ -111,17 +111,17 @@ export type ArbeidsforholdModalSvar = {
   [hvilketLandJobbetDuI]?: string;
   [oppgiPersonnummeretPinDuHaddeIDetteLandet]?: string;
   [hvordanHarDetteArbeidsforholdetEndretSeg]?: string;
-  [jegErOppsagtVarighetPåArbeidsforholdetFraOgMedDato]?: string;
-  [jegErOppsagtVarighetPåArbeidsforholdetTilOgMedDato]?: string;
+  [jegErOppsagtVarighetPåArbeidsforholdetFraDato]?: string;
+  [jegErOppsagtVarighetPåArbeidsforholdetTilDato]?: string;
   [jegErOppsagtHvaVarÅrsaken]?: string;
   [jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
   [jegErOppsagtHvaHarDuSvartPåTilbudet]?: string;
   [jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato]?: string;
-  [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato]?: string;
+  [jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato]?: string;
+  [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato]?: string;
   [jegHarSagtOppHvaVarÅrsaken]?: string;
-  [jegHarFåttAvskjedVarighetPåArbeidsforholdetFraOgMedDato]?: string;
-  [jegHarFåttAvskjedVarighetPåArbeidsforholdetTilOgMedDato]?: string;
+  [jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato]?: string;
+  [jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato]?: string;
   [jegHarFåttAvskjedHvaVarÅrsaken]?: string;
   [arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet]?: string;
   [arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert]?: string;
@@ -129,13 +129,13 @@ export type ArbeidsforholdModalSvar = {
   [arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge]?: string;
   [arbeidstidenErRedusertHvaHarDuSvartPåTilbudet]?: string;
   [arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato]?: string;
-  [kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato]?: string;
+  [kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato]?: string;
+  [kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato]?: string;
   [kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver]?: string;
   [kontraktenErUtgåttHvaHarDuSvartPåTilbudet]?: string;
   [kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]?: string;
-  [konkursVarighetPåArbeidsforholdetFraOgMedDato]?: string;
-  [konkursVarighetPåArbeidsforholdetTilOgMedDato]?: string;
+  [konkursVarighetPåArbeidsforholdetFraDato]?: string;
+  [konkursVarighetPåArbeidsforholdetTilDato]?: string;
   [konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato]?: string;
   [konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet]?: string;
   [konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler]?: string;
@@ -162,8 +162,8 @@ export type ArbeidsforholdModalSvar = {
   [harDuJobbetSkiftTurnusEllerRotasjon]?: string;
   [hvilkenTypeRotasjonsordningJobbetDu]?: string;
   [annenRotasjonBeskrivelse]?: string;
-  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed]?: string;
-  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed]?: string;
+  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto]?: string;
+  [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato]?: string;
 };
 
 export type ArbeidsforholdSvar = {
@@ -357,6 +357,7 @@ export const arbeidsforholdModalKomponenter: KomponentType[] = [
     id: navnetPåBedriften,
     type: "kortTekst",
     label: "Navnet på bedriften",
+    maksLengde: 200,
   },
   {
     id: hvilketLandJobbetDuI,
@@ -367,6 +368,7 @@ export const arbeidsforholdModalKomponenter: KomponentType[] = [
     id: oppgiPersonnummeretPinDuHaddeIDetteLandet,
     type: "kortTekst",
     label: "Oppgi personnummeret (PIN) som du hadde i dette landet",
+    maksLengde: 30,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       (svar[hvilketLandJobbetDuI] && svar[hvilketLandJobbetDuI] !== "NOR") || false,
   },
@@ -391,7 +393,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
   {
     id: harDuJobbetSkiftTurnusEllerRotasjon,
     type: "envalg",
-    label: "Har du jobbet du skift, turnus eller rotasjon?",
+    label: "Har du jobbet skift, turnus eller rotasjon?",
     description:
       "<p>Skift eller turnus kan være når du har avtale om å arbeide ulike tider i ulike uker, som for eksempel dagtid en uke og kveldstid en uke, eller har fri hver tredje helg.</p>" +
       "<p>En rotasjon er for eksempel at du arbeider to uker og har fri i to uker.</p>",
@@ -401,9 +403,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
       { value: hverkenSkiftTurnusEllerRotasjon, label: "Nei, ingen av delene" },
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      (svar[hvordanHarDetteArbeidsforholdetEndretSeg] &&
-        svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== arbeidsforholdetErIkkeEndret) ||
-      false,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== undefined,
   },
   {
     id: "harDuJobbetSkiftTurnusEllerRotasjonLesMer",
@@ -439,24 +439,24 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
   {
     id: annenRotasjonBeskrivelse,
     type: "langTekst",
-    maxLength: 500,
+    maksLengde: 500,
     label: "Annen rotasjon",
     description: "Beskriv kort den avtalte rotasjonsordningen din",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvilkenTypeRotasjonsordningJobbetDu] == annenRotasjon,
   },
   {
-    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoFraOgMed,
+    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
     type: "periodeFra",
     periodeLabel: "Oppgi siste arbeidsperiode du hadde i den siste rotasjonen din",
-    label: "Fra og med",
+    label: "Fra dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
   },
   {
-    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinDatoTilOgMed,
+    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
   },

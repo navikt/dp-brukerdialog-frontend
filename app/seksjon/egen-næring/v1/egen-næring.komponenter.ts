@@ -87,7 +87,7 @@ export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
     variant: "informasjon",
     label: "Informasjon",
     description:
-      "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid. Du må legge til organisasjonsnummer for egen næring.</p>",
+      "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>",
     visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
   },
 ];
@@ -126,6 +126,7 @@ export const leggTilNæringsvirksomhetKomponenter: KomponentType[] = [
     id: virksomhetensNavn,
     type: "kortTekst",
     label: "Virksomhetens navn",
+    maksLengde: 200,
   },
   {
     id: organisasjonsnummer,
@@ -140,7 +141,8 @@ export const leggTilNæringsvirksomhetKomponenter: KomponentType[] = [
   {
     id: hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
     type: "tall",
-    label: "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
+    label:
+      "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert",
   },
   {
     id: hvorMangeTimerJobbetPerUkeNå,
@@ -168,11 +170,13 @@ export const leggTilGårdsbrukKomponenter: KomponentType[] = [
     id: gårdsbruketsNavn,
     type: "kortTekst",
     label: "Gårdsbrukets navn",
+    maksLengde: 200,
   },
   {
     id: organisasjonsnummer,
     type: "kortTekst",
     label: "Gårdsbrukets organisasjonsnummer",
+    maksLengde: 30,
   },
   {
     id: hvilkeTypeGårdsbrukDriverDu,
@@ -201,6 +205,7 @@ export const leggTilGårdsbrukKomponenter: KomponentType[] = [
     id: hvorMangeProsentAvInntektenGårTilDeg,
     type: "tall",
     label: "Hvor mange prosent av inntekten går til deg?",
+    maksVerdi: 100
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
@@ -218,6 +223,6 @@ export const leggTilGårdsbrukKomponenter: KomponentType[] = [
     id: hvordanHarDuBeregnetAntallArbeidstimerTotalt,
     type: "langTekst",
     label: "Forklar kort hvordan du har beregnet antall arbeidstimer totalt",
-    maxLength: 500,
+    maksLengde: 500,
   },
 ];

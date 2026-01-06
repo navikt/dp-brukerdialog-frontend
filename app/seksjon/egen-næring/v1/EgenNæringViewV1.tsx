@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -33,6 +33,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function EgenNæringViewV1() {
   const seksjonnavn = "Egen næring";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
@@ -59,8 +60,8 @@ export function EgenNæringViewV1() {
     submitSource: "state",
     schema: egenNæringSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -171,9 +172,12 @@ export function EgenNæringViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <Form {...form.getFormProps()}>
             <VStack gap="8">
               <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
@@ -190,21 +194,16 @@ export function EgenNæringViewV1() {
                 );
               })}
               {form.value(driverDuEgenNæringsvirksomhet) === "ja" && (
-                <>
-                  {visNæringsvirksomhetFeilmelding && (
-                    <ErrorMessage showIcon>Du må legge til en næringsvirksomhet</ErrorMessage>
+                <VStack gap="space-16">
+                  {næringsvirksomheter?.map(
+                    (næringsvirksomhet: Næringsvirksomhet, index: number) => (
+                      <NæringsvirksomhetDetaljer
+                        key={index}
+                        næringsvirksomhetIndex={index}
+                        næringsvirksomhet={næringsvirksomhet}
+                      />
+                    )
                   )}
-                  <VStack gap="space-16">
-                    {næringsvirksomheter?.map(
-                      (næringsvirksomhet: Næringsvirksomhet, index: number) => (
-                        <NæringsvirksomhetDetaljer
-                          key={index}
-                          næringsvirksomhetIndex={index}
-                          næringsvirksomhet={næringsvirksomhet}
-                        />
-                      )
-                    )}
-                  </VStack>
                   <HStack>
                     <Button
                       type={"button"}
@@ -218,9 +217,13 @@ export function EgenNæringViewV1() {
                       Legg til næringsvirksomhet
                     </Button>
                   </HStack>
-                </>
+                  {visNæringsvirksomhetFeilmelding && (
+                    <ErrorMessage showIcon aria-live="polite">
+                      Du må legge til en næringsvirksomhet
+                    </ErrorMessage>
+                  )}
+                </VStack>
               )}
-
               {egenNæringEgetGårdsbrukKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
@@ -235,19 +238,10 @@ export function EgenNæringViewV1() {
                 );
               })}
               {form.value(driverDuEgetGårdsbruk) === "ja" && (
-                <>
-                  {visGårdsbrukFeilmelding && (
-                    <ErrorMessage showIcon>Du må legge til et gårdsbruk</ErrorMessage>
-                  )}
-                  <VStack gap="space-16">
-                    {gårdsbruk?.map((gårdsbruk: Gårdsbruk, index: number) => (
-                      <GårdsbrukDetaljer
-                        key={index}
-                        gårdsbrukIndex={index}
-                        etGårdsbruk={gårdsbruk}
-                      />
-                    ))}
-                  </VStack>
+                <VStack gap="space-16">
+                  {gårdsbruk?.map((gårdsbruk: Gårdsbruk, index: number) => (
+                    <GårdsbrukDetaljer key={index} gårdsbrukIndex={index} etGårdsbruk={gårdsbruk} />
+                  ))}
                   <HStack>
                     <Button
                       type={"button"}
@@ -261,7 +255,12 @@ export function EgenNæringViewV1() {
                       Legg til gårdsbruk
                     </Button>
                   </HStack>
-                </>
+                  {visGårdsbrukFeilmelding && (
+                    <ErrorMessage showIcon aria-live="polite">
+                      Du må legge til et gårdsbruk
+                    </ErrorMessage>
+                  )}
+                </VStack>
               )}
 
               {actionData && (
@@ -282,7 +281,7 @@ export function EgenNæringViewV1() {
                 Forrige steg
               </Button>
               <Button
-                type="submit"
+                type="button"
                 variant="primary"
                 onClick={handleSubmit}
                 iconPosition="right"

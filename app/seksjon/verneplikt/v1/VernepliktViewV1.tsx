@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
@@ -24,6 +24,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
@@ -35,8 +36,8 @@ export default function VernepliktViewV1() {
     submitSource: "state",
     schema: vernepliktSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -87,9 +88,12 @@ export default function VernepliktViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             <VStack gap="8">

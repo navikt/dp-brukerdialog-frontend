@@ -24,7 +24,7 @@ export const tilleggsopplysningerKomponenter: KomponentType[] = [
     id: tilleggsopplysninger,
     type: "langTekst",
     label: "Skriv inn tilleggsopplysningene her",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
   },
 ];

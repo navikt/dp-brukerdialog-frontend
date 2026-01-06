@@ -7,10 +7,10 @@ export const pensjonFraAndreEnnNav = "pensjonFraAndreEnnNav";
 export const dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere =
   "dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere";
 export const hvemUtbetalerPengestøtten = "hvemUtbetalerPengestøtten";
-export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed =
-  "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed";
-export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed =
-  "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed";
+export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato =
+  "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato";
+export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato =
+  "iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato";
 export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver =
   "mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver";
 
@@ -19,8 +19,8 @@ export type PengestøtteFraNorgeModalSvar = {
     | typeof pensjonFraAndreEnnNav
     | typeof dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere;
   [hvemUtbetalerPengestøtten]?: string;
-  [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed]?: string;
-  [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed]?: string;
+  [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]?: string;
+  [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato]?: string;
 };
 
 export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
@@ -96,19 +96,20 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
     id: hvemUtbetalerPengestøtten,
     type: "kortTekst",
     label: "Hvem utbetaler pengestøtten?",
+    maksLengde: 200,
     visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
       svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === "pensjonFraAndreEnnNav",
   },
   {
-    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed,
+    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
     type: "periodeFra",
     periodeLabel: "I hvilken periode har du mottatt eller søkt om pengestøtten?",
-    label: "Fra og med",
+    label: "Fra dato",
   },
   {
-    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed,
+    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     description: "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
     optional: true,
   },

@@ -122,7 +122,7 @@ export const personaliaSpørsmål: KomponentType[] = [
   {
     id: folkeregistrertAdresseErNorgeStemmerDet,
     type: "envalg",
-    label: "Vi ser fra din folkeregistrete adresse at du bor i Norge. Stemmer dette?",
+    label: "Vi ser fra din folkeregistrerte adresse at du bor i Norge. Stemmer dette?",
     options: [
       { value: "ja", label: "Ja, jeg bor i Norge" },
       { value: "nei", label: "Nei, jeg bor ikke i Norge" },
@@ -135,7 +135,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
   {
     id: "personaliaBostedslandForklarendeTekst",
     type: "forklarendeTekst",
-    description: "<h2>Bostedsland</h2>",
+    description: "<h3>Bostedsland</h3>",
     visHvis: (svar: PersonaliaSvar) =>
       svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei" && svar[landFraPdl] === "NORGE",
   },
@@ -189,8 +189,9 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
   },
   {
     id: hvorforReistDuFraNorge,
-    type: "kortTekst",
+    type: "langTekst",
     label: "Hvorfor reiste du fra Norge?",
+    maksLengde: 500,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {

@@ -35,7 +35,7 @@ export default function TilleggsopplysningerOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Tilleggsopplysninger"/>
     </FormSummary>
   );
 }

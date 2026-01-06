@@ -27,6 +27,11 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilNæringsvirksomhetSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: næringsvirksomhetModalData?.næringsvirksomhet ?? {},
     handleSubmit: (næringsvirksomhet) => {
       if (
@@ -92,7 +97,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
 
             <HStack className="mt-4" justify="end">
               <Button
-                type={"submit"}
+                type="submit"
                 icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
               >
                 Lagre og lukk

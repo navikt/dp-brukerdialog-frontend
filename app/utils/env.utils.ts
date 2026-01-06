@@ -16,6 +16,8 @@ export type IEnv = {
   DP_MELLOMLAGRING_TOKEN: string;
   DP_MELLOMLAGRING_URL: string;
   DP_MINE_DAGPENGER_URL: string;
+  ARBEIDSSOKERREGISTERET_URL: string;
+  ARBEIDSSOKERREGISTERET_TOKEN: string;
   FARO_URL: string;
 };
 

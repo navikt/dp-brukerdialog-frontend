@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, BodyShort, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -33,24 +33,23 @@ import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import invariant from "tiny-invariant";
 
-enum BarnLagtManueltVarsel {
-  MÅ_LEGGE_TIL_BARN = "må-legge-til-barn",
-  MÅ_FJERNE_BARN = "må-fjerne-barn",
-}
-
 export function BarnetilleggViewV1() {
+  const seksjonnavn = "Barnetillegg";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
-  const [varsel, setVarsel] = useState<BarnLagtManueltVarsel | undefined>(undefined);
+  const [visLeggTilBarnFeilmelding, setVisLeggTilBarnFeilmelding] = useState(false);
   const {
     barnFraPdl,
     barnLagtManuelt,
+    setBarnLagtManuelt,
     setValiderBarnFraPdl,
     modalData,
     setModalData,
     dokumentasjonskrav,
+    setDokumentasjonskrav,
   } = useBarnetilleggContext();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
@@ -73,17 +72,13 @@ export function BarnetilleggViewV1() {
   const forsørgerDuBarnSomIkkeVisesHerSvar = form.value(forsørgerDuBarnSomIkkeVisesHer);
 
   useEffect(() => {
+    setVisLeggTilBarnFeilmelding(
+      forsørgerDuBarnSomIkkeVisesHerSvar !== "ja" && barnLagtManuelt.length > 0
+    );
     if (forsørgerDuBarnSomIkkeVisesHerSvar === "nei") {
-      setVarsel(barnLagtManuelt.length > 0 ? BarnLagtManueltVarsel.MÅ_FJERNE_BARN : undefined);
-      return;
+      setBarnLagtManuelt([]);
+      setDokumentasjonskrav([]);
     }
-
-    if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
-      setVarsel(BarnLagtManueltVarsel.MÅ_LEGGE_TIL_BARN);
-      return;
-    }
-
-    setVarsel(undefined);
   }, [forsørgerDuBarnSomIkkeVisesHerSvar, barnLagtManuelt.length]);
 
   function handleMellomlagring(ønsketHandling: Seksjonshandling) {
@@ -101,7 +96,8 @@ export function BarnetilleggViewV1() {
     form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
-    if (varsel) {
+    if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
+      setVisLeggTilBarnFeilmelding(true);
       return;
     }
 
@@ -139,21 +135,12 @@ export function BarnetilleggViewV1() {
     };
   }
 
-  function hentVarselTekst(varsel: BarnLagtManueltVarsel) {
-    switch (varsel) {
-      case BarnLagtManueltVarsel.MÅ_LEGGE_TIL_BARN:
-        return "Du må legge til et barn for å kunne gå videre i søknaden.";
-      case BarnLagtManueltVarsel.MÅ_FJERNE_BARN:
-        return "Du må fjerne barnet for å kunne gå videre i søknaden.";
-      default:
-        console.error("Ukjent varseltype:", varsel);
-        return null;
-    }
-  }
-
   return (
     <div className="innhold">
-      <h2>Barnetillegg</h2>
+      <title>{seksjonHeadTitle}</title>
+      <Heading size="medium" level="2">
+        {seksjonnavn}
+      </Heading>
       {barnetilleggForklarendeTekst.map((komponent) => {
         if (komponent.visHvis && !komponent.visHvis(form.value())) {
           return null;
@@ -211,10 +198,10 @@ export function BarnetilleggViewV1() {
           </HStack>
         )}
 
-        {varsel && (
-          <Alert variant="warning" className="mt-4">
-            <BodyShort className="validation--warning">{hentVarselTekst(varsel)}</BodyShort>
-          </Alert>
+        {visLeggTilBarnFeilmelding && (
+          <ErrorMessage showIcon aria-live="polite">
+            Du må legge til barn du forsørger
+          </ErrorMessage>
         )}
 
         {actionData && (

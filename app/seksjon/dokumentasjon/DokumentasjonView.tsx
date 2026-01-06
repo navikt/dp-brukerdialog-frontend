@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
@@ -16,6 +16,8 @@ const NESTE_SEKSJON_ID = "oppsummering";
 const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
 
 export function DokumentasjonView() {
+  const seksjonnavn = "Dokumentasjon";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const navigate = useNavigate();
   const {
     dokumentasjonskrav,
@@ -99,27 +101,34 @@ export function DokumentasjonView() {
 
   return (
     <div className="innhold">
-      <h2>Dokumentasjon</h2>
-      <VStack gap="4">
-        {dokumentasjonKomponenter.map((komponent) => {
-          if (komponent.visHvis && !komponent.visHvis(form.value())) {
-            return null;
-          }
+      <title>{seksjonHeadTitle}</title>
+      <VStack gap="20">
+        <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
+          <VStack gap="8">
+            {dokumentasjonKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                return null;
+              }
 
-          return (
-            <Komponent
-              key={komponent.id}
-              props={komponent}
-              formScope={form.scope(komponent.id as keyof DokumentasjonSvar)}
-            />
-          );
-        })}
-        {dokumentasjonskrav.map((dokumentasjonskrav) => (
-          <DokumentasjonskravKomponent
-            key={dokumentasjonskrav.id}
-            dokumentasjonskrav={dokumentasjonskrav}
-          />
-        ))}
+              return (
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof DokumentasjonSvar)}
+                />
+              );
+            })}
+            {dokumentasjonskrav.map((dokumentasjonskrav) => (
+              <DokumentasjonskravKomponent
+                key={dokumentasjonskrav.id}
+                dokumentasjonskrav={dokumentasjonskrav}
+              />
+            ))}
+          </VStack>
+        </VStack>
       </VStack>
 
       {harTekniskFeil && (

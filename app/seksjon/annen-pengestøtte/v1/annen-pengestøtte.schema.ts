@@ -10,11 +10,11 @@ import {
   dagpengerEllerArbeidsledighetstrygd,
   foreldrepengerEllerSvangerskapspenger,
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
-  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
@@ -30,8 +30,8 @@ import {
   PengestøtteFraNorgeModalSvar,
   dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
   pensjonFraAndreEnnNav,
-  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed,
-  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -95,11 +95,11 @@ export const pengestøtteFraAndreEøsLandSchema = z
       .optional(),
     [fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]: z.string().optional(),
     [mottarDuFortsattPengestøttenFraAndreEøsLand]: z.string().optional(),
-    [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]: z.string().optional(),
-    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed]: z
+    [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato]: z.string().optional(),
+    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato]: z
       .string()
       .optional(),
-    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed]: z
+    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato]: z
       .string()
       .optional(),
   })
@@ -120,8 +120,8 @@ export const pengestøtteFraNorgeSchema = z
       ])
       .optional(),
     [hvemUtbetalerPengestøtten]: z.string().optional(),
-    [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraOgMed]: z.string().optional(),
-    [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilOgMed]: z.string().optional(),
+    [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]: z.string().optional(),
+    [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato]: z.string().optional(),
   })
   .superRefine((data, context) => {
     pengestøtteFraNorgeModalKomponenter.forEach((komponent) => {

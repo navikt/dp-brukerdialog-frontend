@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -52,6 +52,7 @@ import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pe
 
 export function AnnenPengestøtteViewV1() {
   const seksjonnavn = "Annen pengestøtte";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
@@ -93,8 +94,8 @@ export function AnnenPengestøtteViewV1() {
     submitSource: "state",
     schema: annenPengestøtteSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -305,11 +306,14 @@ export function AnnenPengestøtteViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="8">
+            <Heading size="medium" level="2">
+              {seksjonnavn}
+            </Heading>
             {mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter.map(
               (komponent) => render(komponent)
             )}
@@ -341,14 +345,16 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
-                  <ErrorMessage showIcon>
+                  <ErrorMessage showIcon aria-live="polite">
                     Du må legge til utbetalinger eller økonomiske goder
                   </ErrorMessage>
                 )}
               </VStack>
             )}
 
-            <h3>Pengestøtte fra Norge</h3>
+            <Heading size="small" level="3">
+              Pengestøtte fra Norge
+            </Heading>
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
 
             {form.value(mottarDuPengestøtteFraAndreEnnNav) === "ja" && (
@@ -372,12 +378,16 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
-                  <ErrorMessage showIcon>Du må legge til pengestøtte fra Norge</ErrorMessage>
+                  <ErrorMessage showIcon aria-live="polite">
+                    Du må legge til pengestøtte fra Norge
+                  </ErrorMessage>
                 )}
               </VStack>
             )}
 
-            <h3>Pengestøtte fra andre EØS land</h3>
+            <Heading size="small" level="3">
+              Pengestøtte fra andre EØS-land
+            </Heading>
             {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {
               return render(komponent);
             })}
@@ -407,7 +417,7 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
-                  <ErrorMessage showIcon>
+                  <ErrorMessage showIcon aria-live="polite">
                     Du må legge til pengestøtte fra andre EØS-land
                   </ErrorMessage>
                 )}

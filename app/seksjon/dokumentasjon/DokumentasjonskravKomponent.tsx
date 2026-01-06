@@ -301,7 +301,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
               />
               {visHarValideringsfeilFeilmelding && (
                 <VStack gap="4" className="mt-8">
-                  <ErrorMessage>
+                  <ErrorMessage showIcon aria-live="polite">
                     Du må rette feilen{antallFilerMedValideringsfeil > 1 ? "e" : ""} over før
                     dokumentasjon kan sendes inn.
                   </ErrorMessage>
@@ -309,7 +309,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
               )}
               {visIngenFilerErLastetOppFeilmelding && (
                 <VStack gap="4" className="mt-8">
-                  <ErrorMessage>
+                  <ErrorMessage showIcon aria-live="polite">
                     Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
                   </ErrorMessage>
                 </VStack>

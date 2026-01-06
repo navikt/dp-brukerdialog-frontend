@@ -108,7 +108,7 @@ export default function ArbeidsforholdOppsummeringV1({
           </FormSummary.Answer>
         ))}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Arbeidsforhold"/>
     </FormSummary>
   );
 }

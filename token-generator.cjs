@@ -16,6 +16,10 @@ const TOKEN_LIST = [
     env: "DP_MELLOMLAGRING_TOKEN",
     aud: "dev-gcp:teamdagpenger:dp-mellomlagring",
   },
+  {
+    env: "ARBEIDSSOKERREGISTERET_TOKEN",
+    aud: "dev-gcp:paw:paw-arbeidssoekerregisteret-api-oppslag-v2",
+  },
 ];
 
 const IDENT_LIST = [
