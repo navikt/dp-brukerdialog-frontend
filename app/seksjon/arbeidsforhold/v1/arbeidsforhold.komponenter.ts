@@ -393,7 +393,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
   {
     id: harDuJobbetSkiftTurnusEllerRotasjon,
     type: "envalg",
-    label: "Har du jobbet du skift, turnus eller rotasjon?",
+    label: "Har du jobbet skift, turnus eller rotasjon?",
     description:
       "<p>Skift eller turnus kan være når du har avtale om å arbeide ulike tider i ulike uker, som for eksempel dagtid en uke og kveldstid en uke, eller har fri hver tredje helg.</p>" +
       "<p>En rotasjon er for eksempel at du arbeider to uker og har fri i to uker.</p>",
