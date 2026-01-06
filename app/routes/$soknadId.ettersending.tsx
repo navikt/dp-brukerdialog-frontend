@@ -19,17 +19,14 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
     return { dokumentasjonskrav: null };
   }
 
-  const data = await response.json();
-  const dokumentasjonskrav = data.flatMap((krav: string) => JSON.parse(krav));
-  const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
-  );
+  const dokumentkravJson = await response.json();
+  const dokumentasjonskrav = dokumentkravJson.flatMap((krav: string) => JSON.parse(krav));
 
-  if (dokumentasjonSomSkalSendesAvDeg.length === 0) {
+  if (dokumentasjonskrav.length === 0) {
     return redirect(`/soknad/${params.soknadId}/kvittering`);
   }
 
-  return { dokumentasjonskrav: dokumentasjonSomSkalSendesAvDeg };
+  return { dokumentasjonskrav };
 }
 
 export default function EttersendingRoute() {
@@ -37,7 +34,7 @@ export default function EttersendingRoute() {
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
   return (
-    <EttersendingProvider dokumentasjonskrav={dokumentasjonskrav || []}>
+    <EttersendingProvider dokumentasjonskrav={dokumentasjonskrav}>
       <EttersendingView />
     </EttersendingProvider>
   );

@@ -139,6 +139,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
         ...dokumentasjonskrav,
         filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
       });
+
       return;
     }
 

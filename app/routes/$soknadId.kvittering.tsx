@@ -17,14 +17,14 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
 
   if (alleSeksjonerResponse.ok) {
     const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
+    const dokumentasjonskravJson = await dokumentasjonskravResponse.json();
+    const dokumentasjonskrav = dokumentasjonskravJson.flatMap((dokumentasjonskrav: string) =>
+      JSON.parse(dokumentasjonskrav)
+    );
 
     return {
       seksjoner: await alleSeksjonerResponse.json(),
-      dokumentasjonskrav: dokumentasjonskravResponse.ok
-        ? (await dokumentasjonskravResponse.json()).flatMap((dokumentasjonskrav: string) =>
-            JSON.parse(dokumentasjonskrav)
-          )
-        : undefined,
+      dokumentasjonskrav: dokumentasjonskrav,
     };
   }
 
