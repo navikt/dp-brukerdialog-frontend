@@ -31,8 +31,8 @@ export function DinSituasjonViewV1() {
     submitSource: "state",
     schema: dinSituasjonSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
