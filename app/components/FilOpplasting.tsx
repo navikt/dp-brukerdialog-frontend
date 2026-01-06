@@ -43,7 +43,6 @@ interface IProps {
   setIngenFilerErLastetOppForDokumentkravet: (
     ingenFilerErLastetOppForDokumentkravet: boolean
   ) => void;
-  erEttersending?: boolean;
 }
 
 export function FilOpplasting({
@@ -53,7 +52,6 @@ export function FilOpplasting({
   setDokumentasjonskravIdSomSkalLagres,
   setAntallFilerMedFeil,
   setIngenFilerErLastetOppForDokumentkravet,
-  erEttersending,
 }: IProps) {
   const { soknadId } = useParams();
 

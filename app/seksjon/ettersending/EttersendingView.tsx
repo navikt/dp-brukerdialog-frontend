@@ -1,4 +1,14 @@
-import { BodyLong, BodyShort, Box, Button, HStack, Link, ReadMore, VStack } from "@navikt/ds-react";
+import {
+  BodyLong,
+  BodyShort,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Link,
+  ReadMore,
+  VStack,
+} from "@navikt/ds-react";
 import { useNavigate } from "react-router";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
@@ -10,7 +20,9 @@ export function EttersendingView() {
 
   return (
     <div className="innhold">
-      <h2>Ettersending</h2>
+      <Heading size="large" level="2">
+        Ettersending
+      </Heading>
 
       <VStack gap="4">
         <BodyShort weight="semibold">
