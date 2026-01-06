@@ -60,11 +60,12 @@ export type FlervalgSpørsmål = SpørsmålBase & {
 
 export type LangTekstSpørsmål = SpørsmålBase & {
   type: "langTekst";
-  maxLength?: number;
+  maksLengde?: number;
 };
 
 export type KortTekstSpørsmål = SpørsmålBase & {
   type: "kortTekst";
+  maksLengde?: number;
 };
 
 export type DatoSpørsmål = SpørsmålBase & {
@@ -87,6 +88,7 @@ export type LandSpørsmål = SpørsmålBase & {
 
 export type TallSpørsmål = SpørsmålBase & {
   type: "tall";
+  maksVerdi?: number
 };
 
 export type NedtrekkslisteSpørsmål = SpørsmålBase & {

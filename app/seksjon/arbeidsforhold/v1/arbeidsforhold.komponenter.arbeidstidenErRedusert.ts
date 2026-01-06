@@ -22,7 +22,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     id: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
     description: "Når startet du i dette arbeidsforholdet?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
@@ -30,7 +30,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
   {
     id: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
     description: "Når ble arbeidstiden din redusert?",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
@@ -63,7 +63,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     id: arbeidstidenErRedusertHvaErÅrsaken,
     type: "langTekst",
     label: "Hva er årsaken til at arbeidstiden din ble redusert?",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
   },
@@ -109,7 +109,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     id: arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
     type: "langTekst",
     label: "Hva er årsaken til at du ikke har tatt imot tilbudet?",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
   },

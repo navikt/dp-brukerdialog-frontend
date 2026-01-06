@@ -12,6 +12,7 @@ export const pengestøtteFraTidligereArbeidsgiverModalKomponenter: KomponentType
   {
     id: hvemMottarDuUtbetalingerEllerGoderFra,
     type: "kortTekst",
+    maksLengde: 200,
     label: "Hvem mottar du utbetalinger eller økonomiske goder fra?",
   },
   {
@@ -34,7 +35,7 @@ export const pengestøtteFraTidligereArbeidsgiverModalKomponenter: KomponentType
     id: hvaFårEllerBeholderDu,
     type: "langTekst",
     label: "Skriv inn hva du får eller beholder",
-    maxLength: 500,
+    maksLengde: 500,
   },
   {
     id: "dokumentasjonskravindikator",

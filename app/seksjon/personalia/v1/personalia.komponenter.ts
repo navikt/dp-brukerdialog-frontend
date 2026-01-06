@@ -189,8 +189,9 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
   },
   {
     id: hvorforReistDuFraNorge,
-    type: "kortTekst",
+    type: "langTekst",
     label: "Hvorfor reiste du fra Norge?",
+    maksLengde: 500,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {

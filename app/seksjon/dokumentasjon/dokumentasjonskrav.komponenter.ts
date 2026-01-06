@@ -76,7 +76,7 @@ const dokumentasjonskravKomponenter: KomponentType[] = [
     type: "langTekst",
     label: "Hva er grunnen til at du sender dokumentet senere?",
     description: "Frist for ettersending er 14 dager etter at du sendte søknaden.",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: DokumentasjonskravSvar) =>
       svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderSenere,
   },
@@ -86,7 +86,7 @@ const dokumentasjonskravKomponenter: KomponentType[] = [
     label: "Når sendte du dokumentet?",
     description:
       "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt.",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: DokumentasjonskravSvar) =>
       svar[velgHvaDuVilGjøre] === dokumentkravSvarSendtTidligere,
   },
@@ -104,7 +104,7 @@ const dokumentasjonskravKomponenter: KomponentType[] = [
     id: hvaErGrunnenTilAtDuIkkeSenderDokumentet,
     type: "langTekst",
     label: "Hva er grunnen til at du ikke sender dokumentet?",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: DokumentasjonskravSvar) =>
       svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
   },

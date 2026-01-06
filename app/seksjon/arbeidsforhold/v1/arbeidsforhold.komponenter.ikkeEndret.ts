@@ -47,7 +47,7 @@ export const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter: Kompone
   {
     id: ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
     type: "langTekst",
-    maxLength: 500,
+    maksLengde: 500,
     label: "Tilleggsopplysninger",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet] === "ja",

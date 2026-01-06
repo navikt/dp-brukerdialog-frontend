@@ -129,7 +129,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: kanDuTaAlleTyperArbeidHvilkeTyperArbeidKanDuIkkeTa,
     type: "langTekst",
     label: "Hvilke typer arbeid kan du ikke ta?",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuTaAlleTyperArbeid] === "nei",
   },
   {
@@ -276,7 +276,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen,
     type: "langTekst",
     label: "Skriv kort om situasjonen din",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeHeltidOgDeltidJegErPermitert
@@ -425,7 +425,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: kanIkkeJobbeIHeleNorgeKortOmSituasjonen,
     type: "langTekst",
     label: "Skriv kort om situasjonen din",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeIHeleNorgeJegErPermitert
