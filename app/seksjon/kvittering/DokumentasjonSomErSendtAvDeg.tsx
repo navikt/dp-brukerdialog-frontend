@@ -27,7 +27,6 @@ export default function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }
           {dokumentasjonskrav.bundle && (
             <Button
               variant="tertiary"
-              className="mt-4"
               size="small"
               icon={<DownloadIcon />}
               onClick={() =>
@@ -39,7 +38,7 @@ export default function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }
           )}
         </HStack>
 
-        <ReadMore header="Dette må dokumentasjonen inneholde" className="mt-4">
+        <ReadMore header="Dette må dokumentasjonen inneholde">
           <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
         </ReadMore>
       </VStack>

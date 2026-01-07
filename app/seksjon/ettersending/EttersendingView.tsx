@@ -19,7 +19,7 @@ const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
 export function EttersendingView() {
   const navigate = useNavigate();
-  const { ettersendinger, lagrer, validerEttersending } = useEttersendingContext();
+  const { ettersending, lagrer, validerEttersending } = useEttersendingContext();
 
   return (
     <div className="innhold">
@@ -56,7 +56,7 @@ export function EttersendingView() {
       </VStack>
 
       <VStack gap="4" className="mt-8">
-        {ettersendinger.map((dokumentasjonskrav: Dokumentasjonskrav) => (
+        {ettersending.map((dokumentasjonskrav: Dokumentasjonskrav) => (
           <Box.New
             key={dokumentasjonskrav.id}
             padding="space-16"

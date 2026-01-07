@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
@@ -10,8 +10,8 @@ interface EttersendingTilLagring {
 type EttersendingContextType = {
   dokumentasjonskrav: Dokumentasjonskrav[];
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
-  ettersendinger: Dokumentasjonskrav[];
-  setEttersendinger: (ettersendinger: Dokumentasjonskrav[]) => void;
+  ettersending: Dokumentasjonskrav[];
+  setEttersending: (ettersending: Dokumentasjonskrav[]) => void;
   oppdaterEttersendinger: (oppdatertKrav: Dokumentasjonskrav) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
@@ -26,7 +26,7 @@ type EttersendingContextType = {
 
 type EttersendingProviderProps = {
   dokumentasjonskrav: Dokumentasjonskrav[];
-  ettersendinger: Dokumentasjonskrav[];
+  ettersending: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
@@ -48,14 +48,14 @@ function useEttersendingContext() {
 
 function EttersendingProvider({
   dokumentasjonskrav: dokumentasjonskravProps,
-  ettersendinger: ettersendingerProps,
+  ettersending: ettersendingProps,
   children,
 }: EttersendingProviderProps) {
   const { soknadId } = useParams();
   const navigate = useNavigate();
 
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
-  const [ettersendinger, setEttersendinger] = useState(ettersendingerProps);
+  const [ettersending, setEttersending] = useState(ettersendingProps);
   const [lagrer, setLagrer] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [ettersendingManglerFiler, setEttersendingManglerFiler] = useState<string[]>([]);
@@ -64,21 +64,21 @@ function EttersendingProvider({
   >([]);
 
   function oppdaterEttersendinger(ettersending: Dokumentasjonskrav) {
-    setEttersendinger((current) =>
+    setEttersending((current) =>
       current.map((krav) => (krav.id === ettersending.id ? ettersending : krav))
     );
   }
 
   async function validerEttersending(): Promise<void> {
-    const ettersendingUtenFil = ettersendinger
-      .filter((krav) => !krav.filer || krav.filer.length === 0)
-      .map((krav) => krav.id);
+    const ettersendingUtenFil = ettersending
+      .filter((ettersending) => !ettersending.filer || ettersending.filer.length === 0)
+      .map((ettersending) => ettersending.id);
 
     setEttersendingManglerFiler(ettersendingUtenFil);
 
-    const ettersendingMedFilFeil = ettersendinger
-      .filter((krav) => krav.filer?.some((fil) => fil.feil))
-      .map((krav) => krav.id);
+    const ettersendingMedFilFeil = ettersending
+      .filter((ettersending) => ettersending.filer?.some((fil) => fil.feil))
+      .map((ettersending) => ettersending.id);
 
     setEttersendingHarEnValideringsfeil(ettersendingMedFilFeil);
 
@@ -93,30 +93,33 @@ function EttersendingProvider({
     setLagrer(true);
     setHarTekniskFeil(false);
 
-    const bundletEttersendinger: Dokumentasjonskrav[] = [];
+    const bundletEttersend: Dokumentasjonskrav[] = [];
 
-    for (const ettersending of ettersendinger) {
-      const bundle = await bundleFiler(ettersending);
+    for (const etEttersending of ettersending) {
+      const bundle = await bundleFilerForEttersending(etEttersending);
 
       if (bundle) {
-        const oppdatertDokumentasjonskrav = { ...ettersending, bundle };
-        bundletEttersendinger.push(oppdatertDokumentasjonskrav);
+        const oppdatertDokumentasjonskrav = { ...etEttersending, bundle };
+        bundletEttersend.push(oppdatertDokumentasjonskrav);
       }
     }
 
-    const alleDokumentasjonskrav = dokumentasjonskrav.map((krav) => {
-      const oppdatert = bundletEttersendinger.find((e) => e.id === krav.id);
-      return oppdatert || krav;
+    const alleDokumentasjonskrav = dokumentasjonskrav.map((etDokumentasjonskrav) => {
+      const oppdatertDokumentasjonskrav = bundletEttersend.find(
+        (etEttersending) => etEttersending.id === etDokumentasjonskrav.id
+      );
+
+      return oppdatertDokumentasjonskrav || etDokumentasjonskrav;
     });
 
-    const ettersendingerTilLagring: EttersendingTilLagring[] = [];
+    const ettersendingTilLagring: EttersendingTilLagring[] = [];
     const seksjonIds: string[] = [];
 
-    for (const bundletEttersending of bundletEttersendinger) {
+    for (const bundletEttersending of bundletEttersend) {
       if (!seksjonIds.includes(bundletEttersending.seksjonId)) {
         seksjonIds.push(bundletEttersending.seksjonId);
 
-        ettersendingerTilLagring.push({
+        ettersendingTilLagring.push({
           seksjonId: bundletEttersending.seksjonId,
           dokumentasjonskrav: alleDokumentasjonskrav.filter(
             (krav) => krav.seksjonId === bundletEttersending.seksjonId
@@ -125,27 +128,32 @@ function EttersendingProvider({
       }
     }
 
-    for (const ettersendingTilLagring of ettersendingerTilLagring) {
-      const { seksjonId, dokumentasjonskrav } = ettersendingTilLagring;
-      await lagreDokumentasjonskrav(seksjonId, dokumentasjonskrav);
+    for (const etEttersending of ettersendingTilLagring) {
+      const { seksjonId, dokumentasjonskrav } = etEttersending;
+      await lagreDokumentasjonskravMedEttersending(seksjonId, dokumentasjonskrav);
     }
 
     setLagrer(false);
     navigate(`../kvittering`);
   }
 
-  async function bundleFiler(krav: Dokumentasjonskrav): Promise<Bundle | null> {
+  async function bundleFilerForEttersending(
+    ettersending: Dokumentasjonskrav
+  ): Promise<Bundle | null> {
     try {
       const formData = new FormData();
-      formData.append("dokumentasjonskravFiler", JSON.stringify(krav.filer || []));
+      formData.append("filer", JSON.stringify(ettersending.filer || []));
 
-      const response = await fetch(`/api/dokumentasjonskrav/${soknadId}/${krav.id}/bundle-filer`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/bundle-filer`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
-        console.error("Feil ved bundling av filer for dokumentasjonskrav:", krav.id);
+        console.error("Feil ved bundling av filer for dokumentasjonskrav:", ettersending.id);
 
         setHarTekniskFeil(true);
         return null;
@@ -160,7 +168,7 @@ function EttersendingProvider({
     }
   }
 
-  async function lagreDokumentasjonskrav(
+  async function lagreDokumentasjonskravMedEttersending(
     seksjonId: string,
     ettersendinger: Dokumentasjonskrav[]
   ): Promise<void> {
@@ -195,8 +203,8 @@ function EttersendingProvider({
         ettersendingManglerFiler,
         setEttersendingManglerFiler,
         validerEttersending,
-        ettersendinger,
-        setEttersendinger,
+        ettersending,
+        setEttersending,
         ettersendingHarEnValideringsfeil,
         setEttersendingHarEnValideringsfeil,
         harTekniskFeil,

@@ -40,8 +40,14 @@ export default function KvitteringView() {
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
   );
 
+  const dokumentasjonSomEttersendtAvDeg = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) =>
+      krav.svar === dokumentkravSvarSenderSenere && krav.filer && krav.filer.length > 0
+  );
+
   const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
+    (krav: Dokumentasjonskrav) =>
+      krav.svar === dokumentkravSvarSenderSenere && krav.filer?.length === 0
   );
 
   const dokumentasjonSomIkkeSkalSendes = dokumentasjonskrav.filter(
@@ -65,18 +71,6 @@ export default function KvitteringView() {
             )}
           </HStack>
 
-          {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-            <BodyLong>
-              Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
-              du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når
-              svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
-                saksbehandlingstiden
-              </Link>{" "}
-              for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
-              Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
-            </BodyLong>
-          )}
           {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
             <BodyLong>
               Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
@@ -178,6 +172,15 @@ export default function KvitteringView() {
             <VStack gap="4">
               <Heading size="small">Dokumenter du har sendt inn</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
+                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
+              ))}
+            </VStack>
+          )}
+
+          {dokumentasjonSomEttersendtAvDeg.length > 0 && (
+            <VStack gap="4">
+              <Heading size="small">Dokumenter du har ettersendt</Heading>
+              {dokumentasjonSomEttersendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
             </VStack>
