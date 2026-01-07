@@ -10,13 +10,15 @@ export const dokumentkravSvarSendNå = "dokumentkravSvarSendNå";
 export const dokumentkravSvarSenderIkke = "dokumentkravSvarSenderIkke";
 export const dokumentkravSvarSenderSenere = "dokumentkravSvarSenderSenere";
 export const dokumentkravSvarSendtTidligere = "dokumentkravSvarSendtTidligere";
+export const dokumentkravEttersendt = "dokumentkravEttersendt";
 
 export type DokumentasjonskravSvar = {
   [velgHvaDuVilGjøre]?:
     | typeof dokumentkravSvarSendNå
     | typeof dokumentkravSvarSenderIkke
     | typeof dokumentkravSvarSenderSenere
-    | typeof dokumentkravSvarSendtTidligere;
+    | typeof dokumentkravSvarSendtTidligere
+    | typeof dokumentkravEttersendt;
   [hvaErGrunnenTilAtDuSenderDokumentetSenere]?: string;
   [nårSendteDuDokumentet]?: string;
   [hvaErGrunnenTilAtDuIkkeSenderDokumentet]?: string;

@@ -7,6 +7,7 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import dokumentasjonskravKomponenter, {
   DokumentasjonskravSvar,
+  dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
@@ -66,7 +67,8 @@ export type GyldigDokumentkravSvar =
   | typeof dokumentkravSvarSendNå
   | typeof dokumentkravSvarSenderSenere
   | typeof dokumentkravSvarSendtTidligere
-  | typeof dokumentkravSvarSenderIkke;
+  | typeof dokumentkravSvarSenderIkke
+  | typeof dokumentkravEttersendt;
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -131,6 +133,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       const begrunnelse =
         dokumentasjonskravskjema[nårSendteDuDokumentet] ||
         dokumentasjonskravskjema[hvaErGrunnenTilAtDuIkkeSenderDokumentet] ||
+        dokumentasjonskravskjema[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
         dokumentasjonskravskjema[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
         undefined;
 

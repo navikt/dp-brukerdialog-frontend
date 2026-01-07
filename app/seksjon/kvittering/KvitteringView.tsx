@@ -22,6 +22,7 @@ import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
 import {
+  dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
@@ -37,17 +38,12 @@ export default function KvitteringView() {
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
   const dokumentasjonSomErSendtAvDeg = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
-  );
-
-  const dokumentasjonSomEttersendtAvDeg = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) =>
-      krav.svar === dokumentkravSvarSenderSenere && krav.filer && krav.filer.length > 0
+      krav.svar === dokumentkravSvarSendNå || krav.svar === dokumentkravEttersendt
   );
 
   const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) =>
-      krav.svar === dokumentkravSvarSenderSenere && krav.filer?.length === 0
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
   const dokumentasjonSomIkkeSkalSendes = dokumentasjonskrav.filter(
@@ -172,15 +168,6 @@ export default function KvitteringView() {
             <VStack gap="4">
               <Heading size="small">Dokumenter du har sendt inn</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
-              ))}
-            </VStack>
-          )}
-
-          {dokumentasjonSomEttersendtAvDeg.length > 0 && (
-            <VStack gap="4">
-              <Heading size="small">Dokumenter du har ettersendt</Heading>
-              {dokumentasjonSomEttersendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
             </VStack>

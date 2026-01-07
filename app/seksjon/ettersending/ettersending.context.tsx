@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import {
+  Bundle,
+  Dokumentasjonskrav,
+  GyldigDokumentkravSvar,
+} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 
 interface EttersendingTilLagring {
   seksjonId: string;
@@ -99,7 +104,11 @@ function EttersendingProvider({
       const bundle = await bundleFilerForEttersending(etEttersending);
 
       if (bundle) {
-        const oppdatertDokumentasjonskrav = { ...etEttersending, bundle };
+        const oppdatertDokumentasjonskrav: Dokumentasjonskrav = {
+          ...etEttersending,
+          svar: dokumentkravEttersendt as GyldigDokumentkravSvar,
+          bundle,
+        };
         bundletEttersend.push(oppdatertDokumentasjonskrav);
       }
     }

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { valider } from "~/utils/validering.utils";
 import dokumentasjonskravKomponenter, {
   DokumentasjonskravSvar,
+  dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
@@ -23,6 +24,7 @@ export const dokumentasjonskravSchema = z
         dokumentkravSvarSenderIkke,
         dokumentkravSvarSenderSenere,
         dokumentkravSvarSendtTidligere,
+        dokumentkravEttersendt,
       ])
       .optional(),
     [hvaErGrunnenTilAtDuSenderDokumentetSenere]: z
