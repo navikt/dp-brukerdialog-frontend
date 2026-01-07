@@ -77,13 +77,15 @@ export function PersonaliaViewV1() {
   form.setValue(mellomnavnFraPdl, mellomnavn || "");
   form.setValue(etternavnFraPdl, etternavn || "");
   form.setValue(fødselsnummerFraPdl, ident || "");
-  form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
-  form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
-  form.setValue(adresselinje3FraPdl, folkeregistrertAdresse.adresselinje3 || "");
-  form.setValue(postnummerFraPdl, folkeregistrertAdresse.postnummer || "");
-  form.setValue(poststedFraPdl, folkeregistrertAdresse.poststed || "");
-  form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
-  form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
+  if (folkeregistrertAdresse) {
+    form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
+    form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
+    form.setValue(adresselinje3FraPdl, folkeregistrertAdresse.adresselinje3 || "");
+    form.setValue(postnummerFraPdl, folkeregistrertAdresse.postnummer || "");
+    form.setValue(poststedFraPdl, folkeregistrertAdresse.poststed || "");
+    form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
+    form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
+  }
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
@@ -147,27 +149,22 @@ export function PersonaliaViewV1() {
               <Label as="p">Alder</Label>
               <BodyShort>{alder}</BodyShort>
             </div>
-            <div className="mb-4">
-              <Label as="p">Folkeregistrert adresse</Label>
-              <BodyShort>
-                {folkeregistrertAdresse && (
-                  <>
-                    {folkeregistrertAdresse.adresselinje1}{" "}
-                    {folkeregistrertAdresse.adresselinje1 && <br />}
-                    {folkeregistrertAdresse.adresselinje2}{" "}
-                    {folkeregistrertAdresse.adresselinje2 && <br />}
-                    {folkeregistrertAdresse.adresselinje3}{" "}
-                    {folkeregistrertAdresse.adresselinje3 && <br />}
-                    {folkeregistrertAdresse.postnummer} {folkeregistrertAdresse.poststed}{" "}
-                    {folkeregistrertAdresse.land && <br />}
-                    {folkeregistrertAdresse.land}
-                  </>
-                )}
-                {!folkeregistrertAdresse && (
-                  <>Det er ikke registert en bostedsadresse på deg i Folkeregisteret</>
-                )}
-              </BodyShort>
-            </div>
+            {folkeregistrertAdresse && (
+              <div className="mb-4">
+                <Label as="p">Folkeregistrert adresse</Label>
+                <BodyShort>
+                  {folkeregistrertAdresse.adresselinje1}{" "}
+                  {folkeregistrertAdresse.adresselinje1 && <br />}
+                  {folkeregistrertAdresse.adresselinje2}{" "}
+                  {folkeregistrertAdresse.adresselinje2 && <br />}
+                  {folkeregistrertAdresse.adresselinje3}{" "}
+                  {folkeregistrertAdresse.adresselinje3 && <br />}
+                  {folkeregistrertAdresse.postnummer} {folkeregistrertAdresse.poststed}{" "}
+                  {folkeregistrertAdresse.land && <br />}
+                  {folkeregistrertAdresse.land}
+                </BodyShort>
+              </div>
+            )}
             <div className="mb-4">
               <Label as="p">Kontonummer</Label>
               <BodyShort>
