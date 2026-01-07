@@ -67,7 +67,7 @@ export default function KvitteringView() {
             )}
           </HStack>
 
-          {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
+          {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
             <BodyLong>
               Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
               <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
