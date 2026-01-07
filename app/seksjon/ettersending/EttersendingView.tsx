@@ -3,6 +3,7 @@ import {
   BodyShort,
   Box,
   Button,
+  ErrorMessage,
   Heading,
   HStack,
   Link,
@@ -19,7 +20,7 @@ const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
 export function EttersendingView() {
   const navigate = useNavigate();
-  const { ettersending, lagrer, validerEttersending } = useEttersendingContext();
+  const { ettersending, lagrer, validerEttersending, harTekniskFeil } = useEttersendingContext();
 
   return (
     <div className="innhold">
@@ -70,6 +71,12 @@ export function EttersendingView() {
           </Box.New>
         ))}
       </VStack>
+
+      {!lagrer && harTekniskFeil && (
+        <ErrorMessage className="mt-4">
+          Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt.
+        </ErrorMessage>
+      )}
 
       <HStack gap="4" className="mt-14">
         <Button type="button" loading={lagrer} onClick={() => validerEttersending()}>
