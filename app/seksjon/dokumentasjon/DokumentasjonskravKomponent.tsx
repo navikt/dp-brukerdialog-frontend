@@ -200,7 +200,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   async function bundleFiler(): Promise<Bundle | null> {
     try {
       const formData = new FormData();
-      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
+      formData.append("filer", JSON.stringify(dokumentkravFiler));
 
       const response = await fetch(
         `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,

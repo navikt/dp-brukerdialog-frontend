@@ -113,7 +113,7 @@ export function FilOpplasting({
           }
 
           const formData = new FormData();
-          formData.append("file", fil.file);
+          formData.append("fil", fil.file);
 
           const url = `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/last-opp-fil`;
           const respons = await fetch(url, { method: "POST", body: formData });

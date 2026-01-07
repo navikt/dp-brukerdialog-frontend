@@ -23,8 +23,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
   const dokumentkravJson = await response.json();
   const dokumentasjonskrav = dokumentkravJson.flatMap((krav: string) => JSON.parse(krav));
   const ettersending = dokumentasjonskrav.filter(
-    (krav: Dokumentasjonskrav) =>
-      krav.svar === dokumentkravSvarSenderSenere && krav.filer?.length === 0
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
   if (dokumentasjonskrav.length === 0) {

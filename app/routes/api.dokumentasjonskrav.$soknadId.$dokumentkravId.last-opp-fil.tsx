@@ -14,14 +14,14 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const dokumentkravId = params.dokumentkravId as string;
 
   const formData = await parseFormData(request);
-  const fil = formData.get("file") as File;
+  const fil = formData.get("fil") as File;
 
   try {
     const url = `${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/${søknadId}/${dokumentkravId}`;
     const onBehalfOfToken = await hentMellomlagringOboToken(request);
 
     const body = new FormData();
-    body.append("file", fil);
+    body.append("fil", fil);
 
     return await fetch(url, {
       method: "POST",
