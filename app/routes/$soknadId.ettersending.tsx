@@ -17,7 +17,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
   const response = await hentDokumentasjonskrav(request, params.soknadId);
 
   if (!response.ok) {
-    return { dokumentasjonskrav: null };
+    return { dokumentasjonskrav: null, ettersending: null };
   }
 
   const dokumentkravJson = await response.json();
