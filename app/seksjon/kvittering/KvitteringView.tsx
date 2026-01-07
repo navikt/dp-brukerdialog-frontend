@@ -69,6 +69,18 @@ export default function KvitteringView() {
 
           {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
             <BodyLong>
+              Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
+              du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når
+              svaret er klart. Se hvor lang tid{" "}
+              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
+                saksbehandlingstiden
+              </Link>{" "}
+              for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
+              Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
+            </BodyLong>
+          )}
+          {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
+            <BodyLong>
               Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
               <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
                 saksbehandlingstiden
@@ -77,7 +89,6 @@ export default function KvitteringView() {
               Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
             </BodyLong>
           )}
-
           {loaderData.erRegistrertArbeidssøker === true && (
             <InfoCard data-color="info">
               <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
