@@ -14,14 +14,18 @@ import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplastin
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
 import { useEttersendingContext } from "./ettersending.context";
 
+const seksjonnavn = "Ettersending";
+const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
+
 export function EttersendingView() {
   const navigate = useNavigate();
   const { ettersendinger, lagrer, validerEttersending } = useEttersendingContext();
 
   return (
     <div className="innhold">
-      <Heading size="large" level="2">
-        Ettersending
+      <title>{seksjonHeadTitle}</title>
+      <Heading size="medium" level="2">
+        {seksjonnavn}
       </Heading>
 
       <VStack gap="4">

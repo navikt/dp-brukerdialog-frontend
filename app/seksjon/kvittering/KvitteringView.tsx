@@ -30,9 +30,9 @@ import {
 import DokumentasjonSomSkalSendesAvDeg from "./DokumentasjonSomSkalSendesAvDeg";
 
 export default function KvitteringView() {
+  const { soknadId } = useParams();
   const seksjonnavn = "Søknad mottatt";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
-  const { soknadId } = useParams();
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
@@ -53,18 +53,6 @@ export default function KvitteringView() {
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
       <VStack gap="8">
-        <VStack gap="6">
-          <HStack justify="space-between">
-            <VStack>
-              <Heading size="medium">{seksjonnavn}</Heading>
-            </VStack>
-            {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-              <Tag variant={"warning"} size="xsmall">
-                Mangler dokumentasjon
-              </Tag>
-            )}
-          </HStack>
-        </VStack>
         <VStack gap="8">
           <HStack justify="space-between">
             <VStack>

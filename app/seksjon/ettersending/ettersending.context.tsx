@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
-import { useParams } from "react-router";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 interface EttersendingTilLagring {
@@ -18,6 +18,10 @@ type EttersendingContextType = {
   ettersendingManglerFiler: string[];
   setEttersendingManglerFiler: (dokumentkravId: string[]) => void;
   validerEttersending: () => Promise<void>;
+  ettersendingHarEnValideringsfeil: string[];
+  setEttersendingHarEnValideringsfeil: (dokumentkravId: string[]) => void;
+  harTekniskFeil: boolean;
+  setHarTekniskFeil: (harTekniskFeil: boolean) => void;
 };
 
 type EttersendingProviderProps = {
@@ -48,10 +52,16 @@ function EttersendingProvider({
   children,
 }: EttersendingProviderProps) {
   const { soknadId } = useParams();
+  const navigate = useNavigate();
+
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [ettersendinger, setEttersendinger] = useState(ettersendingerProps);
-  const [ettersendingManglerFiler, setEttersendingManglerFiler] = useState<string[]>([]);
   const [lagrer, setLagrer] = useState(false);
+  const [harTekniskFeil, setHarTekniskFeil] = useState(false);
+  const [ettersendingManglerFiler, setEttersendingManglerFiler] = useState<string[]>([]);
+  const [ettersendingHarEnValideringsfeil, setEttersendingHarEnValideringsfeil] = useState<
+    string[]
+  >([]);
 
   function oppdaterEttersendinger(ettersending: Dokumentasjonskrav) {
     setEttersendinger((current) =>
@@ -66,11 +76,22 @@ function EttersendingProvider({
 
     setEttersendingManglerFiler(ettersendingUtenFil);
 
-    if (ettersendingUtenFil.length > 0) {
+    const ettersendingMedFilFeil = ettersendinger
+      .filter((krav) => krav.filer?.some((fil) => fil.feil))
+      .map((krav) => krav.id);
+
+    setEttersendingHarEnValideringsfeil(ettersendingMedFilFeil);
+
+    if (ettersendingUtenFil.length > 0 || ettersendingMedFilFeil.length > 0) {
       return;
     }
 
+    await bundleOgLagreEttersendinger();
+  }
+
+  async function bundleOgLagreEttersendinger(): Promise<void> {
     setLagrer(true);
+    setHarTekniskFeil(false);
 
     const bundletEttersendinger: Dokumentasjonskrav[] = [];
 
@@ -110,6 +131,7 @@ function EttersendingProvider({
     }
 
     setLagrer(false);
+    navigate(`../kvittering`);
   }
 
   async function bundleFiler(krav: Dokumentasjonskrav): Promise<Bundle | null> {
@@ -122,13 +144,18 @@ function EttersendingProvider({
         body: formData,
       });
 
-      if (response.ok) {
-        return await response.json();
+      if (!response.ok) {
+        console.error("Feil ved bundling av filer for dokumentasjonskrav:", krav.id);
+
+        setHarTekniskFeil(true);
+        return null;
       }
 
-      return null;
+      return await response.json();
     } catch (error) {
       console.error("Feil ved bundling av filer:", error);
+
+      setHarTekniskFeil(true);
       return null;
     }
   }
@@ -148,8 +175,11 @@ function EttersendingProvider({
 
       if (!response.ok) {
         console.error("Feil ved lagring av dokumentasjonskrav:", seksjonId);
+        setHarTekniskFeil(true);
+        return;
       }
     } catch (error) {
+      setHarTekniskFeil(true);
       console.error("Feil ved lagring av dokumentasjonskrav:", error);
     }
   }
@@ -167,6 +197,10 @@ function EttersendingProvider({
         validerEttersending,
         ettersendinger,
         setEttersendinger,
+        ettersendingHarEnValideringsfeil,
+        setEttersendingHarEnValideringsfeil,
+        harTekniskFeil,
+        setHarTekniskFeil,
       }}
     >
       {children}

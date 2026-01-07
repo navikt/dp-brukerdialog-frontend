@@ -40,8 +40,11 @@ interface IProps {
 
 export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterEttersendinger, ettersendingManglerFiler } = useEttersendingContext();
+  const { oppdaterEttersendinger, ettersendingManglerFiler, ettersendingHarEnValideringsfeil } =
+    useEttersendingContext();
+
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
+  const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -210,6 +213,11 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
             />
           ))}
         </VStack>
+      )}
+      {ettersendingHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
+        <ErrorMessage className="mt-4">
+          Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+        </ErrorMessage>
       )}
 
       {ettersendingManglerFiler.includes(dokumentasjonskrav.id) &&

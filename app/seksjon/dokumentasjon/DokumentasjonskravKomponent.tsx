@@ -308,11 +308,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
                 </VStack>
               )}
               {visIngenFilerErLastetOppFeilmelding && (
-                <VStack gap="4" className="mt-8">
-                  <ErrorMessage showIcon aria-live="polite">
-                    Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-                  </ErrorMessage>
-                </VStack>
+                <ErrorMessage showIcon aria-live="polite">
+                  Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+                </ErrorMessage>
               )}
             </>
           )}

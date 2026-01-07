@@ -1,4 +1,4 @@
-import { Box, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
+import { Box, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useEffect } from "react";
 import { useParams } from "react-router";
@@ -11,7 +11,6 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 export type DokumentkravFil = {
