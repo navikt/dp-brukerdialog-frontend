@@ -58,7 +58,7 @@ export default function KvitteringView() {
         <VStack gap="8">
           <HStack justify="space-between">
             <VStack>
-              <Heading size="medium">Søknad mottatt</Heading>
+              <Heading size="medium">{seksjonnavn}</Heading>
             </VStack>
             {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
               <Tag variant={"warning"} size="xsmall">
