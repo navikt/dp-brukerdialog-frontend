@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+import { startOfDay, subYears } from "date-fns";
 
 export const mottarDuPengestøtteFraAndreEnnNav = "mottarDuPengestøtteFraAndreEnnNav";
 export const hvilkenPengestøtteFraAndreEnnNavMottarDu = "hvilkenPengestøtteFraAndreEnnNavMottarDu";
@@ -103,14 +104,16 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
   {
     id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
     type: "periodeFra",
-    periodeLabel: "I hvilken periode har du mottatt eller søkt om pengestøtten?",
+    periodeLabel: "I hvilken periode har du mottatt pengestøtten?",
     label: "Fra dato",
+    fraOgMed: startOfDay(subYears(new Date(), 20)),
   },
   {
     id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
     type: "periodeTil",
     label: "Til dato",
-    description: "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
+    description:
+      "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
     optional: true,
   },
 ];

@@ -1,4 +1,5 @@
 import { KomponentType } from "~/components/Komponent.types";
+import { endOfDay } from "date-fns";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -116,6 +117,7 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
     id: fødselsdato,
     type: "dato",
     label: "Fødselsdato",
+    tilOgMed: endOfDay(new Date()),
   },
   {
     id: bostedsland,

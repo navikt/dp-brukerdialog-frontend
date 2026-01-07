@@ -4,6 +4,7 @@ import {
   arbeidstidenErRedusert,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
 export const arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet =
   "arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet";
@@ -24,6 +25,7 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     periodeLabel: "Varighet på arbeidsforholdet",
     label: "Fra dato",
     description: "Når startet du i dette arbeidsforholdet?",
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
   },

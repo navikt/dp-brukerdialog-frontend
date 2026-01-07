@@ -6,6 +6,7 @@ import { useState } from "react";
 import { PeriodeSpørsmål } from "../Komponent.types";
 
 import styles from "./Periode.module.css";
+import { formaterNorskDatoMedTall } from "~/utils/formatering.utils";
 
 interface IProps {
   props: PeriodeSpørsmål;
@@ -26,6 +27,14 @@ export function Periode({ props, formScope }: IProps) {
     onValidate(val) {
       if (!val.isEmpty && val.isInvalid) {
         setError("Ugyldig dato");
+      } else if (!val.isEmpty && val.isAfter) {
+        setError(
+          `Valgt dato er etter siste gyldige dato (${formaterNorskDatoMedTall(props.tilOgMed!)})`
+        );
+      } else if (!val.isEmpty && val.isBefore) {
+        setError(
+          `Valgt dato er før første gyldige dato (${formaterNorskDatoMedTall(props.fraOgMed!)})`
+        );
       } else {
         field.clearError();
         setError(undefined);
@@ -45,7 +54,7 @@ export function Periode({ props, formScope }: IProps) {
           [styles.periodeVenstreBordertil]: periodeTilSpørsmal,
         })}
       >
-        <DatePicker {...datepickerProps}>
+        <DatePicker {...datepickerProps} dropdownCaption={true}>
           <DatePicker.Input
             {...inputProps}
             key={props.id}

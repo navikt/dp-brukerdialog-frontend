@@ -1,5 +1,6 @@
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+import { endOfDay, startOfDay, subYears } from "date-fns";
 
 export const harMottattEllerSøktOmPengestøtteFraAndreEøsLand =
   "harMottattEllerSøktOmPengestøtteFraAndreEøsLand";
@@ -99,7 +100,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
   {
     id: "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLandDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av pengestøtte fra et annet EØS-land"
+    label: "Dokumentasjon av pengestøtte fra et annet EØS-land",
   },
   {
     id: fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
@@ -121,6 +122,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     id: fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
     type: "dato",
     label: "Fra hvilken dato har du mottatt pengestøtten?",
+    fraOgMed: startOfDay(subYears(new Date(), 40)),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "ja",
   },
@@ -129,6 +131,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     type: "periodeFra",
     periodeLabel: "I hvilken periode mottok du pengesøtten?",
     label: "Fra dato",
+    fraOgMed: startOfDay(subYears(new Date(), 40)),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },
@@ -136,6 +139,8 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
     type: "periodeTil",
     label: "Til dato",
+    fraOgMed: startOfDay(subYears(new Date(), 4)),
+    tilOgMed: endOfDay(new Date()),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },

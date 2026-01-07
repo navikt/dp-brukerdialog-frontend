@@ -4,6 +4,7 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegErPermitert,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
 export const permittertVarighetPåArbeidsforholdetFraOgMedDato =
   "permittertVarighetPåArbeidsforholdetFraOgMedDato";
@@ -26,6 +27,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     id: permittertVarighetPåArbeidsforholdetFraOgMedDato,
     type: "dato",
     label: "Når startet du i dette arbeidsforholdet?",
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },

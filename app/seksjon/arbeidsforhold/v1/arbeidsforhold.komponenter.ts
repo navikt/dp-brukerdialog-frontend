@@ -63,6 +63,7 @@ import {
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { startOfDay, subYears } from "date-fns";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -450,6 +451,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
     type: "periodeFra",
     periodeLabel: "Oppgi siste arbeidsperiode du hadde i den siste rotasjonen din",
     label: "Fra dato",
+    fraOgMed: startOfDay(subYears(new Date(), 5)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
   },
