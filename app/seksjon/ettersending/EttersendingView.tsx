@@ -36,7 +36,7 @@ export function EttersendingView() {
         <BodyLong>
           Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er ansvarlig for
           at dokumentasjonen sendes til oss. Hvis du ikke sender alle dokumentene innen fristen kan
-          du få avslag på søknaden, fordi NAV mangler viktige opplysninger i saken din. Ta kontakt
+          du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt
           hvis du ikke rekker å ettersende alle dokumentene.
         </BodyLong>
 
