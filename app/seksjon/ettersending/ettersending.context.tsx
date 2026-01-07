@@ -17,7 +17,7 @@ type EttersendingContextType = {
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   ettersending: Dokumentasjonskrav[];
   setEttersending: (ettersending: Dokumentasjonskrav[]) => void;
-  oppdaterEttersendinger: (oppdatertKrav: Dokumentasjonskrav) => void;
+  oppdaterEttersending: (ettersending: Dokumentasjonskrav) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
   ettersendingManglerFiler: string[];
@@ -68,7 +68,7 @@ function EttersendingProvider({
     string[]
   >([]);
 
-  function oppdaterEttersendinger(ettersending: Dokumentasjonskrav) {
+  function oppdaterEttersending(ettersending: Dokumentasjonskrav) {
     setEttersending((current) =>
       current.map((krav) => (krav.id === ettersending.id ? ettersending : krav))
     );
@@ -151,7 +151,7 @@ function EttersendingProvider({
   ): Promise<Bundle | null> {
     try {
       const formData = new FormData();
-      formData.append("filer", JSON.stringify(ettersending.filer || []));
+      formData.append("filer", JSON.stringify(ettersending.filer));
 
       const response = await fetch(
         `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/bundle-filer`,
@@ -206,7 +206,7 @@ function EttersendingProvider({
       value={{
         dokumentasjonskrav,
         setDokumentasjonskrav,
-        oppdaterEttersendinger,
+        oppdaterEttersending,
         lagrer,
         setLagrer,
         ettersendingManglerFiler,

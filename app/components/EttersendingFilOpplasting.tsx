@@ -40,7 +40,7 @@ interface IProps {
 
 export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterEttersendinger, ettersendingManglerFiler, ettersendingHarEnValideringsfeil } =
+  const { oppdaterEttersending, ettersendingManglerFiler, ettersendingHarEnValideringsfeil } =
     useEttersendingContext();
 
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
@@ -84,7 +84,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       }
     });
 
-    oppdaterEttersendinger({
+    oppdaterEttersending({
       ...dokumentasjonskrav,
       filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
     });
@@ -98,7 +98,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
           }
 
           const formData = new FormData();
-          formData.append("file", fil.file);
+          formData.append("fil", fil.file);
 
           const url = `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/last-opp-fil`;
           const respons = await fetch(url, { method: "POST", body: formData });
@@ -126,7 +126,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
 
       const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
 
-      oppdaterEttersendinger({
+      oppdaterEttersending({
         ...dokumentasjonskrav,
         filer: oppdaterteFiler.map((fil) => ({
           ...fil,
@@ -138,7 +138,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      oppdaterEttersendinger({
+      oppdaterEttersending({
         ...dokumentasjonskrav,
         filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
       });
@@ -161,7 +161,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       return;
     }
 
-    oppdaterEttersendinger({
+    oppdaterEttersending({
       ...dokumentasjonskrav,
       filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
     });
