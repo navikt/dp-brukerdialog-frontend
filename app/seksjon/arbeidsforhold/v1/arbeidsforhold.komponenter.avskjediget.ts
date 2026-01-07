@@ -38,7 +38,7 @@ export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] =
       "<p>Du må dokumentere eller beskrive grunnen og datoen for avskjeden. Dette kan for eksempel stå i avskjedsbrevet eller i møtereferat.</p>" +
       "<p>Har du fått avskjed vil du normalt ikke få utbetalt dagpenger i 18 uker.</p>" +
       "<p>Det er Nav som vurderer om grunnen til avskjeden får betydning for utbetalingen din.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.",
+      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
   },
