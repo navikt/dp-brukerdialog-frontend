@@ -27,7 +27,14 @@ const IDENT_LIST = [
   { name: "Hes Påske: 17477146473", value: "17477146473" },
   { name: "Komplett Sol: 07447534341", value: "07447534341" },
   { name: "Dynamisk Røyskatt: 07430195322", value: "07430195322" },
-  { name: "Ängslig Innestemme (SWE): 11439813689", value: "11439813689" },
+  {
+    name: "Ängslig Innestemme (folkeregistrert i Sverige, 67+): 11439813689",
+    value: "11439813689",
+  },
+  {
+    name: "Idiotsikker Distingvert Porto (uten folkeregistrert adresse): 30848997419",
+    value: "30848997419",
+  },
 ];
 
 init();
