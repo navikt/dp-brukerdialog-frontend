@@ -1,4 +1,4 @@
-import { BodyShort, Box, Heading, ReadMore, Tag, VStack } from "@navikt/ds-react";
+import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { DokumentasjonskravInnhold } from "../dokumentasjon/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
 
@@ -10,14 +10,14 @@ export default function DokumentasjonSomSkalSendesAvDeg({ dokumentasjonskrav }: 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">
       <VStack gap="4">
-        <Heading size="xsmall" level="4">
-          {dokumentasjonskrav.tittel}
-        </Heading>
-        <BodyShort>
+        <HStack justify="space-between">
+          <Heading size="xsmall" level="4">
+            {dokumentasjonskrav.tittel}
+          </Heading>
           <Tag variant="warning" size="xsmall">
             Mangler
           </Tag>
-        </BodyShort>
+        </HStack>
 
         <BodyShort>Skal sendes av deg</BodyShort>
 

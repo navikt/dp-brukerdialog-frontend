@@ -12,20 +12,21 @@ export default function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">
       <VStack gap="4">
-        <Heading size="xsmall" level="4">
-          {dokumentasjonskrav.tittel}
-        </Heading>
-        <BodyShort>
-          <Tag variant="success" size={"xsmall"}>
-            Mottatt
-          </Tag>
-        </BodyShort>
+        <HStack justify="space-between">
+          <Heading size="xsmall" level="4">
+            {dokumentasjonskrav.tittel}
+          </Heading>
+          <BodyShort>
+            <Tag variant="success" size={"xsmall"}>
+              Mottatt
+            </Tag>
+          </BodyShort>
+        </HStack>
 
         <HStack>
           {dokumentasjonskrav.bundle && (
             <Button
               variant="tertiary"
-              className="mt-4"
               size="small"
               icon={<DownloadIcon />}
               onClick={() =>
@@ -37,7 +38,7 @@ export default function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }
           )}
         </HStack>
 
-        <ReadMore header="Dette må dokumentasjonen inneholde" className="mt-4">
+        <ReadMore header="Dette må dokumentasjonen inneholde">
           <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
         </ReadMore>
       </VStack>

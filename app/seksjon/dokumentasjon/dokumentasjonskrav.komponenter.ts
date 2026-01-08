@@ -10,13 +10,15 @@ export const dokumentkravSvarSendNå = "dokumentkravSvarSendNå";
 export const dokumentkravSvarSenderIkke = "dokumentkravSvarSenderIkke";
 export const dokumentkravSvarSenderSenere = "dokumentkravSvarSenderSenere";
 export const dokumentkravSvarSendtTidligere = "dokumentkravSvarSendtTidligere";
+export const dokumentkravEttersendt = "dokumentkravEttersendt";
 
 export type DokumentasjonskravSvar = {
   [velgHvaDuVilGjøre]?:
     | typeof dokumentkravSvarSendNå
     | typeof dokumentkravSvarSenderIkke
     | typeof dokumentkravSvarSenderSenere
-    | typeof dokumentkravSvarSendtTidligere;
+    | typeof dokumentkravSvarSendtTidligere
+    | typeof dokumentkravEttersendt;
   [hvaErGrunnenTilAtDuSenderDokumentetSenere]?: string;
   [nårSendteDuDokumentet]?: string;
   [hvaErGrunnenTilAtDuIkkeSenderDokumentet]?: string;
@@ -52,7 +54,7 @@ export const dokumentasjonKomponenter: KomponentType[] = [
   {
     id: "dokumentasjonDokumenterDuSkalSendeInnForklarendeTekst",
     type: "forklarendeTekst",
-    description: "<h3>Dokumenter du skal sende inn</h3>",
+    description: "<h3>Dokumenter du skal sende inn</h3>", // Dette er ikke semantisk korrekt. H3 kan ikke ligge inni en p-tag
   },
 ];
 

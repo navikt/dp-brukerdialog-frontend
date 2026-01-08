@@ -7,6 +7,7 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import dokumentasjonskravKomponenter, {
   DokumentasjonskravSvar,
+  dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
@@ -18,7 +19,7 @@ import dokumentasjonskravKomponenter, {
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
-import { DokumentkravFil, FilOpplasting } from "./FilOpplasting";
+import { DokumentkravFil, FilOpplasting } from "~/components/FilOpplasting";
 
 export type Dokumentasjonskrav = {
   id: string;
@@ -66,7 +67,8 @@ export type GyldigDokumentkravSvar =
   | typeof dokumentkravSvarSendNå
   | typeof dokumentkravSvarSenderSenere
   | typeof dokumentkravSvarSendtTidligere
-  | typeof dokumentkravSvarSenderIkke;
+  | typeof dokumentkravSvarSenderIkke
+  | typeof dokumentkravEttersendt;
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -197,7 +199,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   async function bundleFiler(): Promise<Bundle | null> {
     try {
       const formData = new FormData();
-      formData.append("dokumentasjonskravFiler", JSON.stringify(dokumentkravFiler));
+      formData.append("filer", JSON.stringify(dokumentkravFiler));
 
       const response = await fetch(
         `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
@@ -237,7 +239,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       formData.append("dokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskravListe));
 
       const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}/${oppdatertDokumentasjonskrav.id}`,
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}`,
         {
           method: "PUT",
           body: formData,
@@ -308,11 +310,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
                 </VStack>
               )}
               {visIngenFilerErLastetOppFeilmelding && (
-                <VStack gap="4" className="mt-8">
-                  <ErrorMessage showIcon aria-live="polite">
-                    Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-                  </ErrorMessage>
-                </VStack>
+                <ErrorMessage showIcon aria-live="polite">
+                  Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+                </ErrorMessage>
               )}
             </>
           )}

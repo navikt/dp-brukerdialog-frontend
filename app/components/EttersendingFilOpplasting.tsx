@@ -1,8 +1,9 @@
-import { Box, FileObject, VStack } from "@navikt/ds-react";
+import { Box, ErrorMessage, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useEffect } from "react";
 import { useParams } from "react-router";
+import { useEttersendingContext } from "~/seksjon/ettersending/ettersending.context";
 import {
+  hentFilFeilmelding,
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
   hentTillatteFiltyperTekst,
@@ -10,58 +11,21 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { Dokumentasjonskrav } from "./DokumentasjonskravKomponent";
-
-export type DokumentkravFil = {
-  id: string;
-  filnavn: string;
-  urn?: string;
-  tidspunkt?: string;
-  storrelse?: number;
-  filsti?: string;
-  lasterOpp?: boolean;
-  file?: File;
-  feil?: LastOppFeil;
-};
-
-export enum LastOppFeil {
-  FIL_FOR_STOR = "FIL_FOR_STOR",
-  UGYLDIG_FORMAT = "UGYLDIG_FORMAT",
-  TEKNISK_FEIL = "TEKNISK_FEIL",
-  DUPLIKAT_FIL = "DUPLIKAT_FIL",
-  UKJENT_FEIL = "UKJENT_FEIL",
-}
+import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
+import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { DokumentkravFil, LastOppFeil } from "./FilOpplasting";
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
-  dokumentkravFiler: DokumentkravFil[];
-  setDokumentkravFiler: React.Dispatch<React.SetStateAction<DokumentkravFil[]>>;
-  setDokumentasjonskravIdSomSkalLagres: (dokumentasjonskravIdSomSkalLagres: string | null) => void;
-  setAntallFilerMedFeil: (dokumentkravetHarValideringsfeil: number) => void;
-  setIngenFilerErLastetOppForDokumentkravet: (
-    ingenFilerErLastetOppForDokumentkravet: boolean
-  ) => void;
 }
 
-export function FilOpplasting({
-  dokumentasjonskrav,
-  dokumentkravFiler,
-  setDokumentkravFiler,
-  setDokumentasjonskravIdSomSkalLagres,
-  setAntallFilerMedFeil,
-  setIngenFilerErLastetOppForDokumentkravet,
-}: IProps) {
+export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
+  const { oppdaterEttersending, ettersendingManglerFiler, ettersendingHarEnValideringsfeil } =
+    useEttersendingContext();
 
-  useEffect(() => {
-    setAntallFilerMedFeil(
-      dokumentkravFiler.filter((dokumentkravFil) => dokumentkravFil.feil !== undefined).length
-    );
-  }, [dokumentkravFiler.length]);
-
-  useEffect(() => {
-    setIngenFilerErLastetOppForDokumentkravet(dokumentkravFiler.length === 0);
-  }, [dokumentkravFiler.length]);
+  const dokumentkravFiler = dokumentasjonskrav.filer || [];
+  const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -101,7 +65,10 @@ export function FilOpplasting({
       }
     });
 
-    setDokumentkravFiler((prev) => [...prev, ...filerMedFeil, ...filerKlarTilOpplasting]);
+    oppdaterEttersending({
+      ...dokumentasjonskrav,
+      filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
+    });
 
     if (filerKlarTilOpplasting.length > 0) {
       const responser = await Promise.all(
@@ -112,7 +79,7 @@ export function FilOpplasting({
           }
 
           const formData = new FormData();
-          formData.append("file", fil.file);
+          formData.append("fil", fil.file);
 
           const url = `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/last-opp-fil`;
           const respons = await fetch(url, { method: "POST", body: formData });
@@ -138,15 +105,25 @@ export function FilOpplasting({
         })
       );
 
-      setDokumentkravFiler((prev) =>
-        prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
-      );
+      const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
+
+      oppdaterEttersending({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler.map((fil) => ({
+          ...fil,
+          ...responser.find((respons) => respons?.id === fil.id),
+        })),
+      });
     }
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
+      oppdaterEttersending({
+        ...dokumentasjonskrav,
+        filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
+      });
+
       return;
     }
 
@@ -165,32 +142,28 @@ export function FilOpplasting({
       return;
     }
 
-    setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
-    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
+    oppdaterEttersending({
+      ...dokumentasjonskrav,
+      filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
+    });
 
     return await response.text();
   }
 
-  function hentFilFeilmelding(feilType: LastOppFeil) {
-    switch (feilType) {
-      case LastOppFeil.FIL_FOR_STOR:
-        return `Kunne ikke laste opp filen. Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
-      case LastOppFeil.UGYLDIG_FORMAT:
-        return "Kunne ikke laste opp filen. Ugyldig filformat";
-      case LastOppFeil.TEKNISK_FEIL:
-        return "Kunne ikke laste opp filen. Det oppstod en teknisk feil";
-      case LastOppFeil.DUPLIKAT_FIL:
-        return "Kunne ikke laste opp filen. Filen er duplikat";
-      case LastOppFeil.UKJENT_FEIL:
-        return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
-      default:
-        return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
-    }
-  }
-
   return (
-    <Box.New borderRadius="large" background="sunken" className="mt-4">
-      <VStack gap="8">
+    <Box.New borderRadius="large" background="sunken">
+      <VStack gap="4">
+        <HStack justify="space-between">
+          <Heading size="small" level="3">
+            {dokumentasjonskrav.tittel || "Dokumentasjon"}
+          </Heading>
+          <Tag variant="warning" size="xsmall">
+            Mangler
+          </Tag>
+        </HStack>
+
+        {dokumentasjonskrav.type && <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />}
+
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
             className="mt-4 fileUpload"
@@ -202,21 +175,38 @@ export function FilOpplasting({
           />
         </form>
       </VStack>
-      <VStack gap="4" className="mt-8">
-        {dokumentkravFiler?.map((fil) => (
-          <FileUploadItem
-            key={fil.id}
-            file={fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }}
-            status={fil.lasterOpp ? "uploading" : "idle"}
-            translations={{ uploading: "Laster opp..." }}
-            error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
-            button={{
-              action: "delete",
-              onClick: () => slettEnFil(fil),
-            }}
-          />
-        ))}
-      </VStack>
+
+      {dokumentkravFiler.length > 0 && (
+        <VStack gap="4" className="mt-8">
+          {dokumentkravFiler?.map((fil) => (
+            <FileUploadItem
+              key={fil.id}
+              file={
+                fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }
+              }
+              status={fil.lasterOpp ? "uploading" : "idle"}
+              translations={{ uploading: "Laster opp..." }}
+              error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
+              button={{
+                action: "delete",
+                onClick: () => slettEnFil(fil),
+              }}
+            />
+          ))}
+        </VStack>
+      )}
+      {ettersendingHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
+        <ErrorMessage className="mt-4">
+          Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+        </ErrorMessage>
+      )}
+
+      {ettersendingManglerFiler.includes(dokumentasjonskrav.id) &&
+        dokumentkravFiler.length === 0 && (
+          <ErrorMessage className="mt-4">
+            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+          </ErrorMessage>
+        )}
     </Box.New>
   );
 }

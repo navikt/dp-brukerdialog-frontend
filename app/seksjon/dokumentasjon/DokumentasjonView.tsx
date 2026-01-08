@@ -54,8 +54,9 @@ export function DokumentasjonView() {
     if (
       (!lagrerOgNavigererTilNesteSeksjon && !lagrerOgNavigererTilForrigeSeksjon) ||
       dokumentasjonskravIdSomSkalLagres !== null
-    )
+    ) {
       return;
+    }
 
     const nesteIndex = index + 1;
 
@@ -101,12 +102,12 @@ export function DokumentasjonView() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
-        <VStack gap="6">
+      <VStack>
+        <VStack gap="4">
           <Heading size="medium" level="2">
             {seksjonnavn}
           </Heading>
-          <VStack gap="8">
+          <VStack gap="2">
             {dokumentasjonKomponenter.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
