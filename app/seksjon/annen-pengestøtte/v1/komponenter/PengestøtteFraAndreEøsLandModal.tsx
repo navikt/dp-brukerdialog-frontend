@@ -1,7 +1,7 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -26,6 +26,7 @@ import {
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -39,6 +40,9 @@ export type PengestøtteFraAndreEøsLand = PengestøtteFraAndreEøsLandModalSvar
 };
 
 export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,
@@ -159,51 +163,73 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     }
   }, [form.value(mottarDuFortsattPengestøttenFraAndreEøsLand)]);
 
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setPengestøtteFraAndreEøsLandModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
+
   const modalOperasjon =
     pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil
       ? "Legg til"
       : "Rediger";
 
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setPengestøtteFraAndreEøsLandModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">{modalOperasjon} pengestøtte fra andre EØS-land</HStack>
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {pengestøtteFraAndreEøsLandModalKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                return null;
-              }
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setPengestøtteFraAndreEøsLandModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            <HStack gap="2">{modalOperasjon} pengestøtte fra andre EØS-land</HStack>
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {pengestøtteFraAndreEøsLandModalKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                  return null;
+                }
 
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(komponent.id as keyof PengestøtteFraAndreEøsLandModalSvar)}
-                />
-              );
-            })}
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(
+                      komponent.id as keyof PengestøtteFraAndreEøsLandModalSvar
+                    )}
+                  />
+                );
+              })}
 
-            <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
-                Lagre og lukk
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+              <HStack className="mt-4" justify="end">
+                <Button
+                  type="submit"
+                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                >
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }
