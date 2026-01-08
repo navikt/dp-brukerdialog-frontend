@@ -76,8 +76,8 @@ export type DatoSpørsmål = SpørsmålBase & {
 
 export type PeriodeSpørsmål = SpørsmålBase & {
   type: "periodeFra" | "periodeTil";
-  fraOgMed?: DatoSpørsmål;
-  tilOgMed?: DatoSpørsmål;
+  fraOgMed?: Date;
+  tilOgMed?: Date;
   periodeLabel?: string;
 };
 

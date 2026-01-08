@@ -1,4 +1,5 @@
 import { KomponentType } from "~/components/Komponent.types";
+import { endOfDay } from "date-fns";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -177,6 +178,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
     id: avreiseDatoFra,
     type: "periodeFra",
     label: "Fra dato",
+    tilOgMed: endOfDay(new Date()),
     periodeLabel: "Avreise dato",
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
