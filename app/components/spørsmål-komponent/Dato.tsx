@@ -3,6 +3,7 @@ import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
 import { DatoSpørsmål } from "../Komponent.types";
 import { useState } from "react";
+import { formaterNorskDatoMedTall } from "~/utils/formatering.utils";
 
 interface IProps {
   props: DatoSpørsmål;
@@ -23,6 +24,14 @@ export function Dato({ props, formScope }: IProps) {
     onValidate(val) {
       if (!val.isEmpty && val.isInvalid) {
         setError("Ugyldig dato");
+      } else if (!val.isEmpty && val.isAfter) {
+        setError(
+          `Valgt dato er etter siste gyldige dato (${formaterNorskDatoMedTall(props.tilOgMed!)})`
+        );
+      } else if (!val.isEmpty && val.isBefore) {
+        setError(
+          `Valgt dato er før første gyldige dato (${formaterNorskDatoMedTall(props.fraOgMed!)})`
+        );
       } else {
         field.clearError();
         setError(undefined);

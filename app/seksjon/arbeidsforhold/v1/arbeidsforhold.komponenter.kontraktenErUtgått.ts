@@ -4,6 +4,7 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
   kontraktenErUtgått,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
 export const kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato =
   "kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato";
@@ -21,6 +22,7 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
     label: "Fra dato",
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
   },

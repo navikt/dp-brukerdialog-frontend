@@ -7,6 +7,10 @@ export function formaterNorskDato(dato: Date) {
   return formattertDato.charAt(0).toUpperCase() + formattertDato.slice(1);
 }
 
+export function formaterNorskDatoMedTall(dato: Date) {
+  return format(dato, "dd.MM.yyyy", { locale: nb });
+}
+
 export const formaterDatoSvar = (spørsmål: SpørsmålBase, svar: string) => {
   if (
     (spørsmål.type == "dato" || spørsmål.type == "periodeFra" || spørsmål.type == "periodeTil") &&

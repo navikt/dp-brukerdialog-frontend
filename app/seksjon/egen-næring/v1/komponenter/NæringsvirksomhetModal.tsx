@@ -11,12 +11,17 @@ import {
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function NæringsvirksomhetModal({ ref }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const {
     næringsvirksomheter,
     setNæringsvirksomheter,
@@ -66,46 +71,66 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
   const modalOperasjon =
     næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
 
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setNæringsvirksomhetModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
+
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setNæringsvirksomhetModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">{modalOperasjon} næringsvirksomhet</HStack>
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                return null;
-              }
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setNæringsvirksomhetModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            <HStack gap="2">{modalOperasjon} næringsvirksomhet</HStack>
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                  return null;
+                }
 
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(komponent.id as keyof LeggTilNæringsvirksomhetSvar)}
-                />
-              );
-            })}
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof LeggTilNæringsvirksomhetSvar)}
+                  />
+                );
+              })}
 
-            <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
-                Lagre og lukk
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+              <HStack className="mt-4" justify="end">
+                <Button
+                  type="submit"
+                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                >
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }

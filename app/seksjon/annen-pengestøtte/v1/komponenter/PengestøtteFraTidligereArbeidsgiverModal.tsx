@@ -19,6 +19,8 @@ import {
   pengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { useEffect, useRef, useState } from "react";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -32,6 +34,9 @@ export type PengestøtteFraTidligereArbeidsgiver = PengestøtteFraTidligereArbei
 };
 
 export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const {
     pengestøtteFraTidligereArbeidsgiver,
     setPengestøtteFraTidligereArbeidsgiver,
@@ -143,48 +148,70 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
       ? "Legg til"
       : "Rediger";
 
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setPengestøtteFraTidligereArbeidsgiverModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
+
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setPengestøtteFraTidligereArbeidsgiverModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">{modalOperasjon} utbetalinger eller økonomiske goder fra tidligere arbeidsgiver</HStack>
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                return null;
-              }
-
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(
-                    komponent.id as keyof PengestøtteFraTidligereArbeidsgiverModalSvar
-                  )}
-                />
-              );
-            })}
-
-            <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
-                Lagre og lukk
-              </Button>
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setPengestøtteFraTidligereArbeidsgiverModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            <HStack gap="2">
+              {modalOperasjon} utbetalinger eller økonomiske goder fra tidligere arbeidsgiver
             </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                  return null;
+                }
+
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(
+                      komponent.id as keyof PengestøtteFraTidligereArbeidsgiverModalSvar
+                    )}
+                  />
+                );
+              })}
+
+              <HStack className="mt-4" justify="end">
+                <Button
+                  type="submit"
+                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                >
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }
