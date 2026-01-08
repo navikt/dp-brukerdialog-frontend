@@ -40,12 +40,17 @@ import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function ArbeidsforholdModal({ ref }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const {
     registrerteArbeidsforhold,
     setRegistrerteArbeidsforhold,
@@ -97,6 +102,12 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   });
 
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
+
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
 
   function leggTilArbeidsforhold(skjemaData: ArbeidsforholdModalSvar) {
     const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
@@ -313,61 +324,75 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       ? "Legg til arbeidsforhold"
       : "Rediger arbeidsforhold";
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          {modalTittel}
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        {modalData?.form &&
-          arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-            if (komponent.visHvis && !komponent.visHvis(modalData.form?.value())) {
-              return null;
-            }
-
-            if (modalData?.form) {
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={modalData.form.scope(komponent.id as keyof ArbeidsforholdSvar)}
-                />
-              );
-            }
-          })}
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {alleModalKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            {modalTittel}
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          {modalData?.form &&
+            arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(modalData.form?.value())) {
                 return null;
               }
 
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
-                />
-              );
+              if (modalData?.form) {
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={modalData.form.scope(komponent.id as keyof ArbeidsforholdSvar)}
+                  />
+                );
+              }
             })}
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {alleModalKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                  return null;
+                }
 
-            <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
-                Lagre og lukk
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
+                  />
+                );
+              })}
+
+              <HStack className="mt-4" justify="end">
+                <Button
+                  type="submit"
+                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                >
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }
