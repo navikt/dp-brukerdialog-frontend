@@ -99,6 +99,7 @@ function EttersendingProvider({
     setHarTekniskFeil(false);
 
     const bundletEttersend: Dokumentasjonskrav[] = [];
+    let bundlingFeilet = false;
 
     for (const etEttersending of ettersending) {
       const bundle = await bundleFilerForEttersending(etEttersending);
@@ -110,7 +111,15 @@ function EttersendingProvider({
           bundle,
         };
         bundletEttersend.push(oppdatertDokumentasjonskrav);
+      } else {
+        bundlingFeilet = true;
+        console.error("Bundling feilet for dokumentkrav:", etEttersending.id);
       }
+    }
+
+    if (bundlingFeilet) {
+      setLagrer(false);
+      return;
     }
 
     const alleDokumentasjonskrav = dokumentasjonskrav.map((etDokumentasjonskrav) => {
@@ -139,7 +148,15 @@ function EttersendingProvider({
 
     for (const etEttersending of ettersendingTilLagring) {
       const { seksjonId, dokumentasjonskrav } = etEttersending;
-      await lagreDokumentasjonskravMedEttersending(seksjonId, dokumentasjonskrav);
+      const lagringsResultat = await lagreDokumentasjonskravMedEttersending(
+        seksjonId,
+        dokumentasjonskrav
+      );
+
+      if (!lagringsResultat) {
+        setLagrer(false);
+        return;
+      }
     }
 
     setLagrer(false);
@@ -180,7 +197,7 @@ function EttersendingProvider({
   async function lagreDokumentasjonskravMedEttersending(
     seksjonId: string,
     ettersendinger: Dokumentasjonskrav[]
-  ): Promise<void> {
+  ): Promise<boolean> {
     try {
       const formData = new FormData();
       formData.append("ettersendinger", JSON.stringify(ettersendinger));
@@ -193,11 +210,14 @@ function EttersendingProvider({
       if (!response.ok) {
         console.error("Feil ved lagring av dokumentasjonskrav:", seksjonId);
         setHarTekniskFeil(true);
-        return;
+        return false;
       }
+
+      return true;
     } catch (error) {
       setHarTekniskFeil(true);
       console.error("Feil ved lagring av dokumentasjonskrav:", error);
+      return false;
     }
   }
 
