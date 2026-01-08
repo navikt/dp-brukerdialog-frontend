@@ -14,3 +14,4 @@ faro_url: https://telemetry.ekstern.dev.nav.no/collect
 dp_soknad_orkestrator_url: https://dp-soknad-orkestrator.intern.dev.nav.no
 dp_mellomlagring_url: https://dp-mellomlagring.intern.dev.nav.no/v1/obo/mellomlagring
 arbeidssokerregisteret_url: https://oppslag-v2-arbeidssoekerregisteret.intern.dev.nav.no
+dp_mine_dagpenger_url: https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/mine-dagpenger

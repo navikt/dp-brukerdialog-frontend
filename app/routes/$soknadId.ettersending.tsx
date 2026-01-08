@@ -6,12 +6,12 @@ import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKo
 import { EttersendingProvider } from "~/seksjon/ettersending/ettersending.context";
 import { EttersendingView } from "~/seksjon/ettersending/EttersendingView";
 
-export type EttersendingSeksjon = {
+export type Ettersending = {
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
   ettersending: Dokumentasjonskrav[] | null;
 };
 
-export async function loader({ request, params }: LoaderFunctionArgs<EttersendingSeksjon>) {
+export async function loader({ request, params }: LoaderFunctionArgs<Ettersending>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const response = await hentDokumentasjonskrav(request, params.soknadId);
@@ -26,7 +26,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
-  if (dokumentasjonskrav.length === 0) {
+  if (ettersending.length === 0) {
     return redirect(`/soknad/${params.soknadId}/kvittering`);
   }
 

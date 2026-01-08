@@ -56,6 +56,8 @@ spec:
       value: "{{ dp_mellomlagring_url }}"
     - name: ARBEIDSSOKERREGISTERET_URL
       value: "{{arbeidssokerregisteret_url}}"
+    - name: DP_MINE_DAGPENGER_URL
+      value: "{{ dp_mine_dagpenger_url }}"
 
   ingresses:
     {{#each ingresses as |url|}}

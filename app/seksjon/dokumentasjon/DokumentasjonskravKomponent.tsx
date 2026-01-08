@@ -134,7 +134,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         dokumentasjonskravskjema[nårSendteDuDokumentet] ||
         dokumentasjonskravskjema[hvaErGrunnenTilAtDuIkkeSenderDokumentet] ||
         dokumentasjonskravskjema[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
-        dokumentasjonskravskjema[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
         undefined;
 
       const dokumentasjonskravsvar = {

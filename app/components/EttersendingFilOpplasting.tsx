@@ -13,26 +13,7 @@ import {
 } from "~/utils/dokument.utils";
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
-
-export type DokumentkravFil = {
-  id: string;
-  filnavn: string;
-  urn?: string;
-  tidspunkt?: string;
-  storrelse?: number;
-  filsti?: string;
-  lasterOpp?: boolean;
-  file?: File;
-  feil?: LastOppFeil;
-};
-
-export enum LastOppFeil {
-  FIL_FOR_STOR = "FIL_FOR_STOR",
-  UGYLDIG_FORMAT = "UGYLDIG_FORMAT",
-  TEKNISK_FEIL = "TEKNISK_FEIL",
-  DUPLIKAT_FIL = "DUPLIKAT_FIL",
-  UKJENT_FEIL = "UKJENT_FEIL",
-}
+import { DokumentkravFil, LastOppFeil } from "./FilOpplasting";
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;

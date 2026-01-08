@@ -233,7 +233,12 @@ export default function KvitteringView() {
               </ExpansionCard.Content>
             </ExpansionCard>
             <HStack>
-              <Button as="a" href={getEnv("DP_MINE_DAGPENGER_URL")}>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  window.location.href = getEnv("DP_MINE_DAGPENGER_URL");
+                }}
+              >
                 Gå til mine dagpenger
               </Button>
             </HStack>
