@@ -121,12 +121,19 @@ export const personaliaSpørsmål: KomponentType[] = [
     visHvis: (svar: PersonaliaSvar) => Number(svar[alderFraPdl]) >= 67,
   },
   {
+    id: "personaliaBostedslandForklarendeTekst",
+    type: "forklarendeTekst",
+    description: "<h3>Bostedsland</h3>",
+  },
+  {
     id: folkeregistrertAdresseErNorgeStemmerDet,
     type: "envalg",
-    label: "Vi ser fra din folkeregistrerte adresse at du bor i Norge. Stemmer dette?",
+    label: "Du er folkeregistrert i Norge. Er Norge bostedslandet ditt?",
+    description:
+      "Bostedslandet ditt er det landet du eier eller leier bolig i og tilbringer mesteparten av tiden din, også når du ikke jobber.",
     options: [
-      { value: "ja", label: "Ja, jeg bor i Norge" },
-      { value: "nei", label: "Nei, jeg bor ikke i Norge" },
+      { value: "ja", label: "Ja, Norge er bostedslandet mitt" },
+      { value: "nei", label: "Nei, Norge er ikke bostedslandet mitt" },
     ],
     visHvis: (svar: PersonaliaSvar) => svar[landFraPdl] === "NORGE",
   },
@@ -134,18 +141,9 @@ export const personaliaSpørsmål: KomponentType[] = [
 
 export const personaliaBostedslandSpørsmål: KomponentType[] = [
   {
-    id: "personaliaBostedslandForklarendeTekst",
-    type: "forklarendeTekst",
-    description: "<h3>Bostedsland</h3>",
-    visHvis: (svar: PersonaliaSvar) =>
-      svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei" && svar[landFraPdl] === "NORGE",
-  },
-  {
     id: bostedsland,
     type: "land",
     label: "Hvilket land bor du i?",
-    description:
-      "Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge.",
     visHvis: (svar: PersonaliaSvar) =>
       svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
@@ -162,6 +160,8 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
       "<li>om du er permittert eller delvis arbeidsledig, eller om du er helt arbeidsledig</li>" +
       "</ul>" +
       "Er du usikker på hva du skal svare, kan du lese <a href='https://nav.no/dagpenger#eos'>mer om hvor du skal søke penger fra</a>.",
+    visHvis: (svar: PersonaliaSvar) =>
+      svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
   {
     id: reistTilbakeTilBostedslandet,
