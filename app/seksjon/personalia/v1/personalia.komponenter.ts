@@ -144,6 +144,8 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
     id: bostedsland,
     type: "land",
     label: "Hvilket land bor du i?",
+    description:
+      "Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge.",
     visHvis: (svar: PersonaliaSvar) =>
       svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
