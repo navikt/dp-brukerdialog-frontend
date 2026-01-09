@@ -37,16 +37,16 @@ export default function KvitteringView() {
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
 
-  const dokumentasjonSomErSendtAvDeg = dokumentasjonskrav.filter(
+  const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) =>
       krav.svar === dokumentkravSvarSendNå || krav.svar === dokumentkravEttersendt
   );
 
-  const dokumentasjonSomSkalSendesAvDeg = dokumentasjonskrav.filter(
+  const dokumentasjonSomSkalSendesAvDeg: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
-  const dokumentasjonSomIkkeSkalSendes = dokumentasjonskrav.filter(
+  const dokumentasjonSomIkkeSkalSendes: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) =>
       krav.svar === dokumentkravSvarSenderIkke || krav.svar === dokumentkravSvarSendtTidligere
   );
