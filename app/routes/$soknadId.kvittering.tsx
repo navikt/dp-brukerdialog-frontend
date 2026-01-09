@@ -33,6 +33,15 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
 
   if (alleSeksjonerResponse.ok) {
     const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
+
+    if (!dokumentasjonskravResponse.ok) {
+      return {
+        seksjoner: await alleSeksjonerResponse.json(),
+        dokumentasjonskrav: null,
+        erRegistrertArbeidssøker: await hentArbeidssøkerStatus(request),
+      };
+    }
+
     const dokumentasjonskravJson = await dokumentasjonskravResponse.json();
     const dokumentasjonskrav = dokumentasjonskravJson.flatMap((dokumentasjonskrav: string) =>
       JSON.parse(dokumentasjonskrav)
