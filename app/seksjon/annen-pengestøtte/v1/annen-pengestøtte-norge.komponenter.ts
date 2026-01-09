@@ -107,6 +107,7 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
     periodeLabel: "I hvilken periode har du mottatt pengestøtten?",
     label: "Fra dato",
     fraOgMed: startOfDay(subYears(new Date(), 20)),
+    referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
   },
   {
     id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
@@ -115,35 +116,38 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
     description:
       "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
     optional: true,
+    referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
   },
 ];
 
-export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] = [
-  {
-    id: mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
-    type: "envalg",
-    label:
-      "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
-    description:
-      "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverLesMer",
-    type: "lesMer",
-    label: "Grunnen til at vi spør om dette",
-    description:
-      "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
-  },
-  {
-    id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />" +
-      "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver.",
-    visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja",
-  },
-];
+export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] =
+  [
+    {
+      id: mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+      type: "envalg",
+      label:
+        "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
+      description:
+        "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
+      options: [
+        { value: "ja", label: "Ja" },
+        { value: "nei", label: "Nei" },
+      ],
+    },
+    {
+      id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverLesMer",
+      type: "lesMer",
+      label: "Grunnen til at vi spør om dette",
+      description:
+        "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
+    },
+    {
+      id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverForklarendeTekst",
+      type: "forklarendeTekst",
+      description:
+        "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />" +
+        "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver.",
+      visHvis: (svar: AnnenPengestøtteSvar) =>
+        svar[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja",
+    },
+  ];

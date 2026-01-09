@@ -12,7 +12,8 @@ export const kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato =
   "kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato";
 export const kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver =
   "kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver";
-export const kontraktenErUtgåttHvaHarDuSvartPåTilbudet = "kontraktenErUtgåttHvaHarDuSvartPåTilbudet";
+export const kontraktenErUtgåttHvaHarDuSvartPåTilbudet =
+  "kontraktenErUtgåttHvaHarDuSvartPåTilbudet";
 export const kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
   "kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
@@ -22,6 +23,7 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
     label: "Fra dato",
+    referanseId: kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
@@ -30,6 +32,7 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
     id: kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
     label: "Til dato",
+    referanseId: kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
   },

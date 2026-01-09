@@ -38,6 +38,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     periodeLabel: "Når er du permittert?",
     description:
       "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen.",
+    referanseId: permittertNårErDuPermittertTilOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },
@@ -46,6 +47,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     type: "periodeTil",
     label: "Til og med dato",
     optional: true,
+    referanseId: permittertNårErDuPermittertFraOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
   },
@@ -150,6 +152,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     type: "periodeFra",
     periodeLabel: "Fyll inn lønnspliktperioden",
     label: "Fra og med dato",
+    referanseId: permittertLønnsperiodeTilOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
   },
@@ -158,6 +161,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     type: "periodeTil",
     label: "Til og med dato",
     optional: true,
+    referanseId: permittertLønnsperiodeFraOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
   },

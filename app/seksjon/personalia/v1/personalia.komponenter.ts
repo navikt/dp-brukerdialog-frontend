@@ -182,6 +182,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
     label: "Fra dato",
     tilOgMed: endOfDay(new Date()),
     periodeLabel: "Avreise dato",
+    referanseId: avreiseDatoTil,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
@@ -189,6 +190,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
     type: "periodeTil",
     label: "Til dato",
     optional: true,
+    referanseId: avreiseDatoFra,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
