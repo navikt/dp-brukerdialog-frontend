@@ -17,16 +17,17 @@ import { Periode } from "./spørsmål-komponent/Periode";
 interface IProps {
   props: KomponentType;
   formScope: FormScope<string | Array<string> | undefined>;
+  formValues?: Record<string, any>;
 }
 
-export function Komponent({ props, formScope }: IProps) {
+export function Komponent({ props, formScope, formValues }: IProps) {
   switch (props.type) {
     case "dato":
       return <Dato props={props} formScope={formScope} />;
 
     case "periodeFra":
     case "periodeTil":
-      return <Periode props={props} formScope={formScope} />;
+      return <Periode props={props} formScope={formScope} formValues={formValues} />;
 
     case "envalg":
       return <Envalg props={props} formScope={formScope} />;

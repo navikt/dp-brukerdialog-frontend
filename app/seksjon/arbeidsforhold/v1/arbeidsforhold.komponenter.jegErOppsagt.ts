@@ -24,6 +24,7 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
     periodeLabel: "Varighet på arbeidsforholdet",
     label: "Fra dato",
     fraOgMed: startOfDay(subYears(new Date(), 100)),
+    referanseId: jegErOppsagtVarighetPåArbeidsforholdetTilDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
@@ -31,6 +32,7 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
     id: jegErOppsagtVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
     label: "Til dato",
+    referanseId: jegErOppsagtVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
