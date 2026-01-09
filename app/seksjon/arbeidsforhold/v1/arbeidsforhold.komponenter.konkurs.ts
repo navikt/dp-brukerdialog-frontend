@@ -4,7 +4,7 @@ import {
   arbeidsgiverErKonkurs,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { endOfDay, startOfDay, subMonths, subYears } from "date-fns";
+import { addYears, endOfDay, startOfDay, subMonths, subYears } from "date-fns";
 
 export const konkursVarighetPåArbeidsforholdetFraDato =
   "konkursVarighetPåArbeidsforholdetFraDato";
@@ -89,7 +89,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     type: "dato",
     label: "Oppgi den kontraktsfestede sluttdatoen for dette arbeidsforholdet",
     fraOgMed: startOfDay(subMonths(new Date(), 9)),
-    tilOgMed: endOfDay(subYears(new Date(), 100)),
+    tilOgMed: endOfDay(addYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato] === "ja",
   },
