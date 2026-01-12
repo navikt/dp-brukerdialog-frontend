@@ -18,6 +18,7 @@ export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] =
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
     label: "Fra dato",
+    referanseId: jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
@@ -26,6 +27,7 @@ export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] =
     id: jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
     label: "Til dato",
+    referanseId: jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
   },

@@ -79,6 +79,7 @@ export type PeriodeSpørsmål = SpørsmålBase & {
   fraOgMed?: Date;
   tilOgMed?: Date;
   periodeLabel?: string;
+  referanseId?: string;
 };
 
 export type LandSpørsmål = SpørsmålBase & {
@@ -88,7 +89,7 @@ export type LandSpørsmål = SpørsmålBase & {
 
 export type TallSpørsmål = SpørsmålBase & {
   type: "tall";
-  maksVerdi?: number
+  maksVerdi?: number;
 };
 
 export type NedtrekkslisteSpørsmål = SpørsmålBase & {

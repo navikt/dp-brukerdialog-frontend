@@ -131,6 +131,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     type: "periodeFra",
     periodeLabel: "I hvilken periode mottok du pengesøtten?",
     label: "Fra dato",
+    referanseId: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 40)),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
@@ -139,6 +140,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
     type: "periodeTil",
     label: "Til dato",
+    referanseId: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
     fraOgMed: startOfDay(subYears(new Date(), 4)),
     tilOgMed: endOfDay(new Date()),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>

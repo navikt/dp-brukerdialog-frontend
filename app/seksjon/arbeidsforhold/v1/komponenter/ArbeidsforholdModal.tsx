@@ -373,6 +373,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                     key={komponent.id}
                     props={komponent}
                     formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
+                    formValues={form.value()}
                   />
                 );
               })}

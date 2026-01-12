@@ -451,6 +451,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
     type: "periodeFra",
     periodeLabel: "Oppgi siste arbeidsperiode du hadde i den siste rotasjonen din",
     label: "Fra dato",
+    referanseId: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 5)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
@@ -459,6 +460,7 @@ export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] 
     id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
     type: "periodeTil",
     label: "Til dato",
+    referanseId: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
   },
