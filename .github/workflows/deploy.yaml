@@ -111,21 +111,21 @@ jobs:
           VARS: .nais/vars-dev.yaml
           PRINT_PAYLOAD: true
 
-  deploy-prod:
-    needs: [build]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      actions: read
-    environment: prod-gcp
-    steps:
-      - uses: actions/checkout@v6
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/nais.yaml
-          VAR: image=${{ needs.build.outputs.image }}
-          VARS: .nais/vars-prod.yaml
-          PRINT_PAYLOAD: true
+  # deploy-prod:
+  #   needs: [build]
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     id-token: write
+  #     actions: read
+  #   environment: prod-gcp
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - uses: nais/deploy/actions/deploy@v2
+  #       env:
+  #         CLUSTER: prod-gcp
+  #         RESOURCE: .nais/nais.yaml
+  #         VAR: image=${{ needs.build.outputs.image }}
+  #         VARS: .nais/vars-prod.yaml
+  #         PRINT_PAYLOAD: true
