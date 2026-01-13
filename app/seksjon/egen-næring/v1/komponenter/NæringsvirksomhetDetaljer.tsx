@@ -26,9 +26,9 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
       <h3 style={{ marginTop: "0" }}>{næringsvirksomhet[virksomhetensNavn]}</h3>
       <BodyShort spacing>
         {næringsvirksomhet[hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]} timer arbeidstid
-        pr. uke før reduksjon
+        per uke før reduksjon
         <br />
-        {næringsvirksomhet[hvorMangeTimerJobbetPerUkeNå]} timer arbeidstid pr. uke nå
+        {næringsvirksomhet[hvorMangeTimerJobbetPerUkeNå]} timer arbeidstid per uke nå
       </BodyShort>
       <HStack gap="4">
         <Button
