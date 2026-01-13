@@ -14,7 +14,9 @@ import {
   hvordanHarDuBeregnetAntallArbeidstimerTotalt,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
+  hvorMangeProsentAvInntektenGårTilAndre,
   hvorMangeProsentAvInntektenGårTilDeg,
+  hvorMangeProsentAvInntektenGårTilSamboerEktefelle,
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
   hvorMangeTimerJobbetPerUkeNå,
   jeg,
@@ -84,6 +86,8 @@ export const leggTilGårdsbrukSchema = z
     [hvilkeTypeGårdsbrukDriverDu]: z.array(z.enum([dyr, jord, skog, annet])).optional(),
     [hvemEierGårdsbruket]: z.array(z.enum([jeg, samboerEktefelle, andre])).optional(),
     [hvorMangeProsentAvInntektenGårTilDeg]: z.string().optional(),
+    [hvorMangeProsentAvInntektenGårTilSamboerEktefelle]: z.string().optional(),
+    [hvorMangeProsentAvInntektenGårTilAndre]: z.string().optional(),
     [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]: z.string().optional(),
     [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]: z
       .string()
