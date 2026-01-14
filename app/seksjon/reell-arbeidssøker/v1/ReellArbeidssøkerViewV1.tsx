@@ -16,6 +16,7 @@ import {
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidRedusertHelse,
   kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
+  kanIkkeJobbeIHeleNorgeAnnenSituasjon,
   kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   kanIkkeJobbeIHeleNorgeRedusertHelse,
@@ -144,6 +145,7 @@ export function ReellArbeidssøkerViewV1() {
       kanIkkeJobbeIHeleNorgeRedusertHelse,
       kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
       kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+      kanIkkeJobbeIHeleNorgeAnnenSituasjon,
     ];
 
     const dokumentasjonskravTrigges = skjemaSvarArray.some((valgt) =>
