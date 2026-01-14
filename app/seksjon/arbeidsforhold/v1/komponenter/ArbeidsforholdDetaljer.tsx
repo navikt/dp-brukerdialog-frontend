@@ -156,7 +156,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
                 <>
                   til{" "}
                   {formaterNorskDato(
-                    new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato]!)
+                    new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato])
                   )}
                 </>
               )}
