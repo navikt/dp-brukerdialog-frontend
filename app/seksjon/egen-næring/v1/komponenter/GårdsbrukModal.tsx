@@ -13,6 +13,7 @@ import {
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -62,6 +63,8 @@ export function GårdsbrukModal({ ref }: IProps) {
     },
     resetAfterSubmit: true,
   });
+
+  useNullstillSkjulteFelter<LeggTilGårdsbrukSvar>(form, leggTilGårdsbrukKomponenter);
 
   const modalOperasjon =
     gårdsbrukModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";

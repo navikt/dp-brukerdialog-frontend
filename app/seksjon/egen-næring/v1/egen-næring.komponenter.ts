@@ -24,6 +24,9 @@ export const jeg = "jeg";
 export const samboerEktefelle = "samboerEktefelle";
 export const andre = "andre";
 export const hvorMangeProsentAvInntektenGårTilDeg = "hvorMangeProsentAvInntektenGårTilDeg";
+export const hvorMangeProsentAvInntektenGårTilSamboerEktefelle =
+  "hvorMangeProsentAvInntektenGårTilSamboerEktefelle";
+export const hvorMangeProsentAvInntektenGårTilAndre = "hvorMangeProsentAvInntektenGårTilAndre";
 export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr =
   "hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr";
 export const hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer =
@@ -86,8 +89,7 @@ export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
     type: "informasjonskort",
     variant: "informasjon",
     label: "Informasjon",
-    description:
-      "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>",
+    description: "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>",
     visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
   },
 ];
@@ -160,6 +162,8 @@ export type LeggTilGårdsbrukSvar = {
   [hvilkeTypeGårdsbrukDriverDu]?: Array<typeof dyr | typeof jord | typeof skog | typeof annet>;
   [hvemEierGårdsbruket]?: Array<typeof jeg | typeof samboerEktefelle | typeof andre>;
   [hvorMangeProsentAvInntektenGårTilDeg]?: string;
+  [hvorMangeProsentAvInntektenGårTilSamboerEktefelle]?: string;
+  [hvorMangeProsentAvInntektenGårTilAndre]?: string;
   [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]?: string;
   [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]?: string;
   [hvordanHarDuBeregnetAntallArbeidstimerTotalt]?: string;
@@ -205,7 +209,23 @@ export const leggTilGårdsbrukKomponenter: KomponentType[] = [
     id: hvorMangeProsentAvInntektenGårTilDeg,
     type: "tall",
     label: "Hvor mange prosent av inntekten går til deg?",
-    maksVerdi: 100
+    maksVerdi: 100,
+    visHvis: (svar: LeggTilGårdsbrukSvar) => svar[hvemEierGårdsbruket]?.includes(jeg) || false,
+  },
+  {
+    id: hvorMangeProsentAvInntektenGårTilSamboerEktefelle,
+    type: "tall",
+    label: "Hvor mange prosent av inntekten går til samboer/ektefelle?",
+    maksVerdi: 100,
+    visHvis: (svar: LeggTilGårdsbrukSvar) =>
+      svar[hvemEierGårdsbruket]?.includes(samboerEktefelle) || false,
+  },
+  {
+    id: hvorMangeProsentAvInntektenGårTilAndre,
+    type: "tall",
+    label: "Hvor mange prosent av inntekten går til andre?",
+    maksVerdi: 100,
+    visHvis: (svar: LeggTilGårdsbrukSvar) => svar[hvemEierGårdsbruket]?.includes(andre) || false,
   },
   {
     id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
