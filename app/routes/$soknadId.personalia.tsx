@@ -33,6 +33,7 @@ import {
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "personalia";
@@ -72,6 +73,7 @@ export type PersonaliaSeksjon = {
   };
   personalia?: Personalia | null;
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
+  sistOppdatert?: Date;
 };
 
 export async function loader({ params, request }: LoaderFunctionArgs): Promise<PersonaliaSeksjon> {
@@ -79,6 +81,11 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<P
 
   const personaliaResponse = await hentPersonalia(request);
   const seksjonResponse = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const sistOppdatertResponse = await hentSøknadSistOppdatert(request, params.soknadId);
+
+  let sistOppdatert = sistOppdatertResponse.ok
+    ? JSON.parse(await sistOppdatertResponse.text())
+    : undefined;
 
   if (!personaliaResponse.ok) {
     return {
@@ -108,6 +115,7 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<P
     ...seksjonsdata,
     personalia: await personaliaResponse.json(),
     dokumentasjonskrav: null,
+    sistOppdatert: new Date(sistOppdatert),
   };
 }
 

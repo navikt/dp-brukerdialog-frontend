@@ -39,6 +39,7 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { formaterNorskDatoMedKlokkeslett } from "~/utils/formatering.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
@@ -48,7 +49,7 @@ export function PersonaliaViewV1() {
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
-  const { seksjon, personalia } = loaderData;
+  const { seksjon, personalia, sistOppdatert } = loaderData;
   const actionData = useActionData<typeof action>();
 
   if (!personalia) {
@@ -215,18 +216,25 @@ export function PersonaliaViewV1() {
               )}
             </VStack>
 
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleSubmit}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            <VStack className="mt-8">
+              {sistOppdatert && (
+                <BodyShort textColor="subtle">
+                  {`Sist lagret: ${formaterNorskDatoMedKlokkeslett(sistOppdatert)}`}
+                </BodyShort>
+              )}
+              <HStack gap="4">
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={handleSubmit}
+                  iconPosition="right"
+                  icon={<ArrowRightIcon aria-hidden />}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Neste steg
+                </Button>
+              </HStack>
+            </VStack>
           </Form>
         </VStack>
       </VStack>
