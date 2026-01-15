@@ -49,6 +49,7 @@ import {
   PengestøtteFraTidligereArbeidsgiverModal,
 } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
+import { SistOppdatert } from "~/components/SistOppdatert";
 
 export function AnnenPengestøtteViewV1() {
   const seksjonnavn = "Annen pengestøtte";
@@ -430,27 +431,30 @@ export function AnnenPengestøtteViewV1() {
             </Alert>
           )}
 
-          <HStack gap="4" className="mt-8">
-            <Button
-              variant="secondary"
-              type="button"
-              icon={<ArrowLeftIcon aria-hidden />}
-              onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Forrige steg
-            </Button>
-            <Button
-              variant="primary"
-              type="button"
-              iconPosition="right"
-              icon={<ArrowRightIcon aria-hidden />}
-              onClick={handleSubmit}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Neste steg
-            </Button>
-          </HStack>
+          <VStack className="mt-8" gap="4">
+            <SistOppdatert />
+            <HStack gap="4">
+              <Button
+                variant="secondary"
+                type="button"
+                icon={<ArrowLeftIcon aria-hidden />}
+                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+                disabled={state === "submitting" || state === "loading"}
+              >
+                Forrige steg
+              </Button>
+              <Button
+                variant="primary"
+                type="button"
+                iconPosition="right"
+                icon={<ArrowRightIcon aria-hidden />}
+                onClick={handleSubmit}
+                disabled={state === "submitting" || state === "loading"}
+              >
+                Neste steg
+              </Button>
+            </HStack>
+          </VStack>
         </Form>
       </VStack>
       {pengestøtteFraTidligereArbeidsgiverModalData && (

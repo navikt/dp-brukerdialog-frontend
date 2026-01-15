@@ -7,6 +7,10 @@ export function formaterNorskDato(dato: Date) {
   return formattertDato.charAt(0).toUpperCase() + formattertDato.slice(1);
 }
 
+export function formaterNorskDatoMedKlokkeslett(dato: Date) {
+  return format(dato, "dd.MM.yyyy 'kl.' HH:mm", { locale: nb });
+}
+
 export function formaterNorskDatoMedTall(dato: Date) {
   return format(dato, "dd.MM.yyyy", { locale: nb });
 }

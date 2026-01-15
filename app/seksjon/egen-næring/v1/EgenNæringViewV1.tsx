@@ -3,7 +3,10 @@ import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
@@ -27,9 +30,7 @@ import { GårdsbrukModal } from "~/seksjon/egen-næring/v1/komponenter/Gårdsbru
 import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
 import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { SøknadFooter } from "~/components/SøknadFooter";
 
 export function EgenNæringViewV1() {
   const seksjonnavn = "Egen næring";
@@ -270,27 +271,30 @@ export function EgenNæringViewV1() {
               )}
             </VStack>
 
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                type="button"
-                variant="primary"
-                onClick={handleSubmit}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            <VStack className="mt-8" gap="4">
+              <SistOppdatert />
+              <HStack gap="4">
+                <Button
+                  variant="secondary"
+                  type="button"
+                  icon={<ArrowLeftIcon aria-hidden />}
+                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Forrige steg
+                </Button>
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={handleSubmit}
+                  iconPosition="right"
+                  icon={<ArrowRightIcon aria-hidden />}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Neste steg
+                </Button>
+              </HStack>
+            </VStack>
           </Form>
         </VStack>
       </VStack>

@@ -1,8 +1,9 @@
-import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-router";
-import { SøknadIkon } from "~/components/SøknadIkon";
 import { FormProgress, Heading } from "@navikt/ds-react";
+import { LoaderFunctionArgs, Outlet, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
+import { SøknadIkon } from "~/components/SøknadIkon";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
+import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
 
 type Steg = {
   tittel: string;
@@ -51,14 +52,30 @@ function finnAktivSteg(seksjoner: FremgangSteg[], urlPath: string) {
   return seksjonIndeks;
 }
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export type SoknadIdRoute = {
+  søknadProgress: FremgangSteg[];
+  aktivSteg: number;
+  sistOppdatert?: Date;
+};
+
+export async function loader({
+  request,
+  params,
+}: LoaderFunctionArgs): Promise<SoknadIdRoute | Response> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const progressResponse = await hentSøknadFremgangInfo(request, params.soknadId);
+  const sistOppdatertResponse = await hentSøknadSistOppdatert(request, params.soknadId);
+
+  let sistOppdatert = sistOppdatertResponse.ok
+    ? JSON.parse(await sistOppdatertResponse.text())
+    : undefined;
+
   if (!progressResponse.ok) {
     return {
       søknadProgress: fyllTommeSteger(),
       aktivSteg: 1,
+      sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
     };
   }
   const { seksjoner }: StegResponse = await progressResponse.json();
@@ -77,6 +94,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   return {
     søknadProgress: soknadSections,
     aktivSteg: finnAktivSteg(soknadSections, request.url) + 1,
+    sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
   };
 }
 

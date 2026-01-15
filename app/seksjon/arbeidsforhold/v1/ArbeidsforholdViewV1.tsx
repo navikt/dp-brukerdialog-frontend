@@ -3,7 +3,10 @@ import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
@@ -36,8 +39,6 @@ import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/Arbe
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import invariant from "tiny-invariant";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -243,27 +244,30 @@ export function ArbeidsforholdViewV1() {
               )}
             </VStack>
 
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="button"
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                onClick={handleSubmit}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            <VStack className="mt-8" gap="4">
+              <SistOppdatert />
+              <HStack gap="4">
+                <Button
+                  variant="secondary"
+                  type="button"
+                  icon={<ArrowLeftIcon aria-hidden />}
+                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Forrige steg
+                </Button>
+                <Button
+                  variant="primary"
+                  type="button"
+                  iconPosition="right"
+                  icon={<ArrowRightIcon aria-hidden />}
+                  onClick={handleSubmit}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Neste steg
+                </Button>
+              </HStack>
+            </VStack>
           </Form>
         </VStack>
         {modalData && <ArbeidsforholdModal ref={ref} />}
