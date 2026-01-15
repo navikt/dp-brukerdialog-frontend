@@ -1,13 +1,14 @@
-import { Box, ErrorMessage, Heading, VStack } from "@navikt/ds-react";
+import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
-import { Form, useParams } from "react-router";
+import { Form } from "react-router";
+import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { Dokumentasjonskrav } from "./dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import dokumentasjonskravKomponenter, {
   DokumentasjonskravSvar,
-  dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
@@ -19,56 +20,6 @@ import dokumentasjonskravKomponenter, {
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
-import { DokumentkravFil, FilOpplasting } from "~/components/FilOpplasting";
-
-export type Dokumentasjonskrav = {
-  id: string;
-  spørsmålId: string;
-  tittel?: string;
-  skjemakode: string;
-  seksjonId: string;
-  type: DokumentasjonskravType;
-  svar?: GyldigDokumentkravSvar;
-  begrunnelse?: string;
-  filer?: DokumentkravFil[] | null;
-  bundle?: Bundle | null;
-};
-
-export type Bundle = {
-  filnavn: string;
-  urn: string;
-  filsti: string;
-  storrelse: number;
-  tidspunkt: string;
-};
-
-export enum DokumentasjonskravType {
-  Barn = "Barn",
-  ArbeidsforholdArbeidsavtale = "ArbeidsforholdArbeidsavtale",
-  ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp = "ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp",
-  ArbeidsforholdJegHarSagtOppSelv = "ArbeidsforholdJegHarSagtOppSelv",
-  ArbeidsforholdAvskjedigelse = "ArbeidsforholdAvskjedigelse",
-  ArbeidsforholdRedusertArbeidstid = "ArbeidsforholdRedusertArbeidstid",
-  ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter = "ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter",
-  ArbeidsforholdPermitteringsvarsel = "ArbeidsforholdPermitteringsvarsel",
-  ArbeidsforholdRotasjon = "ArbeidsforholdRotasjon",
-  Tjenestebevis = "Tjenestebevis",
-  Utdanning = "Utdanning",
-  ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid = "ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid",
-  ReellArbeidssøkerKanIkkeJobbeHeleNorge = "ReellArbeidssøkerKanIkkeJobbeHeleNorge",
-  ReellArbeidssøkerKanIkkeTaAlleTyperArbeid = "ReellArbeidssøkerKanIkkeTaAlleTyperArbeid",
-  AnnenPengestøtteFraAndreEøsLand = "AnnenPengestøtteFraAndreEøsLand",
-  AnnenPengestøtteFraNorgePensjonFraAndre = "AnnenPengestøtteFraNorgePensjonFraAndre",
-  AnnenPengestøtteFraNorgePengestøtteFraGff = "AnnenPengestøtteFraNorgePengestøtteFraGff",
-  AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver = "AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver",
-}
-
-export type GyldigDokumentkravSvar =
-  | typeof dokumentkravSvarSendNå
-  | typeof dokumentkravSvarSenderSenere
-  | typeof dokumentkravSvarSendtTidligere
-  | typeof dokumentkravSvarSenderIkke
-  | typeof dokumentkravEttersendt;
 
 interface DokumentasjonskravProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -102,7 +53,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     },
   });
 
-  // Hook for å mellomlagre begrunnelse med debounce
   const begrunnelseSenderSenere = form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere);
   const begrunnelseSendtTidligere = form.value(nårSendteDuDokumentet);
   const begrunnelseSenderIkke = form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
@@ -112,24 +62,20 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     const nåværendeBegrunnelse =
       begrunnelseSenderSenere || begrunnelseSendtTidligere || begrunnelseSenderIkke;
 
-    // Sjekk om begrunnelsen faktisk har endret seg fra forrige verdi
     if (nåværendeBegrunnelse === tidligereBegrunnelse) {
       return;
     }
 
-    // Sett opp en debounce timer
     const timer = setTimeout(() => {
       if (nåværendeBegrunnelse) {
         setTidligereBegrunnelse(nåværendeBegrunnelse);
-
-        // Her må vi sjekke om hvis bruker har lastet opp filer,
-        // Hvis ja, må vi setter lastOppNå med filer, fjern dermed begrunnelse
-        // Tidligere logikk ser ut som til å være greit // se dokumentasjonskravsvar linje 139
 
         const dokumentasjonskravsvar: Dokumentasjonskrav = {
           ...dokumentasjonskrav,
           svar: hvaVilDuGjøreSvar,
           begrunnelse: nåværendeBegrunnelse,
+          filer:
+            hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
         };
 
         oppdaterDokumentasjonskrav(dokumentasjonskravsvar);
@@ -137,7 +83,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         form.validate();
         setTidligereBegrunnelse(undefined);
       }
-    }, 1000); // Venter 1 sekund etter siste endring
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [

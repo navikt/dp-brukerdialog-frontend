@@ -2,6 +2,13 @@ import { Box, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useParams } from "react-router";
 import {
+  Dokumentasjonskrav,
+  DokumentkravFil,
+  FilOpplastingFeilType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { useDokumentasjonskravContext } from "~/seksjon/dokumentasjon/dokumentasjonskrav.context";
+import { dokumentkravSvarSendNå } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
@@ -10,28 +17,6 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import { useDokumentasjonskravContext } from "~/seksjon/dokumentasjon/dokumentasjonskrav.context";
-
-export type DokumentkravFil = {
-  id: string;
-  filnavn: string;
-  urn?: string;
-  tidspunkt?: string;
-  storrelse?: number;
-  filsti?: string;
-  lasterOpp?: boolean;
-  file?: File;
-  feil?: LastOppFeil;
-};
-
-export enum LastOppFeil {
-  FIL_FOR_STOR = "FIL_FOR_STOR",
-  UGYLDIG_FORMAT = "UGYLDIG_FORMAT",
-  TEKNISK_FEIL = "TEKNISK_FEIL",
-  DUPLIKAT_FIL = "DUPLIKAT_FIL",
-  UKJENT_FEIL = "UKJENT_FEIL",
-}
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -57,19 +42,19 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.UGYLDIG_FORMAT,
+          feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
         });
       } else if (erDuplikat) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.DUPLIKAT_FIL,
+          feil: FilOpplastingFeilType.DUPLIKAT_FIL,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.FIL_FOR_STOR,
+          feil: FilOpplastingFeilType.FIL_FOR_STOR,
         });
       } else {
         filerKlarTilOpplasting.push({
@@ -100,7 +85,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
               filnavn: fil.file.name,
               storrelse: fil.file.size,
               lasterOpp: false,
-              feil: LastOppFeil.TEKNISK_FEIL,
+              feil: FilOpplastingFeilType.TEKNISK_FEIL,
               id: fil.id,
             };
           }
@@ -124,6 +109,8 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
           ...fil,
           ...responser.find((respons) => respons?.id === fil.id),
         })),
+        begrunnelse: undefined,
+        svar: dokumentkravSvarSendNå,
       });
     }
   }

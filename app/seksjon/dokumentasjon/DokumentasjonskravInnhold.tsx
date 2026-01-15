@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Link, List, ReadMore, VStack } from "@navikt/ds-react";
-import { DokumentasjonskravType } from "./DokumentasjonskravKomponent";
+import { DokumentasjonskravType } from "./dokumentasjon.types";
 
 interface IProps {
   type: DokumentasjonskravType;
@@ -257,7 +257,8 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
               dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.
             </BodyLong>
             <BodyLong>
-              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid.
+              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke
+              kan ta alle typer arbeid.
             </BodyLong>
           </>
         );

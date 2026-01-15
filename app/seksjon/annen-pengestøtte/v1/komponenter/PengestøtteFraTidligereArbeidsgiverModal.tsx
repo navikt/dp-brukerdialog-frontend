@@ -13,7 +13,7 @@ import { pengestøtteFraTidligereArbeidsgiverSchema } from "~/seksjon/annen-peng
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   hvemMottarDuUtbetalingerEllerGoderFra,
   pengestøtteFraTidligereArbeidsgiverModalKomponenter,

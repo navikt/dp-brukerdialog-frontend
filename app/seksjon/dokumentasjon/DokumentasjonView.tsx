@@ -1,16 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import React, { useEffect, useState } from "react";
+import { useForm } from "@rvf/react-router";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
+import { z } from "zod";
+import { Komponent } from "~/components/Komponent";
 import {
   dokumentasjonKomponenter,
   DokumentasjonSvar,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
-import { Komponent } from "~/components/Komponent";
-import { useForm } from "@rvf/react-router";
-import { z } from "zod";
+import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 
 const NESTE_SEKSJON_ID = "oppsummering";
 const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";

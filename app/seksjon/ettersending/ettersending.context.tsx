@@ -4,7 +4,7 @@ import {
   Bundle,
   Dokumentasjonskrav,
   GyldigDokumentkravSvar,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 
 interface EttersendingTilLagring {

@@ -20,13 +20,14 @@ import {
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;

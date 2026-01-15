@@ -12,7 +12,7 @@ import {
 } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
-import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import { useEttersendingContext } from "./ettersending.context";
 
 const seksjonnavn = "Ettersending";

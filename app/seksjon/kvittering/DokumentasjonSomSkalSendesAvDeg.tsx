@@ -1,6 +1,6 @@
 import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { DokumentasjonskravInnhold } from "../dokumentasjon/DokumentasjonskravInnhold";
-import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;

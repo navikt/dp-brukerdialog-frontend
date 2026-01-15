@@ -14,7 +14,7 @@ import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPe
 import { PengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorge } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
