@@ -1,6 +1,5 @@
 import { Box, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useEffect } from "react";
 import { useParams } from "react-router";
 import {
   hentFilFeilmelding,
@@ -12,6 +11,7 @@ import {
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { useDokumentasjonskravContext } from "~/seksjon/dokumentasjon/dokumentasjonskrav.context";
 
 export type DokumentkravFil = {
   id: string;
@@ -35,11 +35,13 @@ export enum LastOppFeil {
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
-  dokumentkravFiler: DokumentkravFil[];
 }
 
-export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps) {
+export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
+  const { oppdaterDokumentasjonskrav } = useDokumentasjonskravContext();
+
+  const dokumentkravFiler = dokumentasjonskrav.filer || [];
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -47,7 +49,7 @@ export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps)
 
     filer.forEach((fil: FileObject) => {
       const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.file.name.endsWith(format));
-      const erDuplikat = dokumentkravFiler.some(
+      const erDuplikat = dokumentkravFiler?.some(
         (f) => f.filnavn === fil.file.name && f.storrelse === fil.file.size
       );
 
@@ -78,8 +80,6 @@ export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps)
         });
       }
     });
-
-    // setDokumentkravFiler((prev) => [...prev, ...filerMedFeil, ...filerKlarTilOpplasting]);
 
     if (filerKlarTilOpplasting.length > 0) {
       const responser = await Promise.all(
@@ -116,15 +116,25 @@ export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps)
         })
       );
 
-      // setDokumentkravFiler((prev) =>
-      //   prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
-      // );
+      const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
+
+      oppdaterDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler.map((fil) => ({
+          ...fil,
+          ...responser.find((respons) => respons?.id === fil.id),
+        })),
+      });
     }
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      // setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
+      oppdaterDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
+      });
+
       return;
     }
 
@@ -143,12 +153,13 @@ export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps)
       return;
     }
 
-    // setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
-    // setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
+    oppdaterDokumentasjonskrav({
+      ...dokumentasjonskrav,
+      filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
+    });
 
     return await response.text();
   }
-
   return (
     <Box.New borderRadius="large" background="sunken">
       <VStack gap="4">
@@ -157,14 +168,14 @@ export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps)
             className="mt-4 fileUpload"
             label="Last opp dokument"
             description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
-            fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentkravFiler.length }}
+            fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentasjonskrav.filer?.length ?? 0 }}
             accept={hentTillatteFiltyperString()}
             onSelect={(filer) => lastOppfiler(filer)}
           />
         </form>
       </VStack>
       <VStack gap="4" className="mt-8">
-        {dokumentkravFiler?.map((fil) => (
+        {dokumentasjonskrav.filer?.map((fil) => (
           <FileUploadItem
             key={fil.id}
             file={fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }}

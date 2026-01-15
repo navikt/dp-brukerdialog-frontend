@@ -75,16 +75,11 @@ interface DokumentasjonskravProps {
 }
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
-  const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
-    dokumentasjonskrav.filer ?? []
-  );
-
   const [tidligereBegrunnelse, setTidligereBegrunnelse] = useState<string | undefined>(
     dokumentasjonskrav.begrunnelse
   );
 
-  const { oppdaterDokumentasjonskrav, setDokumentasjonskravIdSomSkalLagres } =
-    useDokumentasjonskravContext();
+  const { oppdaterDokumentasjonskrav } = useDokumentasjonskravContext();
 
   const form = useForm({
     method: "PUT",
@@ -108,11 +103,14 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   });
 
   // Hook for å mellomlagre begrunnelse med debounce
+  const begrunnelseSenderSenere = form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere);
+  const begrunnelseSendtTidligere = form.value(nårSendteDuDokumentet);
+  const begrunnelseSenderIkke = form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
+  const hvaVilDuGjøreSvar = form.value(velgHvaDuVilGjøre);
+
   useEffect(() => {
     const nåværendeBegrunnelse =
-      form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere) ||
-      form.value(nårSendteDuDokumentet) ||
-      form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
+      begrunnelseSenderSenere || begrunnelseSendtTidligere || begrunnelseSenderIkke;
 
     // Sjekk om begrunnelsen faktisk har endret seg fra forrige verdi
     if (nåværendeBegrunnelse === tidligereBegrunnelse) {
@@ -122,9 +120,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     // Sett opp en debounce timer
     const timer = setTimeout(() => {
       if (nåværendeBegrunnelse) {
-        // Mellomlagre context
         setTidligereBegrunnelse(nåværendeBegrunnelse);
-        console.log("Bruker er trolig ferdig med å skrive");
 
         // Her må vi sjekke om hvis bruker har lastet opp filer,
         // Hvis ja, må vi setter lastOppNå med filer, fjern dermed begrunnelse
@@ -132,7 +128,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
         const dokumentasjonskravsvar: Dokumentasjonskrav = {
           ...dokumentasjonskrav,
-          svar: form.value(velgHvaDuVilGjøre),
+          svar: hvaVilDuGjøreSvar,
           begrunnelse: nåværendeBegrunnelse,
         };
 
@@ -145,9 +141,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
     return () => clearTimeout(timer);
   }, [
-    form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere),
-    form.value(nårSendteDuDokumentet),
-    form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet),
+    begrunnelseSenderSenere,
+    begrunnelseSendtTidligere,
+    begrunnelseSenderIkke,
     tidligereBegrunnelse,
   ]);
 
@@ -155,9 +151,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large" className="mt-4">
-      <VStack gap="8">
+      <VStack gap="4">
         <Form {...form.getFormProps()}>
-          <VStack gap="6">
+          <VStack gap="4">
             <Heading size="small" level="3">
               {dokumentasjonskrav.tittel || "Dokumentasjon"}
             </Heading>
@@ -180,14 +176,11 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
               );
             })}
           </VStack>
-
-          {form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå && (
-            <FilOpplasting
-              dokumentasjonskrav={dokumentasjonskrav}
-              dokumentkravFiler={dokumentkravFiler}
-            />
-          )}
         </Form>
+
+        {form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå && (
+          <FilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
+        )}
       </VStack>
     </Box.New>
   );
