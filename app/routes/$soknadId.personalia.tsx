@@ -33,7 +33,6 @@ import {
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "personalia";
