@@ -117,9 +117,11 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
+      const oppdaterteFiler = dokumentkravFiler.filter((f) => f.id !== fil.id);
+
       oppdaterDokumentasjonskrav({
         ...dokumentasjonskrav,
-        filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
+        filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
       });
 
       return;
@@ -140,13 +142,16 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
       return;
     }
 
+    const oppdaterteFiler = dokumentkravFiler.filter((f) => f.filsti !== fil.filsti);
+
     oppdaterDokumentasjonskrav({
       ...dokumentasjonskrav,
-      filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
+      filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
     });
 
     return await response.text();
   }
+
   return (
     <Box.New borderRadius="large" background="sunken">
       <VStack gap="4">

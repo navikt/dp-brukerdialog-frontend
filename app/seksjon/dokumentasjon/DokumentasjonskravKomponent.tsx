@@ -66,23 +66,22 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       return;
     }
 
+    const dokumentasjonskravsvar: Dokumentasjonskrav = {
+      ...dokumentasjonskrav,
+      svar: hvaVilDuGjøreSvar,
+      begrunnelse: nåværendeBegrunnelse,
+      filer: hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
+    };
+
     const timer = setTimeout(() => {
       if (nåværendeBegrunnelse) {
         setTidligereBegrunnelse(nåværendeBegrunnelse);
-
-        const dokumentasjonskravsvar: Dokumentasjonskrav = {
-          ...dokumentasjonskrav,
-          svar: hvaVilDuGjøreSvar,
-          begrunnelse: nåværendeBegrunnelse,
-          filer:
-            hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
-        };
-
-        oppdaterDokumentasjonskrav(dokumentasjonskravsvar);
       } else {
         form.validate();
         setTidligereBegrunnelse(undefined);
       }
+
+      oppdaterDokumentasjonskrav(dokumentasjonskravsvar);
     }, 1000);
 
     return () => clearTimeout(timer);
