@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 
 type DokumentasjonskravContextType = {
@@ -46,15 +46,21 @@ function DokumentasjonskravProvider({
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [harValideringsfeil, setHarValideringsfeil] = useState(false);
   const [ingenFilerErLastetOpp, setIngenFilerErLastetOpp] = useState(false);
-  const [dokumentasjonskravIdSomSkalLagres, setDokumentasjonskravIdSomSkalLagres] = useState<string | null>(
-    null
-  );
+  const [dokumentasjonskravIdSomSkalLagres, setDokumentasjonskravIdSomSkalLagres] = useState<
+    string | null
+  >(null);
 
-  function oppdaterDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
+  function oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
-      current.map((krav) => (krav.id === oppdatertKrav.id ? oppdatertKrav : krav))
+      current.map((krav) =>
+        krav.id === oppdatertDokumentasjonskrav.id ? oppdatertDokumentasjonskrav : krav
+      )
     );
   }
+
+  useEffect(() => {
+    console.log(dokumentasjonskrav);
+  }, [dokumentasjonskrav]);
 
   return (
     <DokumentasjonskravContext.Provider

@@ -75,26 +75,16 @@ interface DokumentasjonskravProps {
 }
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
-  const { soknadId } = useParams();
   const [dokumentkravFiler, setDokumentkravFiler] = useState<DokumentkravFil[]>(
     dokumentasjonskrav.filer ?? []
   );
-  const [antallFilerMedValideringsfeil, setAntallFilerMedValideringsfeil] = useState(0);
-  const [visHarValideringsfeilFeilmelding, setVisHarValideringsfeilFeilmelding] = useState(false);
-  const [ingenFilerErLastetOppForDokumentkravet, setIngenFilerErLastetOppForDokumentkravet] =
-    useState(false);
-  const [visIngenFilerErLastetOppFeilmelding, setVisIngenFilerErLastetOppFeilmelding] =
-    useState(false);
 
-  const {
-    dokumentasjonskrav: alleDokumentasjonskrav,
-    setHarTekniskFeil,
-    setHarValideringsfeil,
-    setIngenFilerErLastetOpp,
-    oppdaterDokumentasjonskrav,
-    dokumentasjonskravIdSomSkalLagres,
-    setDokumentasjonskravIdSomSkalLagres,
-  } = useDokumentasjonskravContext();
+  const [tidligereBegrunnelse, setTidligereBegrunnelse] = useState<string | undefined>(
+    dokumentasjonskrav.begrunnelse
+  );
+
+  const { oppdaterDokumentasjonskrav, setDokumentasjonskravIdSomSkalLagres } =
+    useDokumentasjonskravContext();
 
   const form = useForm({
     method: "PUT",
@@ -115,151 +105,53 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           ? dokumentasjonskrav.begrunnelse
           : undefined,
     },
-    onInvalidSubmit() {
-      setHarValideringsfeil(true);
-      setDokumentasjonskravIdSomSkalLagres(null);
-    },
-    handleSubmit: async (dokumentasjonskravskjema) => {
-      setHarTekniskFeil(false);
-      let bundle: Bundle | null = null;
-
-      if (
-        dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå &&
-        dokumentkravFiler.length > 0
-      ) {
-        bundle = await bundleFiler();
-      }
-
-      const begrunnelse =
-        dokumentasjonskravskjema[nårSendteDuDokumentet] ||
-        dokumentasjonskravskjema[hvaErGrunnenTilAtDuIkkeSenderDokumentet] ||
-        dokumentasjonskravskjema[hvaErGrunnenTilAtDuSenderDokumentetSenere] ||
-        undefined;
-
-      const dokumentasjonskravsvar = {
-        ...dokumentasjonskrav,
-        svar: dokumentasjonskravskjema[velgHvaDuVilGjøre],
-        begrunnelse: begrunnelse,
-        filer:
-          dokumentasjonskravskjema[velgHvaDuVilGjøre] === dokumentkravSvarSendNå &&
-          dokumentkravFiler.length > 0
-            ? dokumentkravFiler
-            : null,
-        bundle: bundle,
-      };
-
-      await lagreDokumentasjonskravsvar(dokumentasjonskravsvar);
-    },
   });
 
+  // Hook for å mellomlagre begrunnelse med debounce
   useEffect(() => {
-    if (dokumentasjonskravIdSomSkalLagres === dokumentasjonskrav.id) {
-      if (
-        form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå &&
-        antallFilerMedValideringsfeil > 0
-      ) {
-        setDokumentasjonskravIdSomSkalLagres(null);
-        setHarValideringsfeil(true);
-        setVisHarValideringsfeilFeilmelding(true);
-      } else if (
-        form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå &&
-        ingenFilerErLastetOppForDokumentkravet
-      ) {
-        setDokumentasjonskravIdSomSkalLagres(null);
-        setIngenFilerErLastetOpp(true);
-        setVisIngenFilerErLastetOppFeilmelding(true);
+    const nåværendeBegrunnelse =
+      form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere) ||
+      form.value(nårSendteDuDokumentet) ||
+      form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
+
+    // Sjekk om begrunnelsen faktisk har endret seg fra forrige verdi
+    if (nåværendeBegrunnelse === tidligereBegrunnelse) {
+      return;
+    }
+
+    // Sett opp en debounce timer
+    const timer = setTimeout(() => {
+      if (nåværendeBegrunnelse) {
+        // Mellomlagre context
+        setTidligereBegrunnelse(nåværendeBegrunnelse);
+        console.log("Bruker er trolig ferdig med å skrive");
+
+        // Her må vi sjekke om hvis bruker har lastet opp filer,
+        // Hvis ja, må vi setter lastOppNå med filer, fjern dermed begrunnelse
+        // Tidligere logikk ser ut som til å være greit // se dokumentasjonskravsvar linje 139
+
+        const dokumentasjonskravsvar: Dokumentasjonskrav = {
+          ...dokumentasjonskrav,
+          svar: form.value(velgHvaDuVilGjøre),
+          begrunnelse: nåværendeBegrunnelse,
+        };
+
+        oppdaterDokumentasjonskrav(dokumentasjonskravsvar);
       } else {
-        form.submit();
+        form.validate();
+        setTidligereBegrunnelse(undefined);
       }
-    }
-  }, [dokumentasjonskravIdSomSkalLagres, dokumentasjonskrav.id]);
+    }, 1000); // Venter 1 sekund etter siste endring
 
-  useEffect(() => {
-    if (antallFilerMedValideringsfeil === 0) {
-      setHarValideringsfeil(false);
-      setVisHarValideringsfeilFeilmelding(false);
-    }
-  }, [antallFilerMedValideringsfeil]);
-
-  useEffect(() => {
-    if (!ingenFilerErLastetOppForDokumentkravet) {
-      setIngenFilerErLastetOpp(false);
-      setVisIngenFilerErLastetOppFeilmelding(false);
-    }
-  }, [ingenFilerErLastetOppForDokumentkravet]);
-
-  useEffect(() => {
-    if (form.value(velgHvaDuVilGjøre) !== dokumentkravSvarSendNå) {
-      setDokumentkravFiler([]);
-    }
-  }, [form]);
+    return () => clearTimeout(timer);
+  }, [
+    form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere),
+    form.value(nårSendteDuDokumentet),
+    form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet),
+    tidligereBegrunnelse,
+  ]);
 
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
-
-  async function bundleFiler(): Promise<Bundle | null> {
-    try {
-      const formData = new FormData();
-      formData.append("filer", JSON.stringify(dokumentkravFiler));
-
-      const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        return await response.json();
-      }
-
-      setHarTekniskFeil(true);
-      return null;
-    } catch (error) {
-      console.error("Feil ved bundling av filer:", error);
-      setHarTekniskFeil(true);
-      return null;
-    }
-  }
-
-  async function lagreDokumentasjonskravsvar(oppdatertDokumentasjonskrav: Dokumentasjonskrav) {
-    try {
-      const oppdatertDokumentasjonskravListe = alleDokumentasjonskrav
-        .filter(
-          (etDokumentasjonskrav) =>
-            etDokumentasjonskrav.seksjonId === oppdatertDokumentasjonskrav.seksjonId
-        )
-        .map((etDokumentasjonskrav) =>
-          etDokumentasjonskrav.id === oppdatertDokumentasjonskrav.id
-            ? oppdatertDokumentasjonskrav
-            : etDokumentasjonskrav
-        );
-
-      const formData = new FormData();
-      formData.append("dokumentasjonskrav", JSON.stringify(oppdatertDokumentasjonskravListe));
-
-      const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.seksjonId}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
-
-      if (response.ok) {
-        oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav);
-        setDokumentasjonskravIdSomSkalLagres(null);
-      } else {
-        console.error("Feil ved lagring av dokumentasjonskrav:", oppdatertDokumentasjonskrav.id);
-        setHarTekniskFeil(true);
-        setDokumentasjonskravIdSomSkalLagres(null);
-      }
-    } catch (error) {
-      console.error("Feil ved lagring av dokumentasjonskrav:", error);
-      setHarTekniskFeil(true);
-      setDokumentasjonskravIdSomSkalLagres(null);
-    }
-  }
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large" className="mt-4">
@@ -290,31 +182,10 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           </VStack>
 
           {form.value(velgHvaDuVilGjøre) === dokumentkravSvarSendNå && (
-            <>
-              <FilOpplasting
-                dokumentasjonskrav={dokumentasjonskrav}
-                dokumentkravFiler={dokumentkravFiler}
-                setDokumentkravFiler={setDokumentkravFiler}
-                setDokumentasjonskravIdSomSkalLagres={setDokumentasjonskravIdSomSkalLagres}
-                setAntallFilerMedFeil={setAntallFilerMedValideringsfeil}
-                setIngenFilerErLastetOppForDokumentkravet={
-                  setIngenFilerErLastetOppForDokumentkravet
-                }
-              />
-              {visHarValideringsfeilFeilmelding && (
-                <VStack gap="4" className="mt-8">
-                  <ErrorMessage showIcon aria-live="polite">
-                    Du må rette feilen{antallFilerMedValideringsfeil > 1 ? "e" : ""} over før
-                    dokumentasjon kan sendes inn.
-                  </ErrorMessage>
-                </VStack>
-              )}
-              {visIngenFilerErLastetOppFeilmelding && (
-                <ErrorMessage showIcon aria-live="polite">
-                  Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-                </ErrorMessage>
-              )}
-            </>
+            <FilOpplasting
+              dokumentasjonskrav={dokumentasjonskrav}
+              dokumentkravFiler={dokumentkravFiler}
+            />
           )}
         </Form>
       </VStack>

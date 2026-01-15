@@ -36,33 +36,10 @@ export enum LastOppFeil {
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
   dokumentkravFiler: DokumentkravFil[];
-  setDokumentkravFiler: React.Dispatch<React.SetStateAction<DokumentkravFil[]>>;
-  setDokumentasjonskravIdSomSkalLagres: (dokumentasjonskravIdSomSkalLagres: string | null) => void;
-  setAntallFilerMedFeil: (dokumentkravetHarValideringsfeil: number) => void;
-  setIngenFilerErLastetOppForDokumentkravet: (
-    ingenFilerErLastetOppForDokumentkravet: boolean
-  ) => void;
 }
 
-export function FilOpplasting({
-  dokumentasjonskrav,
-  dokumentkravFiler,
-  setDokumentkravFiler,
-  setDokumentasjonskravIdSomSkalLagres,
-  setAntallFilerMedFeil,
-  setIngenFilerErLastetOppForDokumentkravet,
-}: IProps) {
+export function FilOpplasting({ dokumentasjonskrav, dokumentkravFiler }: IProps) {
   const { soknadId } = useParams();
-
-  useEffect(() => {
-    setAntallFilerMedFeil(
-      dokumentkravFiler.filter((dokumentkravFil) => dokumentkravFil.feil !== undefined).length
-    );
-  }, [dokumentkravFiler.length]);
-
-  useEffect(() => {
-    setIngenFilerErLastetOppForDokumentkravet(dokumentkravFiler.length === 0);
-  }, [dokumentkravFiler.length]);
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -102,7 +79,7 @@ export function FilOpplasting({
       }
     });
 
-    setDokumentkravFiler((prev) => [...prev, ...filerMedFeil, ...filerKlarTilOpplasting]);
+    // setDokumentkravFiler((prev) => [...prev, ...filerMedFeil, ...filerKlarTilOpplasting]);
 
     if (filerKlarTilOpplasting.length > 0) {
       const responser = await Promise.all(
@@ -139,15 +116,15 @@ export function FilOpplasting({
         })
       );
 
-      setDokumentkravFiler((prev) =>
-        prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
-      );
+      // setDokumentkravFiler((prev) =>
+      //   prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
+      // );
     }
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
+      // setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
       return;
     }
 
@@ -166,8 +143,8 @@ export function FilOpplasting({
       return;
     }
 
-    setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
-    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
+    // setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
+    // setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
 
     return await response.text();
   }
