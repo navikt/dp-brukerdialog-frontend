@@ -1,4 +1,4 @@
-import { Box, FileObject, VStack } from "@navikt/ds-react";
+import { Box, ErrorMessage, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useParams } from "react-router";
 import {
@@ -24,9 +24,14 @@ interface IProps {
 
 export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterDokumentasjonskrav } = useDokumentasjonskravContext();
+  const {
+    oppdaterDokumentasjonskrav,
+    dokumentasjonskravHarEnValideringsfeil,
+    dokumentasjonskravManglerFiler,
+  } = useDokumentasjonskravContext();
 
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
+  const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -64,6 +69,11 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
           lasterOpp: true,
         });
       }
+    });
+
+    oppdaterDokumentasjonskrav({
+      ...dokumentasjonskrav,
+      filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
     });
 
     if (filerKlarTilOpplasting.length > 0) {
@@ -167,7 +177,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         </form>
       </VStack>
       <VStack gap="4" className="mt-8">
-        {dokumentasjonskrav.filer?.map((fil) => (
+        {dokumentkravFiler?.map((fil) => (
           <FileUploadItem
             key={fil.id}
             file={fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }}
@@ -181,6 +191,19 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
           />
         ))}
       </VStack>
+
+      {dokumentasjonskravHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
+        <ErrorMessage className="mt-4">
+          Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+        </ErrorMessage>
+      )}
+
+      {dokumentasjonskravManglerFiler.includes(dokumentasjonskrav.id) &&
+        dokumentkravFiler.length === 0 && (
+          <ErrorMessage className="mt-4">
+            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+          </ErrorMessage>
+        )}
     </Box.New>
   );
 }

@@ -3,16 +3,15 @@ import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types"
 
 type DokumentasjonskravContextType = {
   dokumentasjonskrav: Dokumentasjonskrav[];
+  lagrer: boolean;
+  setLagrer: (lagrer: boolean) => void;
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   oppdaterDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
-  harTekniskFeil: boolean;
-  setHarTekniskFeil: (harTekniskFeil: boolean) => void;
-  harValideringsfeil: boolean;
-  setHarValideringsfeil: (harValideringsfeil: boolean) => void;
-  ingenFilerErLastetOpp: boolean;
-  setIngenFilerErLastetOpp: (ingenFilerErLastetOpp: boolean) => void;
-  dokumentasjonskravIdSomSkalLagres: string | null;
-  setDokumentasjonskravIdSomSkalLagres: (id: string | null) => void;
+  dokumentasjonskravHarEnValideringsfeil: string[];
+  setDokumentasjonskravHarEnValideringsfeil: (dokumentkravId: string[]) => void;
+  dokumentasjonskravManglerFiler: string[];
+  setDokumentasjonskravManglerFiler: (dokumentkravId: string[]) => void;
+  validerDokumentasjonskrav: () => Promise<void>;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -43,12 +42,12 @@ function DokumentasjonskravProvider({
   children,
 }: DokumentasjonskravProviderProps) {
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
-  const [harTekniskFeil, setHarTekniskFeil] = useState(false);
-  const [harValideringsfeil, setHarValideringsfeil] = useState(false);
-  const [ingenFilerErLastetOpp, setIngenFilerErLastetOpp] = useState(false);
-  const [dokumentasjonskravIdSomSkalLagres, setDokumentasjonskravIdSomSkalLagres] = useState<
-    string | null
-  >(null);
+  const [lagrer, setLagrer] = useState(false);
+  const [dokumentasjonskravHarEnValideringsfeil, setDokumentasjonskravHarEnValideringsfeil] =
+    useState<string[]>([]);
+  const [dokumentasjonskravManglerFiler, setDokumentasjonskravManglerFiler] = useState<string[]>(
+    []
+  );
 
   function oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
@@ -62,20 +61,42 @@ function DokumentasjonskravProvider({
     console.log(dokumentasjonskrav);
   }, [dokumentasjonskrav]);
 
+  async function validerDokumentasjonskrav(): Promise<void> {
+    console.log("Validerer dokumentasjonskrav...");
+
+    setLagrer(true);
+
+    const dokumentasjonskravUtenFil = dokumentasjonskrav
+      .filter(
+        (dokumentasjonskrav) => !dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0
+      )
+      .map((dokumentasjonskrav) => dokumentasjonskrav.id);
+
+    setDokumentasjonskravManglerFiler(dokumentasjonskravUtenFil);
+    const dokumentasjonskravMedFilFeil = dokumentasjonskrav
+      .filter((dokumentasjonskrav) => dokumentasjonskrav.filer?.some((fil) => fil.feil))
+      .map((dokumentasjonskrav) => dokumentasjonskrav.id);
+
+    setDokumentasjonskravHarEnValideringsfeil(dokumentasjonskravMedFilFeil);
+
+    if (dokumentasjonskravUtenFil.length > 0 || dokumentasjonskravMedFilFeil.length > 0) {
+      return;
+    }
+  }
+
   return (
     <DokumentasjonskravContext.Provider
       value={{
         dokumentasjonskrav,
         setDokumentasjonskrav,
         oppdaterDokumentasjonskrav,
-        harTekniskFeil,
-        setHarTekniskFeil,
-        harValideringsfeil,
-        setHarValideringsfeil,
-        ingenFilerErLastetOpp,
-        setIngenFilerErLastetOpp,
-        dokumentasjonskravIdSomSkalLagres,
-        setDokumentasjonskravIdSomSkalLagres,
+        dokumentasjonskravHarEnValideringsfeil,
+        setDokumentasjonskravHarEnValideringsfeil,
+        dokumentasjonskravManglerFiler,
+        setDokumentasjonskravManglerFiler,
+        validerDokumentasjonskrav,
+        lagrer,
+        setLagrer,
       }}
     >
       {children}

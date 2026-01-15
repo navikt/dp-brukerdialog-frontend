@@ -58,7 +58,6 @@ function EttersendingProvider({
 }: EttersendingProviderProps) {
   const { soknadId } = useParams();
   const navigate = useNavigate();
-
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [ettersending, setEttersending] = useState(ettersendingProps);
   const [lagrer, setLagrer] = useState(false);

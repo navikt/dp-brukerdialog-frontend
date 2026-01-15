@@ -198,6 +198,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
           ))}
         </VStack>
       )}
+
       {ettersendingHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
         <ErrorMessage className="mt-4">
           Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
