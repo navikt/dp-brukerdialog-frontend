@@ -32,6 +32,7 @@ import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import invariant from "tiny-invariant";
+import { SistOppdatert } from "~/components/SistOppdatert";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -154,7 +155,7 @@ export function BarnetilleggViewV1() {
           />
         );
       })}
-      <VStack gap="10">
+      <VStack gap="8">
         <VStack gap="space-16">
           {barnFraPdl?.map((barn: BarnFraPdl) => (
             <BarnFraPdlKomponent key={barn.id} barn={barn} />
@@ -210,27 +211,30 @@ export function BarnetilleggViewV1() {
           </Alert>
         )}
 
-        <HStack gap="4" className="mt-8">
-          <Button
-            variant="secondary"
-            type="button"
-            icon={<ArrowLeftIcon aria-hidden />}
-            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Forrige steg
-          </Button>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={handleSubmit}
-            iconPosition="right"
-            icon={<ArrowRightIcon aria-hidden />}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Neste steg
-          </Button>
-        </HStack>
+        <VStack gap="4">
+          <SistOppdatert />
+          <HStack gap="4">
+            <Button
+              variant="secondary"
+              type="button"
+              icon={<ArrowLeftIcon aria-hidden />}
+              onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+              disabled={state === "submitting" || state === "loading"}
+            >
+              Forrige steg
+            </Button>
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={handleSubmit}
+              iconPosition="right"
+              icon={<ArrowRightIcon aria-hidden />}
+              disabled={state === "submitting" || state === "loading"}
+            >
+              Neste steg
+            </Button>
+          </HStack>
+        </VStack>
         {modalData && (
           <BarnModal
             ref={ref}

@@ -9,11 +9,14 @@ import {
   Label,
   VStack,
 } from "@navikt/ds-react";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
-import { action, loader } from "~/routes/$soknadId.personalia";
-import { Komponent } from "~/components/Komponent";
 import { useForm } from "@rvf/react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
+import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { action, loader } from "~/routes/$soknadId.personalia";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,
@@ -35,21 +38,19 @@ import {
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { formaterNorskDatoMedKlokkeslett } from "~/utils/formatering.utils";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
-  const { seksjon, personalia, sistOppdatert } = loaderData;
+  const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
 
   if (!personalia) {
@@ -216,12 +217,8 @@ export function PersonaliaViewV1() {
               )}
             </VStack>
 
-            <VStack className="mt-8">
-              {sistOppdatert && (
-                <BodyShort textColor="subtle">
-                  {`Sist lagret: ${formaterNorskDatoMedKlokkeslett(sistOppdatert)}`}
-                </BodyShort>
-              )}
+            <VStack className="mt-8" gap="4">
+              <SistOppdatert />
               <HStack gap="4">
                 <Button
                   variant="primary"

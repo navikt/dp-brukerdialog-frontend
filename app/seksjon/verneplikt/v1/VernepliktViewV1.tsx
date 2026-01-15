@@ -2,13 +2,17 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import {
   avtjentVerneplikt,
   pdfGrunnlag,
@@ -17,10 +21,7 @@ import {
 } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
-import { SøknadFooter } from "~/components/SøknadFooter";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
@@ -118,27 +119,30 @@ export default function VernepliktViewV1() {
               </Alert>
             )}
 
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleSubmit}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            <VStack className="mt-8" gap="4">
+              <SistOppdatert />
+              <HStack gap="4">
+                <Button
+                  variant="secondary"
+                  type="button"
+                  icon={<ArrowLeftIcon aria-hidden />}
+                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Forrige steg
+                </Button>
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={handleSubmit}
+                  iconPosition="right"
+                  icon={<ArrowRightIcon aria-hidden />}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Neste steg
+                </Button>
+              </HStack>
+            </VStack>
           </Form>
         </VStack>
       </VStack>
