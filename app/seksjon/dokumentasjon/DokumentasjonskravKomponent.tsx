@@ -30,7 +30,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     dokumentasjonskrav.begrunnelse
   );
 
-  const { oppdaterDokumentasjonskrav } = useDokumentasjonskravContext();
+  const { oppdaterEtDokumentasjonskrav } = useDokumentasjonskravContext();
 
   const form = useForm({
     method: "PUT",
@@ -81,7 +81,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         setTidligereBegrunnelse(undefined);
       }
 
-      oppdaterDokumentasjonskrav(dokumentasjonskravsvar);
+      oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
     }, 1000);
 
     return () => clearTimeout(timer);

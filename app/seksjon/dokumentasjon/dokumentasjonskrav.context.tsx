@@ -1,10 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import {
-  Bundle,
-  Dokumentasjonskrav,
-  GyldigDokumentkravSvar,
-} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
 interface DokumentasjonskravTilLagring {
@@ -17,11 +13,11 @@ type DokumentasjonskravContextType = {
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
-  oppdaterDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
-  dokumentasjonskravHarEnValideringsfeil: string[];
-  setDokumentasjonskravHarEnValideringsfeil: (dokumentkravId: string[]) => void;
-  dokumentasjonskravManglerFiler: string[];
-  setDokumentasjonskravManglerFiler: (dokumentkravId: string[]) => void;
+  oppdaterEtDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
+  kravIdMedFilopplastingFeil: string[];
+  setKravIdMedFilopplastingFeil: (dokumentkravId: string[]) => void;
+  kravIdManglerFiler: string[];
+  setKravIdManglerFiler: (dokumentkravId: string[]) => void;
   validerDokumentasjonskrav: () => Promise<void>;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
@@ -59,48 +55,38 @@ function DokumentasjonskravProvider({
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [lagrer, setLagrer] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
-  const [dokumentasjonskravHarEnValideringsfeil, setDokumentasjonskravHarEnValideringsfeil] =
-    useState<string[]>([]);
-  const [dokumentasjonskravManglerFiler, setDokumentasjonskravManglerFiler] = useState<string[]>(
-    []
-  );
+  const [kravIdMedFilopplastingFeil, setKravIdMedFilopplastingFeil] = useState<string[]>([]);
+  const [kravIdManglerFiler, setKravIdManglerFiler] = useState<string[]>([]);
 
-  function oppdaterDokumentasjonskrav(oppdatertDokumentasjonskrav: Dokumentasjonskrav) {
+  function oppdaterEtDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
-      current.map((krav) =>
-        krav.id === oppdatertDokumentasjonskrav.id ? oppdatertDokumentasjonskrav : krav
-      )
+      current.map((etKrav) => (etKrav.id === oppdatertKrav.id ? oppdatertKrav : etKrav))
     );
   }
 
-  useEffect(() => {
-    console.log(dokumentasjonskrav);
-  }, [dokumentasjonskrav]);
-
   async function validerDokumentasjonskrav(): Promise<void> {
-    const dokumentasjonskravUtenFil = dokumentasjonskrav
+    const sendNåKravIdListeUtenFil = dokumentasjonskrav
       .filter(
-        (dokumentasjonskrav) =>
-          dokumentasjonskrav.svar === dokumentkravSvarSendNå &&
-          (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0)
+        (krav) => krav.svar === dokumentkravSvarSendNå && (!krav.filer || krav.filer.length === 0)
       )
-      .map((dokumentasjonskrav) => dokumentasjonskrav.id);
+      .map((krav) => krav.id);
 
-    setDokumentasjonskravManglerFiler(dokumentasjonskravUtenFil);
-    const dokumentasjonskravMedFilFeil = dokumentasjonskrav
-      .filter((dokumentasjonskrav) => dokumentasjonskrav.filer?.some((fil) => fil.feil))
-      .map((dokumentasjonskrav) => dokumentasjonskrav.id);
+    setKravIdManglerFiler(sendNåKravIdListeUtenFil);
 
-    setDokumentasjonskravHarEnValideringsfeil(dokumentasjonskravMedFilFeil);
+    const dokumentkravMedEnFeil = dokumentasjonskrav
+      .filter((krav) => krav.filer?.some((fil) => fil.feil))
+      .map((krav) => krav.id);
 
-    if (dokumentasjonskravUtenFil.length > 0 || dokumentasjonskravMedFilFeil.length > 0) {
+    setKravIdMedFilopplastingFeil(dokumentkravMedEnFeil);
+
+    if (sendNåKravIdListeUtenFil.length > 0 || dokumentkravMedEnFeil.length > 0) {
       return;
     }
 
-    await bundleOgLagreEttersendinger();
+    await bundleOgLagreDokumentasjonskrav();
   }
 
-  async function bundleOgLagreEttersendinger(): Promise<void> {
+  async function bundleOgLagreDokumentasjonskrav(): Promise<void> {
     setLagrer(true);
     setHarTekniskFeil(false);
 
@@ -233,11 +219,11 @@ function DokumentasjonskravProvider({
       value={{
         dokumentasjonskrav,
         setDokumentasjonskrav,
-        oppdaterDokumentasjonskrav,
-        dokumentasjonskravHarEnValideringsfeil,
-        setDokumentasjonskravHarEnValideringsfeil,
-        dokumentasjonskravManglerFiler,
-        setDokumentasjonskravManglerFiler,
+        oppdaterEtDokumentasjonskrav,
+        kravIdMedFilopplastingFeil,
+        setKravIdMedFilopplastingFeil,
+        kravIdManglerFiler,
+        setKravIdManglerFiler,
         validerDokumentasjonskrav,
         lagrer,
         setLagrer,

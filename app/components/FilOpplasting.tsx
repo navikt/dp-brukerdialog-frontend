@@ -24,11 +24,8 @@ interface IProps {
 
 export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const {
-    oppdaterDokumentasjonskrav,
-    dokumentasjonskravHarEnValideringsfeil,
-    dokumentasjonskravManglerFiler,
-  } = useDokumentasjonskravContext();
+  const { oppdaterEtDokumentasjonskrav, kravIdMedFilopplastingFeil, kravIdManglerFiler } =
+    useDokumentasjonskravContext();
 
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
   const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
@@ -71,7 +68,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
       }
     });
 
-    oppdaterDokumentasjonskrav({
+    oppdaterEtDokumentasjonskrav({
       ...dokumentasjonskrav,
       filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
     });
@@ -113,7 +110,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
 
       const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
 
-      oppdaterDokumentasjonskrav({
+      oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
         filer: oppdaterteFiler.map((fil) => ({
           ...fil,
@@ -129,7 +126,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
     if (fil.feil || !fil.filsti) {
       const oppdaterteFiler = dokumentkravFiler.filter((f) => f.id !== fil.id);
 
-      oppdaterDokumentasjonskrav({
+      oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
         filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
       });
@@ -154,7 +151,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
 
     const oppdaterteFiler = dokumentkravFiler.filter((f) => f.filsti !== fil.filsti);
 
-    oppdaterDokumentasjonskrav({
+    oppdaterEtDokumentasjonskrav({
       ...dokumentasjonskrav,
       filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
     });
@@ -192,18 +189,17 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         ))}
       </VStack>
 
-      {dokumentasjonskravHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
+      {kravIdMedFilopplastingFeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
         <ErrorMessage className="mt-4">
           Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
         </ErrorMessage>
       )}
 
-      {dokumentasjonskravManglerFiler.includes(dokumentasjonskrav.id) &&
-        dokumentkravFiler.length === 0 && (
-          <ErrorMessage className="mt-4">
-            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-          </ErrorMessage>
-        )}
+      {kravIdManglerFiler.includes(dokumentasjonskrav.id) && dokumentkravFiler.length === 0 && (
+        <ErrorMessage className="mt-4">
+          Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+        </ErrorMessage>
+      )}
     </Box.New>
   );
 }
