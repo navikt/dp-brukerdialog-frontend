@@ -1,7 +1,13 @@
-import { Box, FileObject, VStack } from "@navikt/ds-react";
+import { Box, ErrorMessage, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { useEffect } from "react";
 import { useParams } from "react-router";
+import {
+  Dokumentasjonskrav,
+  DokumentkravFil,
+  FilOpplastingFeilType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { useDokumentasjonskravContext } from "~/seksjon/dokumentasjon/dokumentasjonskrav.context";
+import { dokumentkravSvarSendNå } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,
@@ -11,58 +17,18 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
-
-export type DokumentkravFil = {
-  id: string;
-  filnavn: string;
-  urn?: string;
-  tidspunkt?: string;
-  storrelse?: number;
-  filsti?: string;
-  lasterOpp?: boolean;
-  file?: File;
-  feil?: LastOppFeil;
-};
-
-export enum LastOppFeil {
-  FIL_FOR_STOR = "FIL_FOR_STOR",
-  UGYLDIG_FORMAT = "UGYLDIG_FORMAT",
-  TEKNISK_FEIL = "TEKNISK_FEIL",
-  DUPLIKAT_FIL = "DUPLIKAT_FIL",
-  UKJENT_FEIL = "UKJENT_FEIL",
-}
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
-  dokumentkravFiler: DokumentkravFil[];
-  setDokumentkravFiler: React.Dispatch<React.SetStateAction<DokumentkravFil[]>>;
-  setDokumentasjonskravIdSomSkalLagres: (dokumentasjonskravIdSomSkalLagres: string | null) => void;
-  setAntallFilerMedFeil: (dokumentkravetHarValideringsfeil: number) => void;
-  setIngenFilerErLastetOppForDokumentkravet: (
-    ingenFilerErLastetOppForDokumentkravet: boolean
-  ) => void;
 }
 
-export function FilOpplasting({
-  dokumentasjonskrav,
-  dokumentkravFiler,
-  setDokumentkravFiler,
-  setDokumentasjonskravIdSomSkalLagres,
-  setAntallFilerMedFeil,
-  setIngenFilerErLastetOppForDokumentkravet,
-}: IProps) {
+export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
+  const { oppdaterEtDokumentasjonskrav, kravIdMedFilopplastingFeil, kravIdManglerFiler } =
+    useDokumentasjonskravContext();
 
-  useEffect(() => {
-    setAntallFilerMedFeil(
-      dokumentkravFiler.filter((dokumentkravFil) => dokumentkravFil.feil !== undefined).length
-    );
-  }, [dokumentkravFiler.length]);
-
-  useEffect(() => {
-    setIngenFilerErLastetOppForDokumentkravet(dokumentkravFiler.length === 0);
-  }, [dokumentkravFiler.length]);
+  const dokumentkravFiler = dokumentasjonskrav.filer || [];
+  const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -70,7 +36,7 @@ export function FilOpplasting({
 
     filer.forEach((fil: FileObject) => {
       const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.file.name.endsWith(format));
-      const erDuplikat = dokumentkravFiler.some(
+      const erDuplikat = dokumentkravFiler?.some(
         (f) => f.filnavn === fil.file.name && f.storrelse === fil.file.size
       );
 
@@ -78,19 +44,19 @@ export function FilOpplasting({
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.UGYLDIG_FORMAT,
+          feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
         });
       } else if (erDuplikat) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.DUPLIKAT_FIL,
+          feil: FilOpplastingFeilType.DUPLIKAT_FIL,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.FIL_FOR_STOR,
+          feil: FilOpplastingFeilType.FIL_FOR_STOR,
         });
       } else {
         filerKlarTilOpplasting.push({
@@ -102,7 +68,10 @@ export function FilOpplasting({
       }
     });
 
-    setDokumentkravFiler((prev) => [...prev, ...filerMedFeil, ...filerKlarTilOpplasting]);
+    oppdaterEtDokumentasjonskrav({
+      ...dokumentasjonskrav,
+      filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
+    });
 
     if (filerKlarTilOpplasting.length > 0) {
       const responser = await Promise.all(
@@ -123,7 +92,7 @@ export function FilOpplasting({
               filnavn: fil.file.name,
               storrelse: fil.file.size,
               lasterOpp: false,
-              feil: LastOppFeil.TEKNISK_FEIL,
+              feil: FilOpplastingFeilType.TEKNISK_FEIL,
               id: fil.id,
             };
           }
@@ -139,15 +108,29 @@ export function FilOpplasting({
         })
       );
 
-      setDokumentkravFiler((prev) =>
-        prev.map((fil) => ({ ...fil, ...responser.find((respons) => respons.id === fil.id) }))
-      );
+      const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
+
+      oppdaterEtDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler.map((fil) => ({
+          ...fil,
+          ...responser.find((respons) => respons?.id === fil.id),
+        })),
+        begrunnelse: undefined,
+        svar: dokumentkravSvarSendNå,
+      });
     }
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
-      setDokumentkravFiler((prev) => prev.filter((f) => f.id !== fil.id));
+      const oppdaterteFiler = dokumentkravFiler.filter((f) => f.id !== fil.id);
+
+      oppdaterEtDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+      });
+
       return;
     }
 
@@ -166,8 +149,12 @@ export function FilOpplasting({
       return;
     }
 
-    setDokumentkravFiler((prev) => prev.filter((f) => f.filsti !== fil.filsti));
-    setDokumentasjonskravIdSomSkalLagres(dokumentasjonskrav.id);
+    const oppdaterteFiler = dokumentkravFiler.filter((f) => f.filsti !== fil.filsti);
+
+    oppdaterEtDokumentasjonskrav({
+      ...dokumentasjonskrav,
+      filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+    });
 
     return await response.text();
   }
@@ -180,7 +167,7 @@ export function FilOpplasting({
             className="mt-4 fileUpload"
             label="Last opp dokument"
             description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
-            fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentkravFiler.length }}
+            fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentasjonskrav.filer?.length ?? 0 }}
             accept={hentTillatteFiltyperString()}
             onSelect={(filer) => lastOppfiler(filer)}
           />
@@ -201,6 +188,18 @@ export function FilOpplasting({
           />
         ))}
       </VStack>
+
+      {kravIdMedFilopplastingFeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
+        <ErrorMessage className="mt-4">
+          Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+        </ErrorMessage>
+      )}
+
+      {kravIdManglerFiler.includes(dokumentasjonskrav.id) && dokumentkravFiler.length === 0 && (
+        <ErrorMessage className="mt-4">
+          Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+        </ErrorMessage>
+      )}
     </Box.New>
   );
 }

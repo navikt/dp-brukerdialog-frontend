@@ -16,7 +16,7 @@ import {
   BarnLagtManuelt,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 

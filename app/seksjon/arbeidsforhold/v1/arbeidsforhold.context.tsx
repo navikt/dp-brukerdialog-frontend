@@ -1,7 +1,7 @@
 import { FormApi } from "@rvf/react-router";
 import React, { createContext, useContext, useState } from "react";
 import { Arbeidsforhold } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",

@@ -1,4 +1,4 @@
-import { LastOppFeil } from "~/components/FilOpplasting";
+import { FilOpplastingFeilType } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export const TILLATTE_FILFORMAT = [".pdf", ".jpg", ".jpeg", ".png"];
 export const MAX_ANTALL_FILER = 5;
@@ -58,17 +58,17 @@ export async function lastnedDokument(filsti?: string, tittel?: string) {
   window.URL.revokeObjectURL(blobUrl);
 }
 
-export function hentFilFeilmelding(feilType: LastOppFeil) {
+export function hentFilFeilmelding(feilType: FilOpplastingFeilType) {
   switch (feilType) {
-    case LastOppFeil.FIL_FOR_STOR:
+    case FilOpplastingFeilType.FIL_FOR_STOR:
       return `Kunne ikke laste opp filen. Filstørrelsen overskrider ${hentMaksFilStørrelseMB()} MB`;
-    case LastOppFeil.UGYLDIG_FORMAT:
+    case FilOpplastingFeilType.UGYLDIG_FORMAT:
       return "Kunne ikke laste opp filen. Ugyldig filformat";
-    case LastOppFeil.TEKNISK_FEIL:
+    case FilOpplastingFeilType.TEKNISK_FEIL:
       return "Kunne ikke laste opp filen. Det oppstod en teknisk feil";
-    case LastOppFeil.DUPLIKAT_FIL:
+    case FilOpplastingFeilType.DUPLIKAT_FIL:
       return "Kunne ikke laste opp filen. Filen er duplikat";
-    case LastOppFeil.UKJENT_FEIL:
+    case FilOpplastingFeilType.UKJENT_FEIL:
       return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
     default:
       return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";

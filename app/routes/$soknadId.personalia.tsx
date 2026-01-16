@@ -13,7 +13,7 @@ import {
   lagreSøknadPersonalia,
   PutSøknadPersonaliaRequestBody,
 } from "~/models/lagre-søknad-personalia.server";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,

@@ -39,7 +39,7 @@ import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsfo
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { useEffect, useRef, useState } from "react";
 

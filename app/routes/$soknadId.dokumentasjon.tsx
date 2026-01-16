@@ -1,8 +1,8 @@
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { DokumentasjonskravProvider } from "~/seksjon/dokumentasjon/dokumentasjonskrav.context";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { DokumentasjonView } from "~/seksjon/dokumentasjon/DokumentasjonView";
 
 export type DokumentasjonskravSeksjon = {

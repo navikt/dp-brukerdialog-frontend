@@ -6,10 +6,6 @@ import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
 import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import {
   handling,
   kanDuTaAlleTyperArbeid,
   kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
@@ -31,6 +27,10 @@ import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { SistOppdatert } from "~/components/SistOppdatert";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";

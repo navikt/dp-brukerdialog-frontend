@@ -2,7 +2,7 @@ import { LoaderFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import KvitteringView from "~/seksjon/kvittering/KvitteringView";
 import {
   hentArbeidssøkerperioder,

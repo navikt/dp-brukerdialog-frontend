@@ -4,7 +4,7 @@ import {
   Bundle,
   Dokumentasjonskrav,
   GyldigDokumentkravSvar,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 
 interface EttersendingTilLagring {
@@ -58,7 +58,6 @@ function EttersendingProvider({
 }: EttersendingProviderProps) {
   const { soknadId } = useParams();
   const navigate = useNavigate();
-
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [ettersending, setEttersending] = useState(ettersendingProps);
   const [lagrer, setLagrer] = useState(false);

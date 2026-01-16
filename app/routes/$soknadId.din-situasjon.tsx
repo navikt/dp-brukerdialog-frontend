@@ -10,7 +10,7 @@ import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export type DinSituasjonSeksjon = {

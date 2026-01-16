@@ -14,7 +14,7 @@ import {
   ArbeidsforholdSvar,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";

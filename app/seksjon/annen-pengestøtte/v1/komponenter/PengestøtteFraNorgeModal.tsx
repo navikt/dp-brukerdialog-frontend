@@ -15,13 +15,13 @@ import {
   useAnnenPengestøtteContext,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;

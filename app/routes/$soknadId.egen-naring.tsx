@@ -8,7 +8,7 @@ import {
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { EgenNæringViewV1 } from "~/seksjon/egen-næring/v1/EgenNæringViewV1";
 import { EgenNæringProvider } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {

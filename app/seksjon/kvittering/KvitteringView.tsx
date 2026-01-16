@@ -20,7 +20,7 @@ import DokumentasjonskravSomErSendtAvDeg from "~/seksjon/kvittering/Dokumentasjo
 import DokumentasjonSomIkkeSkalSendes from "~/seksjon/kvittering/DokumentasjonSomIkkeSkalSendes";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
 import { getEnv } from "~/utils/env.utils";
-import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import {
   dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
