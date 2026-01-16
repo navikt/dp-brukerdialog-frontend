@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { z } from "zod";
 import { Komponent } from "~/components/Komponent";
@@ -13,7 +13,8 @@ import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 export function DokumentasjonView() {
   const seksjonnavn = "Dokumentasjon";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
-  const { dokumentasjonskrav, lagrer, validerDokumentasjonskrav } = useDokumentasjonskravContext();
+  const { dokumentasjonskrav, lagrer, validerDokumentasjonskrav, harTekniskFeil } =
+    useDokumentasjonskravContext();
 
   const form = useForm({
     schema: z.object({}),
@@ -51,6 +52,12 @@ export function DokumentasjonView() {
           </VStack>
         </VStack>
       </VStack>
+
+      {!lagrer && harTekniskFeil && (
+        <ErrorMessage className="mt-4">
+          Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt.
+        </ErrorMessage>
+      )}
 
       <HStack gap="4" className="mt-14">
         <Button
