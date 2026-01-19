@@ -1,8 +1,10 @@
 import { Box, ErrorMessage, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { fi } from "date-fns/locale";
 import { useParams } from "react-router";
 import {
   Dokumentasjonskrav,
+  DokumentasjonskravFeilType,
   DokumentkravFil,
   FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
@@ -24,8 +26,7 @@ interface IProps {
 
 export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterEtDokumentasjonskrav, kravIdMedFilopplastingFeil, kravIdManglerFiler } =
-    useDokumentasjonskravContext();
+  const { oppdaterEtDokumentasjonskrav } = useDokumentasjonskravContext();
 
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
   const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
@@ -189,17 +190,18 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         ))}
       </VStack>
 
-      {kravIdMedFilopplastingFeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
+      {dokumentasjonskrav.filer?.find((fil) => fil.feil) && antallFeil > 0 && (
         <ErrorMessage className="mt-4">
           Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
         </ErrorMessage>
       )}
 
-      {kravIdManglerFiler.includes(dokumentasjonskrav.id) && dokumentkravFiler.length === 0 && (
-        <ErrorMessage className="mt-4">
-          Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-        </ErrorMessage>
-      )}
+      {dokumentasjonskrav.feil === DokumentasjonskravFeilType.MANGLER_FILER &&
+        dokumentkravFiler.length === 0 && (
+          <ErrorMessage className="mt-4">
+            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+          </ErrorMessage>
+        )}
     </Box.New>
   );
 }

@@ -13,8 +13,13 @@ import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 export function DokumentasjonView() {
   const seksjonnavn = "Dokumentasjon";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
-  const { dokumentasjonskrav, lagrer, validerDokumentasjonskrav, harTekniskFeil } =
-    useDokumentasjonskravContext();
+  const {
+    dokumentasjonskrav,
+    lagrer,
+    validerDokumentasjonskrav,
+    harTekniskFeil,
+    setValideringsTeller,
+  } = useDokumentasjonskravContext();
 
   const form = useForm({
     schema: z.object({}),
@@ -74,7 +79,7 @@ export function DokumentasjonView() {
           type="button"
           iconPosition="right"
           icon={<ArrowRightIcon />}
-          onClick={() => validerDokumentasjonskrav()}
+          onClick={() => setValideringsTeller((prev: number) => prev + 1)}
           disabled={lagrer}
         >
           Til oppsummering

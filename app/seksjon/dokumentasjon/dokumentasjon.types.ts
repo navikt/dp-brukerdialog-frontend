@@ -17,7 +17,13 @@ export type Dokumentasjonskrav = {
   begrunnelse?: string;
   filer?: DokumentkravFil[] | null;
   bundle?: Bundle | null;
+  feil?: DokumentasjonskravFeilType;
 };
+
+export enum DokumentasjonskravFeilType {
+  VALIDERINGSFEIL = "VALIDERINGSFEIL",
+  MANGLER_FILER = "MANGLER_FILER",
+}
 
 export type Bundle = {
   filnavn: string;

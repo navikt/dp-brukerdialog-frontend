@@ -5,7 +5,7 @@ import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { Dokumentasjonskrav } from "./dokumentasjon.types";
+import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "./dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import dokumentasjonskravKomponenter, {
   DokumentasjonskravSvar,
@@ -30,7 +30,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     dokumentasjonskrav.begrunnelse
   );
 
-  const { oppdaterEtDokumentasjonskrav } = useDokumentasjonskravContext();
+  const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
 
   const form = useForm({
     method: "PUT",
@@ -53,6 +53,12 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     },
   });
 
+  useEffect(() => {
+    if (valideringsTeller > 0) {
+      form.validate();
+    }
+  }, [valideringsTeller, form]);
+
   const begrunnelseSenderSenere = form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere);
   const begrunnelseSendtTidligere = form.value(nårSendteDuDokumentet);
   const begrunnelseSenderIkke = form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
@@ -71,6 +77,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       svar: hvaVilDuGjøreSvar,
       begrunnelse: nåværendeBegrunnelse,
       filer: hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
+      feil: undefined,
     };
 
     const timer = setTimeout(() => {
@@ -91,6 +98,23 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     begrunnelseSenderIkke,
     tidligereBegrunnelse,
   ]);
+
+  useEffect(() => {
+    if (!form.formState.isValid) {
+      oppdaterEtDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
+      });
+    }
+
+    if (valideringsTeller > 0 && hvaVilDuGjøreSvar === dokumentkravSvarSendNå)
+      if (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0) {
+        oppdaterEtDokumentasjonskrav({
+          ...dokumentasjonskrav,
+          feil: DokumentasjonskravFeilType.MANGLER_FILER,
+        });
+      }
+  }, [form, valideringsTeller]);
 
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 

@@ -1,7 +1,12 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import {
+  Bundle,
+  Dokumentasjonskrav,
+  DokumentasjonskravFeilType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
+import { d } from "node_modules/@react-router/dev/dist/routes-CZR-bKRt";
 
 interface DokumentasjonskravTilLagring {
   seksjonId: string;
@@ -14,13 +19,11 @@ type DokumentasjonskravContextType = {
   setLagrer: (lagrer: boolean) => void;
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   oppdaterEtDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
-  kravIdMedFilopplastingFeil: string[];
-  setKravIdMedFilopplastingFeil: (dokumentkravId: string[]) => void;
-  kravIdManglerFiler: string[];
-  setKravIdManglerFiler: (dokumentkravId: string[]) => void;
   validerDokumentasjonskrav: () => Promise<void>;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
+  valideringsTeller: number;
+  setValideringsTeller: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -50,13 +53,12 @@ function DokumentasjonskravProvider({
   dokumentasjonskrav: dokumentasjonskravProps,
   children,
 }: DokumentasjonskravProviderProps) {
-  const { soknadId } = useParams();
   const navigate = useNavigate();
+  const { soknadId } = useParams();
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [lagrer, setLagrer] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
-  const [kravIdMedFilopplastingFeil, setKravIdMedFilopplastingFeil] = useState<string[]>([]);
-  const [kravIdManglerFiler, setKravIdManglerFiler] = useState<string[]>([]);
+  const [valideringsTeller, setValideringsTeller] = useState(0);
 
   function oppdaterEtDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
@@ -65,24 +67,7 @@ function DokumentasjonskravProvider({
   }
 
   async function validerDokumentasjonskrav(): Promise<void> {
-    const sendNåKravIdListeUtenFil = dokumentasjonskrav
-      .filter(
-        (krav) => krav.svar === dokumentkravSvarSendNå && (!krav.filer || krav.filer.length === 0)
-      )
-      .map((krav) => krav.id);
-
-    setKravIdManglerFiler(sendNåKravIdListeUtenFil);
-
-    const dokumentkravMedEnFeil = dokumentasjonskrav
-      .filter((krav) => krav.filer?.some((fil) => fil.feil))
-      .map((krav) => krav.id);
-
-    setKravIdMedFilopplastingFeil(dokumentkravMedEnFeil);
-
-    if (sendNåKravIdListeUtenFil.length > 0 || dokumentkravMedEnFeil.length > 0) {
-      return;
-    }
-
+    setValideringsTeller((prev) => prev + 1);
     await bundleOgLagreDokumentasjonskrav();
   }
 
@@ -220,15 +205,13 @@ function DokumentasjonskravProvider({
         dokumentasjonskrav,
         setDokumentasjonskrav,
         oppdaterEtDokumentasjonskrav,
-        kravIdMedFilopplastingFeil,
-        setKravIdMedFilopplastingFeil,
-        kravIdManglerFiler,
-        setKravIdManglerFiler,
         validerDokumentasjonskrav,
         lagrer,
         setLagrer,
         harTekniskFeil,
         setHarTekniskFeil,
+        valideringsTeller,
+        setValideringsTeller,
       }}
     >
       {children}
