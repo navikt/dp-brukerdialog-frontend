@@ -4,7 +4,7 @@ import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjo
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
-const NESTE_STEG = "../kvittering";
+const NESTE_STEG = "../oppsummering";
 
 interface DokumentasjonskravTilLagring {
   seksjonId: string;
@@ -75,7 +75,7 @@ function DokumentasjonskravProvider({
 
   function verifiserDokumentasjonskrav(): boolean {
     return dokumentasjonskrav.every((krav) => {
-      if (krav.feil) {
+      if (!krav.svar || krav.feil) {
         return false;
       }
 
