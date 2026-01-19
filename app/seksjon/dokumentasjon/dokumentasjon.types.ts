@@ -23,6 +23,7 @@ export type Dokumentasjonskrav = {
 export enum DokumentasjonskravFeilType {
   VALIDERINGSFEIL = "VALIDERINGSFEIL",
   MANGLER_FILER = "MANGLER_FILER",
+  FIL_OPPLASTING_FEIL = "FIL_OPPLASTING_FEIL",
 }
 
 export type Bundle = {

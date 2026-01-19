@@ -1,12 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import {
-  Bundle,
-  Dokumentasjonskrav,
-  DokumentasjonskravFeilType,
-} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
-import { d } from "node_modules/@react-router/dev/dist/routes-CZR-bKRt";
 
 interface DokumentasjonskravTilLagring {
   seksjonId: string;
@@ -19,7 +14,6 @@ type DokumentasjonskravContextType = {
   setLagrer: (lagrer: boolean) => void;
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
   oppdaterEtDokumentasjonskrav: (oppdatertKrav: Dokumentasjonskrav) => void;
-  validerDokumentasjonskrav: () => Promise<void>;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringsTeller: number;
@@ -66,10 +60,19 @@ function DokumentasjonskravProvider({
     );
   }
 
-  async function validerDokumentasjonskrav(): Promise<void> {
-    setValideringsTeller((prev) => prev + 1);
-    await bundleOgLagreDokumentasjonskrav();
-  }
+  // Todo:
+  // Finn en måte for tilbake knappen for å lagre uten validering
+  useEffect(() => {
+    const klarTilBundlingOgLagring = dokumentasjonskrav.every((krav) => !krav.feil && krav.svar);
+
+    console.log("valideringsTeller", valideringsTeller);
+    console.log("klarTilBundlingOgLagring", klarTilBundlingOgLagring);
+    console.log("dokumentasjonskrav", dokumentasjonskrav);
+
+    if (valideringsTeller > 0 && klarTilBundlingOgLagring) {
+      bundleOgLagreDokumentasjonskrav();
+    }
+  }, [valideringsTeller, dokumentasjonskrav]);
 
   async function bundleOgLagreDokumentasjonskrav(): Promise<void> {
     setLagrer(true);
@@ -205,7 +208,6 @@ function DokumentasjonskravProvider({
         dokumentasjonskrav,
         setDokumentasjonskrav,
         oppdaterEtDokumentasjonskrav,
-        validerDokumentasjonskrav,
         lagrer,
         setLagrer,
         harTekniskFeil,

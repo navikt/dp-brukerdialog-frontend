@@ -1,6 +1,5 @@
 import { Box, ErrorMessage, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
-import { fi } from "date-fns/locale";
 import { useParams } from "react-router";
 import {
   Dokumentasjonskrav,
@@ -72,6 +71,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
     oppdaterEtDokumentasjonskrav({
       ...dokumentasjonskrav,
       filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
+      feil: filerMedFeil.length > 0 ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL : undefined,
     });
 
     if (filerKlarTilOpplasting.length > 0) {
@@ -130,6 +130,9 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
       oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
         filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+        feil: oppdaterteFiler.some((fil) => fil.feil)
+          ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+          : undefined,
       });
 
       return;
@@ -155,6 +158,9 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
     oppdaterEtDokumentasjonskrav({
       ...dokumentasjonskrav,
       filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+      feil: oppdaterteFiler.some((fil) => fil.feil)
+        ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+        : undefined,
     });
 
     return await response.text();
@@ -188,20 +194,20 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
             }}
           />
         ))}
+        {dokumentasjonskrav.feil === DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL &&
+          antallFeil > 0 && (
+            <ErrorMessage>
+              Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+            </ErrorMessage>
+          )}
+
+        {dokumentasjonskrav.feil === DokumentasjonskravFeilType.MANGLER_FILER &&
+          dokumentkravFiler.length === 0 && (
+            <ErrorMessage>
+              Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+            </ErrorMessage>
+          )}
       </VStack>
-
-      {dokumentasjonskrav.filer?.find((fil) => fil.feil) && antallFeil > 0 && (
-        <ErrorMessage className="mt-4">
-          Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
-        </ErrorMessage>
-      )}
-
-      {dokumentasjonskrav.feil === DokumentasjonskravFeilType.MANGLER_FILER &&
-        dokumentkravFiler.length === 0 && (
-          <ErrorMessage className="mt-4">
-            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-          </ErrorMessage>
-        )}
     </Box.New>
   );
 }
