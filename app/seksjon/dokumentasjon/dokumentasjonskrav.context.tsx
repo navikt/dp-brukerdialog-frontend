@@ -75,7 +75,7 @@ function DokumentasjonskravProvider({
 
   function verifiserDokumentasjonskrav(): boolean {
     return dokumentasjonskrav.every((krav) => {
-      if (krav.feil) {
+      if (!krav.svar || krav.feil) {
         return false;
       }
 
