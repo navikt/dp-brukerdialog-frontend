@@ -107,11 +107,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     begrunnelseSenderIkke,
     tidligereBegrunnelse,
     hvaVilDuGjøreSvar,
-    dokumentasjonskrav,
-    oppdaterEtDokumentasjonskrav,
-    dokumentkravSvarSendNå,
     form,
-    hvaVilDuGjøreSvar,
   ]);
 
   useEffect(() => {
