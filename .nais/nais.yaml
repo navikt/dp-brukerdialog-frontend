@@ -58,6 +58,8 @@ spec:
       value: "{{arbeidssokerregisteret_url}}"
     - name: DP_MINE_DAGPENGER_URL
       value: "{{ dp_mine_dagpenger_url }}"
+    - name: GENERELL_INNSENDING_URL
+      value: "{{ generell_innsending_url }}"
 
   ingresses:
     {{#each ingresses as |url|}}

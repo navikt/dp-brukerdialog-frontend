@@ -12,7 +12,15 @@ import {
 } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
+import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
+import {
+  dokumentkravSvarSenderIkke,
+  dokumentkravSvarSendNå,
+  dokumentkravSvarSendtTidligere,
+} from "../dokumentasjon/dokumentasjonskrav.komponenter";
+import DokumentasjonskravSomErSendtAvDeg from "../kvittering/DokumentasjonSomErSendtAvDeg";
+import DokumentasjonSomIkkeSkalSendes from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersendingContext } from "./ettersending.context";
 
 const seksjonnavn = "Ettersending";
@@ -20,7 +28,17 @@ const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
 export function EttersendingView() {
   const navigate = useNavigate();
-  const { ettersending, lagrer, validerEttersending, harTekniskFeil } = useEttersendingContext();
+  const { ettersending, lagrer, validerEttersending, harTekniskFeil, dokumentasjonskrav } =
+    useEttersendingContext();
+
+  const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
+  );
+
+  const dokumentasjonSomIkkeSkalSendes: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
+    (krav: Dokumentasjonskrav) =>
+      krav.svar === dokumentkravSvarSenderIkke || krav.svar === dokumentkravSvarSendtTidligere
+  );
 
   return (
     <div className="innhold">
@@ -94,6 +112,38 @@ export function EttersendingView() {
           Avbryt
         </Button>
       </HStack>
+
+      <VStack className="mt-14" gap="4">
+        {dokumentasjonSomErSendtAvDeg.length > 0 && (
+          <VStack gap="4">
+            <Heading size="small">Dokumenter du har sendt inn</Heading>
+            {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
+              <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
+            ))}
+          </VStack>
+        )}
+
+        {dokumentasjonSomIkkeSkalSendes.length > 0 && (
+          <VStack gap="4">
+            <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
+            {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
+              <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
+            ))}
+          </VStack>
+        )}
+      </VStack>
+
+      <VStack className="mt-14" gap="4">
+        <Heading size="small" level="3">
+          Andre dokumenter
+        </Heading>
+        <BodyLong>
+          Du kan sende inn andre dokumenter hvis du mener det er relevant i saken din. Dette er helt
+          valgfritt.
+        </BodyLong>
+
+        <Link href={getEnv("GENERELL_INNSENDING_URL")}>Jeg vil sende inn andre dokumenter</Link>
+      </VStack>
     </div>
   );
 }
