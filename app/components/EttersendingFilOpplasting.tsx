@@ -1,6 +1,11 @@
 import { Box, ErrorMessage, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
 import { useParams } from "react-router";
+import {
+  Dokumentasjonskrav,
+  DokumentkravFil,
+  FilOpplastingFeilType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { useEttersendingContext } from "~/seksjon/ettersending/ettersending.context";
 import {
   hentFilFeilmelding,
@@ -12,8 +17,6 @@ import {
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
-import { Dokumentasjonskrav } from "../seksjon/dokumentasjon/DokumentasjonskravKomponent";
-import { DokumentkravFil, LastOppFeil } from "./FilOpplasting";
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -41,19 +44,19 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.UGYLDIG_FORMAT,
+          feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
         });
       } else if (erDuplikat) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.DUPLIKAT_FIL,
+          feil: FilOpplastingFeilType.DUPLIKAT_FIL,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: LastOppFeil.FIL_FOR_STOR,
+          feil: FilOpplastingFeilType.FIL_FOR_STOR,
         });
       } else {
         filerKlarTilOpplasting.push({
@@ -89,7 +92,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
               filnavn: fil.file.name,
               storrelse: fil.file.size,
               lasterOpp: false,
-              feil: LastOppFeil.TEKNISK_FEIL,
+              feil: FilOpplastingFeilType.TEKNISK_FEIL,
               id: fil.id,
             };
           }
@@ -195,6 +198,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
           ))}
         </VStack>
       )}
+
       {ettersendingHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
         <ErrorMessage className="mt-4">
           Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.

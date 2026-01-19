@@ -8,7 +8,7 @@ import { action, loader } from "~/routes/$soknadId.utdanning";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   avsluttetUtdanningSiste6Måneder,
   handling,

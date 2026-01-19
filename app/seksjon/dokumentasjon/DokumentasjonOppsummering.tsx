@@ -3,7 +3,7 @@ import { Button, FormSummary } from "@navikt/ds-react";
 import dokumentasjonskravKomponenter, {
   velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
@@ -61,7 +61,11 @@ export default function DokumentasjonOppsummering({
           );
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={`/${søknadId}/dokumentasjon`} redigerbar={true} seksjonnavn="Dokumentasjon"/>
+      <FormSummaryFooter
+        seksjonsUrl={`/${søknadId}/dokumentasjon`}
+        redigerbar={true}
+        seksjonnavn="Dokumentasjon"
+      />
     </FormSummary>
   );
 }

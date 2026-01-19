@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, Link, List, ReadMore, VStack } from "@navikt/ds-react";
-import { DokumentasjonskravType } from "./DokumentasjonskravKomponent";
+import { DokumentasjonskravType } from "./dokumentasjon.types";
 
 interface IProps {
   type: DokumentasjonskravType;
@@ -36,7 +36,11 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   avtalt arbeidstid avt endt oppsigelsestid sluttdato, hvis du har en midlertidig
                   arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
                   skjemaet{" "}
-                  <Link href="https://www.nav.no/soknader">
+                  <Link
+                    href="https://www.nav.no/soknader"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     "Bekreftelse på sluttårsak/nedsatt arbeidstid" (NAV 04-08.03)
                   </Link>
                   . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
@@ -257,7 +261,8 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
               dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.
             </BodyLong>
             <BodyLong>
-              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid.
+              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke
+              kan ta alle typer arbeid.
             </BodyLong>
           </>
         );

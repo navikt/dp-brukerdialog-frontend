@@ -11,7 +11,7 @@ import { action, loader } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import {
   avtjentVerneplikt,

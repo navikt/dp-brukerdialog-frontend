@@ -4,7 +4,7 @@ import {
   Bundle,
   Dokumentasjonskrav,
   GyldigDokumentkravSvar,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 
 interface EttersendingTilLagring {
@@ -58,7 +58,6 @@ function EttersendingProvider({
 }: EttersendingProviderProps) {
   const { soknadId } = useParams();
   const navigate = useNavigate();
-
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [ettersending, setEttersending] = useState(ettersendingProps);
   const [lagrer, setLagrer] = useState(false);
@@ -98,7 +97,7 @@ function EttersendingProvider({
     setLagrer(true);
     setHarTekniskFeil(false);
 
-    const bundletEttersend: Dokumentasjonskrav[] = [];
+    const bundletEttersendinger: Dokumentasjonskrav[] = [];
     let bundlingFeilet = false;
 
     for (const etEttersending of ettersending) {
@@ -109,8 +108,10 @@ function EttersendingProvider({
           ...etEttersending,
           svar: dokumentkravEttersendt as GyldigDokumentkravSvar,
           bundle,
+          begrunnelse: undefined,
         };
-        bundletEttersend.push(oppdatertDokumentasjonskrav);
+
+        bundletEttersendinger.push(oppdatertDokumentasjonskrav);
       } else {
         bundlingFeilet = true;
         console.error("Bundling feilet for dokumentkrav:", etEttersending.id);
@@ -123,7 +124,7 @@ function EttersendingProvider({
     }
 
     const alleDokumentasjonskrav = dokumentasjonskrav.map((etDokumentasjonskrav) => {
-      const oppdatertDokumentasjonskrav = bundletEttersend.find(
+      const oppdatertDokumentasjonskrav = bundletEttersendinger.find(
         (etEttersending) => etEttersending.id === etDokumentasjonskrav.id
       );
 
@@ -133,7 +134,7 @@ function EttersendingProvider({
     const ettersendingTilLagring: EttersendingTilLagring[] = [];
     const seksjonIds: string[] = [];
 
-    for (const bundletEttersending of bundletEttersend) {
+    for (const bundletEttersending of bundletEttersendinger) {
       if (!seksjonIds.includes(bundletEttersending.seksjonId)) {
         seksjonIds.push(bundletEttersending.seksjonId);
 
@@ -202,10 +203,13 @@ function EttersendingProvider({
       const formData = new FormData();
       formData.append("ettersendinger", JSON.stringify(ettersendinger));
 
-      const response = await fetch(`/api/ettersending/${soknadId}/${seksjonId}`, {
-        method: "PUT",
-        body: formData,
-      });
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${seksjonId}/ettersending`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         console.error("Feil ved lagring av dokumentasjonskrav:", seksjonId);

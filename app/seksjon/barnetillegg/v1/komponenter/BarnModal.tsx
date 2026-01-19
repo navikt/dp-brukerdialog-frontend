@@ -18,7 +18,7 @@ import {
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
