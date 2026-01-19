@@ -59,17 +59,33 @@ function DokumentasjonskravProvider({
   const [valideringsTeller, setValideringsTeller] = useState(0);
 
   useEffect(() => {
-    const klarTilBundlingOgLagring = dokumentasjonskrav.every((krav) => !krav.feil && krav.svar);
-
-    if (valideringsTeller > 0 && klarTilBundlingOgLagring) {
-      bundleOgLagreDokumentasjonskrav();
+    if (valideringsTeller > 0) {
+      const klarTilBundlingOgLagring = verifiserDokumentasjonskrav();
+      if (klarTilBundlingOgLagring) {
+        bundleOgLagreDokumentasjonskrav();
+      }
     }
-  }, [valideringsTeller, dokumentasjonskrav]);
+  }, [valideringsTeller]);
 
   function oppdaterEtDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
     setDokumentasjonskrav((current) =>
       current.map((etKrav) => (etKrav.id === oppdatertKrav.id ? oppdatertKrav : etKrav))
     );
+  }
+
+  function verifiserDokumentasjonskrav(): boolean {
+    return dokumentasjonskrav.every((krav) => {
+      if (krav.feil) {
+        return false;
+      }
+
+      if (krav.svar === dokumentkravSvarSendNå) {
+        const alleFilerErOk = krav.filer?.every((fil) => !fil.feil) ?? false;
+        return alleFilerErOk;
+      }
+
+      return true;
+    });
   }
 
   async function bundleOgLagreDokumentasjonskrav(tilbakenavigering?: boolean): Promise<void> {
@@ -80,7 +96,7 @@ function DokumentasjonskravProvider({
     let bundlingFeilet = false;
 
     for (const etKrav of dokumentasjonskrav) {
-      if (etKrav.svar !== dokumentkravSvarSendNå && !etKrav.filer?.length) {
+      if (etKrav.svar !== dokumentkravSvarSendNå || tilbakenavigering) {
         continue;
       }
 

@@ -119,6 +119,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         })),
         begrunnelse: undefined,
         svar: dokumentkravSvarSendNå,
+        feil: oppdaterteFiler.some((fil) => !fil.feil) ? undefined : dokumentasjonskrav.feil,
       });
     }
   }

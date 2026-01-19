@@ -68,7 +68,10 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     const nåværendeBegrunnelse =
       begrunnelseSenderSenere || begrunnelseSendtTidligere || begrunnelseSenderIkke;
 
-    if (nåværendeBegrunnelse === tidligereBegrunnelse) {
+    if (
+      nåværendeBegrunnelse === tidligereBegrunnelse &&
+      hvaVilDuGjøreSvar === dokumentasjonskrav.svar
+    ) {
       return;
     }
 
@@ -79,6 +82,12 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       filer: hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
       feil: undefined,
     };
+
+    if (hvaVilDuGjøreSvar !== dokumentasjonskrav.svar) {
+      oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
+      setTidligereBegrunnelse(nåværendeBegrunnelse);
+      return;
+    }
 
     const timer = setTimeout(() => {
       if (nåværendeBegrunnelse) {
@@ -97,6 +106,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     begrunnelseSendtTidligere,
     begrunnelseSenderIkke,
     tidligereBegrunnelse,
+    hvaVilDuGjøreSvar,
   ]);
 
   useEffect(() => {
