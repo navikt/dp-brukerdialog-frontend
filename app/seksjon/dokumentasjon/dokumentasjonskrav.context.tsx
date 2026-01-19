@@ -4,7 +4,7 @@ import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjo
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
-const NESTE_STEG = "../kvittering";
+const NESTE_STEG = "../oppsummering";
 
 interface DokumentasjonskravTilLagring {
   seksjonId: string;
