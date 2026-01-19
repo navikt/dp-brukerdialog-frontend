@@ -13,8 +13,13 @@ import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 export function DokumentasjonView() {
   const seksjonnavn = "Dokumentasjon";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
-  const { dokumentasjonskrav, lagrer, harTekniskFeil, setValideringsTeller } =
-    useDokumentasjonskravContext();
+  const {
+    dokumentasjonskrav,
+    lagrer,
+    harTekniskFeil,
+    setValideringsTeller,
+    bundleOgLagreDokumentasjonskrav,
+  } = useDokumentasjonskravContext();
 
   const form = useForm({
     schema: z.object({}),
@@ -65,6 +70,7 @@ export function DokumentasjonView() {
           type="button"
           icon={<ArrowLeftIcon title="a11y-title" fontSize="1.5rem" />}
           disabled={lagrer}
+          onClick={() => bundleOgLagreDokumentasjonskrav(true)}
         >
           Forrige steg
         </Button>
@@ -73,7 +79,7 @@ export function DokumentasjonView() {
           type="button"
           iconPosition="right"
           icon={<ArrowRightIcon />}
-          onClick={() => setValideringsTeller((prev: number) => prev + 1)}
+          onClick={() => setValideringsTeller((prev) => prev + 1)}
           disabled={lagrer}
         >
           Til oppsummering

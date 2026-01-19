@@ -3,6 +3,9 @@ import { useNavigate, useParams } from "react-router";
 import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
+const FORRIGE_STEG = "../tilleggsopplysninger";
+const NESTE_STEG = "../kvittering";
+
 interface DokumentasjonskravTilLagring {
   seksjonId: string;
   dokumentasjonskrav: Dokumentasjonskrav[];
@@ -18,6 +21,7 @@ type DokumentasjonskravContextType = {
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringsTeller: number;
   setValideringsTeller: React.Dispatch<React.SetStateAction<number>>;
+  bundleOgLagreDokumentasjonskrav: (tilbakenavigering?: boolean) => Promise<void>;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -54,27 +58,21 @@ function DokumentasjonskravProvider({
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [valideringsTeller, setValideringsTeller] = useState(0);
 
-  function oppdaterEtDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
-    setDokumentasjonskrav((current) =>
-      current.map((etKrav) => (etKrav.id === oppdatertKrav.id ? oppdatertKrav : etKrav))
-    );
-  }
-
-  // Todo:
-  // Finn en måte for tilbake knappen for å lagre uten validering
   useEffect(() => {
     const klarTilBundlingOgLagring = dokumentasjonskrav.every((krav) => !krav.feil && krav.svar);
-
-    console.log("valideringsTeller", valideringsTeller);
-    console.log("klarTilBundlingOgLagring", klarTilBundlingOgLagring);
-    console.log("dokumentasjonskrav", dokumentasjonskrav);
 
     if (valideringsTeller > 0 && klarTilBundlingOgLagring) {
       bundleOgLagreDokumentasjonskrav();
     }
   }, [valideringsTeller, dokumentasjonskrav]);
 
-  async function bundleOgLagreDokumentasjonskrav(): Promise<void> {
+  function oppdaterEtDokumentasjonskrav(oppdatertKrav: Dokumentasjonskrav) {
+    setDokumentasjonskrav((current) =>
+      current.map((etKrav) => (etKrav.id === oppdatertKrav.id ? oppdatertKrav : etKrav))
+    );
+  }
+
+  async function bundleOgLagreDokumentasjonskrav(tilbakenavigering?: boolean): Promise<void> {
     setLagrer(true);
     setHarTekniskFeil(false);
 
@@ -82,7 +80,7 @@ function DokumentasjonskravProvider({
     let bundlingFeilet = false;
 
     for (const etKrav of dokumentasjonskrav) {
-      if (etKrav.svar !== dokumentkravSvarSendNå) {
+      if (etKrav.svar !== dokumentkravSvarSendNå && !etKrav.filer?.length) {
         continue;
       }
 
@@ -141,7 +139,7 @@ function DokumentasjonskravProvider({
     }
 
     setLagrer(false);
-    navigate(`../kvittering`);
+    navigate(tilbakenavigering ? FORRIGE_STEG : NESTE_STEG);
   }
 
   async function bundleFilerForDokumentasjonskrav(
@@ -214,6 +212,7 @@ function DokumentasjonskravProvider({
         setHarTekniskFeil,
         valideringsTeller,
         setValideringsTeller,
+        bundleOgLagreDokumentasjonskrav,
       }}
     >
       {children}
