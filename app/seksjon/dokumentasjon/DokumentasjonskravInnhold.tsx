@@ -36,11 +36,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   avtalt arbeidstid avt endt oppsigelsestid sluttdato, hvis du har en midlertidig
                   arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
                   skjemaet{" "}
-                  <Link
-                    href="https://www.nav.no/soknader"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <Link href="https://www.nav.no/soknader" target="">
                     "Bekreftelse på sluttårsak/nedsatt arbeidstid" (NAV 04-08.03)
                   </Link>
                   . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.

@@ -59,7 +59,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       SANITY_DATASET: getEnv("SANITY_DATASET"),
       DP_SOKNAD_ORKESTRATOR_URL: getEnv("DP_SOKNAD_ORKESTRATOR_URL"),
       DP_MINE_DAGPENGER_URL: getEnv("DP_MINE_DAGPENGER_URL"),
+      GENERELL_INNSENDING_URL: getEnv("GENERELL_INNSENDING_URL"),
       FARO_URL: getEnv("FARO_URL"),
+
     },
   });
 }
