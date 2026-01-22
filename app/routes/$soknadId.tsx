@@ -31,6 +31,7 @@ export const stegISøknaden: Steg[] = [
   { tittel: "Tilleggsopplysninger", path: "tilleggsopplysninger" },
   { tittel: "Dokumentasjon", path: "dokumentasjon" },
   { tittel: "Oppsummering", path: "oppsummering" },
+  { tittel: "Kvittering", path: "kvittering" },
 ];
 
 function fyllTommeSteger(): FremgangSteg[] {
@@ -62,6 +63,10 @@ export async function loader({
   request,
   params,
 }: LoaderFunctionArgs): Promise<SoknadIdRoute | Response> {
+  const url = new URL(request.url);
+  const pathParts = url.pathname.split("/");
+  const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
+
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const progressResponse = await hentSøknadFremgangInfo(request, params.soknadId);
@@ -88,7 +93,9 @@ export async function loader({
 
   const soknadSections: FremgangSteg[] = stegISøknaden.map((step) => ({
     ...step,
-    fullført: seksjoner.includes(step.path),
+    fullført:
+      seksjoner.includes(step.path) ||
+      (step.path == "dokumentasjon" && seksjonsIdFraUrl == "oppsummering"),
   }));
 
   return {
@@ -111,13 +118,12 @@ export default function SoknadIdIndex() {
         </Heading>
       </div>
       <div className="innhold">
-        <FormProgress totalSteps={14} activeStep={loaderData?.aktivSteg || 1}>
+        <FormProgress totalSteps={stegISøknaden.length} activeStep={loaderData?.aktivSteg || 1}>
           {progressData.map((steg) => (
             <FormProgress.Step href={steg.path} completed={steg.fullført} interactive={false}>
               {steg.tittel}
             </FormProgress.Step>
           ))}
-          <FormProgress.Step interactive={false}>Kvittering</FormProgress.Step>
         </FormProgress>
       </div>
       <Outlet />
