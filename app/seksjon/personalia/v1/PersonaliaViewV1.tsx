@@ -72,6 +72,9 @@ export function PersonaliaViewV1() {
       whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
+    onBeforeSubmit(state) {
+      console.log(state.cancelSubmit);
+    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -79,6 +82,7 @@ export function PersonaliaViewV1() {
   form.setValue(mellomnavnFraPdl, mellomnavn || "");
   form.setValue(etternavnFraPdl, etternavn || "");
   form.setValue(fødselsnummerFraPdl, ident || "");
+
   if (folkeregistrertAdresse) {
     form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
     form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
@@ -88,6 +92,7 @@ export function PersonaliaViewV1() {
     form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
     form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
   }
+
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
@@ -95,18 +100,16 @@ export function PersonaliaViewV1() {
 
   async function handleSubmit() {
     form.setValue(handling, Seksjonshandling.neste);
-    if (Object.values(await form.validate()).length === 0) {
-      const pdfPayload = {
-        navn: seksjonnavn,
-        spørsmål: [
-          ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-          ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
-        ],
-      };
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+      ],
+    };
 
-      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-      form.submit();
-    }
+    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+    form.submit();
   }
 
   function handleFortsettSenere() {
