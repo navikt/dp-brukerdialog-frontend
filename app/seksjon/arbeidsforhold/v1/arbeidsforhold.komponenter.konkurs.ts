@@ -118,7 +118,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     label: "Les mer om hvem som bør søke om forskudd på lønnsgarantimidler",
     description:
       "<p>Når arbeidsgiveren din går konkurs, kan du i tillegg til dagpenger søke om:</p>" +
-      '<ol><li><strong>Lønnsgarantimidler</strong><br/>Lønnsgarantiordningen skal sikre at du som arbeidstaker får utbetalt lønn, feriepenger og annet arbeidsvederlag som du har til gode når arbeidsgiveren din går konkurs. Send <a href="https://www.nav.no/soknader#lonnsgaranti">søknad om lønnsgarantimidler</a> via bostyrer i konkursboet.</li>' +
+      '<ol><li><strong>Lønnsgarantimidler</strong><br/>Lønnsgarantiordningen skal sikre at du som arbeidstaker får utbetalt lønn, feriepenger og annet arbeidsvederlag som du har til gode når arbeidsgiveren din går konkurs. Send <a href="https://www.nav.no/soknader#lonnsgaranti" target="_blank" rel="noopener noreferrer">søknad om lønnsgarantimidler</a> via bostyrer i konkursboet.</li>' +
       '<li><strong>Forskudd på lønnsgarantimidler i form av dagpenger</strong><br/>Du kan få forskudd på lønnsgarantimidler i form av dagpenger for den første måneden etter at arbeidsgiveren din er konkurs. Dette er fordi det kan ta lang tid å få svar på søknaden om lønnsgaranti. Du søker om forskudd ved å svare "Ja" på spørsmålet over.</li></ol>' +
       "<p>Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd. Du må da også sende en egen søknad om lønnsgarantimidler. Dette kan bostyrer hjelpe deg med.</p>",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -130,7 +130,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     variant: "informasjon",
     label: "Informasjon",
     description:
-      '<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href="https://www.nav.no/soknader#lonnsgaranti">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>',
+      '<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href="https://www.nav.no/soknader#lonnsgaranti" target="_blank" rel="noopener noreferrer">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>',
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
   },

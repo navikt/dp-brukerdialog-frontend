@@ -8,6 +8,7 @@ import {
   HStack,
   Label,
   VStack,
+  Link,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -133,7 +134,11 @@ export function PersonaliaViewV1() {
           </Heading>
           <BodyLong>
             Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
-            Kontonummer kan du legge til eller endre på <a href="https://www.nav.no/">Min side</a>.
+            Kontonummer kan du legge til eller endre på{" "}
+            <Link href="https://www.nav.no/" target="_blank" rel="noopener noreferrer">
+              Min side
+            </Link>
+            .
           </BodyLong>
 
           <VStack gap="0">

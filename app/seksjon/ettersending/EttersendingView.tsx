@@ -62,11 +62,19 @@ export function EttersendingView() {
           <BodyLong>
             Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal sendes
             inn og frist for å sende inn. Brev du har fått ligger i{" "}
-            <Link href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste">
+            <Link
+              href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               dokumentlisten på Mine dagpenger
             </Link>
             . Når du har dokumentene klare kan du{" "}
-            <Link href="https://www.nav.no/dagpenger/dialog/generell-innsending/">
+            <Link
+              href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               sende dem inn her.
             </Link>
             Dette kan forlenge tiden det tar å behandle søknaden din.
