@@ -2,6 +2,7 @@ import { TrashIcon } from "@navikt/aksel-icons";
 import { BodyLong, Box, Button, HStack, Link, Modal, VStack } from "@navikt/ds-react";
 import { useRef } from "react";
 import { useNavigate } from "react-router";
+import { getEnv } from "~/utils/env.utils";
 
 interface IProps {
   søknadId?: string;
@@ -69,11 +70,9 @@ export function SlettSøknadModal({ søknadId }: IProps) {
           <VStack gap="6">
             <BodyLong>Søknaden og alle svarene dine er slettet.</BodyLong>
             <HStack gap="8">
-              <Link href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger">
-                <Button variant="primary" as="a">
-                  Lukk
-                </Button>
-              </Link>
+              <Button variant="primary" as="a" href={getEnv("DP_MINE_DAGPENGER_URL")}>
+                Lukk
+              </Button>
               <Button
                 type="button"
                 variant="tertiary"

@@ -214,7 +214,7 @@ export function ArbeidsforholdViewV1() {
                         arbeidsforhold={arbeidsforhold}
                       />
                     ))}
-                    <HStack>
+                    <HStack className="mt-4">
                       <Button
                         variant="secondary"
                         type="button"
