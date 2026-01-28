@@ -72,7 +72,11 @@ export default function KvitteringView() {
               Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
               du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når
               svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
+              <Link
+                href="https://www.nav.no/saksbehandlingstider#dagpenger"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 saksbehandlingstiden
               </Link>{" "}
               for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
@@ -82,7 +86,11 @@ export default function KvitteringView() {
           {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
             <BodyLong>
               Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
+              <Link
+                href="https://www.nav.no/saksbehandlingstider#dagpenger"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 saksbehandlingstiden
               </Link>{" "}
               for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
@@ -111,7 +119,11 @@ export default function KvitteringView() {
                 <BodyLong>
                   Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden
                   din. Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
-                  <Link href="https://arbeidssokerregistrering.nav.no/" className={""}>
+                  <Link
+                    href="https://arbeidssokerregistrering.nav.no/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Registrer deg som arbeidssøker
                   </Link>
                   .
@@ -132,7 +144,11 @@ export default function KvitteringView() {
                 </BodyShort>
                 <BodyShort>
                   Hvis du er usikker på om du er registrert som arbeidssøker, må du{" "}
-                  <Link href="https://arbeidssokerregistrering.nav.no/">
+                  <Link
+                    href="https://arbeidssokerregistrering.nav.no/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     registrere deg som arbeidssøker
                   </Link>
                   .
@@ -164,11 +180,19 @@ export default function KvitteringView() {
             <ReadMore header="Har du fått brev om manglende opplysninger?">
               Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal
               sendes inn og frist for å sende inn. Brev du har fått ligger i{" "}
-              <Link href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste">
+              <Link
+                href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 dokumentlisten på Mine dagpenger
               </Link>
               . Når du har dokumentene klare kan du{" "}
-              <Link href="https://www.nav.no/dagpenger/dialog/generell-innsending/">
+              <Link
+                href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 sende dem inn her
               </Link>
               .

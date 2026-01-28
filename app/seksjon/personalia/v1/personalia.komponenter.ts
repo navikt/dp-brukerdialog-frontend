@@ -117,7 +117,7 @@ export const personaliaSpørsmål: KomponentType[] = [
     variant: "advarsel",
     label: "Vi har registrert at du er over 67 år",
     description:
-      '<p>Du har ikke rett til dagpenger lenger enn ut måneden du fyller 67 år. Hvis du ikke har søkt om alderspensjon, kan du <a href="https://www.nav.no/soknader#alderspensjon">søke om alderspensjon her</a>.</p>',
+      '<p>Du har ikke rett til dagpenger lenger enn ut måneden du fyller 67 år. Hvis du ikke har søkt om alderspensjon, kan du <a href="https://www.nav.no/soknader#alderspensjon" target="_blank" rel="noopener noreferrer">søke om alderspensjon her</a>.</p>',
     visHvis: (svar: PersonaliaSvar) => Number(svar[alderFraPdl]) >= 67,
   },
   {
@@ -161,7 +161,7 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
       "<li>hvilket land du bor i</li>" +
       "<li>om du er permittert eller delvis arbeidsledig, eller om du er helt arbeidsledig</li>" +
       "</ul>" +
-      "Er du usikker på hva du skal svare, kan du lese <a href='https://nav.no/dagpenger#eos'>mer om hvor du skal søke penger fra</a>.",
+      'Er du usikker på hva du skal svare, kan du lese <a href="https://nav.no/dagpenger#eos" target="_blank" rel="noopener noreferrer">mer om hvor du skal søke penger fra</a>.',
     visHvis: (svar: PersonaliaSvar) =>
       svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },

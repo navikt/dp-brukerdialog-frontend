@@ -76,7 +76,7 @@ export const utdanningKomponenter: KomponentType[] = [
     variant: "advarsel",
     label: "Du kan få avslag på søknaden",
     description:
-      '<p>For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href="https://www.nav.no/fyllut/nav040605">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - Nav 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.</p>' +
+      '<p>For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href="https://www.nav.no/fyllut/nav040605" target="_blank" rel="noopener noreferrer">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - Nav 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.</p>' +
       "<p>Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan vi avslå søknaden din om dagpenger.</p>",
     visHvis: (svar: UtdanningSvar) =>
       svar[tarUtdanningEllerOpplæring] === "ja" ||
