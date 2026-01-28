@@ -72,9 +72,6 @@ export function PersonaliaViewV1() {
       whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
-    onBeforeSubmit(state) {
-      console.log(state.cancelSubmit);
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -100,16 +97,18 @@ export function PersonaliaViewV1() {
 
   async function handleSubmit() {
     form.setValue(handling, Seksjonshandling.neste);
-    const pdfPayload = {
-      navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
-      ],
-    };
+    if (Object.values(await form.validate()).length === 0) {
+      const pdfPayload = {
+        navn: seksjonnavn,
+        spørsmål: [
+          ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+          ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+        ],
+      };
 
-    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-    form.submit();
+      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+      form.submit();
+    }
   }
 
   function handleFortsettSenere() {
