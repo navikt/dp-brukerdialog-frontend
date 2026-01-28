@@ -1,18 +1,29 @@
-import { BodyLong, Button, Heading, HStack, InfoCard, VStack } from "@navikt/ds-react";
-import { useLoaderData, useNavigation, useParams } from "react-router";
-import { stegISøknaden } from "~/routes/$soknadId";
-import { loader } from "~/routes/$soknadId.oppsummering";
-import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
-import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
 import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
-import React from "react";
+import { BodyLong, Button, ErrorMessage, Heading, InfoCard, VStack } from "@navikt/ds-react";
+import { useForm } from "@rvf/react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import { z } from "zod";
+import { stegISøknaden } from "~/routes/$soknadId";
+import { action, loader } from "~/routes/$soknadId.oppsummering";
+import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
+import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+
+const schema = z.object({});
 
 export default function OppsummeringView() {
   const seksjonnavn = "Se over før du sender inn";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
   const { soknadId } = useParams();
   const { state } = useNavigation();
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: schema,
+    defaultValues: {},
+  });
 
   if (!loaderData) {
     return null;
@@ -45,6 +56,7 @@ export default function OppsummeringView() {
           <Heading size="medium" level="2">
             Dine svar
           </Heading>
+
           {stegISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
@@ -57,15 +69,23 @@ export default function OppsummeringView() {
               />
             );
           })}
+
           <DokumentasjonOppsummering
             søknadId={soknadId}
             dokumentasjonskrav={loaderData.dokumentasjonskrav}
           />
-          <HStack className="mt-4">
-            <form method="POST">
-              <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
-            </form>
-          </HStack>
+
+          <Form {...form.getFormProps()}>
+            <Button loading={state === "submitting" || state === "loading"} className="mt-4">
+              Send søknad
+            </Button>
+          </Form>
+
+          {actionData?.error && (
+            <ErrorMessage showIcon aria-live="polite">
+              {actionData.error}
+            </ErrorMessage>
+          )}
         </VStack>
       </VStack>
     </div>
