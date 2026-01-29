@@ -8,10 +8,12 @@ import {
   HStack,
   Label,
   VStack,
+  Link,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
+import { EksterneLenke } from "~/components/EksterneLenke";
 import { Komponent } from "~/components/Komponent";
 import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
@@ -135,7 +137,8 @@ export function PersonaliaViewV1() {
           </Heading>
           <BodyLong>
             Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
-            Kontonummer kan du legge til eller endre på <a href="https://www.nav.no/">Min side</a>.
+            Kontonummer kan du legge til eller endre på{" "}
+            <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
           </BodyLong>
 
           <VStack gap="0">
@@ -175,7 +178,7 @@ export function PersonaliaViewV1() {
                 {formattertKontonummer || (
                   <span>
                     Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på{" "}
-                    <a href="https://www.nav.no/">Min side</a>.
+                    <EksterneLenke href="https://www.nav.no/minside" tekst="Min side" />.
                   </span>
                 )}
               </BodyShort>

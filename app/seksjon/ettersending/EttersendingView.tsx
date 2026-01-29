@@ -6,11 +6,11 @@ import {
   ErrorMessage,
   Heading,
   HStack,
-  Link,
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
 import { useNavigate } from "react-router";
+import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
@@ -62,13 +62,15 @@ export function EttersendingView() {
           <BodyLong>
             Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal sendes
             inn og frist for å sende inn. Brev du har fått ligger i{" "}
-            <Link href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste">
-              dokumentlisten på Mine dagpenger
-            </Link>
+            <EksterneLenke
+              href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
+              tekst="dokumentlisten på Mine dagpenger"
+            />
             . Når du har dokumentene klare kan du{" "}
-            <Link href="https://www.nav.no/dagpenger/dialog/generell-innsending/">
-              sende dem inn her.
-            </Link>
+            <EksterneLenke
+              href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
+              tekst="sende dem inn her"
+            />{" "}
             Dette kan forlenge tiden det tar å behandle søknaden din.
           </BodyLong>
         </ReadMore>
@@ -142,7 +144,10 @@ export function EttersendingView() {
           valgfritt.
         </BodyLong>
 
-        <Link href={getEnv("GENERELL_INNSENDING_URL")}>Jeg vil sende inn andre dokumenter</Link>
+        <EksterneLenke
+          href={getEnv("GENERELL_INNSENDING_URL")}
+          tekst="Jeg vil sende inn andre dokumenter"
+        />
       </VStack>
     </div>
   );

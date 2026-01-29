@@ -7,13 +7,13 @@ import {
   Heading,
   HStack,
   InfoCard,
-  Link,
   LocalAlert,
   ReadMore,
   Tag,
   VStack,
 } from "@navikt/ds-react";
-import { Link as RouterLink, useLoaderData, useParams } from "react-router";
+import { Link, useLoaderData, useParams } from "react-router";
+import { EksterneLenke } from "~/components/EksterneLenke";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
 import DokumentasjonskravSomErSendtAvDeg from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
@@ -72,9 +72,10 @@ export default function KvitteringView() {
               Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
               du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når
               svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
-                saksbehandlingstiden
-              </Link>{" "}
+              <EksterneLenke
+                href="https://www.nav.no/saksbehandlingstider#dagpenger"
+                tekst="saksbehandlingstiden"
+              />{" "}
               for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
               Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
             </BodyLong>
@@ -82,9 +83,10 @@ export default function KvitteringView() {
           {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
             <BodyLong>
               Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
-              <Link href="https://www.nav.no/saksbehandlingstider#dagpenger">
-                saksbehandlingstiden
-              </Link>{" "}
+              <EksterneLenke
+                href="https://www.nav.no/saksbehandlingstider#dagpenger"
+                tekst="saksbehandlingstiden"
+              />{" "}
               for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
               Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
             </BodyLong>
@@ -111,9 +113,10 @@ export default function KvitteringView() {
                 <BodyLong>
                   Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden
                   din. Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
-                  <Link href="https://arbeidssokerregistrering.nav.no/" className={""}>
-                    Registrer deg som arbeidssøker
-                  </Link>
+                  <EksterneLenke
+                    href="https://arbeidssokerregistrering.nav.no/"
+                    tekst="Registrer deg som arbeidssøker"
+                  />
                   .
                 </BodyLong>
               </InfoCard.Content>
@@ -132,10 +135,10 @@ export default function KvitteringView() {
                 </BodyShort>
                 <BodyShort>
                   Hvis du er usikker på om du er registrert som arbeidssøker, må du{" "}
-                  <Link href="https://arbeidssokerregistrering.nav.no/">
-                    registrere deg som arbeidssøker
-                  </Link>
-                  .
+                  <EksterneLenke
+                    href="https://arbeidssokerregistrering.nav.no/"
+                    tekst="egistrere deg som arbeidssøker"
+                  />
                 </BodyShort>
               </LocalAlert.Content>
             </LocalAlert>
@@ -164,13 +167,15 @@ export default function KvitteringView() {
             <ReadMore header="Har du fått brev om manglende opplysninger?">
               Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal
               sendes inn og frist for å sende inn. Brev du har fått ligger i{" "}
-              <Link href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste">
-                dokumentlisten på Mine dagpenger
-              </Link>
+              <EksterneLenke
+                href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
+                tekst="dokumentlisten på Mine dagpenger"
+              />
               . Når du har dokumentene klare kan du{" "}
-              <Link href="https://www.nav.no/dagpenger/dialog/generell-innsending/">
-                sende dem inn her
-              </Link>
+              <EksterneLenke
+                href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
+                tekst="sende dem inn her"
+              />
               .
             </ReadMore>
           </VStack>
@@ -191,9 +196,9 @@ export default function KvitteringView() {
                 <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
               <HStack>
-                <RouterLink to={`/${soknadId}/ettersending`}>
+                <Link to={`/${soknadId}/ettersending`}>
                   <Button variant="primary">Send inn dokumenter</Button>
-                </RouterLink>
+                </Link>
               </HStack>
             </VStack>
           )}
