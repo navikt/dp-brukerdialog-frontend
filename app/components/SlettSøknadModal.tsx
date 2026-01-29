@@ -1,5 +1,5 @@
 import { TrashIcon } from "@navikt/aksel-icons";
-import { BodyLong, Box, Button, HStack, Link, Modal, VStack } from "@navikt/ds-react";
+import { BodyLong, Box, Button, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useRef } from "react";
 import { useNavigate } from "react-router";
 import { getEnv } from "~/utils/env.utils";
