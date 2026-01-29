@@ -46,7 +46,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
   } else {
     return {
-      error: "Noe gikk galt ved innsending av søknaden.",
+      error: "Noe gikk galt ved innsending av søknaden. Vennligst prøv på nytt.",
     };
   }
 }
