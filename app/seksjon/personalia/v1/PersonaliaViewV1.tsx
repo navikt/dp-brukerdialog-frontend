@@ -80,6 +80,7 @@ export function PersonaliaViewV1() {
   form.setValue(mellomnavnFraPdl, mellomnavn || "");
   form.setValue(etternavnFraPdl, etternavn || "");
   form.setValue(fødselsnummerFraPdl, ident || "");
+
   if (folkeregistrertAdresse) {
     form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
     form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
@@ -89,6 +90,7 @@ export function PersonaliaViewV1() {
     form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
     form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
   }
+
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
