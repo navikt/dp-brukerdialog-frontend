@@ -70,7 +70,7 @@ export function EttersendingView() {
             <EksterneLenke
               href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
               tekst="sende dem inn her"
-            />
+            />{" "}
             Dette kan forlenge tiden det tar å behandle søknaden din.
           </BodyLong>
         </ReadMore>

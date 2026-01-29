@@ -155,7 +155,7 @@ export function BarnetilleggViewV1() {
           />
         );
       })}
-      <VStack gap="8">
+      <VStack gap="6" className="mt-4">
         <VStack gap="space-16">
           {barnFraPdl?.map((barn: BarnFraPdl) => (
             <BarnFraPdlKomponent key={barn.id} barn={barn} />
@@ -211,7 +211,7 @@ export function BarnetilleggViewV1() {
           </Alert>
         )}
 
-        <VStack gap="4">
+        <VStack gap="4" className="mt-8">
           <SistOppdatert />
           <HStack gap="4">
             <Button
