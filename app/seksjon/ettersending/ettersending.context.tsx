@@ -87,10 +87,8 @@ function EttersendingProvider({
   }
 
   async function bundleOgLagreEttersendinger(): Promise<void> {
-    // setLagrer(true);
-    // setHarTekniskFeil(false);
-
-    console.log("start bundling og lagring");
+    setLagrer(true);
+    setHarTekniskFeil(false);
 
     const ettersendingerTilBundling = ettersending.filter(
       (ettersending) =>
@@ -151,8 +149,6 @@ function EttersendingProvider({
 
     for (const etEttersending of ettersendingTilLagring) {
       const { seksjonId, dokumentasjonskrav } = etEttersending;
-      console.log("Lagrer ettersending for seksjon:", seksjonId);
-      console.log("Dokumentasjonskrav:", dokumentasjonskrav);
       const lagringsResultat = await lagreDokumentasjonskravMedEttersending(
         seksjonId,
         dokumentasjonskrav
