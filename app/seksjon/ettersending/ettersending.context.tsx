@@ -20,13 +20,11 @@ type EttersendingContextType = {
   oppdaterEttersending: (ettersending: Dokumentasjonskrav) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
-  ettersendingManglerFiler: string[];
-  setEttersendingManglerFiler: (dokumentkravId: string[]) => void;
   validerEttersending: () => Promise<void>;
-  ettersendingHarEnValideringsfeil: string[];
-  setEttersendingHarEnValideringsfeil: (dokumentkravId: string[]) => void;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
+  valideringStartet: boolean;
+  setValideringStartet: (valideringStartet: boolean) => void;
 };
 
 type EttersendingProviderProps = {
@@ -61,11 +59,8 @@ function EttersendingProvider({
   const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
   const [ettersending, setEttersending] = useState(ettersendingProps);
   const [lagrer, setLagrer] = useState(false);
+  const [valideringStartet, setValideringStartet] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
-  const [ettersendingManglerFiler, setEttersendingManglerFiler] = useState<string[]>([]);
-  const [ettersendingHarEnValideringsfeil, setEttersendingHarEnValideringsfeil] = useState<
-    string[]
-  >([]);
 
   function oppdaterEttersending(ettersending: Dokumentasjonskrav) {
     setEttersending((current) =>
@@ -74,19 +69,16 @@ function EttersendingProvider({
   }
 
   async function validerEttersending(): Promise<void> {
-    const ettersendingUtenFil = ettersending
-      .filter((ettersending) => !ettersending.filer || ettersending.filer.length === 0)
-      .map((ettersending) => ettersending.id);
+    setValideringStartet(true);
 
-    setEttersendingManglerFiler(ettersendingUtenFil);
+    const klarForbundlingOgLagring = ettersending.some(
+      (ettersending) =>
+        ettersending.filer &&
+        ettersending.filer.length > 0 &&
+        !ettersending.filer.some((fil) => fil.feil)
+    );
 
-    const ettersendingMedFilFeil = ettersending
-      .filter((ettersending) => ettersending.filer?.some((fil) => fil.feil))
-      .map((ettersending) => ettersending.id);
-
-    setEttersendingHarEnValideringsfeil(ettersendingMedFilFeil);
-
-    if (ettersendingUtenFil.length > 0 || ettersendingMedFilFeil.length > 0) {
+    if (!klarForbundlingOgLagring) {
       return;
     }
 
@@ -97,10 +89,17 @@ function EttersendingProvider({
     setLagrer(true);
     setHarTekniskFeil(false);
 
+    const ettersendingerTilBundling = ettersending.filter(
+      (ettersending) =>
+        ettersending.filer &&
+        ettersending.filer.length > 0 &&
+        !ettersending.filer.some((fil) => fil.feil)
+    );
+
     const bundletEttersendinger: Dokumentasjonskrav[] = [];
     let bundlingFeilet = false;
 
-    for (const etEttersending of ettersending) {
+    for (const etEttersending of ettersendingerTilBundling) {
       const bundle = await bundleFilerForEttersending(etEttersending);
 
       if (bundle) {
@@ -233,15 +232,13 @@ function EttersendingProvider({
         oppdaterEttersending,
         lagrer,
         setLagrer,
-        ettersendingManglerFiler,
-        setEttersendingManglerFiler,
         validerEttersending,
         ettersending,
         setEttersending,
-        ettersendingHarEnValideringsfeil,
-        setEttersendingHarEnValideringsfeil,
         harTekniskFeil,
         setHarTekniskFeil,
+        valideringStartet,
+        setValideringStartet,
       }}
     >
       {children}
