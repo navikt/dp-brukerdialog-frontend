@@ -24,7 +24,8 @@ interface IProps {
 
 export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterEttersending, valideringStartet } = useEttersendingContext();
+  const { oppdaterEttersending, ettersendingManglerFiler, ettersendingHarEnValideringsfeil } =
+    useEttersendingContext();
 
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
   const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
@@ -198,11 +199,18 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
         </VStack>
       )}
 
-      {valideringStartet && antallFeil > 0 && (
+      {ettersendingHarEnValideringsfeil.includes(dokumentasjonskrav.id) && antallFeil > 0 && (
         <ErrorMessage className="mt-4">
           Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
         </ErrorMessage>
       )}
+
+      {ettersendingManglerFiler.includes(dokumentasjonskrav.id) &&
+        dokumentkravFiler.length === 0 && (
+          <ErrorMessage className="mt-4">
+            Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+          </ErrorMessage>
+        )}
     </Box.New>
   );
 }

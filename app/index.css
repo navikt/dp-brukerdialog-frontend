@@ -4,6 +4,16 @@
   --innhold-max-width: 576px;
 }
 
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
 #maincontent {
   max-width: var(--app-max-width);
   min-height: var(--app-min-height);
@@ -83,11 +93,6 @@
 .navds-expansioncard__header,
 .navds-expansioncard__content {
   border: 0;
-}
-
-/* Overskriver stilene til Aksel Base Alert-komponenten */
-.aksel-base-alert p {
-  margin: 0;
 }
 
 /* Overskriver stilene til ExpansionCard-komponenten */

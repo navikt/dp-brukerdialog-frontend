@@ -28,14 +28,8 @@ const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
 export function EttersendingView() {
   const navigate = useNavigate();
-  const {
-    ettersending,
-    lagrer,
-    validerEttersending,
-    harTekniskFeil,
-    dokumentasjonskrav,
-    valideringStartet,
-  } = useEttersendingContext();
+  const { ettersending, lagrer, validerEttersending, harTekniskFeil, dokumentasjonskrav } =
+    useEttersendingContext();
 
   const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
@@ -44,10 +38,6 @@ export function EttersendingView() {
   const dokumentasjonSomIkkeSkalSendes: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) =>
       krav.svar === dokumentkravSvarSenderIkke || krav.svar === dokumentkravSvarSendtTidligere
-  );
-
-  const minstEnEttersendingHarFil = ettersending.some(
-    (krav: Dokumentasjonskrav) => krav.filer && krav.filer.length > 0
   );
 
   return (
@@ -108,12 +98,6 @@ export function EttersendingView() {
         </ErrorMessage>
       )}
 
-      {valideringStartet && !minstEnEttersendingHarFil && (
-        <ErrorMessage className="mt-4">
-          Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-        </ErrorMessage>
-      )}
-
       <HStack gap="4" className="mt-14">
         <Button type="button" loading={lagrer} onClick={() => validerEttersending()}>
           Send inn dokumenter
@@ -131,7 +115,7 @@ export function EttersendingView() {
         </Button>
       </HStack>
 
-      <VStack className="mt-8" gap="4">
+      <VStack className="mt-14" gap="4">
         {dokumentasjonSomErSendtAvDeg.length > 0 && (
           <VStack gap="4">
             <Heading size="small">Dokumenter du har sendt inn</Heading>
