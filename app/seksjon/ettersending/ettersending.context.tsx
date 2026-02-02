@@ -6,7 +6,6 @@ import {
   GyldigDokumentkravSvar,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
-import { set } from "date-fns";
 
 interface EttersendingTilLagring {
   seksjonId: string;
