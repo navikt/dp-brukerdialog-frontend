@@ -59,7 +59,7 @@ export default function OpprettSoknadRoute() {
         </Heading>
       </div>
 
-      <div className="innhold info-side">
+      <div className="innhold">
         {innhold?.body && (
           <PortableText value={innhold.body} components={{ types: { readMore: SanityReadMore } }} />
         )}
