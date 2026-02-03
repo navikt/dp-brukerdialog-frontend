@@ -31,7 +31,7 @@ export function EttersendingView() {
   const {
     ettersendingene,
     lagrer,
-    validerOgLagreEttersendingene,
+    validerOgLagre,
     harTekniskFeil,
     dokumentasjonskravene,
     valideringStartet,
@@ -112,7 +112,7 @@ export function EttersendingView() {
         </VStack>
 
         <HStack gap="4">
-          <Button type="button" loading={lagrer} onClick={() => validerOgLagreEttersendingene()}>
+          <Button type="button" loading={lagrer} onClick={() => validerOgLagre()}>
             Send inn dokumenter
           </Button>
           <Button

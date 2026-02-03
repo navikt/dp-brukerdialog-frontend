@@ -14,7 +14,7 @@ import {
   lagreEttersending,
 } from "./ettersending.utils";
 
-type EttersendingContext = {
+type EttersendingContextType = {
   dokumentasjonskravene: Dokumentasjonskrav[];
   setDokumentasjonskravene: (dokumentasjonskravene: Dokumentasjonskrav[]) => void;
   ettersendingene: Dokumentasjonskrav[];
@@ -22,7 +22,7 @@ type EttersendingContext = {
   oppdaterEttersending: (ettersending: Dokumentasjonskrav) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
-  validerOgLagreEttersendingene: () => Promise<void>;
+  validerOgLagre: () => Promise<void>;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringStartet: boolean;
@@ -36,7 +36,7 @@ type EttersendingProviderProps = {
   children: React.ReactNode;
 };
 
-const EttersendingContext = createContext<EttersendingContext | undefined>(undefined);
+const EttersendingContext = createContext<EttersendingContextType | undefined>(undefined);
 
 function useEttersending() {
   const context = useContext(EttersendingContext);
@@ -67,13 +67,13 @@ function EttersendingProvider({
 
   function oppdaterEttersending(ettersending: Dokumentasjonskrav) {
     setEttersendingene((current) =>
-      current.map((opprinneligEttersending) =>
-        opprinneligEttersending.id === ettersending.id ? ettersending : opprinneligEttersending
+      current.map((eksisterendeEttersending) =>
+        eksisterendeEttersending.id === ettersending.id ? ettersending : eksisterendeEttersending
       )
     );
   }
 
-  async function validerOgLagreEttersendingene(): Promise<void> {
+  async function validerOgLagre(): Promise<void> {
     setValideringStartet(true);
 
     const klarForBundlingOgLagring = harMinstEnFilOgIngenFeil(ettersendingene);
@@ -144,7 +144,7 @@ function EttersendingProvider({
         oppdaterEttersending,
         lagrer,
         setLagrer,
-        validerOgLagreEttersendingene,
+        validerOgLagre,
         ettersendingene,
         setEttersendingene,
         harTekniskFeil,
