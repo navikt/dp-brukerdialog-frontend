@@ -12,7 +12,8 @@ import {
   Tag,
   VStack,
 } from "@navikt/ds-react";
-import { Link, useLoaderData, useParams } from "react-router";
+import { useEffect } from "react";
+import { Link, useLoaderData, useParams, useSearchParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
@@ -32,10 +33,17 @@ import DokumentasjonSomSkalSendesAvDeg from "./DokumentasjonSomSkalSendesAvDeg";
 
 export default function KvitteringView() {
   const { soknadId } = useParams();
+  const [searchParams] = useSearchParams();
   const seksjonnavn = "Søknad mottatt";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
+
+  useEffect(() => {
+    if (searchParams.get("reload") === "true") {
+      window.location.replace(`/${soknadId}/kvittering`);
+    }
+  }, [searchParams, soknadId]);
 
   const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) =>

@@ -133,7 +133,7 @@ function EttersendingProvider({
     }
 
     setLagrer(false);
-    navigate(`../kvittering`);
+    navigate(`../kvittering?reload=true`);
   }
 
   return (
