@@ -76,18 +76,20 @@ function EttersendingProvider({
   async function validerOgLagreEttersendingene(): Promise<void> {
     setValideringStartet(true);
 
-    if (!harMinstEnFilOgIngenFeil(ettersendingene)) {
+    const klarForBundlingOgLagring = harMinstEnFilOgIngenFeil(ettersendingene);
+    const ettersendingeneTilBundling = hentGyldigeEttersendingeneTilBundling(ettersendingene);
+
+    if (!klarForBundlingOgLagring || ettersendingeneTilBundling.length === 0) {
       return;
     }
 
-    await bundleFilerOgLagre();
+    await bundleOgLagre(ettersendingeneTilBundling);
   }
 
-  async function bundleFilerOgLagre(): Promise<void> {
+  async function bundleOgLagre(ettersendingeneTilBundling: Dokumentasjonskrav[]): Promise<void> {
     setLagrer(true);
     setHarTekniskFeil(false);
 
-    const ettersendingeneTilBundling = hentGyldigeEttersendingeneTilBundling(ettersendingene);
     const ettersendingeneFerdigBundlet: Dokumentasjonskrav[] = [];
 
     for (const ettersending of ettersendingeneTilBundling) {
@@ -121,7 +123,6 @@ function EttersendingProvider({
 
     for (const seksjon of oppdaterteDokumentasjonskravSeksjoner) {
       const { seksjonId, dokumentasjonskravene } = seksjon;
-
       const lagringOk = await lagreEttersending(søknadId, seksjonId, dokumentasjonskravene);
 
       if (!lagringOk) {
