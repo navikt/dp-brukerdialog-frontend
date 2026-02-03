@@ -1,40 +1,42 @@
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { hentDokumentasjonskrav as hentDokumentasjonskraver } from "~/models/hent-dokumentasjonskrav.server";
+import { hentDokumentasjonskrav as hentDokumentasjonskravene } from "~/models/hent-dokumentasjonskrav.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { dokumentkravSvarSenderSenere } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
-import { EttersendingerProvider } from "~/seksjon/ettersending/ettersending.context";
+import { EttersendingProvider } from "~/seksjon/ettersending/ettersending.context";
 import { EttersendingView } from "~/seksjon/ettersending/EttersendingView";
 
 export type Ettersending = {
   søknadId: string;
-  dokumentasjonskraver: Dokumentasjonskrav[];
-  ettersendinger: Dokumentasjonskrav[];
+  dokumentasjonskravene: Dokumentasjonskrav[];
+  ettersendingene: Dokumentasjonskrav[];
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs<Ettersending>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentDokumentasjonskraver(request, params.soknadId);
+  const response = await hentDokumentasjonskravene(request, params.soknadId);
 
   if (!response.ok) {
-    return { søknadId: params.soknadId, dokumentasjonskraver: [], ettersendinger: [] };
+    return { søknadId: params.soknadId, dokumentasjonskravene: [], ettersendingene: [] };
   }
 
-  const dokumentasjonskravJson = await response.json();
-  const dokumentasjonskraver = dokumentasjonskravJson.flatMap((krav: string) => JSON.parse(krav));
-  const ettersendinger = dokumentasjonskraver.filter(
+  const dokumentasjonskraveneJson = await response.json();
+  const dokumentasjonskravene = dokumentasjonskraveneJson.flatMap((krav: string) =>
+    JSON.parse(krav)
+  );
+  const ettersendingene = dokumentasjonskravene.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
-  if (ettersendinger.length === 0) {
+  if (ettersendingene.length === 0) {
     return redirect(`/soknad/${params.soknadId}/kvittering`);
   }
 
   return {
     søknadId: params.soknadId,
-    dokumentasjonskraver: dokumentasjonskraver || [],
-    ettersendinger: ettersendinger || [],
+    dokumentasjonskravene: dokumentasjonskravene || [],
+    ettersendingene: ettersendingene || [],
   };
 }
 
@@ -42,12 +44,12 @@ export default function EttersendingRoute() {
   const loaderData = useLoaderData<typeof loader>();
 
   return (
-    <EttersendingerProvider
-      dokumentasjonskraver={loaderData.dokumentasjonskraver}
-      ettersendinger={loaderData.ettersendinger}
+    <EttersendingProvider
+      dokumentasjonskravene={loaderData.dokumentasjonskravene}
+      ettersendingene={loaderData.ettersendingene}
       søknadId={loaderData.søknadId}
     >
       <EttersendingView />
-    </EttersendingerProvider>
+    </EttersendingProvider>
   );
 }

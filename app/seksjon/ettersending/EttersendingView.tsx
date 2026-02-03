@@ -21,7 +21,7 @@ import {
 } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 import DokumentasjonskravSomErSendtAvDeg from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import DokumentasjonSomIkkeSkalSendes from "../kvittering/DokumentasjonSomIkkeSkalSendes";
-import { useEttersendinger } from "./ettersending.context";
+import { useEttersending } from "./ettersending.context";
 
 const seksjonnavn = "Ettersending";
 const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
@@ -29,24 +29,24 @@ const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 export function EttersendingView() {
   const navigate = useNavigate();
   const {
-    ettersendinger,
+    ettersendingene,
     lagrer,
-    validerOgLagreEttersendinger,
+    validerOgLagreEttersendingene,
     harTekniskFeil,
-    dokumentasjonskraver,
+    dokumentasjonskravene,
     valideringStartet,
-  } = useEttersendinger();
+  } = useEttersending();
 
-  const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskraver.filter(
+  const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskravene.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
   );
 
-  const dokumentasjonSomIkkeSkalSendes: Dokumentasjonskrav[] = dokumentasjonskraver.filter(
+  const dokumentasjonSomIkkeSkalSendes: Dokumentasjonskrav[] = dokumentasjonskravene.filter(
     (krav: Dokumentasjonskrav) =>
       krav.svar === dokumentkravSvarSenderIkke || krav.svar === dokumentkravSvarSendtTidligere
   );
 
-  const minstEnEttersendingHarMinstEnFil = ettersendinger.some(
+  const minstEnEttersendingHarMinstEnFil = ettersendingene.some(
     (krav: Dokumentasjonskrav) => krav.filer && krav.filer.length > 0
   );
 
@@ -86,7 +86,7 @@ export function EttersendingView() {
             </BodyLong>
           </ReadMore>
 
-          {ettersendinger.map((dokumentasjonskrav: Dokumentasjonskrav) => (
+          {ettersendingene.map((dokumentasjonskrav: Dokumentasjonskrav) => (
             <Box.New
               key={dokumentasjonskrav.id}
               padding="space-16"
@@ -112,7 +112,7 @@ export function EttersendingView() {
         </VStack>
 
         <HStack gap="4">
-          <Button type="button" loading={lagrer} onClick={() => validerOgLagreEttersendinger()}>
+          <Button type="button" loading={lagrer} onClick={() => validerOgLagreEttersendingene()}>
             Send inn dokumenter
           </Button>
           <Button

@@ -6,7 +6,7 @@ import {
   DokumentkravFil,
   FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { useEttersendinger } from "~/seksjon/ettersending/ettersending.context";
+import { useEttersending } from "~/seksjon/ettersending/ettersending.context";
 import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,
@@ -24,7 +24,7 @@ interface IProps {
 
 export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterEttersending, valideringStartet } = useEttersendinger();
+  const { oppdaterEttersending, valideringStartet } = useEttersending();
 
   const dokumentkravFiler = dokumentasjonskrav.filer || [];
   const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;

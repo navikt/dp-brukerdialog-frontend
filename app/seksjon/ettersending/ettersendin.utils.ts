@@ -36,25 +36,25 @@ export function kombinerDokumentasjonskravMedEttersendinger(
 
 export function grupperDokumentasjonskravPerSeksjon(
   ettersendingerFerdigBundlet: Dokumentasjonskrav[],
-  oppdaterteDokumentasjonskrav: Dokumentasjonskrav[]
+  oppdaterteDokumentasjonskravene: Dokumentasjonskrav[]
 ): EttersendingTilLagring[] {
-  const ettersendingTilLagring: EttersendingTilLagring[] = [];
+  const ettersendingeneTilLagring: EttersendingTilLagring[] = [];
   const seksjonIds: string[] = [];
 
   for (const ettersending of ettersendingerFerdigBundlet) {
     if (!seksjonIds.includes(ettersending.seksjonId)) {
       seksjonIds.push(ettersending.seksjonId);
 
-      ettersendingTilLagring.push({
+      ettersendingeneTilLagring.push({
         seksjonId: ettersending.seksjonId,
-        dokumentasjonskraver: oppdaterteDokumentasjonskrav.filter(
+        dokumentasjonskravene: oppdaterteDokumentasjonskravene.filter(
           (dokumentasjonskrav) => dokumentasjonskrav.seksjonId === ettersending.seksjonId
         ),
       });
     }
   }
 
-  return ettersendingTilLagring;
+  return ettersendingeneTilLagring;
 }
 
 export async function bundleFiler(

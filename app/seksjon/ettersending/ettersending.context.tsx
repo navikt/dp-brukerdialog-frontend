@@ -7,27 +7,27 @@ import {
 import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 import {
   bundleFiler,
-  grupperDokumentasjonskravPerSeksjon,
+  grupperDokumentasjonskravPerSeksjon as byggKompletteDokumentasjonskravPerSeksjonForLagring,
   harMinstEnGyldigEttersending,
   hentGyldigeEttersendinger,
-  kombinerDokumentasjonskravMedEttersendinger,
+  kombinerDokumentasjonskravMedEttersendinger as kombinerDokumentasjonskravMedFerdigBundletEttersendingene,
   lagreEttersending,
-} from "./ettersendinger.utils";
+} from "./ettersendin.utils";
 
 export interface EttersendingTilLagring {
   seksjonId: string;
-  dokumentasjonskraver: Dokumentasjonskrav[];
+  dokumentasjonskravene: Dokumentasjonskrav[];
 }
 
-type EttersendingContextType = {
-  dokumentasjonskraver: Dokumentasjonskrav[];
-  setDokumentasjonskraver: (dokumentasjonskraver: Dokumentasjonskrav[]) => void;
-  ettersendinger: Dokumentasjonskrav[];
-  setEttersendinger: (ettersendinger: Dokumentasjonskrav[]) => void;
+type EttersendingContext = {
+  dokumentasjonskravene: Dokumentasjonskrav[];
+  setDokumentasjonskravene: (dokumentasjonskravene: Dokumentasjonskrav[]) => void;
+  ettersendingene: Dokumentasjonskrav[];
+  setEttersendingene: (ettersendingene: Dokumentasjonskrav[]) => void;
   oppdaterEttersending: (ettersending: Dokumentasjonskrav) => void;
   lagrer: boolean;
   setLagrer: (lagrer: boolean) => void;
-  validerOgLagreEttersendinger: () => Promise<void>;
+  validerOgLagreEttersendingene: () => Promise<void>;
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringStartet: boolean;
@@ -36,19 +36,19 @@ type EttersendingContextType = {
 
 type EttersendingProviderProps = {
   søknadId: string;
-  dokumentasjonskraver: Dokumentasjonskrav[];
-  ettersendinger: Dokumentasjonskrav[];
+  dokumentasjonskravene: Dokumentasjonskrav[];
+  ettersendingene: Dokumentasjonskrav[];
   children: React.ReactNode;
 };
 
-const EttersendingContext = createContext<EttersendingContextType | undefined>(undefined);
+const EttersendingContext = createContext<EttersendingContext | undefined>(undefined);
 
-function useEttersendinger() {
+function useEttersending() {
   const context = useContext(EttersendingContext);
 
   if (!context) {
     const feilmelding =
-      "useEttersendinger må brukes innenfor en EttersendingerProvider. Sjekk om <EttersendingView> ligger inni <EttersendingerProvider>.";
+      "useEttersending må brukes innenfor en EttersendingProvider. Sjekk om <EttersendingView> ligger inni <EttersendingProvider>.";
 
     console.error(feilmelding);
     throw new Error(feilmelding);
@@ -57,29 +57,31 @@ function useEttersendinger() {
   return context;
 }
 
-function EttersendingerProvider({
+function EttersendingProvider({
   søknadId,
-  dokumentasjonskraver: dokumentasjonskraverProps,
-  ettersendinger: ettersendingerProps,
+  dokumentasjonskravene: dokumentasjonskraveneProps,
+  ettersendingene: ettersendingeneProps,
   children,
 }: EttersendingProviderProps) {
   const navigate = useNavigate();
-  const [dokumentasjonskraver, setDokumentasjonskraver] = useState(dokumentasjonskraverProps);
-  const [ettersendinger, setEttersendinger] = useState(ettersendingerProps);
+  const [dokumentasjonskravene, setDokumentasjonskravene] = useState(dokumentasjonskraveneProps);
+  const [ettersendingene, setEttersendingene] = useState(ettersendingeneProps);
   const [lagrer, setLagrer] = useState(false);
   const [valideringStartet, setValideringStartet] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
 
   function oppdaterEttersending(ettersending: Dokumentasjonskrav) {
-    setEttersendinger((current) =>
-      current.map((krav) => (krav.id === ettersending.id ? ettersending : krav))
+    setEttersendingene((current) =>
+      current.map((opprinneligEttersending) =>
+        opprinneligEttersending.id === ettersending.id ? ettersending : opprinneligEttersending
+      )
     );
   }
 
-  async function validerOgLagreEttersendinger(): Promise<void> {
+  async function validerOgLagreEttersendingene(): Promise<void> {
     setValideringStartet(true);
 
-    if (!harMinstEnGyldigEttersending(ettersendinger)) {
+    if (!harMinstEnGyldigEttersending(ettersendingene)) {
       return;
     }
 
@@ -90,10 +92,10 @@ function EttersendingerProvider({
     setLagrer(true);
     setHarTekniskFeil(false);
 
-    const ettersendingerTilBundling = hentGyldigeEttersendinger(ettersendinger);
-    const ettersendingerFerdigBundlet: Dokumentasjonskrav[] = [];
+    const ettersendingeneTilBundling = hentGyldigeEttersendinger(ettersendingene);
+    const ettersendingeneFerdigBundlet: Dokumentasjonskrav[] = [];
 
-    for (const ettersending of ettersendingerTilBundling) {
+    for (const ettersending of ettersendingeneTilBundling) {
       const bundle = await bundleFiler(ettersending, søknadId);
 
       if (bundle) {
@@ -104,7 +106,7 @@ function EttersendingerProvider({
           begrunnelse: undefined,
         };
 
-        ettersendingerFerdigBundlet.push(oppdatertDokumentasjonskrav);
+        ettersendingeneFerdigBundlet.push(oppdatertDokumentasjonskrav);
       } else {
         setLagrer(false);
         setHarTekniskFeil(true);
@@ -112,20 +114,20 @@ function EttersendingerProvider({
       }
     }
 
-    const oppdaterteDokumentasjonskrav = kombinerDokumentasjonskravMedEttersendinger(
-      dokumentasjonskraver,
-      ettersendingerFerdigBundlet
+    const kombinerteDokumentasjonskrav = kombinerDokumentasjonskravMedFerdigBundletEttersendingene(
+      dokumentasjonskravene,
+      ettersendingeneFerdigBundlet
     );
 
-    const ettersendingerTilLagring = grupperDokumentasjonskravPerSeksjon(
-      ettersendingerFerdigBundlet,
-      oppdaterteDokumentasjonskrav
+    const kompletteSeksjonerForLagring = byggKompletteDokumentasjonskravPerSeksjonForLagring(
+      ettersendingeneFerdigBundlet,
+      kombinerteDokumentasjonskrav
     );
 
-    for (const ettersending of ettersendingerTilLagring) {
-      const { seksjonId, dokumentasjonskraver: dokumentasjonskrav } = ettersending;
+    for (const seksjon of kompletteSeksjonerForLagring) {
+      const { seksjonId, dokumentasjonskravene } = seksjon;
 
-      const lagringOk = await lagreEttersending(søknadId, seksjonId, dokumentasjonskrav);
+      const lagringOk = await lagreEttersending(søknadId, seksjonId, dokumentasjonskravene);
 
       if (!lagringOk) {
         setLagrer(false);
@@ -141,14 +143,14 @@ function EttersendingerProvider({
   return (
     <EttersendingContext.Provider
       value={{
-        dokumentasjonskraver,
-        setDokumentasjonskraver,
+        dokumentasjonskravene,
+        setDokumentasjonskravene,
         oppdaterEttersending,
         lagrer,
         setLagrer,
-        validerOgLagreEttersendinger,
-        ettersendinger,
-        setEttersendinger,
+        validerOgLagreEttersendingene,
+        ettersendingene,
+        setEttersendingene,
         harTekniskFeil,
         setHarTekniskFeil,
         valideringStartet,
@@ -160,4 +162,4 @@ function EttersendingerProvider({
   );
 }
 
-export { EttersendingerProvider, useEttersendinger };
+export { EttersendingProvider, useEttersending };
