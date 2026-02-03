@@ -9,7 +9,7 @@ import {
   bundleFiler,
   hentOppdaterteDokumentasjonskravSeksjoner,
   harMinstEnFilOgIngenFeil,
-  hentGyldigeEttersendingene,
+  hentGyldigeEttersendingeneTilBundling,
   hentOppdaterteDokumentasjonskravene,
   lagreEttersending,
 } from "./ettersending.utils";
@@ -87,7 +87,7 @@ function EttersendingProvider({
     setLagrer(true);
     setHarTekniskFeil(false);
 
-    const ettersendingeneTilBundling = hentGyldigeEttersendingene(ettersendingene);
+    const ettersendingeneTilBundling = hentGyldigeEttersendingeneTilBundling(ettersendingene);
     const ettersendingeneFerdigBundlet: Dokumentasjonskrav[] = [];
 
     for (const ettersending of ettersendingeneTilBundling) {

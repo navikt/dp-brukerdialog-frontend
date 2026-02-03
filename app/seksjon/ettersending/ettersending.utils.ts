@@ -1,23 +1,18 @@
 import { Bundle, Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 
 export function harMinstEnFilOgIngenFeil(ettersendingene: Dokumentasjonskrav[]): boolean {
-  const harFilerMedFeil = ettersendingene.some(
-    (ettersending) =>
-      ettersending.filer &&
-      ettersending.filer.length > 0 &&
-      ettersending.filer.some((fil) => fil.feil)
-  );
-
-  if (harFilerMedFeil) {
-    return false;
-  }
-
-  return ettersendingene.some(
+  const harMinstEnFil = ettersendingene.some(
     (ettersending) => ettersending.filer && ettersending.filer.length > 0
   );
+
+  const harEnFeil = ettersendingene.some((ettersending) =>
+    ettersending.filer?.some((fil) => fil.feil)
+  );
+
+  return harMinstEnFil && !harEnFeil;
 }
 
-export function hentGyldigeEttersendingene(
+export function hentGyldigeEttersendingeneTilBundling(
   ettersendingene: Dokumentasjonskrav[]
 ): Dokumentasjonskrav[] {
   return ettersendingene.filter(

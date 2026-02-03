@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { harMinstEnFilOgIngenFeil, hentGyldigeEttersendingene } from "./ettersending.utils";
+import {
+  harMinstEnFilOgIngenFeil,
+  hentGyldigeEttersendingeneTilBundling,
+} from "./ettersending.utils";
 import {
   Dokumentasjonskrav,
   DokumentkravFil,
@@ -7,7 +10,7 @@ import {
   FilOpplastingFeilType,
 } from "../dokumentasjon/dokumentasjon.types";
 
-describe("hentGyldigeEttersendingene", () => {
+describe("hentGyldigeEttersendingeneTilBundling", () => {
   const mockDokumentasjonskrav = (
     id: string,
     filer?: DokumentkravFil[] | null
@@ -33,7 +36,7 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("2", [mockFil("fil-2")]),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(2);
     expect(resultat[0].id).toBe("1");
@@ -48,7 +51,7 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("4", []),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(1);
     expect(resultat[0].id).toBe("1");
@@ -60,7 +63,7 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("2", []),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(1);
     expect(resultat[0].id).toBe("1");
@@ -76,7 +79,7 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("3", [mockFil("fil-4", FilOpplastingFeilType.TEKNISK_FEIL)]),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(1);
     expect(resultat[0].id).toBe("1");
@@ -92,7 +95,7 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("6", [mockFil("fil-6")]),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(1);
     expect(resultat[0].id).toBe("6");
@@ -105,13 +108,13 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("3", [mockFil("fil-3", FilOpplastingFeilType.TEKNISK_FEIL)]),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(0);
   });
 
   it("skal returnere tom array når input er tom array", () => {
-    const resultat = hentGyldigeEttersendingene([]);
+    const resultat = hentGyldigeEttersendingeneTilBundling([]);
 
     expect(resultat).toHaveLength(0);
   });
@@ -121,7 +124,7 @@ describe("hentGyldigeEttersendingene", () => {
       mockDokumentasjonskrav("1", [mockFil("fil-1"), mockFil("fil-2"), mockFil("fil-3")]),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(1);
     expect(resultat[0].filer).toHaveLength(3);
@@ -137,7 +140,7 @@ describe("hentGyldigeEttersendingene", () => {
       ]),
     ];
 
-    const resultat = hentGyldigeEttersendingene(ettersendingene);
+    const resultat = hentGyldigeEttersendingeneTilBundling(ettersendingene);
 
     expect(resultat).toHaveLength(0);
   });
