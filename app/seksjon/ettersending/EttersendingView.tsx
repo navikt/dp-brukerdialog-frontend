@@ -46,7 +46,7 @@ export function EttersendingView() {
       krav.svar === dokumentkravSvarSenderIkke || krav.svar === dokumentkravSvarSendtTidligere
   );
 
-  const minstEnEttersendingHarMinstEnFil = ettersendingene.some(
+  const harLastetOppFil = ettersendingene.some(
     (krav: Dokumentasjonskrav) => krav.filer && krav.filer.length > 0
   );
 
@@ -86,14 +86,14 @@ export function EttersendingView() {
             </BodyLong>
           </ReadMore>
 
-          {ettersendingene.map((dokumentasjonskrav: Dokumentasjonskrav) => (
+          {ettersendingene.map((ettersending: Dokumentasjonskrav) => (
             <Box.New
-              key={dokumentasjonskrav.id}
+              key={ettersending.id}
               padding="space-16"
               background="sunken"
               borderRadius="large"
             >
-              <EttersendingFilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
+              <EttersendingFilOpplasting ettersending={ettersending} />
             </Box.New>
           ))}
 
@@ -104,7 +104,7 @@ export function EttersendingView() {
             </ErrorMessage>
           )}
 
-          {valideringStartet && !minstEnEttersendingHarMinstEnFil && (
+          {valideringStartet && !harLastetOppFil && (
             <ErrorMessage>
               Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
             </ErrorMessage>
