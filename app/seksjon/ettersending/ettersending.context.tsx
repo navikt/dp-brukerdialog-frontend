@@ -7,17 +7,12 @@ import {
 import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
 import {
   bundleFiler,
-  grupperDokumentasjonskravPerSeksjon as byggKompletteDokumentasjonskravPerSeksjonForLagring,
+  hentOppdaterteDokumentasjonskravSeksjoner,
   harMinstEnGyldigEttersending,
-  hentGyldigeEttersendinger,
-  kombinerDokumentasjonskravMedEttersendinger as kombinerDokumentasjonskravMedFerdigBundletEttersendingene,
+  hentGyldigeEttersendingene,
+  hentOppdaterteDokumentasjonskravene,
   lagreEttersending,
 } from "./ettersendin.utils";
-
-export interface EttersendingTilLagring {
-  seksjonId: string;
-  dokumentasjonskravene: Dokumentasjonskrav[];
-}
 
 type EttersendingContext = {
   dokumentasjonskravene: Dokumentasjonskrav[];
@@ -92,7 +87,7 @@ function EttersendingProvider({
     setLagrer(true);
     setHarTekniskFeil(false);
 
-    const ettersendingeneTilBundling = hentGyldigeEttersendinger(ettersendingene);
+    const ettersendingeneTilBundling = hentGyldigeEttersendingene(ettersendingene);
     const ettersendingeneFerdigBundlet: Dokumentasjonskrav[] = [];
 
     for (const ettersending of ettersendingeneTilBundling) {
@@ -114,17 +109,17 @@ function EttersendingProvider({
       }
     }
 
-    const kombinerteDokumentasjonskrav = kombinerDokumentasjonskravMedFerdigBundletEttersendingene(
+    const oppdaterteDokumentasjonskravene = hentOppdaterteDokumentasjonskravene(
       dokumentasjonskravene,
       ettersendingeneFerdigBundlet
     );
 
-    const kompletteSeksjonerForLagring = byggKompletteDokumentasjonskravPerSeksjonForLagring(
+    const oppdaterteDokumentasjonskravSeksjoner = hentOppdaterteDokumentasjonskravSeksjoner(
       ettersendingeneFerdigBundlet,
-      kombinerteDokumentasjonskrav
+      oppdaterteDokumentasjonskravene
     );
 
-    for (const seksjon of kompletteSeksjonerForLagring) {
+    for (const seksjon of oppdaterteDokumentasjonskravSeksjoner) {
       const { seksjonId, dokumentasjonskravene } = seksjon;
 
       const lagringOk = await lagreEttersending(søknadId, seksjonId, dokumentasjonskravene);

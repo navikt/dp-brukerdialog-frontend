@@ -1,10 +1,9 @@
 import { Bundle, Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
-import { EttersendingTilLagring } from "./ettersending.context";
 
-export function hentGyldigeEttersendinger(
-  ettersendinger: Dokumentasjonskrav[]
+export function hentGyldigeEttersendingene(
+  ettersendingene: Dokumentasjonskrav[]
 ): Dokumentasjonskrav[] {
-  return ettersendinger.filter(
+  return ettersendingene.filter(
     (ettersending) =>
       ettersending.filer &&
       ettersending.filer.length > 0 &&
@@ -12,8 +11,8 @@ export function hentGyldigeEttersendinger(
   );
 }
 
-export function harMinstEnGyldigEttersending(ettersendinger: Dokumentasjonskrav[]): boolean {
-  return ettersendinger.some(
+export function harMinstEnGyldigEttersending(ettersendingene: Dokumentasjonskrav[]): boolean {
+  return ettersendingene.some(
     (ettersending) =>
       ettersending.filer &&
       ettersending.filer.length > 0 &&
@@ -21,12 +20,12 @@ export function harMinstEnGyldigEttersending(ettersendinger: Dokumentasjonskrav[
   );
 }
 
-export function kombinerDokumentasjonskravMedEttersendinger(
-  dokumentasjonskraver: Dokumentasjonskrav[],
-  bundletEttersendinger: Dokumentasjonskrav[]
+export function hentOppdaterteDokumentasjonskravene(
+  dokumentasjonskravene: Dokumentasjonskrav[],
+  ettersendingeneFerdigBundlet: Dokumentasjonskrav[]
 ): Dokumentasjonskrav[] {
-  return dokumentasjonskraver.map((dokumentkrav) => {
-    const oppdatertDokumentasjonskrav = bundletEttersendinger.find(
+  return dokumentasjonskravene.map((dokumentkrav) => {
+    const oppdatertDokumentasjonskrav = ettersendingeneFerdigBundlet.find(
       (ettersending) => ettersending.id === dokumentkrav.id
     );
 
@@ -34,14 +33,19 @@ export function kombinerDokumentasjonskravMedEttersendinger(
   });
 }
 
-export function grupperDokumentasjonskravPerSeksjon(
-  ettersendingerFerdigBundlet: Dokumentasjonskrav[],
+type OppdaterteSeksjon = {
+  seksjonId: string;
+  dokumentasjonskravene: Dokumentasjonskrav[];
+};
+
+export function hentOppdaterteDokumentasjonskravSeksjoner(
+  ettersendingeneFerdigBundlet: Dokumentasjonskrav[],
   oppdaterteDokumentasjonskravene: Dokumentasjonskrav[]
-): EttersendingTilLagring[] {
-  const ettersendingeneTilLagring: EttersendingTilLagring[] = [];
+): OppdaterteSeksjon[] {
+  const ettersendingeneTilLagring: OppdaterteSeksjon[] = [];
   const seksjonIds: string[] = [];
 
-  for (const ettersending of ettersendingerFerdigBundlet) {
+  for (const ettersending of ettersendingeneFerdigBundlet) {
     if (!seksjonIds.includes(ettersending.seksjonId)) {
       seksjonIds.push(ettersending.seksjonId);
 
