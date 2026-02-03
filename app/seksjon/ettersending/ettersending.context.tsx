@@ -8,11 +8,11 @@ import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komp
 import {
   bundleFiler,
   hentOppdaterteDokumentasjonskravSeksjoner,
-  harMinstEnGyldigEttersending,
+  harMinstEnFilOgIngenFeil,
   hentGyldigeEttersendingene,
   hentOppdaterteDokumentasjonskravene,
   lagreEttersending,
-} from "./ettersendin.utils";
+} from "./ettersending.utils";
 
 type EttersendingContext = {
   dokumentasjonskravene: Dokumentasjonskrav[];
@@ -76,7 +76,7 @@ function EttersendingProvider({
   async function validerOgLagreEttersendingene(): Promise<void> {
     setValideringStartet(true);
 
-    if (!harMinstEnGyldigEttersending(ettersendingene)) {
+    if (!harMinstEnFilOgIngenFeil(ettersendingene)) {
       return;
     }
 
