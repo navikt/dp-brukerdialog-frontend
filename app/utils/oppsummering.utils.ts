@@ -1,5 +1,7 @@
 import { KomponentType } from "~/components/Komponent.types";
 
 export function erInformasjonsFelt(spørsmål: KomponentType) {
-  return ["varselmelding, lesMer", "dokumentasjonskravindikator"].includes(spørsmål.type);
+  return ["informasjonskort", "lesMer", "dokumentasjonskravindikator", "forklarendeTekst"].includes(
+    spørsmål.type
+  );
 }

@@ -18,11 +18,24 @@ export function valider(
     return;
   }
 
-  if (!svar && !komponent.optional) {
+  if ((!svar || svar.length === 0) && !komponent.optional) {
     context.addIssue({
       path: [komponent.id],
       code: "custom",
       message: "Du må svare på dette spørsmålet",
+    });
+  }
+
+  if (
+    svar &&
+    (komponent.type === "langTekst" || komponent.type === "kortTekst") &&
+    komponent.maksLengde &&
+    svar.length > komponent.maksLengde
+  ) {
+    context.addIssue({
+      path: [komponent.id],
+      code: "custom",
+      message: `Svaret kan ikke være lengre enn ${komponent.maksLengde} tegn`,
     });
   }
 
@@ -39,7 +52,15 @@ export function valider(
       context.addIssue({
         path: [komponent.id],
         code: "custom",
-        message: "Tallet kan ikke være negativt",
+        message: "Svaret kan ikke være et negativt tall",
+      });
+    }
+
+    if (komponent.maksVerdi && ((svar as string).replace(",", ".") as unknown as number) > komponent.maksVerdi) {
+      context.addIssue({
+        path: [komponent.id],
+        code: "custom",
+        message: `Svaret kan ikke være høyere enn ${komponent.maksVerdi}`,
       });
     }
   }

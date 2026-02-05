@@ -2,10 +2,10 @@ import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
   Gårdsbruk,
+  gårdsbruketsNavn,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
   hvorMangeProsentAvInntektenGårTilDeg,
-  organisasjonsnummer,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
@@ -23,10 +23,9 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
-      <h3 style={{ marginTop: "0" }}>{etGårdsbruk[organisasjonsnummer]}</h3>
+      <h3 style={{ marginTop: "0" }}>{etGårdsbruk[gårdsbruketsNavn]}</h3>
       <BodyShort spacing>
-        {etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg]}% av inntekten går til meg pr. uke før
-        reduksjon
+        {etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg]}% av inntekten går til meg
         <br />
         {etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]}{" "}
         arbeidstimer brukt i{" "}

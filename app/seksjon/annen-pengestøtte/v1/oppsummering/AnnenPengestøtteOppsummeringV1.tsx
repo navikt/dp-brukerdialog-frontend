@@ -1,16 +1,15 @@
 import { FormSummary } from "@navikt/ds-react";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalKomponenter,
   pengestøtteFraAndreEøsLandKomponenter,
+  pengestøtteFraAndreEøsLandModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
-  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeModalKomponenter,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+  mottarDuPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeKomponenter,
-  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+  pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import OppsummeringsSvar from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
@@ -18,6 +17,9 @@ import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import {
+  pengestøtteFraTidligereArbeidsgiverModalKomponenter
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 
 export default function AnnenPengestøtteOppsummeringV1({
   seksjonSvarene,
@@ -38,17 +40,12 @@ export default function AnnenPengestøtteOppsummeringV1({
 
   const mottarPengestøtteFraNorge = finnSpørsmål(
     pengestøtteFraNorgeKomponenter,
-    mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav
+    mottarDuPengestøtteFraAndreEnnNav
   );
 
   const mottaLønnEllerAndreGoderFraTidligereArbeidsgiver = finnSpørsmål(
-    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
-    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver
-  );
-
-  const hvaDuFårBeholdeFraTidligereArbeidsgiverSpørsmål = finnSpørsmål(
-    fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
-    skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver
+    mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+    mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver
   );
 
   return (
@@ -57,6 +54,78 @@ export default function AnnenPengestøtteOppsummeringV1({
         <FormSummary.Heading level="2">Annen pengestøtte</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
+        <FormSummary.Answer>
+          <FormSummary.Label>
+            {mottaLønnEllerAndreGoderFraTidligereArbeidsgiver?.label}
+          </FormSummary.Label>
+          <OppsummeringsSvar
+            spørsmål={mottaLønnEllerAndreGoderFraTidligereArbeidsgiver!}
+            svar={data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] ?? "Ubesvart"}
+          />
+        </FormSummary.Answer>
+        {data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja" &&
+          data.pengestøtteFraTidligereArbeidsgiver?.map((pengestøtte, index) => (
+            <FormSummary.Answer>
+              <FormSummary.Label> {`Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver ${index + 1}`}</FormSummary.Label>
+              <FormSummary.Value>
+                <FormSummary.Answers>
+                  {Object.entries(pengestøtte).map((enPengestøtte) => {
+                    const spørsmål = finnSpørsmål(
+                      pengestøtteFraTidligereArbeidsgiverModalKomponenter,
+                      enPengestøtte[0]
+                    );
+                    if (
+                      spørsmål &&
+                      !erInformasjonsFelt(spørsmål) &&
+                      (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))
+                    ) {
+                      return (
+                        <FormSummary.Answer key={enPengestøtte[0]}>
+                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                          <OppsummeringsSvar spørsmål={spørsmål!} svar={enPengestøtte[1]} />
+                        </FormSummary.Answer>
+                      );
+                    }
+                  })}
+                </FormSummary.Answers>
+              </FormSummary.Value>
+            </FormSummary.Answer>
+          ))}
+        <FormSummary.Answer>
+          <FormSummary.Label>{mottarPengestøtteFraNorge?.label}</FormSummary.Label>
+          <OppsummeringsSvar
+            spørsmål={mottarPengestøtteFraNorge!}
+            svar={data[mottarDuPengestøtteFraAndreEnnNav] ?? "Ubesvart"}
+          />
+        </FormSummary.Answer>
+        {data[mottarDuPengestøtteFraAndreEnnNav] === "ja" &&
+          data.pengestøtteFraNorge?.map((pengestøtte, index) => (
+            <FormSummary.Answer>
+              <FormSummary.Label> {`Pengestøtte fra Norge ${index + 1}`}</FormSummary.Label>
+              <FormSummary.Value>
+                <FormSummary.Answers>
+                  {Object.entries(pengestøtte).map((enPengestøtte) => {
+                    const spørsmål = finnSpørsmål(
+                      pengestøtteFraNorgeModalKomponenter,
+                      enPengestøtte[0]
+                    );
+                    if (
+                      spørsmål &&
+                      !erInformasjonsFelt(spørsmål) &&
+                      (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))
+                    ) {
+                      return (
+                        <FormSummary.Answer key={enPengestøtte[0]}>
+                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
+                          <OppsummeringsSvar spørsmål={spørsmål!} svar={enPengestøtte[1]} />
+                        </FormSummary.Answer>
+                      );
+                    }
+                  })}
+                </FormSummary.Answers>
+              </FormSummary.Value>
+            </FormSummary.Answer>
+          ))}
         <FormSummary.Answer>
           <FormSummary.Label>
             {mottattEllerSøktOmPengestøtteFraAndreEøsLand?.label}
@@ -95,64 +164,8 @@ export default function AnnenPengestøtteOppsummeringV1({
               </FormSummary.Value>
             </FormSummary.Answer>
           ))}
-        <FormSummary.Answer>
-          <FormSummary.Label>{mottarPengestøtteFraNorge?.label}</FormSummary.Label>
-          <OppsummeringsSvar
-            spørsmål={mottarPengestøtteFraNorge!}
-            svar={data[mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav] ?? "Ubesvart"}
-          />
-        </FormSummary.Answer>
-        {data[mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav] === "ja" &&
-          data.pengestøtteFraNorge?.map((pengestøtte, index) => (
-            <FormSummary.Answer>
-              <FormSummary.Label> {`Pengestøtte fra Norge ${index + 1}`}</FormSummary.Label>
-              <FormSummary.Value>
-                <FormSummary.Answers>
-                  {Object.entries(pengestøtte).map((enPengestøtte) => {
-                    const spørsmål = finnSpørsmål(
-                      pengestøtteFraNorgeModalKomponenter,
-                      enPengestøtte[0]
-                    );
-                    if (
-                      spørsmål &&
-                      !erInformasjonsFelt(spørsmål) &&
-                      (!spørsmål.visHvis || spørsmål.visHvis(pengestøtte))
-                    ) {
-                      return (
-                        <FormSummary.Answer key={enPengestøtte[0]}>
-                          <FormSummary.Label>{spørsmål?.label}</FormSummary.Label>
-                          <OppsummeringsSvar spørsmål={spørsmål!} svar={enPengestøtte[1]} />
-                        </FormSummary.Answer>
-                      );
-                    }
-                  })}
-                </FormSummary.Answers>
-              </FormSummary.Value>
-            </FormSummary.Answer>
-          ))}
-        <FormSummary.Answer>
-          <FormSummary.Label>
-            {mottaLønnEllerAndreGoderFraTidligereArbeidsgiver?.label}
-          </FormSummary.Label>
-          <OppsummeringsSvar
-            spørsmål={mottaLønnEllerAndreGoderFraTidligereArbeidsgiver!}
-            svar={
-              data[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] ?? "Ubesvart"
-            }
-          />
-        </FormSummary.Answer>
-        {data[fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver] === "ja" && (
-          <FormSummary.Answer>
-            <FormSummary.Label>
-              {hvaDuFårBeholdeFraTidligereArbeidsgiverSpørsmål?.label}
-            </FormSummary.Label>
-            <FormSummary.Value>
-              {data[skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]}
-            </FormSummary.Value>
-          </FormSummary.Answer>
-        )}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Annen pengestøtte"/>
     </FormSummary>
   );
 }

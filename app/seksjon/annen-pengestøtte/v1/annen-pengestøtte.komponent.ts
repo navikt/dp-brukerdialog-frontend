@@ -4,30 +4,31 @@ import {
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter,
-  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+  mottarDuPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeKomponenter,
   PengestøtteFraNorgeModalSvar,
-  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
+import { PengestøtteFraTidligereArbeidsgiverModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const handling = "handling";
 
 export type AnnenPengestøtteSvar = {
+  [mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver]?: "ja" | "nei";
+  [mottarDuPengestøtteFraAndreEnnNav]?: "ja" | "nei";
   [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]?: "ja" | "nei";
-  [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]?: "ja" | "nei";
-  [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]?: "ja" | "nei";
-  [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]?: string;
 };
 
 export type AnnenPengestøtteResponse = AnnenPengestøtteSvar & {
-  pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLandModalSvar[];
+  pengestøtteFraTidligereArbeidsgiver?: PengestøtteFraTidligereArbeidsgiverModalSvar[];
   pengestøtteFraNorge?: PengestøtteFraNorgeModalSvar[];
+  pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLandModalSvar[];
 };
 
-export const annenPengestøtteKomponenter = pengestøtteFraAndreEøsLandKomponenter
-  .concat(pengestøtteFraNorgeKomponenter)
-  .concat(fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiverKomponenter);
+export const annenPengestøtteKomponenter =
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter
+    .concat(pengestøtteFraNorgeKomponenter)
+    .concat(pengestøtteFraAndreEøsLandKomponenter);

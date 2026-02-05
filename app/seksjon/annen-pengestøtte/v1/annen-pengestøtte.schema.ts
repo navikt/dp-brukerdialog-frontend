@@ -1,4 +1,4 @@
-import { string, z } from "zod";
+import { z } from "zod";
 import {
   annenPengestøtteKomponenter,
   AnnenPengestøtteSvar,
@@ -10,11 +10,11 @@ import {
   dagpengerEllerArbeidsledighetstrygd,
   foreldrepengerEllerSvangerskapspenger,
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
-  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed,
+  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed,
-  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
+  iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
   pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
@@ -22,23 +22,25 @@ import {
   sykepenger,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
-  etterlønnFraArbeidsgiver,
-  fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver,
+  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   hvemUtbetalerPengestøtten,
-  hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
-  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
-  mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav,
+  hvilkenPengestøtteFraAndreEnnNavMottarDu,
+  mottarDuPengestøtteFraAndreEnnNav,
   pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
-  pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
+  dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
   pensjonFraAndreEnnNav,
-  skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-
-const kortTekstMaksLengde = 200;
+import {
+  hvaFårEllerBeholderDu,
+  hvemMottarDuUtbetalingerEllerGoderFra,
+  pengestøtteFraTidligereArbeidsgiverModalKomponenter,
+  PengestøtteFraTidligereArbeidsgiverModalSvar,
+} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 
 export const annenPengestøtteSchema = z
   .object({
@@ -46,13 +48,9 @@ export const annenPengestøtteSchema = z
     [pdfGrunnlag]: z.string().optional(),
     [handling]: z.string().optional(),
     [harMottattEllerSøktOmPengestøtteFraAndreEøsLand]: z.enum(["ja", "nei"]).optional(),
-    [mottarDuEllerHarDuSøktOmPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),
-    [fårEllerKommerTilÅFåLønnEllerAndreGoderFraTidligereArbeidsgiver]: z
+    [mottarDuPengestøtteFraAndreEnnNav]: z.enum(["ja", "nei"]).optional(),
+    [mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver]: z
       .enum(["ja", "nei"])
-      .optional(),
-    [skrivInnHvaDuFårBeholdeFraTidligereArbeidsgiver]: z
-      .string()
-      .max(kortTekstMaksLengde, `Maks ${kortTekstMaksLengde} tegn.`)
       .optional(),
     versjon: z.number().optional(),
     dokumentasjonskrav: z.string().optional(),
@@ -72,6 +70,19 @@ export const annenPengestøtteSchema = z
     });
   });
 
+export const pengestøtteFraTidligereArbeidsgiverSchema = z
+  .object({
+    [hvemMottarDuUtbetalingerEllerGoderFra]: z.string().optional(),
+    [hvaFårEllerBeholderDu]: z.string().optional(),
+  })
+  .superRefine((data, context) => {
+    pengestøtteFraTidligereArbeidsgiverModalKomponenter.forEach((komponent) => {
+      const synlig = !komponent.visHvis || komponent.visHvis(data);
+      const svar = data[komponent.id as keyof PengestøtteFraTidligereArbeidsgiverModalSvar];
+      valider(komponent, svar, synlig, context);
+    });
+  });
+
 export const pengestøtteFraAndreEøsLandSchema = z
   .object({
     [hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]: z
@@ -84,11 +95,11 @@ export const pengestøtteFraAndreEøsLandSchema = z
       .optional(),
     [fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]: z.string().optional(),
     [mottarDuFortsattPengestøttenFraAndreEøsLand]: z.string().optional(),
-    [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraOgMed]: z.string().optional(),
-    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraOgMed]: z
+    [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato]: z.string().optional(),
+    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato]: z
       .string()
       .optional(),
-    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilOgMed]: z
+    [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato]: z
       .string()
       .optional(),
   })
@@ -102,16 +113,15 @@ export const pengestøtteFraAndreEøsLandSchema = z
 
 export const pengestøtteFraNorgeSchema = z
   .object({
-    [hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]: z
+    [hvilkenPengestøtteFraAndreEnnNavMottarDu]: z
       .enum([
         pensjonFraAndreEnnNav,
-        pengestøtteUnderArbeidsledighetEllerGarantiLottForFiskere,
-        etterlønnFraArbeidsgiver,
+        dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
       ])
       .optional(),
     [hvemUtbetalerPengestøtten]: z.string().optional(),
-    [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed]: z.string().optional(),
-    [iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed]: z.string().optional(),
+    [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]: z.string().optional(),
+    [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato]: z.string().optional(),
   })
   .superRefine((data, context) => {
     pengestøtteFraNorgeModalKomponenter.forEach((komponent) => {

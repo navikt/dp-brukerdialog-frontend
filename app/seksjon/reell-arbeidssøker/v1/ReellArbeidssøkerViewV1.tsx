@@ -1,14 +1,10 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import {
   handling,
   kanDuTaAlleTyperArbeid,
@@ -16,6 +12,7 @@ import {
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidRedusertHelse,
   kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
+  kanIkkeJobbeIHeleNorgeAnnenSituasjon,
   kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   kanIkkeJobbeIHeleNorgeRedusertHelse,
@@ -29,9 +26,15 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { SøknadFooter } from "~/components/SøknadFooter";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
@@ -43,8 +46,8 @@ export function ReellArbeidssøkerViewV1() {
     submitSource: "state",
     schema: reellArbeidssøkerSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -95,8 +98,8 @@ export function ReellArbeidssøkerViewV1() {
         seksjonId: "reell-arbeidssoker",
         spørsmålId: kanDuTaAlleTyperArbeid,
         skjemakode: "T9",
-        tittel: "Bekreftelse fra lege eller annen behandler",
-        type: DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker,
+        tittel: "Bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid",
+        type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeTaAlleTyperArbeid,
       };
 
       return [dokumentasjonskrav];
@@ -143,6 +146,7 @@ export function ReellArbeidssøkerViewV1() {
       kanIkkeJobbeIHeleNorgeRedusertHelse,
       kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
       kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+      kanIkkeJobbeIHeleNorgeAnnenSituasjon,
     ];
 
     const dokumentasjonskravTrigges = skjemaSvarArray.some((valgt) =>
@@ -175,11 +179,14 @@ export function ReellArbeidssøkerViewV1() {
   }
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
-      <VStack gap="20">
+      <title>{seksjonHeadTitle}</title>
+      <VStack gap="4">
+        <Heading size="medium" level="2">
+          {seksjonnavn}
+        </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-          <VStack gap="8">
+          <VStack gap="6">
             {reellArbeidssøkerKomponenter.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
@@ -193,14 +200,17 @@ export function ReellArbeidssøkerViewV1() {
                 />
               );
             })}
+          </VStack>
 
-            {actionData && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
+          {actionData && (
+            <Alert variant="error" className="mt-4">
+              {actionData.error}
+            </Alert>
+          )}
 
-            <HStack gap="4" className="mt-8">
+          <VStack className="mt-8" gap="4">
+            <SistOppdatert />
+            <HStack gap="4">
               <Button
                 variant="secondary"
                 type="button"

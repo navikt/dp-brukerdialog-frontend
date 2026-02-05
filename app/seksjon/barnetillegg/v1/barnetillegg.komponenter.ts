@@ -1,4 +1,5 @@
 import { KomponentType } from "~/components/Komponent.types";
+import { endOfDay } from "date-fns";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -34,9 +35,9 @@ export const barnetilleggForklarendeTekst: KomponentType[] = [
     id: "barnetilleggForklarendeTekst",
     type: "forklarendeTekst",
     description:
-      "Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.<br /><br />" +
-      "Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12 måneder.<br /><br />" +
-      "Hvis vi har registrert noen barn på deg vises de under.<br/><br/>",
+      "<p>Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.</p>" +
+      "<p>Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12 måneder.</p>" +
+      "<p>Hvis vi har opplysninger om at du er forelder til noen barn så vises de under.</p>",
   },
 ];
 
@@ -45,6 +46,8 @@ export const barnetilleggKomponenter: KomponentType[] = [
     id: forsørgerDuBarnSomIkkeVisesHer,
     type: "envalg",
     label: "Forsørger du barn som ikke vises her?",
+    description:
+      "Hvis du har forsørgeransvar for barn under 18 år som ikke vises her, kan du legge dem til.",
     options: [
       { value: "ja", label: "Ja" },
       { value: "nei", label: "Nei" },
@@ -62,18 +65,22 @@ export const barnFraPdlSpørsmål: KomponentType[] = [
   {
     id: fornavnOgMellomnavn,
     type: "registeropplysning",
+    label: "Fornavn og mellomnavn",
   },
   {
     id: etternavn,
     type: "registeropplysning",
+    label: "Etternavn",
   },
   {
     id: fødselsdato,
     type: "registeropplysning",
+    label: "Fødsesldato",
   },
   {
     id: bostedsland,
     type: "registeropplysning",
+    label: "Bostedsland",
   },
   {
     id: forsørgerDuBarnet,
@@ -98,16 +105,19 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
     id: fornavnOgMellomnavn,
     type: "kortTekst",
     label: "Fornavn og mellomnavn",
+    maksLengde: 200,
   },
   {
     id: etternavn,
     type: "kortTekst",
     label: "Etternavn",
+    maksLengde: 200,
   },
   {
     id: fødselsdato,
     type: "dato",
     label: "Fødselsdato",
+    tilOgMed: endOfDay(new Date()),
   },
   {
     id: bostedsland,
@@ -118,16 +128,11 @@ export const leggTilBarnManueltSpørsmål: KomponentType[] = [
     id: "lesMerOmBarnetBostedLesMer",
     type: "lesMer",
     label: "Les mer om barnets bosted",
-    description: "Her kan du lese mer om hvordan vi behandler informasjon om barnets bosted.",
+    description: "Bostedet du oppgir må være det landet barnet faktisk oppholder seg i til vanlig.",
   },
   {
     id: "barnLagtTilManueltDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Fødselsattest",
-    description:
-      "Her kommer en lang beskrivelse av hva som må være med i dokumentasjonen. Denne trenger " +
-      "vi ikke å vise til bruker i søknaden, men vi kan vise den i Dokumentopplasting-seksjonen. " +
-      "Nødvendige hjelpetekster er også tett knyttet til seksjonen hvor dokumentasjonskravet oppstår." +
-      "<strong>HTML</strong> kan brukes",
+    label: "Fødselsattest/bostedsbevis",
   },
 ];

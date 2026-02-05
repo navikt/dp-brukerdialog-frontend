@@ -54,6 +54,12 @@ spec:
       value: "{{ dp_soknad_orkestrator_url }}"
     - name: DP_MELLOMLAGRING_URL
       value: "{{ dp_mellomlagring_url }}"
+    - name: ARBEIDSSOKERREGISTERET_URL
+      value: "{{arbeidssokerregisteret_url}}"
+    - name: DP_MINE_DAGPENGER_URL
+      value: "{{ dp_mine_dagpenger_url }}"
+    - name: GENERELL_INNSENDING_URL
+      value: "{{ generell_innsending_url }}"
 
   ingresses:
     {{#each ingresses as |url|}}
@@ -71,6 +77,8 @@ spec:
           namespace: personbruker
         - application: dp-soknad-orkestrator
         - application: dp-mellomlagring
+        - application: paw-arbeidssoekerregisteret-api-oppslag-v2
+          namespace: paw
   idporten:
     enabled: true
     sidecar:

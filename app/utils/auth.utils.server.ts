@@ -31,6 +31,15 @@ export async function hentMellomlagringOboToken(request: Request) {
   return await hentOnBehalfOfToken(request, audience);
 }
 
+export async function hentArbeidssøkerregisteretOboToken(request: Request) {
+  if (getEnv("IS_LOCALHOST") === "true") {
+    return håndterLocalhostToken("ARBEIDSSOKERREGISTERET_TOKEN");
+  }
+
+  const audience = `${getEnv("NAIS_CLUSTER_NAME")}:paw:paw-arbeidssoekerregisteret-api-oppslag-v2`;
+  return await hentOnBehalfOfToken(request, audience);
+}
+
 export async function hentOnBehalfOfToken(request: Request, audience: string): Promise<string> {
   const token = getToken(request);
   if (!token) {

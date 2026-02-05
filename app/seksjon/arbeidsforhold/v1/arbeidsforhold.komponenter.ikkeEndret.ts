@@ -4,6 +4,7 @@ import {
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
 export const ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato =
   "ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato";
@@ -17,6 +18,7 @@ export const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter: Kompone
     id: ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
     type: "dato",
     label: "Når startet du i dette arbeidsforholdet?",
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
   },
@@ -47,7 +49,7 @@ export const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter: Kompone
   {
     id: ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
     type: "langTekst",
-    maxLength: 500,
+    maksLengde: 500,
     label: "Tilleggsopplysninger",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet] === "ja",

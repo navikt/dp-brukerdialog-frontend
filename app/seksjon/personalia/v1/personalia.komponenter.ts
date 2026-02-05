@@ -1,4 +1,5 @@
 import { KomponentType } from "~/components/Komponent.types";
+import { endOfDay } from "date-fns";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -116,29 +117,29 @@ export const personaliaSpørsmål: KomponentType[] = [
     variant: "advarsel",
     label: "Vi har registrert at du er over 67 år",
     description:
-      "Du har ikke rett på dagpenger fordi du er over 67 år. Hvis du ikke har søkt om alderspensjon, kan du søke om <a href='https://www.nav.no/soknader'>alderspensjon her</a>.",
+      '<p>Du har ikke rett til dagpenger lenger enn ut måneden du fyller 67 år. Hvis du ikke har søkt om alderspensjon, kan du <a href="https://www.nav.no/soknader#alderspensjon" target="_blank" rel="noopener noreferrer">søke om alderspensjon her</a>.</p>',
     visHvis: (svar: PersonaliaSvar) => Number(svar[alderFraPdl]) >= 67,
+  },
+  {
+    id: "personaliaBostedslandForklarendeTekst",
+    type: "forklarendeTekst",
+    description: "<h3>Bostedsland</h3>",
   },
   {
     id: folkeregistrertAdresseErNorgeStemmerDet,
     type: "envalg",
-    label: "Vi ser fra din folkeregistrete adresse at du bor i Norge. Stemmer dette?",
+    label: "Du er folkeregistrert i Norge. Er Norge bostedslandet ditt?",
+    description:
+      "Bostedslandet ditt er det landet du eier eller leier bolig i og tilbringer mesteparten av tiden din, også når du ikke jobber.",
     options: [
-      { value: "ja", label: "Ja, jeg bor i Norge" },
-      { value: "nei", label: "Nei, jeg bor ikke i Norge" },
+      { value: "ja", label: "Ja, Norge er bostedslandet mitt" },
+      { value: "nei", label: "Nei, Norge er ikke bostedslandet mitt" },
     ],
     visHvis: (svar: PersonaliaSvar) => svar[landFraPdl] === "NORGE",
   },
 ];
 
 export const personaliaBostedslandSpørsmål: KomponentType[] = [
-  {
-    id: "personaliaBostedslandForklarendeTekst",
-    type: "forklarendeTekst",
-    description: "<h2>Bostedsland</h2>",
-    visHvis: (svar: PersonaliaSvar) =>
-      svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei" && svar[landFraPdl] === "NORGE",
-  },
   {
     id: bostedsland,
     type: "land",
@@ -160,7 +161,9 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
       "<li>hvilket land du bor i</li>" +
       "<li>om du er permittert eller delvis arbeidsledig, eller om du er helt arbeidsledig</li>" +
       "</ul>" +
-      "Er du usikker på hva du skal svare, kan du lese <a href='https://nav.no/dagpenger#eos'>mer om hvor du skal søke penger fra</a>.",
+      'Er du usikker på hva du skal svare, kan du lese <a href="https://nav.no/dagpenger#eos" target="_blank" rel="noopener noreferrer">mer om hvor du skal søke penger fra</a>.',
+    visHvis: (svar: PersonaliaSvar) =>
+      svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
   {
     id: reistTilbakeTilBostedslandet,
@@ -177,7 +180,9 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
     id: avreiseDatoFra,
     type: "periodeFra",
     label: "Fra dato",
+    tilOgMed: endOfDay(new Date()),
     periodeLabel: "Avreise dato",
+    referanseId: avreiseDatoTil,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
@@ -185,12 +190,14 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
     type: "periodeTil",
     label: "Til dato",
     optional: true,
+    referanseId: avreiseDatoFra,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
     id: hvorforReistDuFraNorge,
-    type: "kortTekst",
+    type: "langTekst",
     label: "Hvorfor reiste du fra Norge?",
+    maksLengde: 500,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {

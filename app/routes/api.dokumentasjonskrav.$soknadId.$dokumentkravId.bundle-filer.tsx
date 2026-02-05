@@ -21,15 +21,15 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const dokumentkravId = params.dokumentkravId;
 
   const formData = await request.formData();
-  const dokumentasjonskravFiler = formData.get("dokumentasjonskravFiler") as string;
-  const dokumentasjonskravFilerUrn: Urn[] = JSON.parse(dokumentasjonskravFiler).map((fil: Urn) => {
+  const filer = formData.get("filer") as string;
+  const filerUrn: Urn[] = JSON.parse(filer).map((fil: Urn) => {
     return { urn: fil.urn };
   });
 
   const bundleBody: MellomlagringBundle = {
     soknadId: søknadId,
     bundleNavn: dokumentkravId,
-    filer: dokumentasjonskravFilerUrn,
+    filer: filerUrn,
   };
 
   const mellomlagringBundleUrl = `${getEnv("DP_MELLOMLAGRING_URL")}/pdf/bundle`;

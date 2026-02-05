@@ -34,7 +34,7 @@ export default function VernepliktOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} />
+      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Verneplikt"/>
     </FormSummary>
   );
 }

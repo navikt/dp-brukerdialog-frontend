@@ -10,11 +10,14 @@ interface SøknadFooterProps {
 }
 
 export function SøknadFooter({ søknadId, className, onFortsettSenere }: SøknadFooterProps) {
-  const [showMsg, setShowMsg] = useState(false);
+  const [visMelding, setVisMelding] = useState(false);
 
   function handleClick() {
-    if (onFortsettSenere) onFortsettSenere();
-    setShowMsg(true);
+    if (onFortsettSenere) {
+      onFortsettSenere();
+    }
+
+    setVisMelding(true);
   }
 
   return (
@@ -32,7 +35,7 @@ export function SøknadFooter({ søknadId, className, onFortsettSenere }: Søkna
           </Button>
           <SlettSøknadModal søknadId={søknadId} />
         </HStack>
-        {showMsg && (
+        {visMelding && (
           <Alert variant="success" className="mt-8">
             Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir
             automatisk slettet hvis du ikke gjør noe innen 7 dager.

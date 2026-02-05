@@ -11,18 +11,29 @@ import {
   LeggTilGårdsbrukSvar,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
+import { useEffect, useRef, useState } from "react";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function GårdsbrukModal({ ref }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const { gårdsbruk, setGårdsbruk, gårdsbrukModalData, setGårdsbrukModalData } =
     useEgenNæringContext();
 
   const form = useForm({
     submitSource: "state",
     schema: leggTilGårdsbrukSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: gårdsbrukModalData?.etGårdsbruk ?? {},
     handleSubmit: (etGårdsbruk) => {
       if (
@@ -53,46 +64,71 @@ export function GårdsbrukModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  useNullstillSkjulteFelter<LeggTilGårdsbrukSvar>(form, leggTilGårdsbrukKomponenter);
+
+  const modalOperasjon =
+    gårdsbrukModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setGårdsbrukModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
+
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setGårdsbrukModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">Legg til gårdsbruk</HStack>
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {leggTilGårdsbrukKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
-                return null;
-              }
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setGårdsbrukModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            <HStack gap="2">{modalOperasjon} gårdsbruk</HStack>
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {leggTilGårdsbrukKomponenter.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                  return null;
+                }
 
-              return (
-                <Komponent
-                  key={spørsmål.id}
-                  props={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof LeggTilGårdsbrukSvar)}
-                />
-              );
-            })}
+                return (
+                  <Komponent
+                    key={spørsmål.id}
+                    props={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof LeggTilGårdsbrukSvar)}
+                  />
+                );
+              })}
 
-            <HStack className="mt-4" justify="end">
-              <Button
-                type={"submit"}
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
-                Lagre og lukk
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+              <HStack className="mt-4" justify="end">
+                <Button
+                  type="submit"
+                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                >
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }

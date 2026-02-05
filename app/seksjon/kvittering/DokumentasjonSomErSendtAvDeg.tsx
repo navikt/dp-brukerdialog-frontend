@@ -1,33 +1,45 @@
-import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
+import { DownloadIcon } from "@navikt/aksel-icons";
+import { BodyShort, Box, Button, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
+import { lastnedDokument } from "~/utils/dokument.utils";
 import { DokumentasjonskravInnhold } from "../dokumentasjon/DokumentasjonskravInnhold";
-import { Dokumentasjonskrav } from "../dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 
 interface IProps {
-  dokummentasjonskrav: Dokumentasjonskrav;
+  dokumentasjonskrav: Dokumentasjonskrav;
 }
 
-export default function DokumentasjonskravSomErSendtAvDeg({ dokummentasjonskrav }: IProps) {
+export default function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps) {
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">
-      <VStack gap="2">
-        <VStack gap="2">
-          <HStack gap="2" justify="space-between">
-            <Heading size="xsmall" level="4">
-              {dokummentasjonskrav.tittel}
-            </Heading>
-            <Tag variant="success" size="xsmall">
+      <VStack gap="4">
+        <HStack justify="space-between">
+          <Heading size="xsmall" level="4">
+            {dokumentasjonskrav.tittel}
+          </Heading>
+          <BodyShort>
+            <Tag variant="success" size={"xsmall"}>
               Mottatt
             </Tag>
-          </HStack>
-
-          <BodyShort>
-            Se opplastet dokument &lt;&lt; TODO dette skal være en link så bruker får lastet ned
-            dokumentet
           </BodyShort>
-        </VStack>
+        </HStack>
+
+        <HStack>
+          {dokumentasjonskrav.bundle && (
+            <Button
+              variant="tertiary"
+              size="small"
+              icon={<DownloadIcon />}
+              onClick={() =>
+                lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
+              }
+            >
+              Last ned opplastet dokument
+            </Button>
+          )}
+        </HStack>
 
         <ReadMore header="Dette må dokumentasjonen inneholde">
-          <DokumentasjonskravInnhold type={dokummentasjonskrav.type} />
+          <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
         </ReadMore>
       </VStack>
     </Box.New>

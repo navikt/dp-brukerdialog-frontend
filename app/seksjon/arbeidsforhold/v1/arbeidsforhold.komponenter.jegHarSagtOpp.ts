@@ -4,26 +4,30 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegHarSagtOppSelv,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
-export const jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato =
-  "jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato";
-export const jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato =
-  "jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato";
+export const jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato =
+  "jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato";
+export const jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato =
+  "jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato";
 export const jegHarSagtOppHvaVarÅrsaken = "jegHarSagtOppHvaVarÅrsaken";
 
 export const arbeidsforholdModalJegHarSagtOppSelvKomponenter: KomponentType[] = [
   {
-    id: jegHarSagtOppSelvVarighetPåArbeidsforholdetFraOgMedDato,
+    id: jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
+    referanseId: jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarSagtOppSelv,
   },
   {
-    id: jegHarSagtOppSelvVarighetPåArbeidsforholdetTilOgMedDato,
+    id: jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
+    referanseId: jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarSagtOppSelv,
   },
@@ -31,7 +35,7 @@ export const arbeidsforholdModalJegHarSagtOppSelvKomponenter: KomponentType[] = 
     id: "jegHarSagtOppSelvInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Hvis du har sagt opp selv, må vi vite når og hvorfor.</p>" +
       "<p>Derfor må du dokumentere grunnen og datoen du sa opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.</p>" +
@@ -60,7 +64,7 @@ export const arbeidsforholdModalJegHarSagtOppSelvKomponenter: KomponentType[] = 
     id: jegHarSagtOppHvaVarÅrsaken,
     type: "langTekst",
     label: "Hva er årsaken til at du har sagt opp?",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarSagtOppSelv,
   },

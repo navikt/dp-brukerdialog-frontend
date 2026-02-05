@@ -9,6 +9,7 @@ import {
   useArbeidsforholdContext,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
+  arbeidsforholdetErIkkeEndret,
   arbeidsforholdForklarendeTekstKomponenter,
   arbeidsforholdModalKomponenter,
   arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
@@ -17,12 +18,14 @@ import {
   arbeidsgiverenMinHarSagtMegOpp,
   arbeidsgiverErKonkurs,
   arbeidstidenErRedusert,
+  harDuJobbetSkiftTurnusEllerRotasjon,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegErPermitert,
   jegHarFåttAvskjed,
   jegHarSagtOppSelv,
   kontraktenErUtgått,
   navnetPåBedriften,
+  rotasjon,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
@@ -36,13 +39,18 @@ import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsfo
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function ArbeidsforholdModal({ ref }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const {
     registrerteArbeidsforhold,
     setRegistrerteArbeidsforhold,
@@ -66,6 +74,11 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: arbeidsforholdModalSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: modalData?.arbeidsforhold ?? {},
     handleSubmit: (skjemaData) => {
       if (modalData?.operasjon === undefined) {
@@ -90,11 +103,22 @@ export function ArbeidsforholdModal({ ref }: IProps) {
 
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
 
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
+
   function leggTilArbeidsforhold(skjemaData: ArbeidsforholdModalSvar) {
+    const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
     const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
     const bedriftNavn = skjemaData[navnetPåBedriften] || "";
 
-    const nyttDokumentkrav = lagDokumentasjonskrav(arbeidsforholdSituasjon, bedriftNavn);
+    const nyttDokumentkrav = lagDokumentasjonskrav(
+      jobbetSkiftTurnusEllerRotasjon,
+      arbeidsforholdSituasjon,
+      bedriftNavn
+    );
     const nyttArbeidsforhold = {
       ...skjemaData,
       id: crypto.randomUUID(),
@@ -112,6 +136,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     }
 
     const gammeltArbeidsforhold = modalData.arbeidsforhold;
+    const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
     const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
     const bedriftNavn = skjemaData[navnetPåBedriften] || "";
 
@@ -119,7 +144,11 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       (krav) => !gammeltArbeidsforhold.dokumentasjonskrav?.includes(krav.id)
     );
 
-    const nyeDokumentkrav = lagDokumentasjonskrav(arbeidsforholdSituasjon, bedriftNavn);
+    const nyeDokumentkrav = lagDokumentasjonskrav(
+      jobbetSkiftTurnusEllerRotasjon,
+      arbeidsforholdSituasjon,
+      bedriftNavn
+    );
 
     const oppdatertArbeidsforhold = {
       ...skjemaData,
@@ -136,12 +165,15 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   }
 
   function lagDokumentasjonskrav(
+    jobbetSkiftTurnusEllerRotasjon: string,
     arbeidsforholdSituasjon: string,
     bedriftNavn: string
   ): Dokumentasjonskrav[] {
+    const dokumentasjonskrav = new Array<Dokumentasjonskrav>();
+
     switch (arbeidsforholdSituasjon) {
       case arbeidsgiverenMinHarSagtMegOpp:
-        return [
+        dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
@@ -157,10 +189,11 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             skjemakode: "T8",
             tittel: `Oppsigelse - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp,
-          },
-        ];
+          }
+        );
+        break;
       case jegHarSagtOppSelv:
-        return [
+        dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
@@ -176,10 +209,11 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             skjemakode: "T8",
             tittel: `Oppsigelse - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv,
-          },
-        ];
+          }
+        );
+        break;
       case jegHarFåttAvskjed:
-        return [
+        dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
@@ -195,22 +229,22 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             skjemakode: "T8",
             tittel: `Avskjedigelse - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdAvskjedigelse,
-          },
-        ];
-
+          }
+        );
+        break;
       case kontraktenErUtgått:
-        return [
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-        ];
+      case arbeidsforholdetErIkkeEndret:
+        dokumentasjonskrav.push({
+          id: crypto.randomUUID(),
+          seksjonId: "arbeidsforhold",
+          spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
+          skjemakode: "O2",
+          tittel: `Arbeidsavtale - ${bedriftNavn}`,
+          type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
+        });
+        break;
       case arbeidstidenErRedusert:
-        return [
+        dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
@@ -226,10 +260,11 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             skjemakode: "T8",
             tittel: `Redusert arbeidstid - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid,
-          },
-        ];
+          }
+        );
+        break;
       case arbeidsgiverErKonkurs:
-        return [
+        dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
@@ -245,10 +280,11 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             skjemakode: "M7",
             tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter,
-          },
-        ];
+          }
+        );
+        break;
       case jegErPermitert:
-        return [
+        dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
             seksjonId: "arbeidsforhold",
@@ -264,12 +300,23 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             skjemakode: "T6",
             tittel: `Permitteringsvarsel - ${bedriftNavn}`,
             type: DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel,
-          },
-        ];
-
-      default:
-        return [];
+          }
+        );
+        break;
     }
+
+    if (jobbetSkiftTurnusEllerRotasjon === rotasjon) {
+      dokumentasjonskrav.push({
+        id: crypto.randomUUID(),
+        seksjonId: "arbeidsforhold",
+        spørsmålId: harDuJobbetSkiftTurnusEllerRotasjon,
+        skjemakode: "M6",
+        tittel: `Dokumentasjon av rotasjonsordningen - ${bedriftNavn}`,
+        type: DokumentasjonskravType.ArbeidsforholdRotasjon,
+      });
+    }
+
+    return dokumentasjonskrav;
   }
 
   const modalTittel =
@@ -277,61 +324,76 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       ? "Legg til arbeidsforhold"
       : "Rediger arbeidsforhold";
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          {modalTittel}
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        {modalData?.form &&
-          arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-            if (komponent.visHvis && !komponent.visHvis(modalData.form?.value())) {
-              return null;
-            }
-
-            if (modalData?.form) {
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={modalData.form.scope(komponent.id as keyof ArbeidsforholdSvar)}
-                />
-              );
-            }
-          })}
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {alleModalKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            {modalTittel}
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          {modalData?.form &&
+            arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(modalData.form?.value())) {
                 return null;
               }
 
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
-                />
-              );
+              if (modalData?.form) {
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={modalData.form.scope(komponent.id as keyof ArbeidsforholdSvar)}
+                  />
+                );
+              }
             })}
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {alleModalKomponenter.map((komponent) => {
+                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                  return null;
+                }
 
-            <HStack className="mt-4" justify="end">
-              <Button
-                type="submit"
-                icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-              >
-                Lagre og lukk
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+                return (
+                  <Komponent
+                    key={komponent.id}
+                    props={komponent}
+                    formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
+                    formValues={form.value()}
+                  />
+                );
+              })}
+
+              <HStack className="mt-4" justify="end">
+                <Button
+                  type="submit"
+                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
+                >
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }

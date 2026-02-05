@@ -1,5 +1,6 @@
-import { BodyLong, BodyShort, Link, List, ReadMore, VStack } from "@navikt/ds-react";
-import { DokumentasjonskravType } from "./DokumentasjonskravKomponent";
+import { BodyLong, BodyShort, List, ReadMore, VStack } from "@navikt/ds-react";
+import { EksterneLenke } from "~/components/EksterneLenke";
+import { DokumentasjonskravType } from "./dokumentasjon.types";
 
 interface IProps {
   type: DokumentasjonskravType;
@@ -35,11 +36,12 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   Arbeidsavtalen må inneholde datoen du startet i jobben din stillingsprosent eller
                   avtalt arbeidstid avt endt oppsigelsestid sluttdato, hvis du har en midlertidig
                   arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
-                  skjemaet 
-                  <Link href="https://www.nav.no/soknader">
-                    "Bekreftelse på sluttårsak/nedsatt arbeidstid" (NAV 04-08.03)
-                  </Link>
-                   . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
+                  skjemaet{" "}
+                  <EksterneLenke
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb4398396949d8c6efbb439839694b04dd5.pdf"
+                    tekst="Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                  />
+                  . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -60,10 +62,11 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 <BodyLong>
                   For å dokumentere dette, kan du legge ved oppsigelsen du fikk av arbeidsgiveren
                   din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke
-                  skjemaet 
-                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
-                    Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
-                  </Link>
+                  skjemaet.
+                  <EksterneLenke
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439694b04dd5.pdf"
+                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                  />
                   . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
                   arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
                 </BodyLong>
@@ -85,12 +88,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 </List>
                 <BodyLong>
                   For å dokumentere dette, kan du legge ved oppsigelsen du ga arbeidsgiveren din.
-                  Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet {" "}
-                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
-                     Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
-                  </Link>
-                  Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren
-                  din om å dokumentere opplysningene på en annen måte.
+                  Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet{" "}
+                  <EksterneLenke
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
+                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                  />
+                  . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
+                  arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -112,9 +116,10 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   For å dokumentere dette, kan du sende oss avskjedigelsen du har fått fra
                   arbeidsgiver. Hvis avskjedigelsen ikke inneholder opplysningene vi trenger, kan du
                   bruke skjemaet{" "}
-                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
-                    Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
-                  </Link>
+                  <EksterneLenke
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
+                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                  />
                   . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
                   arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
                 </BodyLong>
@@ -137,10 +142,11 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 </List>
                 <BodyLong>
                   Du må be arbeidsgiver om denne dokumentasjonen. Hvis dokumentene ikke inneholder
-                  opplysningene vi trenger, kan du bruke skjemaet 
-                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf">
-                    Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)
-                  </Link>
+                  opplysningene vi trenger, kan du bruke skjemaet{" "}
+                  <EksterneLenke
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
+                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                  />
                   . Arbeidsgiveren din må fylle ut og signere skjemaet.
                 </BodyLong>
               </VStack>
@@ -192,14 +198,24 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 <BodyLong>
                   Hvis permitteringsvarselet ikke inneholder disse opplysningene kan du bruke
                   skjemaet{" "}
-                  <Link href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf">
-                    Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04).
-                  </Link>
-                  Arbeidsgiveren din må fylle ut og signere skjemaet.
+                  <EksterneLenke
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf"
+                    tekst=" Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04)"
+                  />
+                  . Arbeidsgiveren din må fylle ut og signere skjemaet.
                 </BodyLong>
               </VStack>
             </ReadMore>
           </VStack>
+        );
+
+      case DokumentasjonskravType.ArbeidsforholdRotasjon:
+        return (
+          <BodyLong>
+            Du har krysset av for at du jobbet rotasjon. Du må dokumentere hvilken rotasjonsordning
+            du har hatt. Den siste rotasjonen må dokumenteres med timeliste eller lignende, som
+            viser når du var på jobb og når du hadde avspasering.
+          </BodyLong>
         );
 
       case DokumentasjonskravType.Tjenestebevis:
@@ -240,39 +256,106 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
           </BodyLong>
         );
 
-      case DokumentasjonskravType.ReellArbeidssøkerIkkeTaAlleTypeYrker:
+      case DokumentasjonskravType.ReellArbeidssøkerKanIkkeTaAlleTyperArbeid:
         return (
           <>
             <BodyLong>
-              Du har krysset av for at du ikke har mulighet til å ta arbeid i hele Norge. Dette må
-              du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det
-              er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du
-              dokumentere dette.
+              Du har krysset av for at du ikke har mulighet til å ta alle typer arbeid. Dette må du
+              dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.
             </BodyLong>
             <BodyLong>
-              Dokumentasjonen må inneholde begrunnelse for at du ikke kan jobbe i hele Norge.
+              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke
+              kan ta alle typer arbeid.
             </BodyLong>
           </>
         );
 
-      case DokumentasjonskravType.AnnenPengestøtteFåLønnEllerAndreØkonomiskeGoder:
+      case DokumentasjonskravType.AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver:
         return (
-          <BodyLong>
-            Du har krysset av for at du får eller kommer til å få en utbetaling eller andre
-            økonomiske goder fra arbeidsgiver. Du må sende inn sluttavtale eller annen dokumentasjon
-            som beskriver hva du får.
-          </BodyLong>
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske
+              goder fra arbeidsgiver.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
         );
 
       case DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand:
-        return <BodyLong>Du har krysset av for at du mottar støtte fra andre EØS-land.</BodyLong>;
+        return (
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet
+              EØS-land.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
 
-      case DokumentasjonskravType.AnnenPengestøtteFraNorge:
-        return <BodyLong>Du har krysset av for at du mottar støtte fra Norge.</BodyLong>;
+      case DokumentasjonskravType.AnnenPengestøtteFraNorgePensjonFraAndre:
+        return (
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
+
+      case DokumentasjonskravType.AnnenPengestøtteFraNorgePengestøtteFraGff:
+        return (
+          <VStack gap="2">
+            <BodyLong>
+              Du har krysset av for at du mottar eller har søkt om pengestøtte fra Garantikassen for
+              fiskere.
+            </BodyLong>
+            <ReadMore header="Dette må dokumentasjonen inneholde">
+              <VStack gap="2">
+                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
+                <List as="ul">
+                  <List.Item>hvilken pengestøtte dette er</List.Item>
+                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
+                  <List.Item>hvor mye du får</List.Item>
+                  <List.Item>perioden den utbetales for</List.Item>
+                </List>
+              </VStack>
+            </ReadMore>
+          </VStack>
+        );
 
       default:
-        console.error(`Ukjent dokumentasjonskrav type: ${type}`);
-        return <p>Ukjent dokumentasjonskrav type.</p>;
+        console.error(`Ukjent dokumentasjonskrav: ${type}`);
+        return <p>Ukjent dokumentasjonskrav.</p>;
     }
   }
 

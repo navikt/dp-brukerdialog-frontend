@@ -2,9 +2,9 @@ import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
   hvemUtbetalerPengestøtten,
-  hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed,
-  iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed,
+  hvilkenPengestøtteFraAndreEnnNavMottarDu,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
+  iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
   pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
@@ -47,8 +47,8 @@ export function PengestøtteFraNorgeDetaljer({
       <h3 style={{ marginTop: "0" }}>
         {finnOptionLabel(
           pengestøtteFraNorgeModalKomponenter,
-          hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm,
-          pengestøtteFraNorgeProps[hvilkePengestøtteFraAndreEnnNavMottarDuEllerHarDuSøktOm]!
+          hvilkenPengestøtteFraAndreEnnNavMottarDu,
+          pengestøtteFraNorgeProps[hvilkenPengestøtteFraAndreEnnNavMottarDu]!
         )}
       </h3>
       <BodyShort spacing>
@@ -63,19 +63,19 @@ export function PengestøtteFraNorgeDetaljer({
           {formaterNorskDato(
             new Date(
               pengestøtteFraNorgeProps[
-                iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeFraOgMed
+                iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato
               ]!
             )
           )}
           {pengestøtteFraNorgeProps[
-            iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
+            iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato
           ] && (
             <>
               , til og med&nbsp;
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraNorgeProps[
-                    iHvilkenPeriodeMottarDuEllerHarDuSøktOmPengestøtteFraNorgeTilOgMed
+                    iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato
                   ]
                 )
               )}

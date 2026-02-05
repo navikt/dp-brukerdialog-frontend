@@ -1,14 +1,18 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, HStack, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import {
   avtjentVerneplikt,
   pdfGrunnlag,
@@ -17,13 +21,11 @@ import {
 } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
-import { SøknadFooter } from "~/components/SøknadFooter";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
@@ -35,8 +37,8 @@ export default function VernepliktViewV1() {
     submitSource: "state",
     schema: vernepliktSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -87,9 +89,12 @@ export default function VernepliktViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             <VStack gap="8">
@@ -114,27 +119,30 @@ export default function VernepliktViewV1() {
               </Alert>
             )}
 
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleSubmit}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            <VStack className="mt-8" gap="4">
+              <SistOppdatert />
+              <HStack gap="4">
+                <Button
+                  variant="secondary"
+                  type="button"
+                  icon={<ArrowLeftIcon aria-hidden />}
+                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Forrige steg
+                </Button>
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={handleSubmit}
+                  iconPosition="right"
+                  icon={<ArrowRightIcon aria-hidden />}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Neste steg
+                </Button>
+              </HStack>
+            </VStack>
           </Form>
         </VStack>
       </VStack>

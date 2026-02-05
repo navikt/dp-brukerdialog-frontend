@@ -1,14 +1,29 @@
-import { Alert, BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
-import { useLoaderData, useNavigation, useParams } from "react-router";
+import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
+import { BodyLong, Button, ErrorMessage, Heading, InfoCard, VStack } from "@navikt/ds-react";
+import { useForm } from "@rvf/react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import { z } from "zod";
 import { stegISøknaden } from "~/routes/$soknadId";
-import { loader } from "~/routes/$soknadId.oppsummering";
-import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import { action, loader } from "~/routes/$soknadId.oppsummering";
 import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
+import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+
+const schema = z.object({});
 
 export default function OppsummeringView() {
+  const seksjonnavn = "Se over før du sender inn";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
   const { soknadId } = useParams();
   const { state } = useNavigation();
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: schema,
+    defaultValues: {},
+  });
 
   if (!loaderData) {
     return null;
@@ -16,11 +31,20 @@ export default function OppsummeringView() {
 
   return (
     <div className="innhold">
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
         <VStack gap="6">
-          <Alert variant="warning" fullWidth>
-            Husk å trykke på "Send søknad" nederst på siden før du avslutter
-          </Alert>
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
+          <InfoCard data-color="warning">
+            <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
+              <InfoCard.Title>Søknaden din er ikke sendt enda</InfoCard.Title>
+            </InfoCard.Header>
+            <InfoCard.Content>
+              <BodyLong>Husk å trykke på "Send søknad" nederst på siden før du avslutter.</BodyLong>
+            </InfoCard.Content>
+          </InfoCard>
           <BodyLong>
             Nå kan du se over at alt er riktig før du sender inn søknaden. Ved behov kan du endre
             opplysningene.
@@ -29,7 +53,10 @@ export default function OppsummeringView() {
             Når du har sendt inn søknaden kommer du til en kvitteringsside med informasjon om veien
             videre. Der kan du også ettersende dokumentasjon som mangler.
           </BodyLong>
-          <h2>Dine svar</h2>
+          <Heading size="medium" level="2">
+            Dine svar
+          </Heading>
+
           {stegISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
@@ -42,12 +69,23 @@ export default function OppsummeringView() {
               />
             );
           })}
-          <DokumentasjonOppsummering søknadId={soknadId} dokumentasjonskrav={loaderData.dokumentasjonskrav}/>
-          <HStack className="mt-4">
-            <form method="POST">
-              <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
-            </form>
-          </HStack>
+
+          <DokumentasjonOppsummering
+            søknadId={soknadId}
+            dokumentasjonskrav={loaderData.dokumentasjonskrav}
+          />
+
+          <Form {...form.getFormProps()}>
+            <Button loading={state === "submitting" || state === "loading"} className="mt-4">
+              Send søknad
+            </Button>
+          </Form>
+
+          {actionData?.error && (
+            <ErrorMessage showIcon aria-live="polite">
+              {actionData.error}
+            </ErrorMessage>
+          )}
         </VStack>
       </VStack>
     </div>

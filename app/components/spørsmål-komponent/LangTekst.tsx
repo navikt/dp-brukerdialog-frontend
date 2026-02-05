@@ -18,7 +18,7 @@ export function LangTekst({ props, formScope }: IProps) {
       defaultValue={(field.value() as string) ?? undefined}
       description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={props.id}
-      maxLength={props.maxLength}
+      maxLength={props.maksLengde}
       error={field.error()}
     />
   );

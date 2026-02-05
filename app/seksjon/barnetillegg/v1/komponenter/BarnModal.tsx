@@ -2,7 +2,6 @@ import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
-import { z } from "zod";
 import { Komponent } from "~/components/Komponent";
 import {
   ModalOperasjon,
@@ -19,7 +18,9 @@ import {
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { useEffect, useRef, useState } from "react";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -28,6 +29,9 @@ interface IProps {
 }
 
 export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
+  const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
+    useState(false);
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -40,6 +44,11 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilBarnManueltSchema,
+    validationBehaviorConfig: {
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
+      whenSubmitted: "onBlur",
+    },
     defaultValues: modalData?.barn ?? {},
     handleSubmit: (skjemaData) => {
       const barn: BarnLagtManuelt = {
@@ -69,6 +78,12 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
     },
     resetAfterSubmit: true,
   });
+
+  useEffect(() => {
+    if (stengModalSelvOmDetErUlagredeEndringer) {
+      setModalData(undefined);
+    }
+  }, [stengModalSelvOmDetErUlagredeEndringer]);
 
   function leggTilEtBarn(barnProps: BarnLagtManuelt) {
     const dokumentasjonskravId = crypto.randomUUID();
@@ -118,49 +133,62 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       <PersonPencilIcon aria-hidden />
     );
 
-  const modalTittel =
-    modalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til barn" : "Rediger barn";
+  const modalOperasjon = modalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
 
   return (
-    <Modal
-      ref={ref}
-      width={700}
-      aria-labelledby="modal-heading"
-      onClose={() => setModalData(undefined)}
-    >
-      <Modal.Header>
-        <Heading level="1" size="medium" id="modal-heading">
-          <HStack gap="2">
-            {modalIkon}
-            {modalTittel}
-          </HStack>
-        </Heading>
-      </Modal.Header>
-      <Modal.Body>
-        <Form {...form.getFormProps()}>
-          <VStack gap="4" className="mt-4">
-            {leggTilBarnManueltSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
-                return null;
-              }
-
-              return (
-                <Komponent
-                  key={spørsmål.id}
-                  props={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
-                />
-              );
-            })}
-
-            <HStack className="mt-4" justify="end">
-              <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
-                Lagre og lukk
-              </Button>
+    <>
+      <Modal
+        ref={ref}
+        width={700}
+        aria-labelledby="modal-heading"
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setModalData(undefined)}
+      >
+        <Modal.Header>
+          <Heading level="1" size="medium" id="modal-heading">
+            <HStack gap="2">
+              {modalIkon}
+              {modalOperasjon} barn du forsørger
             </HStack>
-          </VStack>
-        </Form>
-      </Modal.Body>
-    </Modal>
+          </Heading>
+        </Modal.Header>
+        <Modal.Body>
+          <Form {...form.getFormProps()}>
+            <VStack gap="4" className="mt-4">
+              {leggTilBarnManueltSpørsmål.map((spørsmål) => {
+                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                  return null;
+                }
+
+                return (
+                  <Komponent
+                    key={spørsmål.id}
+                    props={spørsmål}
+                    formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
+                  />
+                );
+              })}
+
+              <HStack className="mt-4" justify="end">
+                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
+                  Lagre og lukk
+                </Button>
+              </HStack>
+            </VStack>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <EndringerErIkkeLagretModal
+        ref={endringerErIkkeLagretModalRef}
+        setStengModalSelvOmDetErUlagredeEndringer={setStengModalSelvOmDetErUlagredeEndringer}
+      />
+    </>
   );
 }

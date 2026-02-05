@@ -4,11 +4,10 @@ import {
   arbeidsgiverErKonkurs,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { addYears, endOfDay, startOfDay, subMonths, subYears } from "date-fns";
 
-export const konkursVarighetPåArbeidsforholdetFraOgMedDato =
-  "konkursVarighetPåArbeidsforholdetFraOgMedDato";
-export const konkursVarighetPåArbeidsforholdetTilOgMedDato =
-  "konkursVarighetPåArbeidsforholdetTilOgMedDato";
+export const konkursVarighetPåArbeidsforholdetFraDato = "konkursVarighetPåArbeidsforholdetFraDato";
+export const konkursVarighetPåArbeidsforholdetTilDato = "konkursVarighetPåArbeidsforholdetTilDato";
 export const konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato =
   "konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato";
 export const konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet =
@@ -31,17 +30,20 @@ export const konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinG
 
 export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[] = [
   {
-    id: konkursVarighetPåArbeidsforholdetFraOgMedDato,
+    id: konkursVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
+    referanseId: konkursVarighetPåArbeidsforholdetTilDato,
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
   },
   {
-    id: konkursVarighetPåArbeidsforholdetTilOgMedDato,
+    id: konkursVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
+    referanseId: konkursVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
   },
@@ -86,6 +88,8 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
     type: "dato",
     label: "Oppgi den kontraktsfestede sluttdatoen for dette arbeidsforholdet",
+    fraOgMed: startOfDay(subMonths(new Date(), 9)),
+    tilOgMed: endOfDay(addYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato] === "ja",
   },
@@ -114,7 +118,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     label: "Les mer om hvem som bør søke om forskudd på lønnsgarantimidler",
     description:
       "<p>Når arbeidsgiveren din går konkurs, kan du i tillegg til dagpenger søke om:</p>" +
-      '<ol><li><strong>Lønnsgarantimidler</strong><br/>Lønnsgarantiordningen skal sikre at du som arbeidstaker får utbetalt lønn, feriepenger og annet arbeidsvederlag som du har til gode når arbeidsgiveren din går konkurs. Send <a href="https://www.nav.no/soknader#lonnsgaranti">søknad om lønnsgarantimidler</a> via bostyrer i konkursboet.</li>' +
+      '<ol><li><strong>Lønnsgarantimidler</strong><br/>Lønnsgarantiordningen skal sikre at du som arbeidstaker får utbetalt lønn, feriepenger og annet arbeidsvederlag som du har til gode når arbeidsgiveren din går konkurs. Send <a href="https://www.nav.no/soknader#lonnsgaranti" target="_blank" rel="noopener noreferrer">søknad om lønnsgarantimidler</a> via bostyrer i konkursboet.</li>' +
       '<li><strong>Forskudd på lønnsgarantimidler i form av dagpenger</strong><br/>Du kan få forskudd på lønnsgarantimidler i form av dagpenger for den første måneden etter at arbeidsgiveren din er konkurs. Dette er fordi det kan ta lang tid å få svar på søknaden om lønnsgaranti. Du søker om forskudd ved å svare "Ja" på spørsmålet over.</li></ol>' +
       "<p>Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd. Du må da også sende en egen søknad om lønnsgarantimidler. Dette kan bostyrer hjelpe deg med.</p>",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -124,9 +128,9 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerVarselemdling",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
-      '<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href="https://www.nav.no/soknader#lonnsgaranti">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>',
+      '<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href="https://www.nav.no/soknader#lonnsgaranti" target="_blank" rel="noopener noreferrer">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>',
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
   },
@@ -224,7 +228,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: "konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningenInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag",
+    label: "Du kan få avslag på søknaden",
     description:
       '<p>Hvis du svarer "Nei" vil du få avslag på søknaden om forskudd på lønnsgarantimidler.</p>' +
       "<p>Vi må trekke forskuddet fra lønnsgarantimidlene dine for å hindre at du får dobbelt utbetaling for den første måneden.</p>",
@@ -260,7 +264,7 @@ export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[
     id: "konkursHarDuSøktOmLønnsgarantimidlerInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag",
+    label: "Du kan få avslag på søknaden",
     description:
       "Hvis du ikke søker om lønnsgarantimidler, har du ikke rett til forskudd, og du vil få avslag på søknaden din om forskudd på lønnsgarantimidler.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>

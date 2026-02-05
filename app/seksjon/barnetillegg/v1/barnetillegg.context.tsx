@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { BarnFraPdl, BarnLagtManuelt } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",

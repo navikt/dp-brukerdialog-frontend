@@ -8,12 +8,15 @@ import {
   egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukKomponenter,
   EgenNæringSvar,
+  gårdsbruketsNavn,
   hvemEierGårdsbruket,
   hvilkeTypeGårdsbrukDriverDu,
   hvordanHarDuBeregnetAntallArbeidstimerTotalt,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
+  hvorMangeProsentAvInntektenGårTilAndre,
   hvorMangeProsentAvInntektenGårTilDeg,
+  hvorMangeProsentAvInntektenGårTilSamboerEktefelle,
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
   hvorMangeTimerJobbetPerUkeNå,
   jeg,
@@ -22,11 +25,13 @@ import {
   LeggTilGårdsbrukSvar,
   leggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
+  nårBleArbeidstidenRedusert,
   organisasjonsnummer,
   pdfGrunnlag,
   samboerEktefelle,
   seksjonsvar,
   skog,
+  virksomhetensNavn,
 } from "./egen-næring.komponenter";
 import { valider } from "~/utils/validering.utils";
 import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
@@ -60,7 +65,9 @@ export const egenNæringSchema = z
 
 export const leggTilNæringsvirksomhetSchema = z
   .object({
+    [virksomhetensNavn]: z.string().optional(),
     [organisasjonsnummer]: z.string().optional(),
+    [nårBleArbeidstidenRedusert]: z.string().optional(),
     [hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]: z.string().optional(),
     [hvorMangeTimerJobbetPerUkeNå]: z.string().optional(),
   })
@@ -75,9 +82,12 @@ export const leggTilNæringsvirksomhetSchema = z
 export const leggTilGårdsbrukSchema = z
   .object({
     [organisasjonsnummer]: z.string().optional(),
+    [gårdsbruketsNavn]: z.string().optional(),
     [hvilkeTypeGårdsbrukDriverDu]: z.array(z.enum([dyr, jord, skog, annet])).optional(),
     [hvemEierGårdsbruket]: z.array(z.enum([jeg, samboerEktefelle, andre])).optional(),
     [hvorMangeProsentAvInntektenGårTilDeg]: z.string().optional(),
+    [hvorMangeProsentAvInntektenGårTilSamboerEktefelle]: z.string().optional(),
+    [hvorMangeProsentAvInntektenGårTilAndre]: z.string().optional(),
     [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]: z.string().optional(),
     [hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]: z
       .string()

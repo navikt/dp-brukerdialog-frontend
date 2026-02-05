@@ -4,30 +4,35 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
   kontraktenErUtgått,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
-export const kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato =
-  "kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato";
-export const kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato =
-  "kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato";
+export const kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato =
+  "kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato";
+export const kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato =
+  "kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato";
 export const kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver =
   "kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver";
-export const kontraktenErUtgåttHvaHarDuSvartPåTilbudet = "kontraktenErUtgåttHvaHarDuSvartPåTilbudet";
+export const kontraktenErUtgåttHvaHarDuSvartPåTilbudet =
+  "kontraktenErUtgåttHvaHarDuSvartPåTilbudet";
 export const kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
   "kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
 export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] = [
   {
-    id: kontraktenErUtgåttVarighetPåArbeidsforholdetFraOgMedDato,
+    id: kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
     periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra og med",
+    label: "Fra dato",
+    referanseId: kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
+    fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
   },
   {
-    id: kontraktenErUtgåttVarighetPåArbeidsforholdetTilOgMedDato,
+    id: kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til og med",
+    label: "Til dato",
+    referanseId: kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
   },
@@ -68,7 +73,7 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
     id: "kontraktenErUtgåttHvaHarDuSvartPåTilbudetOmForlengelseAvArbeidskontraktenEllerAnnenStillingInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Viktig informasjon",
+    label: "Informasjon",
     description:
       "<p>Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.</p>" +
       "<p>Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
@@ -80,7 +85,7 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
     id: kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
     type: "langTekst",
     label: "Hva er årsaken til at du ikke har tatt imot tilbudet?",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[kontraktenErUtgåttHvaHarDuSvartPåTilbudet] === "nei",
   },

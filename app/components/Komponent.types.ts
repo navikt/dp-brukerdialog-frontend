@@ -60,11 +60,12 @@ export type FlervalgSpørsmål = SpørsmålBase & {
 
 export type LangTekstSpørsmål = SpørsmålBase & {
   type: "langTekst";
-  maxLength?: number;
+  maksLengde?: number;
 };
 
 export type KortTekstSpørsmål = SpørsmålBase & {
   type: "kortTekst";
+  maksLengde?: number;
 };
 
 export type DatoSpørsmål = SpørsmålBase & {
@@ -75,9 +76,10 @@ export type DatoSpørsmål = SpørsmålBase & {
 
 export type PeriodeSpørsmål = SpørsmålBase & {
   type: "periodeFra" | "periodeTil";
-  fraOgMed?: DatoSpørsmål;
-  tilOgMed?: DatoSpørsmål;
+  fraOgMed?: Date;
+  tilOgMed?: Date;
   periodeLabel?: string;
+  referanseId?: string;
 };
 
 export type LandSpørsmål = SpørsmålBase & {
@@ -87,6 +89,7 @@ export type LandSpørsmål = SpørsmålBase & {
 
 export type TallSpørsmål = SpørsmålBase & {
   type: "tall";
+  maksVerdi?: number;
 };
 
 export type NedtrekkslisteSpørsmål = SpørsmålBase & {

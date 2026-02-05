@@ -14,9 +14,10 @@ import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPe
 import { PengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorge } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "annen-pengestotte";
@@ -24,6 +25,7 @@ const NESTE_SEKSJON_ID = "egen-naring";
 const FORRIGE_SEKSJON_ID = "arbeidsforhold";
 
 export type SeksjonSvar = AnnenPengestøtteSvar & {
+  pengestøtteFraTidligereArbeidsgiver?: PengestøtteFraTidligereArbeidsgiver[];
   pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLand[];
   pengestøtteFraNorge?: PengestøtteFraNorge[];
 };
@@ -103,6 +105,9 @@ export default function AnnenPengestøtteRoute() {
     case 1:
       return (
         <AnnenPengestøtteProvider
+          pengestøtteFraTidligereArbeidsgiver={
+            seksjon?.seksjonsvar?.pengestøtteFraTidligereArbeidsgiver ?? []
+          }
           pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
@@ -116,6 +121,9 @@ export default function AnnenPengestøtteRoute() {
       );
       return (
         <AnnenPengestøtteProvider
+          pengestøtteFraTidligereArbeidsgiver={
+            seksjon?.seksjonsvar?.pengestøtteFraTidligereArbeidsgiver ?? []
+          }
           pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}

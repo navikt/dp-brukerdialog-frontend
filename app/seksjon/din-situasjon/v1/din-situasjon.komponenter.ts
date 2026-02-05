@@ -32,7 +32,7 @@ export const dinSituasjonKomponenter: KomponentType[] = [
     label: "Skriv om årsaken til at dagpengene ble stanset",
     description:
       "For eksempel om du har hatt arbeid, vært syk, på ferie, glemt å sende meldekort, vært i utdanning eller hatt foreldrepermisjon.",
-    maxLength: 500,
+    maksLengde: 500,
     visHvis: (svar: DinSituasjonSvar) =>
       svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
   },

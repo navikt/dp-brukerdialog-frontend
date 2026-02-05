@@ -1,10 +1,24 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, BodyShort, Button, HStack, Label, VStack } from "@navikt/ds-react";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
-import { action, loader } from "~/routes/$soknadId.personalia";
-import { Komponent } from "~/components/Komponent";
+import {
+  Alert,
+  BodyLong,
+  BodyShort,
+  Button,
+  Heading,
+  HStack,
+  Label,
+  VStack,
+  Link,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
+import { EksterneLenke } from "~/components/EksterneLenke";
+import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { action, loader } from "~/routes/$soknadId.personalia";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,
@@ -26,15 +40,15 @@ import {
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -56,8 +70,8 @@ export function PersonaliaViewV1() {
     submitSource: "state",
     schema: personaliaSchema,
     validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
+      initial: "onSubmit",
+      whenTouched: "onSubmit",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -67,13 +81,17 @@ export function PersonaliaViewV1() {
   form.setValue(mellomnavnFraPdl, mellomnavn || "");
   form.setValue(etternavnFraPdl, etternavn || "");
   form.setValue(fødselsnummerFraPdl, ident || "");
-  form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
-  form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
-  form.setValue(adresselinje3FraPdl, folkeregistrertAdresse.adresselinje3 || "");
-  form.setValue(postnummerFraPdl, folkeregistrertAdresse.postnummer || "");
-  form.setValue(poststedFraPdl, folkeregistrertAdresse.poststed || "");
-  form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
-  form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
+
+  if (folkeregistrertAdresse) {
+    form.setValue(adresselinje1FraPdl, folkeregistrertAdresse.adresselinje1 || "");
+    form.setValue(adresselinje2FraPdl, folkeregistrertAdresse.adresselinje2 || "");
+    form.setValue(adresselinje3FraPdl, folkeregistrertAdresse.adresselinje3 || "");
+    form.setValue(postnummerFraPdl, folkeregistrertAdresse.postnummer || "");
+    form.setValue(poststedFraPdl, folkeregistrertAdresse.poststed || "");
+    form.setValue(landkodeFraPdl, folkeregistrertAdresse.landkode || "");
+    form.setValue(landFraPdl, folkeregistrertAdresse.land || "");
+  }
+
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
@@ -111,12 +129,16 @@ export function PersonaliaViewV1() {
 
   return (
     <div className="innhold">
-      <h2>{seksjonnavn}</h2>
+      <title>{seksjonHeadTitle}</title>
       <VStack gap="20">
-        <VStack gap="4">
+        <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
           <BodyLong>
             Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
-            Kontonummer kan du legge til eller endre på <a href="https://www.nav.no/">Min side</a>.
+            Kontonummer kan du legge til eller endre på{" "}
+            <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
           </BodyLong>
 
           <VStack gap="0">
@@ -134,34 +156,29 @@ export function PersonaliaViewV1() {
               <Label as="p">Alder</Label>
               <BodyShort>{alder}</BodyShort>
             </div>
-            <div className="mb-4">
-              <Label as="p">Folkeregistrert adresse</Label>
-              <BodyShort>
-                {folkeregistrertAdresse && (
-                  <>
-                    {folkeregistrertAdresse.adresselinje1}{" "}
-                    {folkeregistrertAdresse.adresselinje1 && <br />}
-                    {folkeregistrertAdresse.adresselinje2}{" "}
-                    {folkeregistrertAdresse.adresselinje2 && <br />}
-                    {folkeregistrertAdresse.adresselinje3}{" "}
-                    {folkeregistrertAdresse.adresselinje3 && <br />}
-                    {folkeregistrertAdresse.postnummer} {folkeregistrertAdresse.poststed}{" "}
-                    {folkeregistrertAdresse.land && <br />}
-                    {folkeregistrertAdresse.land}
-                  </>
-                )}
-                {!folkeregistrertAdresse && (
-                  <>Det er ikke registert adresse på deg i Folkeregisteret.</>
-                )}
-              </BodyShort>
-            </div>
+            {folkeregistrertAdresse && (
+              <div className="mb-4">
+                <Label as="p">Folkeregistrert adresse</Label>
+                <BodyShort>
+                  {folkeregistrertAdresse.adresselinje1}{" "}
+                  {folkeregistrertAdresse.adresselinje1 && <br />}
+                  {folkeregistrertAdresse.adresselinje2}{" "}
+                  {folkeregistrertAdresse.adresselinje2 && <br />}
+                  {folkeregistrertAdresse.adresselinje3}{" "}
+                  {folkeregistrertAdresse.adresselinje3 && <br />}
+                  {folkeregistrertAdresse.postnummer} {folkeregistrertAdresse.poststed}{" "}
+                  {folkeregistrertAdresse.land && <br />}
+                  {folkeregistrertAdresse.land}
+                </BodyShort>
+              </div>
+            )}
             <div className="mb-4">
               <Label as="p">Kontonummer</Label>
               <BodyShort>
                 {formattertKontonummer || (
                   <span>
                     Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på{" "}
-                    <a href="https://www.nav.no/">Min side</a>.
+                    <EksterneLenke href="https://www.nav.no/minside" tekst="Min side" />.
                   </span>
                 )}
               </BodyShort>
@@ -205,18 +222,21 @@ export function PersonaliaViewV1() {
               )}
             </VStack>
 
-            <HStack gap="4" className="mt-8">
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleSubmit}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            <VStack className="mt-8" gap="4">
+              <SistOppdatert />
+              <HStack gap="4">
+                <Button
+                  variant="primary"
+                  type="button"
+                  onClick={handleSubmit}
+                  iconPosition="right"
+                  icon={<ArrowRightIcon aria-hidden />}
+                  disabled={state === "submitting" || state === "loading"}
+                >
+                  Neste steg
+                </Button>
+              </HStack>
+            </VStack>
           </Form>
         </VStack>
       </VStack>
