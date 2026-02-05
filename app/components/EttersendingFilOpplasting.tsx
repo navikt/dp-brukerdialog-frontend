@@ -6,7 +6,7 @@ import {
   DokumentkravFil,
   FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { useEttersendingContext } from "~/seksjon/ettersending/ettersending.context";
+import { useEttersending } from "~/seksjon/ettersending/ettersending.context";
 import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,
@@ -19,15 +19,15 @@ import {
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
 
 interface IProps {
-  dokumentasjonskrav: Dokumentasjonskrav;
+  ettersending: Dokumentasjonskrav;
 }
 
-export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
+export function EttersendingFilOpplasting({ ettersending }: IProps) {
   const { soknadId } = useParams();
-  const { oppdaterEttersending, valideringStartet } = useEttersendingContext();
+  const { oppdaterEttersending, valideringStartet } = useEttersending();
 
-  const dokumentkravFiler = dokumentasjonskrav.filer || [];
-  const antallFeil = dokumentkravFiler.filter((fil) => fil.feil).length;
+  const ettersendingFiler = ettersending.filer || [];
+  const antallFeil = ettersendingFiler.filter((fil) => fil.feil).length;
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -35,7 +35,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
 
     filer.forEach((fil: FileObject) => {
       const erGyldigFormat = TILLATTE_FILFORMAT.some((format) => fil.file.name.endsWith(format));
-      const erDuplikat = dokumentkravFiler.some(
+      const erDuplikat = ettersendingFiler.some(
         (f) => f.filnavn === fil.file.name && f.storrelse === fil.file.size
       );
 
@@ -68,8 +68,8 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
     });
 
     oppdaterEttersending({
-      ...dokumentasjonskrav,
-      filer: [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
+      ...ettersending,
+      filer: [...ettersendingFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
     });
 
     if (filerKlarTilOpplasting.length > 0) {
@@ -83,7 +83,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
           const formData = new FormData();
           formData.append("fil", fil.file);
 
-          const url = `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/last-opp-fil`;
+          const url = `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/last-opp-fil`;
           const respons = await fetch(url, { method: "POST", body: formData });
 
           if (!respons.ok) {
@@ -107,10 +107,10 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
         })
       );
 
-      const oppdaterteFiler = [...dokumentkravFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
+      const oppdaterteFiler = [...ettersendingFiler, ...filerKlarTilOpplasting, ...filerMedFeil];
 
       oppdaterEttersending({
-        ...dokumentasjonskrav,
+        ...ettersending,
         filer: oppdaterteFiler.map((fil) => ({
           ...fil,
           ...responser.find((respons) => respons?.id === fil.id),
@@ -122,8 +122,8 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
   async function slettEnFil(fil: DokumentkravFil) {
     if (fil.feil || !fil.filsti) {
       oppdaterEttersending({
-        ...dokumentasjonskrav,
-        filer: dokumentkravFiler.filter((f) => f.id !== fil.id),
+        ...ettersending,
+        filer: ettersendingFiler.filter((f) => f.id !== fil.id),
       });
 
       return;
@@ -133,7 +133,7 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
     formData.append("filsti", fil.filsti);
 
     const response = await fetch(
-      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/slett-fil`,
+      `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
       {
         method: "POST",
         body: formData,
@@ -145,8 +145,8 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
     }
 
     oppdaterEttersending({
-      ...dokumentasjonskrav,
-      filer: dokumentkravFiler.filter((f) => f.filsti !== fil.filsti),
+      ...ettersending,
+      filer: ettersendingFiler.filter((f) => f.filsti !== fil.filsti),
     });
 
     return await response.text();
@@ -157,30 +157,30 @@ export function EttersendingFilOpplasting({ dokumentasjonskrav }: IProps) {
       <VStack gap="4">
         <HStack justify="space-between">
           <Heading size="small" level="3">
-            {dokumentasjonskrav.tittel || "Dokumentasjon"}
+            {ettersending.tittel || "Dokumentasjon"}
           </Heading>
           <Tag variant="warning" size="xsmall">
             Mangler
           </Tag>
         </HStack>
 
-        {dokumentasjonskrav.type && <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />}
+        {ettersending.type && <DokumentasjonskravInnhold type={ettersending.type} />}
 
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
             className="mt-4 fileUpload"
             label="Last opp dokument"
             description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
-            fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentkravFiler.length }}
+            fileLimit={{ max: MAX_ANTALL_FILER, current: ettersendingFiler.length }}
             accept={hentTillatteFiltyperString()}
             onSelect={(filer) => lastOppfiler(filer)}
           />
         </form>
       </VStack>
 
-      {dokumentkravFiler.length > 0 && (
+      {ettersendingFiler.length > 0 && (
         <VStack gap="4" className="mt-8">
-          {dokumentkravFiler?.map((fil) => (
+          {ettersendingFiler?.map((fil) => (
             <FileUploadItem
               key={fil.id}
               file={

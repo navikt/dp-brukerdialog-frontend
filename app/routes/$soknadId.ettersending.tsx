@@ -1,36 +1,43 @@
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
-import { dokumentkravSvarSenderSenere } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import { hentDokumentasjonskrav as hentDokumentasjonskravene } from "~/models/hent-dokumentasjonskrav.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { dokumentkravSvarSenderSenere } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { EttersendingProvider } from "~/seksjon/ettersending/ettersending.context";
 import { EttersendingView } from "~/seksjon/ettersending/EttersendingView";
 
 export type Ettersending = {
-  dokumentasjonskrav: Dokumentasjonskrav[] | null;
-  ettersending: Dokumentasjonskrav[] | null;
+  søknadId: string;
+  dokumentasjonskravene: Dokumentasjonskrav[];
+  ettersendingene: Dokumentasjonskrav[];
 };
 
 export async function loader({ request, params }: LoaderFunctionArgs<Ettersending>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentDokumentasjonskrav(request, params.soknadId);
+  const response = await hentDokumentasjonskravene(request, params.soknadId);
 
   if (!response.ok) {
-    return { dokumentasjonskrav: null, ettersending: null };
+    return { søknadId: params.soknadId, dokumentasjonskravene: [], ettersendingene: [] };
   }
 
-  const dokumentkravJson = await response.json();
-  const dokumentasjonskrav = dokumentkravJson.flatMap((krav: string) => JSON.parse(krav));
-  const ettersending = dokumentasjonskrav.filter(
+  const dokumentasjonskraveneJson = await response.json();
+  const dokumentasjonskravene = dokumentasjonskraveneJson.flatMap((krav: string) =>
+    JSON.parse(krav)
+  );
+  const ettersendingene = dokumentasjonskravene.filter(
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
-  if (ettersending.length === 0) {
+  if (ettersendingene.length === 0) {
     return redirect(`/soknad/${params.soknadId}/kvittering`);
   }
 
-  return { dokumentasjonskrav: dokumentasjonskrav || [], ettersending: ettersending || [] };
+  return {
+    søknadId: params.soknadId,
+    dokumentasjonskravene: dokumentasjonskravene || [],
+    ettersendingene: ettersendingene || [],
+  };
 }
 
 export default function EttersendingRoute() {
@@ -38,8 +45,9 @@ export default function EttersendingRoute() {
 
   return (
     <EttersendingProvider
-      dokumentasjonskrav={loaderData?.dokumentasjonskrav}
-      ettersending={loaderData?.ettersending}
+      dokumentasjonskravene={loaderData.dokumentasjonskravene}
+      ettersendingene={loaderData.ettersendingene}
+      søknadId={loaderData.søknadId}
     >
       <EttersendingView />
     </EttersendingProvider>
