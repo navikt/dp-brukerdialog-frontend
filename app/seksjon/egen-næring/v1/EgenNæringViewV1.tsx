@@ -1,18 +1,11 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import {
-  Button,
-  ErrorMessage,
-  Heading,
-  HStack,
-  InlineMessage,
-  LocalAlert,
-  VStack,
-} from "@navikt/ds-react";
+import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -269,12 +262,10 @@ export function EgenNæringViewV1() {
             )}
 
             {actionData && (
-              <LocalAlert status="error">
-                <LocalAlert.Header>
-                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
-                </LocalAlert.Header>
-                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
-              </LocalAlert>
+              <SeksjonTekniskFeil
+                tittel="Det har oppstått en teknisk feil"
+                beskrivelse={actionData.error}
+              />
             )}
           </VStack>
         </Form>

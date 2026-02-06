@@ -13,6 +13,7 @@ import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { SøknadFooter } from "~/components/SøknadFooter";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();
@@ -65,9 +66,10 @@ export function DokumentasjonView() {
         </VStack>
 
         {!lagrer && harTekniskFeil && (
-          <ErrorMessage>
-            Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt.
-          </ErrorMessage>
+          <SeksjonTekniskFeil
+            tittel="Det har oppstått en teknisk feil"
+            beskrivelse="Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt"
+          />
         )}
 
         <VStack className="seksjon-navigasjon" gap="4">

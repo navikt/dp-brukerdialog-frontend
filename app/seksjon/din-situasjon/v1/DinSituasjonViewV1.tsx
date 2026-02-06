@@ -1,9 +1,10 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Button, Heading, HStack, LocalAlert, VStack } from "@navikt/ds-react";
+import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
@@ -91,12 +92,10 @@ export function DinSituasjonViewV1() {
         </Form>
 
         {actionData && (
-          <LocalAlert status="error">
-            <LocalAlert.Header>
-              <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
-            </LocalAlert.Header>
-            <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
-          </LocalAlert>
+          <SeksjonTekniskFeil
+            tittel="Det har oppstått en teknisk feil"
+            beskrivelse={actionData.error}
+          />
         )}
 
         <VStack className="seksjon-navigasjon" gap="4">
