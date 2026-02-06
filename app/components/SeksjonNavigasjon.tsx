@@ -3,7 +3,7 @@ import { SistOppdatert } from "./SistOppdatert";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 
 interface IProps {
-  onForrigeSteg: () => void;
+  onForrigeSteg?: () => void;
   onNesteSteg: () => void;
   lagrer: boolean;
 }
@@ -13,15 +13,18 @@ export function SeksjonNavigasjon({ onForrigeSteg, onNesteSteg, lagrer }: IProps
     <VStack className="seksjon-navigasjon" gap="4">
       <SistOppdatert />
       <HStack gap="4">
-        <Button
-          variant="secondary"
-          type="button"
-          icon={<ArrowLeftIcon aria-hidden />}
-          onClick={onForrigeSteg}
-          disabled={lagrer}
-        >
-          Forrige steg
-        </Button>
+        {onForrigeSteg && (
+          <Button
+            variant="secondary"
+            type="button"
+            icon={<ArrowLeftIcon aria-hidden />}
+            onClick={onForrigeSteg}
+            disabled={lagrer}
+          >
+            Forrige steg
+          </Button>
+        )}
+
         <Button
           variant="primary"
           type="button"

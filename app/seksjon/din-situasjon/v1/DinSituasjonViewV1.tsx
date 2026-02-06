@@ -87,14 +87,16 @@ export function DinSituasjonViewV1() {
                 />
               );
             })}
+
+            {actionData && (
+              <SeksjonTekniskFeil
+                tittel="Det har oppstått en teknisk feil"
+                beskrivelse={actionData.error}
+              />
+            )}
           </VStack>
         </Form>
-        {actionData && (
-          <SeksjonTekniskFeil
-            tittel="Det har oppstått en teknisk feil"
-            beskrivelse={actionData.error}
-          />
-        )}
+
         <SeksjonNavigasjon
           onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
           onNesteSteg={lagreSvar}

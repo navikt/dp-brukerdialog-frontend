@@ -271,14 +271,14 @@ export function EgenNæringViewV1() {
         </Form>
       </VStack>
 
+      {næringsvirksomhetModalData && <NæringsvirksomhetModal ref={næringsvirksomhetModalRef} />}
+      {gårdsbrukModalData && <GårdsbrukModal ref={gårdsbrukModalRef} />}
+
       <SeksjonNavigasjon
         onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
         onNesteSteg={lagreSvar}
         lagrer={state === "submitting" || state === "loading"}
       />
-
-      {næringsvirksomhetModalData && <NæringsvirksomhetModal ref={næringsvirksomhetModalRef} />}
-      {gårdsbrukModalData && <GårdsbrukModal ref={gårdsbrukModalRef} />}
 
       <SøknadFooter
         søknadId={soknadId}

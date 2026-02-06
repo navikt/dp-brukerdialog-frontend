@@ -1,12 +1,11 @@
-import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { BodyLong, BodyShort, Button, Heading, HStack, Label, VStack } from "@navikt/ds-react";
+import { BodyLong, BodyShort, Heading, Label, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
-import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.personalia";
@@ -47,7 +46,25 @@ export function PersonaliaViewV1() {
   const actionData = useActionData<typeof action>();
 
   if (!personalia) {
-    return <h1>Ingen personalia funnet</h1>;
+    return (
+      <div className="innhold">
+        <title>{seksjonHeadTitle}</title>
+        <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
+          <LocalAlert status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+              Vi klarte ikke å hente dine personalia opplysninger. Prøv igjen senere.
+            </LocalAlert.Content>
+          </LocalAlert>
+        </VStack>
+        <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
+      </div>
+    );
   }
 
   const { fornavn, mellomnavn, etternavn, ident, alder, folkeregistrertAdresse } =
@@ -212,24 +229,14 @@ export function PersonaliaViewV1() {
               />
             )}
           </VStack>
-
-          <VStack className="seksjon-navigasjon" gap="4">
-            <SistOppdatert />
-            <HStack gap="4">
-              <Button
-                variant="primary"
-                type="button"
-                onClick={lagreSvar}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
-          </VStack>
         </Form>
       </VStack>
+
+      <SeksjonNavigasjon
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
+      />
+
       <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
     </div>
   );

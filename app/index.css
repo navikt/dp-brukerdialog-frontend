@@ -7,7 +7,7 @@
 #maincontent {
   max-width: var(--app-max-width);
   min-height: var(--app-min-height);
-  margin: var(--ax-space-16) auto;
+  margin: var(--ax-space-40) auto;
   padding: var(--ax-space-16);
 }
 
@@ -22,9 +22,14 @@
   margin-top: var(--ax-space-64);
 }
 
+.progressbar {
+  max-width: var(--innhold-max-width);
+  margin: 0 auto var(--ax-space-56);
+}
+
 .innhold {
   max-width: var(--innhold-max-width);
-  margin: 0 auto var(--ax-space-80);
+  margin: 0 auto;
 }
 
 .footer {
