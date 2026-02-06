@@ -1,5 +1,13 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import {
+  Button,
+  ErrorMessage,
+  Heading,
+  HStack,
+  InlineMessage,
+  LocalAlert,
+  VStack,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -217,9 +225,7 @@ export function EgenNæringViewV1() {
                   </Button>
                 </HStack>
                 {visNæringsvirksomhetFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
-                    Du må legge til en næringsvirksomhet
-                  </ErrorMessage>
+                  <InlineMessage status="error">Du må legge til en næringsvirksomhet</InlineMessage>
                 )}
               </VStack>
             )}
@@ -255,14 +261,21 @@ export function EgenNæringViewV1() {
                   </Button>
                 </HStack>
                 {visGårdsbrukFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error" aria-live="polite">
                     Du må legge til et gårdsbruk
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </VStack>
             )}
 
-            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
+            {actionData && (
+              <LocalAlert status="error">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
+              </LocalAlert>
+            )}
           </VStack>
         </Form>
       </VStack>

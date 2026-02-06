@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Box, Button, Checkbox, Heading, VStack } from "@navikt/ds-react";
+import { Alert, Box, Button, Checkbox, Heading, LocalAlert, VStack } from "@navikt/ds-react";
 import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
@@ -76,7 +76,14 @@ export default function OpprettSoknadRoute() {
               </Checkbox>
             </Box.New>
 
-            {actionData && actionData.error && <Alert variant="error">{actionData.error}</Alert>}
+            {actionData && actionData.error && (
+              <LocalAlert status="error" className="mt-4">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
+              </LocalAlert>
+            )}
 
             <Button
               iconPosition="right"

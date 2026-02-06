@@ -1,5 +1,13 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import {
+  Button,
+  ErrorMessage,
+  Heading,
+  HStack,
+  InlineMessage,
+  LocalAlert,
+  VStack,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -349,9 +357,9 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error">
                     Du må legge til utbetalinger eller økonomiske goder
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </VStack>
             )}
@@ -359,6 +367,7 @@ export function AnnenPengestøtteViewV1() {
             <Heading size="small" level="3" className="mt-4">
               Pengestøtte fra Norge
             </Heading>
+
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
 
             {form.value(mottarDuPengestøtteFraAndreEnnNav) === "ja" && (
@@ -382,9 +391,9 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error">
                     Du må legge til pengestøtte fra Norge
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </>
             )}
@@ -422,14 +431,21 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error">
                     Du må legge til pengestøtte fra andre EØS-land
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </>
             )}
 
-            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
+            {actionData && (
+              <LocalAlert status="error">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
+              </LocalAlert>
+            )}
           </VStack>
         </Form>
       </VStack>

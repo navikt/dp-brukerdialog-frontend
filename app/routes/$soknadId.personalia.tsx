@@ -146,8 +146,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   if (lagreSeksjonResponse.status !== 200) {
     return {
-      error:
-        "Det har oppstått en teknisk feil. Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
+      error: "Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
     };
   }
 
@@ -174,8 +173,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   if (lagreSøknadPersonaliaResponse.status !== 200) {
     return {
-      error:
-        "Det har oppstått en teknisk feil. Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
+      error: "Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
     };
   }
 

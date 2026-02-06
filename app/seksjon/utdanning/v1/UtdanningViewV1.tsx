@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, Heading, HStack, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
@@ -110,7 +110,14 @@ export function UtdanningViewV1() {
               );
             })}
 
-            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
+            {actionData && (
+              <LocalAlert status="error">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
+              </LocalAlert>
+            )}
           </VStack>
 
           <VStack className="seksjon-navigasjon" gap="4">

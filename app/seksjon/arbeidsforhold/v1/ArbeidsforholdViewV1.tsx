@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, Heading, HStack, InlineMessage, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -229,14 +229,19 @@ export function ArbeidsforholdViewV1() {
                     </Button>
                   </HStack>
                   {visManglerArbeidsforholdFeilmelding && (
-                    <ErrorMessage showIcon aria-live="polite">
-                      Du må legge til et arbeidsforhold
-                    </ErrorMessage>
+                    <InlineMessage status="error">Du må legge til et arbeidsforhold</InlineMessage>
                   )}
                 </VStack>
               )}
 
-            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
+            {actionData && (
+              <LocalAlert status="error">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
+              </LocalAlert>
+            )}
           </VStack>
         </Form>
 

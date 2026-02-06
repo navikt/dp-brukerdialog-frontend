@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   Label,
+  LocalAlert,
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
@@ -213,7 +214,14 @@ export function PersonaliaViewV1() {
               );
             })}
 
-            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
+            {actionData && (
+              <LocalAlert status="error">
+                <LocalAlert.Header>
+                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                </LocalAlert.Header>
+                <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
+              </LocalAlert>
+            )}
           </VStack>
 
           <VStack className="seksjon-navigasjon" gap="4">
