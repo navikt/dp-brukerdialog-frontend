@@ -181,15 +181,15 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
         ref={ref}
         width={700}
         aria-labelledby="modal-heading"
-        // onBeforeClose={() => {
-        //   if (form.transient.formState.isDirty) {
-        //     endringerErIkkeLagretModalRef.current?.showModal();
-        //     return false;
-        //   } else {
-        //     return true;
-        //   }
-        // }}
-        // onClose={() => setPengestøtteFraAndreEøsLandModalData(undefined)}
+        onBeforeClose={() => {
+          if (form.transient.formState.isDirty) {
+            endringerErIkkeLagretModalRef.current?.showModal();
+            return false;
+          } else {
+            return true;
+          }
+        }}
+        onClose={() => setPengestøtteFraAndreEøsLandModalData(undefined)}
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
