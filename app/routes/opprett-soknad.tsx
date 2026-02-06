@@ -76,11 +76,7 @@ export default function OpprettSoknadRoute() {
               </Checkbox>
             </Box.New>
 
-            {actionData && actionData.error && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
+            {actionData && actionData.error && <Alert variant="error">{actionData.error}</Alert>}
 
             <Button
               iconPosition="right"

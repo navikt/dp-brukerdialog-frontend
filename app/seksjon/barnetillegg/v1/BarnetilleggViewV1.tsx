@@ -142,54 +142,52 @@ export function BarnetilleggViewV1() {
       <Heading size="medium" level="2">
         {seksjonnavn}
       </Heading>
-      {barnetilleggForklarendeTekst.map((komponent) => {
-        if (komponent.visHvis && !komponent.visHvis(form.value())) {
-          return null;
-        }
+      <VStack gap="6">
+        {barnetilleggForklarendeTekst.map((komponent) => {
+          if (komponent.visHvis && !komponent.visHvis(form.value())) {
+            return null;
+          }
 
-        return (
-          <Komponent
-            key={komponent.id}
-            props={komponent}
-            formScope={form.scope(komponent.id as keyof BarnetilleggSvar)}
-          />
-        );
-      })}
-      <VStack gap="6" className="mt-4">
-        <VStack gap="space-16">
-          {barnFraPdl?.map((barn: BarnFraPdl) => (
-            <BarnFraPdlKomponent key={barn.id} barn={barn} />
-          ))}
-        </VStack>
+          return (
+            <Komponent
+              key={komponent.id}
+              props={komponent}
+              formScope={form.scope(komponent.id as keyof BarnetilleggSvar)}
+            />
+          );
+        })}
+
+        {barnFraPdl?.map((barn: BarnFraPdl) => (
+          <BarnFraPdlKomponent key={barn.id} barn={barn} />
+        ))}
+
         <Form {...form.getFormProps()}>
-          <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
-            {barnetilleggKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
-                return null;
-              }
+          <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
+          {barnetilleggKomponenter.map((spørsmål) => {
+            if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              return null;
+            }
 
-              return (
-                <Komponent
-                  key={spørsmål.id}
-                  props={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
-                />
-              );
-            })}
-          </VStack>
+            return (
+              <Komponent
+                key={spørsmål.id}
+                props={spørsmål}
+                formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
+              />
+            );
+          })}
         </Form>
-        <VStack gap="space-16">
-          {barnLagtManuelt?.map((barn: BarnLagtManuelt) => (
-            <BarnLagtManueltKomponent key={barn.id} barn={barn} />
-          ))}
-        </VStack>
+
+        {barnLagtManuelt?.map((barn: BarnLagtManuelt) => (
+          <BarnLagtManueltKomponent key={barn.id} barn={barn} />
+        ))}
+
         {forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && (
           <HStack>
             <Button
               variant="secondary"
               type="submit"
-              icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
+              icon={<PersonPlusIcon aria-hidden />}
               onClick={() => {
                 setModalData({ operasjon: ModalOperasjon.LeggTil });
               }}
@@ -205,46 +203,43 @@ export function BarnetilleggViewV1() {
           </ErrorMessage>
         )}
 
-        {actionData && (
-          <Alert variant="error" className="mt-4">
-            {actionData.error}
-          </Alert>
-        )}
-
-        <VStack gap="4" className="mt-8">
-          <SistOppdatert />
-          <HStack gap="4">
-            <Button
-              variant="secondary"
-              type="button"
-              icon={<ArrowLeftIcon aria-hidden />}
-              onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Forrige steg
-            </Button>
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={handleSubmit}
-              iconPosition="right"
-              icon={<ArrowRightIcon aria-hidden />}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Neste steg
-            </Button>
-          </HStack>
-        </VStack>
-        {modalData && (
-          <BarnModal
-            ref={ref}
-            seksjonId={loaderData.seksjon?.seksjonId}
-            spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
-          />
-        )}
+        {actionData && <Alert variant="error">{actionData.error}</Alert>}
       </VStack>
+
+      <VStack className="seksjon-navigasjon" gap="4">
+        <SistOppdatert />
+        <HStack gap="4">
+          <Button
+            variant="secondary"
+            type="button"
+            icon={<ArrowLeftIcon aria-hidden />}
+            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+            disabled={state === "submitting" || state === "loading"}
+          >
+            Forrige steg
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            onClick={handleSubmit}
+            iconPosition="right"
+            icon={<ArrowRightIcon aria-hidden />}
+            disabled={state === "submitting" || state === "loading"}
+          >
+            Neste steg
+          </Button>
+        </HStack>
+      </VStack>
+
+      {modalData && (
+        <BarnModal
+          ref={ref}
+          seksjonId={loaderData.seksjon?.seksjonId}
+          spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
+        />
+      )}
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
         onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
       />

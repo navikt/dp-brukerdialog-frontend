@@ -311,7 +311,7 @@ export function AnnenPengestøtteViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack>
+      <VStack gap="6">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="6">
@@ -362,7 +362,7 @@ export function AnnenPengestøtteViewV1() {
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
 
             {form.value(mottarDuPengestøtteFraAndreEnnNav) === "ja" && (
-              <VStack>
+              <>
                 {pengestøtteFraNorge?.map((støtte: PengestøtteFraNorge) => (
                   <PengestøtteFraNorgeDetaljer key={støtte.id} pengestøtteFraNorge={støtte} />
                 ))}
@@ -386,7 +386,7 @@ export function AnnenPengestøtteViewV1() {
                     Du må legge til pengestøtte fra Norge
                   </ErrorMessage>
                 )}
-              </VStack>
+              </>
             )}
 
             <Heading size="small" level="3" className="mt-4">
@@ -398,7 +398,7 @@ export function AnnenPengestøtteViewV1() {
             })}
 
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
-              <VStack gap="6">
+              <>
                 {pengestøtteFraAndreEøsLand?.map((støtte: PengestøtteFraAndreEøsLand) => (
                   <PengestøtteFraAndreEøsLandDetaljer
                     key={støtte.id}
@@ -426,67 +426,62 @@ export function AnnenPengestøtteViewV1() {
                     Du må legge til pengestøtte fra andre EØS-land
                   </ErrorMessage>
                 )}
-              </VStack>
+              </>
             )}
-          </VStack>
 
-          {actionData && (
-            <Alert variant="error" className="mt-4">
-              {actionData.error}
-            </Alert>
-          )}
-
-          <VStack className="seksjon-navigering" gap="4">
-            <SistOppdatert />
-            <HStack gap="4">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="button"
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                onClick={handleSubmit}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            {actionData && <Alert variant="error">{actionData.error}</Alert>}
           </VStack>
         </Form>
-
-        {pengestøtteFraTidligereArbeidsgiverModalData && (
-          <PengestøtteFraTidligereArbeidsgiverModal
-            ref={pengestøtteFraTidligereArbeidsgiverModalRef}
-            spørsmålId={mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver}
-            seksjonId="annen-pengestotte"
-          />
-        )}
-        {pengestøtteFraAndreEøsLandModalData && (
-          <PengestøtteFraAndreEøsLandModal
-            ref={pengestøtteFraAndreEøsLandModalRef}
-            spørsmålId={harMottattEllerSøktOmPengestøtteFraAndreEøsLand}
-            seksjonId="annen-pengestotte"
-          />
-        )}
-        {pengestøtteFraNorgeModalData && (
-          <PengestøtteFraNorgeModal
-            ref={pengestøtteFraNorgeModalRef}
-            spørsmålId={mottarDuPengestøtteFraAndreEnnNav}
-            seksjonId="annen-pengestotte"
-          />
-        )}
       </VStack>
 
+      <VStack className="seksjon-navigasjon" gap="4">
+        <SistOppdatert />
+        <HStack gap="4">
+          <Button
+            variant="secondary"
+            type="button"
+            icon={<ArrowLeftIcon aria-hidden />}
+            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+            disabled={state === "submitting" || state === "loading"}
+          >
+            Forrige steg
+          </Button>
+          <Button
+            variant="primary"
+            type="button"
+            iconPosition="right"
+            icon={<ArrowRightIcon aria-hidden />}
+            onClick={handleSubmit}
+            disabled={state === "submitting" || state === "loading"}
+          >
+            Neste steg
+          </Button>
+        </HStack>
+      </VStack>
+
+      {pengestøtteFraTidligereArbeidsgiverModalData && (
+        <PengestøtteFraTidligereArbeidsgiverModal
+          ref={pengestøtteFraTidligereArbeidsgiverModalRef}
+          spørsmålId={mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver}
+          seksjonId="annen-pengestotte"
+        />
+      )}
+      {pengestøtteFraAndreEøsLandModalData && (
+        <PengestøtteFraAndreEøsLandModal
+          ref={pengestøtteFraAndreEøsLandModalRef}
+          spørsmålId={harMottattEllerSøktOmPengestøtteFraAndreEøsLand}
+          seksjonId="annen-pengestotte"
+        />
+      )}
+      {pengestøtteFraNorgeModalData && (
+        <PengestøtteFraNorgeModal
+          ref={pengestøtteFraNorgeModalRef}
+          spørsmålId={mottarDuPengestøtteFraAndreEnnNav}
+          seksjonId="annen-pengestotte"
+        />
+      )}
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
         onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
       />

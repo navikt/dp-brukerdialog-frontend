@@ -18,13 +18,17 @@
   margin-bottom: var(--ax-space-32);
 }
 
-.seksjon-navigering {
+.seksjon-navigasjon {
   margin-top: var(--ax-space-64);
 }
 
 .innhold {
   max-width: var(--innhold-max-width);
   margin: 0 auto var(--ax-space-80);
+}
+
+.footer {
+  margin-top: var(--ax-space-80);
 }
 
 .forklarende-tekst p,
@@ -104,8 +108,4 @@
 
 .inline {
   display: inline;
-}
-
-.footer {
-  margin-top: var(--ax-space-80);
 }

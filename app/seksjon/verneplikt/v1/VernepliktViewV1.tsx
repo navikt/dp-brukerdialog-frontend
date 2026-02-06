@@ -90,64 +90,58 @@ export default function VernepliktViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
-        <VStack gap="6">
-          <Heading size="medium" level="2">
-            {seksjonnavn}
-          </Heading>
-          <Form {...form.getFormProps()}>
-            <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-            <VStack gap="8">
-              {vernepliktKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                  return null;
-                }
+      <VStack gap="6">
+        <Heading size="medium" level="2">
+          {seksjonnavn}
+        </Heading>
+        <Form {...form.getFormProps()}>
+          <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
+          <VStack gap="6">
+            {vernepliktKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                return null;
+              }
 
-                return (
-                  <Komponent
-                    key={komponent.id}
-                    props={komponent}
-                    formScope={form.scope(komponent.id as keyof VernepliktSvar)}
-                  />
-                );
-              })}
-            </VStack>
+              return (
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof VernepliktSvar)}
+                />
+              );
+            })}
+          </VStack>
+        </Form>
 
-            {actionData && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
-
-            <VStack className="mt-8" gap="4">
-              <SistOppdatert />
-              <HStack gap="4">
-                <Button
-                  variant="secondary"
-                  type="button"
-                  icon={<ArrowLeftIcon aria-hidden />}
-                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Forrige steg
-                </Button>
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={handleSubmit}
-                  iconPosition="right"
-                  icon={<ArrowRightIcon aria-hidden />}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Neste steg
-                </Button>
-              </HStack>
-            </VStack>
-          </Form>
-        </VStack>
+        {actionData && <Alert variant="error">{actionData.error}</Alert>}
       </VStack>
+
+      <VStack className="seksjon-navigasjon" gap="4">
+        <SistOppdatert />
+        <HStack gap="4">
+          <Button
+            variant="secondary"
+            type="button"
+            icon={<ArrowLeftIcon aria-hidden />}
+            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+            disabled={state === "submitting" || state === "loading"}
+          >
+            Forrige steg
+          </Button>
+          <Button
+            variant="primary"
+            type="button"
+            onClick={handleSubmit}
+            iconPosition="right"
+            icon={<ArrowRightIcon aria-hidden />}
+            disabled={state === "submitting" || state === "loading"}
+          >
+            Neste steg
+          </Button>
+        </HStack>
+      </VStack>
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
         onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
       />
