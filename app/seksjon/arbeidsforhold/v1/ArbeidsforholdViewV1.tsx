@@ -1,12 +1,12 @@
-import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
+import { BriefcaseIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
-import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
@@ -134,7 +134,7 @@ export function ArbeidsforholdViewV1() {
     return dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null";
   }
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     const arbeidsforholdResponse = lagArbeidsforholdResponse();
 
     form.setValue(handling, ønsketHandling);
@@ -145,7 +145,7 @@ export function ArbeidsforholdViewV1() {
     form.submit();
   }
 
-  function handleSubmit() {
+  function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
@@ -243,38 +243,18 @@ export function ArbeidsforholdViewV1() {
             )}
           </VStack>
         </Form>
-
-        <VStack className="seksjon-navigasjon" gap="4">
-          <SistOppdatert />
-          <HStack gap="4">
-            <Button
-              variant="secondary"
-              type="button"
-              icon={<ArrowLeftIcon aria-hidden />}
-              onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Forrige steg
-            </Button>
-            <Button
-              variant="primary"
-              type="button"
-              iconPosition="right"
-              icon={<ArrowRightIcon aria-hidden />}
-              onClick={handleSubmit}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Neste steg
-            </Button>
-          </HStack>
-        </VStack>
+        <SeksjonNavigasjon
+          onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+          onNesteSteg={lagreSvar}
+          lagrer={state === "submitting" || state === "loading"}
+        />
       </VStack>
 
       {modalData && <ArbeidsforholdModal ref={ref} />}
 
       <SøknadFooter
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

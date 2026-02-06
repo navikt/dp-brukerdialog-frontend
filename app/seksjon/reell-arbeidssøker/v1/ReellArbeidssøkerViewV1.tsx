@@ -1,11 +1,10 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
-import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
@@ -56,7 +55,7 @@ export function ReellArbeidssøkerViewV1() {
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     const dokumentasjonskrav = hentDokumentasjonskrav();
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -68,7 +67,7 @@ export function ReellArbeidssøkerViewV1() {
     form.submit();
   }
 
-  async function handleSubmit() {
+  async function lagreSvar() {
     const dokumentasjonskrav = hentDokumentasjonskrav();
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -210,33 +209,15 @@ export function ReellArbeidssøkerViewV1() {
         </VStack>
       </Form>
 
-      <VStack className="seksjon-navigasjon" gap="4">
-        <SistOppdatert />
-        <HStack gap="4">
-          <Button
-            variant="secondary"
-            type="button"
-            icon={<ArrowLeftIcon aria-hidden />}
-            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Forrige steg
-          </Button>
-          <Button
-            variant="primary"
-            type="button"
-            onClick={handleSubmit}
-            iconPosition="right"
-            icon={<ArrowRightIcon aria-hidden />}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Neste steg
-          </Button>
-        </HStack>
-      </VStack>
+      <SeksjonNavigasjon
+        onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
+      />
+
       <SøknadFooter
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

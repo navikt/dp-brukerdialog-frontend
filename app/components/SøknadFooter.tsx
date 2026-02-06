@@ -11,7 +11,7 @@ interface SøknadFooterProps {
 export function SøknadFooter({ søknadId, onFortsettSenere }: SøknadFooterProps) {
   const [visMelding, setVisMelding] = useState(false);
 
-  function handleClick() {
+  function onClick() {
     if (onFortsettSenere) {
       onFortsettSenere();
     }
@@ -28,7 +28,7 @@ export function SøknadFooter({ søknadId, onFortsettSenere }: SøknadFooterProp
             size="small"
             icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" />}
             type="button"
-            onClick={handleClick}
+            onClick={onClick}
           >
             Fortsett senere
           </Button>

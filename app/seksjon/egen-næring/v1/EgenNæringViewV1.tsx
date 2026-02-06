@@ -1,12 +1,12 @@
-import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
+import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
-import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
@@ -118,7 +118,7 @@ export function EgenNæringViewV1() {
     return JSON.stringify(pdfPayload);
   }
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     form.setValue(handling, ønsketHandling);
 
     const egenNæringResponse: SeksjonSvar = {
@@ -133,7 +133,7 @@ export function EgenNæringViewV1() {
     form.submit();
   }
 
-  function handleSubmit() {
+  function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
@@ -271,37 +271,18 @@ export function EgenNæringViewV1() {
         </Form>
       </VStack>
 
-      <VStack className="seksjon-navigasjon" gap="4">
-        <SistOppdatert />
-        <HStack gap="4">
-          <Button
-            variant="secondary"
-            type="button"
-            icon={<ArrowLeftIcon aria-hidden />}
-            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Forrige steg
-          </Button>
-          <Button
-            type="button"
-            variant="primary"
-            onClick={handleSubmit}
-            iconPosition="right"
-            icon={<ArrowRightIcon aria-hidden />}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Neste steg
-          </Button>
-        </HStack>
-      </VStack>
+      <SeksjonNavigasjon
+        onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
+      />
 
       {næringsvirksomhetModalData && <NæringsvirksomhetModal ref={næringsvirksomhetModalRef} />}
       {gårdsbrukModalData && <GårdsbrukModal ref={gårdsbrukModalRef} />}
 
       <SøknadFooter
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

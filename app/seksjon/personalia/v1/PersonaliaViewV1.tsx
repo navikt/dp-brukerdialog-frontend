@@ -88,7 +88,7 @@ export function PersonaliaViewV1() {
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
-  async function handleSubmit() {
+  async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
     if (Object.values(await form.validate()).length === 0) {
       const pdfPayload = {
@@ -104,7 +104,7 @@ export function PersonaliaViewV1() {
     }
   }
 
-  function handleFortsettSenere() {
+  function fortsettSenere() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
@@ -219,7 +219,7 @@ export function PersonaliaViewV1() {
               <Button
                 variant="primary"
                 type="button"
-                onClick={handleSubmit}
+                onClick={lagreSvar}
                 iconPosition="right"
                 icon={<ArrowRightIcon aria-hidden />}
                 disabled={state === "submitting" || state === "loading"}
@@ -230,7 +230,7 @@ export function PersonaliaViewV1() {
           </VStack>
         </Form>
       </VStack>
-      <SøknadFooter søknadId={soknadId} onFortsettSenere={handleFortsettSenere} />
+      <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
     </div>
   );
 }

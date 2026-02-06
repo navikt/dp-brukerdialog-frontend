@@ -1,12 +1,12 @@
-import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Button, Heading, HStack, InlineMessage, LocalAlert, VStack } from "@navikt/ds-react";
+import { PersonPlusIcon } from "@navikt/aksel-icons";
+import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
-import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
@@ -210,31 +210,6 @@ export function BarnetilleggViewV1() {
         )}
       </VStack>
 
-      <VStack className="seksjon-navigasjon" gap="4">
-        <SistOppdatert />
-        <HStack gap="4">
-          <Button
-            variant="secondary"
-            type="button"
-            icon={<ArrowLeftIcon aria-hidden />}
-            onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Forrige steg
-          </Button>
-          <Button
-            variant="primary"
-            type="submit"
-            onClick={handleSubmit}
-            iconPosition="right"
-            icon={<ArrowRightIcon aria-hidden />}
-            disabled={state === "submitting" || state === "loading"}
-          >
-            Neste steg
-          </Button>
-        </HStack>
-      </VStack>
-
       {modalData && (
         <BarnModal
           ref={ref}
@@ -242,6 +217,12 @@ export function BarnetilleggViewV1() {
           spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
         />
       )}
+
+      <SeksjonNavigasjon
+        onForrigeSteg={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={handleSubmit}
+        lagrer={state === "submitting" || state === "loading"}
+      />
 
       <SøknadFooter
         søknadId={soknadId}

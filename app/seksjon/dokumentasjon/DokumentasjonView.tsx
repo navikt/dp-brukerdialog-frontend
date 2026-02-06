@@ -42,28 +42,26 @@ export function DokumentasjonView() {
         <Heading size="medium" level="2">
           {seksjonnavn}
         </Heading>
-        <VStack gap="6">
-          {dokumentasjonKomponenter.map((komponent) => {
-            if (komponent.visHvis && !komponent.visHvis(form.value())) {
-              return null;
-            }
+        {dokumentasjonKomponenter.map((komponent) => {
+          if (komponent.visHvis && !komponent.visHvis(form.value())) {
+            return null;
+          }
 
-            return (
-              <Komponent
-                key={komponent.id}
-                props={komponent}
-                formScope={form.scope(komponent.id as keyof DokumentasjonSvar)}
-              />
-            );
-          })}
-
-          {dokumentasjonskrav.map((dokumentasjonskrav) => (
-            <DokumentasjonskravKomponent
-              key={dokumentasjonskrav.id}
-              dokumentasjonskrav={dokumentasjonskrav}
+          return (
+            <Komponent
+              key={komponent.id}
+              props={komponent}
+              formScope={form.scope(komponent.id as keyof DokumentasjonSvar)}
             />
-          ))}
-        </VStack>
+          );
+        })}
+
+        {dokumentasjonskrav.map((dokumentasjonskrav) => (
+          <DokumentasjonskravKomponent
+            key={dokumentasjonskrav.id}
+            dokumentasjonskrav={dokumentasjonskrav}
+          />
+        ))}
 
         {!lagrer && harTekniskFeil && (
           <SeksjonTekniskFeil
