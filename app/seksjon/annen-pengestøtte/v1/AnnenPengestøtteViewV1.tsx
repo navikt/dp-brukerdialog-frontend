@@ -1,14 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
+import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
+import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
@@ -34,6 +36,11 @@ import {
   PengestøtteFraNorge,
   PengestøtteFraNorgeModal,
 } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
+import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
+import {
+  PengestøtteFraTidligereArbeidsgiver,
+  PengestøtteFraTidligereArbeidsgiverModal,
+} from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -43,13 +50,6 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
-import {
-  PengestøtteFraTidligereArbeidsgiver,
-  PengestøtteFraTidligereArbeidsgiverModal,
-} from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
-import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
-import { SistOppdatert } from "~/components/SistOppdatert";
 
 const seksjonnavn = "Annen pengestøtte";
 const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
@@ -429,7 +429,7 @@ export function AnnenPengestøtteViewV1() {
               </>
             )}
 
-            {actionData && <Alert variant="error">{actionData.error}</Alert>}
+            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
           </VStack>
         </Form>
       </VStack>

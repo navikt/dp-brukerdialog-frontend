@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
@@ -113,7 +113,7 @@ export default function VernepliktViewV1() {
           </VStack>
         </Form>
 
-        {actionData && <Alert variant="error">{actionData.error}</Alert>}
+        {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
       </VStack>
 
       <VStack className="seksjon-navigasjon" gap="4">

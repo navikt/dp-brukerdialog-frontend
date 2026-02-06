@@ -1,22 +1,22 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
-import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import {
   handling,
   pdfGrunnlag,
   tilleggsopplysningerKomponenter,
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
+import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import { SistOppdatert } from "~/components/SistOppdatert";
 
 export function TilleggsopplysningerViewV1() {
   const seksjonnavn = "Tilleggsopplysninger";
@@ -90,7 +90,7 @@ export function TilleggsopplysningerViewV1() {
             })}
           </VStack>
 
-          {actionData && <Alert variant="error">{actionData.error}</Alert>}
+          {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
 
           <VStack className="seksjon-navigasjon" gap="4">
             <SistOppdatert />

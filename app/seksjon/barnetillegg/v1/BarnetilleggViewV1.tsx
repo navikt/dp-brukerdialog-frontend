@@ -1,9 +1,12 @@
 import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
@@ -27,12 +30,9 @@ import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnF
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import invariant from "tiny-invariant";
-import { SistOppdatert } from "~/components/SistOppdatert";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -203,7 +203,7 @@ export function BarnetilleggViewV1() {
           </ErrorMessage>
         )}
 
-        {actionData && <Alert variant="error">{actionData.error}</Alert>}
+        {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
       </VStack>
 
       <VStack className="seksjon-navigasjon" gap="4">

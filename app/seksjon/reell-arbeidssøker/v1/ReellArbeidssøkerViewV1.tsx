@@ -1,10 +1,17 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   handling,
   kanDuTaAlleTyperArbeid,
@@ -23,14 +30,7 @@ import {
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import { SistOppdatert } from "~/components/SistOppdatert";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
@@ -200,7 +200,7 @@ export function ReellArbeidssøkerViewV1() {
             );
           })}
 
-          {actionData && <Alert variant="error">{actionData.error}</Alert>}
+          {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
         </VStack>
       </Form>
 

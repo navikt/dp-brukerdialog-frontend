@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -236,7 +236,7 @@ export function ArbeidsforholdViewV1() {
                 </VStack>
               )}
 
-            {actionData && <Alert variant="error">{actionData.error}</Alert>}
+            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
           </VStack>
         </Form>
 

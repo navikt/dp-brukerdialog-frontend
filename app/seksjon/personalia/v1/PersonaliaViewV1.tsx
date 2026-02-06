@@ -1,14 +1,13 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
 import {
-  Alert,
   BodyLong,
   BodyShort,
   Button,
+  ErrorMessage,
   Heading,
   HStack,
   Label,
   VStack,
-  Link,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
@@ -214,7 +213,7 @@ export function PersonaliaViewV1() {
               );
             })}
 
-            {actionData && <Alert variant="error">{actionData.error}</Alert>}
+            {actionData && <ErrorMessage>{actionData.error}</ErrorMessage>}
           </VStack>
 
           <VStack className="seksjon-navigasjon" gap="4">

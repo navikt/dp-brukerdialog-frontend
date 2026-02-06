@@ -78,7 +78,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
 
   if (response.status !== 200) {
-    return { error: "Noe gikk galt ved lagring av seksjonen" };
+    return {
+      error:
+        "Det har oppstått en teknisk feil. Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
+    };
   }
 
   if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
