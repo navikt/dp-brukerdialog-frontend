@@ -5,14 +5,13 @@ import { SlettSøknadModal } from "~/components/SlettSøknadModal";
 
 interface SøknadFooterProps {
   søknadId: string;
-  className?: string;
   onFortsettSenere?: () => void;
 }
 
-export function SøknadFooter({ søknadId, className, onFortsettSenere }: SøknadFooterProps) {
+export function SøknadFooter({ søknadId, onFortsettSenere }: SøknadFooterProps) {
   const [visMelding, setVisMelding] = useState(false);
 
-  function handleClick() {
+  function onClick() {
     if (onFortsettSenere) {
       onFortsettSenere();
     }
@@ -21,7 +20,7 @@ export function SøknadFooter({ søknadId, className, onFortsettSenere }: Søkna
   }
 
   return (
-    <div className={className || undefined}>
+    <div className="footer">
       <div className="innhold">
         <HStack>
           <Button
@@ -29,7 +28,7 @@ export function SøknadFooter({ søknadId, className, onFortsettSenere }: Søkna
             size="small"
             icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" />}
             type="button"
-            onClick={handleClick}
+            onClick={onClick}
           >
             Fortsett senere
           </Button>

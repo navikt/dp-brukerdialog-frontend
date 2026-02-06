@@ -180,7 +180,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="4" className="mt-4">
+            <VStack gap="6">
               {pengestøtteFraNorgeModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -196,10 +196,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
               })}
 
               <HStack className="mt-4" justify="end">
-                <Button
-                  type="submit"
-                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                >
+                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>
               </HStack>

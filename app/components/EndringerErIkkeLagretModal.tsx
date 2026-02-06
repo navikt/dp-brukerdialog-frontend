@@ -5,7 +5,10 @@ interface IProps {
   setStengModalSelvOmDetErUlagredeEndringer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function EndringerErIkkeLagretModal({ ref, setStengModalSelvOmDetErUlagredeEndringer }: IProps) {
+export function EndringerErIkkeLagretModal({
+  ref,
+  setStengModalSelvOmDetErUlagredeEndringer,
+}: IProps) {
   return (
     <Modal ref={ref} header={{ heading: "Er du sikker på at du vil lukke vinduet?" }}>
       <Modal.Body>
@@ -13,7 +16,7 @@ export function EndringerErIkkeLagretModal({ ref, setStengModalSelvOmDetErUlagre
           <BodyLong>
             Du har gjort endringer som ikke er lagret. Vil du allikevel lukke dette vinduet?
           </BodyLong>
-          <HStack gap="8">
+          <HStack gap="4">
             <Button
               variant="danger"
               type="button"

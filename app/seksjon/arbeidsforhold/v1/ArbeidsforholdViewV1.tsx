@@ -1,11 +1,12 @@
-import { ArrowLeftIcon, ArrowRightIcon, BriefcaseIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { BriefcaseIcon } from "@navikt/aksel-icons";
+import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
-import { SistOppdatert } from "~/components/SistOppdatert";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
@@ -133,7 +134,7 @@ export function ArbeidsforholdViewV1() {
     return dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null";
   }
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     const arbeidsforholdResponse = lagArbeidsforholdResponse();
 
     form.setValue(handling, ønsketHandling);
@@ -144,7 +145,7 @@ export function ArbeidsforholdViewV1() {
     form.submit();
   }
 
-  function handleSubmit() {
+  function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
@@ -167,115 +168,93 @@ export function ArbeidsforholdViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
-        <VStack gap="6">
-          <Form {...form.getFormProps()}>
-            <VStack gap="8">
-              <Heading size="medium" level="2">
-                {seksjonnavn}
-              </Heading>
-              <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-              {arbeidsforholdKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                  return null;
-                }
+      <VStack gap="6">
+        <Form {...form.getFormProps()}>
+          <VStack gap="6">
+            <Heading size="medium" level="2">
+              {seksjonnavn}
+            </Heading>
+            <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
+            {arbeidsforholdKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                return null;
+              }
 
-                return (
-                  <Komponent
-                    key={komponent.id}
-                    props={komponent}
-                    formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
-                  />
-                );
-              })}
+              return (
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
+                />
+              );
+            })}
 
-              {form.value(hvordanHarDuJobbet) &&
-                form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
-                form.value(
-                  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-                ) && (
-                  <VStack gap="space-16">
-                    {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-                      if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                        return null;
-                      }
+            {form.value(hvordanHarDuJobbet) &&
+              form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
+              form.value(
+                harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+              ) && (
+                <VStack className="mt-4" gap="6">
+                  {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+                    if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                      return null;
+                    }
 
-                      return (
-                        <Komponent
-                          key={komponent.id}
-                          props={komponent}
-                          formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
-                        />
-                      );
-                    })}
-                    {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
-                      <ArbeidsforholdDetaljer
-                        key={arbeidsforhold.id}
-                        arbeidsforhold={arbeidsforhold}
+                    return (
+                      <Komponent
+                        key={komponent.id}
+                        props={komponent}
+                        formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                       />
-                    ))}
-                    <HStack className="mt-4">
-                      <Button
-                        variant="secondary"
-                        type="button"
-                        icon={<BriefcaseIcon />}
-                        onClick={() => {
-                          setModalData({
-                            operasjon: ModalOperasjon.LeggTil,
-                            form: form,
-                          });
-                        }}
-                      >
-                        Legg til arbeidsforhold
-                      </Button>
-                    </HStack>
-                    {visManglerArbeidsforholdFeilmelding && (
-                      <ErrorMessage showIcon aria-live="polite">
-                        Du må legge til et arbeidsforhold
-                      </ErrorMessage>
-                    )}
-                  </VStack>
-                )}
-
-              {actionData && (
-                <Alert variant="error" className="mt-4">
-                  {actionData.error}
-                </Alert>
+                    );
+                  })}
+                  {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
+                    <ArbeidsforholdDetaljer
+                      key={arbeidsforhold.id}
+                      arbeidsforhold={arbeidsforhold}
+                    />
+                  ))}
+                  <HStack>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      icon={<BriefcaseIcon />}
+                      onClick={() => {
+                        setModalData({
+                          operasjon: ModalOperasjon.LeggTil,
+                          form: form,
+                        });
+                      }}
+                    >
+                      Legg til arbeidsforhold
+                    </Button>
+                  </HStack>
+                  {visManglerArbeidsforholdFeilmelding && (
+                    <InlineMessage status="error">Du må legge til et arbeidsforhold</InlineMessage>
+                  )}
+                </VStack>
               )}
-            </VStack>
 
-            <VStack className="mt-8" gap="4">
-              <SistOppdatert />
-              <HStack gap="4">
-                <Button
-                  variant="secondary"
-                  type="button"
-                  icon={<ArrowLeftIcon aria-hidden />}
-                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Forrige steg
-                </Button>
-                <Button
-                  variant="primary"
-                  type="button"
-                  iconPosition="right"
-                  icon={<ArrowRightIcon aria-hidden />}
-                  onClick={handleSubmit}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Neste steg
-                </Button>
-              </HStack>
-            </VStack>
-          </Form>
-        </VStack>
-        {modalData && <ArbeidsforholdModal ref={ref} />}
+            {actionData && (
+              <SeksjonTekniskFeil
+                tittel="Det har oppstått en teknisk feil"
+                beskrivelse={actionData.error}
+              />
+            )}
+          </VStack>
+        </Form>
+        <SeksjonNavigasjon
+          onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+          onNesteSteg={lagreSvar}
+          lagrer={state === "submitting" || state === "loading"}
+        />
       </VStack>
+
+      {modalData && <ArbeidsforholdModal ref={ref} />}
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

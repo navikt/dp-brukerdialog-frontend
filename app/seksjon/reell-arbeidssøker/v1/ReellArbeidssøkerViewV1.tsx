@@ -1,10 +1,17 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
+import {
+  Dokumentasjonskrav,
+  DokumentasjonskravType,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   handling,
   kanDuTaAlleTyperArbeid,
@@ -23,14 +30,7 @@ import {
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import invariant from "tiny-invariant";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import { SistOppdatert } from "~/components/SistOppdatert";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
@@ -55,7 +55,7 @@ export function ReellArbeidssøkerViewV1() {
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     const dokumentasjonskrav = hentDokumentasjonskrav();
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -67,7 +67,7 @@ export function ReellArbeidssøkerViewV1() {
     form.submit();
   }
 
-  async function handleSubmit() {
+  async function lagreSvar() {
     const dokumentasjonskrav = hentDokumentasjonskrav();
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -180,64 +180,44 @@ export function ReellArbeidssøkerViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="4">
-        <Heading size="medium" level="2">
-          {seksjonnavn}
-        </Heading>
-        <Form {...form.getFormProps()}>
+      <Heading size="medium" level="2">
+        {seksjonnavn}
+      </Heading>
+      <Form {...form.getFormProps()}>
+        <VStack gap="6">
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-          <VStack gap="6">
-            {reellArbeidssøkerKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                return null;
-              }
+          {reellArbeidssøkerKomponenter.map((komponent) => {
+            if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              return null;
+            }
 
-              return (
-                <Komponent
-                  key={komponent.id}
-                  props={komponent}
-                  formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
-                />
-              );
-            })}
-          </VStack>
+            return (
+              <Komponent
+                key={komponent.id}
+                props={komponent}
+                formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
+              />
+            );
+          })}
 
           {actionData && (
-            <Alert variant="error" className="mt-4">
-              {actionData.error}
-            </Alert>
+            <SeksjonTekniskFeil
+              tittel="Det har oppstått en teknisk feil"
+              beskrivelse={actionData.error}
+            />
           )}
+        </VStack>
+      </Form>
 
-          <VStack className="mt-8" gap="4">
-            <SistOppdatert />
-            <HStack gap="4">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleSubmit}
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
-          </VStack>
-        </Form>
-      </VStack>
+      <SeksjonNavigasjon
+        onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
+      />
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

@@ -6,5 +6,5 @@ interface IProps {
 }
 
 export function ForklarendeTekst({ props }: IProps) {
-  return <>{parse(props?.description || "", { trim: true })}</>;
+  return <div className="forklarende-tekst">{parse(props?.description || "", { trim: true })}</div>;
 }

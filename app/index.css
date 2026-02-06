@@ -7,7 +7,7 @@
 #maincontent {
   max-width: var(--app-max-width);
   min-height: var(--app-min-height);
-  margin: var(--ax-space-16) auto;
+  margin: var(--ax-space-40) auto;
   padding: var(--ax-space-16);
 }
 
@@ -18,26 +18,28 @@
   margin-bottom: var(--ax-space-32);
 }
 
+.seksjon-navigasjon {
+  margin-top: var(--ax-space-64);
+}
+
+.progressbar {
+  max-width: var(--innhold-max-width);
+  margin: 0 auto var(--ax-space-56);
+}
+
 .innhold {
   max-width: var(--innhold-max-width);
-  margin: 0 auto var(--ax-space-80);
+  margin: 0 auto;
 }
 
-.preprod {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.footer {
+  margin-top: var(--ax-space-40);
 }
 
-.left-border {
-  border-left: 4px solid var(--ax-brand-blue-700);
-  padding-left: var(--ax-space-16);
-}
-
-.expansion-card--pdf {
-  background-color: var(--ax-meta-purple-200);
-  border: none;
+.forklarende-tekst p,
+.forklarende-tekst h2,
+.forklarende-tekst h3 {
+  margin: var(--ax-space-16) 0;
 }
 
 .text-center {
@@ -111,8 +113,4 @@
 
 .inline {
   display: inline;
-}
-
-.footer {
-  margin-top: var(--ax-space-80);
 }
