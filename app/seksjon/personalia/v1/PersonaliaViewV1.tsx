@@ -130,7 +130,7 @@ export function PersonaliaViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
+      <VStack>
         <VStack gap="6">
           <Heading size="medium" level="2">
             {seksjonnavn}
@@ -141,23 +141,23 @@ export function PersonaliaViewV1() {
             <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
           </BodyLong>
 
-          <VStack gap="0">
-            <div className="mb-4">
+          <VStack gap="6">
+            <VStack>
               <Label as="p">Navn</Label>
               <BodyShort>
                 {fornavn} {mellomnavn} {etternavn}
               </BodyShort>
-            </div>
-            <div className="mb-4">
+            </VStack>
+            <VStack>
               <Label as="p">Fødselsnummer</Label>
               <BodyShort>{formattertIdent}</BodyShort>
-            </div>
-            <div className="mb-4">
+            </VStack>
+            <VStack>
               <Label as="p">Alder</Label>
               <BodyShort>{alder}</BodyShort>
-            </div>
+            </VStack>
             {folkeregistrertAdresse && (
-              <div className="mb-4">
+              <VStack>
                 <Label as="p">Folkeregistrert adresse</Label>
                 <BodyShort>
                   {folkeregistrertAdresse.adresselinje1}{" "}
@@ -170,9 +170,9 @@ export function PersonaliaViewV1() {
                   {folkeregistrertAdresse.land && <br />}
                   {folkeregistrertAdresse.land}
                 </BodyShort>
-              </div>
+              </VStack>
             )}
-            <div className="mb-4">
+            <VStack>
               <Label as="p">Kontonummer</Label>
               <BodyShort>
                 {formattertKontonummer || (
@@ -182,11 +182,11 @@ export function PersonaliaViewV1() {
                   </span>
                 )}
               </BodyShort>
-            </div>
+            </VStack>
           </VStack>
           <Form {...form.getFormProps()}>
             <input type="hidden" name="versjon" value={seksjon.versjon} />
-            <VStack gap="8">
+            <VStack gap="6">
               {personaliaSpørsmål.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -222,7 +222,7 @@ export function PersonaliaViewV1() {
               )}
             </VStack>
 
-            <VStack className="mt-8" gap="4">
+            <VStack className="seksjon-navigering" gap="4">
               <SistOppdatert />
               <HStack gap="4">
                 <Button

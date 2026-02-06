@@ -67,7 +67,7 @@ export function DinSituasjonViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
+      <VStack>
         <VStack gap="6">
           <Heading size="medium" level="2">
             {seksjonnavn}
@@ -96,7 +96,7 @@ export function DinSituasjonViewV1() {
               )}
             </VStack>
 
-            <VStack className="mt-8" gap="4">
+            <VStack className="seksjon-navigering" gap="4">
               <SistOppdatert />
               <HStack gap="4">
                 <Button

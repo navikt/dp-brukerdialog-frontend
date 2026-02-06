@@ -3,11 +3,16 @@
   padding-left: var(--ax-space-16);
 }
 
-.periodeVenstreBorderfra {
-  padding-bottom: var(--ax-space-32);
-}
-
 .periodeVenstreBordertil {
   position: relative;
+}
+
+.periodeVenstreBordertil::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  left: -4px;
+  height: var(--ax-space-32);
   top: calc(-1 * var(--ax-space-32));
+  background-color: var(--ax-brand-blue-700);
 }
