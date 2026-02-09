@@ -1,9 +1,13 @@
-import { ArrowLeftIcon, ArrowRightIcon, PersonPlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { PersonPlusIcon } from "@navikt/aksel-icons";
+import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
@@ -27,12 +31,9 @@ import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnF
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import invariant from "tiny-invariant";
-import { SistOppdatert } from "~/components/SistOppdatert";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -142,54 +143,52 @@ export function BarnetilleggViewV1() {
       <Heading size="medium" level="2">
         {seksjonnavn}
       </Heading>
-      {barnetilleggForklarendeTekst.map((komponent) => {
-        if (komponent.visHvis && !komponent.visHvis(form.value())) {
-          return null;
-        }
+      <VStack gap="6">
+        {barnetilleggForklarendeTekst.map((komponent) => {
+          if (komponent.visHvis && !komponent.visHvis(form.value())) {
+            return null;
+          }
 
-        return (
-          <Komponent
-            key={komponent.id}
-            props={komponent}
-            formScope={form.scope(komponent.id as keyof BarnetilleggSvar)}
-          />
-        );
-      })}
-      <VStack gap="6" className="mt-4">
-        <VStack gap="space-16">
-          {barnFraPdl?.map((barn: BarnFraPdl) => (
-            <BarnFraPdlKomponent key={barn.id} barn={barn} />
-          ))}
-        </VStack>
+          return (
+            <Komponent
+              key={komponent.id}
+              props={komponent}
+              formScope={form.scope(komponent.id as keyof BarnetilleggSvar)}
+            />
+          );
+        })}
+
+        {barnFraPdl?.map((barn: BarnFraPdl) => (
+          <BarnFraPdlKomponent key={barn.id} barn={barn} />
+        ))}
+
         <Form {...form.getFormProps()}>
-          <VStack gap="8">
-            <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
-            {barnetilleggKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
-                return null;
-              }
+          <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
+          {barnetilleggKomponenter.map((spørsmål) => {
+            if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              return null;
+            }
 
-              return (
-                <Komponent
-                  key={spørsmål.id}
-                  props={spørsmål}
-                  formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
-                />
-              );
-            })}
-          </VStack>
+            return (
+              <Komponent
+                key={spørsmål.id}
+                props={spørsmål}
+                formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
+              />
+            );
+          })}
         </Form>
-        <VStack gap="space-16">
-          {barnLagtManuelt?.map((barn: BarnLagtManuelt) => (
-            <BarnLagtManueltKomponent key={barn.id} barn={barn} />
-          ))}
-        </VStack>
+
+        {barnLagtManuelt?.map((barn: BarnLagtManuelt) => (
+          <BarnLagtManueltKomponent key={barn.id} barn={barn} />
+        ))}
+
         {forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && (
           <HStack>
             <Button
               variant="secondary"
-              type="submit"
-              icon={<PersonPlusIcon title="a11y-title" fontSize="1.5rem" />}
+              type="button"
+              icon={<PersonPlusIcon aria-hidden />}
               onClick={() => {
                 setModalData({ operasjon: ModalOperasjon.LeggTil });
               }}
@@ -200,51 +199,32 @@ export function BarnetilleggViewV1() {
         )}
 
         {visLeggTilBarnFeilmelding && (
-          <ErrorMessage showIcon aria-live="polite">
-            Du må legge til barn du forsørger
-          </ErrorMessage>
+          <InlineMessage status="error">Du må legge til barn du forsørger</InlineMessage>
         )}
 
         {actionData && (
-          <Alert variant="error" className="mt-4">
-            {actionData.error}
-          </Alert>
-        )}
-
-        <VStack gap="4" className="mt-8">
-          <SistOppdatert />
-          <HStack gap="4">
-            <Button
-              variant="secondary"
-              type="button"
-              icon={<ArrowLeftIcon aria-hidden />}
-              onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Forrige steg
-            </Button>
-            <Button
-              variant="primary"
-              type="submit"
-              onClick={handleSubmit}
-              iconPosition="right"
-              icon={<ArrowRightIcon aria-hidden />}
-              disabled={state === "submitting" || state === "loading"}
-            >
-              Neste steg
-            </Button>
-          </HStack>
-        </VStack>
-        {modalData && (
-          <BarnModal
-            ref={ref}
-            seksjonId={loaderData.seksjon?.seksjonId}
-            spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
+          <SeksjonTekniskFeil
+            tittel="Det har oppstått en teknisk feil"
+            beskrivelse={actionData.error}
           />
         )}
       </VStack>
+
+      {modalData && (
+        <BarnModal
+          ref={ref}
+          seksjonId={loaderData.seksjon?.seksjonId}
+          spørsmålId={forsørgerDuBarnSomIkkeVisesHer}
+        />
+      )}
+
+      <SeksjonNavigasjon
+        onForrigeSteg={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={handleSubmit}
+        lagrer={state === "submitting" || state === "loading"}
+      />
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
         onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
       />

@@ -1,14 +1,17 @@
-import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@navikt/aksel-icons";
-import { Alert, Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { PlusIcon } from "@navikt/aksel-icons";
+import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
+import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
@@ -34,6 +37,11 @@ import {
   PengestøtteFraNorge,
   PengestøtteFraNorgeModal,
 } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
+import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
+import {
+  PengestøtteFraTidligereArbeidsgiver,
+  PengestøtteFraTidligereArbeidsgiverModal,
+} from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -43,17 +51,12 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
-import {
-  PengestøtteFraTidligereArbeidsgiver,
-  PengestøtteFraTidligereArbeidsgiverModal,
-} from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
-import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
-import { SistOppdatert } from "~/components/SistOppdatert";
+import { V } from "node_modules/vitest/dist/chunks/reporters.d.CWXNI2jG";
+
+const seksjonnavn = "Annen pengestøtte";
+const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
 export function AnnenPengestøtteViewV1() {
-  const seksjonnavn = "Annen pengestøtte";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
@@ -72,6 +75,7 @@ export function AnnenPengestøtteViewV1() {
     visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding,
     setVisMottattEllerSøktOmPengestøtteFraNorgeFeilmelding,
   ] = useState(false);
+
   const {
     pengestøtteFraTidligereArbeidsgiver,
     setPengestøtteFraTidligereArbeidsgiver,
@@ -87,6 +91,7 @@ export function AnnenPengestøtteViewV1() {
     setPengestøtteFraNorgeModalData,
     dokumentasjonskrav,
   } = useAnnenPengestøtteContext();
+
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -174,7 +179,7 @@ export function AnnenPengestøtteViewV1() {
     };
   }
 
-  const genererPdfGrunnlag = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
@@ -197,7 +202,7 @@ export function AnnenPengestøtteViewV1() {
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
 
   function hentDokumentasjonskrav() {
     let fullstendigDokumentasjonskrav = [...dokumentasjonskrav];
@@ -232,7 +237,7 @@ export function AnnenPengestøtteViewV1() {
       : "null";
   }
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
     form.setValue(handling, ønsketHandling);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -241,7 +246,7 @@ export function AnnenPengestøtteViewV1() {
     form.submit();
   }
 
-  async function handleSubmit() {
+  async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
     form.validate();
 
@@ -308,10 +313,10 @@ export function AnnenPengestøtteViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
+      <VStack gap="6">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-          <VStack gap="8">
+          <VStack gap="6">
             <Heading size="medium" level="2">
               {seksjonnavn}
             </Heading>
@@ -321,7 +326,7 @@ export function AnnenPengestøtteViewV1() {
 
             {form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) ===
               "ja" && (
-              <VStack gap="space-16">
+              <VStack gap="6">
                 {pengestøtteFraTidligereArbeidsgiver?.map(
                   (pengestøtte: PengestøtteFraTidligereArbeidsgiver) => (
                     <PengestøtteFraTidligereArbeidsgiverDetaljer
@@ -332,69 +337,71 @@ export function AnnenPengestøtteViewV1() {
                 )}
                 <HStack>
                   <Button
-                    type={"button"}
-                    variant={"secondary"}
+                    type="button"
+                    variant="secondary"
                     onClick={() => {
                       setPengestøtteFraTidligereArbeidsgiverModalData({
                         operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
                     icon={<PlusIcon />}
-                    iconPosition={"left"}
+                    iconPosition="left"
                   >
                     Legg til utbetalinger eller goder
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error">
                     Du må legge til utbetalinger eller økonomiske goder
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </VStack>
             )}
 
-            <Heading size="small" level="3">
+            <Heading size="small" level="3" className="mt-4">
               Pengestøtte fra Norge
             </Heading>
+
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
 
             {form.value(mottarDuPengestøtteFraAndreEnnNav) === "ja" && (
-              <VStack gap="space-16">
+              <VStack gap="6">
                 {pengestøtteFraNorge?.map((støtte: PengestøtteFraNorge) => (
                   <PengestøtteFraNorgeDetaljer key={støtte.id} pengestøtteFraNorge={støtte} />
                 ))}
                 <HStack>
                   <Button
-                    type={"button"}
-                    variant={"secondary"}
+                    type="button"
+                    variant="secondary"
                     onClick={() => {
                       setPengestøtteFraNorgeModalData({
                         operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
                     icon={<PlusIcon />}
-                    iconPosition={"left"}
+                    iconPosition="left"
                   >
                     Legg til pengestøtte fra Norge
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error">
                     Du må legge til pengestøtte fra Norge
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </VStack>
             )}
 
-            <Heading size="small" level="3">
+            <Heading size="small" level="3" className="mt-4">
               Pengestøtte fra andre EØS-land
             </Heading>
+
             {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {
               return render(komponent);
             })}
 
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
-              <VStack gap="space-16">
+              <VStack gap="6">
                 {pengestøtteFraAndreEøsLand?.map((støtte: PengestøtteFraAndreEøsLand) => (
                   <PengestøtteFraAndreEøsLandDetaljer
                     key={støtte.id}
@@ -404,59 +411,37 @@ export function AnnenPengestøtteViewV1() {
 
                 <HStack>
                   <Button
-                    type={"button"}
-                    variant={"secondary"}
+                    type="button"
+                    variant="secondary"
                     onClick={() => {
                       setPengestøtteFraAndreEøsLandModalData({
                         operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
                     icon={<PlusIcon />}
-                    iconPosition={"left"}
+                    iconPosition="left"
                   >
                     Legg til pengestøtte fra andre EØS-land
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
-                  <ErrorMessage showIcon aria-live="polite">
+                  <InlineMessage status="error">
                     Du må legge til pengestøtte fra andre EØS-land
-                  </ErrorMessage>
+                  </InlineMessage>
                 )}
               </VStack>
             )}
-          </VStack>
-          {actionData && (
-            <Alert variant="error" className="mt-4">
-              {actionData.error}
-            </Alert>
-          )}
 
-          <VStack className="mt-8" gap="4">
-            <SistOppdatert />
-            <HStack gap="4">
-              <Button
-                variant="secondary"
-                type="button"
-                icon={<ArrowLeftIcon aria-hidden />}
-                onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Forrige steg
-              </Button>
-              <Button
-                variant="primary"
-                type="button"
-                iconPosition="right"
-                icon={<ArrowRightIcon aria-hidden />}
-                onClick={handleSubmit}
-                disabled={state === "submitting" || state === "loading"}
-              >
-                Neste steg
-              </Button>
-            </HStack>
+            {actionData && (
+              <SeksjonTekniskFeil
+                tittel="Det har oppstått en teknisk feil"
+                beskrivelse={actionData.error}
+              />
+            )}
           </VStack>
         </Form>
       </VStack>
+
       {pengestøtteFraTidligereArbeidsgiverModalData && (
         <PengestøtteFraTidligereArbeidsgiverModal
           ref={pengestøtteFraTidligereArbeidsgiverModalRef}
@@ -478,10 +463,16 @@ export function AnnenPengestøtteViewV1() {
           seksjonId="annen-pengestotte"
         />
       )}
+
+      <SeksjonNavigasjon
+        onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
+      />
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

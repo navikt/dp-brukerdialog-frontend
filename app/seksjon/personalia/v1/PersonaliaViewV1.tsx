@@ -1,21 +1,11 @@
-import { ArrowRightIcon } from "@navikt/aksel-icons";
-import {
-  Alert,
-  BodyLong,
-  BodyShort,
-  Button,
-  Heading,
-  HStack,
-  Label,
-  VStack,
-  Link,
-} from "@navikt/ds-react";
+import { BodyLong, BodyShort, Heading, Label, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { Komponent } from "~/components/Komponent";
-import { SistOppdatert } from "~/components/SistOppdatert";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.personalia";
@@ -56,7 +46,25 @@ export function PersonaliaViewV1() {
   const actionData = useActionData<typeof action>();
 
   if (!personalia) {
-    return <h1>Ingen personalia funnet</h1>;
+    return (
+      <div className="innhold">
+        <title>{seksjonHeadTitle}</title>
+        <VStack gap="6">
+          <Heading size="medium" level="2">
+            {seksjonnavn}
+          </Heading>
+          <LocalAlert status="error">
+            <LocalAlert.Header>
+              <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+            </LocalAlert.Header>
+            <LocalAlert.Content>
+              Vi klarte ikke å hente dine personalia opplysninger. Prøv igjen senere.
+            </LocalAlert.Content>
+          </LocalAlert>
+        </VStack>
+        <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
+      </div>
+    );
   }
 
   const { fornavn, mellomnavn, etternavn, ident, alder, folkeregistrertAdresse } =
@@ -97,7 +105,7 @@ export function PersonaliaViewV1() {
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
-  async function handleSubmit() {
+  async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
     if (Object.values(await form.validate()).length === 0) {
       const pdfPayload = {
@@ -113,7 +121,7 @@ export function PersonaliaViewV1() {
     }
   }
 
-  function handleFortsettSenere() {
+  function fortsettSenere() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
@@ -130,121 +138,106 @@ export function PersonaliaViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
+      <VStack gap="6">
+        <Heading size="medium" level="2">
+          {seksjonnavn}
+        </Heading>
+        <BodyLong>
+          Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
+          Kontonummer kan du legge til eller endre på{" "}
+          <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
+        </BodyLong>
+
         <VStack gap="6">
-          <Heading size="medium" level="2">
-            {seksjonnavn}
-          </Heading>
-          <BodyLong>
-            Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
-            Kontonummer kan du legge til eller endre på{" "}
-            <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
-          </BodyLong>
-
-          <VStack gap="0">
-            <div className="mb-4">
-              <Label as="p">Navn</Label>
-              <BodyShort>
-                {fornavn} {mellomnavn} {etternavn}
-              </BodyShort>
-            </div>
-            <div className="mb-4">
-              <Label as="p">Fødselsnummer</Label>
-              <BodyShort>{formattertIdent}</BodyShort>
-            </div>
-            <div className="mb-4">
-              <Label as="p">Alder</Label>
-              <BodyShort>{alder}</BodyShort>
-            </div>
-            {folkeregistrertAdresse && (
-              <div className="mb-4">
-                <Label as="p">Folkeregistrert adresse</Label>
-                <BodyShort>
-                  {folkeregistrertAdresse.adresselinje1}{" "}
-                  {folkeregistrertAdresse.adresselinje1 && <br />}
-                  {folkeregistrertAdresse.adresselinje2}{" "}
-                  {folkeregistrertAdresse.adresselinje2 && <br />}
-                  {folkeregistrertAdresse.adresselinje3}{" "}
-                  {folkeregistrertAdresse.adresselinje3 && <br />}
-                  {folkeregistrertAdresse.postnummer} {folkeregistrertAdresse.poststed}{" "}
-                  {folkeregistrertAdresse.land && <br />}
-                  {folkeregistrertAdresse.land}
-                </BodyShort>
-              </div>
-            )}
-            <div className="mb-4">
-              <Label as="p">Kontonummer</Label>
-              <BodyShort>
-                {formattertKontonummer || (
-                  <span>
-                    Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på{" "}
-                    <EksterneLenke href="https://www.nav.no/minside" tekst="Min side" />.
-                  </span>
-                )}
-              </BodyShort>
-            </div>
+          <VStack>
+            <Label as="p">Navn</Label>
+            <BodyShort>
+              {fornavn} {mellomnavn} {etternavn}
+            </BodyShort>
           </VStack>
-          <Form {...form.getFormProps()}>
-            <input type="hidden" name="versjon" value={seksjon.versjon} />
-            <VStack gap="8">
-              {personaliaSpørsmål.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                  return null;
-                }
-
-                return (
-                  <Komponent
-                    key={komponent.id}
-                    props={komponent}
-                    formScope={form.scope(komponent.id as keyof PersonaliaSvar)}
-                  />
-                );
-              })}
-
-              {personaliaBostedslandSpørsmål.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
-                  return null;
-                }
-
-                return (
-                  <Komponent
-                    key={spørsmål.id}
-                    props={spørsmål}
-                    formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
-                  />
-                );
-              })}
-
-              {actionData && (
-                <Alert variant="error" className="mt-4">
-                  {actionData.error}
-                </Alert>
+          <VStack>
+            <Label as="p">Fødselsnummer</Label>
+            <BodyShort>{formattertIdent}</BodyShort>
+          </VStack>
+          <VStack>
+            <Label as="p">Alder</Label>
+            <BodyShort>{alder}</BodyShort>
+          </VStack>
+          {folkeregistrertAdresse && (
+            <VStack>
+              <Label as="p">Folkeregistrert adresse</Label>
+              <BodyShort>
+                {folkeregistrertAdresse.adresselinje1}{" "}
+                {folkeregistrertAdresse.adresselinje1 && <br />}
+                {folkeregistrertAdresse.adresselinje2}{" "}
+                {folkeregistrertAdresse.adresselinje2 && <br />}
+                {folkeregistrertAdresse.adresselinje3}{" "}
+                {folkeregistrertAdresse.adresselinje3 && <br />}
+                {folkeregistrertAdresse.postnummer} {folkeregistrertAdresse.poststed}{" "}
+                {folkeregistrertAdresse.land && <br />}
+                {folkeregistrertAdresse.land}
+              </BodyShort>
+            </VStack>
+          )}
+          <VStack>
+            <Label as="p">Kontonummer</Label>
+            <BodyShort>
+              {formattertKontonummer || (
+                <span>
+                  Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på{" "}
+                  <EksterneLenke href="https://www.nav.no/minside" tekst="Min side" />.
+                </span>
               )}
-            </VStack>
-
-            <VStack className="mt-8" gap="4">
-              <SistOppdatert />
-              <HStack gap="4">
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={handleSubmit}
-                  iconPosition="right"
-                  icon={<ArrowRightIcon aria-hidden />}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Neste steg
-                </Button>
-              </HStack>
-            </VStack>
-          </Form>
+            </BodyShort>
+          </VStack>
         </VStack>
+        <Form {...form.getFormProps()}>
+          <input type="hidden" name="versjon" value={seksjon.versjon} />
+          <VStack gap="6">
+            {personaliaSpørsmål.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                return null;
+              }
+
+              return (
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof PersonaliaSvar)}
+                />
+              );
+            })}
+
+            {personaliaBostedslandSpørsmål.map((spørsmål) => {
+              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                return null;
+              }
+
+              return (
+                <Komponent
+                  key={spørsmål.id}
+                  props={spørsmål}
+                  formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
+                />
+              );
+            })}
+
+            {actionData && (
+              <SeksjonTekniskFeil
+                tittel="Det har oppstått en teknisk feil"
+                beskrivelse={actionData.error}
+              />
+            )}
+          </VStack>
+        </Form>
       </VStack>
-      <SøknadFooter
-        className="footer"
-        søknadId={soknadId}
-        onFortsettSenere={handleFortsettSenere}
+
+      <SeksjonNavigasjon
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
       />
+
+      <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
     </div>
   );
 }

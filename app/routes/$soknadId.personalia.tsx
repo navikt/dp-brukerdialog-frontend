@@ -123,6 +123,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       key !== handling &&
       key !== "pdfGrunnlag"
   );
+
   const seksjonsvar = Object.fromEntries(filtrertEntries);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
@@ -145,7 +146,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   );
 
   if (lagreSeksjonResponse.status !== 200) {
-    return { error: "Noe gikk galt ved lagring av seksjonen" };
+    return {
+      error: "Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
+    };
   }
 
   const putSøknadPersonaliaRequestBody: PutSøknadPersonaliaRequestBody = {
@@ -170,7 +173,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
   );
 
   if (lagreSøknadPersonaliaResponse.status !== 200) {
-    return { error: "Noe gikk galt ved lagring av personalia" };
+    return {
+      error: "Vi klarte ikke å lagre dine svar. Vennligst prøv igjen.",
+    };
   }
 
   if (formData.get(handling) === Seksjonshandling.fortsettSenere) {

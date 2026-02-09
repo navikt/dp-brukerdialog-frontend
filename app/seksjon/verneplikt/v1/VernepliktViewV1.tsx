@@ -1,10 +1,10 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
-import { SistOppdatert } from "~/components/SistOppdatert";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
@@ -70,14 +70,14 @@ export default function VernepliktViewV1() {
       : "null";
   }
 
-  function handleMellomlagring(ønsketHandling: Seksjonshandling) {
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(handling, ønsketHandling);
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.submit();
   }
 
-  async function handleSubmit() {
+  async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
 
     if (Object.values(await form.validate()).length === 0) {
@@ -90,66 +90,46 @@ export default function VernepliktViewV1() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
-        <VStack gap="6">
-          <Heading size="medium" level="2">
-            {seksjonnavn}
-          </Heading>
-          <Form {...form.getFormProps()}>
-            <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-            <VStack gap="8">
-              {vernepliktKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
-                  return null;
-                }
+      <VStack gap="6">
+        <Heading size="medium" level="2">
+          {seksjonnavn}
+        </Heading>
+        <Form {...form.getFormProps()}>
+          <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
+          <VStack gap="6">
+            {vernepliktKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                return null;
+              }
 
-                return (
-                  <Komponent
-                    key={komponent.id}
-                    props={komponent}
-                    formScope={form.scope(komponent.id as keyof VernepliktSvar)}
-                  />
-                );
-              })}
-            </VStack>
+              return (
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formScope={form.scope(komponent.id as keyof VernepliktSvar)}
+                />
+              );
+            })}
+          </VStack>
+        </Form>
 
-            {actionData && (
-              <Alert variant="error" className="mt-4">
-                {actionData.error}
-              </Alert>
-            )}
-
-            <VStack className="mt-8" gap="4">
-              <SistOppdatert />
-              <HStack gap="4">
-                <Button
-                  variant="secondary"
-                  type="button"
-                  icon={<ArrowLeftIcon aria-hidden />}
-                  onClick={() => handleMellomlagring(Seksjonshandling.tilbakenavigering)}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Forrige steg
-                </Button>
-                <Button
-                  variant="primary"
-                  type="button"
-                  onClick={handleSubmit}
-                  iconPosition="right"
-                  icon={<ArrowRightIcon aria-hidden />}
-                  disabled={state === "submitting" || state === "loading"}
-                >
-                  Neste steg
-                </Button>
-              </HStack>
-            </VStack>
-          </Form>
-        </VStack>
+        {actionData && (
+          <SeksjonTekniskFeil
+            tittel="Det har oppstått en teknisk feil"
+            beskrivelse={actionData.error}
+          />
+        )}
       </VStack>
+
+      <SeksjonNavigasjon
+        onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+        onNesteSteg={lagreSvar}
+        lagrer={state === "submitting" || state === "loading"}
+      />
+
       <SøknadFooter
-        className="footer"
         søknadId={soknadId}
-        onFortsettSenere={() => handleMellomlagring(Seksjonshandling.fortsettSenere)}
+        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
       />
     </div>
   );

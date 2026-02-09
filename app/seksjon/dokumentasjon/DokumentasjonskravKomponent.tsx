@@ -130,8 +130,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="large" className="mt-4">
-      <VStack gap="4">
+    <Box.New padding="space-16" background="sunken" borderRadius="large">
+      <VStack gap="6">
         <Form {...form.getFormProps()}>
           <VStack gap="4">
             <Heading size="small" level="3">

@@ -68,6 +68,8 @@ export function hentFilFeilmelding(feilType: FilOpplastingFeilType) {
       return "Kunne ikke laste opp filen. Det oppstod en teknisk feil";
     case FilOpplastingFeilType.DUPLIKAT_FIL:
       return "Kunne ikke laste opp filen. Filen er duplikat";
+    case FilOpplastingFeilType.SLETTING_FEIL:
+      return "Kunne ikke slette filen. Det oppstod en feil";
     case FilOpplastingFeilType.UKJENT_FEIL:
       return "Kunne ikke laste opp filen. Det oppstod en ukjent feil";
     default:

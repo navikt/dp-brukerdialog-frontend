@@ -3,6 +3,7 @@ import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload"
 import { useParams } from "react-router";
 import {
   Dokumentasjonskrav,
+  DokumentasjonskravFeilType,
   DokumentkravFil,
   FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
@@ -129,27 +130,53 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("filsti", fil.filsti);
+    try {
+      const formData = new FormData();
+      formData.append("filsti", fil.filsti);
 
-    const response = await fetch(
-      `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
-      {
-        method: "POST",
-        body: formData,
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Feil ved sletting av fil med filsti:", fil.filsti);
+
+        const oppdaterteFiler = ettersending.filer?.map((f) =>
+          f.id === fil.id ? { ...f, feil: FilOpplastingFeilType.SLETTING_FEIL } : f
+        );
+
+        oppdaterEttersending({
+          ...ettersending,
+          filer: oppdaterteFiler,
+          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
+        });
+
+        return;
       }
-    );
 
-    if (!response.ok) {
-      return;
+      oppdaterEttersending({
+        ...ettersending,
+        filer: ettersendingFiler.filter((f) => f.filsti !== fil.filsti),
+      });
+
+      return await response.text();
+    } catch (error) {
+      console.error("Uventet feil ved sletting av fil:", error);
+
+      const oppdaterteFiler = ettersendingFiler.map((f) =>
+        f.id === fil.id ? { ...f, feil: FilOpplastingFeilType.SLETTING_FEIL } : f
+      );
+
+      oppdaterEttersending({
+        ...ettersending,
+        filer: oppdaterteFiler,
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
+      });
     }
-
-    oppdaterEttersending({
-      ...ettersending,
-      filer: ettersendingFiler.filter((f) => f.filsti !== fil.filsti),
-    });
-
-    return await response.text();
   }
 
   return (
