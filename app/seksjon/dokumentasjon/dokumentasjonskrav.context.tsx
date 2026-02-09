@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
@@ -21,7 +22,7 @@ type DokumentasjonskravContextType = {
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringsTeller: number;
   setValideringsTeller: React.Dispatch<React.SetStateAction<number>>;
-  bundleOgLagreDokumentasjonskrav: (tilbakenavigering?: boolean) => Promise<void>;
+  bundleOgLagreDokumentasjonskrav: (tilbakenavigering?: Seksjonshandling) => Promise<void>;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -88,15 +89,19 @@ function DokumentasjonskravProvider({
     });
   }
 
-  async function bundleOgLagreDokumentasjonskrav(tilbakenavigering?: boolean): Promise<void> {
+  async function bundleOgLagreDokumentasjonskrav(ønsketHandling?: Seksjonshandling): Promise<void> {
     setLagrer(true);
     setHarTekniskFeil(false);
 
     const bundletDokumentasjonskrav: Dokumentasjonskrav[] = [];
     let bundlingFeilet = false;
 
+    const skalIkkeBundleFiler =
+      ønsketHandling === Seksjonshandling.tilbakenavigering ||
+      ønsketHandling === Seksjonshandling.fortsettSenere;
+
     for (const etKrav of dokumentasjonskrav) {
-      if (etKrav.svar !== dokumentkravSvarSendNå || tilbakenavigering) {
+      if (etKrav.svar !== dokumentkravSvarSendNå || skalIkkeBundleFiler) {
         continue;
       }
 
@@ -155,7 +160,13 @@ function DokumentasjonskravProvider({
     }
 
     setLagrer(false);
-    navigate(tilbakenavigering ? FORRIGE_STEG : NESTE_STEG);
+
+    if (ønsketHandling === Seksjonshandling.fortsettSenere) return;
+    if (ønsketHandling === Seksjonshandling.tilbakenavigering) {
+      navigate(FORRIGE_STEG);
+    } else {
+      navigate(NESTE_STEG);
+    }
   }
 
   async function bundleFilerForDokumentasjonskrav(

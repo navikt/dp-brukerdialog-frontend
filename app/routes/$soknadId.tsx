@@ -119,7 +119,7 @@ export default function SoknadIdIndex() {
           Søknad om dagpenger
         </Heading>
       </div>
-      <div className="innhold">
+      <div className="progressbar">
         {!erEttersending && (
           <FormProgress totalSteps={stegISøknaden.length} activeStep={loaderData?.aktivSteg || 1}>
             {progressData.map((steg) => (

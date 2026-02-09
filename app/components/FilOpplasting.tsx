@@ -139,32 +139,58 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("filsti", fil.filsti);
+    try {
+      const formData = new FormData();
+      formData.append("filsti", fil.filsti);
 
-    const response = await fetch(
-      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/slett-fil`,
-      {
-        method: "POST",
-        body: formData,
+      const response = await fetch(
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/slett-fil`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Feil ved sletting av fil med filsti:", fil.filsti);
+
+        const oppdaterteFiler = dokumentkravFiler.map((f) =>
+          f.id === fil.id ? { ...f, feil: FilOpplastingFeilType.SLETTING_FEIL } : f
+        );
+
+        oppdaterEtDokumentasjonskrav({
+          ...dokumentasjonskrav,
+          filer: oppdaterteFiler,
+          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
+        });
+
+        return;
       }
-    );
 
-    if (!response.ok) {
-      return;
+      const oppdaterteFiler = dokumentkravFiler.filter((f) => f.filsti !== fil.filsti);
+
+      oppdaterEtDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+        feil: oppdaterteFiler.some((fil) => fil.feil)
+          ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+          : undefined,
+      });
+
+      return await response.text();
+    } catch (error) {
+      console.error("Uventet feil ved sletting av fil:", error);
+
+      const oppdaterteFiler = dokumentkravFiler.map((f) =>
+        f.id === fil.id ? { ...f, feil: FilOpplastingFeilType.SLETTING_FEIL } : f
+      );
+
+      oppdaterEtDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        filer: oppdaterteFiler,
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
+      });
     }
-
-    const oppdaterteFiler = dokumentkravFiler.filter((f) => f.filsti !== fil.filsti);
-
-    oppdaterEtDokumentasjonskrav({
-      ...dokumentasjonskrav,
-      filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
-      feil: oppdaterteFiler.some((fil) => fil.feil)
-        ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
-        : undefined,
-    });
-
-    return await response.text();
   }
 
   return (
