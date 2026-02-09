@@ -1,19 +1,19 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Button, ErrorMessage, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useParams } from "react-router";
+import invariant from "tiny-invariant";
 import { z } from "zod";
 import { Komponent } from "~/components/Komponent";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import {
   dokumentasjonKomponenter,
   DokumentasjonSvar,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
-import { useParams } from "react-router";
-import invariant from "tiny-invariant";
-import { SøknadFooter } from "~/components/SøknadFooter";
-import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 
 export function DokumentasjonView() {
   const { soknadId } = useParams();

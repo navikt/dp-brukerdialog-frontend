@@ -187,7 +187,7 @@ export function BarnetilleggViewV1() {
           <HStack>
             <Button
               variant="secondary"
-              type="submit"
+              type="button"
               icon={<PersonPlusIcon aria-hidden />}
               onClick={() => {
                 setModalData({ operasjon: ModalOperasjon.LeggTil });

@@ -1,12 +1,10 @@
-import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
-import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
-import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";

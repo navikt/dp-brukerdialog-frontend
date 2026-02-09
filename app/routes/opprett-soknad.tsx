@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Alert, Box, Button, Checkbox, Heading, LocalAlert, VStack } from "@navikt/ds-react";
+import { Box, Button, Checkbox, Heading, LocalAlert, VStack } from "@navikt/ds-react";
 import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
