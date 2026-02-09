@@ -13,6 +13,7 @@ import {
   DokumentasjonSvar,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 
 export function DokumentasjonView() {
@@ -78,7 +79,7 @@ export function DokumentasjonView() {
               type="button"
               icon={<ArrowLeftIcon aria-hidden />}
               disabled={lagrer}
-              onClick={() => bundleOgLagreDokumentasjonskrav(true)}
+              onClick={() => bundleOgLagreDokumentasjonskrav(Seksjonshandling.tilbakenavigering)}
             >
               Forrige steg
             </Button>
@@ -97,7 +98,7 @@ export function DokumentasjonView() {
 
         <SøknadFooter
           søknadId={soknadId}
-          onFortsettSenere={() => bundleOgLagreDokumentasjonskrav(true)}
+          onFortsettSenere={() => bundleOgLagreDokumentasjonskrav(Seksjonshandling.fortsettSenere)}
         />
       </VStack>
     </div>

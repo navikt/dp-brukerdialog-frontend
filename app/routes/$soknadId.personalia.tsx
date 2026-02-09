@@ -123,6 +123,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       key !== handling &&
       key !== "pdfGrunnlag"
   );
+
   const seksjonsvar = Object.fromEntries(filtrertEntries);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
