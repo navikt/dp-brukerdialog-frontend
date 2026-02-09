@@ -129,7 +129,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      id: SEKSJON_ID,
+      seksjonId: SEKSJON_ID,
       seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
