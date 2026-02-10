@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { Bundle, Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import {
+  Bundle,
+  Dokumentasjonskrav,
+  DokumentkravFil,
+} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
@@ -22,7 +26,7 @@ type DokumentasjonskravContextType = {
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringsTeller: number;
   setValideringsTeller: React.Dispatch<React.SetStateAction<number>>;
-  bundleOgLagreDokumentasjonskrav: (tilbakenavigering?: Seksjonshandling) => Promise<void>;
+  bundleOgLagreDokumentasjonskrav: (tilbakenavigering: Seksjonshandling) => Promise<void>;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -62,8 +66,9 @@ function DokumentasjonskravProvider({
   useEffect(() => {
     if (valideringsTeller > 0) {
       const klarTilBundlingOgLagring = verifiserDokumentasjonskrav();
+
       if (klarTilBundlingOgLagring) {
-        bundleOgLagreDokumentasjonskrav();
+        bundleOgLagreDokumentasjonskrav(Seksjonshandling.neste);
       }
     }
   }, [valideringsTeller]);
@@ -89,31 +94,38 @@ function DokumentasjonskravProvider({
     });
   }
 
-  async function bundleOgLagreDokumentasjonskrav(ønsketHandling?: Seksjonshandling): Promise<void> {
+  async function bundleOgLagreDokumentasjonskrav(ønsketHandling: Seksjonshandling): Promise<void> {
     setLagrer(true);
     setHarTekniskFeil(false);
 
     const bundletDokumentasjonskrav: Dokumentasjonskrav[] = [];
     let bundlingFeilet = false;
 
-    const skalIkkeBundleFiler =
-      ønsketHandling === Seksjonshandling.tilbakenavigering ||
-      ønsketHandling === Seksjonshandling.fortsettSenere;
-
     for (const etKrav of dokumentasjonskrav) {
-      if (etKrav.svar !== dokumentkravSvarSendNå || skalIkkeBundleFiler) {
+      if (etKrav.svar !== dokumentkravSvarSendNå) {
         continue;
       }
 
-      const bundle = await bundleFilerForDokumentasjonskrav(etKrav);
+      const erMellomlagring =
+        ønsketHandling === Seksjonshandling.fortsettSenere ||
+        ønsketHandling === Seksjonshandling.tilbakenavigering;
+
+      const filerTilBundling = erMellomlagring
+        ? (etKrav.filer?.filter((fil) => !fil.feil) ?? [])
+        : (etKrav.filer ?? []);
+
+      if (filerTilBundling.length === 0) {
+        continue;
+      }
+
+      const bundle = await bundleFilerForDokumentasjonskrav(etKrav.id, filerTilBundling);
 
       if (bundle) {
-        const oppdatertDokumentasjonskrav: Dokumentasjonskrav = {
+        bundletDokumentasjonskrav.push({
           ...etKrav,
           bundle,
-        };
-
-        bundletDokumentasjonskrav.push(oppdatertDokumentasjonskrav);
+          filer: erMellomlagring ? filerTilBundling : etKrav.filer,
+        });
       } else {
         bundlingFeilet = true;
         console.error("Bundling feilet for dokumentkrav:", etKrav.id);
@@ -170,14 +182,15 @@ function DokumentasjonskravProvider({
   }
 
   async function bundleFilerForDokumentasjonskrav(
-    dokumentasjonskrav: Dokumentasjonskrav
+    dokumentasjonskravId: string,
+    dokumentasjonskravFiler: DokumentkravFil[]
   ): Promise<Bundle | null> {
     try {
       const formData = new FormData();
-      formData.append("filer", JSON.stringify(dokumentasjonskrav.filer));
+      formData.append("filer", JSON.stringify(dokumentasjonskravFiler));
 
       const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
+        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskravId}/bundle-filer`,
         {
           method: "POST",
           body: formData,
@@ -185,7 +198,7 @@ function DokumentasjonskravProvider({
       );
 
       if (!response.ok) {
-        console.error("Feil ved bundling av filer for dokumentasjonskrav:", dokumentasjonskrav.id);
+        console.error("Feil ved bundling av filer for dokumentasjonskrav:", dokumentasjonskravId);
 
         setHarTekniskFeil(true);
         return null;
