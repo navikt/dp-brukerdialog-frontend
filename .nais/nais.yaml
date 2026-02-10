@@ -87,3 +87,11 @@ spec:
       level: idporten-loa-high
   tokenx:
     enabled: true
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
