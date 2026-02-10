@@ -102,29 +102,23 @@ function DokumentasjonskravProvider({
     let bundlingFeilet = false;
 
     for (const etKrav of dokumentasjonskrav) {
-      if (etKrav.svar !== dokumentkravSvarSendNå) {
+      if (etKrav.svar !== dokumentkravSvarSendNå || ønsketHandling !== Seksjonshandling.neste) {
         continue;
       }
 
-      const erMellomlagring =
-        ønsketHandling === Seksjonshandling.fortsettSenere ||
-        ønsketHandling === Seksjonshandling.tilbakenavigering;
-
-      const filerTilBundling = erMellomlagring
-        ? (etKrav.filer?.filter((fil) => !fil.feil) ?? [])
-        : (etKrav.filer ?? []);
-
-      if (filerTilBundling.length === 0) {
+      if (!etKrav.filer || etKrav.filer.length === 0) {
         continue;
       }
 
-      const bundle = await bundleFilerForDokumentasjonskrav(etKrav.id, filerTilBundling);
+      console.log("nå bundler vi dokumenter");
+
+      const bundle = await bundleFilerForDokumentasjonskrav(etKrav.id, etKrav.filer);
 
       if (bundle) {
         bundletDokumentasjonskrav.push({
           ...etKrav,
           bundle,
-          filer: erMellomlagring ? filerTilBundling : etKrav.filer,
+          filer: etKrav.filer,
         });
       } else {
         bundlingFeilet = true;
