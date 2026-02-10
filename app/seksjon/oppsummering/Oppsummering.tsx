@@ -9,10 +9,16 @@ import BarnetilleggOppsummeringV1 from "~/seksjon/barnetillegg/v1/oppsummering/B
 import ReellArbeidssøkerOppsummeringV1 from "~/seksjon/reell-arbeidssøker/v1/oppsummering/ReellArbeidssøkerOppsummeringV1";
 import TilleggsopplysningerOppsummeringV1 from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggsopplysningerOppsummeringV1";
 
-type RenderSeksjonProps = {
+export type OppsummeringSeksjonsData = {
+  seksjonId: string;
+  versjon: number;
+  seksjonsvar?: any;
+};
+
+type OppsummeringProps = {
   seksjonsId: string;
   seksjonsUrl: string;
-  seksjonsData: string;
+  seksjonsData: OppsummeringSeksjonsData;
   redigerbar?: boolean;
 };
 
@@ -21,16 +27,14 @@ export default function Oppsummering({
   seksjonsUrl,
   seksjonsData,
   redigerbar = true,
-}: RenderSeksjonProps) {
-  const seksjonSvarene = JSON.parse(seksjonsData);
-
+}: OppsummeringProps) {
   switch (seksjonsId) {
     case "din-situasjon":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <DinSituasjonOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -38,18 +42,18 @@ export default function Oppsummering({
         default:
           return (
             <DinSituasjonOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
           );
       }
     case "personalia":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <PersonaliaOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -57,18 +61,18 @@ export default function Oppsummering({
         default:
           return (
             <PersonaliaOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
           );
       }
     case "arbeidsforhold":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <ArbeidsforholdOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -76,7 +80,7 @@ export default function Oppsummering({
         default:
           return (
             <ArbeidsforholdOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -84,11 +88,11 @@ export default function Oppsummering({
       }
 
     case "annen-pengestotte":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <AnnenPengestøtteOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -96,18 +100,18 @@ export default function Oppsummering({
         default:
           return (
             <AnnenPengestøtteOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
           );
       }
     case "egen-naring":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <EgenNæringOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -115,18 +119,18 @@ export default function Oppsummering({
         default:
           return (
             <EgenNæringOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
           );
       }
     case "verneplikt":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <VernepliktOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -134,7 +138,7 @@ export default function Oppsummering({
         default:
           return (
             <VernepliktOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -142,11 +146,11 @@ export default function Oppsummering({
       }
 
     case "utdanning":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <UtdanningOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -154,7 +158,7 @@ export default function Oppsummering({
         default:
           return (
             <UtdanningOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -162,11 +166,11 @@ export default function Oppsummering({
       }
 
     case "barnetillegg":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <BarnetilleggOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -174,7 +178,7 @@ export default function Oppsummering({
         default:
           return (
             <BarnetilleggOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -182,11 +186,11 @@ export default function Oppsummering({
       }
 
     case "reell-arbeidssoker":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <ReellArbeidssøkerOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -194,7 +198,7 @@ export default function Oppsummering({
         default:
           return (
             <ReellArbeidssøkerOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -202,11 +206,11 @@ export default function Oppsummering({
       }
 
     case "tilleggsopplysninger":
-      switch (seksjonSvarene.versjon) {
+      switch (seksjonsData.versjon) {
         case 1:
           return (
             <TilleggsopplysningerOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />
@@ -215,7 +219,7 @@ export default function Oppsummering({
         default:
           return (
             <TilleggsopplysningerOppsummeringV1
-              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonSvarene={seksjonsData.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
             />

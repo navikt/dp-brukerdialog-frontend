@@ -6,7 +6,7 @@ import { z } from "zod";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
 import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
-import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import Oppsummering, { OppsummeringSeksjonsData } from "~/seksjon/oppsummering/Oppsummering";
 
 const schema = z.object({});
 
@@ -60,12 +60,13 @@ export default function OppsummeringView() {
           {stegISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
+
             return (
               <Oppsummering
                 key={seksjon.path}
                 seksjonsId={seksjon.path}
                 seksjonsUrl={`/${soknadId}/${seksjon.path}`}
-                seksjonsData={seksjonsData.data}
+                seksjonsData={seksjonsData.data as unknown as OppsummeringSeksjonsData}
               />
             );
           })}
