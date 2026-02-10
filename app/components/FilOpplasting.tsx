@@ -125,7 +125,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
-    if (fil.feil || !fil.filsti) {
+    if (!fil.filsti) {
       const oppdaterteFiler = dokumentkravFiler.filter((f) => f.id !== fil.id);
 
       oppdaterEtDokumentasjonskrav({

@@ -110,8 +110,6 @@ function DokumentasjonskravProvider({
         continue;
       }
 
-      console.log("nå bundler vi dokumenter");
-
       const bundle = await bundleFilerForDokumentasjonskrav(etKrav.id, etKrav.filer);
 
       if (bundle) {

@@ -121,10 +121,15 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
   }
 
   async function slettEnFil(fil: DokumentkravFil) {
-    if (fil.feil || !fil.filsti) {
+    if (!fil.filsti) {
+      const oppdaterteFiler = ettersendingFiler.filter((f) => f.id !== fil.id);
+
       oppdaterEttersending({
         ...ettersending,
-        filer: ettersendingFiler.filter((f) => f.id !== fil.id),
+        filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+        feil: oppdaterteFiler.some((fil) => fil.feil)
+          ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+          : undefined,
       });
 
       return;
@@ -158,9 +163,14 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         return;
       }
 
+      const oppdaterteFiler = ettersendingFiler.filter((f) => f.filsti !== fil.filsti);
+
       oppdaterEttersending({
         ...ettersending,
-        filer: ettersendingFiler.filter((f) => f.filsti !== fil.filsti),
+        filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
+        feil: oppdaterteFiler.some((fil) => fil.feil)
+          ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+          : undefined,
       });
 
       return await response.text();
