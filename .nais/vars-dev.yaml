@@ -11,8 +11,8 @@ unleash:
   server_api_url: https://teamdagpenger-unleash-api.nav.cloud.nais.io/api
   environment: development
 faro_url: https://telemetry.ekstern.dev.nav.no/collect
-dp_soknad_orkestrator_url: https://dp-soknad-orkestrator.intern.dev.nav.no
-dp_mellomlagring_url: https://dp-mellomlagring.intern.dev.nav.no/v1/obo/mellomlagring
+dp_soknad_orkestrator_url: http://dp-soknad-orkestrator
+dp_mellomlagring_url: http://dp-mellomlagring/v1/obo/mellomlagring
 arbeidssokerregisteret_url: https://oppslag-v2-arbeidssoekerregisteret.intern.dev.nav.no
 dp_mine_dagpenger_url: https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/mine-dagpenger
 generell_innsending_url: https://arbeid.intern.dev.nav.no/dagpenger/dialog/generell-innsending/
