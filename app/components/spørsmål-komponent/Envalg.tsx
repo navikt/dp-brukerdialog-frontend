@@ -18,7 +18,6 @@ export function Envalg({ props, formScope, horisontal, ref }: IProps) {
     <RadioGroup
       {...field.getInputProps()}
       ref={ref}
-      tabIndex={-1}
       legend={props.label}
       key={props.id}
       defaultValue={(field.value() as string) ?? undefined}

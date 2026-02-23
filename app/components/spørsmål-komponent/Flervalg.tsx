@@ -18,7 +18,6 @@ export function Flervalg({ props, formScope, ref }: IProps) {
     <CheckboxGroup
       {...field.getInputProps()}
       ref={ref}
-      tabIndex={-1}
       legend={props.label}
       description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={props.id}

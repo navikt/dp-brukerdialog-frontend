@@ -18,6 +18,7 @@ import {
   handling,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
+import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
@@ -54,19 +55,8 @@ export function DinSituasjonViewV1() {
     form.submit();
   }
 
-  async function lagreSvar() {
-    const valideringResultat = await form.validate();
-    const harEnFeil = Object.values(valideringResultat).length > 0;
-
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-
-      økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-      return;
-    }
+  function lagreSvar() {
+    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
 
     form.setValue(handling, Seksjonshandling.neste);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());

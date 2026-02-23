@@ -17,7 +17,6 @@ export function LangTekst({ props, formScope, ref }: IProps) {
     <Textarea
       {...field.getInputProps()}
       ref={ref}
-      tabIndex={-1}
       label={props.label}
       defaultValue={(field.value() as string) ?? undefined}
       description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?

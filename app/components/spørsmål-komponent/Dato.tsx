@@ -45,7 +45,6 @@ export function Dato({ props, formScope, ref }: IProps) {
       <DatePicker.Input
         {...inputProps}
         ref={ref}
-        tabIndex={-1}
         placeholder="DD.MM.ÅÅÅÅ"
         error={error || field.error()}
         label={props.optional ? `${props.label} (valgfritt)` : `${props.label}`}

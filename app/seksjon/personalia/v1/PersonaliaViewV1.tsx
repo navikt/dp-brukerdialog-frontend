@@ -34,6 +34,7 @@ import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
@@ -102,19 +103,8 @@ export function PersonaliaViewV1() {
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
-  async function lagreSvar() {
-    const valideringResultat = await form.validate();
-    const harEnFeil = Object.values(valideringResultat).length > 0;
-
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-
-      økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-      return;
-    }
+  function lagreSvar() {
+    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
 
     const pdfPayload = {
       navn: seksjonnavn,

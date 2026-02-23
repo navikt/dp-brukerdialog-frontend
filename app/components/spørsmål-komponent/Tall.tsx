@@ -16,7 +16,6 @@ export function Tall({ props, formScope, ref }: IProps) {
     <TextField
       {...field.getInputProps()}
       ref={ref}
-      tabIndex={-1}
       inputMode="decimal"
       defaultValue={(field.value() as string) ?? undefined}
       label={props.label}

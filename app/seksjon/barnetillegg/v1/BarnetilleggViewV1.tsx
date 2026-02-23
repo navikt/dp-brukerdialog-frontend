@@ -35,6 +35,7 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -97,24 +98,11 @@ export function BarnetilleggViewV1() {
   }
 
   async function handleSubmit() {
-    form.setValue(handling, Seksjonshandling.neste);
-
     // Todo: fokusen flytter ikke helt riktig. Den må også flytte opp barn fra pdl først
-    const valideringResultat = await form.validate();
-    const harEnFeil = Object.values(valideringResultat).length > 0;
+    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
 
     if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
       setVisLeggTilBarnFeilmelding(true);
-      return;
-    }
-
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-
-      økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
       return;
     }
 
@@ -122,6 +110,7 @@ export function BarnetilleggViewV1() {
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
     if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
       form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
       form.setValue(

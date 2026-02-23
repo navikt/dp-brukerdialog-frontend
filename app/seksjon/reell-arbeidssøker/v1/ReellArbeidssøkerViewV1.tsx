@@ -32,6 +32,7 @@ import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
@@ -65,22 +66,10 @@ export function ReellArbeidssøkerViewV1() {
     form.submit();
   }
 
-  async function lagreSvar() {
+  function lagreSvar() {
+    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+
     const dokumentasjonskrav = hentDokumentasjonskrav();
-
-    const valideringResultat = await form.validate();
-    const harEnFeil = Object.values(valideringResultat).length > 0;
-
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-
-      økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-      return;
-    }
-
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(handling, Seksjonshandling.neste);
     form.setValue(

@@ -33,6 +33,7 @@ import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/N
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function EgenNæringViewV1() {
   const { soknadId } = useParams();
@@ -131,19 +132,8 @@ export function EgenNæringViewV1() {
     form.submit();
   }
 
-  async function lagreSvar() {
-    const valideringResultat = await form.validate();
-    const harEnFeil = Object.values(valideringResultat).length > 0;
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-
-      økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-
-      return;
-    }
+  function lagreSvar() {
+    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
 
     const manglerRegistrertNæringsvirksomhet =
       form.value(driverDuEgenNæringsvirksomhet) === "ja" && næringsvirksomheter.length === 0;

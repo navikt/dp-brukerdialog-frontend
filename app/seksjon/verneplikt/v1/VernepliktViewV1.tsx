@@ -23,6 +23,7 @@ import {
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
@@ -75,21 +76,10 @@ export default function VernepliktViewV1() {
     form.submit();
   }
 
-  async function lagreSvar() {
+  function lagreSvar() {
+    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+
     form.setValue(handling, Seksjonshandling.neste);
-    const valideringResultat = await form.validate();
-    const harEnFeil = Object.values(valideringResultat).length > 0;
-
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-
-      økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-      return;
-    }
-
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.submit();

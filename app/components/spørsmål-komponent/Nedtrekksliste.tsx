@@ -17,7 +17,6 @@ export function Nedtrekksliste({ props, formScope, ref }: IProps) {
     <Select
       {...field.getInputProps()}
       ref={ref}
-      tabIndex={-1}
       defaultValue={field.value() ?? undefined}
       label={props.label}
       key={props.id}
