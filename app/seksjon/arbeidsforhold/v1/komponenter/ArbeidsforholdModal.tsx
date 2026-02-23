@@ -75,8 +75,8 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     submitSource: "state",
     schema: arbeidsforholdModalSchema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
     defaultValues: modalData?.arbeidsforhold ?? {},
@@ -119,6 +119,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       arbeidsforholdSituasjon,
       bedriftNavn
     );
+
     const nyttArbeidsforhold = {
       ...skjemaData,
       id: crypto.randomUUID(),

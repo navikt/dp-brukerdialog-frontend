@@ -8,6 +8,7 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
+import { useSoknad } from "~/seksjon/soknad.context";
 import {
   handling,
   pdfGrunnlag,
@@ -25,23 +26,20 @@ export function TilleggsopplysningerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: tilleggsopplysningerSchema,
-    validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerKomponenter);
 
-  const genererPdfPayload = () => {
+  const genererPdfGrunnlag = () => {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
@@ -51,18 +49,28 @@ export function TilleggsopplysningerViewV1() {
   };
 
   function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
-    form.setValue(pdfGrunnlag, genererPdfPayload());
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(handling, ønsketHandling);
     form.submit();
   }
 
   async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
 
-    if (Object.values(await form.validate()).length === 0) {
-      form.setValue(pdfGrunnlag, genererPdfPayload());
-      form.submit();
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      økeSubmitTeller();
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+      return;
     }
+
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.submit();
   }
 
   return (

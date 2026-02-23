@@ -12,6 +12,7 @@ import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { useSoknad } from "~/seksjon/soknad.context";
 import {
   avsluttetUtdanningSiste6Måneder,
   handling,
@@ -30,17 +31,14 @@ export function UtdanningViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: utdanningSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -79,12 +77,22 @@ export function UtdanningViewV1() {
 
   async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
 
-    if (Object.values(await form.validate()).length === 0) {
-      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
-      form.submit();
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      økeSubmitTeller();
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+      return;
     }
+
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+    form.submit();
   }
 
   return (

@@ -33,7 +33,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
 
   const form = useForm({
-    method: "PUT",
+    method: "POST",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
     defaultValues: {

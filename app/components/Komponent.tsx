@@ -26,13 +26,13 @@ interface IProps {
 export function Komponent({ props, formScope, formValues }: IProps) {
   const ref = useRef(null);
   const { settFokus } = useFokus();
-  const { spørsmålIdTilFokus } = useSoknad();
+  const { spørsmålIdTilFokus, submitTeller } = useSoknad();
 
   useEffect(() => {
     if (props.id === spørsmålIdTilFokus) {
       settFokus(ref);
     }
-  }, [spørsmålIdTilFokus]);
+  }, [spørsmålIdTilFokus, submitTeller]);
 
   switch (props.type) {
     case "dato":
@@ -40,28 +40,28 @@ export function Komponent({ props, formScope, formValues }: IProps) {
 
     case "periodeFra":
     case "periodeTil":
-      return <Periode props={props} formScope={formScope} formValues={formValues} />;
+      return <Periode ref={ref} props={props} formScope={formScope} formValues={formValues} />;
 
     case "envalg":
       return <Envalg ref={ref} props={props} formScope={formScope} />;
 
     case "flervalg":
-      return <Flervalg props={props} formScope={formScope} />;
+      return <Flervalg ref={ref} props={props} formScope={formScope} />;
 
     case "langTekst":
       return <LangTekst ref={ref} props={props} formScope={formScope} />;
 
     case "kortTekst":
-      return <KortTekst props={props} formScope={formScope} />;
+      return <KortTekst ref={ref} props={props} formScope={formScope} />;
 
     case "land":
       return <Land ref={ref} props={props} formScope={formScope} />;
 
     case "tall":
-      return <Tall props={props} formScope={formScope} />;
+      return <Tall ref={ref} props={props} formScope={formScope} />;
 
     case "nedtrekksliste":
-      return <Nedtrekksliste props={props} formScope={formScope} />;
+      return <Nedtrekksliste ref={ref} props={props} formScope={formScope} />;
 
     case "informasjonskort":
       return <Informasjonskort props={props} />;

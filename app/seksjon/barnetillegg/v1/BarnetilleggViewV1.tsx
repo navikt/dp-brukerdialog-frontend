@@ -31,6 +31,7 @@ import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnF
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -42,6 +43,7 @@ export function BarnetilleggViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
   const [visLeggTilBarnFeilmelding, setVisLeggTilBarnFeilmelding] = useState(false);
   const {
     barnFraPdl,
@@ -94,12 +96,25 @@ export function BarnetilleggViewV1() {
     form.submit();
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+
+    // Todo: fokusen flytter ikke helt riktig. Den må også flytte opp barn fra pdl først
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
 
     if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
       setVisLeggTilBarnFeilmelding(true);
+      return;
+    }
+
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      økeSubmitTeller();
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
       return;
     }
 

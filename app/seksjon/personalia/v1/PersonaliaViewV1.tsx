@@ -1,5 +1,6 @@
 import { BodyLong, BodyShort, Heading, Label, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { C } from "node_modules/vitest/dist/chunks/reporters.d.CWXNI2jG";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { EksterneLenke } from "~/components/EksterneLenke";
@@ -39,7 +40,7 @@ export function PersonaliaViewV1() {
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { setSpørsmålIdTilFokus } = useSoknad();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -63,7 +64,7 @@ export function PersonaliaViewV1() {
             </LocalAlert.Content>
           </LocalAlert>
         </VStack>
-        <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
+        <SøknadFooter søknadId={soknadId} onFortsettSenere={mellomlagreSvar} />
       </div>
     );
   }
@@ -78,11 +79,6 @@ export function PersonaliaViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: personaliaSchema,
-    validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -115,22 +111,25 @@ export function PersonaliaViewV1() {
         (key) => valideringResultat[key] !== undefined
       );
 
+      økeSubmitTeller();
       setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-    } else {
-      const pdfPayload = {
-        navn: seksjonnavn,
-        spørsmål: [
-          ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-          ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
-        ],
-      };
-
-      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-      form.submit();
+      return;
     }
+
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [
+        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+      ],
+    };
+
+    form.setValue(handling, Seksjonshandling.neste);
+    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+    form.submit();
   }
 
-  function fortsettSenere() {
+  function mellomlagreSvar() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
@@ -246,7 +245,7 @@ export function PersonaliaViewV1() {
         lagrer={state === "submitting" || state === "loading"}
       />
 
-      <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
+      <SøknadFooter søknadId={soknadId} onFortsettSenere={mellomlagreSvar} />
     </div>
   );
 }

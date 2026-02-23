@@ -51,7 +51,7 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { V } from "node_modules/vitest/dist/chunks/reporters.d.CWXNI2jG";
+import { useSoknad } from "~/seksjon/soknad.context";
 
 const seksjonnavn = "Annen pengestøtte";
 const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
@@ -61,6 +61,8 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [
@@ -99,11 +101,6 @@ export function AnnenPengestøtteViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: annenPengestøtteSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -247,8 +244,19 @@ export function AnnenPengestøtteViewV1() {
   }
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
+
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      økeSubmitTeller();
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+
+      return;
+    }
 
     const manglerPengestøtteFraTidligereArbeidsgiver =
       form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) === "ja" &&
@@ -289,6 +297,7 @@ export function AnnenPengestøtteViewV1() {
       !manglerPengestøtteFraNorge
     ) {
       const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
       form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());

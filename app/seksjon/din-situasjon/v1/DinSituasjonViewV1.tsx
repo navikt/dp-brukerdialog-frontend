@@ -25,7 +25,7 @@ export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const { setSpørsmålIdTilFokus } = useSoknad();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
 
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
@@ -34,27 +34,22 @@ export function DinSituasjonViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: dinSituasjonSchema,
-    validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
 
-  const genererPdfPayload = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
 
   function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
-    form.setValue(pdfGrunnlag, genererPdfPayload());
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(handling, ønsketHandling);
     form.submit();
   }
@@ -68,12 +63,14 @@ export function DinSituasjonViewV1() {
         (key) => valideringResultat[key] !== undefined
       );
 
+      økeSubmitTeller();
       setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
-    } else {
-      form.setValue(handling, Seksjonshandling.neste);
-      form.setValue(pdfGrunnlag, genererPdfPayload());
-      form.submit();
+      return;
     }
+
+    form.setValue(handling, Seksjonshandling.neste);
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.submit();
   }
 
   return (

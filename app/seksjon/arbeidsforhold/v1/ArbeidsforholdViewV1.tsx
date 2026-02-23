@@ -38,6 +38,7 @@ import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeids
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
@@ -59,17 +60,13 @@ export function ArbeidsforholdViewV1() {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
   const { soknadId } = useParams();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: arbeidsforholdSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -141,13 +138,22 @@ export function ArbeidsforholdViewV1() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.setValue(seksjonsvar, JSON.stringify(arbeidsforholdResponse));
-
     form.submit();
   }
 
-  function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+  async function lagreSvar() {
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
+
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      økeSubmitTeller();
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+      return;
+    }
 
     const manglerArbeidsforhold =
       form.value(hvordanHarDuJobbet) &&
@@ -159,6 +165,7 @@ export function ArbeidsforholdViewV1() {
       return;
     }
 
+    form.setValue(handling, Seksjonshandling.neste);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));

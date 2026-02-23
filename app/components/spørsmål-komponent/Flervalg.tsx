@@ -7,15 +7,18 @@ import parse from "html-react-parser";
 interface IProps {
   props: FlervalgSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
+  ref: React.Ref<HTMLFieldSetElement>;
 }
 
-export function Flervalg({ props, formScope }: IProps) {
+export function Flervalg({ props, formScope, ref }: IProps) {
   const field = useField(formScope);
   const value = (field.value() as string[]) ?? undefined;
 
   return (
     <CheckboxGroup
       {...field.getInputProps()}
+      ref={ref}
+      tabIndex={-1}
       legend={props.label}
       description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={props.id}

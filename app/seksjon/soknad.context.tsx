@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type SoknadContextType = {
   spørsmålIdTilFokus: string | undefined;
   setSpørsmålIdTilFokus: (spørsmålId?: string | undefined) => void;
+  submitTeller: number;
+  setSubmitTeller: (teller: number) => void;
+  økeSubmitTeller: () => void;
 };
 
 type SoknadProviderProps = {
@@ -27,11 +30,20 @@ function useSoknad() {
 
 function SoknadProvider({ children }: SoknadProviderProps) {
   const [spørsmålIdTilFokus, setSpørsmålIdTilFokus] = useState<string | undefined>(undefined);
+  const [submitTeller, setSubmitTeller] = useState(0);
+
+  function økeSubmitTeller() {
+    setSubmitTeller((teller) => teller + 1);
+  }
+
   return (
     <SoknadContext.Provider
       value={{
         spørsmålIdTilFokus,
         setSpørsmålIdTilFokus,
+        submitTeller,
+        setSubmitTeller,
+        økeSubmitTeller,
       }}
     >
       {children}

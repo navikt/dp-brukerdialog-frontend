@@ -13,6 +13,7 @@ import {
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { useSoknad } from "~/seksjon/soknad.context";
 import {
   avtjentVerneplikt,
   pdfGrunnlag,
@@ -30,17 +31,14 @@ export default function VernepliktViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
+  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: vernepliktSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -79,12 +77,22 @@ export default function VernepliktViewV1() {
 
   async function lagreSvar() {
     form.setValue(handling, Seksjonshandling.neste);
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
 
-    if (Object.values(await form.validate()).length === 0) {
-      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
-      form.submit();
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      økeSubmitTeller();
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+      return;
     }
+
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+    form.submit();
   }
 
   return (
