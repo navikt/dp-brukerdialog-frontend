@@ -1,20 +1,23 @@
 import { HStack, Radio, RadioGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import parse from "html-react-parser";
+import { Ref } from "react";
 import { EnvalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: EnvalgSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
   horisontal?: boolean;
+  ref: Ref<HTMLFieldSetElement>;
 }
 
-export function Envalg({ props, formScope, horisontal }: IProps) {
+export function Envalg({ props, formScope, horisontal, ref }: IProps) {
   const field = useField(formScope);
 
   return (
     <RadioGroup
       {...field.getInputProps()}
+      ref={ref}
       legend={props.label}
       key={props.id}
       defaultValue={(field.value() as string) ?? undefined}

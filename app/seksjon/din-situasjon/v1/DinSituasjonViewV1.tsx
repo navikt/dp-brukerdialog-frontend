@@ -9,6 +9,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import {
@@ -24,6 +25,8 @@ export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { setSpørsmålIdTilFokus } = useSoknad();
+
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -32,8 +35,8 @@ export function DinSituasjonViewV1() {
     submitSource: "state",
     schema: dinSituasjonSchema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -57,8 +60,17 @@ export function DinSituasjonViewV1() {
   }
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    if (Object.values(await form.validate()).length === 0) {
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
+
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+    } else {
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, genererPdfPayload());
       form.submit();
     }
@@ -103,6 +115,7 @@ export function DinSituasjonViewV1() {
           lagrer={state === "submitting" || state === "loading"}
         />
       </VStack>
+
       <SøknadFooter
         søknadId={soknadId}
         onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}

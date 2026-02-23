@@ -30,6 +30,7 @@ import {
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
@@ -38,7 +39,7 @@ export function PersonaliaViewV1() {
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-
+  const { setSpørsmålIdTilFokus } = useSoknad();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -78,8 +79,8 @@ export function PersonaliaViewV1() {
     submitSource: "state",
     schema: personaliaSchema,
     validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
+      initial: "onBlur",
+      whenTouched: "onBlur",
       whenSubmitted: "onBlur",
     },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
@@ -106,8 +107,16 @@ export function PersonaliaViewV1() {
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    if (Object.values(await form.validate()).length === 0) {
+    const valideringResultat = await form.validate();
+    const harEnFeil = Object.values(valideringResultat).length > 0;
+
+    if (harEnFeil) {
+      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+        (key) => valideringResultat[key] !== undefined
+      );
+
+      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+    } else {
       const pdfPayload = {
         navn: seksjonnavn,
         spørsmål: [
