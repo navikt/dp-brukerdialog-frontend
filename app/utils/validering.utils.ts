@@ -74,17 +74,17 @@ export function validerOgSettFørsteUgyldigSpørsmålIdTilFokus<T>(
   form: FormApi<T>,
   økeSubmitTeller: () => void,
   setKomponentIdTilFokus: (id: string | undefined) => void
-) {
-  form.validate().then((valideringResultat) => {
+): Promise<boolean> {
+  return form.validate().then((valideringResultat) => {
     const harEnFeil = Object.values(valideringResultat).length > 0;
-
     if (harEnFeil) {
       const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
         (key) => valideringResultat[key] !== undefined
       );
-
       økeSubmitTeller();
       setKomponentIdTilFokus(førsteUgyldigeSpørsmålId);
     }
+
+    return harEnFeil;
   });
 }
