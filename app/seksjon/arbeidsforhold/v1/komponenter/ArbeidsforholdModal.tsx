@@ -74,11 +74,6 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: arbeidsforholdModalSchema,
-    validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: modalData?.arbeidsforhold ?? {},
     handleSubmit: (skjemaData) => {
       if (modalData?.operasjon === undefined) {

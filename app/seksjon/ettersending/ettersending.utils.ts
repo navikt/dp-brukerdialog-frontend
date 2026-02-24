@@ -104,7 +104,7 @@ export async function lagreEttersending(
     formData.append("ettersendinger", JSON.stringify(ettersendinger));
 
     const response = await fetch(`/api/dokumentasjonskrav/${søknadId}/${seksjonId}/ettersending`, {
-      method: "POST",
+      method: "PUT",
       body: formData,
     });
 

@@ -35,7 +35,6 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -44,7 +43,6 @@ export function BarnetilleggViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
-  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const [visLeggTilBarnFeilmelding, setVisLeggTilBarnFeilmelding] = useState(false);
   const {
     barnFraPdl,
@@ -98,9 +96,6 @@ export function BarnetilleggViewV1() {
   }
 
   async function handleSubmit() {
-    // Todo: fokusen flytter ikke helt riktig. Den må også flytte opp barn fra pdl først
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
-
     if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
       setVisLeggTilBarnFeilmelding(true);
       return;

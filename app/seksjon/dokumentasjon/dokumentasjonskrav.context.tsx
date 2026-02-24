@@ -184,7 +184,7 @@ function DokumentasjonskravProvider({
       const response = await fetch(
         `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskravId}/bundle-filer`,
         {
-          method: "POST",
+          method: "PUT",
           body: formData,
         }
       );

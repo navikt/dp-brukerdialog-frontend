@@ -40,14 +40,14 @@ export function TilleggsopplysningerViewV1() {
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerKomponenter);
 
-  const genererPdfGrunnlag = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
 
   function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
