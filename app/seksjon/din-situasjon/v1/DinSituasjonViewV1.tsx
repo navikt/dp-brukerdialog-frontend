@@ -12,13 +12,13 @@ import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.sch
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 import {
   dinSituasjonKomponenter,
   DinSituasjonSvar,
   handling,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
@@ -55,12 +55,14 @@ export function DinSituasjonViewV1() {
     form.submit();
   }
 
-  function lagreSvar() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.submit();
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.submit();
+    }
   }
 
   return (

@@ -70,21 +70,22 @@ export function valider(
   }
 }
 
-export function validerOgSettFørsteUgyldigSpørsmålIdTilFokus<T>(
+export async function validerSvar<T>(
   form: FormApi<T>,
   økeSubmitTeller: () => void,
   setKomponentIdTilFokus: (id: string | undefined) => void
 ): Promise<boolean> {
-  return form.validate().then((valideringResultat) => {
-    const harEnFeil = Object.values(valideringResultat).length > 0;
-    if (harEnFeil) {
-      const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
-        (key) => valideringResultat[key] !== undefined
-      );
-      økeSubmitTeller();
-      setKomponentIdTilFokus(førsteUgyldigeSpørsmålId);
-    }
+  const valideringResultat = await form.validate();
 
-    return harEnFeil;
-  });
+  const harEnFeil = Object.values(valideringResultat).length > 0;
+  const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+    (key) => valideringResultat[key] !== undefined
+  );
+
+  if (harEnFeil && førsteUgyldigeSpørsmålId) {
+    setKomponentIdTilFokus(førsteUgyldigeSpørsmålId);
+    økeSubmitTeller();
+  }
+
+  return !harEnFeil;
 }

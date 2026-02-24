@@ -41,7 +41,7 @@ import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/Arb
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -142,8 +142,8 @@ export function ArbeidsforholdViewV1() {
     form.submit();
   }
 
-  function lagreSvar() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const manglerArbeidsforhold =
       form.value(hvordanHarDuJobbet) &&
@@ -155,11 +155,13 @@ export function ArbeidsforholdViewV1() {
       return;
     }
 
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
-    form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
-    form.submit();
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+      form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
+      form.submit();
+    }
   }
 
   return (

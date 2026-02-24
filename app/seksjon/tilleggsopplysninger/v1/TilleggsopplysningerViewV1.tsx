@@ -18,7 +18,7 @@ import {
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function TilleggsopplysningerViewV1() {
   const seksjonnavn = "Tilleggsopplysninger";
@@ -55,12 +55,14 @@ export function TilleggsopplysningerViewV1() {
     form.submit();
   }
 
-  function lagreSvar() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.submit();
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.submit();
+    }
   }
 
   return (

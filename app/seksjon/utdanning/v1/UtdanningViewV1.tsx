@@ -23,7 +23,7 @@ import {
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function UtdanningViewV1() {
   const seksjonnavn = "Utdanning";
@@ -76,13 +76,15 @@ export function UtdanningViewV1() {
     form.submit();
   }
 
-  function lagreSvar() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
-    form.submit();
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+      form.submit();
+    }
   }
 
   return (

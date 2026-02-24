@@ -1,6 +1,5 @@
 import { BodyLong, BodyShort, Heading, Label, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { C } from "node_modules/vitest/dist/chunks/reporters.d.CWXNI2jG";
 import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { EksterneLenke } from "~/components/EksterneLenke";
@@ -34,7 +33,7 @@ import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
@@ -103,20 +102,22 @@ export function PersonaliaViewV1() {
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
-  function lagreSvar() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    const pdfPayload = {
-      navn: seksjonnavn,
-      spørsmål: [
-        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
-      ],
-    };
+    if (klarTilLagring) {
+      const pdfPayload = {
+        navn: seksjonnavn,
+        spørsmål: [
+          ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
+          ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+        ],
+      };
 
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
-    form.submit();
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
+      form.submit();
+    }
   }
 
   function mellomlagreSvar() {

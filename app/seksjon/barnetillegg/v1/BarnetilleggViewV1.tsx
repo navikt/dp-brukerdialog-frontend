@@ -35,7 +35,7 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -98,7 +98,7 @@ export function BarnetilleggViewV1() {
   }
 
   async function handleSubmit() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
       setVisLeggTilBarnFeilmelding(true);
@@ -108,7 +108,11 @@ export function BarnetilleggViewV1() {
     const harUbesvartBarnFraPdl = barnFraPdl.some((barn: BarnFraPdl) => !barn[forsørgerDuBarnet]);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
-    if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
+    if (
+      klarTilLagring &&
+      !harUbesvartBarnFraPdl &&
+      forsørgerDuBarnSomIkkeVisesHerSvar !== undefined
+    ) {
       form.setValue(handling, Seksjonshandling.neste);
       form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
       form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));

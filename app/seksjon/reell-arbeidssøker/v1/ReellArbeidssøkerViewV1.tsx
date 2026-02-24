@@ -32,7 +32,7 @@ import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
@@ -66,17 +66,19 @@ export function ReellArbeidssøkerViewV1() {
     form.submit();
   }
 
-  function lagreSvar() {
-    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    const dokumentasjonskrav = hentDokumentasjonskrav();
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(
-      "dokumentasjonskrav",
-      dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
-    );
-    form.submit();
+    if (klarTilLagring) {
+      const dokumentasjonskrav = hentDokumentasjonskrav();
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(
+        "dokumentasjonskrav",
+        dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
+      );
+      form.submit();
+    }
   }
 
   function hentDokumentasjonskrav() {
