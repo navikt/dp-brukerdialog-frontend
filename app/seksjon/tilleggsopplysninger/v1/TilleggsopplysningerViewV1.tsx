@@ -18,7 +18,7 @@ import {
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function TilleggsopplysningerViewV1() {
   const seksjonnavn = "Tilleggsopplysninger";
@@ -27,7 +27,7 @@ export function TilleggsopplysningerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
-  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -56,7 +56,7 @@ export function TilleggsopplysningerViewV1() {
   }
 
   function lagreSvar() {
-    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     form.setValue(handling, Seksjonshandling.neste);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());

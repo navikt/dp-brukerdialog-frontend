@@ -23,7 +23,7 @@ import {
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
@@ -32,7 +32,7 @@ export default function VernepliktViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
-  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -77,7 +77,7 @@ export default function VernepliktViewV1() {
   }
 
   function lagreSvar() {
-    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     form.setValue(handling, Seksjonshandling.neste);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());

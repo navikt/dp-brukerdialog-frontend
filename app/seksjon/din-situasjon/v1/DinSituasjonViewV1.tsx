@@ -18,7 +18,7 @@ import {
   handling,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
-import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";
@@ -26,7 +26,7 @@ export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
@@ -56,7 +56,7 @@ export function DinSituasjonViewV1() {
   }
 
   function lagreSvar() {
-    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     form.setValue(handling, Seksjonshandling.neste);
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());

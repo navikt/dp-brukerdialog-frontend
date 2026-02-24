@@ -26,13 +26,13 @@ interface IProps {
 export function Komponent({ props, formScope, formValues }: IProps) {
   const ref = useRef(null);
   const { settFokus } = useFokus();
-  const { spørsmålIdTilFokus, submitTeller } = useSoknad();
+  const { komponentIdTilFokus, submitTeller } = useSoknad();
 
   useEffect(() => {
-    if (props.id === spørsmålIdTilFokus) {
+    if (props.id === komponentIdTilFokus) {
       settFokus(ref);
     }
-  }, [spørsmålIdTilFokus, submitTeller]);
+  }, [komponentIdTilFokus, submitTeller]);
 
   switch (props.type) {
     case "dato":

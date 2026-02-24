@@ -70,10 +70,10 @@ export function valider(
   }
 }
 
-export function validerOgSettFørstUgyldigSpørsmålIdTilFokus<T>(
+export function validerOgSettFørsteUgyldigSpørsmålIdTilFokus<T>(
   form: FormApi<T>,
   økeSubmitTeller: () => void,
-  setSpørsmålIdTilFokus: (id: string | undefined) => void
+  setKomponentIdTilFokus: (id: string | undefined) => void
 ) {
   form.validate().then((valideringResultat) => {
     const harEnFeil = Object.values(valideringResultat).length > 0;
@@ -84,7 +84,7 @@ export function validerOgSettFørstUgyldigSpørsmålIdTilFokus<T>(
       );
 
       økeSubmitTeller();
-      setSpørsmålIdTilFokus(førsteUgyldigeSpørsmålId);
+      setKomponentIdTilFokus(førsteUgyldigeSpørsmålId);
     }
   });
 }

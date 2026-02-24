@@ -34,14 +34,14 @@ import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -104,7 +104,7 @@ export function PersonaliaViewV1() {
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
   function lagreSvar() {
-    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const pdfPayload = {
       navn: seksjonnavn,

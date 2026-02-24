@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type SoknadContextType = {
-  spørsmålIdTilFokus: string | undefined;
-  setSpørsmålIdTilFokus: (spørsmålId?: string | undefined) => void;
+  komponentIdTilFokus: string | undefined;
+  setKomponentIdTilFokus: (spørsmålId?: string | undefined) => void;
   submitTeller: number;
   setSubmitTeller: (teller: number) => void;
   økeSubmitTeller: () => void;
@@ -29,7 +29,7 @@ function useSoknad() {
 }
 
 function SoknadProvider({ children }: SoknadProviderProps) {
-  const [spørsmålIdTilFokus, setSpørsmålIdTilFokus] = useState<string | undefined>(undefined);
+  const [komponentIdTilFokus, setKomponentIdTilFokus] = useState<string | undefined>(undefined);
   const [submitTeller, setSubmitTeller] = useState(0);
 
   function økeSubmitTeller() {
@@ -39,8 +39,8 @@ function SoknadProvider({ children }: SoknadProviderProps) {
   return (
     <SoknadContext.Provider
       value={{
-        spørsmålIdTilFokus,
-        setSpørsmålIdTilFokus,
+        komponentIdTilFokus,
+        setKomponentIdTilFokus,
         submitTeller,
         setSubmitTeller,
         økeSubmitTeller,

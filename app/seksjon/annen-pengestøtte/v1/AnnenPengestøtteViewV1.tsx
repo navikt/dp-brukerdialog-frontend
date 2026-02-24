@@ -46,7 +46,7 @@ import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandKomponenter,
@@ -62,7 +62,7 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
-  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -245,7 +245,7 @@ export function AnnenPengestøtteViewV1() {
   }
 
   function lagreSvar() {
-    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const manglerPengestøtteFraTidligereArbeidsgiver =
       form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) === "ja" &&

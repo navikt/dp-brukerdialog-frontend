@@ -41,7 +41,7 @@ import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/Arb
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { validerOgSettFørstUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
+import { validerOgSettFørsteUgyldigSpørsmålIdTilFokus } from "~/utils/validering.utils";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -61,7 +61,7 @@ export function ArbeidsforholdViewV1() {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
   const { soknadId } = useParams();
-  const { setSpørsmålIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
@@ -143,7 +143,7 @@ export function ArbeidsforholdViewV1() {
   }
 
   function lagreSvar() {
-    validerOgSettFørstUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setSpørsmålIdTilFokus);
+    validerOgSettFørsteUgyldigSpørsmålIdTilFokus(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const manglerArbeidsforhold =
       form.value(hvordanHarDuJobbet) &&
