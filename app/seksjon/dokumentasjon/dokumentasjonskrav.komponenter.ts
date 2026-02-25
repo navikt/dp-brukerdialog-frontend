@@ -24,8 +24,6 @@ export type DokumentasjonskravSvar = {
   [hvaErGrunnenTilAtDuIkkeSenderDokumentet]?: string;
 };
 
-export type DokumentasjonSvar = {};
-
 export const dokumentasjonKomponenter: KomponentType[] = [
   {
     id: "dokumentasjonForklarendeTekst",

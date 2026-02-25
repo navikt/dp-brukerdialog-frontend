@@ -2,8 +2,7 @@ import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
-import invariant from "tiny-invariant";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
@@ -36,9 +35,6 @@ import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function EgenNæringViewV1() {
-  const { soknadId } = useParams();
-  invariant(soknadId, "SøknadID er påkrevd");
-
   const seksjonnavn = "Egen næring";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
@@ -280,10 +276,7 @@ export function EgenNæringViewV1() {
         lagrer={state === "submitting" || state === "loading"}
       />
 
-      <SøknadFooter
-        søknadId={soknadId}
-        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
-      />
+      <SøknadFooter onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)} />
     </div>
   );
 }

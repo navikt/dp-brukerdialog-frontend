@@ -58,6 +58,7 @@ export type SoknadIdRoute = {
   søknadProgress: FremgangSteg[];
   aktivSteg: number;
   sistOppdatert?: Date;
+  søknadId: string;
 };
 
 export async function loader({
@@ -82,6 +83,7 @@ export async function loader({
       søknadProgress: fyllTommeSteger(),
       aktivSteg: 1,
       sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
+      søknadId: params.soknadId,
     };
   }
   const { seksjoner }: StegResponse = await progressResponse.json();
@@ -103,6 +105,7 @@ export async function loader({
     søknadProgress: soknadSections,
     aktivSteg: finnAktivSteg(soknadSections, request.url) + 1,
     sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
+    søknadId: params.soknadId,
   };
 }
 
