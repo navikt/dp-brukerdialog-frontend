@@ -94,7 +94,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
-export default function DinSituasjonRoute() {
+export default function DinSituasjonSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
   const { seksjon } = loaderData;
   const { soknadId } = useParams();

@@ -18,6 +18,7 @@ import {
   useParams,
 } from "react-router";
 import { z } from "zod";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
 import { DokumentasjonOppsummering } from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
@@ -28,9 +29,9 @@ const schema = z.object({});
 export function OppsummeringView() {
   const seksjonnavn = "Se over før du sender inn";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
+  const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const { soknadId } = useParams();
   const { state } = useNavigation();
   const navigate = useNavigate();
 
@@ -81,16 +82,13 @@ export function OppsummeringView() {
               <Oppsummering
                 key={seksjon.path}
                 seksjonsId={seksjon.path}
-                seksjonsUrl={`/${soknadId}/${seksjon.path}`}
+                seksjonsUrl={`/${søknadId}/${seksjon.path}`}
                 seksjonsData={seksjonsData.data}
               />
             );
           })}
 
-          <DokumentasjonOppsummering
-            søknadId={soknadId}
-            dokumentasjonskrav={loaderData.dokumentasjonskrav}
-          />
+          <DokumentasjonOppsummering dokumentasjonskrav={loaderData.dokumentasjonskrav} />
 
           {actionData?.error && (
             <ErrorMessage showIcon aria-live="polite">

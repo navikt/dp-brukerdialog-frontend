@@ -56,7 +56,7 @@ export const dokumentasjonKomponenter: KomponentType[] = [
   },
 ];
 
-const dokumentasjonskravKomponenter: KomponentType[] = [
+export const dokumentasjonskravKomponenter: KomponentType[] = [
   {
     id: velgHvaDuVilGjøre,
     type: "envalg",
@@ -109,4 +109,3 @@ const dokumentasjonskravKomponenter: KomponentType[] = [
       svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
   },
 ];
-export default dokumentasjonskravKomponenter;

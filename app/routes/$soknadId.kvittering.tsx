@@ -61,6 +61,6 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
   };
 }
 
-export default function Kvittering() {
+export default function KvitteringSide() {
   return <KvitteringView />;
 }

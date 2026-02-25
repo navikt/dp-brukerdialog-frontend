@@ -92,7 +92,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
-export default function UtdanningRoute() {
+export default function UtdanningSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 

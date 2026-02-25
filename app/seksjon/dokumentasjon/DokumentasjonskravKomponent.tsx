@@ -7,7 +7,8 @@ import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "./dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
-import dokumentasjonskravKomponenter, {
+import {
+  dokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,

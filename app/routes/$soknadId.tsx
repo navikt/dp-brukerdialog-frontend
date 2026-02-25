@@ -109,7 +109,7 @@ export async function loader({
   };
 }
 
-export default function SoknadIdIndex() {
+export default function SoknadIdLayoutSide() {
   const loaderData = useLoaderData<typeof loader>();
   const progressData = loaderData?.søknadProgress;
   const location = useLocation();

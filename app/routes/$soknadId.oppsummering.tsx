@@ -51,7 +51,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 }
 
-export default function Oppsummering() {
+export default function OppsummeringSide() {
   const loaderData = useLoaderData<typeof loader>();
 
   if (!loaderData) {
