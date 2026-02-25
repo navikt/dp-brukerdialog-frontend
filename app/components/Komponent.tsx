@@ -19,7 +19,7 @@ import { Periode } from "./spørsmål-komponent/Periode";
 
 interface IProps {
   props: KomponentType;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   formValues?: Record<string, any>;
 }
 
@@ -34,60 +34,52 @@ export function Komponent({ props, formScope, formValues }: IProps) {
     }
   }, [komponentIdTilFokus, submitTeller]);
 
-  if (formScope) {
-    switch (props.type) {
-      case "dato":
-        return <Dato ref={ref} props={props} formScope={formScope} />;
+  switch (props.type) {
+    case "dato":
+      return <Dato ref={ref} props={props} formScope={formScope} />;
 
-      case "periodeFra":
-      case "periodeTil":
-        return <Periode ref={ref} props={props} formScope={formScope} formValues={formValues} />;
+    case "periodeFra":
+    case "periodeTil":
+      return <Periode ref={ref} props={props} formScope={formScope} formValues={formValues} />;
 
-      case "envalg":
-        return <Envalg ref={ref} props={props} formScope={formScope} />;
+    case "envalg":
+      return <Envalg ref={ref} props={props} formScope={formScope} />;
 
-      case "flervalg":
-        return <Flervalg ref={ref} props={props} formScope={formScope} />;
+    case "flervalg":
+      return <Flervalg ref={ref} props={props} formScope={formScope} />;
 
-      case "langTekst":
-        return <LangTekst ref={ref} props={props} formScope={formScope} />;
+    case "langTekst":
+      return <LangTekst ref={ref} props={props} formScope={formScope} />;
 
-      case "kortTekst":
-        return <KortTekst ref={ref} props={props} formScope={formScope} />;
+    case "kortTekst":
+      return <KortTekst ref={ref} props={props} formScope={formScope} />;
 
-      case "land":
-        return <Land ref={ref} props={props} formScope={formScope} />;
+    case "land":
+      return <Land ref={ref} props={props} formScope={formScope} />;
 
-      case "tall":
-        return <Tall ref={ref} props={props} formScope={formScope} />;
+    case "tall":
+      return <Tall ref={ref} props={props} formScope={formScope} />;
 
-      case "nedtrekksliste":
-        return <Nedtrekksliste ref={ref} props={props} formScope={formScope} />;
+    case "nedtrekksliste":
+      return <Nedtrekksliste ref={ref} props={props} formScope={formScope} />;
 
-      default:
-        console.warn(`Ukjent spørsmålstype: ${props}`);
-        return null;
-    }
-  } else {
-    switch (props.type) {
-      case "informasjonskort":
-        return <Informasjonskort props={props} />;
+    case "informasjonskort":
+      return <Informasjonskort props={props} />;
 
-      case "lesMer":
-        return <LesMer props={props} />;
+    case "lesMer":
+      return <LesMer props={props} />;
 
-      case "dokumentasjonskravindikator":
-        return <Dokumentasjonskravindikator props={props} />;
+    case "dokumentasjonskravindikator":
+      return <Dokumentasjonskravindikator props={props} />;
 
-      case "forklarendeTekst":
-        return <ForklarendeTekst props={props} />;
+    case "forklarendeTekst":
+      return <ForklarendeTekst props={props} />;
 
-      case "registeropplysning":
-        return null;
+    case "registeropplysning":
+      return null;
 
-      default:
-        console.warn(`Ukjent spørsmålstype: ${props}`);
-        return null;
-    }
+    default:
+      console.warn(`Ukjent spørsmålstype: ${props}`);
+      return null;
   }
 }
