@@ -1,7 +1,6 @@
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
-import invariant from "tiny-invariant";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
@@ -27,9 +26,6 @@ export function DinSituasjonViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-
-  const { soknadId } = useParams();
-  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -105,10 +101,7 @@ export function DinSituasjonViewV1() {
         />
       </VStack>
 
-      <SøknadFooter
-        søknadId={soknadId}
-        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
-      />
+      <SøknadFooter onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)} />
     </div>
   );
 }

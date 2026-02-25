@@ -18,10 +18,13 @@ import {
   useParams,
 } from "react-router";
 import { z } from "zod";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SøknadFooter } from "~/components/SøknadFooter";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
 import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
 import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const schema = z.object({});
 
