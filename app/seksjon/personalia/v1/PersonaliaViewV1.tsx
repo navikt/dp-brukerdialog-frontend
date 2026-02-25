@@ -41,8 +41,6 @@ export function PersonaliaViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { soknadId } = useParams();
-  invariant(soknadId, "SøknadID er påkrevd");
 
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
@@ -64,7 +62,7 @@ export function PersonaliaViewV1() {
             </LocalAlert.Content>
           </LocalAlert>
         </VStack>
-        <SøknadFooter søknadId={soknadId} onFortsettSenere={mellomlagreSvar} />
+        <SøknadFooter onFortsettSenere={mellomlagreSvar} />
       </div>
     );
   }
@@ -236,7 +234,7 @@ export function PersonaliaViewV1() {
         lagrer={state === "submitting" || state === "loading"}
       />
 
-      <SøknadFooter søknadId={soknadId} onFortsettSenere={mellomlagreSvar} />
+      <SøknadFooter onFortsettSenere={mellomlagreSvar} />
     </div>
   );
 }

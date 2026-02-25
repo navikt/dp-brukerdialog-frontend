@@ -2,8 +2,7 @@ import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
-import invariant from "tiny-invariant";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
@@ -94,9 +93,6 @@ export function AnnenPengestøtteViewV1() {
     setPengestøtteFraNorgeModalData,
     dokumentasjonskrav,
   } = useAnnenPengestøtteContext();
-
-  const { soknadId } = useParams();
-  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -469,10 +465,7 @@ export function AnnenPengestøtteViewV1() {
         lagrer={state === "submitting" || state === "loading"}
       />
 
-      <SøknadFooter
-        søknadId={soknadId}
-        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
-      />
+      <SøknadFooter onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)} />
     </div>
   );
 }

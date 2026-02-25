@@ -2,8 +2,7 @@ import { BriefcaseIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
-import invariant from "tiny-invariant";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
@@ -60,9 +59,7 @@ export function ArbeidsforholdViewV1() {
     setDokumentasjonskrav,
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
-  const { soknadId } = useParams();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
@@ -251,10 +248,7 @@ export function ArbeidsforholdViewV1() {
 
       {modalData && <ArbeidsforholdModal ref={ref} />}
 
-      <SøknadFooter
-        søknadId={soknadId}
-        onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}
-      />
+      <SøknadFooter onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)} />
     </div>
   );
 }

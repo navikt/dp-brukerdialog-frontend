@@ -1,25 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import { useForm } from "@rvf/react-router";
-import { useParams } from "react-router";
-import invariant from "tiny-invariant";
-import { z } from "zod";
+import { FormScope } from "@rvf/react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
 import { SøknadFooter } from "~/components/SøknadFooter";
-import {
-  dokumentasjonKomponenter,
-  DokumentasjonSvar,
-} from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 
 export function DokumentasjonView() {
-  const { soknadId } = useParams();
-  invariant(soknadId, "SøknadID er påkrevd");
-
   const seksjonnavn = "Dokumentasjon";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
@@ -31,11 +22,6 @@ export function DokumentasjonView() {
     bundleOgLagreDokumentasjonskrav,
   } = useDokumentasjonskravContext();
 
-  const form = useForm({
-    schema: z.object({}),
-    defaultValues: {},
-  });
-
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
@@ -44,15 +30,11 @@ export function DokumentasjonView() {
           {seksjonnavn}
         </Heading>
         {dokumentasjonKomponenter.map((komponent) => {
-          if (komponent.visHvis && !komponent.visHvis(form.value())) {
-            return null;
-          }
-
           return (
             <Komponent
               key={komponent.id}
               props={komponent}
-              formScope={form.scope(komponent.id as keyof DokumentasjonSvar)}
+              formScope={{} as unknown as FormScope<string | string[] | undefined>}
             />
           );
         })}
@@ -97,7 +79,6 @@ export function DokumentasjonView() {
         </VStack>
 
         <SøknadFooter
-          søknadId={soknadId}
           onFortsettSenere={() => bundleOgLagreDokumentasjonskrav(Seksjonshandling.fortsettSenere)}
         />
       </VStack>

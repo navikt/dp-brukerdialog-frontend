@@ -2,14 +2,15 @@ import { useState } from "react";
 import { Alert, Button, HStack } from "@navikt/ds-react";
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { SlettSøknadModal } from "~/components/SlettSøknadModal";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
 interface SøknadFooterProps {
-  søknadId: string;
   onFortsettSenere?: () => void;
 }
 
-export function SøknadFooter({ søknadId, onFortsettSenere }: SøknadFooterProps) {
+export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
   const [visMelding, setVisMelding] = useState(false);
+  const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
   function onClick() {
     if (onFortsettSenere) {
