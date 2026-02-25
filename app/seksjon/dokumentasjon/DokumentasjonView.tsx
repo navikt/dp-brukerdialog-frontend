@@ -30,13 +30,7 @@ export function DokumentasjonView() {
           {seksjonnavn}
         </Heading>
         {dokumentasjonKomponenter.map((komponent) => {
-          return (
-            <Komponent
-              key={komponent.id}
-              props={komponent}
-              formScope={{} as unknown as FormScope<string | string[] | undefined>}
-            />
-          );
+          return <Komponent key={komponent.id} props={komponent} />;
         })}
 
         {dokumentasjonskrav.map((dokumentasjonskrav) => (
