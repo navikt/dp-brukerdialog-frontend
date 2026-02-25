@@ -4,10 +4,7 @@ import { FormScope } from "@rvf/react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import {
-  dokumentasjonKomponenter,
-  DokumentasjonSvar,
-} from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
