@@ -1,15 +1,11 @@
 import { utdanningKomponenter } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function UtdanningOppsummeringV1({
-  seksjonSvarene,
-  seksjonsUrl,
-  redigerbar,
-}: SeksjonProps) {
+export function UtdanningOppsummeringV1({ seksjonSvarene, seksjonsUrl, redigerbar }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
   const utdanningSvar = Object.entries(seksjonSvarene);
@@ -33,7 +29,11 @@ export default function UtdanningOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Utdanning"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Utdanning"
+      />
     </FormSummary>
   );
 }

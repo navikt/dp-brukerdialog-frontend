@@ -21,11 +21,11 @@ import { z } from "zod";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
 import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
-import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import { Oppsummering } from "~/seksjon/oppsummering/Oppsummering";
 
 const schema = z.object({});
 
-export default function OppsummeringView() {
+export function OppsummeringView() {
   const seksjonnavn = "Se over før du sender inn";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();

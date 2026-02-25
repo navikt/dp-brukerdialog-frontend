@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 
-export default function FormSummaryFooter({
+export function FormSummaryFooter({
   seksjonnavn,
   seksjonsUrl,
   redigerbar,

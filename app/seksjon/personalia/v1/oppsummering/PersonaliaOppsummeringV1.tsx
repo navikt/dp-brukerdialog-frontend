@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import {
   adresselinje1FraPdl,
@@ -19,7 +19,7 @@ import {
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function PersonaliaOppsummeringV1({
+export function PersonaliaOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -90,7 +90,11 @@ export default function PersonaliaOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Personalia"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Personalia"
+      />
     </FormSummary>
   );
 }

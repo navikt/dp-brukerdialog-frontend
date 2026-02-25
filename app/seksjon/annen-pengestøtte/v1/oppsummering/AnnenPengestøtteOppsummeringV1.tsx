@@ -11,17 +11,15 @@ import {
   pengestøtteFraNorgeKomponenter,
   pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
-import {
-  pengestøtteFraTidligereArbeidsgiverModalKomponenter
-} from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
+import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 
-export default function AnnenPengestøtteOppsummeringV1({
+export function AnnenPengestøtteOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -60,13 +58,19 @@ export default function AnnenPengestøtteOppsummeringV1({
           </FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={mottaLønnEllerAndreGoderFraTidligereArbeidsgiver!}
-            svar={data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] ?? "Ubesvart"}
+            svar={
+              data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] ??
+              "Ubesvart"
+            }
           />
         </FormSummary.Answer>
         {data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja" &&
           data.pengestøtteFraTidligereArbeidsgiver?.map((pengestøtte, index) => (
             <FormSummary.Answer>
-              <FormSummary.Label> {`Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver ${index + 1}`}</FormSummary.Label>
+              <FormSummary.Label>
+                {" "}
+                {`Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver ${index + 1}`}
+              </FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
@@ -165,7 +169,11 @@ export default function AnnenPengestøtteOppsummeringV1({
             </FormSummary.Answer>
           ))}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Annen pengestøtte"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Annen pengestøtte"
+      />
     </FormSummary>
   );
 }

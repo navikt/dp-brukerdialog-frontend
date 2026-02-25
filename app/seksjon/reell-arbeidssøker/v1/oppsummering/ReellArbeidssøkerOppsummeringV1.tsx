@@ -1,11 +1,11 @@
-import { reellArbeidssøkerKomponenter } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
-import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { reellArbeidssøkerKomponenter } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function ReellArbeidssøkerOppsummeringV1({
+export function ReellArbeidssøkerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -36,7 +36,11 @@ export default function ReellArbeidssøkerOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Reell arbeidssøker"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Reell arbeidssøker"
+      />
     </FormSummary>
   );
 }

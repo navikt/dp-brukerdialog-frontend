@@ -8,7 +8,7 @@ interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
 }
 
-export default function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps) {
+export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps) {
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">
       <VStack gap="4">

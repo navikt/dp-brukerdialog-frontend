@@ -1,12 +1,12 @@
 import { vernepliktKomponenter } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function VernepliktOppsummeringV1({
+export function VernepliktOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -34,7 +34,11 @@ export default function VernepliktOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Verneplikt"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Verneplikt"
+      />
     </FormSummary>
   );
 }

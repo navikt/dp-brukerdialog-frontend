@@ -4,7 +4,7 @@ import dokumentasjonskravKomponenter, {
   velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 
