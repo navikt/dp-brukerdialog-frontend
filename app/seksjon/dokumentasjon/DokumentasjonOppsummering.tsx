@@ -13,10 +13,7 @@ interface IProps {
   dokumentasjonskrav: string[];
 }
 
-export default function DokumentasjonOppsummering({
-  søknadId,
-  dokumentasjonskrav,
-}: Readonly<IProps>) {
+export function DokumentasjonOppsummering({ søknadId, dokumentasjonskrav }: IProps) {
   if (!dokumentasjonskrav || !søknadId) return null;
 
   const alleDokumentasjonskrav = dokumentasjonskrav.flatMap((alleDokumentasjonskravForSeksjon) => {
