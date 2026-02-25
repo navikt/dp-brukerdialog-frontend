@@ -1,7 +1,22 @@
-import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
-import { BodyLong, Button, ErrorMessage, Heading, InfoCard, VStack } from "@navikt/ds-react";
+import { ArrowLeftIcon, ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
+import {
+  BodyLong,
+  Button,
+  ErrorMessage,
+  Heading,
+  HStack,
+  InfoCard,
+  VStack,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+  useParams,
+} from "react-router";
 import { z } from "zod";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
@@ -17,6 +32,7 @@ export default function OppsummeringView() {
   const actionData = useActionData<typeof action>();
   const { soknadId } = useParams();
   const { state } = useNavigation();
+  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -76,17 +92,25 @@ export default function OppsummeringView() {
             dokumentasjonskrav={loaderData.dokumentasjonskrav}
           />
 
-          <Form {...form.getFormProps()}>
-            <Button loading={state === "submitting" || state === "loading"} className="mt-4">
-              Send søknad
-            </Button>
-          </Form>
-
           {actionData?.error && (
             <ErrorMessage showIcon aria-live="polite">
               {actionData.error}
             </ErrorMessage>
           )}
+
+          <Form {...form.getFormProps()}>
+            <HStack gap="4" className="mt-8">
+              <Button
+                loading={state === "submitting" || state === "loading"}
+                variant="secondary"
+                icon={<ArrowLeftIcon aria-hidden />}
+                onClick={() => navigate(-1)}
+              >
+                Forrige steg
+              </Button>
+              <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
+            </HStack>
+          </Form>
         </VStack>
       </VStack>
     </div>

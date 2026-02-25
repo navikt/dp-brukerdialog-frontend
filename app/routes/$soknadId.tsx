@@ -84,8 +84,8 @@ export async function loader({
       sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
     };
   }
-  const { seksjoner }: StegResponse = await progressResponse.json();
 
+  const { seksjoner }: StegResponse = await progressResponse.json();
   const fullførtSøknaden = seksjoner.includes("oppsummering");
 
   if (fullførtSøknaden) {

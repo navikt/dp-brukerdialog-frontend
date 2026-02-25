@@ -7,7 +7,6 @@ import { z } from "zod";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import { SøknadFooter } from "~/components/SøknadFooter";
 import {
   dokumentasjonKomponenter,
   DokumentasjonSvar,
@@ -95,11 +94,6 @@ export function DokumentasjonView() {
             </Button>
           </HStack>
         </VStack>
-
-        <SøknadFooter
-          søknadId={soknadId}
-          onFortsettSenere={() => bundleOgLagreDokumentasjonskrav(Seksjonshandling.fortsettSenere)}
-        />
       </VStack>
     </div>
   );
