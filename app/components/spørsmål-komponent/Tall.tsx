@@ -6,14 +6,16 @@ import { TallSpørsmål } from "~/components/Komponent.types";
 interface IProps {
   props: TallSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
+  ref: React.Ref<HTMLInputElement>;
 }
 
-export function Tall({ props, formScope }: IProps) {
+export function Tall({ props, formScope, ref }: IProps) {
   const field = useField(formScope);
 
   return (
     <TextField
       {...field.getInputProps()}
+      ref={ref}
       inputMode="decimal"
       defaultValue={(field.value() as string) ?? undefined}
       label={props.label}

@@ -29,8 +29,10 @@ import {
   ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function ReellArbeidssøkerViewV1() {
   const seksjonnavn = "Reell arbeidssøker";
@@ -39,17 +41,14 @@ export function ReellArbeidssøkerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: reellArbeidssøkerSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -68,15 +67,18 @@ export function ReellArbeidssøkerViewV1() {
   }
 
   async function lagreSvar() {
-    const dokumentasjonskrav = hentDokumentasjonskrav();
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.setValue(handling, Seksjonshandling.neste);
-    form.setValue(
-      "dokumentasjonskrav",
-      dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
-    );
-    form.submit();
+    if (klarTilLagring) {
+      const dokumentasjonskrav = hentDokumentasjonskrav();
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(
+        "dokumentasjonskrav",
+        dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null"
+      );
+      form.submit();
+    }
   }
 
   function hentDokumentasjonskrav() {
@@ -177,6 +179,7 @@ export function ReellArbeidssøkerViewV1() {
 
     return JSON.stringify(pdfPayload);
   }
+
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>

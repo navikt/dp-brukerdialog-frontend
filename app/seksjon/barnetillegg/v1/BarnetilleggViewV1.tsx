@@ -31,9 +31,11 @@ import { BarnFraPdlKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnF
 import { BarnLagtManueltKomponent } from "~/seksjon/barnetillegg/v1/komponenter/BarnLagtManueltKomponent";
 import { BarnModal } from "~/seksjon/barnetillegg/v1/komponenter/BarnModal";
 import { pdfGrunnlag } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function BarnetilleggViewV1() {
   const seksjonnavn = "Barnetillegg";
@@ -42,6 +44,7 @@ export function BarnetilleggViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const [visLeggTilBarnFeilmelding, setVisLeggTilBarnFeilmelding] = useState(false);
   const {
     barnFraPdl,
@@ -94,9 +97,8 @@ export function BarnetilleggViewV1() {
     form.submit();
   }
 
-  function handleSubmit() {
-    form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+  async function handleSubmit() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     if (forsørgerDuBarnSomIkkeVisesHerSvar === "ja" && barnLagtManuelt.length === 0) {
       setVisLeggTilBarnFeilmelding(true);
@@ -106,7 +108,12 @@ export function BarnetilleggViewV1() {
     const harUbesvartBarnFraPdl = barnFraPdl.some((barn: BarnFraPdl) => !barn[forsørgerDuBarnet]);
     setValiderBarnFraPdl(harUbesvartBarnFraPdl);
 
-    if (!harUbesvartBarnFraPdl && forsørgerDuBarnSomIkkeVisesHerSvar !== undefined) {
+    if (
+      klarTilLagring &&
+      !harUbesvartBarnFraPdl &&
+      forsørgerDuBarnSomIkkeVisesHerSvar !== undefined
+    ) {
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(seksjonsvar, JSON.stringify(lagSeksjonsvar()));
       form.setValue(pdfGrunnlag, JSON.stringify(lagPdfGrunnlag()));
       form.setValue(

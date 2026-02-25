@@ -30,15 +30,17 @@ import {
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function PersonaliaViewV1() {
   const seksjonnavn = "Personalia";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -62,7 +64,7 @@ export function PersonaliaViewV1() {
             </LocalAlert.Content>
           </LocalAlert>
         </VStack>
-        <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
+        <SøknadFooter søknadId={soknadId} onFortsettSenere={mellomlagreSvar} />
       </div>
     );
   }
@@ -77,11 +79,6 @@ export function PersonaliaViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: personaliaSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -106,8 +103,9 @@ export function PersonaliaViewV1() {
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    if (Object.values(await form.validate()).length === 0) {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
+
+    if (klarTilLagring) {
       const pdfPayload = {
         navn: seksjonnavn,
         spørsmål: [
@@ -116,12 +114,13 @@ export function PersonaliaViewV1() {
         ],
       };
 
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
       form.submit();
     }
   }
 
-  function fortsettSenere() {
+  function mellomlagreSvar() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [
@@ -237,7 +236,7 @@ export function PersonaliaViewV1() {
         lagrer={state === "submitting" || state === "loading"}
       />
 
-      <SøknadFooter søknadId={soknadId} onFortsettSenere={fortsettSenere} />
+      <SøknadFooter søknadId={soknadId} onFortsettSenere={mellomlagreSvar} />
     </div>
   );
 }

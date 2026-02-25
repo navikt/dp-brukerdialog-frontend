@@ -30,8 +30,10 @@ import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/Gårds
 import { GårdsbrukModal } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukModal";
 import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
 import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function EgenNæringViewV1() {
   const { soknadId } = useParams();
@@ -44,6 +46,8 @@ export function EgenNæringViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
   const {
     næringsvirksomheter,
     setNæringsvirksomheter,
@@ -62,11 +66,6 @@ export function EgenNæringViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: egenNæringSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -133,9 +132,8 @@ export function EgenNæringViewV1() {
     form.submit();
   }
 
-  function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const manglerRegistrertNæringsvirksomhet =
       form.value(driverDuEgenNæringsvirksomhet) === "ja" && næringsvirksomheter.length === 0;
@@ -158,7 +156,8 @@ export function EgenNæringViewV1() {
       form.value(driverDuEgenNæringsvirksomhet) !== undefined &&
       form.value(driverDuEgetGårdsbruk) !== undefined &&
       !manglerRegistrertNæringsvirksomhet &&
-      !manglerRegistrertGårdsbruk
+      !manglerRegistrertGårdsbruk &&
+      klarTilLagring
     ) {
       const egenNæringResponse: SeksjonSvar = {
         [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
@@ -167,6 +166,7 @@ export function EgenNæringViewV1() {
         gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
       };
 
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue(seksjonsvar, JSON.stringify(egenNæringResponse));
       form.submit();

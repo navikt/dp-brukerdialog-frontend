@@ -8,6 +8,7 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
+import { useSoknad } from "~/seksjon/soknad.context";
 import {
   handling,
   pdfGrunnlag,
@@ -17,6 +18,7 @@ import {
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function TilleggsopplysningerViewV1() {
   const seksjonnavn = "Tilleggsopplysninger";
@@ -25,42 +27,40 @@ export function TilleggsopplysningerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: tilleggsopplysningerSchema,
-    validationBehaviorConfig: {
-      initial: "onBlur",
-      whenTouched: "onBlur",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<TilleggsopplysningerSvar>(form, tilleggsopplysningerKomponenter);
 
-  const genererPdfPayload = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
 
   function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
-    form.setValue(pdfGrunnlag, genererPdfPayload());
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(handling, ønsketHandling);
     form.submit();
   }
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    if (Object.values(await form.validate()).length === 0) {
-      form.setValue(pdfGrunnlag, genererPdfPayload());
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.submit();
     }
   }

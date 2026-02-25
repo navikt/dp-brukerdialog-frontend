@@ -1,5 +1,6 @@
-import { KomponentType } from "~/components/Komponent.types";
+import { FormApi } from "@rvf/react-router";
 import { $RefinementCtx } from "zod/v4/core";
+import { KomponentType } from "~/components/Komponent.types";
 
 export function valider(
   komponent: KomponentType,
@@ -56,7 +57,10 @@ export function valider(
       });
     }
 
-    if (komponent.maksVerdi && ((svar as string).replace(",", ".") as unknown as number) > komponent.maksVerdi) {
+    if (
+      komponent.maksVerdi &&
+      ((svar as string).replace(",", ".") as unknown as number) > komponent.maksVerdi
+    ) {
       context.addIssue({
         path: [komponent.id],
         code: "custom",
@@ -64,4 +68,24 @@ export function valider(
       });
     }
   }
+}
+
+export async function validerSvar<T>(
+  form: FormApi<T>,
+  økeSubmitTeller: () => void,
+  setKomponentIdTilFokus: (id: string | undefined) => void
+): Promise<boolean> {
+  const valideringResultat = await form.validate();
+
+  const harEnFeil = Object.values(valideringResultat).length > 0;
+  const førsteUgyldigeSpørsmålId = Object.keys(valideringResultat).find(
+    (key) => valideringResultat[key] !== undefined
+  );
+
+  if (harEnFeil && førsteUgyldigeSpørsmålId) {
+    setKomponentIdTilFokus(førsteUgyldigeSpørsmålId);
+    økeSubmitTeller();
+  }
+
+  return !harEnFeil;
 }

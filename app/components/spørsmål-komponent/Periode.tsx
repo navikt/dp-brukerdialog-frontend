@@ -12,9 +12,10 @@ interface IProps {
   props: PeriodeSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
   formValues?: Record<string, any>;
+  ref: React.Ref<HTMLDivElement>;
 }
 
-export function Periode({ props, formScope, formValues }: IProps) {
+export function Periode({ props, formScope, formValues, ref }: IProps) {
   const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
   const { referanseId, type } = props;
@@ -50,7 +51,7 @@ export function Periode({ props, formScope, formValues }: IProps) {
   const periodeTilSpørsmal = props.type === "periodeTil";
 
   return (
-    <VStack gap="4">
+    <VStack gap="4" ref={ref}>
       {props.type === "periodeFra" && <BodyShort weight="semibold">{props.periodeLabel}</BodyShort>}
       <VStack
         className={classNames(styles.periodeVenstreBorder, {

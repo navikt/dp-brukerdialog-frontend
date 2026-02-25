@@ -29,11 +29,6 @@ export function GårdsbrukModal({ ref }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: leggTilGårdsbrukSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: gårdsbrukModalData?.etGårdsbruk ?? {},
     handleSubmit: (etGårdsbruk) => {
       if (
