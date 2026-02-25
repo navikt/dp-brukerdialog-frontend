@@ -43,15 +43,16 @@ import {
   PengestøtteFraTidligereArbeidsgiverModal,
 } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   pengestøtteFraAndreEøsLandKomponenter,
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { V } from "node_modules/vitest/dist/chunks/reporters.d.CWXNI2jG";
 
 const seksjonnavn = "Annen pengestøtte";
 const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
@@ -61,6 +62,8 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [
@@ -99,11 +102,6 @@ export function AnnenPengestøtteViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: annenPengestøtteSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -247,8 +245,7 @@ export function AnnenPengestøtteViewV1() {
   }
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const manglerPengestøtteFraTidligereArbeidsgiver =
       form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) === "ja" &&
@@ -286,9 +283,11 @@ export function AnnenPengestøtteViewV1() {
       form.value(mottarDuPengestøtteFraAndreEnnNav) !== undefined &&
       !manglerPengestøtteFraNorge &&
       !manglerPengestøtteFraAndreEøsLand &&
-      !manglerPengestøtteFraNorge
+      !manglerPengestøtteFraNorge &&
+      klarTilLagring
     ) {
       const annenPengestøtteResponse = lagAnnenPengestøtteResponse();
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue(seksjonsvar, JSON.stringify(annenPengestøtteResponse));
       form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());

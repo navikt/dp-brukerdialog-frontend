@@ -1,10 +1,13 @@
 import { FormScope } from "@rvf/react-router";
+import { useEffect, useRef } from "react";
 import { Dokumentasjonskravindikator } from "~/components/informasjon-komponent/Dokumentasjonskravindikator";
 import { ForklarendeTekst } from "~/components/informasjon-komponent/ForklarendeTekst";
 import { Nedtrekksliste } from "~/components/spørsmål-komponent/Nedtrekksliste";
 import { Tall } from "~/components/spørsmål-komponent/Tall";
-import { LesMer } from "./informasjon-komponent/LesMer";
+import { useFokus } from "~/hooks/useFokus";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { Informasjonskort } from "./informasjon-komponent/Informasjonskort";
+import { LesMer } from "./informasjon-komponent/LesMer";
 import { KomponentType } from "./Komponent.types";
 import { Dato } from "./spørsmål-komponent/Dato";
 import { Envalg } from "./spørsmål-komponent/Envalg";
@@ -21,34 +24,44 @@ interface IProps {
 }
 
 export function Komponent({ props, formScope, formValues }: IProps) {
+  const ref = useRef(null);
+  const { settFokus } = useFokus();
+  const { komponentIdTilFokus, submitTeller } = useSoknad();
+
+  useEffect(() => {
+    if (props.id === komponentIdTilFokus) {
+      settFokus(ref);
+    }
+  }, [komponentIdTilFokus, submitTeller]);
+
   switch (props.type) {
     case "dato":
-      return <Dato props={props} formScope={formScope} />;
+      return <Dato ref={ref} props={props} formScope={formScope} />;
 
     case "periodeFra":
     case "periodeTil":
-      return <Periode props={props} formScope={formScope} formValues={formValues} />;
+      return <Periode ref={ref} props={props} formScope={formScope} formValues={formValues} />;
 
     case "envalg":
-      return <Envalg props={props} formScope={formScope} />;
+      return <Envalg ref={ref} props={props} formScope={formScope} />;
 
     case "flervalg":
-      return <Flervalg props={props} formScope={formScope} />;
+      return <Flervalg ref={ref} props={props} formScope={formScope} />;
 
     case "langTekst":
-      return <LangTekst props={props} formScope={formScope} />;
+      return <LangTekst ref={ref} props={props} formScope={formScope} />;
 
     case "kortTekst":
-      return <KortTekst props={props} formScope={formScope} />;
+      return <KortTekst ref={ref} props={props} formScope={formScope} />;
 
     case "land":
-      return <Land props={props} formScope={formScope} />;
+      return <Land ref={ref} props={props} formScope={formScope} />;
 
     case "tall":
-      return <Tall props={props} formScope={formScope} />;
+      return <Tall ref={ref} props={props} formScope={formScope} />;
 
     case "nedtrekksliste":
-      return <Nedtrekksliste props={props} formScope={formScope} />;
+      return <Nedtrekksliste ref={ref} props={props} formScope={formScope} />;
 
     case "informasjonskort":
       return <Informasjonskort props={props} />;

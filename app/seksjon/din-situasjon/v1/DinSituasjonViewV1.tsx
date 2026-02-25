@@ -9,8 +9,10 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 import {
   dinSituasjonKomponenter,
   DinSituasjonSvar,
@@ -24,6 +26,8 @@ export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
   const { soknadId } = useParams();
   invariant(soknadId, "SøknadID er påkrevd");
 
@@ -31,35 +35,32 @@ export function DinSituasjonViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: dinSituasjonSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
 
-  const genererPdfPayload = () => {
+  function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: seksjonnavn,
       spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
-  };
+  }
 
   function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
-    form.setValue(pdfGrunnlag, genererPdfPayload());
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue(handling, ønsketHandling);
     form.submit();
   }
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    if (Object.values(await form.validate()).length === 0) {
-      form.setValue(pdfGrunnlag, genererPdfPayload());
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
+
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.submit();
     }
   }
@@ -103,6 +104,7 @@ export function DinSituasjonViewV1() {
           lagrer={state === "submitting" || state === "loading"}
         />
       </VStack>
+
       <SøknadFooter
         søknadId={soknadId}
         onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)}

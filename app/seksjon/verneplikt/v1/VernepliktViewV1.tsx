@@ -13,6 +13,7 @@ import {
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import { useSoknad } from "~/seksjon/soknad.context";
 import {
   avtjentVerneplikt,
   pdfGrunnlag,
@@ -22,6 +23,7 @@ import {
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
   const seksjonnavn = "Verneplikt";
@@ -30,17 +32,14 @@ export default function VernepliktViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
   const { soknadId } = useParams();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: vernepliktSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -78,9 +77,10 @@ export default function VernepliktViewV1() {
   }
 
   async function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
-    if (Object.values(await form.validate()).length === 0) {
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, genererPdfGrunnlag());
       form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
       form.submit();

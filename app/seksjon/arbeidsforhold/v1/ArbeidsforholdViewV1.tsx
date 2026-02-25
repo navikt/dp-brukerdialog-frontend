@@ -38,8 +38,10 @@ import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeids
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
+import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { validerSvar } from "~/utils/validering.utils";
 
 export function ArbeidsforholdViewV1() {
   const seksjonnavn = "Arbeidsforhold";
@@ -59,17 +61,13 @@ export function ArbeidsforholdViewV1() {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
   const { soknadId } = useParams();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   invariant(soknadId, "SøknadID er påkrevd");
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: arbeidsforholdSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
@@ -141,13 +139,11 @@ export function ArbeidsforholdViewV1() {
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
     form.setValue(seksjonsvar, JSON.stringify(arbeidsforholdResponse));
-
     form.submit();
   }
 
-  function lagreSvar() {
-    form.setValue(handling, Seksjonshandling.neste);
-    form.validate();
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     const manglerArbeidsforhold =
       form.value(hvordanHarDuJobbet) &&
@@ -159,10 +155,13 @@ export function ArbeidsforholdViewV1() {
       return;
     }
 
-    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
-    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
-    form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
-    form.submit();
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+      form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
+      form.submit();
+    }
   }
 
   return (

@@ -1,16 +1,17 @@
 import { DatePicker, useDatepicker } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
 import { formatISO } from "date-fns";
-import { DatoSpørsmål } from "../Komponent.types";
-import { useState } from "react";
+import { Ref, useState } from "react";
 import { formaterNorskDatoMedTall } from "~/utils/formatering.utils";
+import { DatoSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: DatoSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
+  ref: Ref<HTMLInputElement>;
 }
 
-export function Dato({ props, formScope }: IProps) {
+export function Dato({ props, formScope, ref }: IProps) {
   const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
 
@@ -43,6 +44,7 @@ export function Dato({ props, formScope }: IProps) {
     <DatePicker {...datepickerProps} key={props.id}>
       <DatePicker.Input
         {...inputProps}
+        ref={ref}
         placeholder="DD.MM.ÅÅÅÅ"
         error={error || field.error()}
         label={props.optional ? `${props.label} (valgfritt)` : `${props.label}`}

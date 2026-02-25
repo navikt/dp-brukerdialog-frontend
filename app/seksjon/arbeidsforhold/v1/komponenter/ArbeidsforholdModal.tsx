@@ -74,11 +74,6 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   const form = useForm({
     submitSource: "state",
     schema: arbeidsforholdModalSchema,
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     defaultValues: modalData?.arbeidsforhold ?? {},
     handleSubmit: (skjemaData) => {
       if (modalData?.operasjon === undefined) {
@@ -119,6 +114,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       arbeidsforholdSituasjon,
       bedriftNavn
     );
+
     const nyttArbeidsforhold = {
       ...skjemaData,
       id: crypto.randomUUID(),

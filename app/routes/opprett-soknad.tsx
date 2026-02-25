@@ -32,13 +32,8 @@ export default function OpprettSoknadRoute() {
   const innhold = hentInfosideTekst("infoside.opprett-søknad");
 
   const form = useForm({
-    method: "post",
+    method: "POST",
     submitSource: "state",
-    validationBehaviorConfig: {
-      initial: "onSubmit",
-      whenTouched: "onSubmit",
-      whenSubmitted: "onBlur",
-    },
     schema: z.object({
       checkbox: z.boolean().refine((val) => val, {
         message: "Du må godta vilkårene",

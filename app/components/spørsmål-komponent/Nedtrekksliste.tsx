@@ -7,14 +7,16 @@ interface IProps {
   props: NedtrekkslisteSpørsmål;
   formScope: FormScope<string | Array<string> | undefined>;
   horisontal?: boolean;
+  ref: React.Ref<HTMLSelectElement>;
 }
 
-export function Nedtrekksliste({ props, formScope }: IProps) {
+export function Nedtrekksliste({ props, formScope, ref }: IProps) {
   const field = useField(formScope);
 
   return (
     <Select
       {...field.getInputProps()}
+      ref={ref}
       defaultValue={field.value() ?? undefined}
       label={props.label}
       key={props.id}
