@@ -1,5 +1,5 @@
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   barnetilleggKomponenter,
@@ -11,12 +11,11 @@ import {
   fødselsdato,
   leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
-
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
-export default function BarnetilleggOppsummeringV1({
+export function BarnetilleggOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -99,7 +98,11 @@ export default function BarnetilleggOppsummeringV1({
           );
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Barnetillegg"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Barnetillegg"
+      />
     </FormSummary>
   );
 }

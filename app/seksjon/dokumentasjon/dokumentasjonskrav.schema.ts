@@ -1,7 +1,7 @@
 import { z } from "zod";
-
 import { valider } from "~/utils/validering.utils";
-import dokumentasjonskravKomponenter, {
+import {
+  dokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
   dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,

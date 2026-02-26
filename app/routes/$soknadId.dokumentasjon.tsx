@@ -32,7 +32,7 @@ export async function loader({
   return { dokumentasjonskrav };
 }
 
-export default function DokumentasjonRoute() {
+export default function DokumentasjonSide() {
   const loaderData = useLoaderData<typeof loader>();
 
   return (

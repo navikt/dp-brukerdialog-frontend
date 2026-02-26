@@ -1,25 +1,39 @@
-import { ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
-import { BodyLong, Button, ErrorMessage, Heading, InfoCard, VStack } from "@navikt/ds-react";
+import { ArrowLeftIcon, ExclamationmarkTriangleIcon } from "@navikt/aksel-icons";
+import {
+  BodyLong,
+  Button,
+  ErrorMessage,
+  Heading,
+  HStack,
+  InfoCard,
+  VStack,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+  useParams,
+} from "react-router";
 import { z } from "zod";
-import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
-import { SøknadFooter } from "~/components/SøknadFooter";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
-import DokumentasjonOppsummering from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
-import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { DokumentasjonOppsummering } from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
+import { Oppsummering } from "~/seksjon/oppsummering/Oppsummering";
 
 const schema = z.object({});
 
-export default function OppsummeringView() {
+export function OppsummeringView() {
   const seksjonnavn = "Se over før du sender inn";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
+  const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-  const { soknadId } = useParams();
   const { state } = useNavigation();
+  const navigate = useNavigate();
 
   const form = useForm({
     method: "PUT",
@@ -68,28 +82,33 @@ export default function OppsummeringView() {
               <Oppsummering
                 key={seksjon.path}
                 seksjonsId={seksjon.path}
-                seksjonsUrl={`/${soknadId}/${seksjon.path}`}
+                seksjonsUrl={`/${søknadId}/${seksjon.path}`}
                 seksjonsData={seksjonsData.data}
               />
             );
           })}
 
-          <DokumentasjonOppsummering
-            søknadId={soknadId}
-            dokumentasjonskrav={loaderData.dokumentasjonskrav}
-          />
-
-          <Form {...form.getFormProps()}>
-            <Button loading={state === "submitting" || state === "loading"} className="mt-4">
-              Send søknad
-            </Button>
-          </Form>
+          <DokumentasjonOppsummering dokumentasjonskrav={loaderData.dokumentasjonskrav} />
 
           {actionData?.error && (
             <ErrorMessage showIcon aria-live="polite">
               {actionData.error}
             </ErrorMessage>
           )}
+
+          <Form {...form.getFormProps()}>
+            <HStack gap="4" className="mt-8">
+              <Button
+                loading={state === "submitting" || state === "loading"}
+                variant="secondary"
+                icon={<ArrowLeftIcon aria-hidden />}
+                onClick={() => navigate(-1)}
+              >
+                Forrige steg
+              </Button>
+              <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
+            </HStack>
+          </Form>
         </VStack>
       </VStack>
     </div>

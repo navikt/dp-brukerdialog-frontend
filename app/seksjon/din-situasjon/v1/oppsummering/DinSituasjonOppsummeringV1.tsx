@@ -1,11 +1,11 @@
 import { FormSummary } from "@navikt/ds-react";
 import { dinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function DinSituasjonOppsummeringV1({
+export function DinSituasjonOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,

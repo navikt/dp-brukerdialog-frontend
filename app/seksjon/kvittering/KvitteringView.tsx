@@ -17,9 +17,9 @@ import { Link, useLoaderData, useParams, useSearchParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
-import DokumentasjonskravSomErSendtAvDeg from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
-import DokumentasjonSomIkkeSkalSendes from "~/seksjon/kvittering/DokumentasjonSomIkkeSkalSendes";
-import Oppsummering from "~/seksjon/oppsummering/Oppsummering";
+import { DokumentasjonskravSomErSendtAvDeg } from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
+import { DokumentasjonSomIkkeSkalSendes } from "~/seksjon/kvittering/DokumentasjonSomIkkeSkalSendes";
+import { Oppsummering } from "~/seksjon/oppsummering/Oppsummering";
 import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import {
@@ -29,7 +29,7 @@ import {
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/dokumentasjonskrav.komponenter";
-import DokumentasjonSomSkalSendesAvDeg from "./DokumentasjonSomSkalSendesAvDeg";
+import { DokumentasjonSomSkalSendesAvDeg } from "./DokumentasjonSomSkalSendesAvDeg";
 
 export default function KvitteringView() {
   const { soknadId } = useParams();

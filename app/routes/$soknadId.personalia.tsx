@@ -185,7 +185,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
-export default function PersonaliaRoute() {
+export default function PersonaliaSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 

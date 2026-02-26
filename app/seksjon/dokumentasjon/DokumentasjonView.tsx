@@ -4,7 +4,6 @@ import { FormScope } from "@rvf/react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import { SøknadFooter } from "~/components/SøknadFooter";
 import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -77,10 +76,6 @@ export function DokumentasjonView() {
             </Button>
           </HStack>
         </VStack>
-
-        <SøknadFooter
-          onFortsettSenere={() => bundleOgLagreDokumentasjonskrav(Seksjonshandling.fortsettSenere)}
-        />
       </VStack>
     </div>
   );

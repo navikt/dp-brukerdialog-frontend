@@ -19,14 +19,13 @@ import {
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/dokumentasjonskrav.komponenter";
-import DokumentasjonskravSomErSendtAvDeg from "../kvittering/DokumentasjonSomErSendtAvDeg";
-import DokumentasjonSomIkkeSkalSendes from "../kvittering/DokumentasjonSomIkkeSkalSendes";
+import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
+import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersending } from "./ettersending.context";
 
-const seksjonnavn = "Ettersending";
-const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
-
 export function EttersendingView() {
+  const seksjonnavn = "Ettersending";
+  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const navigate = useNavigate();
   const {
     ettersendingene,

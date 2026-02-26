@@ -24,7 +24,7 @@ export async function action({ request }: Route.ActionArgs) {
   return redirect(`/${soknadId}/personalia`);
 }
 
-export default function OpprettSoknadRoute() {
+export default function OpprettSoknadSide() {
   const { hentInfosideTekst } = useSanity();
   const { state } = useNavigation();
   const actionData = useActionData<typeof action>();

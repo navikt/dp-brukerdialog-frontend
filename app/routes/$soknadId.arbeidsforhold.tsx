@@ -97,7 +97,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
-export default function ArbeidsforholdRoute() {
+export default function ArbeidsforholdSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
   const { seksjon } = loaderData;
   const { soknadId } = useParams();

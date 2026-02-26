@@ -1,9 +1,9 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
-import OppsummeringView from "~/seksjon/oppsummering/OppsummeringView";
-import { sendSøknad } from "~/models/send-søknad.server";
 import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
+import { sendSøknad } from "~/models/send-søknad.server";
+import { OppsummeringView } from "~/seksjon/oppsummering/OppsummeringView";
 
 type Oppsummering = {
   seksjoner: OppsummeringSeksjon[];
@@ -51,7 +51,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   }
 }
 
-export default function Oppsummering() {
+export default function OppsummeringSide() {
   const loaderData = useLoaderData<typeof loader>();
 
   if (!loaderData) {

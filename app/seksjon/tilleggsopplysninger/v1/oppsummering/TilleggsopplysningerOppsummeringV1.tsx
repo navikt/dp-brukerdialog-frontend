@@ -1,11 +1,11 @@
 import { tilleggsopplysningerKomponenter } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function TilleggsopplysningerOppsummeringV1({
+export function TilleggsopplysningerOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -35,7 +35,11 @@ export default function TilleggsopplysningerOppsummeringV1({
           }
         })}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Tilleggsopplysninger"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Tilleggsopplysninger"
+      />
     </FormSummary>
   );
 }

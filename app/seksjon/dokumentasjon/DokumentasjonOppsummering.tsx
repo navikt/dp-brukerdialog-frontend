@@ -1,23 +1,21 @@
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { Button, FormSummary } from "@navikt/ds-react";
-import dokumentasjonskravKomponenter, {
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import {
+  dokumentasjonskravKomponenter,
   velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
-  søknadId: string | undefined;
   dokumentasjonskrav: string[];
 }
 
-export default function DokumentasjonOppsummering({
-  søknadId,
-  dokumentasjonskrav,
-}: Readonly<IProps>) {
-  if (!dokumentasjonskrav || !søknadId) return null;
+export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
+  const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
   const alleDokumentasjonskrav = dokumentasjonskrav.flatMap((alleDokumentasjonskravForSeksjon) => {
     return JSON.parse(alleDokumentasjonskravForSeksjon) as Dokumentasjonskrav;

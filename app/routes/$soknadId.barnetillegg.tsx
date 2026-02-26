@@ -115,7 +115,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
-export default function BarntilleggRoute() {
+export default function BarntilleggSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
   const { seksjon, dokumentasjonskrav } = loaderData;
   const { soknadId } = useParams();

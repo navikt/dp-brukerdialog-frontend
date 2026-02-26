@@ -7,7 +7,7 @@ interface IProps {
   spørsmål: KomponentType;
   svar: string | string[];
 }
-export default function OppsummeringsSvar({ spørsmål, svar }: IProps) {
+export function OppsummeringsSvar({ spørsmål, svar }: IProps) {
   if (svar === "" || svar === undefined || !spørsmål) {
     return <FormSummary.Value>Ubesvart</FormSummary.Value>;
   }

@@ -40,7 +40,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
   };
 }
 
-export default function EttersendingRoute() {
+export default function EttersendingSide() {
   const loaderData = useLoaderData<typeof loader>();
 
   return (

@@ -1,5 +1,5 @@
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
@@ -11,11 +11,11 @@ import {
 
 import { KomponentType } from "~/components/Komponent.types";
 import { SeksjonSvar as EgenNæringSeksjon } from "~/routes/$soknadId.egen-naring";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
-export default function EgenNæringOppsummeringV1({
+export function EgenNæringOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -117,7 +117,11 @@ export default function EgenNæringOppsummeringV1({
             </FormSummary.Answer>
           ))}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Egen næring"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Egen næring"
+      />
     </FormSummary>
   );
 }

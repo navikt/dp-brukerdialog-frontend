@@ -1,5 +1,5 @@
 import { FormSummary } from "@navikt/ds-react";
-import OppsummeringsSvar from "~/components/OppsummeringsSvar";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
 import {
   arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
@@ -20,9 +20,9 @@ import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeids
 import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import FormSummaryFooter from "~/seksjon/oppsummering/FormSummaryFooter";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export default function ArbeidsforholdOppsummeringV1({
+export function ArbeidsforholdOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
@@ -108,7 +108,11 @@ export default function ArbeidsforholdOppsummeringV1({
           </FormSummary.Answer>
         ))}
       </FormSummary.Answers>
-      <FormSummaryFooter seksjonsUrl={seksjonsUrl} redigerbar={redigerbar} seksjonnavn="Arbeidsforhold"/>
+      <FormSummaryFooter
+        seksjonsUrl={seksjonsUrl}
+        redigerbar={redigerbar}
+        seksjonnavn="Arbeidsforhold"
+      />
     </FormSummary>
   );
 }

@@ -99,7 +99,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
-export default function ReellArbeidssøkerRoute() {
+export default function ReellArbeidssøkerSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
   const { soknadId } = useParams();
 
