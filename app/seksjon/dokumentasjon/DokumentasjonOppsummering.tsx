@@ -17,9 +17,11 @@ interface IProps {
 export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
-  const alleDokumentasjonskrav = dokumentasjonskrav.flatMap((alleDokumentasjonskravForSeksjon) => {
-    return JSON.parse(alleDokumentasjonskravForSeksjon) as Dokumentasjonskrav;
-  });
+  const alleDokumentasjonskrav = (dokumentasjonskrav ?? []).flatMap(
+    (alleDokumentasjonskravForSeksjon) => {
+      return JSON.parse(alleDokumentasjonskravForSeksjon) as Dokumentasjonskrav;
+    }
+  );
 
   return (
     <FormSummary>
