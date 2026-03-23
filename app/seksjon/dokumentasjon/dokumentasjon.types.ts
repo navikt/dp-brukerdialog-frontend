@@ -18,6 +18,7 @@ export type Dokumentasjonskrav = {
   filer?: DokumentkravFil[] | null;
   bundle?: Bundle | null;
   feil?: DokumentasjonskravFeilType;
+  pdfGrunnlag?: string | null;
 };
 
 export enum DokumentasjonskravFeilType {

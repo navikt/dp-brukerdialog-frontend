@@ -5,6 +5,7 @@ import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
@@ -27,32 +28,19 @@ interface DokumentasjonskravProps {
 }
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
+  const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
   const [tidligereBegrunnelse, setTidligereBegrunnelse] = useState<string | undefined>(
     dokumentasjonskrav.begrunnelse
   );
-
-  const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
-    defaultValues: {
-      [velgHvaDuVilGjøre]: dokumentasjonskrav.svar,
-      [hvaErGrunnenTilAtDuSenderDokumentetSenere]:
-        dokumentasjonskrav.svar === dokumentkravSvarSenderSenere
-          ? dokumentasjonskrav.begrunnelse
-          : undefined,
-      [nårSendteDuDokumentet]:
-        dokumentasjonskrav.svar === dokumentkravSvarSendtTidligere
-          ? dokumentasjonskrav.begrunnelse
-          : undefined,
-      [hvaErGrunnenTilAtDuIkkeSenderDokumentet]:
-        dokumentasjonskrav.svar === dokumentkravSvarSenderIkke
-          ? dokumentasjonskrav.begrunnelse
-          : undefined,
-    },
+    defaultValues: hentFormDefaultValue(),
   });
+
+  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   useEffect(() => {
     if (valideringsTeller > 0) {
@@ -82,6 +70,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       begrunnelse: nåværendeBegrunnelse,
       filer: hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
       feil: undefined,
+      pdfGrunnlag: genererPdfGrunnlag(),
     };
 
     if (hvaVilDuGjøreSvar !== dokumentasjonskrav.svar) {
@@ -116,6 +105,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
         feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
+        pdfGrunnlag: null,
       });
     }
 
@@ -124,11 +114,34 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         oppdaterEtDokumentasjonskrav({
           ...dokumentasjonskrav,
           feil: DokumentasjonskravFeilType.MANGLER_FILER,
+          pdfGrunnlag: null,
         });
       }
   }, [form, valideringsTeller]);
 
-  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
+  function genererPdfGrunnlag() {
+    return JSON.stringify([
+      ...lagSeksjonPayload(dokumentasjonskravKomponenter, form.transient.value()),
+    ]);
+  }
+
+  function hentFormDefaultValue() {
+    return {
+      [velgHvaDuVilGjøre]: dokumentasjonskrav.svar,
+      [hvaErGrunnenTilAtDuSenderDokumentetSenere]:
+        dokumentasjonskrav.svar === dokumentkravSvarSenderSenere
+          ? dokumentasjonskrav.begrunnelse
+          : undefined,
+      [nårSendteDuDokumentet]:
+        dokumentasjonskrav.svar === dokumentkravSvarSendtTidligere
+          ? dokumentasjonskrav.begrunnelse
+          : undefined,
+      [hvaErGrunnenTilAtDuIkkeSenderDokumentet]:
+        dokumentasjonskrav.svar === dokumentkravSvarSenderIkke
+          ? dokumentasjonskrav.begrunnelse
+          : undefined,
+    };
+  }
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">

@@ -34,7 +34,15 @@ export function DokumentasjonViewV1() {
   function lagreSvar() {
     // Todo: lagre pdfgrunnlag i context
     const pdfGrunnlag = genererPdfGrunnlag();
-    console.log("PDF GRUNNLAG", pdfGrunnlag);
+
+    // Todo: Bygg dokumentasjonskrav komponent som egen type
+    // Avklare med backend slik at de klare å bygge pdf riktig
+    // Dokumentasjonskrav er sammensatt av flere komponenter,
+
+    // console.log(pdfGrunnlag);
+    // dokumentasjonskrav?.map((krav) => {
+    //   console.log(krav?.pdfGrunnlag);
+    // });
     setValideringsTeller((prev) => prev + 1);
   }
 
