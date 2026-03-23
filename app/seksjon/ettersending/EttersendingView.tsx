@@ -18,7 +18,7 @@ import {
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
-} from "../dokumentasjon/dokumentasjonskrav.komponenter";
+} from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersending } from "./ettersending.context";

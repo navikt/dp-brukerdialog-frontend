@@ -5,7 +5,7 @@ import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "./dokumentasjon.types";
+import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
   dokumentasjonskravKomponenter,

@@ -4,12 +4,13 @@ import { FormScope } from "@rvf/react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
-import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
+import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
-export function DokumentasjonView() {
+export function DokumentasjonViewV1() {
   const seksjonnavn = "Dokumentasjon";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
@@ -20,6 +21,22 @@ export function DokumentasjonView() {
     setValideringsTeller,
     bundleOgLagreDokumentasjonskrav,
   } = useDokumentasjonskravContext();
+
+  function genererPdfGrunnlag() {
+    const pdfPayload = {
+      navn: seksjonnavn,
+      spørsmål: [...lagSeksjonPayload(dokumentasjonKomponenter, {})],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
+  function lagreSvar() {
+    // Todo: lagre pdfgrunnlag i context
+    const pdfGrunnlag = genererPdfGrunnlag();
+    console.log("PDF GRUNNLAG", pdfGrunnlag);
+    setValideringsTeller((prev) => prev + 1);
+  }
 
   return (
     <div className="innhold">
@@ -69,7 +86,7 @@ export function DokumentasjonView() {
               type="button"
               iconPosition="right"
               icon={<ArrowRightIcon aria-hidden />}
-              onClick={() => setValideringsTeller((prev) => prev + 1)}
+              onClick={() => lagreSvar()}
               disabled={lagrer}
             >
               Til oppsummering

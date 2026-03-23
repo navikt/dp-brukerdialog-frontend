@@ -113,7 +113,7 @@ export default function EgenNæringSeksjon() {
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${seksjon.versjon} for egen-næring for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
         <EgenNæringProvider

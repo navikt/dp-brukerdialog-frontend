@@ -165,12 +165,13 @@ function DokumentasjonskravProvider({
 
     setLagrer(false);
 
-    if (ønsketHandling === Seksjonshandling.fortsettSenere) return;
-    if (ønsketHandling === Seksjonshandling.tilbakenavigering) {
-      navigate(FORRIGE_STEG);
-    } else {
-      navigate(NESTE_STEG);
-    }
+    console.log("hit");
+
+    // if (ønsketHandling === Seksjonshandling.tilbakenavigering) {
+    //   navigate(FORRIGE_STEG);
+    // } else {
+    //   navigate(NESTE_STEG);
+    // }
   }
 
   async function bundleFilerForDokumentasjonskrav(

@@ -133,7 +133,7 @@ export default function BarntilleggSeksjon() {
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${seksjon?.versjon} for barnetillegg for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
         <BarnetilleggProvider

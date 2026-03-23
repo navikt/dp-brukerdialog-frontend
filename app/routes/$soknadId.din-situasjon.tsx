@@ -104,7 +104,7 @@ export default function DinSituasjonSeksjon() {
       return <DinSituasjonViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${seksjon?.versjon} for din situasjon for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return <DinSituasjonViewV1 />;
   }

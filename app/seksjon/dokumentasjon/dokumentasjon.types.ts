@@ -4,7 +4,7 @@ import {
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
-} from "./dokumentasjonskrav.komponenter";
+} from "./v1/dokumentasjonskrav.komponenter";
 
 export type Dokumentasjonskrav = {
   id: string;
