@@ -66,7 +66,6 @@ function DokumentasjonskravProvider({
   useEffect(() => {
     if (valideringsTeller > 0) {
       const klarTilBundlingOgLagring = verifiserDokumentasjonskrav();
-
       if (klarTilBundlingOgLagring) {
         bundleOgLagreDokumentasjonskrav(Seksjonshandling.neste);
       }
@@ -164,8 +163,6 @@ function DokumentasjonskravProvider({
     }
 
     setLagrer(false);
-
-    console.log("hit");
 
     // if (ønsketHandling === Seksjonshandling.tilbakenavigering) {
     //   navigate(FORRIGE_STEG);

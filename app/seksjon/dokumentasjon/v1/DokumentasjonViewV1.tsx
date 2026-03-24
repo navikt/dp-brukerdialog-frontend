@@ -22,27 +22,19 @@ export function DokumentasjonViewV1() {
     bundleOgLagreDokumentasjonskrav,
   } = useDokumentasjonskravContext();
 
-  function genererPdfGrunnlag() {
+  function lagreSvar() {
+    const seksjonsBeskrivelse = lagSeksjonPayload(dokumentasjonKomponenter, {});
+    const dokumentasjonskravKomponent = dokumentasjonskrav
+      ?.filter((krav) => krav?.pdfGrunnlag !== null && krav?.pdfGrunnlag !== undefined)
+      .flatMap((krav) => JSON.parse(krav.pdfGrunnlag as string));
+
     const pdfPayload = {
       navn: seksjonnavn,
-      spørsmål: [...lagSeksjonPayload(dokumentasjonKomponenter, {})],
+      spørsmål: [...seksjonsBeskrivelse, ...dokumentasjonskravKomponent],
     };
 
-    return JSON.stringify(pdfPayload);
-  }
+    console.log("PDF Payload:", pdfPayload);
 
-  function lagreSvar() {
-    // Todo: lagre pdfgrunnlag i context
-    const pdfGrunnlag = genererPdfGrunnlag();
-
-    // Todo: Bygg dokumentasjonskrav komponent som egen type
-    // Avklare med backend slik at de klare å bygge pdf riktig
-    // Dokumentasjonskrav er sammensatt av flere komponenter,
-
-    // console.log(pdfGrunnlag);
-    // dokumentasjonskrav?.map((krav) => {
-    //   console.log(krav?.pdfGrunnlag);
-    // });
     setValideringsTeller((prev) => prev + 1);
   }
 

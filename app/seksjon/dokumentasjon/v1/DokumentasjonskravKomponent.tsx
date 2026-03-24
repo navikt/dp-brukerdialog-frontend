@@ -1,9 +1,11 @@
 import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
+import { ForklarendeTekst, HeadingTekst } from "~/components/Komponent.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
@@ -120,9 +122,35 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   }, [form, valideringsTeller]);
 
   function genererPdfGrunnlag() {
-    return JSON.stringify([
+    // Todo: Her bør vi også ta være på hva bruker har lastet opp.
+    // Dersom bruker har svart "Jeg vil laste opp nå"
+    // lag pdf grunn lag for "Last opp dokument, maks filstørrelse xxxx"
+    // Kanskje litt overskill
+    // Ta være på filene som har blitt lastet opp og inkluder i pdf grunnlag
+
+    const heading: HeadingTekst = {
+      id: `dokumentasjonskravHeading`,
+      type: "headingTekst",
+      nivå: "3",
+      size: "small",
+      label: dokumentasjonskrav.tittel || "Dokumentasjon",
+    };
+
+    const beskrivelse: ForklarendeTekst = {
+      id: `dokumentasjonskravBeskrivelse`,
+      type: "forklarendeTekst",
+      description: renderToStaticMarkup(
+        <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
+      ),
+    };
+
+    const grunnlag = JSON.stringify([
+      heading,
+      beskrivelse,
       ...lagSeksjonPayload(dokumentasjonskravKomponenter, form.transient.value()),
     ]);
+
+    return grunnlag;
   }
 
   function hentFormDefaultValue() {
@@ -142,6 +170,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           : undefined,
     };
   }
+
+  // Todo
+  // Inkludere dokumentasjonskrav overskrift og tilttel
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">

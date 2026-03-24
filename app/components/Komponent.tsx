@@ -1,3 +1,4 @@
+import { Heading } from "@navikt/ds-react";
 import { FormScope } from "@rvf/react-router";
 import { useEffect, useRef } from "react";
 import { Dokumentasjonskravindikator } from "~/components/informasjon-komponent/Dokumentasjonskravindikator";
@@ -16,6 +17,7 @@ import { KortTekst } from "./spørsmål-komponent/KortTekst";
 import { Land } from "./spørsmål-komponent/Land";
 import { LangTekst } from "./spørsmål-komponent/LangTekst";
 import { Periode } from "./spørsmål-komponent/Periode";
+import { HeadingTekst } from "./informasjon-komponent/HeadingTekst";
 
 interface IProps {
   props: KomponentType;
@@ -74,6 +76,9 @@ export function Komponent({ props, formScope, formValues }: IProps) {
 
     case "forklarendeTekst":
       return <ForklarendeTekst props={props} />;
+
+    case "headingTekst":
+      return <HeadingTekst props={props} />;
 
     case "registeropplysning":
       return null;
