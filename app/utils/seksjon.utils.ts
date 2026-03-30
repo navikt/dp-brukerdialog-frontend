@@ -10,7 +10,7 @@ export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: s
   );
 }
 
-export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any) {
+export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any): KomponentType[] {
   return alleSpørsmål
     .map((spørsmål) => {
       const svar = Object.entries(alleSvar).find(([key]) => {
@@ -29,7 +29,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
           description: spørsmål?.description,
           options: getOptions(spørsmål),
           svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
-        };
+        } as KomponentType;
       }
     })
     .filter((item) => item !== undefined);

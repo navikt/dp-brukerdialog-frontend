@@ -1,13 +1,10 @@
 import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
-import { ForklarendeTekst, HeadingTekst } from "~/components/Komponent.types";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
@@ -50,40 +47,35 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     }
   }, [valideringsTeller, form]);
 
-  const begrunnelseSenderSenere = form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere);
-  const begrunnelseSendtTidligere = form.value(nårSendteDuDokumentet);
-  const begrunnelseSenderIkke = form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
-  const hvaVilDuGjøreSvar = form.value(velgHvaDuVilGjøre);
+  const svar = form.value(velgHvaDuVilGjøre);
+  const begrunnelse =
+    form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere) ||
+    form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet) ||
+    form.value(nårSendteDuDokumentet);
 
   useEffect(() => {
-    const nåværendeBegrunnelse =
-      begrunnelseSenderSenere || begrunnelseSendtTidligere || begrunnelseSenderIkke;
-
-    if (
-      nåværendeBegrunnelse === tidligereBegrunnelse &&
-      hvaVilDuGjøreSvar === dokumentasjonskrav.svar
-    ) {
+    if (begrunnelse === tidligereBegrunnelse && svar === dokumentasjonskrav.svar) {
       return;
     }
 
     const dokumentasjonskravsvar: Dokumentasjonskrav = {
       ...dokumentasjonskrav,
-      svar: hvaVilDuGjøreSvar,
-      begrunnelse: nåværendeBegrunnelse,
-      filer: hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
+      svar: svar,
+      begrunnelse: begrunnelse,
+      filer: svar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
       feil: undefined,
-      pdfGrunnlag: genererPdfGrunnlag(),
+      skjemaSvar: form.transient.value(),
     };
 
-    if (hvaVilDuGjøreSvar !== dokumentasjonskrav.svar) {
+    if (svar !== dokumentasjonskrav.svar) {
       oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
-      setTidligereBegrunnelse(nåværendeBegrunnelse);
+      setTidligereBegrunnelse(begrunnelse);
       return;
     }
 
     const timer = setTimeout(() => {
-      if (nåværendeBegrunnelse) {
-        setTidligereBegrunnelse(nåværendeBegrunnelse);
+      if (begrunnelse) {
+        setTidligereBegrunnelse(begrunnelse);
       } else {
         form.validate();
         setTidligereBegrunnelse(undefined);
@@ -93,65 +85,24 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [
-    begrunnelseSenderSenere,
-    begrunnelseSendtTidligere,
-    begrunnelseSenderIkke,
-    tidligereBegrunnelse,
-    hvaVilDuGjøreSvar,
-    form,
-  ]);
+  }, [begrunnelse, tidligereBegrunnelse, svar, form]);
 
   useEffect(() => {
     if (!form.formState.isValid) {
       oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
         feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
-        pdfGrunnlag: null,
       });
     }
 
-    if (valideringsTeller > 0 && hvaVilDuGjøreSvar === dokumentkravSvarSendNå)
+    if (valideringsTeller > 0 && svar === dokumentkravSvarSendNå)
       if (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0) {
         oppdaterEtDokumentasjonskrav({
           ...dokumentasjonskrav,
           feil: DokumentasjonskravFeilType.MANGLER_FILER,
-          pdfGrunnlag: null,
         });
       }
   }, [form, valideringsTeller]);
-
-  function genererPdfGrunnlag() {
-    // Todo: Her bør vi også ta være på hva bruker har lastet opp.
-    // Dersom bruker har svart "Jeg vil laste opp nå"
-    // lag pdf grunn lag for "Last opp dokument, maks filstørrelse xxxx"
-    // Kanskje litt overskill
-    // Ta være på filene som har blitt lastet opp og inkluder i pdf grunnlag
-
-    const heading: HeadingTekst = {
-      id: `dokumentasjonskravHeading`,
-      type: "headingTekst",
-      nivå: "3",
-      size: "small",
-      label: dokumentasjonskrav.tittel || "Dokumentasjon",
-    };
-
-    const beskrivelse: ForklarendeTekst = {
-      id: `dokumentasjonskravBeskrivelse`,
-      type: "forklarendeTekst",
-      description: renderToStaticMarkup(
-        <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
-      ),
-    };
-
-    const grunnlag = JSON.stringify([
-      heading,
-      beskrivelse,
-      ...lagSeksjonPayload(dokumentasjonskravKomponenter, form.transient.value()),
-    ]);
-
-    return grunnlag;
-  }
 
   function hentFormDefaultValue() {
     return {
@@ -171,16 +122,13 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     };
   }
 
-  // Todo
-  // Inkludere dokumentasjonskrav overskrift og tilttel
-
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">
       <VStack gap="6">
         <Form {...form.getFormProps()}>
           <VStack gap="4">
             <Heading size="small" level="3">
-              {dokumentasjonskrav.tittel || "Dokumentasjon"}
+              {dokumentasjonskrav.tittel}
             </Heading>
 
             {dokumentasjonskrav.type && (

@@ -14,8 +14,8 @@ export type DokumentasjonskravSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[];
 };
 
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "Dokumentasjon";
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "Dokumentasjon";
 
 export async function loader({
   request,

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { NYESTE_VERSJON, SEKSJON_ID } from "~/routes/$soknadId.dokumentasjon";
 import {
   Bundle,
   Dokumentasjonskrav,
@@ -27,6 +28,8 @@ type DokumentasjonskravContextType = {
   valideringsTeller: number;
   setValideringsTeller: React.Dispatch<React.SetStateAction<number>>;
   bundleOgLagreDokumentasjonskrav: (tilbakenavigering: Seksjonshandling) => Promise<void>;
+  pdfGrunnlag: string | null;
+  setPdfGrunnlag: (pdfGrunnlag: string | null) => void;
 };
 
 type DokumentasjonskravProviderProps = {
@@ -62,6 +65,7 @@ function DokumentasjonskravProvider({
   const [lagrer, setLagrer] = useState(false);
   const [harTekniskFeil, setHarTekniskFeil] = useState(false);
   const [valideringsTeller, setValideringsTeller] = useState(0);
+  const [pdfGrunnlag, setPdfGrunnlag] = useState<string | null>(null);
 
   useEffect(() => {
     if (valideringsTeller > 0) {
@@ -162,13 +166,23 @@ function DokumentasjonskravProvider({
       }
     }
 
+    if (pdfGrunnlag) {
+      const lagreSeksjonResponse = await lagreSeksjon(pdfGrunnlag);
+
+      if (!lagreSeksjonResponse) {
+        console.error("Feil ved lagring av seksjon med PDF-grunnlag");
+        setHarTekniskFeil(true);
+        return;
+      }
+    }
+
     setLagrer(false);
 
-    // if (ønsketHandling === Seksjonshandling.tilbakenavigering) {
-    //   navigate(FORRIGE_STEG);
-    // } else {
-    //   navigate(NESTE_STEG);
-    // }
+    if (ønsketHandling === Seksjonshandling.tilbakenavigering) {
+      navigate(FORRIGE_STEG);
+    } else {
+      navigate(NESTE_STEG);
+    }
   }
 
   async function bundleFilerForDokumentasjonskrav(
@@ -230,6 +244,30 @@ function DokumentasjonskravProvider({
     }
   }
 
+  async function lagreSeksjon(pdfGrunnlag: string): Promise<boolean> {
+    try {
+      const formData = new FormData();
+      formData.append("pdfGrunnlag", pdfGrunnlag);
+
+      const response = await fetch(`/api/${soknadId}/${SEKSJON_ID}/${NYESTE_VERSJON}`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        console.error(`Feil ved lagring av seksjon ${SEKSJON_ID} for søknadId: ${soknadId}`);
+        setHarTekniskFeil(true);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      setHarTekniskFeil(true);
+      console.error("Feil ved lagring av seksjon:", error);
+      return false;
+    }
+  }
+
   return (
     <DokumentasjonskravContext.Provider
       value={{
@@ -243,6 +281,8 @@ function DokumentasjonskravProvider({
         valideringsTeller,
         setValideringsTeller,
         bundleOgLagreDokumentasjonskrav,
+        pdfGrunnlag,
+        setPdfGrunnlag,
       }}
     >
       {children}

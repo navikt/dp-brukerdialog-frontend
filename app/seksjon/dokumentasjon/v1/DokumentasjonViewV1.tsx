@@ -1,14 +1,21 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { FormScope } from "@rvf/react-router";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Komponent } from "~/components/Komponent";
+import { ForklarendeTekst, HeadingTekst, KomponentType } from "~/components/Komponent.types";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
+import {
+  dokumentasjonKomponenter,
+  dokumentasjonskravKomponenter,
+} from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { Dokumentasjonskrav } from "../dokumentasjon.types";
+import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
+import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
 
 export function DokumentasjonViewV1() {
   const seksjonnavn = "Dokumentasjon";
@@ -19,23 +26,61 @@ export function DokumentasjonViewV1() {
     lagrer,
     harTekniskFeil,
     setValideringsTeller,
+    setPdfGrunnlag,
     bundleOgLagreDokumentasjonskrav,
   } = useDokumentasjonskravContext();
 
   function lagreSvar() {
-    const seksjonsBeskrivelse = lagSeksjonPayload(dokumentasjonKomponenter, {});
-    const dokumentasjonskravKomponent = dokumentasjonskrav
-      ?.filter((krav) => krav?.pdfGrunnlag !== null && krav?.pdfGrunnlag !== undefined)
-      .flatMap((krav) => JSON.parse(krav.pdfGrunnlag as string));
+    const seksjonsBeskrivelsePdfGrunnlag = lagSeksjonPayload(dokumentasjonKomponenter, {});
+    const dokumentasjonskravPdfGrunnlag = dokumentasjonskrav
+      .map((krav) => {
+        return genererDokumentasjonskravPdfGrunnlag(krav);
+      })
+      .flat();
 
-    const pdfPayload = {
+    const pdfGrunnlag = {
       navn: seksjonnavn,
-      spørsmål: [...seksjonsBeskrivelse, ...dokumentasjonskravKomponent],
+      spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag],
     };
 
-    console.log("PDF Payload:", pdfPayload);
-
+    setPdfGrunnlag(JSON.stringify(pdfGrunnlag));
     setValideringsTeller((prev) => prev + 1);
+  }
+
+  function genererDokumentasjonskravPdfGrunnlag(
+    dokumentasjonskrav: Dokumentasjonskrav
+  ): KomponentType[] {
+    const heading: HeadingTekst = {
+      id: "tittel",
+      type: "headingTekst",
+      nivå: "3",
+      size: "small",
+      label: dokumentasjonskrav.tittel,
+    };
+
+    const beskrivelse: ForklarendeTekst = {
+      id: "beskrivelse",
+      type: "forklarendeTekst",
+      description: renderToStaticMarkup(
+        <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
+      ),
+    };
+
+    const skjemaSvar = lagSeksjonPayload(
+      dokumentasjonskravKomponenter,
+      dokumentasjonskrav.skjemaSvar
+    );
+
+    const filer: KomponentType[] =
+      dokumentasjonskrav.filer?.map((fil) => {
+        return {
+          id: fil.id,
+          type: "forklarendeTekst",
+          description: fil.filnavn,
+        };
+      }) || [];
+
+    return [heading, beskrivelse, ...skjemaSvar, ...filer];
   }
 
   return (
