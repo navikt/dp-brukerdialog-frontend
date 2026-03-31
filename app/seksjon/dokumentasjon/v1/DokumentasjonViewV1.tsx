@@ -34,7 +34,7 @@ export function DokumentasjonViewV1() {
     const seksjonsBeskrivelsePdfGrunnlag = lagSeksjonPayload(dokumentasjonKomponenter, {});
     const dokumentasjonskravPdfGrunnlag = dokumentasjonskrav
       .map((krav) => {
-        return genererDokumentasjonskravPdfGrunnlag(krav);
+        return genererPdfGrunnlag(krav);
       })
       .flat();
 
@@ -47,9 +47,7 @@ export function DokumentasjonViewV1() {
     setValideringsTeller((prev) => prev + 1);
   }
 
-  function genererDokumentasjonskravPdfGrunnlag(
-    dokumentasjonskrav: Dokumentasjonskrav
-  ): KomponentType[] {
+  function genererPdfGrunnlag(dokumentasjonskrav: Dokumentasjonskrav): KomponentType[] {
     const heading: HeadingTekst = {
       id: "tittel",
       type: "headingTekst",
