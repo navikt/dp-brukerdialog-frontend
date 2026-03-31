@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useNavigate, useParams } from "react-router";
 import { NYESTE_VERSJON, SEKSJON_ID } from "~/routes/$soknadId.dokumentasjon";
 import {
@@ -12,10 +20,15 @@ import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 const FORRIGE_STEG = "../tilleggsopplysninger";
 const NESTE_STEG = "../oppsummering";
 
-interface DokumentasjonskravTilLagring {
+type DokumentasjonskravTilLagring = {
   seksjonId: string;
   dokumentasjonskrav: Dokumentasjonskrav[];
-}
+};
+
+type DokumentasjonskravProviderProps = {
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  children: ReactNode;
+};
 
 type DokumentasjonskravContextType = {
   dokumentasjonskrav: Dokumentasjonskrav[];
@@ -26,15 +39,10 @@ type DokumentasjonskravContextType = {
   harTekniskFeil: boolean;
   setHarTekniskFeil: (harTekniskFeil: boolean) => void;
   valideringsTeller: number;
-  setValideringsTeller: React.Dispatch<React.SetStateAction<number>>;
+  setValideringsTeller: Dispatch<SetStateAction<number>>;
   bundleOgLagreDokumentasjonskrav: (tilbakenavigering: Seksjonshandling) => Promise<void>;
   pdfGrunnlag: string | null;
   setPdfGrunnlag: (pdfGrunnlag: string | null) => void;
-};
-
-type DokumentasjonskravProviderProps = {
-  dokumentasjonskrav: Dokumentasjonskrav[];
-  children: React.ReactNode;
 };
 
 const DokumentasjonskravContext = createContext<DokumentasjonskravContextType | undefined>(
