@@ -6,18 +6,18 @@ Brukerdialog er et frontend-applikasjon for dagpengersøknad.
 
 1. Kjør `nvm install` for å installere riktig node versjon.
 2. Kjør `nvm use` for å bruke node versjon du har installert.
-3. Kjør `npm install` for å installere avhengigheter.
-4. Kjør `npm run copy-env` for å kopiere `.env.example` til `.env`.
+3. Kjør `pnpm install` for å installere avhengigheter.
+4. Kjør `pnpm run copy-env` for å kopiere `.env.example` til `.env`.
 
 ## Starte dev server:
 
-For å starte utviklingsserveren, kjør `npm run dev`
+For å starte utviklingsserveren, kjør `pnpm run dev`
 
 ## Kjøre localhost med dev-backend
 
 1. På `.env`, sett `USE_MSW` til false
-2. Kjør `npm run token` for å generere en token
-3. Kjør `npm run dev` for å starte appen
+2. Kjør `pnpm run token` for å generere en token
+3. Kjør `pnpm run dev` for å starte appen
 
 ## IntelliJ Prettier and Eslint configuration
 
@@ -34,6 +34,6 @@ For å starte utviklingsserveren, kjør `npm run dev`
 
 ## Testing
 
-1. Unit testing `npm run test`
-2. Test coverage `npm run coverage`
+1. Unit testing `pnpm run test`
+2. Test coverage `pnpm run coverage`
 3. Vitest ui `npx vitest --ui`
