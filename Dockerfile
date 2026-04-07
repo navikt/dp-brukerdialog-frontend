@@ -6,19 +6,17 @@ RUN pnpm config set @navikt:registry=https://npm.pkg.github.com
 # build app
 FROM node AS app-build
 WORKDIR /app
-ENV RUNTIME_ENVIRONMENT=${RUNTIME_ENVIRONMENT}
 
 COPY ./app ./app
 COPY ./mocks ./mocks
-COPY ./public ./public
+COPY ./public ./public/
 COPY ./vite.config.ts ./
-COPY ./react-router.config.ts ./
 COPY ./package.json ./
-COPY ./pnpm-lock.yaml  ./
+COPY ./pnpm-lock.yaml ./
 
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     pnpm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
-    pnpm install --ignore-scripts --frozen-lockfile && \
+    pnpm install --ignore-scripts && \
     pnpm config delete //npm.pkg.github.com/:_authToken
 RUN pnpm run build
 
@@ -27,20 +25,19 @@ FROM node AS app-dependencies
 WORKDIR /app
 
 COPY ./package.json ./
-COPY ./pnpm-lock.yaml  ./
+COPY ./pnpm-lock.yaml ./
 
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     pnpm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
-    pnpm install --ignore-scripts --frozen-lockfile --prod && \
+    pnpm install --ignore-scripts --prod && \
     pnpm config delete //npm.pkg.github.com/:_authToken
 
 # export build to filesystem (GitHub)
-FROM scratch AS export
-COPY --from=app-build /app/build /
-
+FROM scratch AS build-export
+COPY --from=app-build /app/build ./
 
 # runtime
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24@sha256:ff323a33a89e8c80e70452b0836105445259cb94afa1d2980967a575d983b20f AS runtime
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24@sha256:87949e933ccc49727e796d6c548c698384f25dec7d2dcf3fa4115deca67af426 AS runtime
 WORKDIR /app
 
 ARG NODE_ENV=production
@@ -48,6 +45,7 @@ ENV NODE_ENV=${NODE_ENV}
 ENV TZ="Europe/Oslo"
 EXPOSE 3000
 
+COPY ./public ./public/
 COPY ./package.json ./package.json
 COPY --from=app-build /app/build/ ./build/
 COPY --from=app-dependencies /app/node_modules ./node_modules
