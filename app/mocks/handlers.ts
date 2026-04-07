@@ -59,6 +59,9 @@ export const handlers = [
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
   }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/sistoppdatert`, () => {
+    return HttpResponse.json(new Date().toISOString());
+  }),
   http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, async () => {
     await delay(1000);
     return HttpResponse.json(mockMellomlagring);
