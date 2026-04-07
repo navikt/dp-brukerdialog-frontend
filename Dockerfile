@@ -1,7 +1,5 @@
 FROM node:24.11.0-alpine AS node
 
-RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN)
 RUN npm config set @navikt:registry=https://npm.pkg.github.com
 
 # build app
@@ -14,6 +12,9 @@ COPY ./vite.config.ts ./
 COPY ./package.json ./
 COPY ./package-lock.json  ./
 
+RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
+    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
+    npm config delete //npm.pkg.github.com/:_authToken
 RUN npm ci --ignore-scripts
 RUN npm run build
 
@@ -24,9 +25,10 @@ WORKDIR /app
 
 COPY ./package.json ./
 COPY ./package-lock.json  ./
-
+RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
+    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
+    npm config delete //npm.pkg.github.com/:_authToken
 RUN npm ci --ignore-scripts --omit dev
-
 
 # export build to filesystem (GitHub)
 FROM scratch AS export
