@@ -14,7 +14,9 @@ COPY ./vite.config.ts ./
 COPY ./package.json ./
 COPY ./package-lock.json  ./
 
-RUN npm ci --ignore-scripts
+RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
+    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
+    npm ci --ignore-scripts
 RUN npm run build
 
 
@@ -25,9 +27,7 @@ WORKDIR /app
 COPY ./package.json ./
 COPY ./package-lock.json  ./
 
-RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
-    npm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \
-    npm ci --ignore-scripts --omit dev
+RUN npm ci --ignore-scripts --omit dev
 
 # export build to filesystem (GitHub)
 FROM scratch AS export
