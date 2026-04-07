@@ -15,7 +15,7 @@ export const kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18År
   "kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov";
 export const kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov =
   "kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov";
-export const kanIkkeJobbeHeltidOgDeltidJegErPermitert = "kanIkkeJobbeHeltidOgDeltidJegErPermitert";
+export const kanIkkeJobbeHeltidOgDeltidJegErPermittert = "kanIkkeJobbeHeltidOgDeltidJegErPermittert";
 export const kanIkkeJobbeHeltidOgDeltidHarFylt60 = "kanIkkeJobbeHeltidOgDeltidHarFylt60";
 export const kanIkkeJobbeHeltidOgDeltidAnnenSituasjon = "kanIkkeJobbeHeltidOgDeltidAnnenSituasjon";
 export const kanIkkeJobbeBådeHeltidOgDeltidAntallTimer =
@@ -36,7 +36,7 @@ export const kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedS
   "kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov";
 export const kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov =
   "kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov";
-export const kanIkkeJobbeIHeleNorgeJegErPermitert = "kanIkkeJobbeIHeleNorgeJegErPermitert";
+export const kanIkkeJobbeIHeleNorgeJegErPermittert = "kanIkkeJobbeIHeleNorgeJegErPermittert";
 export const kanIkkeJobbeIHeleNorgeHarFylt60 = "kanIkkeJobbeIHeleNorgeHarFylt60";
 export const kanIkkeJobbeIHeleNorgeAnnenSituasjon = "kanIkkeJobbeIHeleNorgeAnnenSituasjon";
 export const kanIkkeJobbeIHeleNorgeKortOmSituasjonen = "kanIkkeJobbeIHeleNorgeKortOmSituasjonen";
@@ -55,7 +55,7 @@ export type ReellArbeidssøkerSvar = {
     | typeof kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse
     | typeof kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov
     | typeof kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov
-    | typeof kanIkkeJobbeHeltidOgDeltidJegErPermitert
+    | typeof kanIkkeJobbeHeltidOgDeltidJegErPermittert
     | typeof kanIkkeJobbeHeltidOgDeltidHarFylt60
     | typeof kanIkkeJobbeHeltidOgDeltidAnnenSituasjon
   >;
@@ -69,7 +69,7 @@ export type ReellArbeidssøkerSvar = {
     | typeof kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse
     | typeof kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov
     | typeof kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov
-    | typeof kanIkkeJobbeIHeleNorgeJegErPermitert
+    | typeof kanIkkeJobbeIHeleNorgeJegErPermittert
     | typeof kanIkkeJobbeIHeleNorgeHarFylt60
     | typeof kanIkkeJobbeIHeleNorgeAnnenSituasjon
   >;
@@ -206,14 +206,14 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
         label:
           "Den andre forelderen jobber skift, turnus eller utenfor nærområdet. Og dere har ansvar for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
       },
-      { value: kanIkkeJobbeHeltidOgDeltidJegErPermitert, label: "Jeg er permittert" },
+      { value: kanIkkeJobbeHeltidOgDeltidJegErPermittert, label: "Jeg er permittert" },
       { value: kanIkkeJobbeHeltidOgDeltidHarFylt60, label: "Har fylt 60 år" },
       { value: kanIkkeJobbeHeltidOgDeltidAnnenSituasjon, label: "Annen situasjon" },
     ],
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
   {
-    id: "kanIkkeJobbeHeltidOgDeltidJegErPermitertInformasjonskort",
+    id: "kanIkkeJobbeHeltidOgDeltidJegErPermittertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     label: "Informasjon",
@@ -223,7 +223,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       "<p>Hvis det skjer endringer i situasjonen din, må du gi beskjed til oss, slik at vi kan gjøre en ny vurdering.</p>",
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
-        kanIkkeJobbeHeltidOgDeltidJegErPermitert
+        kanIkkeJobbeHeltidOgDeltidJegErPermittert
       ) || false,
   },
   {
@@ -279,7 +279,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
-        kanIkkeJobbeHeltidOgDeltidJegErPermitert
+        kanIkkeJobbeHeltidOgDeltidJegErPermittert
       ) ||
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeHeltidOgDeltidAnnenSituasjon
@@ -347,7 +347,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
         label:
           "Den andre forelderen jobber skift, turnus eller utenfor nærområdet, og dere har ansvar for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
       },
-      { value: kanIkkeJobbeIHeleNorgeJegErPermitert, label: "Jeg er permittert" },
+      { value: kanIkkeJobbeIHeleNorgeJegErPermittert, label: "Jeg er permittert" },
       { value: kanIkkeJobbeIHeleNorgeHarFylt60, label: "Har fylt 60 år" },
       { value: kanIkkeJobbeIHeleNorgeAnnenSituasjon, label: "Annen situasjon" },
     ],
@@ -362,7 +362,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeIHeleNorge] === "nei",
   },
   {
-    id: "kanIkkeJobbeIHeleNorgeJegErPermitertInformasjonskort",
+    id: "kanIkkeJobbeIHeleNorgeJegErPermittertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
     label: "Informasjon",
@@ -372,7 +372,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       "<p>Hvis det skjer endringer i situasjonen din, må du gi beskjed til oss, slik at vi kan gjøre en ny vurdering.</p>",
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
-        kanIkkeJobbeIHeleNorgeJegErPermitert
+        kanIkkeJobbeIHeleNorgeJegErPermittert
       ) || false,
   },
   {
@@ -428,7 +428,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
-        kanIkkeJobbeIHeleNorgeJegErPermitert
+        kanIkkeJobbeIHeleNorgeJegErPermittert
       ) ||
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeIHeleNorgeAnnenSituasjon
