@@ -1,4 +1,4 @@
-import { parseFormData } from "node_modules/@remix-run/form-data-parser/dist/lib/form-data";
+import { parseFormData } from "@remix-run/form-data-parser";
 import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
