@@ -18,6 +18,7 @@ import { mockUtdanning } from "./mock-data/mock-utdanning";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
+    console.log("Mock: Oppretter søknad");
     return HttpResponse.text("b1778783-3ec1-4cd1-8eae-b496c10a6122");
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/personalia`, () => {
@@ -58,6 +59,9 @@ export const handlers = [
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/progress`, () => {
     return HttpResponse.json(mockProgress);
+  }),
+  http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/:soknadId/sistoppdatert`, () => {
+    return HttpResponse.json(new Date().toISOString());
   }),
   http.post(`${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/:soknadId/:dokumentkravId`, async () => {
     await delay(1000);
