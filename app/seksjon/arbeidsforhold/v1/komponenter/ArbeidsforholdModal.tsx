@@ -20,7 +20,7 @@ import {
   arbeidstidenErRedusert,
   harDuJobbetSkiftTurnusEllerRotasjon,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-  jegErPermitert,
+  jegErPermittert,
   jegHarFåttAvskjed,
   jegHarSagtOppSelv,
   kontraktenErUtgått,
@@ -279,7 +279,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           }
         );
         break;
-      case jegErPermitert:
+      case jegErPermittert:
         dokumentasjonskrav.push(
           {
             id: crypto.randomUUID(),
