@@ -2,7 +2,7 @@ import { KomponentType } from "~/components/Komponent.types";
 import {
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-  jegErPermitert,
+  jegErPermittert,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { startOfDay, subYears } from "date-fns";
 
@@ -29,7 +29,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     label: "Når startet du i dette arbeidsforholdet?",
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertNårErDuPermittertFraOgMedDato,
@@ -40,7 +40,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
       "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen.",
     referanseId: permittertNårErDuPermittertTilOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertNårErDuPermittertTilOgMedDato,
@@ -49,7 +49,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     optional: true,
     referanseId: permittertNårErDuPermittertFraOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: "permittertInformasjonskort",
@@ -59,21 +59,21 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     description:
       "For å ha rett til dagpenger under permittering, må arbeidstiden din være redusert med minst 50 prosent. Årsaken til permitteringen må være mangel på arbeid eller andre forhold som arbeidsgiver ikke kan påvirke.",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: "permittertArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
     label: "Arbeidsavtale",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
-    id: "permittertPermiteringsvarselDokumentasjonskravindikator",
+    id: "permittertPermitteringsvarselDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
     label: "Permitteringsvarsel",
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
@@ -94,7 +94,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
       },
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin,
@@ -118,7 +118,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
       },
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertHvorMangeProsentErDuPermittert,
@@ -126,7 +126,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     label: "Hvor mange prosent er du permittert?",
     maksVerdi: 100,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
@@ -145,7 +145,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
       },
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermitert,
+      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertLønnsperiodeFraOgMedDato,
