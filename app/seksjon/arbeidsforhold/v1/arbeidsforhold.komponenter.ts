@@ -88,7 +88,7 @@ export const jegHarFåttAvskjed = "jegHarFåttAvskjed";
 export const kontraktenErUtgått = "kontraktenErUtgått";
 export const arbeidstidenErRedusert = "arbeidstidenErRedusert";
 export const arbeidsgiverErKonkurs = "arbeidsgiverErKonkurs";
-export const jegErPermitert = "jegErPermitert";
+export const jegErPermittert = "jegErPermittert";
 export const arbeidsforholdetErIkkeEndret = "arbeidsforholdetErIkkeEndret";
 export const harDuJobbetSkiftTurnusEllerRotasjon = "harDuJobbetSkiftTurnusEllerRotasjon";
 export const skiftEllerTurns = "skiftEllerTurns";
@@ -384,7 +384,7 @@ export const arbeidsforholdModalKomponenter: KomponentType[] = [
       { value: kontraktenErUtgått, label: "Kontrakten er utgått" },
       { value: arbeidstidenErRedusert, label: "Arbeidstiden er redusert" },
       { value: arbeidsgiverErKonkurs, label: "Arbeidsgiver er konkurs" },
-      { value: jegErPermitert, label: "Jeg er permittert" },
+      { value: jegErPermittert, label: "Jeg er permittert" },
       { value: arbeidsforholdetErIkkeEndret, label: "Arbeidsforholdet er ikke endret" },
     ],
   },
