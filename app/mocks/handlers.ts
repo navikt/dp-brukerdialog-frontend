@@ -18,7 +18,6 @@ import { mockUtdanning } from "./mock-data/mock-utdanning";
 
 export const handlers = [
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
-    console.log("Mock: Oppretter søknad");
     return HttpResponse.text("b1778783-3ec1-4cd1-8eae-b496c10a6122");
   }),
   http.get(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/personalia`, () => {

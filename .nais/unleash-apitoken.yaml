@@ -15,4 +15,4 @@ spec:
 
   # Specify which environment the API token should be created for.
   # Can be one of: development, or production.
-  environment: { { unleash.environment } }
+  environment: "{{ unleash.environment }}"
