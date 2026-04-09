@@ -99,14 +99,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function TilleggsopplysningerSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
+  const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (loaderData?.seksjon.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <TilleggsopplysningerViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.seksjon.versjon} for tilleggsopplysninger for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return <TilleggsopplysningerViewV1 />;
   }

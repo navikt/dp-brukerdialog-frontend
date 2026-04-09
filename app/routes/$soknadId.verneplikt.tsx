@@ -97,14 +97,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function VernepliktSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
+  const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (loaderData?.seksjon?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
     case 1:
       return <VernepliktViewV1 />;
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.seksjon?.versjon} for verneplikt for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return <VernepliktViewV1 />;
   }

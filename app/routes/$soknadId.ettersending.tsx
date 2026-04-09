@@ -2,7 +2,7 @@ import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentDokumentasjonskrav as hentDokumentasjonskravene } from "~/models/hent-dokumentasjonskrav.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { dokumentkravSvarSenderSenere } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import { dokumentkravSvarSenderSenere } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { EttersendingProvider } from "~/seksjon/ettersending/ettersending.context";
 import { EttersendingView } from "~/seksjon/ettersending/EttersendingView";
 

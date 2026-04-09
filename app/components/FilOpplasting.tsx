@@ -7,8 +7,8 @@ import {
   DokumentkravFil,
   FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { useDokumentasjonskravContext } from "~/seksjon/dokumentasjon/dokumentasjonskrav.context";
-import { dokumentkravSvarSendNå } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
+import { useDokumentasjonskravContext } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.context";
+import { dokumentkravSvarSendNå } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,

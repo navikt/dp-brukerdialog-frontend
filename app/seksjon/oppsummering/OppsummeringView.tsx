@@ -21,7 +21,7 @@ import { z } from "zod";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
-import { DokumentasjonOppsummering } from "~/seksjon/dokumentasjon/DokumentasjonOppsummering";
+import { DokumentasjonOppsummering } from "~/seksjon/dokumentasjon/v1/DokumentasjonOppsummering";
 import { Oppsummering } from "~/seksjon/oppsummering/Oppsummering";
 
 const schema = z.object({});

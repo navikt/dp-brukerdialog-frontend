@@ -17,7 +17,7 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
-import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/DokumentasjonskravInnhold";
+import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/v1/DokumentasjonskravInnhold";
 
 interface IProps {
   ettersending: Dokumentasjonskrav;

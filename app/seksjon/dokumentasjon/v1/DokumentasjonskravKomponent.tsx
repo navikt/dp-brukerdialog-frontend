@@ -5,7 +5,7 @@ import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "./dokumentasjon.types";
+import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
   dokumentasjonskravKomponenter,
@@ -27,17 +27,85 @@ interface DokumentasjonskravProps {
 }
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
+  const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
   const [tidligereBegrunnelse, setTidligereBegrunnelse] = useState<string | undefined>(
     dokumentasjonskrav.begrunnelse
   );
-
-  const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
 
   const form = useForm({
     method: "PUT",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
-    defaultValues: {
+    defaultValues: hentFormDefaultValue(),
+  });
+
+  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
+
+  useEffect(() => {
+    if (valideringsTeller > 0) {
+      form.validate();
+    }
+  }, [valideringsTeller, form]);
+
+  const svar = form.value(velgHvaDuVilGjøre);
+  const begrunnelse =
+    form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere) ||
+    form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet) ||
+    form.value(nårSendteDuDokumentet);
+
+  useEffect(() => {
+    if (begrunnelse === tidligereBegrunnelse && svar === dokumentasjonskrav.svar) {
+      return;
+    }
+
+    const dokumentasjonskravsvar: Dokumentasjonskrav = {
+      ...dokumentasjonskrav,
+      svar: svar,
+      begrunnelse: begrunnelse,
+      filer: svar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
+      feil: undefined,
+      skjemaSvar: form.transient.value(),
+    };
+
+    if (svar !== dokumentasjonskrav.svar) {
+      oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
+      setTidligereBegrunnelse(begrunnelse);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      if (begrunnelse) {
+        setTidligereBegrunnelse(begrunnelse);
+      } else {
+        form.validate();
+        setTidligereBegrunnelse(undefined);
+      }
+
+      oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [begrunnelse, tidligereBegrunnelse, svar, form]);
+
+  useEffect(() => {
+    if (!form.formState.isValid) {
+      oppdaterEtDokumentasjonskrav({
+        ...dokumentasjonskrav,
+        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
+      });
+    }
+
+    if (valideringsTeller > 0 && svar === dokumentkravSvarSendNå)
+      if (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0) {
+        oppdaterEtDokumentasjonskrav({
+          ...dokumentasjonskrav,
+          feil: DokumentasjonskravFeilType.MANGLER_FILER,
+        });
+      }
+  }, [form, valideringsTeller]);
+
+  function hentFormDefaultValue() {
+    return {
       [velgHvaDuVilGjøre]: dokumentasjonskrav.svar,
       [hvaErGrunnenTilAtDuSenderDokumentetSenere]:
         dokumentasjonskrav.svar === dokumentkravSvarSenderSenere
@@ -51,84 +119,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         dokumentasjonskrav.svar === dokumentkravSvarSenderIkke
           ? dokumentasjonskrav.begrunnelse
           : undefined,
-    },
-  });
-
-  useEffect(() => {
-    if (valideringsTeller > 0) {
-      form.validate();
-    }
-  }, [valideringsTeller, form]);
-
-  const begrunnelseSenderSenere = form.value(hvaErGrunnenTilAtDuSenderDokumentetSenere);
-  const begrunnelseSendtTidligere = form.value(nårSendteDuDokumentet);
-  const begrunnelseSenderIkke = form.value(hvaErGrunnenTilAtDuIkkeSenderDokumentet);
-  const hvaVilDuGjøreSvar = form.value(velgHvaDuVilGjøre);
-
-  useEffect(() => {
-    const nåværendeBegrunnelse =
-      begrunnelseSenderSenere || begrunnelseSendtTidligere || begrunnelseSenderIkke;
-
-    if (
-      nåværendeBegrunnelse === tidligereBegrunnelse &&
-      hvaVilDuGjøreSvar === dokumentasjonskrav.svar
-    ) {
-      return;
-    }
-
-    const dokumentasjonskravsvar: Dokumentasjonskrav = {
-      ...dokumentasjonskrav,
-      svar: hvaVilDuGjøreSvar,
-      begrunnelse: nåværendeBegrunnelse,
-      filer: hvaVilDuGjøreSvar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
-      feil: undefined,
     };
-
-    if (hvaVilDuGjøreSvar !== dokumentasjonskrav.svar) {
-      oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
-      setTidligereBegrunnelse(nåværendeBegrunnelse);
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      if (nåværendeBegrunnelse) {
-        setTidligereBegrunnelse(nåværendeBegrunnelse);
-      } else {
-        form.validate();
-        setTidligereBegrunnelse(undefined);
-      }
-
-      oppdaterEtDokumentasjonskrav(dokumentasjonskravsvar);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [
-    begrunnelseSenderSenere,
-    begrunnelseSendtTidligere,
-    begrunnelseSenderIkke,
-    tidligereBegrunnelse,
-    hvaVilDuGjøreSvar,
-    form,
-  ]);
-
-  useEffect(() => {
-    if (!form.formState.isValid) {
-      oppdaterEtDokumentasjonskrav({
-        ...dokumentasjonskrav,
-        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
-      });
-    }
-
-    if (valideringsTeller > 0 && hvaVilDuGjøreSvar === dokumentkravSvarSendNå)
-      if (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0) {
-        oppdaterEtDokumentasjonskrav({
-          ...dokumentasjonskrav,
-          feil: DokumentasjonskravFeilType.MANGLER_FILER,
-        });
-      }
-  }, [form, valideringsTeller]);
-
-  useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
+  }
 
   return (
     <Box.New padding="space-16" background="sunken" borderRadius="large">
@@ -136,7 +128,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
         <Form {...form.getFormProps()}>
           <VStack gap="4">
             <Heading size="small" level="3">
-              {dokumentasjonskrav.tittel || "Dokumentasjon"}
+              {dokumentasjonskrav.tittel}
             </Heading>
 
             {dokumentasjonskrav.type && (

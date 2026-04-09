@@ -1,6 +1,6 @@
 import { BodyLong, BodyShort, List, ReadMore, VStack } from "@navikt/ds-react";
 import { EksterneLenke } from "~/components/EksterneLenke";
-import { DokumentasjonskravType } from "./dokumentasjon.types";
+import { DokumentasjonskravType } from "../dokumentasjon.types";
 
 interface IProps {
   type: DokumentasjonskravType;

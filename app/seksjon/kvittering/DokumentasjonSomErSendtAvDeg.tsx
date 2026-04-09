@@ -1,7 +1,7 @@
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { lastnedDokument } from "~/utils/dokument.utils";
-import { DokumentasjonskravInnhold } from "../dokumentasjon/DokumentasjonskravInnhold";
+import { DokumentasjonskravInnhold } from "../dokumentasjon/v1/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 
 interface IProps {
