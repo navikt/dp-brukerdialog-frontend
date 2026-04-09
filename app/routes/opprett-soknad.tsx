@@ -16,6 +16,7 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 
 const SEKSJON_ID = "startside";
 const SEKSJON_NAVN = "Startside";
+const NESTE_SEKSJON_ID = "personalia";
 
 export async function action({ request }: Route.ActionArgs) {
   const opprettSøknadResponse = await opprettSoknad(request);
@@ -47,11 +48,11 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (!lagreSeksjonResponse.ok) {
     return {
-      error: "Feil ved lagring av seksjon",
+      error: "Feil ved lagring av pdfGrunnlag for startsiden",
     };
   }
 
-  return redirect(`/${soknadId}/personalia`);
+  return redirect(`/${soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function OpprettSoknadSide() {
