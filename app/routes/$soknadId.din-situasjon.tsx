@@ -16,7 +16,7 @@ import {
   navigerEtterLagring,
   normaliserFormData,
 } from "~/utils/action.utils.server";
-import { Seksjonshandling, seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export type DinSituasjonSeksjon = {
   seksjon: {
