@@ -28,7 +28,7 @@ import {
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
-} from "../dokumentasjon/dokumentasjonskrav.komponenter";
+} from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonSomSkalSendesAvDeg } from "./DokumentasjonSomSkalSendesAvDeg";
 
 export default function KvitteringView() {

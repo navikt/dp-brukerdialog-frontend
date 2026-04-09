@@ -119,7 +119,7 @@ export default function AnnenPengestøtteSeksjon() {
       );
     default:
       console.error(
-        `Ukjent versjonsnummer: ${loaderData.seksjon?.versjon} for annen-pengestøtte for søknaden ${soknadId}`
+        `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
         <AnnenPengestøtteProvider

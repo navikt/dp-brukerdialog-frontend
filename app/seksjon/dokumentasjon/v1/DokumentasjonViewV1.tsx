@@ -1,15 +1,23 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { FormScope } from "@rvf/react-router";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Komponent } from "~/components/Komponent";
+import { ForklarendeTekst, HeadingTekst, KomponentType } from "~/components/Komponent.types";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import { dokumentasjonKomponenter } from "~/seksjon/dokumentasjon/dokumentasjonskrav.komponenter";
-import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/DokumentasjonskravKomponent";
+import {
+  dokumentasjonKomponenter,
+  dokumentasjonskravKomponenter,
+} from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
+import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { Dokumentasjonskrav } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
+import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
 
-export function DokumentasjonView() {
+export function DokumentasjonViewV1() {
   const seksjonnavn = "Dokumentasjon";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
@@ -18,8 +26,60 @@ export function DokumentasjonView() {
     lagrer,
     harTekniskFeil,
     setValideringsTeller,
+    setPdfGrunnlag,
     bundleOgLagreDokumentasjonskrav,
   } = useDokumentasjonskravContext();
+
+  function lagreSvar() {
+    const seksjonsBeskrivelsePdfGrunnlag = lagSeksjonPayload(dokumentasjonKomponenter, {});
+    const dokumentasjonskravPdfGrunnlag = dokumentasjonskrav
+      .map((krav) => {
+        return genererPdfGrunnlag(krav);
+      })
+      .flat();
+
+    const pdfGrunnlag = {
+      navn: seksjonnavn,
+      spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag],
+    };
+
+    setPdfGrunnlag(JSON.stringify(pdfGrunnlag));
+    setValideringsTeller((prev) => prev + 1);
+  }
+
+  function genererPdfGrunnlag(dokumentasjonskrav: Dokumentasjonskrav): KomponentType[] {
+    const heading: HeadingTekst = {
+      id: "tittel",
+      type: "headingTekst",
+      nivå: "3",
+      size: "small",
+      label: dokumentasjonskrav.tittel,
+    };
+
+    const beskrivelse: ForklarendeTekst = {
+      id: "beskrivelse",
+      type: "forklarendeTekst",
+      description: renderToStaticMarkup(
+        <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
+      ),
+    };
+
+    const skjemaSvar = lagSeksjonPayload(
+      dokumentasjonskravKomponenter,
+      dokumentasjonskrav.skjemaSvar
+    );
+
+    const filer: KomponentType[] =
+      dokumentasjonskrav.filer?.map((fil) => {
+        return {
+          id: fil.id,
+          type: "forklarendeTekst",
+          description: fil.filnavn,
+        };
+      }) || [];
+
+    return [heading, beskrivelse, ...skjemaSvar, ...filer];
+  }
 
   return (
     <div className="innhold">
@@ -69,7 +129,7 @@ export function DokumentasjonView() {
               type="button"
               iconPosition="right"
               icon={<ArrowRightIcon aria-hidden />}
-              onClick={() => setValideringsTeller((prev) => prev + 1)}
+              onClick={() => lagreSvar()}
               disabled={lagrer}
             >
               Til oppsummering

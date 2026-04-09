@@ -4,7 +4,7 @@ import {
   Dokumentasjonskrav,
   GyldigDokumentkravSvar,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { dokumentkravEttersendt } from "../dokumentasjon/dokumentasjonskrav.komponenter";
+import { dokumentkravEttersendt } from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import {
   bundleFiler,
   hentOppdaterteDokumentasjonskravSeksjoner,

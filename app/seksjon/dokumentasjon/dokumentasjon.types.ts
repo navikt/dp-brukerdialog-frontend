@@ -4,7 +4,7 @@ import {
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
-} from "./dokumentasjonskrav.komponenter";
+} from "./v1/dokumentasjonskrav.komponenter";
 
 export type Dokumentasjonskrav = {
   id: string;
@@ -18,6 +18,7 @@ export type Dokumentasjonskrav = {
   filer?: DokumentkravFil[] | null;
   bundle?: Bundle | null;
   feil?: DokumentasjonskravFeilType;
+  skjemaSvar?: Record<string, string | string[] | undefined>;
 };
 
 export enum DokumentasjonskravFeilType {
