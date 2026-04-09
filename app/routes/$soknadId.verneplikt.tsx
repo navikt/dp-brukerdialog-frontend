@@ -1,18 +1,16 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { handling, VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
+import { VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import VernepliktViewV1 from "~/seksjon/verneplikt/v1/VernepliktViewV1";
-import { normaliserFormData } from "~/utils/action.utils.server";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import {
+  filtrerSeksjonsData,
+  navigerEtterLagring,
+  normaliserFormData,
+} from "~/utils/action.utils.server";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "verneplikt";
@@ -53,18 +51,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
   const formData = await request.formData();
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) =>
-      value !== undefined &&
-      value !== "undefined" &&
-      key !== "versjon" &&
-      key !== handling &&
-      key !== "pdfGrunnlag"
-  );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const seksjonsData = filtrerSeksjonsData(formData);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
   const dokumentasjonskrav = formData.get("dokumentasjonskrav");
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -84,15 +75,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
-  }
-
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
 }
 
 export default function VernepliktSeksjon() {
