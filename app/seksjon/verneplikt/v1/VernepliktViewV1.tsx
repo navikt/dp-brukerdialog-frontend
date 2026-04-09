@@ -20,8 +20,8 @@ import {
   VernepliktSvar,
 } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {

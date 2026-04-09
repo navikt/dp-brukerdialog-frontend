@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { valider } from "~/utils/validering.utils";
 import {
   avtjentVerneplikt,
@@ -6,7 +7,6 @@ import {
   vernepliktKomponenter,
   VernepliktSvar,
 } from "./verneplikt.komponenter";
-import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const vernepliktSchema = z

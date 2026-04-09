@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { valider } from "~/utils/validering.utils";
 import {
   avsluttetUtdanningSiste6Måneder,
   dokumenterAvsluttetUtdanningSiste6MånederNå,
@@ -12,8 +14,6 @@ import {
   utdanningKomponenter,
   UtdanningSvar,
 } from "./utdanning.komponenter";
-import { valider } from "~/utils/validering.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const utdanningSchema = z
   .object({

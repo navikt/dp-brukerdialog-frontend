@@ -12,10 +12,10 @@ import {
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { Dokumentasjonskrav } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function DokumentasjonViewV1() {
   const seksjonnavn = "Dokumentasjon";
@@ -31,6 +31,8 @@ export function DokumentasjonViewV1() {
   } = useDokumentasjonskravContext();
 
   function lagreSvar() {
+    setValideringsTeller((prev) => prev + 1);
+
     const seksjonsBeskrivelsePdfGrunnlag = lagSeksjonPayload(dokumentasjonKomponenter, {});
     const dokumentasjonskravPdfGrunnlag = dokumentasjonskrav
       .map((krav) => {
@@ -44,7 +46,6 @@ export function DokumentasjonViewV1() {
     };
 
     setPdfGrunnlag(JSON.stringify(pdfGrunnlag));
-    setValideringsTeller((prev) => prev + 1);
   }
 
   function genererPdfGrunnlag(dokumentasjonskrav: Dokumentasjonskrav): KomponentType[] {

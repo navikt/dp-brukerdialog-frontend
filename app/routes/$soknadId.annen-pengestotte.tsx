@@ -1,10 +1,4 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
@@ -13,11 +7,10 @@ import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pen
 import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPengestøtteViewV1";
 import { PengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorge } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
-import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
-import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { normaliserFormData } from "~/utils/action.utils.server";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "annen-pengestotte";
@@ -68,6 +61,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
   const versjon = formData.get("versjon");
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -87,15 +81,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
-  }
-
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
 }
 
 export default function AnnenPengestøtteSeksjon() {

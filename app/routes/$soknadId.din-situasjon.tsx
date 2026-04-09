@@ -11,6 +11,7 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { filtrerSeksjonsvar, normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export type DinSituasjonSeksjon = {
@@ -52,23 +53,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) =>
-      value !== undefined &&
-      value !== "undefined" &&
-      key !== "versjon" &&
-      key !== handling &&
-      key !== "pdfGrunnlag"
-  );
-  const seksjonsvar = Object.fromEntries(filtrertEntries);
+  const seksjonsvar = filtrerSeksjonsvar(formData);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
-      seksjonsvar: seksjonsvar,
+      seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
     dokumentasjonskrav: null,
