@@ -10,16 +10,19 @@ export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: s
   );
 }
 
-export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any): KomponentType[] {
-  return alleSpørsmål
+export function lagSeksjonPayload(
+  seksjonKomponenter: KomponentType[],
+  formData: any
+): KomponentType[] {
+  return seksjonKomponenter
     .map((spørsmål) => {
-      const svar = Object.entries(alleSvar).find(([key]) => {
+      const svar = Object.entries(formData || {}).find(([key]) => {
         return key === spørsmål.id;
       });
 
       if (
         (svar?.[1] !== undefined && svar?.[1] !== "" && !(spørsmål as SpørsmålBase).optional) ||
-        (!!spørsmål.visHvis && spørsmål.visHvis(alleSvar)) ||
+        (!!spørsmål.visHvis && spørsmål.visHvis(formData)) ||
         (svar === undefined && !spørsmål.visHvis)
       ) {
         return {

@@ -21,7 +21,6 @@ import {
   alderFraPdl,
   etternavnFraPdl,
   fornavnFraPdl,
-  handling,
   kontonummerFraKontoregister,
   landFraPdl,
   landkodeFraPdl,
@@ -31,8 +30,8 @@ import {
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
-import { normaliserFormData } from "~/utils/action.utils.server";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { filtrerSeksjonsvar, normaliserFormData } from "~/utils/action.utils.server";
+import { Seksjonshandling, seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "personalia";
@@ -113,20 +112,12 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<P
 
 export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "SøknadId er påkrevd");
+
   const formData = await request.formData();
-
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) =>
-      value !== undefined &&
-      value !== "undefined" &&
-      key !== "versjon" &&
-      key !== handling &&
-      key !== "pdfGrunnlag"
-  );
-
-  const seksjonsvar = Object.fromEntries(filtrertEntries);
+  const seksjonsvar = filtrerSeksjonsvar(formData);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -178,7 +169,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
+  if (handling === Seksjonshandling.fortsettSenere) {
     return null;
   }
 

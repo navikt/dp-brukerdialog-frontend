@@ -1,10 +1,4 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentBarnFraPdl } from "~/models/hent-barn-fra-pdl.server";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
@@ -17,8 +11,8 @@ import {
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { handling } from "~/seksjon/utdanning/v1/utdanning.komponenter";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { navigerEtterLagring } from "~/utils/action.utils.server";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export type SeksjonSvar = BarnetilleggSvar & {
   barnFraPdl?: BarnFraPdl[] | null;
@@ -85,6 +79,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const pdfGrunnlag = formData.get("pdfGrunnlag") as string;
   const dokumentasjonskrav = formData.get("dokumentasjonskrav") as string;
   const versjon = formData.get("versjon") as string;
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -104,15 +99,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
-  }
-
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
 }
 
 export default function BarntilleggSeksjon() {

@@ -11,7 +11,12 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import {
+  filtrerSeksjonsvar,
+  navigerEtterLagring,
+  normaliserFormData,
+} from "~/utils/action.utils.server";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export type DinSituasjonSeksjon = {
   seksjon: {
@@ -52,23 +57,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) =>
-      value !== undefined &&
-      value !== "undefined" &&
-      key !== "versjon" &&
-      key !== handling &&
-      key !== "pdfGrunnlag"
-  );
-  const seksjonsvar = Object.fromEntries(filtrertEntries);
+  const seksjonsvar = filtrerSeksjonsvar(formData);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
-      seksjonsvar: seksjonsvar,
+      seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
     dokumentasjonskrav: null,
@@ -83,15 +80,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
-  }
-
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
 }
 
 export default function DinSituasjonSeksjon() {

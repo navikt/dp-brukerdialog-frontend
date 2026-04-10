@@ -30,8 +30,8 @@ import { GårdsbrukModal } from "~/seksjon/egen-næring/v1/komponenter/Gårdsbru
 import { NæringsvirksomhetDetaljer } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetDetaljer";
 import { NæringsvirksomhetModal } from "~/seksjon/egen-næring/v1/komponenter/NæringsvirksomhetModal";
 import { useSoknad } from "~/seksjon/soknad.context";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function EgenNæringViewV1() {
