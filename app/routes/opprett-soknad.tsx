@@ -4,24 +4,52 @@ import { PortableText } from "@portabletext/react";
 import { useForm } from "@rvf/react-router";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
+import { KomponentType } from "~/components/Komponent.types";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useSanity } from "~/hooks/useSanity";
+import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { SanityReadMore } from "~/sanity/components/SanityReadMore";
+import { portableTextToKomponenter } from "~/utils/sanity.utils";
 import { Route } from "./+types/opprett-soknad";
 
-export async function action({ request }: Route.ActionArgs) {
-  const response = await opprettSoknad(request);
+const SEKSJON_ID = "startside";
+const SEKSJON_NAVN = "Startside";
+const NESTE_SEKSJON_ID = "personalia";
 
-  if (!response.ok) {
+export async function action({ request }: Route.ActionArgs) {
+  const opprettSøknadResponse = await opprettSoknad(request);
+
+  if (!opprettSøknadResponse.ok) {
     return {
       error: "Feil ved opprettelse av søknad",
     };
   }
 
-  const soknadId = await response.text();
+  const soknadId = await opprettSøknadResponse.text();
+  const formData = await request.formData();
+  const pdfGrunnlag = formData.get("pdfGrunnlag");
 
-  return redirect(`/${soknadId}/personalia`);
+  const putSeksjonRequestBody = {
+    seksjon: JSON.stringify({
+      seksjonId: SEKSJON_ID,
+      versjon: 1,
+    }),
+    pdfGrunnlag: pdfGrunnlag,
+  };
+
+  const lagreSeksjonResponse = await lagreSeksjon(
+    request,
+    soknadId,
+    SEKSJON_ID,
+    putSeksjonRequestBody
+  );
+
+  if (!lagreSeksjonResponse.ok) {
+    console.error("Klarte ikke lagre pdfGrunnlag for startside. SøknadId:", soknadId);
+  }
+
+  return redirect(`/${soknadId}/${NESTE_SEKSJON_ID}`);
 }
 
 export default function OpprettSoknadSide() {
@@ -29,18 +57,38 @@ export default function OpprettSoknadSide() {
   const { state } = useNavigation();
   const actionData = useActionData<typeof action>();
 
-  const innhold = hentInfosideTekst("infoside.opprett-søknad");
+  const vilkårTekst = hentInfosideTekst("infoside.opprett-søknad");
+  const bekreftVilkårTekst = "Jeg bekrefter at jeg vil svare så riktig som jeg kan";
+
+  function opprettSøknad() {
+    if (!vilkårTekst?.body) return;
+
+    const bekreftVilkårKomponent: KomponentType = {
+      id: crypto.randomUUID(),
+      type: "forklarendeTekst",
+      label: bekreftVilkårTekst,
+    };
+
+    const pdfGrunnlag = {
+      navn: SEKSJON_NAVN,
+      spørsmål: [...portableTextToKomponenter(vilkårTekst.body), bekreftVilkårKomponent],
+    };
+
+    form.setValue("pdfGrunnlag", JSON.stringify(pdfGrunnlag));
+    form.submit();
+  }
 
   const form = useForm({
     method: "POST",
     submitSource: "state",
     schema: z.object({
-      checkbox: z.boolean().refine((val) => val, {
+      bekreftVilkår: z.boolean().refine((val) => val, {
         message: "Du må godta vilkårene",
       }),
+      pdfGrunnlag: z.string().optional(),
     }),
     defaultValues: {
-      checkbox: false,
+      bekreftVilkår: false,
     },
   });
 
@@ -55,19 +103,22 @@ export default function OpprettSoknadSide() {
       </div>
 
       <div className="innhold">
-        {innhold?.body && (
-          <PortableText value={innhold.body} components={{ types: { readMore: SanityReadMore } }} />
+        {vilkårTekst?.body && (
+          <PortableText
+            value={vilkårTekst.body}
+            components={{ types: { readMore: SanityReadMore } }}
+          />
         )}
 
         <VStack gap="8" className="mt-14">
           <Form {...form.getFormProps()}>
             <Box.New
               padding="4"
-              background={!!form.value("checkbox") ? "success-moderate" : "sunken"}
+              background={!!form.value("bekreftVilkår") ? "success-moderate" : "sunken"}
               borderRadius="medium"
             >
-              <Checkbox name="checkbox" error={!!form.error("checkbox")}>
-                Jeg bekrefter at jeg vil svare så riktig som jeg kan
+              <Checkbox name="bekreftVilkår" error={!!form.error("bekreftVilkår")}>
+                {bekreftVilkårTekst}
               </Checkbox>
             </Box.New>
 
@@ -84,7 +135,7 @@ export default function OpprettSoknadSide() {
               iconPosition="right"
               className="mt-8"
               icon={<ArrowRightIcon aria-hidden />}
-              type="submit"
+              onClick={() => opprettSøknad()}
               loading={state === "submitting" || state === "loading"}
             >
               Start søknad

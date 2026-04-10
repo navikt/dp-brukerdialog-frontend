@@ -127,6 +127,6 @@ export type ForklarendeTekst = KomponentBase & {
 
 export type HeadingTekst = KomponentBase & {
   type: "headingTekst";
-  size: "small" | "medium" | "large";
+  størrelse: "small" | "medium" | "large";
   nivå: "1" | "2" | "3";
 };
