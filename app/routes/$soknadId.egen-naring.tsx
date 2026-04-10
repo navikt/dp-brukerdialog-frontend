@@ -1,10 +1,4 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
@@ -18,9 +12,8 @@ import {
   Næringsvirksomhet,
   næringsvirksomheter,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
-import { normaliserFormData } from "~/utils/action.utils.server";
-import { handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export type SeksjonSvar = EgenNæringSvar & {
   [næringsvirksomheter]?: Næringsvirksomhet[] | null;
@@ -66,6 +59,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const seksjonsvar = formData.get("seksjonsvar");
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
@@ -85,15 +79,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
-  }
-
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
 }
 
 export default function EgenNæringSeksjon() {

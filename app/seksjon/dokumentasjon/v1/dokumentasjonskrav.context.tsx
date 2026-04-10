@@ -14,8 +14,8 @@ import {
   Dokumentasjonskrav,
   DokumentkravFil,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
 const NESTE_STEG = "../oppsummering";

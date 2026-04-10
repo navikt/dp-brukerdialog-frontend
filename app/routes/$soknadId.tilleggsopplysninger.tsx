@@ -1,21 +1,16 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { TilleggsopplysningerViewV1 } from "~/seksjon/tilleggsopplysninger/v1/TilleggsopplysningerViewV1";
 import {
-  handling,
-  TilleggsopplysningerSvar,
-} from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
-import { normaliserFormData } from "~/utils/action.utils.server";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
+  filtrerSeksjonsvar,
+  navigerEtterLagring,
+  normaliserFormData,
+} from "~/utils/action.utils.server";
+import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 const NYESTE_VERSJON = 1;
 const SEKSJON_ID = "tilleggsopplysninger";
@@ -56,22 +51,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const formData = await request.formData();
-  const filtrertEntries = Array.from(formData.entries()).filter(
-    ([key, value]) =>
-      value !== undefined &&
-      value !== "undefined" &&
-      key !== "versjon" &&
-      key !== handling &&
-      key !== "pdfGrunnlag"
-  );
-  const seksjonsData = Object.fromEntries(filtrertEntries);
+  const seksjonsvar = filtrerSeksjonsvar(formData);
   const pdfGrunnlag = formData.get("pdfGrunnlag");
   const versjon = formData.get("versjon");
+  const handling = seksjonshandlingSchema.parse(formData.get("handling"));
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
-      seksjonsvar: normaliserFormData(seksjonsData),
+      seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
     dokumentasjonskrav: null,
@@ -86,15 +74,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  if (formData.get(handling) === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (formData.get(handling) === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${params.soknadId}/${FORRIGE_SEKSJON_ID}`);
-  }
-
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
 }
 
 export default function TilleggsopplysningerSeksjon() {

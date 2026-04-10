@@ -38,8 +38,8 @@ import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold
 import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { useSoknad } from "~/seksjon/soknad.context";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function ArbeidsforholdViewV1() {

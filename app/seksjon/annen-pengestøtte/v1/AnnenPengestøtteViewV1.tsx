@@ -44,7 +44,6 @@ import {
 import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
@@ -52,6 +51,7 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 const seksjonnavn = "Annen pengestøtte";
 const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;

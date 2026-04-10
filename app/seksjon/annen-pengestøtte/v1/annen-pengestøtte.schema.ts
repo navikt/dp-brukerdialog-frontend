@@ -34,13 +34,13 @@ import {
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import {
   hvaFårEllerBeholderDu,
   hvemMottarDuUtbetalingerEllerGoderFra,
   pengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const annenPengestøtteSchema = z
   .object({
@@ -114,10 +114,7 @@ export const pengestøtteFraAndreEøsLandSchema = z
 export const pengestøtteFraNorgeSchema = z
   .object({
     [hvilkenPengestøtteFraAndreEnnNavMottarDu]: z
-      .enum([
-        pensjonFraAndreEnnNav,
-        dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
-      ])
+      .enum([pensjonFraAndreEnnNav, dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere])
       .optional(),
     [hvemUtbetalerPengestøtten]: z.string().optional(),
     [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]: z.string().optional(),

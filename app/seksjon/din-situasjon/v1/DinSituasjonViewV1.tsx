@@ -10,7 +10,6 @@ import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import {
   dinSituasjonKomponenter,
@@ -18,6 +17,7 @@ import {
   handling,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function DinSituasjonViewV1() {
   const seksjonnavn = "Din situasjon";

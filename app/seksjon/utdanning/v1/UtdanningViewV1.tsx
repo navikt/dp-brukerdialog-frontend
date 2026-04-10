@@ -20,8 +20,8 @@ import {
   UtdanningSvar,
 } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function UtdanningViewV1() {
