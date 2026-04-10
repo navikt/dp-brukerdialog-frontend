@@ -1,5 +1,6 @@
 import { toHTML } from "@portabletext/to-html";
 import { TypedObject } from "@portabletext/types";
+import sanitizeHtml from "sanitize-html";
 import { KomponentType } from "~/components/Komponent.types";
 import { IReadMoreProps } from "~/sanity/components/SanityReadMore";
 
@@ -32,7 +33,7 @@ export function portableTextToKomponenter(body: TypedObject | TypedObject[]): Ko
         {
           id,
           type: "headingTekst",
-          label: headingMatch[2].replace(/<[^>]+>/g, ""),
+          label: sanitizeHtml(headingMatch[2], { allowedTags: [], allowedAttributes: {} }),
           size: "medium",
           nivå: headingMatch[1] as "1" | "2" | "3",
         },
