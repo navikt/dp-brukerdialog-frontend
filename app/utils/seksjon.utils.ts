@@ -10,19 +10,20 @@ export function finnOptionLabel(alleSpørsmål: KomponentType[], spørsmålId: s
   );
 }
 
-export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any): KomponentType[] {
-  const svar = alleSvar ?? {};
-
-  return alleSpørsmål
+export function lagSeksjonPayload(
+  seksjonKomponenter: KomponentType[],
+  formData: any
+): KomponentType[] {
+  return seksjonKomponenter
     .map((spørsmål) => {
-      const entry = Object.entries(svar).find(([key]) => {
+      const svar = Object.entries(formData || {}).find(([key]) => {
         return key === spørsmål.id;
       });
 
       if (
-        (entry?.[1] !== undefined && entry?.[1] !== "" && !(spørsmål as SpørsmålBase).optional) ||
-        (!!spørsmål.visHvis && spørsmål.visHvis(alleSvar)) ||
-        (entry === undefined && !spørsmål.visHvis)
+        (svar?.[1] !== undefined && svar?.[1] !== "" && !(spørsmål as SpørsmålBase).optional) ||
+        (!!spørsmål.visHvis && spørsmål.visHvis(formData)) ||
+        (svar === undefined && !spørsmål.visHvis)
       ) {
         return {
           id: spørsmål?.id,
@@ -30,7 +31,7 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
           label: getLabel(spørsmål),
           description: spørsmål?.description,
           options: getOptions(spørsmål),
-          svar: formaterDatoSvar(spørsmål, entry?.[1] as string),
+          svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
         } as KomponentType;
       }
     })
