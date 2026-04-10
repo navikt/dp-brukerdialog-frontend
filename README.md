@@ -4,6 +4,7 @@ Brukerdialog er et frontend-applikasjon for dagpengersøknad.
 
 ## Kom i gang
 
+0. Kjør `npm install -g pnpm@latest-10` for å installere pnpm.
 1. Kjør `nvm install` for å installere riktig node versjon.
 2. Kjør `nvm use` for å bruke node versjon du har installert.
 3. Kjør `pnpm install` for å installere avhengigheter.

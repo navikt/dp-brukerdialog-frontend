@@ -26,3 +26,5 @@ secure.log
 /playwright/.cache/
 
 .react-router/
+
+package-lock.json
