@@ -17,7 +17,7 @@ import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { logger } from "./utils/logger.utils";
 import akselStyles from "@navikt/ds-css/dist/darkside/index.css?url";
-import { useEffect, useState } from "react";
+
 import { Route } from "./+types/root";
 import indexStyles from "./index.css?url";
 import { sanityClient } from "./sanity/sanity.config";
@@ -67,14 +67,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [header, setHeader] = useState<string | null>(null);
   const { decoratorFragments, env, language } = useLoaderData();
   const { DECORATOR_HEAD_ASSETS, DECORATOR_SCRIPTS, DECORATOR_HEADER, DECORATOR_FOOTER } =
     decoratorFragments;
-
-  useEffect(() => {
-    setHeader(DECORATOR_HEADER);
-  }, [DECORATOR_HEADER]);
 
   useInjectDecoratorScript(DECORATOR_SCRIPTS);
 
@@ -93,7 +88,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div dangerouslySetInnerHTML={header ? { __html: header } : undefined} />
+        <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
         {children}
         <ScrollRestoration />
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
