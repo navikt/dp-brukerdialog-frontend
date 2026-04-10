@@ -34,7 +34,7 @@ export function portableTextToKomponenter(body: TypedObject | TypedObject[]): Ko
           id,
           type: "headingTekst",
           label: sanitizeHtml(headingMatch[2], { allowedTags: [], allowedAttributes: {} }),
-          size: "medium",
+          størrelse: "medium",
           nivå: headingMatch[1] as "1" | "2" | "3",
         },
       ];

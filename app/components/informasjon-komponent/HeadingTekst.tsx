@@ -7,7 +7,7 @@ interface IProps {
 
 export function HeadingTekst({ props }: IProps) {
   return (
-    <Heading level={props.nivå} size={props.size} className="mt-4">
+    <Heading level={props.nivå} size={props.størrelse} className="mt-4">
       {props.label}
     </Heading>
   );

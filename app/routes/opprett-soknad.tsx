@@ -7,12 +7,11 @@ import { z } from "zod";
 import { KomponentType } from "~/components/Komponent.types";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useSanity } from "~/hooks/useSanity";
+import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { SanityReadMore } from "~/sanity/components/SanityReadMore";
 import { portableTextToKomponenter } from "~/utils/sanity.utils";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Route } from "./+types/opprett-soknad";
-import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 
 const SEKSJON_ID = "startside";
 const SEKSJON_NAVN = "Startside";
@@ -60,11 +59,11 @@ export default function OpprettSoknadSide() {
   const { state } = useNavigation();
   const actionData = useActionData<typeof action>();
 
-  const innhold = hentInfosideTekst("infoside.opprett-søknad");
+  const vilkårTekst = hentInfosideTekst("infoside.opprett-søknad");
   const bekreftVilkårTekst = "Jeg bekrefter at jeg vil svare så riktig som jeg kan";
 
   function opprettSøknad() {
-    if (!innhold?.body) return;
+    if (!vilkårTekst?.body) return;
 
     const bekreftVilkårKomponent: KomponentType = {
       id: crypto.randomUUID(),
@@ -74,10 +73,7 @@ export default function OpprettSoknadSide() {
 
     const pdfGrunnlag = {
       navn: SEKSJON_NAVN,
-      spørsmål: [
-        ...lagSeksjonPayload(portableTextToKomponenter(innhold.body), {}),
-        ...lagSeksjonPayload([bekreftVilkårKomponent], {}),
-      ],
+      spørsmål: [...portableTextToKomponenter(vilkårTekst.body), bekreftVilkårKomponent],
     };
 
     form.setValue("pdfGrunnlag", JSON.stringify(pdfGrunnlag));
@@ -109,8 +105,11 @@ export default function OpprettSoknadSide() {
       </div>
 
       <div className="innhold">
-        {innhold?.body && (
-          <PortableText value={innhold.body} components={{ types: { readMore: SanityReadMore } }} />
+        {vilkårTekst?.body && (
+          <PortableText
+            value={vilkårTekst.body}
+            components={{ types: { readMore: SanityReadMore } }}
+          />
         )}
 
         <VStack gap="8" className="mt-14">

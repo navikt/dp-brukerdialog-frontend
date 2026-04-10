@@ -53,7 +53,7 @@ export const dokumentasjonKomponenter: KomponentType[] = [
     id: "dokumentasjonDokumenterDuSkalSendeInnForklarendeTekst",
     type: "headingTekst",
     nivå: "3",
-    size: "small",
+    størrelse: "small",
     label: "Dokumenter du skal sende inn",
   },
 ];

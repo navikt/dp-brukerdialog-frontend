@@ -1,4 +1,9 @@
-import { FlervalgSpørsmål, KomponentType, SpørsmålBase } from "~/components/Komponent.types";
+import {
+  FlervalgSpørsmål,
+  HeadingTekst,
+  KomponentType,
+  SpørsmålBase,
+} from "~/components/Komponent.types";
 import { formaterDatoSvar } from "./formatering.utils";
 import { EØS_LAND, FLERE_LAND, OFTE_VALGTE_LAND } from "./land.utils";
 
@@ -29,6 +34,8 @@ export function lagSeksjonPayload(alleSpørsmål: KomponentType[], alleSvar: any
           description: spørsmål?.description,
           options: getOptions(spørsmål),
           svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
+          nivå: (spørsmål as HeadingTekst)?.nivå,
+          størrelse: (spørsmål as HeadingTekst)?.størrelse,
         } as KomponentType;
       }
     })

@@ -52,7 +52,7 @@ export function DokumentasjonViewV1() {
       id: "tittel",
       type: "headingTekst",
       nivå: "3",
-      size: "small",
+      størrelse: "small",
       label: dokumentasjonskrav.tittel,
     };
 
