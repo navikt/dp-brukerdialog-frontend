@@ -46,9 +46,7 @@ export async function action({ request }: Route.ActionArgs) {
   );
 
   if (!lagreSeksjonResponse.ok) {
-    return {
-      error: "Feil ved lagring av pdfGrunnlag for startsiden",
-    };
+    console.error("Klarte ikke lagre pdfGrunnlag for startside. SøknadId:", soknadId);
   }
 
   return redirect(`/${soknadId}/${NESTE_SEKSJON_ID}`);
