@@ -1,33 +1,3 @@
-import { redirect } from "react-router";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
-
-export function navigerEtterLagring(
-  soknadId: string,
-  handling: Seksjonshandling,
-  nesteSeksjon: string,
-  forrigeSeksjon: string
-) {
-  if (handling === Seksjonshandling.fortsettSenere) {
-    return null;
-  }
-
-  if (handling === Seksjonshandling.tilbakenavigering) {
-    return redirect(`/${soknadId}/${forrigeSeksjon}`);
-  }
-
-  return redirect(`/${soknadId}/${nesteSeksjon}`);
-}
-
-export function filtrerSeksjonsData(formData: FormData): Record<string, FormDataEntryValue> {
-  const IKKE_SEKSJONSSVAR = ["versjon", "pdfGrunnlag", "handling"];
-  const entries = Array.from(formData.entries());
-  const filtrert = entries.filter(
-    ([key, value]) => value !== "undefined" && !IKKE_SEKSJONSSVAR.includes(key)
-  );
-
-  return Object.fromEntries(filtrert);
-}
-
 // Dette er funksjon som samler opp flervalg-svar fra formdata som kommer inn fra action-funksjoner i react-router
 // F.eks. spørsmål med checkbokser som kan ha flere svar
 // Input: { 'flervalg[0]': 'svar1', 'flervalg[1]': 'svar2', 'annetSpørsmål': 'svar3' }

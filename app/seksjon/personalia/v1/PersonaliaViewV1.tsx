@@ -111,11 +111,6 @@ export function PersonaliaViewV1() {
           ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
         ],
       };
-
-      console.log("hit");
-
-      console.log(pdfPayload);
-
       form.setValue(handling, Seksjonshandling.neste);
       form.setValue(pdfGrunnlag, JSON.stringify(pdfPayload));
       form.submit();
