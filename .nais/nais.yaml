@@ -26,8 +26,8 @@ spec:
     path: "{{ base_path }}/api/internal/isready"
     enabled: true
   replicas:
-    min: {{replicas.min}}
-    max: {{replicas.max}}
+    min: {{ replicas.min  }}
+    max: {{ replicas.max  }}
     cpuThresholdPercentage: 75
   resources:
     limits:
@@ -41,7 +41,7 @@ spec:
     - name: BASE_PATH
       value: "{{ base_path }}"
     - name: DEKORATOR_URL
-      value: "{{dekorator.url}}"
+      value: "{{ dekorator.url }}"
     - name: DEKORATOR_ENV
       value: "{{ dekorator.env }}"
     - name: APP_ENV
@@ -57,7 +57,7 @@ spec:
     - name: DP_MELLOMLAGRING_URL
       value: "{{ dp_mellomlagring_url }}"
     - name: ARBEIDSSOKERREGISTERET_URL
-      value: "{{arbeidssokerregisteret_url}}"
+      value: "{{ arbeidssokerregisteret_url }}"
     - name: DP_MINE_DAGPENGER_URL
       value: "{{ dp_mine_dagpenger_url }}"
     - name: GENERELL_INNSENDING_URL

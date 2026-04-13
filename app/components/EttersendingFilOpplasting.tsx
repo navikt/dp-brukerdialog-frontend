@@ -17,6 +17,7 @@ import {
   MAX_FIL_STØRRELSE,
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
+import { getEnv } from "~/utils/env.utils";
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/v1/DokumentasjonskravInnhold";
 
 interface IProps {
@@ -84,7 +85,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
           const formData = new FormData();
           formData.append("fil", fil.file);
 
-          const url = `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/last-opp-fil`;
+          const url = `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/last-opp-fil`;
           const respons = await fetch(url, { method: "POST", body: formData });
 
           if (!respons.ok) {
@@ -140,7 +141,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
       formData.append("filsti", fil.filsti);
 
       const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
+        `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
         {
           method: "POST",
           body: formData,

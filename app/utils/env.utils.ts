@@ -6,6 +6,7 @@ declare global {
 
 export type IEnv = {
   USE_MSW: string;
+  BASE_PATH: string;
   APP_ENV: string;
   NAIS_CLUSTER_NAME: string;
   IS_LOCALHOST: string;

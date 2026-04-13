@@ -1,3 +1,4 @@
+import { getEnv } from "~/utils/env.utils";
 import { Bundle, Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 
 export function harMinstEnFilOgIngenFeil(ettersendingene: Dokumentasjonskrav[]): boolean {
@@ -73,7 +74,7 @@ export async function bundleFiler(
     formData.append("filer", JSON.stringify(dokumentasjonskrav.filer));
 
     const response = await fetch(
-      `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
+      `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskrav.id}/bundle-filer`,
       {
         method: "POST",
         body: formData,
@@ -103,10 +104,13 @@ export async function lagreEttersending(
     const formData = new FormData();
     formData.append("ettersendinger", JSON.stringify(ettersendinger));
 
-    const response = await fetch(`/api/dokumentasjonskrav/${søknadId}/${seksjonId}/ettersending`, {
-      method: "PUT",
-      body: formData,
-    });
+    const response = await fetch(
+      `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${søknadId}/${seksjonId}/ettersending`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
       console.error("Feil ved lagring av dokumentasjonskrav:", seksjonId);

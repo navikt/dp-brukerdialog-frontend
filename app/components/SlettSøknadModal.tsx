@@ -15,7 +15,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
 
   async function slettSøknad() {
     try {
-      const response = await fetch(`/api/slett/${søknadId}`, {
+      const response = await fetch(`${getEnv("BASE_PATH")}/api/slett/${søknadId}`, {
         method: "DELETE",
       });
       if (!response.ok) {

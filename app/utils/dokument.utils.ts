@@ -1,4 +1,5 @@
 import { FilOpplastingFeilType } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { getEnv } from "./env.utils";
 
 export const TILLATTE_FILFORMAT = [".pdf", ".jpg", ".jpeg", ".png"];
 export const MAX_ANTALL_FILER = 5;
@@ -32,7 +33,7 @@ export async function lastnedDokument(filsti?: string, tittel?: string) {
     return;
   }
 
-  const url = "/api/dokumentasjonskrav/lastned";
+  const url = `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/lastned`;
   const response = await fetch(url, {
     method: "POST",
     headers: {

@@ -14,8 +14,9 @@ import {
   Dokumentasjonskrav,
   DokumentkravFil,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { getEnv } from "~/utils/env.utils";
+import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
 const NESTE_STEG = "../oppsummering";
@@ -202,7 +203,7 @@ function DokumentasjonskravProvider({
       formData.append("filer", JSON.stringify(dokumentasjonskravFiler));
 
       const response = await fetch(
-        `/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskravId}/bundle-filer`,
+        `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${dokumentasjonskravId}/bundle-filer`,
         {
           method: "POST",
           body: formData,
@@ -233,10 +234,13 @@ function DokumentasjonskravProvider({
       const formData = new FormData();
       formData.append("dokumentasjonskrav", JSON.stringify(dokumentasjonskrav));
 
-      const response = await fetch(`/api/dokumentasjonskrav/${soknadId}/${seksjonId}`, {
-        method: "PUT",
-        body: formData,
-      });
+      const response = await fetch(
+        `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${seksjonId}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         console.error("Feil ved lagring av dokumentasjonskrav:", seksjonId);
@@ -257,10 +261,13 @@ function DokumentasjonskravProvider({
       const formData = new FormData();
       formData.append("pdfGrunnlag", pdfGrunnlag);
 
-      const response = await fetch(`/api/${soknadId}/${SEKSJON_ID}/${NYESTE_VERSJON}`, {
-        method: "PUT",
-        body: formData,
-      });
+      const response = await fetch(
+        `${getEnv("BASE_PATH")}/api/${soknadId}/${SEKSJON_ID}/${NYESTE_VERSJON}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         console.error(`Feil ved lagring av seksjon ${SEKSJON_ID} for søknadId: ${soknadId}`);
