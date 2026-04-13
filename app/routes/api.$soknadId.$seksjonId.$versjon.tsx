@@ -9,7 +9,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   invariant(params.seksjonId, "Seksjon ID er påkrevd");
   invariant(params.versjon, "Versjon er påkrevd");
 
-  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${params.soknadId}/${params.seksjonId},${params.versjon}`;
+  const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/seksjon/${params.soknadId}/${params.seksjonId}`;
   const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
   const formData = await parseFormData(request);
   const pdfGrunnlag = formData.get("pdfGrunnlag") as string;
