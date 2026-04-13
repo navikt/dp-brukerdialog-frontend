@@ -6,9 +6,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   base:
-      process.env.NODE_ENV === "production"
-          ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
-          : "/",
+    process.env.NODE_ENV === "production"
+      ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
+      : "/dagpenger/ny-dialog/",
   plugins: [reactRouter(), tsconfigPaths(), devtoolsJson()],
   build: {
     manifest: true,
