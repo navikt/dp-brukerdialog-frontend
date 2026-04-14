@@ -8,7 +8,7 @@ export default defineConfig({
   base:
     process.env.NODE_ENV === "production"
       ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
-      : "/dagpenger-v1/dialog",
+      : "/ny-dagpenger/dialog",
   plugins: [reactRouter(), tsconfigPaths(), devtoolsJson()],
   build: {
     manifest: true,
