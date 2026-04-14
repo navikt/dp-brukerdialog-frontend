@@ -10,6 +10,8 @@ node_modules
 
 /coverage
 
+.claude
+
 #intellij
 *.iml
 /.idea
