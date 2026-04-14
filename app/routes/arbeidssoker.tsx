@@ -1,5 +1,5 @@
-import { ArrowRightIcon, ExternalLinkIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, Button, Heading, VStack } from "@navikt/ds-react";
+import { ExternalLinkIcon } from "@navikt/aksel-icons";
+import { Alert, BodyLong, Button, Heading, HStack, Link, VStack } from "@navikt/ds-react";
 import { redirect, useLoaderData } from "react-router";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { hentArbeidssøkerperioder } from "~/models/hent-arbeidssøkerperioder.server";
@@ -64,7 +64,7 @@ export default function ArbeidssokerSide() {
             Du kan tidligst få dagpenger fra datoen du både har registrert deg som arbeidssøker og
             sendt søknad om dagpenger
           </BodyLong>
-          <div>
+          <HStack gap="4" align="center">
             <Button
               as="a"
               href={registreringUrl}
@@ -75,19 +75,18 @@ export default function ArbeidssokerSide() {
             >
               Registrer deg som arbeidssøker
             </Button>
-          </div>
 
-          <div>
-            <Button
-              as="a"
-              href={`${getEnv("BASE_PATH")}/opprett-soknad`}
-              variant="tertiary"
-              icon={<ArrowRightIcon aria-hidden />}
-              iconPosition="right"
-            >
-              Søk om dagpenger likevel
+            <Button as="a" href="https://www.nav.no/minside" variant="secondary">
+              Avbryt
             </Button>
-          </div>
+          </HStack>
+
+          <BodyLong>
+            <Link href={`${getEnv("BASE_PATH")}/opprett-soknad`}>
+              Jeg vil søke om dagpenger likevel
+            </Link>
+            , og er klar over at jeg mest sannsynlig vil få avslag på søknaden
+          </BodyLong>
         </VStack>
       </div>
     </main>
