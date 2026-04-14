@@ -45,7 +45,7 @@ export default function KvitteringView() {
 
   useEffect(() => {
     if (searchParams.get("reload") === "true") {
-      window.location.replace(`${getEnv("BASE_PATH")}/${soknadId}/kvittering`);
+      window.location.href = `${getEnv("BASE_PATH")}/${soknadId}/kvittering`;
     }
   }, [searchParams, soknadId]);
 
