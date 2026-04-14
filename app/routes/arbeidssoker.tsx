@@ -23,7 +23,7 @@ export async function loader({
     );
 
     if (erRegistrert) {
-      throw redirect("/opprett-soknad");
+      throw redirect(`${getEnv("BASE_PATH")}/opprett-soknad`);
     }
 
     return { status: "UNREGISTERED", registreringUrl };
@@ -80,7 +80,7 @@ export default function ArbeidssokerSide() {
           <div>
             <Button
               as="a"
-              href="/opprett-soknad"
+              href={`${getEnv("BASE_PATH")}/opprett-soknad`}
               variant="tertiary"
               icon={<ArrowRightIcon aria-hidden />}
               iconPosition="right"
