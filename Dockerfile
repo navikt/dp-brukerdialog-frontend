@@ -13,7 +13,6 @@ COPY ./vite.config.ts ./
 COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
 COPY ./react-router.config.ts ./
-ENV BASE_PATH=/ny-dagpenger/dialog
 
 
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
