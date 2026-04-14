@@ -2,5 +2,5 @@ import type { Config } from "@react-router/dev/config";
 
 export default {
   ssr: true,
-  basename: "/ny-dagpenger/dialog",
+  basename: process.env.BASE_PATH || "/",
 } satisfies Config;
