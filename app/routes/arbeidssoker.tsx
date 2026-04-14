@@ -23,7 +23,7 @@ export async function loader({
     );
 
     if (erRegistrert) {
-      throw redirect(`${getEnv("BASE_PATH")}/opprett-soknad`);
+      throw redirect("/opprett-soknad");
     }
 
     return { status: "UNREGISTERED", registreringUrl };
