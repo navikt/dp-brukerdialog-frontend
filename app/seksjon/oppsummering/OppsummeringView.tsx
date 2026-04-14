@@ -88,7 +88,9 @@ export function OppsummeringView() {
             );
           })}
 
-          <DokumentasjonOppsummering dokumentasjonskrav={loaderData.dokumentasjonskrav} />
+          {loaderData.dokumentasjonskrav && loaderData.dokumentasjonskrav.length > 0 && (
+            <DokumentasjonOppsummering dokumentasjonskrav={loaderData.dokumentasjonskrav} />
+          )}
 
           {actionData?.error && (
             <ErrorMessage showIcon aria-live="polite">
@@ -99,14 +101,14 @@ export function OppsummeringView() {
           <Form {...form.getFormProps()}>
             <HStack gap="4" className="mt-8">
               <Button
-                loading={state === "submitting" || state === "loading"}
+                disabled={state === "submitting" || state === "loading"}
                 variant="secondary"
                 icon={<ArrowLeftIcon aria-hidden />}
                 onClick={() => navigate(-1)}
               >
                 Forrige steg
               </Button>
-              <Button loading={state === "submitting" || state === "loading"}>Send søknad</Button>
+              <Button disabled={state === "submitting" || state === "loading"}>Send søknad</Button>
             </HStack>
           </Form>
         </VStack>

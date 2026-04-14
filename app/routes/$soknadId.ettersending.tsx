@@ -29,10 +29,6 @@ export async function loader({ request, params }: LoaderFunctionArgs<Ettersendin
     (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSenderSenere
   );
 
-  if (ettersendingene.length === 0) {
-    return redirect(`/soknad/${params.soknadId}/kvittering`);
-  }
-
   return {
     søknadId: params.soknadId,
     dokumentasjonskravene: dokumentasjonskravene || [],
