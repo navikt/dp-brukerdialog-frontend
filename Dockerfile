@@ -12,6 +12,8 @@ COPY ./public ./public/
 COPY ./vite.config.ts ./
 COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
+COPY ./react-router.config.ts ./
+
 
 RUN --mount=type=secret,id=NODE_AUTH_TOKEN \
     pnpm config set //npm.pkg.github.com/:_authToken=$(cat /run/secrets/NODE_AUTH_TOKEN) && \

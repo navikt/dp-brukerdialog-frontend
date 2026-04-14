@@ -56,6 +56,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     env: {
       IS_LOCALHOST: getEnv("IS_LOCALHOST"),
       APP_ENV: getEnv("APP_ENV"),
+      BASE_PATH: getEnv("BASE_PATH"),
       SANITY_DATASET: getEnv("SANITY_DATASET"),
       DP_SOKNAD_ORKESTRATOR_URL: getEnv("DP_SOKNAD_ORKESTRATOR_URL"),
       DP_MINE_DAGPENGER_URL: getEnv("DP_MINE_DAGPENGER_URL"),

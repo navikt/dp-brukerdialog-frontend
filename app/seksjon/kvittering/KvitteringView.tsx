@@ -38,10 +38,14 @@ export default function KvitteringView() {
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
+  const seksjoner =
+    loaderData?.seksjoner.filter(
+      (s: any) => s.seksjonId !== "dokumentasjon" && s.seksjonId !== "startside"
+    ) || [];
 
   useEffect(() => {
     if (searchParams.get("reload") === "true") {
-      window.location.replace(`/${soknadId}/kvittering`);
+      window.location.href = `${getEnv("BASE_PATH")}/${soknadId}/kvittering`;
     }
   }, [searchParams, soknadId]);
 
@@ -228,9 +232,7 @@ export default function KvitteringView() {
               <ExpansionCard.Content>
                 <VStack gap="6">
                   {stegISøknaden.map((seksjon) => {
-                    const seksjonsData = loaderData?.seksjoner?.find(
-                      (s: any) => s.seksjonId === seksjon.path
-                    );
+                    const seksjonsData = seksjoner?.find((s: any) => s.seksjonId === seksjon.path);
                     if (!seksjonsData) return null;
                     return (
                       <Oppsummering

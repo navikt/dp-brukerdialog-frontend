@@ -1,8 +1,13 @@
 ingresses:
-  - https://brukerdialog-dagpenger.ansatt.dev.nav.no
+  - https://arbeid.intern.dev.nav.no/ny-dagpenger/dialog
+  - https://arbeid.ansatt.dev.nav.no/ny-dagpenger/dialog
+base_path: /ny-dagpenger/dialog
 dekorator:
   url: https://dekoratoren.dev.nav.no/
   env: dev
+replicas:
+  min: 1
+  max: 2
 loginservice:
   url: https://loginservice.dev.nav.no/login
 app_env: dev
