@@ -1,5 +1,4 @@
 ingresses:
-  - https://brukerdialog-dagpenger.nav.no
   - https://www.nav.no/ny-dagpenger/dialog
 base_path: "/ny-dagpenger/dialog"
 dekorator:
