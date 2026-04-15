@@ -8,6 +8,7 @@ import {
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
+import { getEnv } from "~/utils/env.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 
 interface IProps {
@@ -62,7 +63,7 @@ export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
         })}
       </FormSummary.Answers>
       <FormSummaryFooter
-        seksjonsUrl={`/${søknadId}/dokumentasjon`}
+        seksjonsUrl={`${getEnv("BASE_PATH")}/${søknadId}/dokumentasjon`}
         redigerbar={true}
         seksjonnavn="Dokumentasjon"
       />
