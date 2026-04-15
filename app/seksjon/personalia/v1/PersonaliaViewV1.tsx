@@ -7,7 +7,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.personalia";
+import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.personalia";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,
@@ -35,22 +35,19 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function PersonaliaViewV1() {
-  const seksjonnavn = "Personalia";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
 
   if (!personalia) {
     return (
       <div className="innhold">
-        <title>{seksjonHeadTitle}</title>
+        <title>{SEKSJON_TITTEL}</title>
         <VStack gap="6">
           <Heading size="medium" level="2">
-            {seksjonnavn}
+            {SEKSJON_NAVN}
           </Heading>
           <LocalAlert status="error">
             <LocalAlert.Header>
@@ -104,7 +101,7 @@ export function PersonaliaViewV1() {
 
     if (klarTilLagring) {
       const pdfPayload = {
-        navn: seksjonnavn,
+        navn: SEKSJON_NAVN,
         spørsmål: [
           ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
           ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
@@ -118,7 +115,7 @@ export function PersonaliaViewV1() {
 
   function mellomlagreSvar() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [
         ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
         ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
@@ -132,10 +129,10 @@ export function PersonaliaViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Heading size="medium" level="2">
-          {seksjonnavn}
+          {SEKSJON_NAVN}
         </Heading>
         <BodyLong>
           Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.

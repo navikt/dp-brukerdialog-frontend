@@ -6,7 +6,12 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
+import {
+  action,
+  loader,
+  SEKSJON_NAVN,
+  SEKSJON_TITTEL,
+} from "~/routes/$soknadId.tilleggsopplysninger";
 import { useSoknad } from "~/seksjon/soknad.context";
 import {
   handling,
@@ -20,8 +25,6 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function TilleggsopplysningerViewV1() {
-  const seksjonnavn = "Tilleggsopplysninger";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
@@ -38,7 +41,7 @@ export function TilleggsopplysningerViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
     };
 
@@ -63,10 +66,10 @@ export function TilleggsopplysningerViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Heading size="medium" level="2">
-          {seksjonnavn}
+          {SEKSJON_NAVN}
         </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />

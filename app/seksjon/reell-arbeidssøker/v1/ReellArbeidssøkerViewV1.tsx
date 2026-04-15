@@ -6,7 +6,13 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
+import {
+  action,
+  loader,
+  SEKSJON_ID,
+  SEKSJON_NAVN,
+  SEKSJON_TITTEL,
+} from "~/routes/$soknadId.reell-arbeidssoker";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -34,8 +40,6 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function ReellArbeidssøkerViewV1() {
-  const seksjonnavn = "Reell arbeidssøker";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
@@ -123,7 +127,7 @@ export function ReellArbeidssøkerViewV1() {
     if (dokumentasjonskravTrigges) {
       const dokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
-        seksjonId: "reell-arbeidssoker",
+        seksjonId: SEKSJON_ID,
         spørsmålId: kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
         skjemakode: "T9",
         tittel: "Bekreftelse fra relevant fagpersonell fordi du bare kan jobbe deltid",
@@ -154,7 +158,7 @@ export function ReellArbeidssøkerViewV1() {
     if (dokumentasjonskravTrigges) {
       const dokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
-        seksjonId: "reell-arbeidssoker",
+        seksjonId: SEKSJON_ID,
         spørsmålId: kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
         skjemakode: "T9",
         tittel: "Bekreftelse fra relevant fagpersonell fordi du ikke kan jobbe i hele Norge",
@@ -169,7 +173,7 @@ export function ReellArbeidssøkerViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [...lagSeksjonPayload(reellArbeidssøkerKomponenter, form.transient.value())],
     };
 
@@ -178,9 +182,9 @@ export function ReellArbeidssøkerViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <Heading size="medium" level="2">
-        {seksjonnavn}
+        {SEKSJON_NAVN}
       </Heading>
       <Form {...form.getFormProps()}>
         <VStack gap="6">

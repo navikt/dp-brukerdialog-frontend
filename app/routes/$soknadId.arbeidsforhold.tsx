@@ -25,10 +25,12 @@ export type ArbeidsforholdSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "arbeidsforhold";
-const NESTE_SEKSJON_ID = "annen-pengestotte";
-const FORRIGE_SEKSJON_ID = "din-situasjon";
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "arbeidsforhold";
+export const SEKSJON_NAVN = "Arbeidsforhold";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Arbeidsforhold";
+export const NESTE_SEKSJON_ID = "annen-pengestotte";
+export const FORRIGE_SEKSJON_ID = "din-situasjon";
 
 export async function loader({
   request,

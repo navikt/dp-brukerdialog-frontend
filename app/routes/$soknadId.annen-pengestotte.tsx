@@ -12,10 +12,12 @@ import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types"
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "annen-pengestotte";
-const NESTE_SEKSJON_ID = "egen-naring";
-const FORRIGE_SEKSJON_ID = "arbeidsforhold";
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "annen-pengestotte";
+export const SEKSJON_NAVN = "Annen pengestøtte";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Annen pengestøtte";
+export const NESTE_SEKSJON_ID = "egen-naring";
+export const FORRIGE_SEKSJON_ID = "arbeidsforhold";
 
 export type SeksjonSvar = AnnenPengestøtteSvar & {
   pengestøtteFraTidligereArbeidsgiver?: PengestøtteFraTidligereArbeidsgiver[];

@@ -28,10 +28,12 @@ export type BarnetilleggSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "barnetillegg";
-const NESTE_SEKSJON_ID = "reell-arbeidssoker";
-const FORRIGE_SEKSJON_ID = "utdanning";
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "barnetillegg";
+export const SEKSJON_NAVN = "Barnetillegg";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Barnetillegg";
+export const NESTE_SEKSJON_ID = "reell-arbeidssoker";
+export const FORRIGE_SEKSJON_ID = "utdanning";
 
 export async function loader({
   request,

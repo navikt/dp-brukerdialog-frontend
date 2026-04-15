@@ -9,7 +9,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
+import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.annen-pengestotte";
 import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
@@ -44,6 +44,7 @@ import {
 import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
@@ -51,10 +52,6 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
-
-const seksjonnavn = "Annen pengestøtte";
-const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
 
 export function AnnenPengestøtteViewV1() {
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);
@@ -175,7 +172,7 @@ export function AnnenPengestøtteViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [
         ...lagSeksjonPayload(
           mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
@@ -307,13 +304,13 @@ export function AnnenPengestøtteViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="6">
             <Heading size="medium" level="2">
-              {seksjonnavn}
+              {SEKSJON_NAVN}
             </Heading>
             {mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter.map(
               (komponent) => render(komponent)

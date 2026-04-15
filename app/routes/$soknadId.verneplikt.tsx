@@ -12,10 +12,12 @@ import {
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "verneplikt";
-const NESTE_SEKSJON_ID = "utdanning";
-const FORRIGE_SEKSJON_ID = "egen-naring";
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "verneplikt";
+export const SEKSJON_NAVN = "Verneplikt";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Verneplikt";
+export const NESTE_SEKSJON_ID = "utdanning";
+export const FORRIGE_SEKSJON_ID = "egen-naring";
 
 export type VernepliktSeksjon = {
   seksjon: {
