@@ -6,7 +6,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.verneplikt";
+import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -25,8 +25,6 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
-  const seksjonnavn = "Verneplikt";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
@@ -43,7 +41,7 @@ export default function VernepliktViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [...lagSeksjonPayload(vernepliktKomponenter, form.transient.value())],
     };
 
@@ -85,10 +83,10 @@ export default function VernepliktViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Heading size="medium" level="2">
-          {seksjonnavn}
+          {SEKSJON_NAVN}
         </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />

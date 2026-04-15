@@ -16,6 +16,10 @@ export type DokumentasjonskravSeksjon = {
 
 export const NYESTE_VERSJON = 1;
 export const SEKSJON_ID = "dokumentasjon";
+export const SEKSJON_NAVN = "Dokumentasjon";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Dokumentasjon";
+export const NESTE_SEKSJON_ID = "oppsummering";
+export const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
 
 export async function loader({
   request,
@@ -27,14 +31,19 @@ export async function loader({
   const seksjonResponse = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
 
   if (!dokumentasjonskravResponse.ok) {
-    return redirect(`/${params.soknadId}/oppsummering`);
+    const brukerFeilmelding =
+      "Beklager, vi får ikke kontakt med systemene våre. Svarene dine er lagret og du kan prøve igjen om litt.";
+    const systemFelmelding = `Feil ved innlastning av dokumentasjonskrav for søknadId: ${params.soknadId}. Status: ${dokumentasjonskravResponse.status}`;
+
+    console.error(systemFelmelding);
+    throw new Response(brukerFeilmelding, { status: dokumentasjonskravResponse.status });
   }
 
   const dokumentasjonJson = await dokumentasjonskravResponse.json();
   const parsedDokumentasjonskrav = dokumentasjonJson.flatMap((krav: string) => JSON.parse(krav));
 
   if (dokumentasjonJson === null) {
-    return redirect(`/${params.soknadId}/oppsummering`);
+    return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
   }
 
   if (dokumentasjonskravResponse.ok && seksjonResponse.ok) {

@@ -1,14 +1,8 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  redirect,
-  useLoaderData,
-  useParams,
-} from "react-router";
+import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
-import { DinSituasjonSvar, handling } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { DinSituasjonSvar } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
@@ -18,6 +12,13 @@ import {
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "din-situasjon";
+export const SEKSJON_NAVN = "Din situasjon";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Din situasjon";
+export const NESTE_SEKSJON_ID = "arbeidsforhold";
+export const FORRIGE_SEKSJON_ID = "personalia";
+
 export type DinSituasjonSeksjon = {
   seksjon: {
     seksjonId: string;
@@ -26,11 +27,6 @@ export type DinSituasjonSeksjon = {
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
-
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "din-situasjon";
-const NESTE_SEKSJON_ID = "arbeidsforhold";
-const FORRIGE_SEKSJON_ID = "personalia";
 
 export async function loader({
   request,

@@ -33,9 +33,11 @@ import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { filtrerSeksjonsvar, normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling, seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "personalia";
-const NESTE_SEKSJON_ID = "din-situasjon";
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "personalia";
+export const SEKSJON_NAVN = "Personalia";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Personalia";
+export const NESTE_SEKSJON_ID = "din-situasjon";
 
 export type Personalia = {
   person: Person;

@@ -6,10 +6,11 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.din-situasjon";
+import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import {
   dinSituasjonKomponenter,
@@ -17,11 +18,8 @@ import {
   handling,
   pdfGrunnlag,
 } from "./din-situasjon.komponenter";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function DinSituasjonViewV1() {
-  const seksjonnavn = "Din situasjon";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -38,7 +36,7 @@ export function DinSituasjonViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
     };
 
@@ -63,10 +61,10 @@ export function DinSituasjonViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Heading size="medium" level="2">
-          {seksjonnavn}
+          {SEKSJON_NAVN}
         </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />

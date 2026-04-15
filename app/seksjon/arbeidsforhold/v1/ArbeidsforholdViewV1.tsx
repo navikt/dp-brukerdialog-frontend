@@ -8,7 +8,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
+import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.arbeidsforhold";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
@@ -43,8 +43,6 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function ArbeidsforholdViewV1() {
-  const seksjonnavn = "Arbeidsforhold";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const ref = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
@@ -100,7 +98,7 @@ export function ArbeidsforholdViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [
         ...lagSeksjonPayload(arbeidsforholdKomponenter, form.transient.value()),
         ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
@@ -163,12 +161,12 @@ export function ArbeidsforholdViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Form {...form.getFormProps()}>
           <VStack gap="6">
             <Heading size="medium" level="2">
-              {seksjonnavn}
+              {SEKSJON_NAVN}
             </Heading>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {arbeidsforholdKomponenter.map((komponent) => {

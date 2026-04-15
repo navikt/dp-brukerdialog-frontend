@@ -6,21 +6,19 @@ import { Komponent } from "~/components/Komponent";
 import { ForklarendeTekst, HeadingTekst, KomponentType } from "~/components/Komponent.types";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
+import { SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.dokumentasjon";
 import {
   dokumentasjonKomponenter,
   dokumentasjonskravKomponenter,
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { Dokumentasjonskrav } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export function DokumentasjonViewV1() {
-  const seksjonnavn = "Dokumentasjon";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
-
   const {
     dokumentasjonskrav,
     lagrer,
@@ -41,7 +39,7 @@ export function DokumentasjonViewV1() {
       .flat();
 
     const pdfGrunnlag = {
-      navn: seksjonnavn,
+      navn: SEKSJON_NAVN,
       spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag],
     };
 
@@ -84,10 +82,10 @@ export function DokumentasjonViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{SEKSJON_TITTEL}</title>
       <VStack gap="6">
         <Heading size="medium" level="2">
-          {seksjonnavn}
+          {SEKSJON_NAVN}
         </Heading>
         {dokumentasjonKomponenter.map((komponent) => {
           return (

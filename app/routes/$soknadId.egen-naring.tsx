@@ -15,6 +15,13 @@ import {
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
+export const NYESTE_VERSJON = 1;
+export const SEKSJON_ID = "egen-naring";
+export const SEKSJON_NAVN = "Egen næring";
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Egen næring";
+export const NESTE_SEKSJON_ID = "verneplikt";
+export const FORRIGE_SEKSJON_ID = "annen-pengestotte";
+
 export type SeksjonSvar = EgenNæringSvar & {
   [næringsvirksomheter]?: Næringsvirksomhet[] | null;
   [gårdsbruk]?: Gårdsbruk[] | null;
@@ -28,11 +35,6 @@ export type EgenNæringSeksjon = {
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
-
-const NYESTE_VERSJON = 1;
-const SEKSJON_ID = "egen-naring";
-const NESTE_SEKSJON_ID = "verneplikt";
-const FORRIGE_SEKSJON_ID = "annen-pengestotte";
 
 export async function loader({ request, params }: LoaderFunctionArgs): Promise<EgenNæringSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
