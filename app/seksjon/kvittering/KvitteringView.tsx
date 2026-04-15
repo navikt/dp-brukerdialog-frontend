@@ -1,4 +1,8 @@
-import { ExclamationmarkTriangleIcon, InformationSquareIcon } from "@navikt/aksel-icons";
+import {
+  ArrowRightIcon,
+  ExclamationmarkTriangleIcon,
+  InformationSquareIcon,
+} from "@navikt/aksel-icons";
 import {
   BodyLong,
   BodyShort,
@@ -207,13 +211,14 @@ export default function KvitteringView() {
               {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
-              <HStack>
-                <Link to={`/${soknadId}/ettersending`}>
-                  <Button variant="primary">Send inn dokumenter</Button>
-                </Link>
-              </HStack>
             </VStack>
           )}
+
+          <HStack>
+            <Link to={`/${soknadId}/ettersending`}>
+              <Button variant="secondary">Send inn dokumenter</Button>
+            </Link>
+          </HStack>
 
           {dokumentasjonSomIkkeSkalSendes.length > 0 && (
             <VStack gap="4">
@@ -250,6 +255,9 @@ export default function KvitteringView() {
             <HStack>
               <Button
                 variant="primary"
+                className="mt-8"
+                icon={<ArrowRightIcon aria-hidden />}
+                iconPosition="right"
                 onClick={() => {
                   window.location.href = getEnv("DP_MINE_DAGPENGER_URL");
                 }}

@@ -9,12 +9,13 @@ import {
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import {
+  dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
@@ -22,8 +23,10 @@ import {
 import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersending } from "./ettersending.context";
+import { ArrowLeftIcon } from "@navikt/aksel-icons";
 
 export function EttersendingView() {
+  const { soknadId } = useParams();
   const seksjonnavn = "Ettersending";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const navigate = useNavigate();
@@ -37,7 +40,8 @@ export function EttersendingView() {
   } = useEttersending();
 
   const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskravene.filter(
-    (krav: Dokumentasjonskrav) => krav.svar === dokumentkravSvarSendNå
+    (krav: Dokumentasjonskrav) =>
+      krav.svar === dokumentkravSvarSendNå || krav.svar === dokumentkravEttersendt
   );
 
   const dokumentasjonSomIkkeSkalSendes: Dokumentasjonskrav[] = dokumentasjonskravene.filter(
@@ -57,75 +61,80 @@ export function EttersendingView() {
           {seksjonnavn}
         </Heading>
 
-        <VStack gap="4">
-          <BodyShort weight="semibold">
-            Frist for innsendinger er 14 dager etter at du sendte søknaden.
-          </BodyShort>
-          <BodyLong>
-            Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er ansvarlig
-            for at dokumentasjonen sendes til oss. Hvis du ikke sender alle dokumentene innen
-            fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken
-            din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene.
-          </BodyLong>
+        {ettersendingene.length > 0 && (
+          <>
+            <VStack gap="4">
+              <BodyShort weight="semibold">
+                Frist for innsendinger er 14 dager etter at du sendte søknaden.
+              </BodyShort>
+              <BodyLong>
+                Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er
+                ansvarlig for at dokumentasjonen sendes til oss. Hvis du ikke sender alle
+                dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige
+                opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle
+                dokumentene.
+              </BodyLong>
 
-          <ReadMore header="Har du fått brev om manglende opplysninger?">
-            <BodyLong>
-              Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal
-              sendes inn og frist for å sende inn. Brev du har fått ligger i{" "}
-              <EksterneLenke
-                href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
-                tekst="dokumentlisten på Mine dagpenger"
-              />
-              . Når du har dokumentene klare kan du{" "}
-              <EksterneLenke
-                href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
-                tekst="sende dem inn her"
-              />{" "}
-              Dette kan forlenge tiden det tar å behandle søknaden din.
-            </BodyLong>
-          </ReadMore>
+              <ReadMore header="Har du fått brev om manglende opplysninger?">
+                <BodyLong>
+                  Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal
+                  sendes inn og frist for å sende inn. Brev du har fått ligger i{" "}
+                  <EksterneLenke
+                    href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
+                    tekst="dokumentlisten på Mine dagpenger"
+                  />
+                  . Når du har dokumentene klare kan du{" "}
+                  <EksterneLenke
+                    href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
+                    tekst="sende dem inn her"
+                  />{" "}
+                  Dette kan forlenge tiden det tar å behandle søknaden din.
+                </BodyLong>
+              </ReadMore>
 
-          {ettersendingene.map((ettersending: Dokumentasjonskrav) => (
-            <Box.New
-              key={ettersending.id}
-              padding="space-16"
-              background="sunken"
-              borderRadius="large"
-            >
-              <EttersendingFilOpplasting ettersending={ettersending} />
-            </Box.New>
-          ))}
+              {ettersendingene.map((ettersending: Dokumentasjonskrav) => (
+                <Box.New
+                  key={ettersending.id}
+                  padding="space-16"
+                  background="sunken"
+                  borderRadius="large"
+                >
+                  <EttersendingFilOpplasting ettersending={ettersending} />
+                </Box.New>
+              ))}
 
-          {!lagrer && harTekniskFeil && (
-            <ErrorMessage>
-              Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv
-              nytt.
-            </ErrorMessage>
-          )}
+              {!lagrer && harTekniskFeil && (
+                <ErrorMessage>
+                  Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv
+                  nytt.
+                </ErrorMessage>
+              )}
 
-          {valideringStartet && !harLastetOppFil && (
-            <ErrorMessage>
-              Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-            </ErrorMessage>
-          )}
-        </VStack>
+              {valideringStartet && !harLastetOppFil && (
+                <ErrorMessage>
+                  Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
+                </ErrorMessage>
+              )}
+            </VStack>
 
-        <HStack gap="4">
-          <Button type="button" loading={lagrer} onClick={() => validerOgLagre()}>
-            Send inn dokumenter
-          </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            iconPosition="right"
-            disabled={lagrer}
-            onClick={() => {
-              navigate(`../kvittering`);
-            }}
-          >
-            Avbryt
-          </Button>
-        </HStack>
+            <HStack gap="4">
+              <Button type="button" loading={lagrer} onClick={() => validerOgLagre()}>
+                Send inn dokumenter
+              </Button>
+              <Button
+                variant="secondary"
+                type="button"
+                iconPosition="right"
+                disabled={lagrer}
+                onClick={() => {
+                  navigate(`../kvittering`);
+                }}
+              >
+                Avbryt
+              </Button>
+            </HStack>
+          </>
+        )}
 
         <VStack gap="4">
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
@@ -160,6 +169,22 @@ export function EttersendingView() {
             tekst="Jeg vil sende inn andre dokumenter"
           />
         </VStack>
+
+        <HStack className="mt-8" gap="2">
+          <Link to={`/${soknadId}/kvittering`}>
+            <Button variant="secondary" icon={<ArrowLeftIcon aria-hidden />}>
+              Kvittering
+            </Button>
+          </Link>
+
+          <Button
+            onClick={() => {
+              window.location.href = getEnv("DP_MINE_DAGPENGER_URL");
+            }}
+          >
+            Gå til mine dagpenger
+          </Button>
+        </HStack>
       </VStack>
     </div>
   );

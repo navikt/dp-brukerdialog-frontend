@@ -1,6 +1,6 @@
 import { TrashIcon } from "@navikt/aksel-icons";
 import { BodyLong, Box, Button, HStack, Modal, VStack } from "@navikt/ds-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { getEnv } from "~/utils/env.utils";
 
@@ -12,6 +12,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
   const sletteSøknadSpørsmålModal = useRef<HTMLDialogElement>(null);
   const slettetSøknadBekreftelseModal = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
+  const [laster, setLaster] = useState(false);
 
   async function slettSøknad() {
     try {
@@ -70,7 +71,15 @@ export function SlettSøknadModal({ søknadId }: IProps) {
           <VStack gap="6">
             <BodyLong>Søknaden og alle svarene dine er slettet.</BodyLong>
             <HStack gap="8">
-              <Button variant="primary" as="a" href={getEnv("DP_MINE_DAGPENGER_URL")}>
+              <Button
+                variant="primary"
+                as="a"
+                loading={laster}
+                onClick={() => {
+                  setLaster(true);
+                  window.location.href = `${getEnv("DP_MINE_DAGPENGER_URL")}`;
+                }}
+              >
                 Lukk
               </Button>
               <Button
