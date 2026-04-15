@@ -9,20 +9,14 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  useParams,
-} from "react-router";
+import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
 import { z } from "zod";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
 import { DokumentasjonOppsummering } from "~/seksjon/dokumentasjon/v1/DokumentasjonOppsummering";
 import { Oppsummering } from "~/seksjon/oppsummering/Oppsummering";
+import { getEnv } from "~/utils/env.utils";
 
 const schema = z.object({});
 
@@ -77,12 +71,13 @@ export function OppsummeringView() {
           {stegISøknaden.map((seksjon) => {
             const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
             if (!seksjonsData) return null;
+            const seksjonUrl = `${getEnv("BASE_PATH")}/${søknadId}/${seksjon.path}`;
 
             return (
               <Oppsummering
                 key={seksjon.path}
                 seksjonsId={seksjon.path}
-                seksjonsUrl={`/${søknadId}/${seksjon.path}`}
+                seksjonsUrl={seksjonUrl}
                 seksjonsData={seksjonsData.data}
               />
             );

@@ -9,7 +9,7 @@ import {
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
@@ -23,8 +23,10 @@ import {
 import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersending } from "./ettersending.context";
+import { ArrowLeftIcon } from "@navikt/aksel-icons";
 
 export function EttersendingView() {
+  const { soknadId } = useParams();
   const seksjonnavn = "Ettersending";
   const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const navigate = useNavigate();
@@ -167,6 +169,22 @@ export function EttersendingView() {
             tekst="Jeg vil sende inn andre dokumenter"
           />
         </VStack>
+
+        <HStack className="mt-8" gap="2">
+          <Link to={`/${soknadId}/kvittering`}>
+            <Button variant="secondary" icon={<ArrowLeftIcon aria-hidden />}>
+              Kvittering
+            </Button>
+          </Link>
+
+          <Button
+            onClick={() => {
+              window.location.href = getEnv("DP_MINE_DAGPENGER_URL");
+            }}
+          >
+            Gå til mine dagpenger
+          </Button>
+        </HStack>
       </VStack>
     </div>
   );

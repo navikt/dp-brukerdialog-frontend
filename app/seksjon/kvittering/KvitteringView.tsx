@@ -216,7 +216,7 @@ export default function KvitteringView() {
 
           <HStack>
             <Link to={`/${soknadId}/ettersending`}>
-              <Button variant="primary">Send inn dokumenter</Button>
+              <Button variant="secondary">Send inn dokumenter</Button>
             </Link>
           </HStack>
 
@@ -254,7 +254,7 @@ export default function KvitteringView() {
             </ExpansionCard>
             <HStack>
               <Button
-                variant="secondary"
+                variant="primary"
                 className="mt-8"
                 icon={<ArrowRightIcon aria-hidden />}
                 iconPosition="right"

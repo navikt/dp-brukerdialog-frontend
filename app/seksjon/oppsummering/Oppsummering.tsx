@@ -222,7 +222,10 @@ export function Oppsummering({
           );
       }
 
-    // Dokumentasjon
+    case "startside":
+    case "dokumentasjon":
+      return null;
+
     default:
       console.error(`Ukjent seksjon for: ${seksjonsUrl}`);
       return null;
