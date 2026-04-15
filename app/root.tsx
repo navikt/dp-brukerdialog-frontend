@@ -1,8 +1,10 @@
+import akselStyles from "@navikt/ds-css/dist/darkside/index.css?url";
+import { Theme } from "@navikt/ds-react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
+import { useEffect, useState } from "react";
 import {
   data,
-  isRouteErrorResponse,
   Links,
   LinksFunction,
   LoaderFunctionArgs,
@@ -13,18 +15,16 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router";
-import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
-import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
-import { logger } from "./utils/logger.utils";
-import akselStyles from "@navikt/ds-css/dist/darkside/index.css?url";
-import { useEffect, useState } from "react";
 import { Route } from "./+types/root";
+import { ErrorBoundaryKomponent } from "./components/ErrorBoundaryKomponent";
+import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import indexStyles from "./index.css?url";
+import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { sanityClient } from "./sanity/sanity.config";
 import { allTextsQuery } from "./sanity/sanity.query";
 import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
-import { Theme } from "@navikt/ds-react";
+import { logger } from "./utils/logger.utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -118,35 +118,5 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  if (isRouteErrorResponse(error)) {
-    return (
-      <main id="maincontent" tabIndex={-1}>
-        <div className="innhold">
-          <h1>
-            {error.status} {error.statusText}
-          </h1>
-          <p>{error.data}</p>
-        </div>
-      </main>
-    );
-  } else if (error instanceof Error) {
-    return (
-      <main id="maincontent" tabIndex={-1}>
-        <div className="innhold">
-          <h1>Error</h1>
-          <p>{error.message}</p>
-          <p>The stack trace is:</p>
-          <pre>{error.stack}</pre>
-        </div>
-      </main>
-    );
-  } else {
-    return (
-      <main id="maincontent" tabIndex={-1}>
-        <div className="innhold">
-          <h1>Unknown Error</h1>
-        </div>
-      </main>
-    );
-  }
+  return <ErrorBoundaryKomponent error={error} />;
 }
