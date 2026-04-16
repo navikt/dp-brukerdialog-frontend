@@ -3,6 +3,7 @@ import { ActionFunctionArgs } from "react-router";
 import invariant from "tiny-invariant";
 import { v4 as uuidV4 } from "uuid";
 import { hentMellomlagringOboToken } from "~/utils/auth.utils.server";
+import { MAX_FIL_STØRRELSE } from "~/utils/dokument.utils";
 import { getEnv } from "~/utils/env.utils";
 
 export async function action({ params, request }: ActionFunctionArgs) {
@@ -13,7 +14,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const søknadId = params.soknadId as string;
   const dokumentkravId = params.dokumentkravId as string;
 
-  const formData = await parseFormData(request);
+  const formData = await parseFormData(request, { maxFileSize: MAX_FIL_STØRRELSE });
   const fil = formData.get("fil") as File;
 
   try {
