@@ -1,5 +1,5 @@
-import { Alert, BodyLong, Button, Heading, HStack, Link, VStack } from "@navikt/ds-react";
-import { redirect, useLoaderData } from "react-router";
+import { Alert, BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Link, redirect, useLoaderData } from "react-router";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { hentArbeidssøkerperioder } from "~/models/hent-arbeidssøkerperioder.server";
 import { getEnv } from "~/utils/env.utils";
@@ -7,9 +7,12 @@ import { Route } from "./+types/arbeidssoker";
 
 type ArbeidssokerStatus = "UNREGISTERED" | "ERROR";
 
-export async function loader({
-  request,
-}: Route.LoaderArgs): Promise<{ status: ArbeidssokerStatus; registreringUrl: string }> {
+type LoaderData = {
+  status: ArbeidssokerStatus;
+  registreringUrl: string;
+};
+
+export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData | Response> {
   const registreringUrl =
     getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/";
 
@@ -22,7 +25,7 @@ export async function loader({
     );
 
     if (erRegistrert) {
-      throw redirect("/opprett-soknad");
+      return redirect("/opprett-soknad");
     }
 
     return { status: "UNREGISTERED", registreringUrl };
@@ -64,12 +67,7 @@ export default function ArbeidssokerSide() {
             sendt søknad om dagpenger
           </BodyLong>
           <HStack gap="4" align="center">
-            <Button
-              as="a"
-              href={registreringUrl}
-              variant="primary"
-              onClick={handleRegistrerKlikk}
-            >
+            <Button as="a" href={registreringUrl} variant="primary" onClick={handleRegistrerKlikk}>
               Registrer deg som arbeidssøker
             </Button>
 
@@ -79,7 +77,7 @@ export default function ArbeidssokerSide() {
           </HStack>
 
           <BodyLong>
-            <Link href={`${getEnv("BASE_PATH")}/opprett-soknad`}>
+            <Link to="/opprett-soknad" className="navds-link navds-link--inline-text">
               Jeg vil søke om dagpenger likevel
             </Link>
             , og er klar over at jeg mest sannsynlig vil få avslag på søknaden
