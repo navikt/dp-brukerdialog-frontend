@@ -1,4 +1,5 @@
 import { delay, http, HttpResponse } from "msw";
+import { mockArbeidssøkerperioder } from "./mock-data/mock-arbeidssøkerperioder";
 import { mockAnnenPengestøtte } from "~/mocks/mock-data/mock-annen-pengestøtte";
 import { mockArbeidsforhold } from "~/mocks/mock-data/mock-arbeidsforhold";
 import { mockEgenNæring } from "~/mocks/mock-data/mock-egen-næring";
@@ -17,6 +18,9 @@ import { mockReellArbeidssøker } from "./mock-data/mock-reell-arbeidssøker";
 import { mockUtdanning } from "./mock-data/mock-utdanning";
 
 export const handlers = [
+  http.get(`${getEnv("ARBEIDSSOKERREGISTERET_URL")}/api/v1/arbeidssoekerperioder`, () => {
+    return HttpResponse.json(mockArbeidssøkerperioder);
+  }),
   http.post(`${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad`, () => {
     return HttpResponse.text("b1778783-3ec1-4cd1-8eae-b496c10a6122");
   }),
