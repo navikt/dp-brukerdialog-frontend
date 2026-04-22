@@ -25,19 +25,19 @@ export default function FortsettEllerSlettKnapper({
       alert("Noe gikk galt med å slette søknaden! Prøv igjen senere.");
       throw new Error("Feil ved sletting av søknad");
     } else {
-      window.location.href = `${getEnv("BASE_PATH")}/opprett-soknad`;
+      window.location.href = `${getEnv("BASE_PATH")}/arbeidssoker`;
     }
   }
 
   return (
     <div>
-      <VStack gap="4">
+      <VStack gap="space-16">
         <BodyLong>
           Du har en påbegynt søknad, sist endret{" "}
           {formaterNorskDato(new Date(påbegyntSøknad.sistEndretAvBruker!))}. Vil du fortsette på
           denne eller starte en ny?
         </BodyLong>
-        <VStack gap="4">
+        <VStack gap="space-16">
           <Link
             to={
               påbegyntSøknad.erOrkestratorSøknad
@@ -49,7 +49,7 @@ export default function FortsettEllerSlettKnapper({
               Fortsett påbegynt søknad
             </Button>
           </Link>
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Button variant="secondary" as="a" onClick={håndterSlettSøknad}>
               Slett og start ny søknad
             </Button>

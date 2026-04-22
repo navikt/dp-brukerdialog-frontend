@@ -1,6 +1,6 @@
 :root {
   --app-max-width: 787px;
-  --app-min-height: 65vh;
+  --app-min-height: 55vh;
   --innhold-max-width: 576px;
 }
 
@@ -76,12 +76,6 @@
 .mr-2 {
   margin-right: var(--ax-space-8);
 }
-
-/* Overskriver stilene til ExpansionCard-komponenten */
-/* .navds-expansioncard__header,
-.navds-expansioncard__content {
-  border: 0;
-} */
 
 /* Overskriver stilene til Aksel Base Alert-komponenten */
 .aksel-base-alert p {

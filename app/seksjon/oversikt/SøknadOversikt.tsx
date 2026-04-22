@@ -35,8 +35,8 @@ export function SøknadOversikt({ søknader }: SøknadOversiktProps) {
         </Heading>
       </div>
       <div className="innhold">
-        <VStack gap="8">
-          <VStack gap="4">
+        <VStack gap="space-32">
+          <VStack gap="space-16">
             <BodyLong>
               Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad
               eller sende inn en ny?

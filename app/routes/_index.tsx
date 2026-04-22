@@ -57,8 +57,12 @@ export async function loader({
     }
   }
 
-  if (påbegyntSøknad === null) {
-    return redirect("/opprett-soknad");
+  if (
+    påbegyntSøknad === null &&
+    orkestratorSøknader?.length === 0 &&
+    quizSøknader?.innsendte?.length === 0
+  ) {
+    return redirect("/arbeidssoker");
   }
 
   return {
