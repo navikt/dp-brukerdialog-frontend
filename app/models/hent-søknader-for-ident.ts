@@ -3,7 +3,7 @@ import { subDays } from "date-fns";
 export interface PåBegynteSøknader {
   soknadUuid: string;
   opprettet: string;
-  sistEndretAvbruker?: string;
+  sistEndretAvBruker?: string;
 }
 
 export interface InnsendteSøknader {
@@ -25,7 +25,11 @@ export interface OrkestratorSoknad {
 }
 
 export interface KombinertInnsendtSoknad extends InnsendteSøknader {
-  isOrkestratorSoknad: boolean;
+  erOrkestratorSøknad: boolean;
+}
+
+export interface PåbegyntSøknadMedKilde extends PåBegynteSøknader {
+  erOrkestratorSøknad: boolean;
 }
 
 export function mapOrkestratorInnsendteSoknader(
@@ -44,7 +48,7 @@ export function mapOrkestratorInnsendteSoknader(
       .map((soknad) => ({
         soknadUuid: soknad.søknadId,
         forstInnsendt: soknad.innsendtTimestamp!,
-        isOrkestratorSoknad: true,
+        erOrkestratorSøknad: true,
       })) || []
   );
 }
@@ -55,7 +59,7 @@ export function mapQuizInnsendteSoknader(
   return (
     innsendte?.map((soknad) => ({
       ...soknad,
-      isOrkestratorSoknad: false,
+      erOrkestratorSøknad: false,
     })) || []
   );
 }

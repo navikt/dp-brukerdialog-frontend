@@ -20,10 +20,13 @@ const TOKEN_LIST = [
     env: "ARBEIDSSOKERREGISTERET_TOKEN",
     aud: "dev-gcp:paw:paw-arbeidssoekerregisteret-api-oppslag-v2",
   },
+  {
+    env: "DP_SOKNAD_TOKEN",
+    aud: "dev-gcp:teamdagpenger:dp-soknad",
+  },
 ];
 
 const IDENT_LIST = [
-  { name: "Top: 19897299162", value: "19897299162" },
   { name: "Top Sure: 21857998666", value: "21857998666" },
   { name: "Hes Påske: 17477146473", value: "17477146473" },
   { name: "Komplett Sol: 07447534341", value: "07447534341" },
@@ -36,6 +39,7 @@ const IDENT_LIST = [
     name: "Idiotsikker Distingvert Porto (uten folkeregistrert adresse): 30848997419",
     value: "30848997419",
   },
+  { name: "DP Sak-bruker: 19897299162", value: "19897299162" },
 ];
 
 init();

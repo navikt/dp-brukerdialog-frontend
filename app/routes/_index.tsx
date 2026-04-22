@@ -1,20 +1,19 @@
 import { redirect, useLoaderData } from "react-router";
-import { hentOrkestratorSøknader } from "~/models/hent-orkestrator-søknader";
-import { hentQuizSøknader } from "~/models/hent-quiz-soknader";
+import { hentOrkestratorSøknader, hentQuizSøknader } from "~/models/hent-søknader";
 import {
   InnsendteSøknader,
   OrkestratorSoknad,
   QuizSøknader,
+  PåbegyntSøknadMedKilde,
 } from "~/models/hent-søknader-for-ident";
-import { getEnv } from "~/utils/env.utils";
 import { logger } from "~/utils/logger.utils";
 import { Route } from "./+types/_index";
-import SøknadOversikt from "~/seksjon/oversikt/SøknadOversikt";
+import { SøknadOversikt } from "~/seksjon/oversikt/SøknadOversikt";
 
 export type SøknadOversiktType = {
   orkestratorSøknader: OrkestratorSoknad[];
   quizSøknader?: InnsendteSøknader[];
-  aktivSøknadRedirectUrl: string | null;
+  påbegyntSøknad: PåbegyntSøknadMedKilde | null;
 };
 
 export async function loader({
@@ -26,7 +25,7 @@ export async function loader({
   ]);
   let quizSøknader = null;
   let orkestratorSøknader = null;
-  let redirectUrl: string = "";
+  let påbegyntSøknad: PåbegyntSøknadMedKilde | null = null;
 
   if (!quizSøknaderResponse.ok) {
     const errorText = await quizSøknaderResponse.json();
@@ -35,7 +34,10 @@ export async function loader({
     quizSøknader = (await quizSøknaderResponse.json()) as QuizSøknader;
 
     if (quizSøknader.paabegynt != null) {
-      redirectUrl = `${getEnv("DP_SOKNADSDIALOG_URL")}/${quizSøknader.paabegynt.soknadUuid}`;
+      påbegyntSøknad = {
+        ...quizSøknader.paabegynt,
+        erOrkestratorSøknad: false,
+      };
     }
   }
 
@@ -45,25 +47,28 @@ export async function loader({
   } else {
     orkestratorSøknader = (await orkestratorSøknaderResponse.json()) as OrkestratorSoknad[];
     const aktiv = orkestratorSøknader.find((søknad) => søknad.status === "PÅBEGYNT");
-
     if (aktiv) {
-      redirectUrl = `${getEnv("BASE_PATH")}/${aktiv.søknadId}/personalia`;
+      påbegyntSøknad = {
+        soknadUuid: aktiv.søknadId,
+        opprettet: "",
+        sistEndretAvBruker: aktiv.oppdatertTidspunkt,
+        erOrkestratorSøknad: true,
+      };
     }
   }
 
-  if (redirectUrl === "") {
-    return redirect("/arbeidssoker");
+  if (påbegyntSøknad === null) {
+    return redirect("/opprett-soknad");
   }
 
   return {
     orkestratorSøknader: orkestratorSøknader ?? [],
     quizSøknader: quizSøknader?.innsendte ?? [],
-    aktivSøknadRedirectUrl: redirectUrl,
+    påbegyntSøknad: påbegyntSøknad,
   };
 }
 
 export default function BrukerdialogIndex() {
   const loaderData = useLoaderData<typeof loader>();
-
   return <SøknadOversikt søknader={loaderData}></SøknadOversikt>;
 }
