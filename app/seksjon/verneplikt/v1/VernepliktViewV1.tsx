@@ -84,13 +84,13 @@ export default function VernepliktViewV1() {
   return (
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
-      <VStack gap="6">
+      <VStack gap="space-24">
         <Heading size="medium" level="2">
           {SEKSJON_NAVN}
         </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-          <VStack gap="6">
+          <VStack gap="space-24">
             {vernepliktKomponenter.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;

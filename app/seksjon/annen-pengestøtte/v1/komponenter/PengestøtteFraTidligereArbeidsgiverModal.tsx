@@ -172,14 +172,14 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="2">
+            <HStack gap="space-8">
               {modalOperasjon} utbetalinger eller økonomiske goder fra tidligere arbeidsgiver
             </HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="6">
+            <VStack gap="space-24">
               {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -196,7 +196,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>

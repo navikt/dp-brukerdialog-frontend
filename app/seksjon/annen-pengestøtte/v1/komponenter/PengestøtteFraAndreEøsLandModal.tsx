@@ -188,12 +188,12 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="2">{modalOperasjon} pengestøtte fra andre EØS-land</HStack>
+            <HStack gap="space-8">{modalOperasjon} pengestøtte fra andre EØS-land</HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="6">
+            <VStack gap="space-24">
               {pengestøtteFraAndreEøsLandModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -210,7 +210,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>

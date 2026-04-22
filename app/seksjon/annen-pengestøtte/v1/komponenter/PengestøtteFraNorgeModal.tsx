@@ -175,12 +175,12 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="2">{modalOperasjon} pengestøtte fra Norge</HStack>
+            <HStack gap="space-8">{modalOperasjon} pengestøtte fra Norge</HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="6">
+            <VStack gap="space-24">
               {pengestøtteFraNorgeModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -195,7 +195,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>

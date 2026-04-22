@@ -88,12 +88,12 @@ export function GårdsbrukModal({ ref }: IProps) {
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="2">{modalOperasjon} gårdsbruk</HStack>
+            <HStack gap="space-8">{modalOperasjon} gårdsbruk</HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="6">
+            <VStack gap="space-24">
               {leggTilGårdsbrukKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
@@ -108,7 +108,7 @@ export function GårdsbrukModal({ ref }: IProps) {
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>

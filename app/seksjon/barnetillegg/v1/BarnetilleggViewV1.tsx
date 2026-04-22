@@ -147,7 +147,7 @@ export function BarnetilleggViewV1() {
       <Heading size="medium" level="2">
         {seksjonnavn}
       </Heading>
-      <VStack gap="6">
+      <VStack gap="space-24">
         {barnetilleggForklarendeTekst.map((komponent) => {
           if (komponent.visHvis && !komponent.visHvis(form.value())) {
             return null;

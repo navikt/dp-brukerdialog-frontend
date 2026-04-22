@@ -36,7 +36,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <Heading size="small" spacing>
         {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
@@ -50,8 +50,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
           BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
-
-      <HStack gap="4" paddingBlock="space-6">
+      <HStack gap="space-16" paddingBlock="space-6">
         <Button
           variant="secondary"
           size="small"
@@ -71,6 +70,6 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
           Fjern
         </Button>
       </HStack>
-    </Box.New>
+    </Box>
   );
 }

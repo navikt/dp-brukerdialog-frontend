@@ -51,7 +51,7 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
   }, [form.formState]);
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <Heading size="small" spacing>
         {barnProps[fornavnOgMellomnavn]} {barnProps[etternavn]}
       </Heading>
@@ -65,7 +65,6 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
           BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
-
       <Form {...form.getFormProps()}>
         {barnFraPdlSpørsmål.map((spørsmål) => {
           if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
@@ -81,6 +80,6 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
           );
         })}
       </Form>
-    </Box.New>
+    </Box>
   );
 }

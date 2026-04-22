@@ -25,7 +25,7 @@ export function Envalg({ props, formScope, horisontal, ref }: IProps) {
       error={field.error()}
     >
       {horisontal && (
-        <HStack gap="6">
+        <HStack gap="space-24">
           {props.options?.map((opt) => (
             <Radio key={opt.value} value={opt.value}>
               {opt.label}

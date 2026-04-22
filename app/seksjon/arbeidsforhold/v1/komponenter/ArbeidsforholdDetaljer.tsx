@@ -66,7 +66,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <h3 style={{ marginTop: "0" }}>{arbeidsforhold[navnetPåBedriften]}</h3>
       <BodyShort spacing>
         <>
@@ -170,7 +170,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
               )}
         </>
       </BodyShort>
-      <HStack gap="4">
+      <HStack gap="space-16">
         <Button
           type="button"
           variant="secondary"
@@ -194,7 +194,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
           Fjern
         </Button>
       </HStack>
-    </Box.New>
+    </Box>
   );
 }
 

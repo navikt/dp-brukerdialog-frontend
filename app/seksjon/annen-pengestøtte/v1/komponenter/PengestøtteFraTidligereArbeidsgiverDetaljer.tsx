@@ -40,14 +40,14 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <Heading level="3" size="small" spacing>
         {pengestøtteFraTidligereArbeidsgiverProps[hvemMottarDuUtbetalingerEllerGoderFra]}
       </Heading>
-      <BodyShort spacing={true}>
+      <BodyShort spacing>
         {pengestøtteFraTidligereArbeidsgiverProps[hvaFårEllerBeholderDu]}
       </BodyShort>
-      <HStack gap="4">
+      <HStack gap="space-16">
         <Button
           type="button"
           variant="secondary"
@@ -71,6 +71,6 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
           Fjern
         </Button>
       </HStack>
-    </Box.New>
+    </Box>
   );
 }

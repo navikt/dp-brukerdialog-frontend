@@ -70,14 +70,14 @@ export default function KvitteringView() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="8">
-        <VStack gap="8">
+      <VStack gap="space-32">
+        <VStack gap="space-32">
           <HStack justify="space-between">
             <VStack>
               <Heading size="medium">{seksjonnavn}</Heading>
             </VStack>
             {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-              <Tag variant={"warning"} size="xsmall">
+              <Tag variant="warning" size="xsmall">
                 Mangler dokumentasjon
               </Tag>
             )}
@@ -160,14 +160,14 @@ export default function KvitteringView() {
             </LocalAlert>
           )}
 
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Heading size="medium">Dokumentasjon</Heading>
             <InfoCard data-color="info">
               <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                 <InfoCard.Title>Sende inn dokumentasjon</InfoCard.Title>
               </InfoCard.Header>
               <InfoCard.Content>
-                <BodyLong spacing={true} weight="semibold">
+                <BodyLong spacing weight="semibold">
                   Frist for ettersending av dokumentasjon er 14 dager etter at du sendte søknaden
                 </BodyLong>
                 <BodyLong>
@@ -197,7 +197,7 @@ export default function KvitteringView() {
           </VStack>
 
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="small">Dokumenter du har sendt inn</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
@@ -206,7 +206,7 @@ export default function KvitteringView() {
           )}
 
           {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="small">Dokumenter du skal sende inn</Heading>
               {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
@@ -221,7 +221,7 @@ export default function KvitteringView() {
           </HStack>
 
           {dokumentasjonSomIkkeSkalSendes.length > 0 && (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
               {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
@@ -229,13 +229,13 @@ export default function KvitteringView() {
             </VStack>
           )}
 
-          <VStack gap="4">
+          <VStack gap="space-16">
             <ExpansionCard aria-label="Dine svar">
               <ExpansionCard.Header>
                 <ExpansionCard.Title>Dine svar</ExpansionCard.Title>
               </ExpansionCard.Header>
               <ExpansionCard.Content>
-                <VStack gap="6">
+                <VStack gap="space-24">
                   {stegISøknaden.map((seksjon) => {
                     const seksjonsData = seksjoner?.find((s: any) => s.seksjonId === seksjon.path);
                     if (!seksjonsData) return null;
@@ -255,7 +255,7 @@ export default function KvitteringView() {
             <HStack>
               <Button
                 variant="primary"
-                className="mt-8"
+                className="mt-32"
                 icon={<ArrowRightIcon aria-hidden />}
                 iconPosition="right"
                 onClick={() => {

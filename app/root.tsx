@@ -1,4 +1,4 @@
-import akselStyles from "@navikt/ds-css/dist/darkside/index.css?url";
+import akselStyles from "@navikt/ds-css/dist/index.css?url";
 import { Theme } from "@navikt/ds-react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";

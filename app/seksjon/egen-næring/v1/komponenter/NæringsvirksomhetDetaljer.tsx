@@ -22,7 +22,7 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <h3 style={{ marginTop: "0" }}>{næringsvirksomhet[virksomhetensNavn]}</h3>
       <BodyShort spacing>
         {næringsvirksomhet[hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]} timer arbeidstid
@@ -30,7 +30,7 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
         <br />
         {næringsvirksomhet[hvorMangeTimerJobbetPerUkeNå]} timer arbeidstid per uke nå
       </BodyShort>
-      <HStack gap="4">
+      <HStack gap="space-16">
         <Button
           type="button"
           variant="secondary"
@@ -55,6 +55,6 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
           Fjern
         </Button>
       </HStack>
-    </Box.New>
+    </Box>
   );
 }

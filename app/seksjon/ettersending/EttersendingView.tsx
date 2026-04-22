@@ -56,14 +56,14 @@ export function EttersendingView() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="8">
+      <VStack gap="space-32">
         <Heading size="medium" level="2">
           {seksjonnavn}
         </Heading>
 
         {ettersendingene.length > 0 && (
           <>
-            <VStack gap="4">
+            <VStack gap="space-16">
               <BodyShort weight="semibold">
                 Frist for innsendinger er 14 dager etter at du sendte søknaden.
               </BodyShort>
@@ -93,14 +93,9 @@ export function EttersendingView() {
               </ReadMore>
 
               {ettersendingene.map((ettersending: Dokumentasjonskrav) => (
-                <Box.New
-                  key={ettersending.id}
-                  padding="space-16"
-                  background="sunken"
-                  borderRadius="large"
-                >
+                <Box key={ettersending.id} padding="space-16" background="sunken" borderRadius="12">
                   <EttersendingFilOpplasting ettersending={ettersending} />
-                </Box.New>
+                </Box>
               ))}
 
               {!lagrer && harTekniskFeil && (
@@ -117,7 +112,7 @@ export function EttersendingView() {
               )}
             </VStack>
 
-            <HStack gap="4">
+            <HStack gap="space-16">
               <Button type="button" loading={lagrer} onClick={() => validerOgLagre()}>
                 Send inn dokumenter
               </Button>
@@ -136,9 +131,9 @@ export function EttersendingView() {
           </>
         )}
 
-        <VStack gap="4">
+        <VStack gap="space-16">
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="small">Dokumenter du har sendt inn</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
@@ -147,7 +142,7 @@ export function EttersendingView() {
           )}
 
           {dokumentasjonSomIkkeSkalSendes.length > 0 && (
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
               {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
@@ -156,7 +151,7 @@ export function EttersendingView() {
           )}
         </VStack>
 
-        <VStack gap="4">
+        <VStack gap="space-16">
           <Heading size="small" level="3">
             Andre dokumenter
           </Heading>
@@ -170,7 +165,7 @@ export function EttersendingView() {
           />
         </VStack>
 
-        <HStack className="mt-8" gap="2">
+        <HStack className="mt-32" gap="space-8">
           <Link to={`/${soknadId}/kvittering`}>
             <Button variant="secondary" icon={<ArrowLeftIcon aria-hidden />}>
               Kvittering

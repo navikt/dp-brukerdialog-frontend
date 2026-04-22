@@ -83,7 +83,7 @@ export function DokumentasjonViewV1() {
   return (
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
-      <VStack gap="6">
+      <VStack gap="space-24">
         <Heading size="medium" level="2">
           {SEKSJON_NAVN}
         </Heading>
@@ -111,9 +111,9 @@ export function DokumentasjonViewV1() {
           />
         )}
 
-        <VStack className="seksjon-navigasjon" gap="4">
+        <VStack className="seksjon-navigasjon" gap="space-16">
           <SistOppdatert />
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Button
               variant="secondary"
               type="button"
