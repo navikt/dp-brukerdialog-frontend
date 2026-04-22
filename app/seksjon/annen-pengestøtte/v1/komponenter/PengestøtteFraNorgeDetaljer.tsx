@@ -43,7 +43,7 @@ export function PengestøtteFraNorgeDetaljer({
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <h3 style={{ marginTop: "0" }}>
         {finnOptionLabel(
           pengestøtteFraNorgeModalKomponenter,
@@ -62,9 +62,7 @@ export function PengestøtteFraNorgeDetaljer({
           Fra og med&nbsp;
           {formaterNorskDato(
             new Date(
-              pengestøtteFraNorgeProps[
-                iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato
-              ]!
+              pengestøtteFraNorgeProps[iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]!
             )
           )}
           {pengestøtteFraNorgeProps[
@@ -83,7 +81,7 @@ export function PengestøtteFraNorgeDetaljer({
           )}
         </>
       </BodyShort>
-      <HStack gap="4">
+      <HStack gap="space-16">
         <Button
           type="button"
           variant="secondary"
@@ -107,6 +105,6 @@ export function PengestøtteFraNorgeDetaljer({
           Fjern
         </Button>
       </HStack>
-    </Box.New>
+    </Box>
   );
 }

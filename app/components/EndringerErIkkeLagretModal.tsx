@@ -12,11 +12,11 @@ export function EndringerErIkkeLagretModal({
   return (
     <Modal ref={ref} header={{ heading: "Er du sikker på at du vil lukke vinduet?" }}>
       <Modal.Body>
-        <VStack gap="6">
+        <VStack gap="space-24">
           <BodyLong>
             Du har gjort endringer som ikke er lagret. Vil du allikevel lukke dette vinduet?
           </BodyLong>
-          <HStack gap="4">
+          <HStack gap="space-16">
             <Button
               variant="danger"
               type="button"

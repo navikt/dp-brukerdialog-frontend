@@ -48,7 +48,7 @@ export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
               {dokumentasjonskrav.bundle && (
                 <Button
                   variant="tertiary"
-                  className="mt-4"
+                  className="mt-16"
                   size="small"
                   icon={<DownloadIcon />}
                   onClick={() =>

@@ -123,10 +123,10 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="large">
-      <VStack gap="6">
+    <Box padding="space-16" background="sunken" borderRadius="12">
+      <VStack gap="space-24">
         <Form {...form.getFormProps()}>
-          <VStack gap="4">
+          <VStack gap="space-16">
             <Heading size="small" level="3">
               {dokumentasjonskrav.tittel}
             </Heading>
@@ -155,6 +155,6 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
           <FilOpplasting dokumentasjonskrav={dokumentasjonskrav} />
         )}
       </VStack>
-    </Box.New>
+    </Box>
   );
 }

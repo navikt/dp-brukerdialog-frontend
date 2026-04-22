@@ -191,8 +191,8 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
   }
 
   return (
-    <Box.New borderRadius="large" background="sunken">
-      <VStack gap="4">
+    <Box borderRadius="12" background="sunken">
+      <VStack gap="space-16">
         <HStack justify="space-between">
           <Heading size="small" level="3">
             {ettersending.tittel || "Dokumentasjon"}
@@ -206,7 +206,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
 
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
-            className="mt-4 fileUpload"
+            className="mt-16 fileUpload"
             label="Last opp dokument"
             description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
             fileLimit={{ max: MAX_ANTALL_FILER, current: ettersendingFiler.length }}
@@ -215,9 +215,8 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
           />
         </form>
       </VStack>
-
       {ettersendingFiler.length > 0 && (
-        <VStack gap="4" className="mt-8">
+        <VStack gap="space-16" className="mt-32">
           {ettersendingFiler?.map((fil) => (
             <FileUploadItem
               key={fil.id}
@@ -235,12 +234,11 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
           ))}
         </VStack>
       )}
-
       {valideringStartet && antallFeil > 0 && (
-        <ErrorMessage className="mt-4">
+        <ErrorMessage className="mt-16">
           Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
         </ErrorMessage>
       )}
-    </Box.New>
+    </Box>
   );
 }

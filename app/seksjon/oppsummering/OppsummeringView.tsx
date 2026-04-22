@@ -43,8 +43,8 @@ export function OppsummeringView() {
   return (
     <div className="innhold">
       <title>{seksjonHeadTitle}</title>
-      <VStack gap="20">
-        <VStack gap="6">
+      <VStack gap="space-80">
+        <VStack gap="space-24">
           <Heading size="medium" level="2">
             {seksjonnavn}
           </Heading>
@@ -94,7 +94,7 @@ export function OppsummeringView() {
           )}
 
           <Form {...form.getFormProps()}>
-            <HStack gap="4" className="mt-8">
+            <HStack gap="space-16" className="mt-32">
               <Button
                 disabled={state === "submitting" || state === "loading"}
                 variant="secondary"

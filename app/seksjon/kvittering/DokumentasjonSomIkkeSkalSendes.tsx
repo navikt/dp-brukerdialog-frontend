@@ -9,10 +9,10 @@ interface IProps {
 
 export function DokumentasjonSomIkkeSkalSendes({ dokummentasjonskrav }: IProps) {
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="large">
-      <VStack gap="2">
-        <VStack gap="2">
-          <HStack gap="2" justify="space-between">
+    <Box padding="space-16" background="sunken" borderRadius="12">
+      <VStack gap="space-8">
+        <VStack gap="space-8">
+          <HStack gap="space-8" justify="space-between">
             <Heading size="xsmall" level="4">
               {dokummentasjonskrav.tittel}
             </Heading>
@@ -31,6 +31,6 @@ export function DokumentasjonSomIkkeSkalSendes({ dokummentasjonskrav }: IProps) 
           <DokumentasjonskravInnhold type={dokummentasjonskrav.type} />
         </ReadMore>
       </VStack>
-    </Box.New>
+    </Box>
   );
 }

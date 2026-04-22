@@ -10,14 +10,14 @@ interface IProps {
 
 export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps) {
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="large">
-      <VStack gap="4">
+    <Box padding="space-16" background="sunken" borderRadius="12">
+      <VStack gap="space-16">
         <HStack justify="space-between">
           <Heading size="xsmall" level="4">
             {dokumentasjonskrav.tittel}
           </Heading>
           <BodyShort>
-            <Tag variant="success" size={"xsmall"}>
+            <Tag variant="success" size="xsmall">
               Mottatt
             </Tag>
           </BodyShort>
@@ -42,6 +42,6 @@ export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps
           <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
         </ReadMore>
       </VStack>
-    </Box.New>
+    </Box>
   );
 }

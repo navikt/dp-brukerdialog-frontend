@@ -162,9 +162,9 @@ export function ArbeidsforholdViewV1() {
   return (
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
-      <VStack gap="6">
+      <VStack gap="space-24">
         <Form {...form.getFormProps()}>
-          <VStack gap="6">
+          <VStack gap="space-24">
             <Heading size="medium" level="2">
               {SEKSJON_NAVN}
             </Heading>
@@ -188,7 +188,7 @@ export function ArbeidsforholdViewV1() {
               form.value(
                 harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
               ) && (
-                <VStack className="mt-4" gap="6">
+                <VStack className="mt-16" gap="space-24">
                   {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
                     if (komponent.visHvis && !komponent.visHvis(form.value())) {
                       return null;

@@ -153,7 +153,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="2">
+            <HStack gap="space-8">
               {modalIkon}
               {modalOperasjon} barn du forsørger
             </HStack>
@@ -161,7 +161,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="4" className="mt-4">
+            <VStack gap="space-16" className="mt-16">
               {leggTilBarnManueltSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
                   return null;
@@ -176,7 +176,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>

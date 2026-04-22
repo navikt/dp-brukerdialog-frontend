@@ -358,7 +358,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
               }
             })}
           <Form {...form.getFormProps()}>
-            <VStack gap="6" className="mt-4">
+            <VStack gap="space-24" className="mt-16">
               {alleModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -374,7 +374,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button
                   type="submit"
                   icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}

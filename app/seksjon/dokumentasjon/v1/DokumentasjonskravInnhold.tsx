@@ -19,13 +19,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdArbeidsavtale:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>
               Du har lagt til et arbeidsforhold. Du må dokumentere arbeidsforholdet ved å sende oss
               arbeidsavtalen.
             </BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Arbeidsavtalen må inneholde</BodyShort>
                 <List as="ul">
                   <List.Item>datoen du startet i jobben din</List.Item>
@@ -50,10 +50,10 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>Du har krysset av for at du har blitt sagt opp.</BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>datoen du fikk oppsigelsen</List.Item>
@@ -77,10 +77,10 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>Du har krysset av for at du har sagt opp jobben.</BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>datoen du ga oppsigelsen til arbeidsgiveren din</List.Item>
@@ -103,10 +103,10 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdAvskjedigelse:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>Du har krysset av for at du har blitt avskjediget.</BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>datoen du ble avskjediget</List.Item>
@@ -130,10 +130,10 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>Du har krysset av for at arbeidstiden din er redusert.</BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>datoen arbeidstiden din ble redusert</List.Item>
@@ -156,13 +156,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>
               Du har krysset av for at arbeidsgiveren din er konkurs. Du må legge ved brevet du har
               fått fra bostyreren eller konkursforvalteren.
             </BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>at arbeidsgiveren din er konkurs</List.Item>
@@ -177,13 +177,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyShort>
               Du har krysset av for at du er permittert. Du må legge ved permitteringsvarselet som
               du har fått fra arbeidsgiveren din.
             </BodyShort>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Permitteringsvarselet må inneholde informasjon om</BodyShort>
                 <List as="ul">
                   <List.Item>årsaken til at du ble permittert (permitteringsårsak)</List.Item>
@@ -272,13 +272,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyLong>
               Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske
               goder fra arbeidsgiver.
             </BodyLong>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>hvilken pengestøtte dette er</List.Item>
@@ -293,13 +293,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyLong>
               Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet
               EØS-land.
             </BodyLong>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>hvilken pengestøtte dette er</List.Item>
@@ -314,12 +314,12 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.AnnenPengestøtteFraNorgePensjonFraAndre:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyLong>
               Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav.
             </BodyLong>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>hvilken pengestøtte dette er</List.Item>
@@ -334,13 +334,13 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
 
       case DokumentasjonskravType.AnnenPengestøtteFraNorgePengestøtteFraGff:
         return (
-          <VStack gap="2">
+          <VStack gap="space-8">
             <BodyLong>
               Du har krysset av for at du mottar eller har søkt om pengestøtte fra Garantikassen for
               fiskere.
             </BodyLong>
             <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="2">
+              <VStack gap="space-8">
                 <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
                 <List as="ul">
                   <List.Item>hvilken pengestøtte dette er</List.Item>

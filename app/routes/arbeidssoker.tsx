@@ -59,14 +59,14 @@ export default function ArbeidssokerSide() {
           </Alert>
         )}
 
-        <VStack gap="4" className="mt-8">
+        <VStack gap="space-16" className="mt-32">
           <BodyLong>
             <strong>Du må være registrert som arbeidssøker for å ha rett til dagpenger</strong>
             <br />
             Du kan tidligst få dagpenger fra datoen du både har registrert deg som arbeidssøker og
             sendt søknad om dagpenger
           </BodyLong>
-          <HStack gap="4" align="center">
+          <HStack gap="space-16" align="center">
             <Button as="a" href={registreringUrl} variant="primary" onClick={handleRegistrerKlikk}>
               Registrer deg som arbeidssøker
             </Button>
@@ -77,10 +77,8 @@ export default function ArbeidssokerSide() {
           </HStack>
 
           <BodyLong>
-            <Link to="/opprett-soknad" className="navds-link navds-link--inline-text">
-              Jeg vil søke om dagpenger likevel
-            </Link>
-            , og er klar over at jeg mest sannsynlig vil få avslag på søknaden
+            <Link to="/opprett-soknad">Jeg vil søke om dagpenger likevel</Link>, og er klar over at
+            jeg mest sannsynlig vil få avslag på søknaden
           </BodyLong>
         </VStack>
       </div>

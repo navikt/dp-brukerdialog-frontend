@@ -53,19 +53,15 @@
   margin-bottom: var(--ax-space-32);
 }
 
-.mt-4 {
+.mt-16 {
   margin-top: var(--ax-space-16);
 }
 
-.ml-4 {
-  margin-left: var(--ax-space-16);
-}
-
-.mt-8 {
+.mt-32 {
   margin-top: var(--ax-space-32);
 }
 
-.mt-14 {
+.mt-56 {
   margin-top: var(--ax-space-56);
 }
 
@@ -82,35 +78,12 @@
 }
 
 /* Overskriver stilene til ExpansionCard-komponenten */
-.navds-expansioncard__header,
+/* .navds-expansioncard__header,
 .navds-expansioncard__content {
   border: 0;
-}
+} */
 
 /* Overskriver stilene til Aksel Base Alert-komponenten */
 .aksel-base-alert p {
   margin: 0;
-}
-
-/* Overskriver stilene til ExpansionCard-komponenten */
-:where(.navds-expansioncard__header):hover + .navds-expansioncard__content,
-.navds-expansioncard__header:hover {
-  box-shadow: none;
-}
-
-.navds-alert .navds-body-long.navds-typo--spacing {
-  margin-bottom: 0;
-}
-
-.fileUpload .navds-dropzone__area {
-  background-color: white;
-}
-
-.expansionCard {
-  background-color: var(--ax-meta-purple-200);
-  border: none;
-}
-
-.inline {
-  display: inline;
 }

@@ -10,9 +10,9 @@ interface IProps {
 
 export function SeksjonNavigasjon({ onForrigeSteg, onNesteSteg, lagrer }: IProps) {
   return (
-    <VStack className="seksjon-navigasjon" gap="4">
+    <VStack className="seksjon-navigasjon" gap="space-16">
       <SistOppdatert />
-      <HStack gap="4">
+      <HStack gap="space-16">
         {onForrigeSteg && (
           <Button
             variant="secondary"

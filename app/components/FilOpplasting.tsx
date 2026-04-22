@@ -195,11 +195,11 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
   }
 
   return (
-    <Box.New borderRadius="large" background="sunken">
-      <VStack gap="4">
+    <Box borderRadius="12" background="sunken">
+      <VStack gap="space-16">
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
-            className="mt-4 fileUpload"
+            className="mt-16 fileUpload"
             label="Last opp dokument"
             description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
             fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentasjonskrav.filer?.length ?? 0 }}
@@ -208,7 +208,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
           />
         </form>
       </VStack>
-      <VStack gap="4" className="mt-8">
+      <VStack gap="space-16" className="mt-32">
         {dokumentkravFiler?.map((fil) => (
           <FileUploadItem
             key={fil.id}
@@ -236,6 +236,6 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
             </ErrorMessage>
           )}
       </VStack>
-    </Box.New>
+    </Box>
   );
 }
