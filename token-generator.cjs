@@ -39,7 +39,7 @@ const IDENT_LIST = [
     name: "Idiotsikker Distingvert Porto (uten folkeregistrert adresse): 30848997419",
     value: "30848997419",
   },
-  { name: "DP Sak-bruker: 19897299162", value: "19897299162" },
+  { name: "Veik Bly: 19897299162", value: "19897299162" },
 ];
 
 init();
