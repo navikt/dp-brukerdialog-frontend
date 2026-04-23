@@ -84,6 +84,7 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
         - application: dp-soknad-orkestrator
+        - application: dp-soknad
         - application: dp-mellomlagring
         - application: paw-arbeidssoekerregisteret-api-oppslag-v2
           namespace: paw
