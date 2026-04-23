@@ -1,5 +1,5 @@
 import { PåbegyntSøknadMedKilde } from "~/models/hent-søknader-for-ident";
-import { BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
+import { BodyLong, Button, HStack, VStack, Link as AkselLink } from "@navikt/ds-react";
 import { Link } from "react-router";
 import { getEnv } from "~/utils/env.utils";
 import { formaterNorskDato } from "~/utils/formatering.utils";
@@ -11,8 +11,6 @@ interface FortsettEllerSlettKnapperProps {
 export default function FortsettEllerSlettKnapper({
   påbegyntSøknad,
 }: FortsettEllerSlettKnapperProps) {
-  const dpSøknadUrl = getEnv("DP_SOKNAD_URL");
-
   async function håndterSlettSøknad() {
     const subPath = påbegyntSøknad.erOrkestratorSøknad
       ? `/api/slett/${påbegyntSøknad.soknadUuid}`
@@ -38,17 +36,21 @@ export default function FortsettEllerSlettKnapper({
           denne eller starte en ny?
         </BodyLong>
         <VStack gap="space-16">
-          <Link
-            to={
-              påbegyntSøknad.erOrkestratorSøknad
-                ? `/${påbegyntSøknad.soknadUuid}/personalia`
-                : `${dpSøknadUrl}/soknad/${påbegyntSøknad.soknadUuid}?fortsett=true`
-            }
-          >
-            <Button variant="primary" as="a">
-              Fortsett påbegynt søknad
-            </Button>
-          </Link>
+          {påbegyntSøknad.erOrkestratorSøknad ? (
+            <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
+              <Button variant="primary" as="a">
+                Fortsett påbegynt søknad
+              </Button>
+            </Link>
+          ) : (
+            <AkselLink
+              href={`${getEnv("DP_SOKNADSDIALOG_URL")}/soknad/${påbegyntSøknad.soknadUuid}?fortsett=true`}
+            >
+              <Button variant="primary" as="a">
+                Fortsett påbegynt søknad
+              </Button>
+            </AkselLink>
+          )}
           <HStack gap="space-16">
             <Button variant="secondary" as="a" onClick={håndterSlettSøknad}>
               Slett og start ny søknad
