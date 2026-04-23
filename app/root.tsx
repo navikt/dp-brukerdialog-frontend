@@ -60,6 +60,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       DP_SOKNAD_ORKESTRATOR_URL: getEnv("DP_SOKNAD_ORKESTRATOR_URL"),
       DP_MINE_DAGPENGER_URL: getEnv("DP_MINE_DAGPENGER_URL"),
       GENERELL_INNSENDING_URL: getEnv("GENERELL_INNSENDING_URL"),
+      DP_SOKNADSDIALOG_URL: getEnv("DP_SOKNADSDIALOG_URL"),
       FARO_URL: getEnv("FARO_URL"),
     },
   });

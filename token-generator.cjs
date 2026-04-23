@@ -20,6 +20,10 @@ const TOKEN_LIST = [
     env: "ARBEIDSSOKERREGISTERET_TOKEN",
     aud: "dev-gcp:paw:paw-arbeidssoekerregisteret-api-oppslag-v2",
   },
+  {
+    env: "DP_SOKNAD_TOKEN",
+    aud: "dev-gcp:teamdagpenger:dp-soknad",
+  },
 ];
 
 const IDENT_LIST = [
@@ -35,6 +39,7 @@ const IDENT_LIST = [
     name: "Idiotsikker Distingvert Porto (uten folkeregistrert adresse): 30848997419",
     value: "30848997419",
   },
+  { name: "Veik Bly: 19897299162", value: "19897299162" },
 ];
 
 init();

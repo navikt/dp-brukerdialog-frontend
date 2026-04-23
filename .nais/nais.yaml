@@ -64,6 +64,10 @@ spec:
       value: "{{generell_innsending_url}}"
     - name: ARBEIDSSOKERREGISTRERING_URL
       value: "{{arbeidssokerregistrering_url}}"
+    - name: DP_SOKNAD_URL
+      value: "{{dp_soknad_url}}"
+    - name: DP_SOKNADSDIALOG_URL
+      value: "{{dp_soknadsdialog_url}}"
 
   ingresses:
     {{#each ingresses as |url|}}
@@ -80,6 +84,7 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
         - application: dp-soknad-orkestrator
+        - application: dp-soknad
         - application: dp-mellomlagring
         - application: paw-arbeidssoekerregisteret-api-oppslag-v2
           namespace: paw
