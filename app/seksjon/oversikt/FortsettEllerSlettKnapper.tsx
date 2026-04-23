@@ -50,7 +50,7 @@ export default function FortsettEllerSlettKnapper({
             />
           )}
           <HStack gap="space-16">
-            <Button variant="secondary" as="a" onClick={håndterSlettSøknad}>
+            <Button variant="secondary" onClick={håndterSlettSøknad}>
               Slett og start ny søknad
             </Button>
           </HStack>
