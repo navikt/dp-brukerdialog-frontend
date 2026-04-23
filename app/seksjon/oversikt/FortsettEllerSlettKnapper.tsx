@@ -1,6 +1,7 @@
-import { PåbegyntSøknadMedKilde } from "~/models/hent-søknader-for-ident";
-import { BodyLong, Button, HStack, VStack, Link as AkselLink } from "@navikt/ds-react";
+import { BodyLong, Button, HStack, VStack } from "@navikt/ds-react";
 import { Link } from "react-router";
+import { EksterneLenke } from "~/components/EksterneLenke";
+import { PåbegyntSøknadMedKilde } from "~/models/hent-søknader-for-ident";
 import { getEnv } from "~/utils/env.utils";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
@@ -38,18 +39,15 @@ export default function FortsettEllerSlettKnapper({
         <VStack gap="space-16">
           {påbegyntSøknad.erOrkestratorSøknad ? (
             <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
-              <Button variant="primary" as="a">
-                Fortsett påbegynt søknad
-              </Button>
+              <Button variant="primary">Fortsett påbegynt søknad</Button>
             </Link>
           ) : (
-            <AkselLink
+            <EksterneLenke
               href={`${getEnv("DP_SOKNADSDIALOG_URL")}/soknad/${påbegyntSøknad.soknadUuid}?fortsett=true`}
-            >
-              <Button variant="primary" as="a">
-                Fortsett påbegynt søknad
-              </Button>
-            </AkselLink>
+              tekst="Fortsett påbegynt søknad"
+              variant="primary"
+              asButton
+            />
           )}
           <HStack gap="space-16">
             <Button variant="secondary" as="a" onClick={håndterSlettSøknad}>

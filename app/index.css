@@ -81,3 +81,7 @@
 .aksel-base-alert p {
   margin: 0;
 }
+
+.block {
+  display: block;
+}

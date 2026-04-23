@@ -1,14 +1,15 @@
-import { SøknadOversiktType } from "~/routes/_index";
+import { BodyLong, Box, Button, Heading, VStack } from "@navikt/ds-react";
+import { Link } from "react-router";
+import { EksterneLenke } from "~/components/EksterneLenke";
+import { SøknadIkon } from "~/components/SøknadIkon";
 import {
   KombinertOgSorterInnsendteSoknader,
   mapOrkestratorInnsendteSoknader,
   mapQuizInnsendteSoknader,
 } from "~/models/hent-søknader-for-ident";
-import { BodyLong, Button, Heading, VStack, Link as AkselLink } from "@navikt/ds-react";
-import { Link } from "react-router";
+import { SøknadOversiktType } from "~/routes/_index";
 import FortsettEllerSlettKnapper from "~/seksjon/oversikt/FortsettEllerSlettKnapper";
 import { getEnv } from "~/utils/env.utils";
-import { SøknadIkon } from "~/components/SøknadIkon";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 interface SøknadOversiktProps {
@@ -41,25 +42,25 @@ export function SøknadOversikt({ søknader }: SøknadOversiktProps) {
               Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad
               eller sende inn en ny?
             </BodyLong>
-            {kombinertOrkestratorOgQuizInnsendteSøknader.map((soknad) =>
-              soknad.erOrkestratorSøknad ? (
-                <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
-                  <Button variant="secondary" as="a">
-                    Send inn vedlegg til søknad sendt{" "}
-                    {formaterNorskDato(new Date(soknad.forstInnsendt))}
-                  </Button>
-                </Link>
-              ) : (
-                <AkselLink
-                  href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
-                >
-                  <Button variant="secondary" as="a">
-                    Send inn vedlegg til søknad sendt{" "}
-                    {formaterNorskDato(new Date(soknad.forstInnsendt))}
-                  </Button>
-                </AkselLink>
-              )
-            )}
+            <VStack gap="space-16" justify="start">
+              {kombinertOrkestratorOgQuizInnsendteSøknader.map((soknad) =>
+                soknad.erOrkestratorSøknad ? (
+                  <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
+                    <Button variant="secondary">
+                      Send inn vedlegg til søknad sendt{" "}
+                      {formaterNorskDato(new Date(soknad.forstInnsendt))}
+                    </Button>
+                  </Link>
+                ) : (
+                  <EksterneLenke
+                    href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
+                    tekst={`Send inn vedlegg til søknad sendt ${formaterNorskDato(new Date(soknad.forstInnsendt))}`}
+                    variant="secondary"
+                    asButton
+                  />
+                )
+              )}
+            </VStack>
           </VStack>
           {søknader.påbegyntSøknad && (
             <FortsettEllerSlettKnapper påbegyntSøknad={søknader.påbegyntSøknad} />
