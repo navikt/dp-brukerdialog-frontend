@@ -64,6 +64,10 @@ spec:
       value: "{{generell_innsending_url}}"
     - name: ARBEIDSSOKERREGISTRERING_URL
       value: "{{arbeidssokerregistrering_url}}"
+    - name: DP_SOKNAD_URL
+      value: "{{dp_soknad_url}}"
+    - name: DP_SOKNADSDIALOG_URL
+      value: "{{dp_soknadsdialog_url}}"
 
   ingresses:
     {{#each ingresses as |url|}}
