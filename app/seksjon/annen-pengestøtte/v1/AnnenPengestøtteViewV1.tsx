@@ -305,10 +305,10 @@ export function AnnenPengestøtteViewV1() {
   return (
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
-      <VStack gap="6">
+      <VStack gap="space-24">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
-          <VStack gap="6">
+          <VStack gap="space-24">
             <Heading size="medium" level="2">
               {SEKSJON_NAVN}
             </Heading>
@@ -318,7 +318,7 @@ export function AnnenPengestøtteViewV1() {
 
             {form.value(mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver) ===
               "ja" && (
-              <VStack gap="6">
+              <VStack gap="space-24">
                 {pengestøtteFraTidligereArbeidsgiver?.map(
                   (pengestøtte: PengestøtteFraTidligereArbeidsgiver) => (
                     <PengestøtteFraTidligereArbeidsgiverDetaljer
@@ -350,14 +350,14 @@ export function AnnenPengestøtteViewV1() {
               </VStack>
             )}
 
-            <Heading size="small" level="3" className="mt-4">
+            <Heading size="small" level="3" className="mt-16">
               Pengestøtte fra Norge
             </Heading>
 
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
 
             {form.value(mottarDuPengestøtteFraAndreEnnNav) === "ja" && (
-              <VStack gap="6">
+              <VStack gap="space-24">
                 {pengestøtteFraNorge?.map((støtte: PengestøtteFraNorge) => (
                   <PengestøtteFraNorgeDetaljer key={støtte.id} pengestøtteFraNorge={støtte} />
                 ))}
@@ -384,7 +384,7 @@ export function AnnenPengestøtteViewV1() {
               </VStack>
             )}
 
-            <Heading size="small" level="3" className="mt-4">
+            <Heading size="small" level="3" className="mt-16">
               Pengestøtte fra andre EØS-land
             </Heading>
 
@@ -393,7 +393,7 @@ export function AnnenPengestøtteViewV1() {
             })}
 
             {form.value(harMottattEllerSøktOmPengestøtteFraAndreEøsLand) === "ja" && (
-              <VStack gap="6">
+              <VStack gap="space-24">
                 {pengestøtteFraAndreEøsLand?.map((støtte: PengestøtteFraAndreEøsLand) => (
                   <PengestøtteFraAndreEøsLandDetaljer
                     key={støtte.id}

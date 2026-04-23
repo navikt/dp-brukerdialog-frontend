@@ -51,7 +51,7 @@ export function Periode({ props, formScope, formValues, ref }: IProps) {
   const periodeTilSpørsmal = props.type === "periodeTil";
 
   return (
-    <VStack gap="4" ref={ref}>
+    <VStack gap="space-16" ref={ref}>
       {props.type === "periodeFra" && <BodyShort weight="semibold">{props.periodeLabel}</BodyShort>}
       <VStack
         className={classNames(styles.periodeVenstreBorder, {

@@ -187,7 +187,7 @@ export function ReellArbeidssøkerViewV1() {
         {SEKSJON_NAVN}
       </Heading>
       <Form {...form.getFormProps()}>
-        <VStack gap="6">
+        <VStack gap="space-24">
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           {reellArbeidssøkerKomponenter.map((komponent) => {
             if (komponent.visHvis && !komponent.visHvis(form.value())) {

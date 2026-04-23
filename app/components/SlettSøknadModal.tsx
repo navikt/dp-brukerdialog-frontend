@@ -46,12 +46,12 @@ export function SlettSøknadModal({ søknadId }: IProps) {
         header={{ heading: "Er du sikker på at du vil slette søknaden?" }}
       >
         <Modal.Body>
-          <VStack gap="6">
+          <VStack gap="space-24">
             <BodyLong>
               Alle svarene dine blir slettet og du må begynne på nytt hvis du skal søke om
               dagpenger.
             </BodyLong>
-            <HStack gap="8">
+            <HStack gap="space-32">
               <Button variant="danger" type="button" onClick={() => slettSøknad()}>
                 Slett søknaden
               </Button>
@@ -68,9 +68,9 @@ export function SlettSøknadModal({ søknadId }: IProps) {
       </Modal>
       <Modal ref={slettetSøknadBekreftelseModal} header={{ heading: "Søknaden din er slettet" }}>
         <Modal.Body>
-          <VStack gap="6">
+          <VStack gap="space-24">
             <BodyLong>Søknaden og alle svarene dine er slettet.</BodyLong>
-            <HStack gap="8">
+            <HStack gap="space-32">
               <Button
                 variant="primary"
                 as="a"

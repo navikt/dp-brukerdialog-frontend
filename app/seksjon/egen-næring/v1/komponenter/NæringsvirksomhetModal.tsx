@@ -95,12 +95,12 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="2">{modalOperasjon} næringsvirksomhet</HStack>
+            <HStack gap="space-8">{modalOperasjon} næringsvirksomhet</HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
           <Form {...form.getFormProps()}>
-            <VStack gap="4">
+            <VStack gap="space-16">
               {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {
                   return null;
@@ -115,7 +115,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
                 );
               })}
 
-              <HStack className="mt-4" justify="end">
+              <HStack className="mt-16" justify="end">
                 <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>

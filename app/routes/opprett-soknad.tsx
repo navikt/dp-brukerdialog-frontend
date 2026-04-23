@@ -101,7 +101,6 @@ export default function OpprettSoknadSide() {
           Søknad om dagpenger
         </Heading>
       </div>
-
       <div className="innhold">
         {vilkårTekst?.body && (
           <PortableText
@@ -110,20 +109,20 @@ export default function OpprettSoknadSide() {
           />
         )}
 
-        <VStack gap="8" className="mt-14">
+        <VStack gap="space-32" className="mt-56">
           <Form {...form.getFormProps()}>
-            <Box.New
-              padding="4"
+            <Box
+              padding="space-16"
               background={!!form.value("bekreftVilkår") ? "success-moderate" : "sunken"}
-              borderRadius="medium"
+              borderRadius="8"
             >
               <Checkbox name="bekreftVilkår" error={!!form.error("bekreftVilkår")}>
                 {bekreftVilkårTekst}
               </Checkbox>
-            </Box.New>
+            </Box>
 
             {actionData && actionData.error && (
-              <LocalAlert status="error" className="mt-4">
+              <LocalAlert status="error" className="mt-16">
                 <LocalAlert.Header>
                   <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
                 </LocalAlert.Header>
@@ -133,7 +132,7 @@ export default function OpprettSoknadSide() {
 
             <Button
               iconPosition="right"
-              className="mt-8"
+              className="mt-32"
               icon={<ArrowRightIcon aria-hidden />}
               onClick={() => opprettSøknad()}
               loading={state === "submitting" || state === "loading"}

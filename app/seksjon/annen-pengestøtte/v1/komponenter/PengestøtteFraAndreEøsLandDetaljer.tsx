@@ -47,7 +47,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
   }
 
   return (
-    <Box.New padding="space-16" background="sunken" borderRadius="xlarge">
+    <Box padding="space-16" background="sunken" borderRadius="16">
       <Heading level="3" size="small" spacing>
         {finnOptionLabel(
           pengestøtteFraAndreEøsLandModalKomponenter,
@@ -90,15 +90,13 @@ export function PengestøtteFraAndreEøsLandDetaljer({
             Motatt fra og med{" "}
             {formaterNorskDato(
               new Date(
-                pengestøtteFraAndreEøsLandProps[
-                  fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato
-                ]
+                pengestøtteFraAndreEøsLandProps[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato]
               )
             )}
           </>
         )}
       </BodyShort>
-      <HStack gap="4">
+      <HStack gap="space-16">
         <Button
           type="button"
           variant="secondary"
@@ -122,6 +120,6 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           Fjern
         </Button>
       </HStack>
-    </Box.New>
+    </Box>
   );
 }

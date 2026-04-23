@@ -40,6 +40,14 @@ export async function hentArbeidssøkerregisteretOboToken(request: Request) {
   return await hentOnBehalfOfToken(request, audience);
 }
 
+export async function hentDpSøknadOboToken(request: Request) {
+  if (getEnv("IS_LOCALHOST") === "true") {
+    return håndterLocalhostToken("DP_SOKNAD_TOKEN");
+  }
+  const audience = `${getEnv("NAIS_CLUSTER_NAME")}:teamdagpenger:dp-soknad`;
+  return await hentOnBehalfOfToken(request, audience);
+}
+
 export async function hentOnBehalfOfToken(request: Request, audience: string): Promise<string> {
   const token = getToken(request);
   if (!token) {

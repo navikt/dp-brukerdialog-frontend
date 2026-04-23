@@ -36,7 +36,7 @@ export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
           <SlettSøknadModal søknadId={søknadId} />
         </HStack>
         {visMelding && (
-          <Alert variant="success" className="mt-8">
+          <Alert variant="success" className="mt-32">
             Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir
             automatisk slettet hvis du ikke gjør noe innen 7 dager.
           </Alert>

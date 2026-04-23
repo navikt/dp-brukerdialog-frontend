@@ -45,7 +45,7 @@ export function PersonaliaViewV1() {
     return (
       <div className="innhold">
         <title>{SEKSJON_TITTEL}</title>
-        <VStack gap="6">
+        <VStack gap="space-24">
           <Heading size="medium" level="2">
             {SEKSJON_NAVN}
           </Heading>
@@ -130,7 +130,7 @@ export function PersonaliaViewV1() {
   return (
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
-      <VStack gap="6">
+      <VStack gap="space-24">
         <Heading size="medium" level="2">
           {SEKSJON_NAVN}
         </Heading>
@@ -140,7 +140,7 @@ export function PersonaliaViewV1() {
           <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
         </BodyLong>
 
-        <VStack gap="6">
+        <VStack gap="space-24">
           <VStack>
             <Label as="p">Navn</Label>
             <BodyShort>
@@ -185,7 +185,7 @@ export function PersonaliaViewV1() {
         </VStack>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={seksjon.versjon} />
-          <VStack gap="6">
+          <VStack gap="space-24">
             {personaliaSpørsmål.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;

@@ -13,14 +13,14 @@ export function ErrorBoundaryKomponent({ error }: ErrorBoundaryKomponentProps) {
       <Theme>
         <main id="maincontent" tabIndex={-1}>
           <div className="innhold">
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="large" level="1">
                 Vi har tekniske problemer akkurat nå
               </Heading>
               <BodyLong>{error.data}</BodyLong>
             </VStack>
             <Button
-              className="mt-8"
+              className="mt-32"
               icon={<ArrowRightIcon aria-hidden />}
               iconPosition="right"
               onClick={() => {
@@ -38,7 +38,7 @@ export function ErrorBoundaryKomponent({ error }: ErrorBoundaryKomponentProps) {
       <Theme>
         <main id="maincontent" tabIndex={-1}>
           <div className="innhold">
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="large" level="1">
                 Vi har tekniske problemer akkurat nå
               </Heading>
@@ -51,7 +51,7 @@ export function ErrorBoundaryKomponent({ error }: ErrorBoundaryKomponentProps) {
               )}
             </VStack>
             <Button
-              className="mt-8"
+              className="mt-32"
               icon={<ArrowRightIcon aria-hidden />}
               iconPosition="right"
               onClick={() => {
@@ -69,7 +69,7 @@ export function ErrorBoundaryKomponent({ error }: ErrorBoundaryKomponentProps) {
       <Theme>
         <main id="maincontent" tabIndex={-1}>
           <div className="innhold">
-            <VStack gap="4">
+            <VStack gap="space-16">
               <Heading size="medium" level="1">
                 Vi har tekniske problemer akkurat nå
               </Heading>
@@ -79,7 +79,7 @@ export function ErrorBoundaryKomponent({ error }: ErrorBoundaryKomponentProps) {
               </BodyLong>
             </VStack>
             <Button
-              className="mt-8"
+              className="mt-32"
               icon={<ArrowRightIcon aria-hidden />}
               iconPosition="right"
               onClick={() => {
