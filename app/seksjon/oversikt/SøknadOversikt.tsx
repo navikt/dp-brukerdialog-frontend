@@ -20,7 +20,7 @@ export function SøknadOversikt() {
 
   const orkestratorInnsendteSøknader = mapOrkestratorInnsendteSoknader(søknader);
   const quizInnsendteSøknader = mapQuizInnsendteSoknader(quizSøknader);
-  const kombinertOrkestratorOgQuizInnsendteSøknader = KombinertOgSorterInnsendteSoknader(
+  const alleSøknader = KombinertOgSorterInnsendteSoknader(
     orkestratorInnsendteSøknader,
     quizInnsendteSøknader
   );
@@ -36,30 +36,34 @@ export function SøknadOversikt() {
       <div className="innhold">
         <VStack gap="space-32">
           <VStack gap="space-16">
-            <BodyLong>
-              Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad
-              eller sende inn en ny?
-            </BodyLong>
-            <VStack gap="space-16" justify="start">
-              {kombinertOrkestratorOgQuizInnsendteSøknader.map((soknad) =>
-                soknad.erQuizSøknad ? (
-                  <EksterneLenke
-                    key={soknad.soknadUuid}
-                    href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
-                    tekst={`Send inn vedlegg til søknad sendt ${formaterNorskDato(new Date(soknad.forstInnsendt))}`}
-                    variant="secondary"
-                    asButton
-                  />
-                ) : (
-                  <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
-                    <Button variant="secondary">
-                      Send inn vedlegg til søknad sendt{" "}
-                      {formaterNorskDato(new Date(soknad.forstInnsendt))}
-                    </Button>
-                  </Link>
-                )
-              )}
-            </VStack>
+            {alleSøknader.length > 0 && (
+              <BodyLong>
+                Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad
+                eller sende inn en ny?
+              </BodyLong>
+            )}
+            {alleSøknader.length > 0 && (
+              <VStack gap="space-16" justify="start">
+                {alleSøknader.map((soknad) =>
+                  soknad.erQuizSøknad ? (
+                    <EksterneLenke
+                      key={soknad.soknadUuid}
+                      href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
+                      tekst={`Send inn vedlegg til søknad sendt ${formaterNorskDato(new Date(soknad.forstInnsendt))}`}
+                      variant="secondary"
+                      asButton
+                    />
+                  ) : (
+                    <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
+                      <Button variant="secondary">
+                        Send inn vedlegg til søknad sendt{" "}
+                        {formaterNorskDato(new Date(soknad.forstInnsendt))}
+                      </Button>
+                    </Link>
+                  )
+                )}
+              </VStack>
+            )}
           </VStack>
           {påbegyntSøknad && (
             <VStack gap="space-16">

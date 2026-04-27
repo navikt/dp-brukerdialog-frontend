@@ -44,12 +44,11 @@ export async function parseQuizResponse(response: Response): Promise<{
   påbegyntSøknad: PåbegyntSøknadMedKilde | null;
 }> {
   if (!response.ok) {
-    const errorText = await response.json();
-    logger.error("Feil ved innhenting av quiz-søknader", { errorText });
+    logger.error("Feil ved innhenting av quiz-søknader", { errorText: await response.json() });
     return { søknader: null, påbegyntSøknad: null };
   }
 
-  const søknader = (await response.json()) as QuizSøknader;
+  const søknader: QuizSøknader = await response.json();
   const påbegyntSøknad =
     søknader.paabegynt != null ? { ...søknader.paabegynt, erQuizSøknad: true } : null;
 
@@ -61,18 +60,26 @@ export async function parseOrkestratorResponse(response: Response): Promise<{
   påbegyntSøknad: PåbegyntSøknadMedKilde | null;
 }> {
   if (!response.ok) {
-    const errorText = await response.json();
-    logger.error("Feil ved innhenting av orkestrator-søknader", { errorText });
+    logger.error("Feil ved innhenting av orkestrator-søknader", {
+      errorText: await response.json(),
+    });
     return { søknader: null, påbegyntSøknad: null };
   }
 
-  const søknader = (await response.json()) as OrkestratorSoknad[];
-  const aktiv = søknader.find((søknad) => søknad.status === "PÅBEGYNT");
-  const påbegyntSøknad = aktiv
+  const alleSøknader: OrkestratorSoknad[] = await response.json();
+  const innenfor30Dager = subDays(Date.now(), 30);
+  const søknader = alleSøknader.filter(
+    (søknad) =>
+      søknad.status === "PÅBEGYNT" ||
+      (søknad.oppdatertTidspunkt !== undefined &&
+        new Date(søknad.oppdatertTidspunkt) > innenfor30Dager)
+  );
+  const påbegynt = søknader.find((søknad) => søknad.status === "PÅBEGYNT");
+  const påbegyntSøknad = påbegynt
     ? {
-        soknadUuid: aktiv.søknadId,
+        soknadUuid: påbegynt.søknadId,
         opprettet: "",
-        sistEndretAvBruker: aktiv.oppdatertTidspunkt,
+        sistEndretAvBruker: påbegynt.oppdatertTidspunkt,
         erQuizSøknad: false,
       }
     : null;

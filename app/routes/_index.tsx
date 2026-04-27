@@ -70,7 +70,7 @@ export async function loader({
 
   const påbegyntSøknad = orkestratorPåbegynt ?? quizPåbegynt;
 
-  if (påbegyntSøknad === null && søknader?.length === 0 && quizSøknader?.innsendte?.length === 0) {
+  if (påbegyntSøknad === null && søknader?.length === 0 && !quizSøknader?.innsendte?.length) {
     return redirect("/arbeidssoker");
   }
 
