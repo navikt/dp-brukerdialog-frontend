@@ -61,6 +61,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       DP_MINE_DAGPENGER_URL: getEnv("DP_MINE_DAGPENGER_URL"),
       GENERELL_INNSENDING_URL: getEnv("GENERELL_INNSENDING_URL"),
       DP_SOKNADSDIALOG_URL: getEnv("DP_SOKNADSDIALOG_URL"),
+      ARBEIDSSOKERREGISTRERING_URL: getEnv("ARBEIDSSOKERREGISTRERING_URL"),
       FARO_URL: getEnv("FARO_URL"),
     },
   });
