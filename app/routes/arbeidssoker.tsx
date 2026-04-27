@@ -1,45 +1,36 @@
 import { Alert, BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { Link, redirect, useLoaderData } from "react-router";
 import { SøknadIkon } from "~/components/SøknadIkon";
-import { hentArbeidssøkerperioder } from "~/models/hent-arbeidssøkerperioder.server";
+import {
+  hentArbeidssøkerperioder,
+  IArbeidssokerperioder,
+} from "~/models/hent-arbeidssøkerperioder.server";
 import { getEnv } from "~/utils/env.utils";
 import { Route } from "./+types/arbeidssoker";
 
-type ArbeidssokerStatus = "UNREGISTERED" | "ERROR";
-
 type LoaderData = {
-  status: ArbeidssokerStatus;
-  registreringUrl: string;
+  status: "UNREGISTERED" | "ERROR";
 };
 
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData | Response> {
-  const registreringUrl =
-    getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/";
-
   const response = await hentArbeidssøkerperioder(request);
 
-  if (response.ok) {
-    const perioder = await response.json();
-    const erRegistrert = perioder.some(
-      (periode: { avsluttet: unknown }) => periode.avsluttet === null
-    );
-
-    if (erRegistrert) {
-      return redirect("/opprett-soknad");
-    }
-
-    return { status: "UNREGISTERED", registreringUrl };
+  if (!response.ok) {
+    return { status: "ERROR" };
   }
 
-  return { status: "ERROR", registreringUrl };
+  const perioder: IArbeidssokerperioder[] = await response.json();
+  const erRegistrert = perioder.some((periode) => periode.avsluttet === null);
+
+  if (erRegistrert) {
+    return redirect("/opprett-soknad");
+  }
+
+  return { status: "UNREGISTERED" };
 }
 
 export default function ArbeidssokerSide() {
-  const { status, registreringUrl } = useLoaderData<typeof loader>();
-
-  function handleRegistrerKlikk() {
-    sessionStorage.setItem("kommerFraDagpenger", "true");
-  }
+  const { status } = useLoaderData<typeof loader>();
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -67,7 +58,16 @@ export default function ArbeidssokerSide() {
             sendt søknad om dagpenger
           </BodyLong>
           <HStack gap="space-16" align="center">
-            <Button as="a" href={registreringUrl} variant="primary" onClick={handleRegistrerKlikk}>
+            <Button
+              as="a"
+              href={
+                getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/"
+              }
+              variant="primary"
+              onClick={() => {
+                sessionStorage.setItem("kommerFraDagpenger", "true");
+              }}
+            >
               Registrer deg som arbeidssøker
             </Button>
 

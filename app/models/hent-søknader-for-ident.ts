@@ -25,11 +25,11 @@ export interface OrkestratorSoknad {
 }
 
 export interface KombinertInnsendtSoknad extends InnsendteSøknader {
-  erOrkestratorSøknad: boolean;
+  erQuizSøknad: boolean;
 }
 
 export interface PåbegyntSøknadMedKilde extends PåBegynteSøknader {
-  erOrkestratorSøknad: boolean;
+  erQuizSøknad: boolean;
 }
 
 export function mapOrkestratorInnsendteSoknader(
@@ -48,7 +48,7 @@ export function mapOrkestratorInnsendteSoknader(
       .map((soknad) => ({
         soknadUuid: soknad.søknadId,
         forstInnsendt: soknad.innsendtTimestamp!,
-        erOrkestratorSøknad: true,
+        erQuizSøknad: false,
       })) || []
   );
 }
@@ -59,7 +59,7 @@ export function mapQuizInnsendteSoknader(
   return (
     innsendte?.map((soknad) => ({
       ...soknad,
-      erOrkestratorSøknad: false,
+      erQuizSøknad: true,
     })) || []
   );
 }

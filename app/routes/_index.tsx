@@ -1,20 +1,57 @@
-import { redirect, useLoaderData } from "react-router";
-import { hentOrkestratorSøknader, hentQuizSøknader } from "~/models/hent-søknader";
+import { redirect } from "react-router";
+import {
+  hentOrkestratorSøknader,
+  hentQuizSøknader,
+  parseQuizResponse,
+  parseOrkestratorResponse,
+} from "~/models/hent-søknader";
 import {
   InnsendteSøknader,
   OrkestratorSoknad,
-  QuizSøknader,
   PåbegyntSøknadMedKilde,
 } from "~/models/hent-søknader-for-ident";
-import { logger } from "~/utils/logger.utils";
 import { Route } from "./+types/_index";
 import { SøknadOversikt } from "~/seksjon/oversikt/SøknadOversikt";
+import { getEnv } from "~/utils/env.utils";
+import { hentDpSøknadOboToken, hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 
 export type SøknadOversiktType = {
-  orkestratorSøknader: OrkestratorSoknad[];
+  søknader: OrkestratorSoknad[];
   quizSøknader?: InnsendteSøknader[];
   påbegyntSøknad: PåbegyntSøknadMedKilde | null;
 };
+
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const soknadUuid = formData.get("soknadUuid") as string;
+  const erQuizSøknad = formData.get("erQuizSøknad") === "true";
+
+  if (erQuizSøknad) {
+    const url = `${getEnv("DP_SOKNAD_URL")}/soknad/${soknadUuid}`;
+    const onBehalfOfToken = await hentDpSøknadOboToken(request);
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { Accept: "application/json", Authorization: `Bearer ${onBehalfOfToken}` },
+    });
+
+    if (!response.ok) {
+      return { error: "Vi klarte ikke å slette din søknad. Vennligst prøv igjen." };
+    }
+  } else {
+    const url = `${getEnv("DP_SOKNAD_ORKESTRATOR_URL")}/soknad/${soknadUuid}`;
+    const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { Accept: "application/json", Authorization: `Bearer ${onBehalfOfToken}` },
+    });
+
+    if (!response.ok) {
+      return { error: "Vi klarte ikke å slette din søknad. Vennligst prøv igjen." };
+    }
+  }
+
+  return redirect("/arbeidssoker");
+}
 
 export async function loader({
   request,
@@ -23,56 +60,27 @@ export async function loader({
     hentQuizSøknader(request),
     hentOrkestratorSøknader(request),
   ]);
-  let quizSøknader = null;
-  let orkestratorSøknader = null;
-  let påbegyntSøknad: PåbegyntSøknadMedKilde | null = null;
 
-  if (!quizSøknaderResponse.ok) {
-    const errorText = await quizSøknaderResponse.json();
-    logger.error("Feil ved innhenting av quiz-søknader", { errorText });
-  } else {
-    quizSøknader = (await quizSøknaderResponse.json()) as QuizSøknader;
+  const { søknader: quizSøknader, påbegyntSøknad: quizPåbegynt } =
+    await parseQuizResponse(quizSøknaderResponse);
 
-    if (quizSøknader.paabegynt != null) {
-      påbegyntSøknad = {
-        ...quizSøknader.paabegynt,
-        erOrkestratorSøknad: false,
-      };
-    }
-  }
+  const { søknader, påbegyntSøknad: orkestratorPåbegynt } = await parseOrkestratorResponse(
+    orkestratorSøknaderResponse
+  );
 
-  if (!orkestratorSøknaderResponse.ok) {
-    const errorText = await orkestratorSøknaderResponse.json();
-    logger.error("Feil ved innhenting av orkestrator-søknader", { errorText });
-  } else {
-    orkestratorSøknader = (await orkestratorSøknaderResponse.json()) as OrkestratorSoknad[];
-    const aktiv = orkestratorSøknader.find((søknad) => søknad.status === "PÅBEGYNT");
-    if (aktiv) {
-      påbegyntSøknad = {
-        soknadUuid: aktiv.søknadId,
-        opprettet: "",
-        sistEndretAvBruker: aktiv.oppdatertTidspunkt,
-        erOrkestratorSøknad: true,
-      };
-    }
-  }
+  const påbegyntSøknad = orkestratorPåbegynt ?? quizPåbegynt;
 
-  if (
-    påbegyntSøknad === null &&
-    orkestratorSøknader?.length === 0 &&
-    quizSøknader?.innsendte?.length === 0
-  ) {
+  if (påbegyntSøknad === null && søknader?.length === 0 && !quizSøknader?.innsendte?.length) {
     return redirect("/arbeidssoker");
   }
 
   return {
-    orkestratorSøknader: orkestratorSøknader ?? [],
+    søknader: søknader ?? [],
     quizSøknader: quizSøknader?.innsendte ?? [],
-    påbegyntSøknad: påbegyntSøknad,
+    påbegyntSøknad,
   };
 }
 
 export default function BrukerdialogIndex() {
-  const loaderData = useLoaderData<typeof loader>();
-  return <SøknadOversikt søknader={loaderData}></SøknadOversikt>;
+  return <SøknadOversikt />;
 }
