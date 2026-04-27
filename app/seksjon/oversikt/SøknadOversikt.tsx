@@ -1,5 +1,5 @@
 import { BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import { Form, Link, useActionData } from "react-router";
+import { Form, Link, useActionData, useNavigation } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
@@ -15,6 +15,7 @@ import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
   const actionData = useActionData<typeof action>();
+  const { state } = useNavigation();
   const { søknader, quizSøknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
 
   const orkestratorInnsendteSøknader = mapOrkestratorInnsendteSoknader(søknader);
@@ -70,7 +71,7 @@ export function SøknadOversikt() {
               <VStack gap="space-16">
                 {påbegyntSøknad.erQuizSøknad && (
                   <EksterneLenke
-                    href={`${getEnv("DP_SOKNADSDIALOG_URL")}/soknad/${påbegyntSøknad.soknadUuid}?fortsett=true`}
+                    href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${påbegyntSøknad.soknadUuid}?fortsett=true`}
                     tekst="Fortsett påbegynt søknad"
                     variant="primary"
                     asButton
@@ -89,7 +90,11 @@ export function SøknadOversikt() {
                       name="erQuizSøknad"
                       value={String(påbegyntSøknad.erQuizSøknad)}
                     />
-                    <Button type="submit" variant="secondary">
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      loading={state === "submitting" || state === "loading"}
+                    >
                       Slett og start ny søknad
                     </Button>
                   </Form>
