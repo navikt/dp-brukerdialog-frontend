@@ -1,10 +1,12 @@
 import { useRouteLoaderData } from "react-router";
 
 import type { loader as rootLoader } from "~/root";
+import type { loader as indexLoader } from "~/routes/_index";
 import type { loader as soknadIdLoader } from "~/routes/$soknadId";
 
 type Loaders = {
   root: typeof rootLoader;
+  "routes/_index": typeof indexLoader;
   "routes/$soknadId": typeof soknadIdLoader;
 };
 
