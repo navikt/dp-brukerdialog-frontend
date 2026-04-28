@@ -2,6 +2,8 @@ import { FormProgress, Heading } from "@navikt/ds-react";
 import { LoaderFunctionArgs, Outlet, redirect, useLoaderData, useLocation } from "react-router";
 import invariant from "tiny-invariant";
 import { SøknadIkon } from "~/components/SøknadIkon";
+import { hentOrkestratorSøknader } from "~/models/hent-søknader";
+import { OrkestratorSoknad } from "~/models/hent-søknader-for-ident";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
 import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
 import { SoknadProvider } from "~/seksjon/soknad.context";
@@ -61,6 +63,8 @@ export type SoknadIdRoute = {
   søknadId: string;
 };
 
+const SIDER_TILGJENGELIG_ETTER_INNSENDING = ["kvittering", "ettersending"];
+
 export async function loader({
   request,
   params,
@@ -71,8 +75,22 @@ export async function loader({
 
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const progressResponse = await hentSøknadFremgangInfo(request, params.soknadId);
-  const sistOppdatertResponse = await hentSøknadSistOppdatert(request, params.soknadId);
+  const [progressResponse, sistOppdatertResponse, søknaderResponse] = await Promise.all([
+    hentSøknadFremgangInfo(request, params.soknadId),
+    hentSøknadSistOppdatert(request, params.soknadId),
+    hentOrkestratorSøknader(request),
+  ]);
+
+  if (
+    !SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonsIdFraUrl) &&
+    søknaderResponse.ok
+  ) {
+    const søknader: OrkestratorSoknad[] = await søknaderResponse.json();
+    const søknad = søknader.find((s) => s.søknadId === params.soknadId);
+    if (søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT") {
+      return redirect(`/${params.soknadId}/kvittering`);
+    }
+  }
 
   let sistOppdatert = sistOppdatertResponse.ok
     ? JSON.parse(await sistOppdatertResponse.text())
