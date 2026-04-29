@@ -37,19 +37,6 @@ export function TekniskFeil({ error }: { error?: unknown }) {
               />
             </HStack>
           </VStack>
-          <VStack gap="space-16" className="mt-56">
-            <div>
-              <Heading level="2" size="large" spacing>
-                Page not found
-              </Heading>
-              <BodyShort spacing>The page you requested cannot be found.</BodyShort>
-              <BodyShort>
-                Go to the{" "}
-                <EksterneLenke href={getEnv("DP_MINE_DAGPENGER_URL")} tekst="mine dagpenger" />, or
-                use one of the links in the menu.
-              </BodyShort>
-            </div>
-          </VStack>
 
           {getEnv("IS_LOCALHOST") === "true" && isRouteErrorResponse(error) && (
             <VStack gap="space-4" className="mt-56">

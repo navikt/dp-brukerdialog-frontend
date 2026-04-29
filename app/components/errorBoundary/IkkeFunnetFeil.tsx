@@ -26,20 +26,6 @@ export function IkkeFunnetFeil() {
               />
             </HStack>
           </VStack>
-
-          <VStack gap="space-16" className="mt-56">
-            <div>
-              <Heading level="2" size="large" spacing>
-                Page not found
-              </Heading>
-              <BodyShort spacing>The page you requested cannot be found.</BodyShort>
-              <BodyShort>
-                Go to the{" "}
-                <EksterneLenke href={getEnv("DP_MINE_DAGPENGER_URL")} tekst="mine dagpenger" />, or
-                use one of the links in the menu.
-              </BodyShort>
-            </div>
-          </VStack>
         </div>
       </main>
     </Theme>
