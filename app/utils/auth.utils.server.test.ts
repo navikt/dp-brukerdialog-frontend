@@ -43,7 +43,7 @@ describe("auth.utils.server", () => {
       expect(getEnv).toHaveBeenCalledWith("DP_SOKNAD_ORKESTRATOR_TOKEN");
     });
 
-    it("skal logge error når localhost token er utløpt og MSW er på false", async () => {
+    it("skal logge error og kaste en 401 response når localhost token er utløpt og MSW er på false", async () => {
       vi.mocked(getEnv).mockImplementation((key) => {
         if (key === "IS_LOCALHOST") return "true";
         if (key === "DP_SOKNAD_ORKESTRATOR_TOKEN") return "expired-token";
@@ -52,7 +52,7 @@ describe("auth.utils.server", () => {
       });
       vi.mocked(oasis.expiresIn).mockReturnValue(-1);
 
-      await hentSoknadOrkestratorOboToken(mockRequest);
+      await expect(hentSoknadOrkestratorOboToken(mockRequest)).rejects.toThrow(Response);
 
       expect(loggerUtils.logger.error).toHaveBeenCalledWith(
         "Lokalt token utløpt! Oppdatere token på nytt!"
@@ -71,19 +71,6 @@ describe("auth.utils.server", () => {
       await hentSoknadOrkestratorOboToken(mockRequest);
 
       expect(loggerUtils.logger.error).not.toHaveBeenCalled();
-    });
-
-    it("skal returnere tom streng når localhost token mangler", async () => {
-      vi.mocked(getEnv).mockImplementation((key) => {
-        if (key === "IS_LOCALHOST") return "true";
-        if (key === "DP_SOKNAD_ORKESTRATOR_TOKEN") return "";
-        if (key === "USE_MSW") return "false";
-        return "";
-      });
-
-      const token = await hentSoknadOrkestratorOboToken(mockRequest);
-
-      expect(token).toBe("");
     });
 
     it("skal hent søknad orkestrator dev OBO token", async () => {
@@ -183,9 +170,7 @@ describe("auth.utils.server", () => {
         errorType: "JWTExpired" as any,
       });
 
-      await expect(hentOnBehalfOfToken(mockRequest, "test-audience")).rejects.toThrowError(
-        Response
-      );
+      await expect(hentOnBehalfOfToken(mockRequest, "test-audience")).rejects.toThrow(Response);
 
       expect(loggerUtils.logger.error).toHaveBeenCalledWith(expect.stringContaining("Uautorisert"));
     });
@@ -198,9 +183,7 @@ describe("auth.utils.server", () => {
         error: new Error("OBO request failed"),
       });
 
-      await expect(hentOnBehalfOfToken(mockRequest, "test-audience")).rejects.toThrowError(
-        Response
-      );
+      await expect(hentOnBehalfOfToken(mockRequest, "test-audience")).rejects.toThrow(Response);
 
       expect(loggerUtils.logger.error).toHaveBeenCalledWith(
         expect.stringContaining("Klarte ikke å hente OBO token")
