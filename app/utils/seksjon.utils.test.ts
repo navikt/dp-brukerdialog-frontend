@@ -91,10 +91,18 @@ describe("validerSøknadId", () => {
   });
 
   it("kaster 404 Response for ugyldig UUID", () => {
-    expect(() => validerSøknadId("ikke-en-uuid")).toThrow();
+    expect.assertions(2);
+
+    try {
+      validerSøknadId("ikke-en-uuid");
+    } catch (e) {
+      expect(e instanceof Response).toBe(true);
+      expect((e as Response).status).toBe(404);
+    }
   });
 
   it("kaster 404 Response for tilfeldig tekst", () => {
+    expect.assertions(2);
     try {
       validerSøknadId("abc123");
     } catch (e) {
