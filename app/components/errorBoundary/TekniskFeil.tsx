@@ -1,13 +1,4 @@
-import {
-  BodyShort,
-  Button,
-  CopyButton,
-  Heading,
-  HStack,
-  Label,
-  Theme,
-  VStack,
-} from "@navikt/ds-react";
+import { BodyShort, Button, Heading, HStack, Label, Theme, VStack } from "@navikt/ds-react";
 import { isRouteErrorResponse } from "react-router";
 import { getEnv } from "~/utils/env.utils";
 import { EksterneLenke } from "../EksterneLenke";
@@ -42,7 +33,6 @@ export function TekniskFeil({ error }: { error?: unknown }) {
             <VStack gap="space-4" className="mt-56">
               <HStack align="center" gap="space-8">
                 <Label>Feilmelding fra throw new Response:</Label>
-                <CopyButton copyText={error.data || ""} />
               </HStack>
               <div className="kode">{error.data}</div>
             </VStack>
@@ -52,7 +42,6 @@ export function TekniskFeil({ error }: { error?: unknown }) {
             <VStack gap="space-4" className="mt-56">
               <HStack align="center" gap="space-8">
                 <Label>Stack trace fra throw new Error:</Label>
-                <CopyButton copyText={error.stack || ""} />
               </HStack>
               <div className="kode">{error.stack}</div>
             </VStack>
