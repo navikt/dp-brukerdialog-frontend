@@ -15,8 +15,12 @@ import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
   const actionData = useActionData<typeof action>();
-  const { state } = useNavigation();
+  const navigation = useNavigation();
   const { søknader, quizSøknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
+
+  const sletterSøknad =
+    (navigation.state === "submitting" || navigation.state === "loading") &&
+    navigation.formData != null;
 
   const orkestratorInnsendteSøknader = mapOrkestratorInnsendteSoknader(søknader);
   const quizInnsendteSøknader = mapQuizInnsendteSoknader(quizSøknader);
@@ -35,15 +39,13 @@ export function SøknadOversikt() {
       </div>
       <div className="innhold">
         <VStack gap="space-32">
-          <VStack gap="space-16">
-            {alleSøknader.length > 0 && (
+          {alleSøknader.length > 0 && (
+            <VStack gap="space-16">
               <BodyLong>
                 Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad
                 eller sende inn en ny?
               </BodyLong>
-            )}
-            {alleSøknader.length > 0 && (
-              <VStack gap="space-16" justify="start">
+              <VStack gap="space-8">
                 {alleSøknader.map((soknad) =>
                   soknad.erQuizSøknad ? (
                     <EksterneLenke
@@ -63,8 +65,8 @@ export function SøknadOversikt() {
                   )
                 )}
               </VStack>
-            )}
-          </VStack>
+            </VStack>
+          )}
           {påbegyntSøknad && (
             <VStack gap="space-16">
               <BodyLong>
@@ -94,11 +96,7 @@ export function SøknadOversikt() {
                       name="erQuizSøknad"
                       value={String(påbegyntSøknad.erQuizSøknad)}
                     />
-                    <Button
-                      type="submit"
-                      variant="secondary"
-                      loading={state === "submitting" || state === "loading"}
-                    >
+                    <Button type="submit" variant="secondary" loading={sletterSøknad}>
                       Slett og start ny søknad
                     </Button>
                   </Form>
@@ -106,13 +104,16 @@ export function SøknadOversikt() {
               </VStack>
             </VStack>
           )}
-          {!påbegyntSøknad && (
-            <Link to="/arbeidssoker">
-              <Button variant="primary" as="a">
-                Start ny søknad
-              </Button>
-            </Link>
-          )}
+
+          <VStack>
+            {!påbegyntSøknad && (
+              <Link to="/arbeidssoker">
+                <Button variant="primary" as="a">
+                  Start ny søknad
+                </Button>
+              </Link>
+            )}
+          </VStack>
 
           {actionData && (
             <SeksjonTekniskFeil

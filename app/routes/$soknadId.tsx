@@ -2,11 +2,12 @@ import { FormProgress, Heading } from "@navikt/ds-react";
 import { LoaderFunctionArgs, Outlet, redirect, useLoaderData, useLocation } from "react-router";
 import invariant from "tiny-invariant";
 import { SøknadIkon } from "~/components/SøknadIkon";
-import { hentOrkestratorSøknader } from "~/models/hent-søknader";
-import { OrkestratorSoknad } from "~/models/hent-søknader-for-ident";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
 import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
+import { hentOrkestratorSøknader } from "~/models/hent-søknader";
+import { OrkestratorSoknad } from "~/models/hent-søknader-for-ident";
 import { SoknadProvider } from "~/seksjon/soknad.context";
+import { validerSøknadId } from "~/utils/seksjon.utils";
 
 type Steg = {
   tittel: string;
@@ -69,11 +70,10 @@ export async function loader({
   request,
   params,
 }: LoaderFunctionArgs): Promise<SoknadIdRoute | Response> {
-  const url = new URL(request.url);
-  const pathParts = url.pathname.split("/");
-  const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
-
   invariant(params.soknadId, "Søknad ID er påkrevd");
+  validerSøknadId(params.soknadId);
+
+  const seksjonId = new URL(request.url).pathname.split("/").at(-1)!;
 
   const [progressResponse, sistOppdatertResponse, søknaderResponse] = await Promise.all([
     hentSøknadFremgangInfo(request, params.soknadId),
@@ -81,10 +81,7 @@ export async function loader({
     hentOrkestratorSøknader(request),
   ]);
 
-  if (
-    !SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonsIdFraUrl) &&
-    søknaderResponse.ok
-  ) {
+  if (!SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId) && søknaderResponse.ok) {
     const søknader: OrkestratorSoknad[] = await søknaderResponse.json();
     const søknad = søknader.find((s) => s.søknadId === params.soknadId);
     if (søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT") {
@@ -92,15 +89,15 @@ export async function loader({
     }
   }
 
-  let sistOppdatert = sistOppdatertResponse.ok
-    ? JSON.parse(await sistOppdatertResponse.text())
+  const sistOppdatert = sistOppdatertResponse.ok
+    ? new Date(await sistOppdatertResponse.json())
     : undefined;
 
   if (!progressResponse.ok) {
     return {
       søknadProgress: fyllTommeSteger(),
       aktivSteg: 1,
-      sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
+      sistOppdatert: sistOppdatert,
       søknadId: params.soknadId,
     };
   }
@@ -112,17 +109,17 @@ export async function loader({
     return redirect(`/${params.soknadId}/kvittering`);
   }
 
-  const soknadSections: FremgangSteg[] = stegISøknaden.map((step) => ({
+  const søknadSeksjoner: FremgangSteg[] = stegISøknaden.map((step) => ({
     ...step,
     fullført:
       seksjoner.includes(step.path) ||
-      (step.path == "dokumentasjon" && seksjonsIdFraUrl == "oppsummering"),
+      (step.path == "dokumentasjon" && seksjonId == "oppsummering"),
   }));
 
   return {
-    søknadProgress: soknadSections,
-    aktivSteg: finnAktivSteg(soknadSections, request.url) + 1,
-    sistOppdatert: sistOppdatert ? new Date(sistOppdatert) : undefined,
+    søknadProgress: søknadSeksjoner,
+    aktivSteg: finnAktivSteg(søknadSeksjoner, request.url) + 1,
+    sistOppdatert: sistOppdatert,
     søknadId: params.soknadId,
   };
 }
@@ -142,8 +139,8 @@ export default function SoknadIdLayoutSide() {
             Søknad om dagpenger
           </Heading>
         </div>
-        <div className="progressbar">
-          {!erEttersending && (
+        {!erEttersending && (
+          <div className="progressbar">
             <FormProgress totalSteps={stegISøknaden.length} activeStep={loaderData?.aktivSteg || 1}>
               {progressData.map((steg) => (
                 <FormProgress.Step href={steg.path} completed={steg.fullført} interactive={false}>
@@ -151,8 +148,8 @@ export default function SoknadIdLayoutSide() {
                 </FormProgress.Step>
               ))}
             </FormProgress>
-          )}
-        </div>
+          </div>
+        )}
         <Outlet />
       </main>
     </SoknadProvider>
