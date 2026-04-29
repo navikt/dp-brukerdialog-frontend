@@ -1,6 +1,6 @@
 ingresses:
-  - https://www.nav.no/ny-dagpenger/dialog/soknad
-base_path: "/ny-dagpenger/dialog/soknad"
+  - https://www.nav.no/dagpenger/dialog/soknad
+base_path: "/dagpenger/dialog/soknad"
 dekorator:
   url: https://www.nav.no/dekoratoren
   env: prod
