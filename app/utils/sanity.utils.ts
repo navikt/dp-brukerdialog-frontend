@@ -22,7 +22,9 @@ export function portableTextToKomponenter(body: TypedObject | TypedObject[]): Ko
       ];
     }
 
-    const html = toHTML([block]);
+    const rawHtml = toHTML([block]);
+    const html = rawHtml.replace(/<ol>/g, "<ul>").replace(/<\/ol>/g, "</ul>");
+
     if (html === "<p></p>") {
       return [];
     }
