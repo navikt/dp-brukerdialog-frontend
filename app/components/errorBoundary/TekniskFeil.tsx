@@ -54,7 +54,7 @@ export function TekniskFeil({ error }: { error?: unknown }) {
           {getEnv("IS_LOCALHOST") === "true" && isRouteErrorResponse(error) && (
             <VStack gap="space-4" className="mt-56">
               <HStack align="center" gap="space-8">
-                <Label>Feilmelding:</Label>
+                <Label>Feilmeldign fra throw new Response:</Label>
                 <CopyButton copyText={error.data || ""} />
               </HStack>
               <div className="kode">{error.data}</div>
@@ -64,7 +64,7 @@ export function TekniskFeil({ error }: { error?: unknown }) {
           {getEnv("IS_LOCALHOST") === "true" && error instanceof Error && (
             <VStack gap="space-4" className="mt-56">
               <HStack align="center" gap="space-8">
-                <Label>Stack trace:</Label>
+                <Label>Stack trace fra throw new Error:</Label>
                 <CopyButton copyText={error.stack || ""} />
               </HStack>
               <div className="kode">{error.stack}</div>
