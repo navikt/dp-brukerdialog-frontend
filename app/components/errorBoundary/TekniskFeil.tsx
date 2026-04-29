@@ -41,7 +41,7 @@ export function TekniskFeil({ error }: { error?: unknown }) {
           {getEnv("IS_LOCALHOST") === "true" && isRouteErrorResponse(error) && (
             <VStack gap="space-4" className="mt-56">
               <HStack align="center" gap="space-8">
-                <Label>Feilmeldign fra throw new Response:</Label>
+                <Label>Feilmelding fra throw new Response:</Label>
                 <CopyButton copyText={error.data || ""} />
               </HStack>
               <div className="kode">{error.data}</div>
