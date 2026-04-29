@@ -81,11 +81,18 @@ export async function loader({
     hentOrkestratorSøknader(request),
   ]);
 
-  if (!SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId) && søknaderResponse.ok) {
+  if (søknaderResponse.ok) {
     const søknader: OrkestratorSoknad[] = await søknaderResponse.json();
     const søknad = søknader.find((s) => s.søknadId === params.soknadId);
-    if (søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT") {
+    const søknadFullført = søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT";
+    const erPåKvitteringEllerEttersending = SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId);
+
+    if (!erPåKvitteringEllerEttersending && søknadFullført) {
       return redirect(`/${params.soknadId}/kvittering`);
+    }
+
+    if (erPåKvitteringEllerEttersending && !søknadFullført) {
+      return redirect(`/${params.soknadId}/personalia`);
     }
   }
 
