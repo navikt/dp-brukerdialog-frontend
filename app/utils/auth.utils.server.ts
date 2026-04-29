@@ -8,6 +8,11 @@ function håndterLocalhostToken(tokenName: keyof IEnv) {
 
   if (expiresIn(token) <= 0 && !useMsw) {
     logger.error("Lokalt token utløpt! Oppdatere token på nytt!");
+
+    throw new Response("Lokalt token er utløpt. Kjør 'npm run token' for å generere nytt token.", {
+      status: 401,
+      statusText: "Token utløpt",
+    });
   }
 
   return token || "";

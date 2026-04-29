@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { lagSeksjonPayload } from "./seksjon.utils";
 import {
   egenNæringEgenNæringsvirksomhetKomponenter,
   egenNæringEgetGårdsbrukKomponenter,
   leggTilGårdsbrukKomponenter,
   leggTilNæringsvirksomhetKomponenter,
 } from "../seksjon/egen-næring/v1/egen-næring.komponenter";
+import { lagSeksjonPayload, validerSøknadId } from "./seksjon.utils";
 
 describe("lagSeksjonPayload", () => {
   const formData = {
@@ -82,5 +82,24 @@ describe("lagSeksjonPayload", () => {
     expect(brutto.length).toBe(
       del1Payload.length + del2Payload.length + del3Payload.length + del4Payload.length
     );
+  });
+});
+
+describe("validerSøknadId", () => {
+  it("kaster ikke feil for gyldig UUID", () => {
+    expect(() => validerSøknadId("550e8400-e29b-41d4-a716-446655440000")).not.toThrow();
+  });
+
+  it("kaster 404 Response for ugyldig UUID", () => {
+    expect(() => validerSøknadId("ikke-en-uuid")).toThrow();
+  });
+
+  it("kaster 404 Response for tilfeldig tekst", () => {
+    try {
+      validerSøknadId("abc123");
+    } catch (e) {
+      expect(e instanceof Response).toBe(true);
+      expect((e as Response).status).toBe(404);
+    }
   });
 });
