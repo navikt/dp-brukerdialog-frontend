@@ -73,6 +73,22 @@ describe("auth.utils.server", () => {
       expect(loggerUtils.logger.error).not.toHaveBeenCalled();
     });
 
+    it("skal kaste 401 Response med 'Token mangler' når localhost token mangler", async () => {
+      vi.mocked(getEnv).mockImplementation((key) => {
+        if (key === "IS_LOCALHOST") return "true";
+        if (key === "DP_SOKNAD_ORKESTRATOR_TOKEN") return "";
+        if (key === "USE_MSW") return "false";
+        return "";
+      });
+
+      await expect(hentSoknadOrkestratorOboToken(mockRequest)).rejects.toThrow(Response);
+
+      expect(loggerUtils.logger.error).toHaveBeenCalledWith(
+        "Lokalt token mangler! Kjør 'npm run token' for å generere token."
+      );
+      expect(oasis.expiresIn).not.toHaveBeenCalled();
+    });
+
     it("skal hent søknad orkestrator dev OBO token", async () => {
       vi.mocked(getEnv).mockImplementation((key) => {
         if (key === "IS_LOCALHOST") return "false";

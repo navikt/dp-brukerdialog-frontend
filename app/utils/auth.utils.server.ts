@@ -6,6 +6,14 @@ function håndterLocalhostToken(tokenName: keyof IEnv) {
   const token = getEnv(tokenName);
   const useMsw = getEnv("USE_MSW") === "true";
 
+  if (!token) {
+    logger.error("Lokalt token mangler! Kjør 'npm run token' for å generere token.");
+    throw new Response("Lokalt token mangler. Kjør 'npm run token' for å generere token.", {
+      status: 401,
+      statusText: "Token mangler",
+    });
+  }
+
   if (expiresIn(token) <= 0 && !useMsw) {
     logger.error("Lokalt token utløpt! Oppdatere token på nytt!");
 
@@ -15,7 +23,7 @@ function håndterLocalhostToken(tokenName: keyof IEnv) {
     });
   }
 
-  return token || "";
+  return token;
 }
 
 export async function hentSoknadOrkestratorOboToken(request: Request) {
