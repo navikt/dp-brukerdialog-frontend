@@ -87,7 +87,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
                 variant="tertiary"
                 onClick={() => {
                   slettetSøknadBekreftelseModal.current?.close();
-                  return navigate("/opprett-soknad");
+                  return navigate("/arbeidssoker");
                 }}
               >
                 Start ny søknad
