@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   FlervalgSpørsmål,
   HeadingTekst,
@@ -68,5 +69,14 @@ function getOptions(spørsmål: KomponentType): Option[] {
     }
   } else {
     return (spørsmål as any)?.options;
+  }
+}
+
+export function validerSøknadId(søknadId: string) {
+  if (!z.uuid().safeParse(søknadId).success) {
+    throw new Response("Siden du leter etter finnes ikke.", {
+      status: 404,
+      statusText: "Beklager, vi fant ikke siden",
+    });
   }
 }

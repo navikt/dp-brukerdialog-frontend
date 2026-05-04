@@ -12,6 +12,7 @@ import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { SanityReadMore } from "~/sanity/components/SanityReadMore";
 import { portableTextToKomponenter } from "~/utils/sanity.utils";
 import { Route } from "./+types/opprett-soknad";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 
 const SEKSJON_ID = "startside";
 const SEKSJON_NAVN = "Startside";
@@ -64,14 +65,23 @@ export default function OpprettSoknadSide() {
     if (!vilkårTekst?.body) return;
 
     const bekreftVilkårKomponent: KomponentType = {
-      id: crypto.randomUUID(),
-      type: "forklarendeTekst",
+      id: "bekreftVilkår",
+      type: "envalg",
       label: bekreftVilkårTekst,
+      options: [
+        { value: "ja", label: "Ja" },
+        { value: "nei", label: "Nei" },
+      ],
     };
 
     const pdfGrunnlag = {
       navn: SEKSJON_NAVN,
-      spørsmål: [...portableTextToKomponenter(vilkårTekst.body), bekreftVilkårKomponent],
+      spørsmål: [
+        ...portableTextToKomponenter(vilkårTekst.body),
+        ...lagSeksjonPayload([{ ...bekreftVilkårKomponent, id: "bekreftVilkår" }], {
+          bekreftVilkår: form.transient.value().bekreftVilkår ? "ja" : "nei",
+        }),
+      ],
     };
 
     form.setValue("pdfGrunnlag", JSON.stringify(pdfGrunnlag));

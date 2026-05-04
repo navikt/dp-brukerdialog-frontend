@@ -46,6 +46,16 @@
   text-align: center;
 }
 
+.kode {
+  font-family: var(--ax-font-mono);
+  background-color: var(--ax-neutral-100);
+  padding: var(--ax-space-16);
+  border-radius: var(--ax-space-8);
+  overflow-x: auto;
+  color: var(--ax-bg-danger-strong);
+  max-height: 40vh;
+}
+
 .card {
   padding: var(--ax-space-32);
   background-color: var(--ax-neutral-200);

@@ -4,6 +4,7 @@ import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
 import {
   data,
+  isRouteErrorResponse,
   Links,
   LinksFunction,
   LoaderFunctionArgs,
@@ -15,15 +16,17 @@ import {
   useNavigate,
 } from "react-router";
 import { Route } from "./+types/root";
-import { ErrorBoundaryKomponent } from "./components/ErrorBoundaryKomponent";
+import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
+import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
+import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import indexStyles from "./index.css?url";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
-import { logger } from "./utils/logger.utils";
 import { sanityClient } from "./sanity/sanity.config";
 import { allTextsQuery } from "./sanity/sanity.query";
 import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
+import { logger } from "./utils/logger.utils";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -114,5 +117,7 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <ErrorBoundaryKomponent error={error} />;
+  if (isRouteErrorResponse(error) && error.status === 404) return <IkkeFunnetFeil />;
+  if (isRouteErrorResponse(error) || error instanceof Error) return <TekniskFeil error={error} />;
+  return <UkjentFeil />;
 }
