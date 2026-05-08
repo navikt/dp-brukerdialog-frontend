@@ -3,3 +3,5 @@ ignoredBuiltDependencies:
   - msw
   - protobufjs
   - unrs-resolver
+overrides:
+  uuid@<14.0.0: '>=14.0.0'
