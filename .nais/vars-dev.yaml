@@ -23,4 +23,4 @@ arbeidssokerregistrering_url: https://www.ansatt.dev.nav.no/arbeid/registrering
 dp_mine_dagpenger_url: https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/mine-dagpenger
 generell_innsending_url: https://arbeid.intern.dev.nav.no/dagpenger/dialog/generell-innsending/
 dp_soknad_url: http://dp-soknad/arbeid/dagpenger/soknadapi
-dp_soknadsdialog_url: https://arbeid.intern.dev.nav.no/dagpenger/dialog/soknad
+dp_soknadsdialog_url: https://arbeid.intern.dev.nav.no/gammel-dagpenger/dialog/soknad
