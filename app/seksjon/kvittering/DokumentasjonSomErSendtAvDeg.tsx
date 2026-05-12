@@ -28,7 +28,7 @@ export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps
             <Button
               variant="tertiary"
               size="small"
-              icon={<DownloadIcon />}
+              icon={<DownloadIcon aria-hidden />}
               onClick={() =>
                 lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
               }

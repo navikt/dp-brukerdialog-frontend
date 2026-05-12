@@ -13,6 +13,8 @@ import { action } from "~/routes/_index";
 import { getEnv } from "~/utils/env.utils";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Søknadsoversikt";
+
 export function SøknadOversikt() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
@@ -31,6 +33,7 @@ export function SøknadOversikt() {
 
   return (
     <main id="maincontent" tabIndex={-1}>
+      <title>{SEKSJON_TITTEL}</title>
       <div className="soknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">

@@ -375,10 +375,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button
-                  type="submit"
-                  icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" aria-hidden />}
-                >
+                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>
               </HStack>

@@ -12,6 +12,8 @@ type LoaderData = {
   status: "UNREGISTERED" | "ERROR";
 };
 
+export const SEKSJON_TITTEL = "Søknad om dagpenger: Arbeidssøker";
+
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData | Response> {
   const response = await hentArbeidssøkerperioder(request);
 
@@ -34,7 +36,7 @@ export default function ArbeidssokerSide() {
 
   return (
     <main id="maincontent" tabIndex={-1}>
-      <title>Søknad om dagpenger</title>
+      <title>{SEKSJON_TITTEL}</title>
       <div className="soknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">

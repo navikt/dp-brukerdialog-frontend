@@ -65,7 +65,7 @@ export function DokumentasjonViewV1() {
 
     const skjemaSvar = lagSeksjonPayload(
       dokumentasjonskravKomponenter,
-      dokumentasjonskrav.skjemaSvar
+      dokumentasjonskrav.skjemaSvar ?? {}
     );
 
     const filer: KomponentType[] =

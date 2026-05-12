@@ -22,6 +22,7 @@ export function Nedtrekksliste({ props, formScope, ref }: IProps) {
       key={props.id}
       description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
+      autoComplete="off"
     >
       <option key="" value=""></option>
       {props.options.map((opt) => (

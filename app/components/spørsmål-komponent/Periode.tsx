@@ -69,6 +69,7 @@ export function Periode({ props, formScope, formValues, ref }: IProps) {
               periodeTilSpørsmal && props.optional ? `${props.label} (valgfritt)` : props.label
             }
             description={props.description}
+            autoComplete="off"
           />
         </DatePicker>
       </VStack>

@@ -212,7 +212,7 @@ export function ArbeidsforholdViewV1() {
                     <Button
                       variant="secondary"
                       type="button"
-                      icon={<BriefcaseIcon />}
+                      icon={<BriefcaseIcon aria-hidden />}
                       onClick={() => {
                         setModalData({
                           operasjon: ModalOperasjon.LeggTil,

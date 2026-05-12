@@ -175,7 +175,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
           type="button"
           variant="secondary"
           size="small"
-          icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<PencilIcon aria-hidden />}
           onClick={() => {
             setModalData({
               operasjon: ModalOperasjon.Rediger,
@@ -189,7 +189,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
           variant="tertiary"
           size="small"
           onClick={fjernArbeidsforhold}
-          icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<TrashIcon aria-hidden />}
         >
           Fjern
         </Button>

@@ -27,7 +27,7 @@ export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
           <Button
             variant="tertiary"
             size="small"
-            icon={<FloppydiskIcon title="a11y-title" fontSize="1.5rem" />}
+            icon={<FloppydiskIcon aria-hidden />}
             type="button"
             onClick={onClick}
           >

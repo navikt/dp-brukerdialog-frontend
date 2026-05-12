@@ -34,7 +34,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
       <Button
         variant="tertiary"
         size="small"
-        icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+        icon={<TrashIcon aria-hidden />}
         onClick={() => {
           sletteSøknadSpørsmålModal.current?.showModal();
         }}

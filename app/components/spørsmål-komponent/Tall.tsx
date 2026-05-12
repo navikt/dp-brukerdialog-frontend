@@ -25,6 +25,7 @@ export function Tall({ props, formScope, ref }: IProps) {
         field.setValue(event.currentTarget.value?.replace(".", ","));
       }}
       error={field.error()}
+      autoComplete="off"
     />
   );
 }

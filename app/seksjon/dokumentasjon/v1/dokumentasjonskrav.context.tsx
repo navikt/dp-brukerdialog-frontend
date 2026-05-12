@@ -16,7 +16,12 @@ import {
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { getEnv } from "~/utils/env.utils";
-import { dokumentkravSvarSendNå } from "./dokumentasjonskrav.komponenter";
+import {
+  dokumentkravSvarSenderIkke,
+  dokumentkravSvarSenderSenere,
+  dokumentkravSvarSendNå,
+  dokumentkravSvarSendtTidligere,
+} from "./dokumentasjonskrav.komponenter";
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
 const NESTE_STEG = "../oppsummering";
@@ -78,8 +83,8 @@ function DokumentasjonskravProvider({
 
   useEffect(() => {
     if (valideringsTeller > 0) {
-      const klarTilBundlingOgLagring = verifiserDokumentasjonskrav();
-      if (klarTilBundlingOgLagring) {
+      const alleDokumentasjonskravErGyldige = sjekkOmAlleDokumentasjonskravErGyldige();
+      if (alleDokumentasjonskravErGyldige) {
         bundleOgLagreDokumentasjonskrav(Seksjonshandling.neste);
       }
     }
@@ -91,7 +96,7 @@ function DokumentasjonskravProvider({
     );
   }
 
-  function verifiserDokumentasjonskrav(): boolean {
+  function sjekkOmAlleDokumentasjonskravErGyldige(): boolean {
     return dokumentasjonskrav.every((krav) => {
       if (!krav.svar || krav.feil) {
         return false;
@@ -100,6 +105,14 @@ function DokumentasjonskravProvider({
       if (krav.svar === dokumentkravSvarSendNå) {
         const alleFilerErOk = krav.filer?.every((fil) => !fil.feil) ?? false;
         return alleFilerErOk;
+      }
+
+      if (
+        krav.svar === dokumentkravSvarSenderSenere ||
+        krav.svar === dokumentkravSvarSendtTidligere ||
+        krav.svar === dokumentkravSvarSenderIkke
+      ) {
+        return !!krav.begrunnelse;
       }
 
       return true;

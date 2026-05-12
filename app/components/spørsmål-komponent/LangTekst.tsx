@@ -23,6 +23,7 @@ export function LangTekst({ props, formScope, ref }: IProps) {
       key={props.id}
       maxLength={props.maksLengde}
       error={field.error()}
+      autoComplete="off"
     />
   );
 }

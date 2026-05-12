@@ -86,7 +86,7 @@ export function PengestøtteFraNorgeDetaljer({
           type="button"
           variant="secondary"
           size="small"
-          icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<PencilIcon aria-hidden />}
           onClick={() => {
             setPengestøtteFraNorgeModalData({
               operasjon: ModalOperasjon.Rediger,
@@ -100,7 +100,7 @@ export function PengestøtteFraNorgeDetaljer({
           variant="tertiary"
           size="small"
           onClick={fjernPengestøtteFraNorge}
-          icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<TrashIcon aria-hidden />}
         >
           Fjern
         </Button>
