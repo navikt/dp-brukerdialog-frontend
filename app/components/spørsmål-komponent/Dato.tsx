@@ -49,6 +49,7 @@ export function Dato({ props, formScope, ref }: IProps) {
         error={error || field.error()}
         label={props.optional ? `${props.label} (valgfritt)` : `${props.label}`}
         description={props.description}
+        autoComplete="off"
       />
     </DatePicker>
   );

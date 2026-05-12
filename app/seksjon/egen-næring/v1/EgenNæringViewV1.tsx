@@ -211,7 +211,7 @@ export function EgenNæringViewV1() {
                     onClick={() => {
                       setNæringsvirksomhetModalData({ operasjon: ModalOperasjon.LeggTil });
                     }}
-                    icon={<PlusIcon />}
+                    icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
                     Legg til næringsvirksomhet
@@ -247,7 +247,7 @@ export function EgenNæringViewV1() {
                     onClick={() => {
                       setGårdsbrukModalData({ operasjon: ModalOperasjon.LeggTil });
                     }}
-                    icon={<PlusIcon />}
+                    icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
                     Legg til gårdsbruk

@@ -1,6 +1,13 @@
 export function SøknadIkon() {
   return (
-    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="72"
+      height="72"
+      viewBox="0 0 72 72"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
       <g clipPath="url(#clip0_759_79067)">
         <rect x="23.25" y="22.5" width="26.25" height="9" fill="#CCE2F0" />
         <rect x="23.25" y="36.75" width="26.25" height="9" fill="#CCE2F0" />

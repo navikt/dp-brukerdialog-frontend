@@ -52,7 +52,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
           type="button"
           variant="secondary"
           size="small"
-          icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<PencilIcon aria-hidden />}
           onClick={() => {
             setPengestøtteFraTidligereArbeidsgiverModalData({
               operasjon: ModalOperasjon.Rediger,
@@ -66,7 +66,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
           variant="tertiary"
           size="small"
           onClick={fjernPengestøtteFraTidligereArbeidsgiver}
-          icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<TrashIcon aria-hidden />}
         >
           Fjern
         </Button>

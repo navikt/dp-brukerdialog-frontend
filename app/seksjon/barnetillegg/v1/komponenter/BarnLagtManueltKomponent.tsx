@@ -54,7 +54,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
         <Button
           variant="secondary"
           size="small"
-          icon={<PencilIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<PencilIcon aria-hidden />}
           onClick={() => {
             setModalData({ operasjon: ModalOperasjon.Rediger, barn: barnProps });
           }}
@@ -65,7 +65,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
           variant="tertiary"
           size="small"
           onClick={fjernBarn}
-          icon={<TrashIcon title="a11y-title" fontSize="1.5rem" />}
+          icon={<TrashIcon aria-hidden />}
         >
           Fjern
         </Button>

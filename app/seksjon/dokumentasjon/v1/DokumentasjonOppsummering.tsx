@@ -50,7 +50,7 @@ export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
                   variant="tertiary"
                   className="mt-16"
                   size="small"
-                  icon={<DownloadIcon />}
+                  icon={<DownloadIcon aria-hidden />}
                   onClick={() =>
                     lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
                   }

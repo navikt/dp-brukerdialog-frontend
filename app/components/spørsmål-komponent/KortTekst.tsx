@@ -21,6 +21,7 @@ export function KortTekst({ props, formScope, ref }: IProps) {
       description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       key={props.id}
       error={field.error()}
+      autoComplete="off"
     />
   );
 }

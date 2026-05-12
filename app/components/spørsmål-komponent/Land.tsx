@@ -23,6 +23,7 @@ export function Land({ props, formScope, ref }: IProps) {
       description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
       error={field.error()}
       key={props.id}
+      autoComplete="off"
     >
       <option value="">Velg et land</option>
       {props.erEøsLand && (

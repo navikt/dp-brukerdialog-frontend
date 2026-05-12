@@ -336,7 +336,7 @@ export function AnnenPengestøtteViewV1() {
                         operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
-                    icon={<PlusIcon />}
+                    icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
                     Legg til utbetalinger eller goder
@@ -370,7 +370,7 @@ export function AnnenPengestøtteViewV1() {
                         operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
-                    icon={<PlusIcon />}
+                    icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
                     Legg til pengestøtte fra Norge
@@ -410,7 +410,7 @@ export function AnnenPengestøtteViewV1() {
                         operasjon: ModalOperasjon.LeggTil,
                       });
                     }}
-                    icon={<PlusIcon />}
+                    icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
                     Legg til pengestøtte fra andre EØS-land
