@@ -111,9 +111,7 @@ export function SøknadOversikt() {
           <VStack>
             {!påbegyntSøknad && (
               <Link to="/arbeidssoker">
-                <Button variant="primary" as="a">
-                  Start ny søknad
-                </Button>
+                <Button variant="primary">Start ny søknad</Button>
               </Link>
             )}
           </VStack>
