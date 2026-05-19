@@ -4,16 +4,19 @@ Instructions for AI coding agents working in this repository.
 
 ## Commands
 
+Package manager is **pnpm** (`pnpm@10.33.0`). Use `pnpm run` not `npm run`.
+
 ```bash
-npm run build            # Production build (React Router SSR)
-npm run dev              # Dev server with hot reload
-npm run test             # Run tests once (vitest)
-npm run coverage         # Tests with coverage report
-npm run lint             # ESLint (cached)
-npm run typecheck        # react-router typegen + tsc
+pnpm run build            # Production build (React Router SSR)
+pnpm run dev              # Dev server with hot reload
+pnpm run test             # Run tests once (vitest)
+pnpm run coverage         # Tests with coverage report
+pnpm run lint             # ESLint (cached)
+pnpm run typecheck        # react-router typegen + tsc
 ```
 
-`lint-staged` runs ESLint with `--fix` on staged `.ts/.tsx` files via Husky pre-commit hook.
+**Pre-commit hook** (Husky) runs in full on every commit: `typecheck → test → build`.
+`lint-staged` additionally runs `eslint --fix` on staged `.ts/.tsx` files.
 
 ## Stack
 
@@ -42,7 +45,7 @@ app/
 │   ├── din-situasjon/
 │   ├── arbeidsforhold/
 │   ├── barnetillegg/
-│   └── ...              # 13 sections total
+│   └── ...              # 15 sections total
 ├── models/              # Server-side data loaders and actions (*.server.ts)
 ├── utils/               # Shared helpers (auth, env, validation, formatting)
 ├── hooks/               # Custom React hooks
@@ -176,10 +179,10 @@ describe("myFunction", () => {
 ## Local development
 
 ```bash
-cp .env.example .env       # Setup environment (or: npm run copy-env)
-npm install
-npm run token              # Generate local JWT token
-npm run dev                # Start dev server
+cp .env.example .env       # Setup environment (or: pnpm run copy-env)
+pnpm install
+pnpm run token              # Generate local JWT token
+pnpm run dev                # Start dev server
 ```
 
 Set `USE_MSW=true` in `.env` to use Mock Service Worker instead of hitting real backends.
