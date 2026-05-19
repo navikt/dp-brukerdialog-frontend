@@ -128,12 +128,12 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
                 new Date(arbeidsforhold[arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet])
               )}
           {arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert] && (
-            <div>
+            <>
               Arbeidstiden ble redusert{" "}
               {formaterNorskDato(
                 new Date(arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert])
               )}
-            </div>
+            </>
           )}
 
           {arbeidsforhold[konkursVarighetPåArbeidsforholdetFraDato] &&
@@ -149,7 +149,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
                 new Date(arbeidsforhold[permittertVarighetPåArbeidsforholdetFraOgMedDato])
               )}
           {arbeidsforhold[permittertNårErDuPermittertFraOgMedDato] && (
-            <div>
+            <>
               {arbeidsforhold[permittertHvorMangeProsentErDuPermittert]}% permittert fra{" "}
               {formaterNorskDato(new Date(arbeidsforhold[permittertNårErDuPermittertFraOgMedDato]))}{" "}
               {arbeidsforhold[permittertNårErDuPermittertTilOgMedDato] && (
@@ -160,7 +160,7 @@ function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
                   )}
                 </>
               )}
-            </div>
+            </>
           )}
 
           {arbeidsforhold[ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato] &&

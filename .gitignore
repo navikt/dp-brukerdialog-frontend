@@ -28,3 +28,5 @@ secure.log
 .react-router/
 
 package-lock.json
+
+.vscode/settings.json
