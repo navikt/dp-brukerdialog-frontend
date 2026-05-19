@@ -279,7 +279,7 @@ export const arbeidsforholdForklarendeTekstKomponenter: KomponentType[] = [
     type: "forklarendeTekst",
     description:
       "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 6 månedene.<p>" +
+      "<p>Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 6 månedene.</p>" +
       "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
     visHvis: (svar: ArbeidsforholdSvar) =>
       svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
