@@ -20,6 +20,7 @@ import {
 import {
   handling,
   kanDuTaAlleTyperArbeid,
+  kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
   kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidRedusertHelse,
@@ -27,6 +28,7 @@ import {
   kanIkkeJobbeIHeleNorgeAnnenSituasjon,
   kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+  kanIkkeJobbeIHeleNorgeOmsorgForPleietrengendeINærFamilie,
   kanIkkeJobbeIHeleNorgeRedusertHelse,
   kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
   pdfGrunnlag,
@@ -118,6 +120,7 @@ export function ReellArbeidssøkerViewV1() {
       kanIkkeJobbeHeltidOgDeltidRedusertHelse,
       kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
       kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
+      kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
     ];
 
     const dokumentasjonskravTrigges = skjemaSvarArray.some((valgt) =>
@@ -146,6 +149,7 @@ export function ReellArbeidssøkerViewV1() {
 
     const svarSomKanTriggesDokumentasjonskrav = [
       kanIkkeJobbeIHeleNorgeRedusertHelse,
+      kanIkkeJobbeIHeleNorgeOmsorgForPleietrengendeINærFamilie,
       kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
       kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
       kanIkkeJobbeIHeleNorgeAnnenSituasjon,
