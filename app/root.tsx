@@ -1,4 +1,3 @@
-import akselStyles from "@navikt/ds-css/dist/index.css?url";
 import { Theme } from "@navikt/ds-react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
@@ -20,13 +19,16 @@ import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
 import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
-import indexStyles from "./index.css?url";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { sanityClient } from "./sanity/sanity.config";
 import { allTextsQuery } from "./sanity/sanity.query";
 import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
+
+import indexStyles from "./index.css?url";
+import akselStyles from "@navikt/ds-css/dist/index.css?url";
+
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
