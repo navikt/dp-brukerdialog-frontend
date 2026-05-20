@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   getEnv: vi.fn(),
@@ -42,6 +42,10 @@ describe("faro.utils", () => {
 
     mocks.getWebInstrumentations.mockReturnValue(["web-instrumentation"]);
     mocks.initializeFaro.mockReturnValue({ initialized: true });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   describe("initFaro", () => {
