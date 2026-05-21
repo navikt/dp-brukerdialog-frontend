@@ -1,0 +1,12 @@
+{
+  "$schema": "https://inlang.com/schema/project-settings",
+  "baseLocale": "nb",
+  "locales": ["nb", "en", "nn"],
+  "modules": ["https://cdn.jsdelivr.net/npm/@inlang/plugin-i18next@3/dist/index.js"],
+  "plugin.inlang.i18next": {
+    "pathPattern": {
+      "common": "./public/locales/{locale}/common.json"
+    },
+    "variableReferencePattern": ["{{", "}}"]
+  }
+}

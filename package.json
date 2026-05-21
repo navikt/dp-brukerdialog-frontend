@@ -15,7 +15,8 @@
     "prepare": "husky",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
-    "dependabot": "react-router typegen && tsc && vitest --run"
+    "dependabot": "react-router typegen && tsc && vitest --run",
+    "i18n:check": "echo \"Open Fink to edit translations: https://fink.inlang.com\""
   },
   "dependencies": {
     "@elastic/ecs-pino-format": "1.5.0",
@@ -40,6 +41,9 @@
     "date-fns": "4.1.0",
     "html-react-parser": "6.1.0",
     "i18n-iso-countries": "7.14.0",
+    "i18next": "^26.2.0",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "i18next-http-backend": "^4.0.0",
     "isbot": "5.1.40",
     "msw": "2.14.3",
     "pino": "10.3.1",
@@ -47,6 +51,7 @@
     "prom-client": "15.1.3",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "react-i18next": "^17.0.8",
     "react-router": "7.15.0",
     "sanitize-html": "^2.17.4",
     "tiny-invariant": "1.3.3",
@@ -56,10 +61,10 @@
   },
   "devDependencies": {
     "@inquirer/prompts": "8.4.2",
+    "@react-router/dev": "^7.15.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@react-router/dev": "^7.15.1",
     "@types/node": "^25.9.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
