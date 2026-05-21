@@ -8,8 +8,9 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["**/*.test.ts"],
+    include: ["**/*.test.{ts,tsx}"],
     exclude: ["**/node_modules/**", "**/.react-router/**"],
+    setupFiles: ["./app/components/test/setup.ts"],
     coverage: {
       include: ["**/*.{ts,tsx}"],
       exclude: [
@@ -22,6 +23,8 @@ export default defineConfig({
         "**/api.internal.*.ts",
         "**/mocks/**",
         "**/sanity/**",
+        "**/*.test.{ts,tsx}",
+        "**/test/**",
         "app/entry.client.tsx",
         "app/entry.server.tsx",
       ],
