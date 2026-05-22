@@ -12,11 +12,9 @@ import { renderToPipeableStream, type RenderToPipeableStreamOptions } from "reac
 import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { getEnv } from "./utils/env.utils";
+import { isOutdatedBasePath, RedirectToUpdatedBasePath } from "./utils/redirect.utils";
 
 export const streamTimeout = 5_000;
-
-const GAMMEL_URL_PREFIX = "/ny-dagpenger/dialog/soknad";
-const NY_URL_PREFIX = "/dagpenger/dialog/soknad";
 
 if (getEnv("USE_MSW") === "true") {
   import("./mocks/mock-server").then(({ startMockServer }) => {
@@ -30,13 +28,8 @@ export default function handleRequest(
   responseHeaders: Headers,
   routerContext: EntryContext
 ) {
-  const url = new URL(request.url);
-  const shouldRedirect =
-    url.pathname === GAMMEL_URL_PREFIX || url.pathname.startsWith(`${GAMMEL_URL_PREFIX}/`);
-  if (shouldRedirect) {
-    const nyPath = NY_URL_PREFIX + url.pathname.slice(GAMMEL_URL_PREFIX.length);
-    const nyUrl = new URL(nyPath + url.search, url.origin);
-    return Response.redirect(nyUrl.toString(), 301);
+  if (isOutdatedBasePath(request)) {
+    return RedirectToUpdatedBasePath(new URL(request.url));
   }
 
   return new Promise((resolve, reject) => {
@@ -61,7 +54,7 @@ export default function handleRequest(
           resolve(
             new Response(stream, {
               headers: responseHeaders,
-              status: responseStatusCode,
+              status: responseStatusCode
             })
           );
 
@@ -78,7 +71,7 @@ export default function handleRequest(
           if (shellRendered) {
             console.log(error);
           }
-        },
+        }
       }
     );
 
