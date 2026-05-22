@@ -15,6 +15,9 @@ import { getEnv } from "./utils/env.utils";
 
 export const streamTimeout = 5_000;
 
+const GAMMEL_URL_PREFIX = "/ny-dagpenger/dialog/soknad";
+const NY_URL_PREFIX = "/dagpenger/dialog/soknad";
+
 if (getEnv("USE_MSW") === "true") {
   import("./mocks/mock-server").then(({ startMockServer }) => {
     startMockServer();
@@ -27,6 +30,15 @@ export default function handleRequest(
   responseHeaders: Headers,
   routerContext: EntryContext
 ) {
+  const url = new URL(request.url);
+  const shouldRedirect =
+    url.pathname === GAMMEL_URL_PREFIX || url.pathname.startsWith(`${GAMMEL_URL_PREFIX}/`);
+  if (shouldRedirect) {
+    const nyPath = NY_URL_PREFIX + url.pathname.slice(GAMMEL_URL_PREFIX.length);
+    const nyUrl = new URL(nyPath + url.search, url.origin);
+    return Response.redirect(nyUrl.toString(), 301);
+  }
+
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const userAgent = request.headers.get("user-agent");
