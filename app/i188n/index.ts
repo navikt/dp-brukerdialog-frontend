@@ -12,7 +12,7 @@ void i18n
     fallbackLng: "nb",
     supportedLngs: [...supportedLanguages],
 
-    ns: ["common"],
+    ns: ["common", "soknadOversikt"],
     defaultNS: "common",
 
     backend: {

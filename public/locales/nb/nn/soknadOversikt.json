@@ -1,0 +1,19 @@
+{
+  "pageTitle": "Søknad om dagpengar: Søknadsoversyn",
+  "heading": "Søknad om dagpengar",
+  "submittedApplications": {
+    "description": "Du har nyleg sendt inn ein søknad. Vil du ettersende vedlegg til ein innsend søknad eller sende inn ein ny?",
+    "attachmentButton": "Send inn vedlegg til søknad sendt {{date}}"
+  },
+  "draftApplication": {
+    "description": "Du har ein påbyrja søknad, sist endra {{date}}. Vil du halde fram med denne eller starte ein ny?",
+    "continueButton": "Hald fram med påbyrja søknad",
+    "deleteAndStartNewButton": "Slett og start ny søknad"
+  },
+  "newApplication": {
+    "startButton": "Start ny søknad"
+  },
+  "technicalError": {
+    "title": "Det har oppstått ein teknisk feil"
+  }
+}

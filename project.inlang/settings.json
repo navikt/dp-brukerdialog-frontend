@@ -10,8 +10,7 @@
   "plugin.inlang.i18next": {
     "pathPattern": {
       "common": "./public/locales/{languageTag}/common.json",
-      "product": "./public/locales/{languageTag}/product.json",
-      "validation": "./public/locales/{languageTag}/validation.json"
+      "soknadOversikt": "./public/locales/{languageTag}/soknadOversikt.json"
     },
     "variableReferencePattern": ["{{", "}}"]
   }
