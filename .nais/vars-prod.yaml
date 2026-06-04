@@ -8,6 +8,11 @@ dekorator:
 replicas:
   min: 4
   max: 6
+resources:
+  limits:
+    memory: 512Mi
+  requests:
+    memory: 416Mi
 loginservice:
   url: https://loginservice.nav.no/login
 app_env: prod
