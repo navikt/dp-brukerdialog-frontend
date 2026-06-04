@@ -4,19 +4,23 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import { defaultLanguage, supportedLanguages } from "./languages";
 
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
 void i18n
   .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: "nb",
+    fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
 
     ns: ["common", "soknadOversikt"],
     defaultNS: "common",
 
     backend: {
-      loadPath: "/locales/{{lng}}/{{ns}}.json"
+      loadPath: `${baseUrl}locales/{{lng}}/{{ns}}.json`
     },
 
     detection: {
@@ -27,6 +31,8 @@ void i18n
     interpolation: {
       escapeValue: false
     },
+
+    load: "languageOnly",
 
     returnNull: false,
     returnEmptyString: false

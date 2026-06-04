@@ -30,6 +30,7 @@ import indexStyles from "./index.css?url";
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
 
 import "./i188n";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -97,6 +98,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
+        <LanguageSwitcher />
         {children}
         <ScrollRestoration />
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
