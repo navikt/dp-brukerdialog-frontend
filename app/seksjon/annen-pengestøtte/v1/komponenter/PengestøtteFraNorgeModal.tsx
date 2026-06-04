@@ -191,6 +191,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
                     key={komponent.id}
                     props={komponent}
                     formScope={form.scope(komponent.id as keyof PengestøtteFraNorgeModalSvar)}
+                    formValues={form.value()}
                   />
                 );
               })}

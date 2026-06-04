@@ -75,6 +75,7 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
             <Komponent
               key={spørsmål.id}
               props={spørsmål}
+              formValues={form.value()}
               formScope={form.scope(spørsmål.id as keyof BarnFraPdl)}
             />
           );

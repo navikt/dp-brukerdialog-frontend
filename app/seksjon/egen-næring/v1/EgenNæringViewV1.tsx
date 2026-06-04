@@ -13,7 +13,7 @@ import {
   loader,
   SEKSJON_NAVN,
   SEKSJON_TITTEL,
-  SeksjonSvar,
+  SeksjonSvar
 } from "~/routes/$soknadId.egen-naring";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
@@ -28,7 +28,7 @@ import {
   leggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
   pdfGrunnlag,
-  seksjonsvar,
+  seksjonsvar
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukDetaljer";
@@ -56,7 +56,7 @@ export function EgenNæringViewV1() {
     næringsvirksomhetModalData,
     setNæringsvirksomhetModalData,
     gårdsbrukModalData,
-    setGårdsbrukModalData,
+    setGårdsbrukModalData
   } = useEgenNæringContext();
 
   const [visNæringsvirksomhetFeilmelding, setVisNæringsvirksomhetFeilmelding] = useState(false);
@@ -66,7 +66,7 @@ export function EgenNæringViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: egenNæringSchema,
-    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon }
   });
 
   useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetKomponenter);
@@ -110,8 +110,8 @@ export function EgenNæringViewV1() {
         ...lagSeksjonPayload(egenNæringEgetGårdsbrukKomponenter, form.transient.value()),
         ...gårdsbruk.map((etGårdsbruk) =>
           lagSeksjonPayload(leggTilGårdsbrukKomponenter, etGårdsbruk)
-        ),
-      ],
+        )
+      ]
     };
 
     return JSON.stringify(pdfPayload);
@@ -124,7 +124,7 @@ export function EgenNæringViewV1() {
       [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
       næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
       [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
+      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null
     };
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -163,7 +163,7 @@ export function EgenNæringViewV1() {
         [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
         næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
         [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
+        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null
       };
 
       form.setValue(handling, Seksjonshandling.neste);
@@ -191,6 +191,7 @@ export function EgenNæringViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
+                  formValues={form.value()}
                   formScope={form.scope(komponent.id as keyof EgenNæringSvar)}
                 />
               );
@@ -231,6 +232,7 @@ export function EgenNæringViewV1() {
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
+                  formValues={form.value()}
                   formScope={form.scope(spørsmål.id as keyof EgenNæringSvar)}
                 />
               );

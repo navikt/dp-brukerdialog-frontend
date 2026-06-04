@@ -9,7 +9,7 @@ import { SistOppdatert } from "~/components/SistOppdatert";
 import { SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.dokumentasjon";
 import {
   dokumentasjonKomponenter,
-  dokumentasjonskravKomponenter,
+  dokumentasjonskravKomponenter
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
@@ -25,7 +25,7 @@ export function DokumentasjonViewV1() {
     harTekniskFeil,
     setValideringsTeller,
     setPdfGrunnlag,
-    bundleOgLagreDokumentasjonskrav,
+    bundleOgLagreDokumentasjonskrav
   } = useDokumentasjonskravContext();
 
   function lagreSvar() {
@@ -40,7 +40,7 @@ export function DokumentasjonViewV1() {
 
     const pdfGrunnlag = {
       navn: SEKSJON_NAVN,
-      spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag],
+      spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag]
     };
 
     setPdfGrunnlag(JSON.stringify(pdfGrunnlag));
@@ -52,7 +52,7 @@ export function DokumentasjonViewV1() {
       type: "headingTekst",
       nivå: "3",
       størrelse: "small",
-      label: dokumentasjonskrav.tittel,
+      label: dokumentasjonskrav.tittel
     };
 
     const beskrivelse: ForklarendeTekst = {
@@ -60,7 +60,7 @@ export function DokumentasjonViewV1() {
       type: "forklarendeTekst",
       description: renderToStaticMarkup(
         <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
-      ),
+      )
     };
 
     const skjemaSvar = lagSeksjonPayload(
@@ -73,7 +73,7 @@ export function DokumentasjonViewV1() {
         return {
           id: fil.id,
           type: "forklarendeTekst",
-          description: fil.filnavn,
+          description: fil.filnavn
         };
       }) || [];
 

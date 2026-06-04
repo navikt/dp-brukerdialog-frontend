@@ -171,6 +171,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
                   <Komponent
                     key={spørsmål.id}
                     props={spørsmål}
+                    formValues={form.value()}
                     formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
                   />
                 );
