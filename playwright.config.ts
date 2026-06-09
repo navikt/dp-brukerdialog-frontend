@@ -4,26 +4,26 @@ export default defineConfig({
   testDir: "./e2e",
   timeout: 30_000,
   expect: {
-    timeout: 10_000
+    timeout: 10_000,
   },
   use: {
-    baseURL: "http://localhost:5173",
-    trace: "on-first-retry"
+    baseURL: "http://localhost:5173/dagpenger/dialog/soknad/",
+    trace: "on-first-retry",
   },
   webServer: {
     command: "pnpm dev",
     url: "http://localhost:5173/dagpenger/dialog/soknad",
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     env: {
       ...process.env,
-      USE_MSW: "true"
-    }
+      USE_MSW: "true",
+    },
   },
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] }
-    }
-  ]
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
 });
