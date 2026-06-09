@@ -297,6 +297,7 @@ export function AnnenPengestøtteViewV1() {
       <Komponent
         key={komponent.id}
         props={komponent}
+        formValues={form.value()}
         formScope={form.scope(komponent.id as keyof AnnenPengestøtteSvar)}
       />
     );

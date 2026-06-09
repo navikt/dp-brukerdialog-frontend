@@ -31,10 +31,9 @@ spec:
     cpuThresholdPercentage: 75
   resources:
     limits:
-      memory: 512Mi
+      memory: {{resources.limits.memory}}
     requests:
-      cpu: 100m
-      memory: 416Mi
+      memory: {{resources.requests.memory}}
   env:
     - name: SELF_URL
       value: "{{ingress}}"

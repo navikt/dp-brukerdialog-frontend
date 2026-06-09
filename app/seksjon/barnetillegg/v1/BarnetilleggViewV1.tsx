@@ -177,6 +177,7 @@ export function BarnetilleggViewV1() {
               <Komponent
                 key={spørsmål.id}
                 props={spørsmål}
+                formValues={form.value()}
                 formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
               />
             );
