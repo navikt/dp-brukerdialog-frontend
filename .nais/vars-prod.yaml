@@ -10,7 +10,7 @@ replicas:
   max: 6
 resources:
   limits:
-    memory: 512Mi
+    memory: 1280Mi
   requests:
     memory: 416Mi
 loginservice:
