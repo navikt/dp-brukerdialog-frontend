@@ -5,7 +5,7 @@ import {
   Dokumentasjonskrav,
   DokumentasjonskravFeilType,
   DokumentkravFil,
-  FilOpplastingFeilType,
+  FilOpplastingFeilType
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { useEttersending } from "~/seksjon/ettersending/ettersending.context";
 import {
@@ -15,7 +15,7 @@ import {
   hentTillatteFiltyperTekst,
   MAX_ANTALL_FILER,
   MAX_FIL_STØRRELSE,
-  TILLATTE_FILFORMAT,
+  TILLATTE_FILFORMAT
 } from "~/utils/dokument.utils";
 import { getEnv } from "~/utils/env.utils";
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/v1/DokumentasjonskravInnhold";
@@ -45,33 +45,33 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
+          feil: FilOpplastingFeilType.UGYLDIG_FORMAT
         });
       } else if (erDuplikat) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FilOpplastingFeilType.DUPLIKAT_FIL,
+          feil: FilOpplastingFeilType.DUPLIKAT_FIL
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FilOpplastingFeilType.FIL_FOR_STOR,
+          feil: FilOpplastingFeilType.FIL_FOR_STOR
         });
       } else {
         filerKlarTilOpplasting.push({
           id: crypto.randomUUID(),
           file: fil.file,
           filnavn: fil.file.name,
-          lasterOpp: true,
+          lasterOpp: true
         });
       }
     });
 
     oppdaterEttersending({
       ...ettersending,
-      filer: [...ettersendingFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
+      filer: [...ettersendingFiler, ...filerKlarTilOpplasting, ...filerMedFeil]
     });
 
     if (filerKlarTilOpplasting.length > 0) {
@@ -94,7 +94,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
               storrelse: fil.file.size,
               lasterOpp: false,
               feil: FilOpplastingFeilType.TEKNISK_FEIL,
-              id: fil.id,
+              id: fil.id
             };
           }
 
@@ -104,7 +104,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
             ...filer[0], // Mellomlagring returnerer en liste
             lasterOpp: false,
             feil: undefined,
-            id: fil.id,
+            id: fil.id
           };
         })
       );
@@ -115,8 +115,8 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         ...ettersending,
         filer: oppdaterteFiler.map((fil) => ({
           ...fil,
-          ...responser.find((respons) => respons?.id === fil.id),
-        })),
+          ...responser.find((respons) => respons?.id === fil.id)
+        }))
       });
     }
   }
@@ -130,7 +130,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
         feil: oppdaterteFiler.some((fil) => fil.feil)
           ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
-          : undefined,
+          : undefined
       });
 
       return;
@@ -144,7 +144,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
         {
           method: "POST",
-          body: formData,
+          body: formData
         }
       );
 
@@ -158,7 +158,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         oppdaterEttersending({
           ...ettersending,
           filer: oppdaterteFiler,
-          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
+          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
         });
 
         return;
@@ -171,7 +171,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
         feil: oppdaterteFiler.some((fil) => fil.feil)
           ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
-          : undefined,
+          : undefined
       });
 
       return await response.text();
@@ -185,7 +185,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
       oppdaterEttersending({
         ...ettersending,
         filer: oppdaterteFiler,
-        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
       });
     }
   }
@@ -228,7 +228,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
               error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
               button={{
                 action: "delete",
-                onClick: () => slettEnFil(fil),
+                onClick: () => slettEnFil(fil)
               }}
             />
           ))}

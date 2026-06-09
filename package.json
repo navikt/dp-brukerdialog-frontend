@@ -15,7 +15,9 @@
     "prepare": "husky",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
-    "dependabot": "react-router typegen && tsc && vitest --run"
+    "dependabot": "react-router typegen && tsc && vitest --run",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@elastic/ecs-pino-format": "1.5.0",
@@ -56,10 +58,11 @@
   },
   "devDependencies": {
     "@inquirer/prompts": "8.5.0",
+    "@playwright/test": "^1.60.0",
+    "@react-router/dev": "^7.15.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@react-router/dev": "^7.15.1",
     "@types/node": "^25.9.1",
     "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",

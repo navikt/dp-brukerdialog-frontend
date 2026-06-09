@@ -33,29 +33,29 @@ export const dokumentasjonKomponenter: KomponentType[] = [
       "<p>Slik bruker du bilder som dokumentasjon i søknaden:</p>" +
       "<ol><li>Ta bilde av dokumentet med smarttelefon eller nettbrett</li>" +
       "<li>Sjekk at dokumentet er lett å lese</li>" +
-      "<li>Last opp bildene her</li></ol>",
+      "<li>Last opp bildene her</li></ol>"
   },
   {
     id: "dokumentasjonManglerDuNoenDokumenterLesMer",
     type: "lesMer",
     label: "Mangler du noen dokumenter?",
     description:
-      "<p>Du kan sende inn det du har nå og ettersende resten innen 14 dager. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene.</p>",
+      "<p>Du kan sende inn det du har nå og ettersende resten innen 14 dager. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene.</p>"
   },
   {
     id: "dokumentasjonHarDuSendtInnDokumentasjonTilNavTidligereLesMer",
     type: "lesMer",
     label: "Har du sendt inn dokumentene til Nav tidligere?",
     description:
-      "<p>Hvis du har sendt inn dokumentene sammen med en tidligere søknad om dagpenger, trenger du ikke å sende det på nytt.</p>",
+      "<p>Hvis du har sendt inn dokumentene sammen med en tidligere søknad om dagpenger, trenger du ikke å sende det på nytt.</p>"
   },
   {
     id: "dokumentasjonDokumenterDuSkalSendeInnForklarendeTekst",
     type: "headingTekst",
     nivå: "3",
     størrelse: "small",
-    label: "Dokumenter du skal sende inn",
-  },
+    label: "Dokumenter du skal sende inn"
+  }
 ];
 
 export const dokumentasjonskravKomponenter: KomponentType[] = [
@@ -68,10 +68,10 @@ export const dokumentasjonskravKomponenter: KomponentType[] = [
       { value: dokumentkravSvarSenderSenere, label: "Jeg sender det senere" },
       {
         value: dokumentkravSvarSendtTidligere,
-        label: "Jeg har sendt det i en tidligere søknad om dagpenger",
+        label: "Jeg har sendt det i en tidligere søknad om dagpenger"
       },
-      { value: dokumentkravSvarSenderIkke, label: "Jeg sender det ikke" },
-    ],
+      { value: dokumentkravSvarSenderIkke, label: "Jeg sender det ikke" }
+    ]
   },
   {
     id: hvaErGrunnenTilAtDuSenderDokumentetSenere,
@@ -80,7 +80,7 @@ export const dokumentasjonskravKomponenter: KomponentType[] = [
     description: "Frist for ettersending er 14 dager etter at du sendte søknaden.",
     maksLengde: 500,
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderSenere,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderSenere
   },
   {
     id: nårSendteDuDokumentet,
@@ -90,7 +90,7 @@ export const dokumentasjonskravKomponenter: KomponentType[] = [
       "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt.",
     maksLengde: 500,
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSendtTidligere,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSendtTidligere
   },
   {
     id: "jegSenderIkkeInformasjonskort",
@@ -100,7 +100,7 @@ export const dokumentasjonskravKomponenter: KomponentType[] = [
     description:
       "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet.",
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke
   },
   {
     id: hvaErGrunnenTilAtDuIkkeSenderDokumentet,
@@ -108,6 +108,6 @@ export const dokumentasjonskravKomponenter: KomponentType[] = [
     label: "Hva er grunnen til at du ikke sender dokumentet?",
     maksLengde: 500,
     visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
-  },
+      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke
+  }
 ];
