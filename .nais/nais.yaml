@@ -28,11 +28,12 @@ spec:
   replicas:
     min: {{replicas.min}}
     max: {{replicas.max}}
-    cpuThresholdPercentage: 75
+    cpuThresholdPercentage: 80
   resources:
     limits:
       memory: {{resources.limits.memory}}
     requests:
+      cpu: {{resources.limits.cpu}}
       memory: {{resources.requests.memory}}
   env:
     - name: SELF_URL
