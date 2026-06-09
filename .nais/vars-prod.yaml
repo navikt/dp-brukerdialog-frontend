@@ -10,9 +10,10 @@ replicas:
   max: 6
 resources:
   limits:
-    memory: 512Mi
+    memory: 1280Mi
   requests:
-    memory: 416Mi
+    cpu: 50m
+    memory: 256Mi
 loginservice:
   url: https://loginservice.nav.no/login
 app_env: prod
