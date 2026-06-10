@@ -10,8 +10,8 @@ import {
   redirectTilOppdatertIngress,
 } from "./app/utils/redirect.utils";
 
-const handleIngress = {
-  name: "handle-ingress",
+const handleOutdatedIngress = {
+  name: "handle-outdated-ingress",
   enforce: "pre" as const,
   configureServer(server: ViteDevServer) {
     server.middlewares.use((req, res, next) => {
@@ -49,7 +49,7 @@ export default defineConfig({
     process.env.NODE_ENV === "production"
       ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
       : "/dagpenger/dialog/soknad",
-  plugins: [handleIngress, reactRouter(), tsconfigPaths(), devtoolsJson()],
+  plugins: [handleOutdatedIngress, reactRouter(), tsconfigPaths(), devtoolsJson()],
   build: {
     manifest: true,
     sourcemap: process.env.NODE_ENV !== "production",
