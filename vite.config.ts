@@ -4,9 +4,9 @@ import { defineConfig, type ViteDevServer } from "vite";
 import devtoolsJson from "vite-plugin-devtools-json";
 import tsconfigPaths from "vite-tsconfig-paths";
 import {
-  erGammelSøknadBasePath,
-  erUtdatertBasePath,
-  GAMMEL_SØKNAD_REDIRECT_URL,
+  erGammelSøknadIngress,
+  erUtdatertIngress,
+  redirectTilInfoside,
   redirectTilOppdatertIngress,
 } from "./app/utils/redirect.utils";
 
@@ -15,17 +15,9 @@ const handleIngress = {
   enforce: "pre" as const,
   configureServer(server: ViteDevServer) {
     server.middlewares.use((req, res, next) => {
-      if (req.url?.includes("/dagpenger/dialog/soknad@react-router/")) {
-        req.url = req.url.replace(
-          "/dagpenger/dialog/soknad@react-router/",
-          "/dagpenger/dialog/soknad/@react-router/"
-        );
-      }
-
-      const host = req.headers.host ?? "localhost:5173";
-      const url = new URL(req.url ?? "/", `http://${host}`);
+      const url = new URL(req.url ?? "/", "http://localhost:5173");
       const request = new Request(url);
-      if (erUtdatertBasePath(request)) {
+      if (erUtdatertIngress(request)) {
         const redirectResponse = redirectTilOppdatertIngress(url);
         const location = redirectResponse.headers.get("Location");
         if (!location) {
@@ -36,8 +28,14 @@ const handleIngress = {
         res.end();
         return;
       }
-      if (erGammelSøknadBasePath(request)) {
-        res.writeHead(302, { Location: GAMMEL_SØKNAD_REDIRECT_URL });
+      if (erGammelSøknadIngress(request)) {
+        const redirectResponse = redirectTilInfoside(url);
+        const location = redirectResponse.headers.get("Location");
+        if (!location) {
+          next();
+          return;
+        }
+        res.writeHead(302, { Location: location });
         res.end();
         return;
       }
