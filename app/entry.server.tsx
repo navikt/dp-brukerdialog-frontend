@@ -12,7 +12,12 @@ import { renderToPipeableStream, type RenderToPipeableStreamOptions } from "reac
 import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { getEnv } from "./utils/env.utils";
-import { isOutdatedBasePath, RedirectToUpdatedBasePath } from "./utils/redirect.utils";
+import {
+  erUtdatertBasePath,
+  erGammelSøknadBasePath,
+  redirectTilOppdatertIngress,
+  redirectTilInfoside,
+} from "./utils/redirect.utils";
 
 export const streamTimeout = 5_000;
 
@@ -28,8 +33,12 @@ export default function handleRequest(
   responseHeaders: Headers,
   routerContext: EntryContext
 ) {
-  if (isOutdatedBasePath(request)) {
-    return RedirectToUpdatedBasePath(new URL(request.url));
+  if (erUtdatertBasePath(request)) {
+    return redirectTilOppdatertIngress(new URL(request.url));
+  }
+
+  if (erGammelSøknadBasePath(request)) {
+    return redirectTilInfoside(new URL(request.url));
   }
 
   return new Promise((resolve, reject) => {
@@ -54,7 +63,7 @@ export default function handleRequest(
           resolve(
             new Response(stream, {
               headers: responseHeaders,
-              status: responseStatusCode
+              status: responseStatusCode,
             })
           );
 
@@ -71,7 +80,7 @@ export default function handleRequest(
           if (shellRendered) {
             console.log(error);
           }
-        }
+        },
       }
     );
 
