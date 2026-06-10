@@ -13,8 +13,8 @@ import type { EntryContext } from "react-router";
 import { ServerRouter } from "react-router";
 import { getEnv } from "./utils/env.utils";
 import {
-  erUtdatertBasePath,
-  erGammelSøknadBasePath,
+  erUtdatertIngress,
+  erGammelSøknadIngress,
   redirectTilOppdatertIngress,
   redirectTilInfoside,
 } from "./utils/redirect.utils";
@@ -33,11 +33,11 @@ export default function handleRequest(
   responseHeaders: Headers,
   routerContext: EntryContext
 ) {
-  if (erUtdatertBasePath(request)) {
+  if (erUtdatertIngress(request)) {
     return redirectTilOppdatertIngress(new URL(request.url));
   }
 
-  if (erGammelSøknadBasePath(request)) {
+  if (erGammelSøknadIngress(request)) {
     return redirectTilInfoside(new URL(request.url));
   }
 

@@ -4,10 +4,10 @@ export default {
   ssr: true,
   basename: "/dagpenger/dialog/soknad",
   future: {
-    v8_middleware: true,
-    v8_splitRouteModules: true,
-    v8_viteEnvironmentApi: true,
-    v8_passThroughRequests: true,
-    v8_trailingSlashAwareDataRequests: true,
+    v8_middleware: false,
+    v8_splitRouteModules: false,
+    v8_viteEnvironmentApi: false,
+    v8_passThroughRequests: false,
+    v8_trailingSlashAwareDataRequests: false,
   },
 } satisfies Config;
