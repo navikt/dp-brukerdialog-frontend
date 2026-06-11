@@ -4,7 +4,7 @@ import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   dokumentasjonskravKomponenter,
-  velgHvaDuVilGjøre,
+  velgHvaDuVilGjøre
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
