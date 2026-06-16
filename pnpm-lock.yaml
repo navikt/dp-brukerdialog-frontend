@@ -27,8 +27,8 @@ importers:
         specifier: 8.11.1
         version: 8.11.1
       '@navikt/ds-css':
-        specifier: 8.11.1
-        version: 8.11.1
+        specifier: 8.12.0
+        version: 8.12.0
       '@navikt/ds-react':
         specifier: 8.12.0
         version: 8.12.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -919,8 +919,8 @@ packages:
     resolution: {integrity: sha512-bopCvqEogyFcmrJiBxK/Mr25d6yPKF7GR36MGrJqiHCPJYf1rDu6lK4cpooTG4Q//D/1xTkHRom8ZH5BI6dTew==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.9/5919241a6dbb782eb101fff3234ce5c36d16e942}
     engines: {node: '>=20.0.0', npm: '>=9.0.0'}
 
-  '@navikt/ds-css@8.11.1':
-    resolution: {integrity: sha512-fOJ3j4oMkPjS2r1DUIpIDBklUM+XU42fN4b0GcqtAUanB9hJoAIw7Pr2pvR+dF8RCGsPTabX9uGW5mIRm6fPVw==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.11.1/d2edadc20c615f882b95093aea06cdb5960fadd8}
+  '@navikt/ds-css@8.12.0':
+    resolution: {integrity: sha512-yHWnAFOhkfzmxC9fOfmIrY3bfbhCgoFWjdJqECZpSKvM8X8qxIm428liLgUwMkLD3uFdfLuGOEh81ONq2aUhyg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-css/8.12.0/6dbc970d209725f1aff7ba28530a726b97c9f940}
 
   '@navikt/ds-react@8.12.0':
     resolution: {integrity: sha512-Fz6j9qzAd2jA1iPZZdsguCaRHXZTuiLqlZXiYgNEohHYWbiHFAdLLhjlPOMiUULJxMWSkoJLPe4HZA9lCg92ig==, tarball: https://npm.pkg.github.com/download/@navikt/ds-react/8.12.0/e84882d3fa3d58b371dc64089f398f3b5d9dc2d4}
@@ -4658,7 +4658,7 @@ snapshots:
 
   '@navikt/analytics-types@0.0.9': {}
 
-  '@navikt/ds-css@8.11.1': {}
+  '@navikt/ds-css@8.12.0': {}
 
   '@navikt/ds-react@8.12.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
