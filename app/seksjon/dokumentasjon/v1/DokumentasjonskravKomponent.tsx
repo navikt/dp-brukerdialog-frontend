@@ -17,7 +17,7 @@ import {
   hvaErGrunnenTilAtDuIkkeSenderDokumentet,
   hvaErGrunnenTilAtDuSenderDokumentetSenere,
   nårSendteDuDokumentet,
-  velgHvaDuVilGjøre,
+  velgHvaDuVilGjøre
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
@@ -36,7 +36,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     method: "PUT",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
-    defaultValues: hentFormDefaultValue(),
+    defaultValues: hentFormDefaultValue()
   });
 
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
@@ -64,7 +64,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       begrunnelse: begrunnelse,
       filer: svar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
       feil: undefined,
-      skjemaSvar: form.transient.value(),
+      skjemaSvar: form.transient.value()
     };
 
     if (svar !== dokumentasjonskrav.svar) {
@@ -91,7 +91,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     if (!form.formState.isValid) {
       oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
-        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
+        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL
       });
     }
 
@@ -99,7 +99,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       if (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0) {
         oppdaterEtDokumentasjonskrav({
           ...dokumentasjonskrav,
-          feil: DokumentasjonskravFeilType.MANGLER_FILER,
+          feil: DokumentasjonskravFeilType.MANGLER_FILER
         });
       }
   }, [form, valideringsTeller]);
@@ -118,7 +118,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       [hvaErGrunnenTilAtDuIkkeSenderDokumentet]:
         dokumentasjonskrav.svar === dokumentkravSvarSenderIkke
           ? dokumentasjonskrav.begrunnelse
-          : undefined,
+          : undefined
     };
   }
 
@@ -144,6 +144,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
+                  formValues={form.value()}
                   formScope={form.scope(spørsmål.id as keyof DokumentasjonskravSvar)}
                 />
               );

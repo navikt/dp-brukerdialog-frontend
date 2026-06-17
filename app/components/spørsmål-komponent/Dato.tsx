@@ -37,11 +37,11 @@ export function Dato({ props, formScope, ref }: IProps) {
         field.clearError();
         setError(undefined);
       }
-    },
+    }
   });
 
   return (
-    <DatePicker {...datepickerProps} key={props.id}>
+    <DatePicker {...datepickerProps} dropdownCaption={true} key={props.id}>
       <DatePicker.Input
         {...inputProps}
         ref={ref}

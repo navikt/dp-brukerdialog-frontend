@@ -1,5 +1,6 @@
 ingresses:
   - https://www.nav.no/dagpenger/dialog/soknad
+  - https://www.nav.no/ny-dagpenger/dialog/soknad
 base_path: "/dagpenger/dialog/soknad"
 dekorator:
   url: https://www.nav.no/dekoratoren
@@ -7,6 +8,12 @@ dekorator:
 replicas:
   min: 4
   max: 6
+resources:
+  limits:
+    memory: 1280Mi
+  requests:
+    cpu: 50m
+    memory: 256Mi
 loginservice:
   url: https://loginservice.nav.no/login
 app_env: prod
@@ -20,6 +27,6 @@ dp_mellomlagring_url: http://dp-mellomlagring/v1/obo/mellomlagring
 arbeidssokerregisteret_url: https://oppslag-v2-arbeidssoekerregisteret.intern.nav.no
 arbeidssokerregistrering_url: https://www.nav.no/registrer-arbeidssoker
 dp_mine_dagpenger_url: https://www.nav.no/arbeid/dagpenger/mine-dagpenger
-generell_innsending_url: https://www.nav.no/gammel-dagpenger/dialog/generell-innsending/
+generell_innsending_url: https://www.nav.no/fyllut-ettersending/lospost?tema=DAG
 dp_soknad_url: http://dp-soknad/arbeid/dagpenger/soknadapi
 dp_soknadsdialog_url: https://www.nav.no/gammel-dagpenger/dialog/soknad

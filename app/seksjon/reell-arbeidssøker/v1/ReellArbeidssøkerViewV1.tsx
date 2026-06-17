@@ -23,6 +23,7 @@ import {
   kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
   kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
   kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
+  kanIkkeJobbeHeltidOgDeltidOmsorgForPleietrengendeINærFamilie,
   kanIkkeJobbeHeltidOgDeltidRedusertHelse,
   kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
   kanIkkeJobbeIHeleNorgeAnnenSituasjon,
@@ -118,6 +119,7 @@ export function ReellArbeidssøkerViewV1() {
 
     const svarSomKanTriggesDokumentasjonskrav = [
       kanIkkeJobbeHeltidOgDeltidRedusertHelse,
+      kanIkkeJobbeHeltidOgDeltidOmsorgForPleietrengendeINærFamilie,
       kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
       kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
       kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
@@ -202,6 +204,7 @@ export function ReellArbeidssøkerViewV1() {
               <Komponent
                 key={komponent.id}
                 props={komponent}
+                formValues={form.value()}
                 formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
               />
             );

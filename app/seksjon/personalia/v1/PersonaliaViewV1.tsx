@@ -195,6 +195,7 @@ export function PersonaliaViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
+                  formValues={form.value()}
                   formScope={form.scope(komponent.id as keyof PersonaliaSvar)}
                 />
               );
@@ -209,6 +210,7 @@ export function PersonaliaViewV1() {
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
+                  formValues={form.value()}
                   formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
                 />
               );
