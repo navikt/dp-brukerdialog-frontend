@@ -68,6 +68,8 @@ spec:
       value: "{{dp_soknad_url}}"
     - name: DP_SOKNADSDIALOG_URL
       value: "{{dp_soknadsdialog_url}}"
+    - name: MIN_SIDE_URL
+      value: "{{min_side_url}}"
 
   ingresses:
     {{#each ingresses as |url|}}
