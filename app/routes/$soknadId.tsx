@@ -84,6 +84,11 @@ export async function loader({
   if (søknaderResponse.ok) {
     const søknader: OrkestratorSoknad[] = await søknaderResponse.json();
     const søknad = søknader.find((s) => s.søknadId === params.soknadId);
+
+    if (!søknad && progressResponse.status === 404) {
+      return redirect("/");
+    }
+
     const søknadFullført = søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT";
     const erPåKvitteringEllerEttersending = SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId);
 
