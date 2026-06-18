@@ -7,17 +7,13 @@ export default function Infoside() {
     <main id="maincontent" tabIndex={-1}>
       <title>Infoside</title>
       <Heading size="large" level="1" spacing>
-        Din søknad om dagpenger har blitt mottatt og arkivert
+        Søknaden kan ikke åpnes
       </Heading>
 
       <VStack gap="space-32">
-        <BodyLong>
-          Nav har mottatt søknaden din om dagpenger, og den er nå arkivert. Søknaden blir behandlet
-          så snart som mulig. Du vil få en bekreftelse på e-post når behandlingen er ferdig.
-        </BodyLong>
-        <BodyLong>Den arkiverte søknaden finner du i Dokumentoversikt på Mine dagpenger.</BodyLong>
+        <BodyLong>Du finner søknaden under 'Siste dokumenter' på Min side.</BodyLong>
 
-        <EksterneLenke asButton href={getEnv("DP_MINE_DAGPENGER_URL")} tekst="Mine dagpenger" />
+        <EksterneLenke asButton href={getEnv("MIN_SIDE_URL")} tekst="Min side" />
       </VStack>
     </main>
   );

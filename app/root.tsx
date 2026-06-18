@@ -29,7 +29,6 @@ import { logger } from "./utils/logger.utils";
 import indexStyles from "./index.css?url";
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
 
-
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
   { rel: "stylesheet", href: indexStyles },
@@ -68,6 +67,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       DP_SOKNADSDIALOG_URL: getEnv("DP_SOKNADSDIALOG_URL"),
       ARBEIDSSOKERREGISTRERING_URL: getEnv("ARBEIDSSOKERREGISTRERING_URL"),
       FARO_URL: getEnv("FARO_URL"),
+      MIN_SIDE_URL: getEnv("MIN_SIDE_URL"),
     },
   });
 }
