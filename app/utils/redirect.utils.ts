@@ -1,18 +1,24 @@
-const GAMMEL_INGRESS_PREFIX = "/ny-dagpenger/dialog/soknad";
-const URL_PREFIX = "/dagpenger/dialog/soknad";
+const UTDATERT_INGRESS_REGEX = /^\/ny-dagpenger(?:\/|$)/;
+const GAMMEL_DAGPENGER_INGRESS_REGEX = /^\/gammel-dagpenger(?:\/|$)/;
 
-export function isOutdatedBasePath(request: Request): boolean {
+export function erUtdatertIngress(request: Request): boolean {
   const { pathname } = new URL(request.url);
-  return pathname === GAMMEL_INGRESS_PREFIX || pathname.startsWith(`${GAMMEL_INGRESS_PREFIX}/`);
+  return UTDATERT_INGRESS_REGEX.test(pathname);
 }
 
-export function createUpdatedBasePath(pathname: string): string {
-  return URL_PREFIX + pathname.slice(GAMMEL_INGRESS_PREFIX.length);
+export function erGammelSøknadIngress(request: Request): boolean {
+  const { pathname } = new URL(request.url);
+  return GAMMEL_DAGPENGER_INGRESS_REGEX.test(pathname);
 }
 
-export function RedirectToUpdatedBasePath(url: URL): Response {
+export function redirectTilOppdatertIngress(url: URL): Response {
+  const oppdatertBasePath = url.pathname.replace(UTDATERT_INGRESS_REGEX, "/dagpenger/");
+  return Response.redirect(new URL(oppdatertBasePath + url.search, url.origin).toString(), 301);
+}
+
+export function redirectTilInfoside(url: URL): Response {
   return Response.redirect(
-    new URL(createUpdatedBasePath(url.pathname) + url.search, url.origin).toString(),
-    301
+    new URL("/dagpenger/dialog/soknad/info-side", url.origin).toString(),
+    302
   );
 }
