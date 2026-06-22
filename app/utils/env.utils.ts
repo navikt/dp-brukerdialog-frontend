@@ -25,6 +25,7 @@ export type IEnv = {
   DP_SOKNADSDIALOG_URL: string;
   GENERELL_INNSENDING_URL: string;
   FARO_URL: string;
+  MIN_SIDE_URL: string;
 };
 
 export function getEnv(value: keyof IEnv) {
