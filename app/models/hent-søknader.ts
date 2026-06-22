@@ -1,6 +1,6 @@
 import { getEnv } from "~/utils/env.utils";
-import { hentDpSøknadOboToken, hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
-import { formatISO, subDays } from "date-fns";
+import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
+import { subDays } from "date-fns";
 import { logger } from "~/utils/logger.utils";
 import {
   PåbegyntSøknadMedKilde,
@@ -23,18 +23,16 @@ export async function hentOrkestratorSøknader(request: Request) {
   });
 }
 
-export async function hentQuizSøknader(request: Request) {
-  const fromDate = subDays(Date.now(), 30);
-  const formattedDate = formatISO(fromDate, { representation: "date" });
+export async function hentQuizSøknader(_request: Request) {
+  const tomQuizSøknader: QuizSøknader = {
+    paabegynt: null,
+    innsendte: [],
+  };
 
-  const url = `${process.env.DP_SOKNAD_URL}/soknad/mine-soknader?fom=${formattedDate}`;
-  const onBehalfOfToken = await hentDpSøknadOboToken(request);
-  return fetch(url, {
-    method: "GET",
+  return new Response(JSON.stringify(tomQuizSøknader), {
+    status: 200,
     headers: {
       "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${onBehalfOfToken}`,
     },
   });
 }
