@@ -3,22 +3,45 @@ import path from "path";
 import { defineConfig, type ViteDevServer } from "vite";
 import devtoolsJson from "vite-plugin-devtools-json";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { isOutdatedBasePath, createUpdatedBasePath } from "./app/utils/redirect.utils";
+import {
+  erGammelSøknadIngress,
+  erUtdatertIngress,
+  redirectTilInfoside,
+  redirectTilOppdatertIngress,
+} from "./app/utils/redirect.utils";
 
-const handleOutdatedBasePath = {
-  name: "handle-outdated-base-path",
+const handleOutdatedIngress = {
+  name: "handle-outdated-ingress",
+  enforce: "pre" as const,
   configureServer(server: ViteDevServer) {
     server.middlewares.use((req, res, next) => {
-      const url = new URL(req.url ?? "", "http://localhost");
+      const url = new URL(req.url ?? "/", "http://localhost:5173");
       const request = new Request(url);
-      if (isOutdatedBasePath(request)) {
-        res.writeHead(301, { Location: createUpdatedBasePath(url.pathname) + url.search });
+      if (erUtdatertIngress(request)) {
+        const redirectResponse = redirectTilOppdatertIngress(url);
+        const location = redirectResponse.headers.get("Location");
+        if (!location) {
+          next();
+          return;
+        }
+        res.writeHead(301, { Location: location });
+        res.end();
+        return;
+      }
+      if (erGammelSøknadIngress(request)) {
+        const redirectResponse = redirectTilInfoside(url);
+        const location = redirectResponse.headers.get("Location");
+        if (!location) {
+          next();
+          return;
+        }
+        res.writeHead(302, { Location: location });
         res.end();
         return;
       }
       next();
     });
-  }
+  },
 };
 
 export default defineConfig({
@@ -26,14 +49,14 @@ export default defineConfig({
     process.env.NODE_ENV === "production"
       ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
       : "/dagpenger/dialog/soknad",
-  plugins: [reactRouter(), tsconfigPaths(), devtoolsJson(), handleOutdatedBasePath],
+  plugins: [handleOutdatedIngress, reactRouter(), tsconfigPaths(), devtoolsJson()],
   build: {
     manifest: true,
-    sourcemap: process.env.NODE_ENV !== "production"
+    sourcemap: process.env.NODE_ENV !== "production",
   },
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "./app")
-    }
-  }
+      "~": path.resolve(__dirname, "./app"),
+    },
+  },
 });

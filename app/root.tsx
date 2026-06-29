@@ -12,7 +12,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useNavigate
+  useNavigate,
 } from "react-router";
 import { Route } from "./+types/root";
 import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
@@ -34,7 +34,7 @@ import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
-  { rel: "stylesheet", href: indexStyles }
+  { rel: "stylesheet", href: indexStyles },
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -52,7 +52,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const sanityData = await sanityClient.fetch<SanityData>(allTextsQuery, {
     baseLang: "nb",
-    lang: dekoratorLanguage
+    lang: dekoratorLanguage,
   });
 
   return data({
@@ -69,8 +69,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       GENERELL_INNSENDING_URL: getEnv("GENERELL_INNSENDING_URL"),
       DP_SOKNADSDIALOG_URL: getEnv("DP_SOKNADSDIALOG_URL"),
       ARBEIDSSOKERREGISTRERING_URL: getEnv("ARBEIDSSOKERREGISTRERING_URL"),
-      FARO_URL: getEnv("FARO_URL")
-    }
+      FARO_URL: getEnv("FARO_URL"),
+      MIN_SIDE_URL: getEnv("MIN_SIDE_URL"),
+    },
   });
 }
 
@@ -104,7 +105,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`
+            __html: `window.env = ${JSON.stringify(env)}`,
           }}
         />
         <Scripts />

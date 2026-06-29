@@ -34,6 +34,7 @@ export const EØS_LANDKODER = [
   "CZE",
   "SWE",
   "CHE",
+  "GBR",
   "ESP",
   "SVN",
   "SVK",
