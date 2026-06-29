@@ -1,7 +1,7 @@
 import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
@@ -12,11 +12,11 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.annen-pengestotte";
 import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
+  lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+  lagPengestøtteFraNorgeKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeKomponenter,
-  pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
   annenPengestøtteKomponenter,
@@ -52,8 +52,21 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
+import { useTranslation } from "react-i18next";
 
 export function AnnenPengestøtteViewV1() {
+  const { t } = useTranslation("annen-pengestotte");
+  const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter = useMemo(
+    () => lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t),
+    [t]
+  );
+
+  const pengestøtteFraNorgeKomponenter = useMemo(() => lagPengestøtteFraNorgeKomponenter(t), [t]);
+
+  const pengestøtteFraNorgeModalKomponenter = useMemo(
+    () => lagPengestøtteFraNorgeModalKomponenter(t),
+    [t]
+  );
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraAndreEøsLandModalRef = useRef<HTMLDialogElement>(null);
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
@@ -305,13 +318,13 @@ export function AnnenPengestøtteViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             <Heading size="medium" level="2">
-              {SEKSJON_NAVN}
+              {t("side.overskrift")}
             </Heading>
             {mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter.map(
               (komponent) => render(komponent)
@@ -340,19 +353,19 @@ export function AnnenPengestøtteViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til utbetalinger eller goder
+                    {t("fraTidligereArbeidsgiver.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
                   <InlineMessage status="error">
-                    Du må legge til utbetalinger eller økonomiske goder
+                    {t("fraTidligereArbeidsgiver.manglerFeilmelding")}
                   </InlineMessage>
                 )}
               </VStack>
             )}
 
             <Heading size="small" level="3" className="mt-16">
-              Pengestøtte fra Norge
+              {t("norge.overskrift")}
             </Heading>
 
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
@@ -374,19 +387,17 @@ export function AnnenPengestøtteViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til pengestøtte fra Norge
+                    {t("norge.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
-                  <InlineMessage status="error">
-                    Du må legge til pengestøtte fra Norge
-                  </InlineMessage>
+                  <InlineMessage status="error">{t("norge.manglerFeilmelding")}</InlineMessage>
                 )}
               </VStack>
             )}
 
             <Heading size="small" level="3" className="mt-16">
-              Pengestøtte fra andre EØS-land
+              {t("eos.overskrift")}
             </Heading>
 
             {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {
@@ -414,22 +425,17 @@ export function AnnenPengestøtteViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til pengestøtte fra andre EØS-land
+                    {t("eos.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
-                  <InlineMessage status="error">
-                    Du må legge til pengestøtte fra andre EØS-land
-                  </InlineMessage>
+                  <InlineMessage status="error">{t("eos.manglerFeilmelding")}</InlineMessage>
                 )}
               </VStack>
             )}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

@@ -8,7 +8,7 @@ import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import {
   KombinertOgSorterInnsendteSoknader,
   mapOrkestratorInnsendteSoknader,
-  mapQuizInnsendteSoknader
+  mapQuizInnsendteSoknader,
 } from "~/models/hent-søknader-for-ident";
 import { action } from "~/routes/_index";
 import { getEnv } from "~/utils/env.utils";
@@ -46,15 +46,15 @@ export function SøknadOversikt() {
         <VStack gap="space-32">
           {alleSøknader.length > 0 && (
             <VStack gap="space-16">
-              <BodyLong>{t("submittedApplications.description")}</BodyLong>
+              <BodyLong>{t("innsendtSoknad.beskrivelse")}</BodyLong>
               <VStack gap="space-8">
                 {alleSøknader.map((soknad) =>
                   soknad.erQuizSøknad ? (
                     <EksterneLenke
                       key={soknad.soknadUuid}
                       href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
-                      tekst={t("submittedApplications.attachmentButton", {
-                        date: formaterNorskDato(new Date(soknad.forstInnsendt))
+                      tekst={t("innsendtSoknad.vedleggsKnapp", {
+                        date: formaterNorskDato(new Date(soknad.forstInnsendt)),
                       })}
                       variant="secondary"
                       asButton
@@ -62,8 +62,8 @@ export function SøknadOversikt() {
                   ) : (
                     <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
                       <Button variant="secondary">
-                        {t("submittedApplications.attachmentButton", {
-                          date: formaterNorskDato(new Date(soknad.forstInnsendt))
+                        {t("innsendtSoknad.vedleggsKnapp", {
+                          date: formaterNorskDato(new Date(soknad.forstInnsendt)),
                         })}
                       </Button>
                     </Link>
@@ -75,22 +75,22 @@ export function SøknadOversikt() {
           {påbegyntSøknad && (
             <VStack gap="space-16">
               <BodyLong>
-                {t("draftApplication.description", {
-                  date: formaterNorskDato(new Date(påbegyntSøknad.sistEndretAvBruker!))
+                {t("pabegyntSoknad.beskrivelse", {
+                  date: formaterNorskDato(new Date(påbegyntSøknad.sistEndretAvBruker!)),
                 })}
               </BodyLong>
               <VStack gap="space-16">
                 {påbegyntSøknad.erQuizSøknad && (
                   <EksterneLenke
                     href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${påbegyntSøknad.soknadUuid}?fortsett=true`}
-                    tekst={t("draftApplication.continueButton")}
+                    tekst={t("pabegyntSoknad.fortsettKnapp")}
                     variant="primary"
                     asButton
                   />
                 )}
                 {!påbegyntSøknad.erQuizSøknad && (
                   <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
-                    <Button variant="primary">{t("draftApplication.continueButton")}</Button>
+                    <Button variant="primary">{t("pabegyntSoknad.fortsettKnapp")}</Button>
                   </Link>
                 )}
                 <HStack gap="space-16">
@@ -102,7 +102,7 @@ export function SøknadOversikt() {
                       value={String(påbegyntSøknad.erQuizSøknad)}
                     />
                     <Button type="submit" variant="secondary" loading={sletterSøknad}>
-                      {t("draftApplication.deleteAndStartNewButton")}
+                      {t("pabegyntSoknad.slettOgStartPaNyttKnapp")}
                     </Button>
                   </Form>
                 </HStack>
@@ -113,13 +113,13 @@ export function SøknadOversikt() {
           <VStack>
             {!påbegyntSøknad && (
               <Link to="/arbeidssoker">
-                <Button variant="primary">{t("newApplication.startButton")}</Button>
+                <Button variant="primary">{t("nySoknad.startNySoknadKnapp")}</Button>
               </Link>
             )}
           </VStack>
 
           {actionData && (
-            <SeksjonTekniskFeil tittel={t("technicalError.title")} beskrivelse={actionData.error} />
+            <SeksjonTekniskFeil tittel={t("tekniskFeil.melding")} beskrivelse={actionData.error} />
           )}
         </VStack>
       </div>

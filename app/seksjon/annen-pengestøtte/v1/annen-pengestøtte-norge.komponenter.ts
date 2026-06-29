@@ -1,6 +1,7 @@
+import type { TFunction } from "i18next";
+import { startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
-import { startOfDay, subYears } from "date-fns";
 
 export const mottarDuPengestøtteFraAndreEnnNav = "mottarDuPengestøtteFraAndreEnnNav";
 export const hvilkenPengestøtteFraAndreEnnNavMottarDu = "hvilkenPengestøtteFraAndreEnnNavMottarDu";
@@ -15,6 +16,8 @@ export const iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato =
 export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver =
   "mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver";
 
+type AnnenPengestotteT = TFunction<"annen-pengestotte">;
+
 export type PengestøtteFraNorgeModalSvar = {
   [hvilkenPengestøtteFraAndreEnnNavMottarDu]?:
     | typeof pensjonFraAndreEnnNav
@@ -24,49 +27,52 @@ export type PengestøtteFraNorgeModalSvar = {
   [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato]?: string;
 };
 
-export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
+const jaNeiOptions = (t: AnnenPengestotteT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+export const lagPengestøtteFraNorgeKomponenter = (t: AnnenPengestotteT): KomponentType[] => [
   {
     id: mottarDuPengestøtteFraAndreEnnNav,
     type: "envalg",
-    label: "Mottar du pengestøtte fra andre enn Nav?",
+    label: t("norge.mottarDuPengestotte.label"),
     description:
       "<p><ul>" +
-      "<li>Pensjon fra andre enn Nav</li>" +
-      "<li>Dagpenger for fiskere eller garantilott fra Garantikassen for fiskere (GFF)</li>" +
+      `<li>${t("norge.mottarDuPengestotte.description.pensjon")}</li>` +
+      `<li>${t("norge.mottarDuPengestotte.description.gff")}</li>` +
       "</ul></p>",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    options: jaNeiOptions(t),
   },
   {
     id: "mottarDuPengestøtteFraAndreEnnNavLesMer",
     type: "lesMer",
-    label: "Grunnen til at vi spør om dette",
-    description:
-      "Hvis du mottar pengestøtte fra andre enn Nav, kan det ha betydning for retten din til dagpenger.",
+    label: t("norge.mottarDuPengestotte.lesMer.label"),
+    description: t("norge.mottarDuPengestotte.lesMer.description"),
   },
   {
     id: "mottarDuPengestøtteFraAndreEnnNavForklarendeTekst",
     type: "forklarendeTekst",
     description:
-      "<strong>Dine pengestøtter fra Norge</strong><br />" +
-      "Du må legge til alle pengestøttene du mottar som som ikke er fra Nav.",
+      `<strong>${t("norge.forklarendeTekst.tittel")}</strong><br />` +
+      t("norge.forklarendeTekst.description"),
     visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuPengestøtteFraAndreEnnNav] === "ja",
   },
 ];
 
-export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
+export const lagPengestøtteFraNorgeModalKomponenter = (t: AnnenPengestotteT): KomponentType[] => [
   {
     id: hvilkenPengestøtteFraAndreEnnNavMottarDu,
     type: "envalg",
-    label: "Hvilken pengestøtte fra andre enn Nav mottar du?",
+    label: t("norge.modal.hvilkenPengestotte.label"),
     options: [
-      { value: pensjonFraAndreEnnNav, label: "Pensjon fra andre enn Nav" },
+      {
+        value: pensjonFraAndreEnnNav,
+        label: t("norge.modal.hvilkenPengestotte.options.pensjonFraAndreEnnNav"),
+      },
       {
         value: dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
-        label:
-          "Dagpenger under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)",
+        label: t("norge.modal.hvilkenPengestotte.options.gff"),
       },
     ],
   },
@@ -74,21 +80,20 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
     id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar.",
+    label: t("norge.modal.informasjonskort.label"),
+    description: t("norge.modal.informasjonskort.description"),
   },
   {
     id: "hvilkePengestøtteFraAndreEnnNavMottarDuPensjonFraAndreEnnNavDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av pensjon fra andre enn Nav",
+    label: t("norge.modal.dokumentasjonskrav.pensjonFraAndreEnnNav"),
     visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
       svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === pensjonFraAndreEnnNav,
   },
   {
     id: "hvilkePengestøtteFraAndreEnnNavMottarDuPengestøtteFraGffDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av pengestøtte fra Garantikassen for fiskere",
+    label: t("norge.modal.dokumentasjonskrav.gff"),
     visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
       svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] ===
       dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
@@ -96,58 +101,62 @@ export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
   {
     id: hvemUtbetalerPengestøtten,
     type: "kortTekst",
-    label: "Hvem utbetaler pengestøtten?",
+    label: t("norge.modal.hvemUtbetaler.label"),
     maksLengde: 200,
     visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
-      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === "pensjonFraAndreEnnNav",
+      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === pensjonFraAndreEnnNav,
   },
   {
     id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
     type: "periodeFra",
-    periodeLabel: "I hvilken periode har du mottatt pengestøtten?",
-    label: "Fra dato",
+    periodeLabel: t("norge.modal.periode.label"),
+    label: t("norge.modal.periode.fraDato"),
     fraOgMed: startOfDay(subYears(new Date(), 20)),
     referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
   },
   {
     id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
     type: "periodeTil",
-    label: "Til dato",
-    description:
-      "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
+    label: t("norge.modal.periode.tilDato"),
+    description: t("norge.modal.periode.tilDatoDescription"),
     optional: true,
     referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
   },
 ];
 
-export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] =
-  [
-    {
-      id: mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
-      type: "envalg",
-      label:
-        "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
-      description:
-        "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
-      options: [
-        { value: "ja", label: "Ja" },
-        { value: "nei", label: "Nei" },
-      ],
-    },
-    {
-      id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverLesMer",
-      type: "lesMer",
-      label: "Grunnen til at vi spør om dette",
-      description:
-        "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
-    },
-    {
-      id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverForklarendeTekst",
-      type: "forklarendeTekst",
-      description:
-        "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />" +
-        "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver.",
-      visHvis: (svar: AnnenPengestøtteSvar) =>
-        svar[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja",
-    },
-  ];
+export const lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter = (
+  t: AnnenPengestotteT
+): KomponentType[] => [
+  {
+    id: mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
+    type: "envalg",
+    label: t("fraTidligereArbeidsgiver.mottarAndreUtbetalinger.label"),
+    description: t("fraTidligereArbeidsgiver.mottarAndreUtbetalinger.description"),
+    options: jaNeiOptions(t),
+  },
+  {
+    id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverLesMer",
+    type: "lesMer",
+    label: t("fraTidligereArbeidsgiver.mottarAndreUtbetalinger.lesMer.label"),
+    description: t("fraTidligereArbeidsgiver.mottarAndreUtbetalinger.lesMer.description"),
+  },
+  {
+    id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverForklarendeTekst",
+    type: "forklarendeTekst",
+    description:
+      `<strong>${t("fraTidligereArbeidsgiver.forklarendeTekst.tittel")}</strong><br />` +
+      t("fraTidligereArbeidsgiver.forklarendeTekst.description"),
+    visHvis: (svar: AnnenPengestøtteSvar) =>
+      svar[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja",
+  },
+];
+
+const fallbackT = ((key: string) => key) as unknown as AnnenPengestotteT;
+
+export const pengestøtteFraNorgeKomponenter = lagPengestøtteFraNorgeKomponenter(fallbackT);
+
+export const pengestøtteFraNorgeModalKomponenter =
+  lagPengestøtteFraNorgeModalKomponenter(fallbackT);
+
+export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter =
+  lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(fallbackT);

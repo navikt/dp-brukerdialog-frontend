@@ -1,19 +1,19 @@
 {
   "pageTitle": "Søknad om dagpenger: Søknadsoversikt",
   "heading": "Søknad om dagpenger",
-  "submittedApplications": {
-    "description": "Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad eller sende inn en ny?",
-    "attachmentButton": "Send inn vedlegg til søknad sendt {{date}}"
+  "innsendtSoknad": {
+    "beskrivelse": "Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad eller sende inn en ny?",
+    "vedleggsKnapp": "Send inn vedlegg til søknad sendt {{date}}"
   },
-  "draftApplication": {
-    "description": "Du har en påbegynt søknad, sist endret {{date}}. Vil du fortsette på denne eller starte en ny?",
-    "continueButton": "Fortsett påbegynt søknad",
-    "deleteAndStartNewButton": "Slett og start ny søknad"
+  "pabegyntSoknad": {
+    "beskrivelse": "Du har en påbegynt søknad, sist endret {{date}}. Vil du fortsette på denne eller starte en ny?",
+    "fortsettKnapp": "Fortsett påbegynt søknad",
+    "slettOgStartPaNyttKnapp": "Slett og start ny søknad"
   },
-  "newApplication": {
-    "startButton": "Start ny søknad"
+  "nySoknad": {
+    "startNySoknadKnapp": "Start ny søknad"
   },
-  "technicalError": {
-    "title": "Det har oppstått en teknisk feil"
+  "tekniskFeil": {
+    "melding": "Det har oppstått en teknisk feil"
   }
 }

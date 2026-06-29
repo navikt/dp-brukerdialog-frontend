@@ -16,26 +16,26 @@ void i18n
     fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
 
-    ns: ["common", "soknadOversikt"],
+    ns: ["common", "soknadOversikt", "annen-pengestotte"],
     defaultNS: "common",
 
     backend: {
-      loadPath: `${baseUrl}locales/{{lng}}/{{ns}}.json`
+      loadPath: `${baseUrl}locales/{{lng}}/{{ns}}.json`,
     },
 
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
-      caches: ["localStorage"]
+      caches: ["localStorage"],
     },
 
     interpolation: {
-      escapeValue: false
+      escapeValue: false,
     },
 
     load: "languageOnly",
 
     returnNull: false,
-    returnEmptyString: false
+    returnEmptyString: false,
   });
 
 i18n.on("languageChanged", (language) => {

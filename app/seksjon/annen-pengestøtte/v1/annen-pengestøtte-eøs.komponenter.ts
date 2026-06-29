@@ -1,6 +1,7 @@
+import type { TFunction } from "i18next";
+import { endOfDay, startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
-import { endOfDay, startOfDay, subYears } from "date-fns";
 
 export const harMottattEllerSøktOmPengestøtteFraAndreEøsLand =
   "harMottattEllerSøktOmPengestøtteFraAndreEøsLand";
@@ -22,6 +23,8 @@ export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLand
 export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato =
   "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato";
 
+type AnnenPengestotteT = TFunction<"annen-pengestotte">;
+
 export type PengestøtteFraAndreEøsLandModalSvar = {
   [hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]?:
     | typeof sykepenger
@@ -35,57 +38,62 @@ export type PengestøtteFraAndreEøsLandModalSvar = {
   [iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato]?: string;
 };
 
-export const pengestøtteFraAndreEøsLandKomponenter: KomponentType[] = [
+const jaNeiOptions = (t: AnnenPengestotteT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+export const lagPengestøtteFraAndreEøsLandKomponenter = (t: AnnenPengestotteT): KomponentType[] => [
   {
     id: harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
     type: "envalg",
-    label:
-      "Har du de siste 36 måneder mottatt eller søkt om pengestøtte fra EØS-land, Sveits eller Storbritannia som ligner på:",
+    label: t("eos.harMottattEllerSokt.label"),
     description:
       "<p><ul>" +
-      "<li>Sykepenger</li>" +
-      "<li>Foreldrepenger eller svangerskapspenger</li>" +
-      "<li>Dagpenger / arbeidsledighetstrygd</li>" +
-      "<li>Pleiepenger, omsorgspenger eller opplæringspenger</li>" +
+      `<li>${t("eos.harMottattEllerSokt.description.sykepenger")}</li>` +
+      `<li>${t("eos.harMottattEllerSokt.description.foreldrepenger")}</li>` +
+      `<li>${t("eos.harMottattEllerSokt.description.dagpenger")}</li>` +
+      `<li>${t("eos.harMottattEllerSokt.description.pleiepenger")}</li>` +
       "</ul></p>",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    options: jaNeiOptions(t),
   },
   {
     id: "harMottattPengestøtteFraAndreEØSLandLesMer",
     type: "lesMer",
-    label: "Grunnen til at vi spør om dette",
-    description:
-      "Hvis du mottar disse pengestøttene fra utlandet, kan det ha betydning for retten din til dagpenger.",
+    label: t("eos.harMottattEllerSokt.lesMer.label"),
+    description: t("eos.harMottattEllerSokt.lesMer.description"),
   },
   {
     id: "harMottattEllerSøktOmPengestøtteFraAndreEøsLandForklarendeTekst",
     type: "forklarendeTekst",
     description:
-      "<strong>Dine pengestøtter fra andre EØS-land</strong><br/>" +
-      "Du må legge til alle pengestøttene du har mottatt fra andre EØS-land, Sveits eller Storbritannia de siste 36 månedene.",
+      `<strong>${t("eos.forklarendeTekst.tittel")}</strong><br/>` +
+      t("eos.forklarendeTekst.description"),
     visHvis: (svar: AnnenPengestøtteSvar) =>
       svar[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] === "ja",
   },
 ];
 
-export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
+export const lagPengestøtteFraAndreEøsLandModalKomponenter = (
+  t: AnnenPengestotteT
+): KomponentType[] => [
   {
     id: hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
     type: "envalg",
-    label: "Mottar du, eller har du tidligere fått pengestøtte fra et annet EØS-land?",
+    label: t("eos.modal.hvilkenPengestotte.label"),
     options: [
-      { value: sykepenger, label: "Sykepenger" },
+      { value: sykepenger, label: t("eos.modal.hvilkenPengestotte.options.sykepenger") },
       {
         value: foreldrepengerEllerSvangerskapspenger,
-        label: "Foreldrepenger eller svangerskapspenger",
+        label: t("eos.modal.hvilkenPengestotte.options.foreldrepenger"),
       },
-      { value: dagpengerEllerArbeidsledighetstrygd, label: "Dagpenger / arbeidsledighetstrygd" },
+      {
+        value: dagpengerEllerArbeidsledighetstrygd,
+        label: t("eos.modal.hvilkenPengestotte.options.dagpenger"),
+      },
       {
         value: pleiepengerOmsorgspengerEllerOpplæringspenger,
-        label: "Pleiepenger, omsorgspenger eller opplæringspenger",
+        label: t("eos.modal.hvilkenPengestotte.options.pleiepenger"),
       },
     ],
   },
@@ -93,35 +101,30 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
     id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar.",
+    label: t("eos.modal.informasjonskort.label"),
+    description: t("eos.modal.informasjonskort.description"),
   },
   {
     id: "hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLandDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av pengestøtte fra et annet EØS-land",
+    label: t("eos.modal.dokumentasjonskrav.label"),
   },
   {
     id: fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
     type: "land",
     erEøsLand: true,
-    label:
-      "Hvilket land har du mottatt eller søkt om pengestøtten fra i løpet av de siste 36 månedene?",
+    label: t("eos.modal.land.label"),
   },
   {
     id: mottarDuFortsattPengestøttenFraAndreEøsLand,
     type: "envalg",
-    label: "Mottar du fortsatt pengestøtten?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("eos.modal.mottarFortsatt.label"),
+    options: jaNeiOptions(t),
   },
   {
     id: fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
     type: "dato",
-    label: "Fra hvilken dato har du mottatt pengestøtten?",
+    label: t("eos.modal.fraNar.label"),
     fraOgMed: startOfDay(subYears(new Date(), 40)),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "ja",
@@ -129,8 +132,8 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
   {
     id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
     type: "periodeFra",
-    periodeLabel: "I hvilken periode mottok du pengesøtten?",
-    label: "Fra dato",
+    periodeLabel: t("eos.modal.periode.label"),
+    label: t("eos.modal.periode.fraDato"),
     referanseId: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 40)),
     visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
@@ -139,7 +142,7 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
   {
     id: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
     type: "periodeTil",
-    label: "Til dato",
+    label: t("eos.modal.periode.tilDato"),
     referanseId: iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
     fraOgMed: startOfDay(subYears(new Date(), 4)),
     tilOgMed: endOfDay(new Date()),
@@ -147,3 +150,11 @@ export const pengestøtteFraAndreEøsLandModalKomponenter: KomponentType[] = [
       svar[mottarDuFortsattPengestøttenFraAndreEøsLand] === "nei",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as AnnenPengestotteT;
+
+export const pengestøtteFraAndreEøsLandKomponenter =
+  lagPengestøtteFraAndreEøsLandKomponenter(fallbackT);
+
+export const pengestøtteFraAndreEøsLandModalKomponenter =
+  lagPengestøtteFraAndreEøsLandModalKomponenter(fallbackT);
