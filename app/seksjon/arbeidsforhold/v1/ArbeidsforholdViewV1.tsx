@@ -1,39 +1,39 @@
 import { BriefcaseIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.arbeidsforhold";
+import { action, loader, SEKSJON_NAVN } from "~/routes/$soknadId.arbeidsforhold";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   Arbeidsforhold,
-  arbeidsforholdForklarendeTekstKomponenter,
-  arbeidsforholdKomponenter,
-  arbeidsforholdModalKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdResponse,
   ArbeidsforholdSvar,
   handling,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
+  lagArbeidsforholdForklarendeTekstKomponenter,
+  lagArbeidsforholdKomponenter,
+  lagArbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   pdfGrunnlag,
   seksjonsvar,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
@@ -41,8 +41,65 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
+import { useTranslation } from "react-i18next";
 
 export function ArbeidsforholdViewV1() {
+  const { t } = useTranslation("arbeidsforhold");
+
+  const arbeidsforholdKomponenter = useMemo(() => lagArbeidsforholdKomponenter(t), [t]);
+
+  const arbeidsforholdForklarendeTekstKomponenter = useMemo(
+    () => lagArbeidsforholdForklarendeTekstKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalJegErPermittertKomponenter = useMemo(
+    () => lagArbeidsforholdModalJegErPermittertKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalKomponenter = useMemo(() => lagArbeidsforholdModalKomponenter(t), [t]);
+
+  const arbeidsforholdModalSkiftTurnusRotasjonKomponenter = useMemo(
+    () => lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalKontraktenErUtgåttKomponenter = useMemo(
+    () => lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalArbeidsgiverErKonkursKomponenter = useMemo(
+    () => lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalJegHarSagtOppSelvKomponenter = useMemo(
+    () => lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter = useMemo(
+    () => lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter = useMemo(
+    () => lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalJegHarFåttAvskjedKomponenter = useMemo(
+    () => lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t),
+    [t]
+  );
+
+  const arbeidsforholdModalArbeidstidenErRedusertKomponenter = useMemo(
+    () => lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t),
+    [t]
+  );
+
   const ref = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
@@ -161,12 +218,12 @@ export function ArbeidsforholdViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Form {...form.getFormProps()}>
           <VStack gap="space-24">
             <Heading size="medium" level="2">
-              {SEKSJON_NAVN}
+              {t("side.overskrift")}
             </Heading>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {arbeidsforholdKomponenter.map((komponent) => {
@@ -222,20 +279,19 @@ export function ArbeidsforholdViewV1() {
                         });
                       }}
                     >
-                      Legg til arbeidsforhold
+                      {t("registrerteArbeidsforhold.leggTilKnapp")}
                     </Button>
                   </HStack>
                   {visManglerArbeidsforholdFeilmelding && (
-                    <InlineMessage status="error">Du må legge til et arbeidsforhold</InlineMessage>
+                    <InlineMessage status="error">
+                      {t("registrerteArbeidsforhold.manglerFeilmelding")}
+                    </InlineMessage>
                   )}
                 </VStack>
               )}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

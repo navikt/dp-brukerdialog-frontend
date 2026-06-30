@@ -1,10 +1,11 @@
+import type { TFunction } from "i18next";
+import { startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import {
-  ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegHarFåttAvskjed,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
+import type { ArbeidsforholdModalSvar } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato =
   "jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato";
@@ -12,12 +13,16 @@ export const jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato =
   "jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato";
 export const jegHarFåttAvskjedHvaVarÅrsaken = "jegHarFåttAvskjedHvaVarÅrsaken";
 
-export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] = [
+type ArbeidsforholdT = TFunction;
+
+export const lagArbeidsforholdModalJegHarFåttAvskjedKomponenter = (
+  t: ArbeidsforholdT
+): KomponentType[] => [
   {
     id: jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
-    periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra dato",
+    periodeLabel: t("modal.jegHarFattAvskjed.varighetPaArbeidsforholdet.label"),
+    label: t("felles.dato.fraDato"),
     referanseId: jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -26,7 +31,7 @@ export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] =
   {
     id: jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til dato",
+    label: t("felles.dato.tilDato"),
     referanseId: jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
@@ -35,37 +40,42 @@ export const arbeidsforholdModalJegHarFåttAvskjedKomponenter: KomponentType[] =
     id: "jegHarFåttAvskjedInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("modal.jegHarFattAvskjed.informasjonskort.label"),
     description:
-      "<p>Hvis du har fått avskjed fra arbeidsgiver, må vi vite hvorfor.</p>" +
-      "<p>Avskjed betyr at du må slutte i jobben din umiddelbart, uten oppsigelsestid.</p>" +
-      "<p>Du må dokumentere eller beskrive grunnen og datoen for avskjeden. Dette kan for eksempel stå i avskjedsbrevet eller i møtereferat.</p>" +
-      "<p>Har du fått avskjed vil du normalt ikke få utbetalt dagpenger i 18 uker.</p>" +
-      "<p>Det er Nav som vurderer om grunnen til avskjeden får betydning for utbetalingen din.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
+      `<p>${t("modal.jegHarFattAvskjed.informasjonskort.description.hvorfor")}</p>` +
+      `<p>${t("modal.jegHarFattAvskjed.informasjonskort.description.hvaBetyrAvskjed")}</p>` +
+      `<p>${t("modal.jegHarFattAvskjed.informasjonskort.description.dokumentere")}</p>` +
+      `<p>${t("modal.jegHarFattAvskjed.informasjonskort.description.karantene")}</p>` +
+      `<p>${t("modal.jegHarFattAvskjed.informasjonskort.description.navVurderer")}</p>` +
+      `<p>${t("modal.jegHarFattAvskjed.informasjonskort.description.meldekort")}</p>`,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
   },
   {
     id: "jegHarFåttAvskjedArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
+    label: t("modal.jegHarFattAvskjed.dokumentasjonskrav.arbeidsavtale"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
   },
   {
     id: "jegHarFåttAvskjedDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Avskjedigelse",
+    label: t("modal.jegHarFattAvskjed.dokumentasjonskrav.avskjedigelse"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
   },
   {
     id: jegHarFåttAvskjedHvaVarÅrsaken,
     type: "langTekst",
-    label: "Hva var årsaken til at du ble avskjediget?",
+    label: t("modal.jegHarFattAvskjed.hvaVarArsaken.label"),
     maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as ArbeidsforholdT;
+
+export const arbeidsforholdModalJegHarFåttAvskjedKomponenter =
+  lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(fallbackT);

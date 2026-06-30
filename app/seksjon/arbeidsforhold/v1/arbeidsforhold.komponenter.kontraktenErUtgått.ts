@@ -1,10 +1,11 @@
+import type { TFunction } from "i18next";
+import { startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import {
-  ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   kontraktenErUtgått,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
+import type { ArbeidsforholdModalSvar } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato =
   "kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato";
@@ -17,12 +18,21 @@ export const kontraktenErUtgåttHvaHarDuSvartPåTilbudet =
 export const kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
   "kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] = [
+type ArbeidsforholdT = TFunction;
+
+const jaNeiOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+export const lagArbeidsforholdModalKontraktenErUtgåttKomponenter = (
+  t: ArbeidsforholdT
+): KomponentType[] => [
   {
     id: kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
-    periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra dato",
+    periodeLabel: t("modal.kontraktenErUtgatt.varighetPaArbeidsforholdet.label"),
+    label: t("felles.dato.fraDato"),
     referanseId: kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -31,7 +41,7 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
   {
     id: kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til dato",
+    label: t("felles.dato.tilDato"),
     referanseId: kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
@@ -39,30 +49,26 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
   {
     id: "kontraktenErGåttUtArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
+    label: t("modal.kontraktenErUtgatt.dokumentasjonskrav.arbeidsavtale"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
   },
   {
     id: kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
     type: "envalg",
-    label:
-      "Har du fått tilbud om forlengelse av arbeidskontrakten eller tilbud om annen stilling hos arbeidsgiveren din?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("modal.kontraktenErUtgatt.tilbudOmForlengelse.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === kontraktenErUtgått,
   },
   {
     id: kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
     type: "envalg",
-    label: "Hva har du svart på tilbudet?",
+    label: t("modal.kontraktenErUtgatt.hvaHarDuSvart.label"),
     options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-      { value: "harIkkeSvart", label: "Har ikke svart" },
+      { value: "ja", label: t("felles.svar.ja") },
+      { value: "nei", label: t("felles.svar.nei") },
+      { value: "harIkkeSvart", label: t("felles.svar.harIkkeSvart") },
     ],
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[
@@ -73,20 +79,25 @@ export const arbeidsforholdModalKontraktenErUtgåttKomponenter: KomponentType[] 
     id: "kontraktenErUtgåttHvaHarDuSvartPåTilbudetOmForlengelseAvArbeidskontraktenEllerAnnenStillingInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("modal.kontraktenErUtgatt.informasjonskort.label"),
     description:
-      "<p>Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.</p>" +
-      "<p>Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
+      `<p>${t("modal.kontraktenErUtgatt.informasjonskort.description.karantene")}</p>` +
+      `<p>${t("modal.kontraktenErUtgatt.informasjonskort.description.sokNa")}</p>` +
+      `<p>${t("modal.kontraktenErUtgatt.informasjonskort.description.meldekort")}</p>`,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[kontraktenErUtgåttHvaHarDuSvartPåTilbudet] === "nei",
   },
   {
     id: kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
     type: "langTekst",
-    label: "Hva er årsaken til at du ikke har tatt imot tilbudet?",
+    label: t("modal.kontraktenErUtgatt.grunnTilIkkeTattImot.label"),
     maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[kontraktenErUtgåttHvaHarDuSvartPåTilbudet] === "nei",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as ArbeidsforholdT;
+
+export const arbeidsforholdModalKontraktenErUtgåttKomponenter =
+  lagArbeidsforholdModalKontraktenErUtgåttKomponenter(fallbackT);
