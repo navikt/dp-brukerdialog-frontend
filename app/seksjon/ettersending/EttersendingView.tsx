@@ -1,3 +1,4 @@
+import { ArrowLeftIcon } from "@navikt/aksel-icons";
 import {
   BodyLong,
   BodyShort,
@@ -9,6 +10,7 @@ import {
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
@@ -23,13 +25,12 @@ import {
 import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersending } from "./ettersending.context";
-import { ArrowLeftIcon } from "@navikt/aksel-icons";
 
 export function EttersendingView() {
+  const { t } = useTranslation("ettersending");
   const { soknadId } = useParams();
-  const seksjonnavn = "Ettersending";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const navigate = useNavigate();
+
   const {
     ettersendingene,
     lagrer,
@@ -55,40 +56,31 @@ export function EttersendingView() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-32">
         <Heading size="medium" level="2">
-          {seksjonnavn}
+          {t("side.overskrift")}
         </Heading>
 
         {ettersendingene.length > 0 && (
           <>
             <VStack gap="space-16">
-              <BodyShort weight="semibold">
-                Frist for innsendinger er 14 dager etter at du sendte søknaden.
-              </BodyShort>
-              <BodyLong>
-                Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er
-                ansvarlig for at dokumentasjonen sendes til oss. Hvis du ikke sender alle
-                dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige
-                opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle
-                dokumentene.
-              </BodyLong>
+              <BodyShort weight="semibold">{t("frist")}</BodyShort>
+              <BodyLong>{t("beskrivelse")}</BodyLong>
 
-              <ReadMore header="Har du fått brev om manglende opplysninger?">
+              <ReadMore header={t("manglendeOpplysninger.header")}>
                 <BodyLong>
-                  Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal
-                  sendes inn og frist for å sende inn. Brev du har fått ligger i{" "}
+                  {t("manglendeOpplysninger.førDokumentliste")}{" "}
                   <EksterneLenke
                     href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
-                    tekst="dokumentlisten på Mine dagpenger"
+                    tekst={t("manglendeOpplysninger.dokumentlisteLenke")}
                   />
-                  . Når du har dokumentene klare kan du{" "}
+                  {t("manglendeOpplysninger.mellomLenker")}{" "}
                   <EksterneLenke
                     href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
-                    tekst="sende dem inn her"
+                    tekst={t("manglendeOpplysninger.innsendingLenke")}
                   />{" "}
-                  Dette kan forlenge tiden det tar å behandle søknaden din.
+                  {t("manglendeOpplysninger.etterInnsendingLenke")}
                 </BodyLong>
               </ReadMore>
 
@@ -98,23 +90,16 @@ export function EttersendingView() {
                 </Box>
               ))}
 
-              {!lagrer && harTekniskFeil && (
-                <ErrorMessage>
-                  Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv
-                  nytt.
-                </ErrorMessage>
-              )}
+              {!lagrer && harTekniskFeil && <ErrorMessage>{t("feil.tekniskFeil")}</ErrorMessage>}
 
               {valideringStartet && !harLastetOppFil && (
-                <ErrorMessage>
-                  Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-                </ErrorMessage>
+                <ErrorMessage>{t("feil.manglerFil")}</ErrorMessage>
               )}
             </VStack>
 
             <HStack gap="space-16">
               <Button type="button" loading={lagrer} onClick={() => validerOgLagre()}>
-                Send inn dokumenter
+                {t("knapper.sendInnDokumenter")}
               </Button>
               <Button
                 variant="secondary"
@@ -125,7 +110,7 @@ export function EttersendingView() {
                   navigate(`../kvittering`);
                 }}
               >
-                Avbryt
+                {t("knapper.avbryt")}
               </Button>
             </HStack>
           </>
@@ -134,7 +119,7 @@ export function EttersendingView() {
         <VStack gap="space-16">
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">Dokumenter du har sendt inn</Heading>
+              <Heading size="small">{t("dokumenterSendtInn.heading")}</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
@@ -143,7 +128,7 @@ export function EttersendingView() {
 
           {dokumentasjonSomIkkeSkalSendes.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
+              <Heading size="small">{t("dokumenterIkkeSendes.heading")}</Heading>
               {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
               ))}
@@ -153,22 +138,19 @@ export function EttersendingView() {
 
         <VStack gap="space-16">
           <Heading size="small" level="3">
-            Andre dokumenter
+            {t("andreDokumenter.heading")}
           </Heading>
-          <BodyLong>
-            Du kan sende inn andre dokumenter hvis du mener det er relevant i saken din. Dette er
-            helt valgfritt.
-          </BodyLong>
+          <BodyLong>{t("andreDokumenter.description")}</BodyLong>
           <EksterneLenke
             href={getEnv("GENERELL_INNSENDING_URL")}
-            tekst="Jeg vil sende inn andre dokumenter"
+            tekst={t("andreDokumenter.lenke")}
           />
         </VStack>
 
         <HStack className="mt-32" gap="space-8">
           <Link to={`/${soknadId}/kvittering`}>
             <Button variant="secondary" icon={<ArrowLeftIcon aria-hidden />}>
-              Kvittering
+              {t("knapper.kvittering")}
             </Button>
           </Link>
 
@@ -177,7 +159,7 @@ export function EttersendingView() {
               window.location.href = getEnv("DP_MINE_DAGPENGER_URL");
             }}
           >
-            Gå til mine dagpenger
+            {t("knapper.mineDagpenger")}
           </Button>
         </HStack>
       </VStack>

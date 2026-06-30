@@ -10,9 +10,17 @@
   "plugin.inlang.i18next": {
     "pathPattern": {
       "common": "./public/locales/{languageTag}/common.json",
-      "soknadOversikt": "./public/locales/{languageTag}/soknadOversikt.json",
       "annen-pengestotte": "./public/locales/{languageTag}/annen-pengestotte.json",
-      "arbeidsforhold": "./public/locales/{languageTag}/arbeidsforhold.json"
+      "arbeidsforhold": "./public/locales/{languageTag}/arbeidsforhold.json",
+      "barnetillegg": "./public/locales/{languageTag}/barnetillegg.json",
+      "din-situasjon": "./public/locales/{languageTag}/din-situasjon.json",
+      "dokumentasjon": "./public/locales/{languageTag}/dokumentasjon.json",
+      "egen-naering": "./public/locales/{languageTag}/egen-naering.json",
+      "ettersending": "./public/locales/{languageTag}/ettersending.json",
+      "kvitteringer": "./public/locales/{languageTag}/kvitteringer.json",
+      "oppsummering": "./public/locales/{languageTag}/oppsummering.json",
+      "personalia": "./public/locales/{languageTag}/personalia.json",
+      "soknadOversikt": "./public/locales/{languageTag}/soknadOversikt.json"
     },
     "variableReferencePattern": ["{{", "}}"]
   }

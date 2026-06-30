@@ -1,7 +1,6 @@
 import { z } from "zod";
 import {
   barnetilleggKomponenter,
-  BarnetilleggSvar,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -10,12 +9,12 @@ import {
   fødselsdato,
   handling,
   leggTilBarnManueltSpørsmål,
-  LeggTilBarnManueltSvar,
   pdfGrunnlag,
   seksjonsvar,
 } from "./barnetillegg.komponenter";
-import { valider } from "~/utils/validering.utils";
+import type { BarnetilleggSvar, LeggTilBarnManueltSvar } from "./barnetillegg.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { valider } from "~/utils/validering.utils";
 
 export const barnetilleggSchema = z
   .object({
@@ -28,8 +27,8 @@ export const barnetilleggSchema = z
   })
   .superRefine((data, context) => {
     if (
-      data.handling === Seksjonshandling.tilbakenavigering ||
-      data.handling === Seksjonshandling.fortsettSenere
+      data[handling] === Seksjonshandling.tilbakenavigering ||
+      data[handling] === Seksjonshandling.fortsettSenere
     ) {
       return;
     }
@@ -37,6 +36,7 @@ export const barnetilleggSchema = z
     barnetilleggKomponenter.forEach((komponent) => {
       const synlig = !komponent.visHvis || komponent.visHvis(data);
       const svar = data[komponent.id as keyof BarnetilleggSvar];
+
       valider(komponent, svar, synlig, context);
     });
   });
@@ -51,9 +51,9 @@ export const barnFraPdlSchema = z
     dokumentasjonskravId: z.string().optional(),
     [forsørgerDuBarnet]: z.enum(["ja", "nei"]).optional(),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (!data[forsørgerDuBarnet]) {
-      ctx.addIssue({
+      context.addIssue({
         path: [forsørgerDuBarnet],
         code: "custom",
         message: "Du må svare på dette spørsmålet",
@@ -72,6 +72,7 @@ export const leggTilBarnManueltSchema = z
     leggTilBarnManueltSpørsmål.forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilBarnManueltSvar];
+
       valider(spørsmål, svar, synlig, context);
     });
   });

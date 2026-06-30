@@ -1,14 +1,17 @@
+import { useTranslation } from "react-i18next";
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { lastnedDokument } from "~/utils/dokument.utils";
-import { DokumentasjonskravInnhold } from "../dokumentasjon/v1/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
+import { DokumentasjonskravInnhold } from "../dokumentasjon/v1/DokumentasjonskravInnhold";
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
 }
 
 export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps) {
+  const { t } = useTranslation("kvittering");
+
   return (
     <Box padding="space-16" background="sunken" borderRadius="12">
       <VStack gap="space-16">
@@ -18,7 +21,7 @@ export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps
           </Heading>
           <BodyShort>
             <Tag variant="success" size="xsmall">
-              Mottatt
+              {t("dokumentasjonskrav.mottatt")}
             </Tag>
           </BodyShort>
         </HStack>
@@ -33,12 +36,12 @@ export function DokumentasjonskravSomErSendtAvDeg({ dokumentasjonskrav }: IProps
                 lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
               }
             >
-              Last ned opplastet dokument
+              {t("dokumentasjonskrav.lastNedOpplastetDokument")}
             </Button>
           )}
         </HStack>
 
-        <ReadMore header="Dette må dokumentasjonen inneholde">
+        <ReadMore header={t("dokumentasjonskrav.readMoreHeader")}>
           <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
         </ReadMore>
       </VStack>

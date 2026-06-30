@@ -1,12 +1,13 @@
+import { useTranslation } from "react-i18next";
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
   hvorMangeTimerJobbetPerUkeNå,
-  Næringsvirksomhet,
   virksomhetensNavn,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import type { Næringsvirksomhet } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 interface IProps {
   næringsvirksomhet: Næringsvirksomhet;
@@ -14,6 +15,7 @@ interface IProps {
 }
 
 export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksomhetIndex }: IProps) {
+  const { t } = useTranslation("egen-naering");
   const { næringsvirksomheter, setNæringsvirksomheter, setNæringsvirksomhetModalData } =
     useEgenNæringContext();
 
@@ -25,10 +27,13 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
     <Box padding="space-16" background="sunken" borderRadius="16">
       <h3 style={{ marginTop: "0" }}>{næringsvirksomhet[virksomhetensNavn]}</h3>
       <BodyShort spacing>
-        {næringsvirksomhet[hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert]} timer arbeidstid
-        per uke før reduksjon
+        {t("naeringsvirksomhetDetaljer.timerForReduksjon", {
+          timer: næringsvirksomhet[hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert],
+        })}
         <br />
-        {næringsvirksomhet[hvorMangeTimerJobbetPerUkeNå]} timer arbeidstid per uke nå
+        {t("naeringsvirksomhetDetaljer.timerNa", {
+          timer: næringsvirksomhet[hvorMangeTimerJobbetPerUkeNå],
+        })}
       </BodyShort>
       <HStack gap="space-16">
         <Button
@@ -44,7 +49,7 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
             });
           }}
         >
-          Endre svar
+          {t("felles.knapper.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -52,7 +57,7 @@ export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksom
           onClick={fjernNæringsvirksomhet}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("felles.knapper.fjern")}
         </Button>
       </HStack>
     </Box>

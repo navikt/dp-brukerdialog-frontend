@@ -16,7 +16,20 @@ void i18n
     fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
 
-    ns: ["common", "soknadOversikt", "annen-pengestotte", "arbeidsforhold"],
+    ns: [
+      "common",
+      "annen-pengestotte",
+      "arbeidsforhold",
+      "barnetillegg",
+      "din-situasjon",
+      "dokumentasjon",
+      "egen-naering",
+      "ettersending",
+      "kvittering",
+      "oppsummering",
+      "personalia",
+      "soknadOversikt",
+    ],
     defaultNS: "common",
 
     backend: {

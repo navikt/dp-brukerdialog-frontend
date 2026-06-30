@@ -1,0 +1,21 @@
+{
+  "side": {
+    "tittel": "Søknad om dagpenger: Se over før du sender inn",
+    "overskrift": "Se over før du sender inn"
+  },
+  "ikkeSendt": {
+    "tittel": "Søknaden din er ikke sendt enda",
+    "beskrivelse": "Husk å trykke på \"Send søknad\" nederst på siden før du avslutter."
+  },
+  "intro": {
+    "seOverSvar": "Nå kan du se over at alt er riktig før du sender inn søknaden. Ved behov kan du endre opplysningene.",
+    "kvittering": "Når du har sendt inn søknaden kommer du til en kvitteringsside med informasjon om veien videre. Der kan du også ettersende dokumentasjon som mangler."
+  },
+  "dineSvar": {
+    "overskrift": "Dine svar"
+  },
+  "knapper": {
+    "forrigeSteg": "Forrige steg",
+    "sendSoknad": "Send søknad"
+  }
+}
