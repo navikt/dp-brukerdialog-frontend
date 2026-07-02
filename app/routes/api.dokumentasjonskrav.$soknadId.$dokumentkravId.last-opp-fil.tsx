@@ -11,34 +11,52 @@ export async function action({ params, request }: ActionFunctionArgs) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
   invariant(params.dokumentkravId, "Dokumentkrav ID er påkrevd");
 
-  const callId = uuidV4();
   const søknadId = params.soknadId;
   const dokumentkravId = params.dokumentkravId;
+  const callId = uuidV4();
 
-  const contentLength = Number(request.headers.get("Content-Length") ?? 0);
-  if (contentLength > MAX_FIL_STØRRELSE + MULTIPART_OVERHEAD) {
-    return new Response("Filen er for stor", { status: 413 });
+  const contentType = request.headers.get("Content-Type");
+
+  if (!contentType?.startsWith("multipart/form-data")) {
+    return new Response("Ugyldig opplastingsformat", { status: 400 });
+  }
+
+  const contentLengthHeader = request.headers.get("Content-Length");
+
+  if (contentLengthHeader) {
+    const contentLength = Number(contentLengthHeader);
+
+    if (!Number.isFinite(contentLength) || contentLength < 0) {
+      return new Response("Ugyldig Content-Length", { status: 400 });
+    }
+
+    if (contentLength > MAX_FIL_STØRRELSE + MULTIPART_OVERHEAD) {
+      return new Response("Filen er for stor", { status: 413 });
+    }
+  }
+
+  if (!request.body) {
+    return new Response("Mangler request body", { status: 400 });
   }
 
   try {
     const url = `${getEnv("DP_MELLOMLAGRING_URL")}/vedlegg/${søknadId}/${dokumentkravId}`;
-
     const onBehalfOfToken = await hentMellomlagringOboToken(request);
 
-    const respons = await fetch(url, {
+    const fetchInit = {
       method: "POST",
-      headers: {
+      headers: new Headers({
         Accept: "application/json",
         Authorization: `Bearer ${onBehalfOfToken}`,
-        "Content-Type": request.headers.get("Content-Type") ?? "",
+        "Content-Type": contentType,
         "X-Request-Id": callId,
-      },
+      }),
       body: request.body,
-      // @ts-expect-error — Node 24 krever duplex: "half" når body er en ReadableStream
+      signal: request.signal,
       duplex: "half",
-    });
+    } satisfies RequestInit & { duplex: "half" };
 
-    return respons;
+    return await fetch(url, fetchInit);
   } catch (error) {
     console.error(error);
 
