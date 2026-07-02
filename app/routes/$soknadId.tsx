@@ -74,6 +74,7 @@ export async function loader({
   validerSøknadId(params.soknadId);
 
   const seksjonId = new URL(request.url).pathname.split("/").at(-1)!;
+  const erPåKvitteringEllerEttersending = SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId);
 
   const [progressResponse, sistOppdatertResponse, søknaderResponse] = await Promise.all([
     hentSøknadFremgangInfo(request, params.soknadId),
@@ -81,19 +82,24 @@ export async function loader({
     hentOrkestratorSøknader(request),
   ]);
 
+  let fullførtSøknad: boolean = false;
+
   if (søknaderResponse.ok) {
     const søknader: OrkestratorSoknad[] = await søknaderResponse.json();
     const søknad = søknader.find((s) => s.søknadId === params.soknadId);
-    const søknadFullført = søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT";
-    const erPåKvitteringEllerEttersending = SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId);
+    fullførtSøknad = søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT";
+  }
 
-    if (!erPåKvitteringEllerEttersending && søknadFullført) {
-      return redirect(`/${params.soknadId}/kvittering`);
-    }
+  if (fullførtSøknad && !erPåKvitteringEllerEttersending) {
+    return redirect(`/${params.soknadId}/kvittering`);
+  }
 
-    if (erPåKvitteringEllerEttersending && !søknadFullført) {
-      return redirect(`/${params.soknadId}/personalia`);
-    }
+  if (!fullførtSøknad && erPåKvitteringEllerEttersending) {
+    return redirect(`/${params.soknadId}/personalia`);
+  }
+
+  if (!fullførtSøknad && seksjonId === "oppsummering") {
+    return redirect(`/${params.soknadId}/personalia`);
   }
 
   const sistOppdatert = sistOppdatertResponse.ok
@@ -110,11 +116,6 @@ export async function loader({
   }
 
   const { seksjoner }: StegResponse = await progressResponse.json();
-  const fullførtSøknaden = seksjoner.includes("oppsummering");
-
-  if (fullførtSøknaden) {
-    return redirect(`/${params.soknadId}/kvittering`);
-  }
 
   const søknadSeksjoner: FremgangSteg[] = stegISøknaden.map((step) => ({
     ...step,
