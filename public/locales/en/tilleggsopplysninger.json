@@ -1,0 +1,24 @@
+{
+  "felles": {
+    "svar": {
+      "ja": "Ja",
+      "nei": "Nei"
+    }
+  },
+  "side": {
+    "tittel": "Søknad om dagpenger: Tilleggsopplysninger",
+    "overskrift": "Tilleggsopplysninger"
+  },
+  "harTilleggsopplysninger": {
+    "label": "Har du noen flere opplysninger du mener er viktige for søknaden din?"
+  },
+  "tilleggsopplysninger": {
+    "label": "Skriv inn tilleggsopplysningene her"
+  },
+  "oppsummering": {
+    "ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen"
+  },
+  "tekniskFeil": {
+    "tittel": "Det har oppstått en teknisk feil"
+  }
+}

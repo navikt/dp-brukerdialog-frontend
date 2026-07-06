@@ -1,0 +1,78 @@
+{
+  "side": {
+    "tittel": "Søknad om dagpenger: Søknad mottatt",
+    "overskrift": "Søknad mottatt"
+  },
+  "tag": {
+    "manglerDokumentasjon": "Mangler dokumentasjon"
+  },
+  "intro": {
+    "medMangler": {
+      "forLenke": "Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når svaret er klart. Se hvor lang tid"
+    },
+    "utenMangler": {
+      "forLenke": "Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid"
+    },
+    "saksbehandlingstidLenke": "saksbehandlingstiden",
+    "etterLenke": "for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette. Saksbehandlingstiden kan da bli lengre enn det som er oppgitt."
+  },
+  "arbeidssoker": {
+    "registrerLenke": "Registrer deg som arbeidssøker",
+    "registrert": {
+      "tittel": "Du er registrert som arbeidssøker",
+      "beskrivelse": "For å ha rett til dagpenger, må du være registrert som arbeidssøker. Du er allerede registrert som arbeidssøker."
+    },
+    "ikkeRegistrert": {
+      "tittel": "Du er ikke registrert som arbeidssøker",
+      "forLenke": "Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden din. Du må være registrert som arbeidssøker for å ha rett til dagpenger."
+    },
+    "oppslagFeilet": {
+      "tittel": "Oppslag mot Arbeidssøkerregisteret feilet",
+      "beskrivelse": "For å ha rett på dagpenger må du være registrert som arbeidssøker. Vi prøvde å sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi dessverre ikke.",
+      "forLenke": "Hvis du er usikker på om du er registrert som arbeidssøker, må du"
+    }
+  },
+  "dokumentasjon": {
+    "heading": "Dokumentasjon",
+    "infoCard": {
+      "tittel": "Sende inn dokumentasjon",
+      "frist": "Frist for ettersending av dokumentasjon er 14 dager etter at du sendte søknaden",
+      "beskrivelse": "Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er ansvarlig for at dokumentasjonen sendes til oss. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene."
+    },
+    "manglendeOpplysninger": {
+      "header": "Har du fått brev om manglende opplysninger?",
+      "forDokumentliste": "Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal sendes inn og frist for å sende inn. Brev du har fått ligger i",
+      "dokumentlisteLenke": "dokumentlisten på Mine dagpenger",
+      "mellomLenker": ". Når du har dokumentene klare kan du",
+      "innsendingLenke": "sende dem inn her"
+    }
+  },
+  "dokumenter": {
+    "sendtInn": {
+      "heading": "Dokumenter du har sendt inn"
+    },
+    "skalSendes": {
+      "heading": "Dokumenter du skal sende inn"
+    },
+    "ikkeSkalSendes": {
+      "heading": "Dokumenter du ikke skal sende inn"
+    }
+  },
+  "dokumentasjonskrav": {
+    "mottatt": "Mottatt",
+    "mangler": "Mangler",
+    "skalSendesAvDeg": "Skal sendes av deg",
+    "lastNedOpplastetDokument": "Last ned opplastet dokument",
+    "readMoreHeader": "Dette må dokumentasjonen inneholde",
+    "sendtTidligere": "Du har opplyst at du har sendt dette tidligere:",
+    "senderIkke": "Du har opplyst at du ikke sender dette:"
+  },
+  "dineSvar": {
+    "ariaLabel": "Dine svar",
+    "tittel": "Dine svar"
+  },
+  "knapper": {
+    "sendInnDokumenter": "Send inn dokumenter",
+    "mineDagpenger": "Gå til mine dagpenger"
+  }
+}
