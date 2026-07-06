@@ -1,198 +1,198 @@
 {
-  "side": {
-    "tittel": "Søknad om dagpenger: Dokumentasjon",
-    "overskrift": "Dokumentasjon"
-  },
-  "forklarendeTekst": {
-    "description": {
-      "intro": "Du må laste opp dokumentasjon som bekrefter opplysningene i søknaden. Du får raskere svar på søknaden din hvis vi har all dokumentasjonen når vi starter behandlingen. Du kan bruke filformatene PDF, JPG og PNG.",
-      "bilder": {
-        "tittel": "Slik bruker du bilder som dokumentasjon i søknaden:",
-        "taBilde": "Ta bilde av dokumentet med smarttelefon eller nettbrett",
-        "sjekkLesbarhet": "Sjekk at dokumentet er lett å lese",
-        "lastOpp": "Last opp bildene her"
-      }
-    }
-  },
-  "manglerDokumenterLesMer": {
-    "label": "Mangler du noen dokumenter?",
-    "description": "Du kan sende inn det du har nå og ettersende resten innen 14 dager. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene."
-  },
-  "sendtTidligereLesMer": {
-    "label": "Har du sendt inn dokumentene til Nav tidligere?",
-    "description": "Hvis du har sendt inn dokumentene sammen med en tidligere søknad om dagpenger, trenger du ikke å sende det på nytt."
-  },
-  "dokumenterDuSkalSendeInn": {
-    "heading": "Dokumenter du skal sende inn"
-  },
-  "dokumentasjonskrav": {
-    "velgHvaDuVilGjore": {
-      "label": "Velg hva du vil gjøre",
-      "options": {
-        "sendNa": "Jeg vil laste opp nå",
-        "senderSenere": "Jeg sender det senere",
-        "sendtTidligere": "Jeg har sendt det i en tidligere søknad om dagpenger",
-        "senderIkke": "Jeg sender det ikke"
-      }
-    },
-    "senderSenereGrunn": {
-      "label": "Hva er grunnen til at du sender dokumentet senere?",
-      "description": "Frist for ettersending er 14 dager etter at du sendte søknaden."
-    },
-    "narSendteDuDokumentet": {
-      "label": "Når sendte du dokumentet?",
-      "description": "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt."
-    },
-    "senderIkkeInformasjonskort": {
-      "label": "Du kan få avslag på søknaden",
-      "description": "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet."
-    },
-    "senderIkkeGrunn": {
-      "label": "Hva er grunnen til at du ikke sender dokumentet?"
-    }
-  },
-  "dokumentasjonskravInnhold": {
-    "felles": {
-      "readMoreHeader": "Dette må dokumentasjonen inneholde",
-      "dokumentasjonSomViser": "Du må legge ved dokumentasjon som viser",
-      "skjemaSluttarsakLink": "Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)",
-      "skjemaPermitteringLink": "Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04)",
-      "pengestotteListe": {
-        "hvilkenPengestotte": "hvilken pengestøtte dette er",
-        "hvemUtbetaler": "hvem som utbetaler pengestøtten",
-        "hvorMye": "hvor mye du får",
-        "periode": "perioden den utbetales for"
-      }
-    },
-    "barn": {
-      "description": "Du må dokumentere at du har barn under 18 år. Dette kan du gjøre ved å legge til fødselsattest eller bostedsbevis for barnet."
-    },
-    "arbeidsavtale": {
-      "intro": "Du har lagt til et arbeidsforhold. Du må dokumentere arbeidsforholdet ved å sende oss arbeidsavtalen.",
-      "arbeidsavtalenMaInneholde": "Arbeidsavtalen må inneholde",
-      "liste": {
-        "startdato": "datoen du startet i jobben din",
-        "arbeidstid": "stillingsprosent eller avtalt arbeidstid",
-        "sluttdato": "sluttdato, hvis du har en midlertidig arbeidsavtale"
-      },
-      "skjema": {
-        "førLenke": "Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut skjemaet",
-        "etterLenke": ". Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte."
-      }
-    },
-    "oppsagt": {
-      "intro": "Du har krysset av for at du har blitt sagt opp.",
-      "liste": {
-        "dato": "datoen du fikk oppsigelsen",
-        "arsak": "årsaken til at du ble sagt opp"
-      },
-      "skjema": {
-        "førLenke": "For å dokumentere dette, kan du legge ved oppsigelsen du fikk av arbeidsgiveren din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
-        "etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren din om å dokumentere opplysningene på en annen måte."
-      }
-    },
-    "sagtOppSelv": {
-      "intro": "Du har krysset av for at du har sagt opp jobben.",
-      "liste": {
-        "dato": "datoen du ga oppsigelsen til arbeidsgiveren din",
-        "arsak": "årsaken til at du sa opp jobben din"
-      },
-      "skjema": {
-        "førLenke": "For å dokumentere dette, kan du legge ved oppsigelsen du ga arbeidsgiveren din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
-        "etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren din om å dokumentere opplysningene på en annen måte."
-      }
-    },
-    "avskjedigelse": {
-      "intro": "Du har krysset av for at du har blitt avskjediget.",
-      "liste": {
-        "dato": "datoen du ble avskjediget",
-        "arsak": "årsaken til at du ble avskjediget"
-      },
-      "skjema": {
-        "førLenke": "For å dokumentere dette, kan du sende oss avskjedigelsen du har fått fra arbeidsgiver. Hvis avskjedigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
-        "etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren din om å dokumentere opplysningene på en annen måte."
-      }
-    },
-    "redusertArbeidstid": {
-      "intro": "Du har krysset av for at arbeidstiden din er redusert.",
-      "liste": {
-        "dato": "datoen arbeidstiden din ble redusert",
-        "arsak": "årsaken til at arbeidstiden din ble redusert",
-        "hvorMye": "hvor mye arbeidstiden din ble redusert"
-      },
-      "skjema": {
-        "førLenke": "Du må be arbeidsgiver om denne dokumentasjonen. Hvis dokumentene ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
-        "etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet."
-      }
-    },
-    "konkursOppsigelse": {
-      "intro": "Du har krysset av for at arbeidsgiveren din er konkurs. Du må legge ved brevet du har fått fra bostyreren eller konkursforvalteren.",
-      "liste": {
-        "konkurs": "at arbeidsgiveren din er konkurs",
-        "dato": "datoen konkursen er åpnet",
-        "boetTrerIkkeInn": "at boet ikke trer inn i arbeidsavtalen din"
-      },
-      "signert": "Brevet må være signert av bostyreren eller konkursforvalteren"
-    },
-    "permitteringsvarsel": {
-      "intro": "Du har krysset av for at du er permittert. Du må legge ved permitteringsvarselet som du har fått fra arbeidsgiveren din.",
-      "inneholde": "Permitteringsvarselet må inneholde informasjon om",
-      "liste": {
-        "arsak": "årsaken til at du ble permittert (permitteringsårsak)",
-        "grad": "hvor mange prosent du er permittert (permitteringsgrad)",
-        "startOgSlutt": "startdato og eventuell sluttdato for permitteringen",
-        "dato": "datoen du fikk permitteringsvarselet",
-        "enighet": "om partene på arbeidsplassen din er enige om permitteringen (JA/NEI)"
-      },
-      "gjelderDeg": "Det må komme frem at permitteringen gjelder deg.",
-      "skjema": {
-        "førLenke": "Hvis permitteringsvarselet ikke inneholder disse opplysningene kan du bruke skjemaet",
-        "etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet."
-      }
-    },
-    "rotasjon": {
-      "description": "Du har krysset av for at du jobbet rotasjon. Du må dokumentere hvilken rotasjonsordning du har hatt. Den siste rotasjonen må dokumenteres med timeliste eller lignende, som viser når du var på jobb og når du hadde avspasering."
-    },
-    "tjenestebevis": {
-      "description": "Du har krysset av for at du har avtjent verneplikt i minst tre av de siste tolv månedene. Du må sende inn tjenestebevis fra forsvaret der start- og sluttdato for tjenesteperioden kommer tydelig frem."
-    },
-    "utdanning": {
-      "description": "Du har krysset av for at du har avsluttet utdanning eller opplæring i løpet av de siste seks månedene. Du må dokumentere sluttdatoen for utdanningen eller opplæringen du har gjennomført. Du kan for eksempel sende oss et vitnemål eller en attest fra studiestedet ditt."
-    },
-    "reellArbeidssoker": {
-      "deltid": {
-        "description": "Du har krysset av for at du kun har mulighet til å ta deltidsjobb. Dette må du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du dokumentere dette."
-      },
-      "heleNorge": {
-        "description": "Du har krysset av for at du ikke kan ta jobb i hele Norge. Dette må du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du dokumentere dette."
-      },
-      "alleTyperArbeid": {
-        "description": "Du har krysset av for at du ikke har mulighet til å ta alle typer arbeid. Dette må du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.",
-        "dokumentasjon": "Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid."
-      }
-    },
-    "andreUtbetalingerEllerGoder": {
-      "description": "Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver."
-    },
-    "annenPengestotte": {
-      "eos": {
-        "description": "Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet EØS-land."
-      },
-      "pensjon": {
-        "description": "Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav."
-      },
-      "gff": {
-        "description": "Du har krysset av for at du mottar eller har søkt om pengestøtte fra Garantikassen for fiskere."
-      }
-    },
-    "ukjent": "Ukjent dokumentasjonskrav."
-  },
-  "tekniskFeil": {
-    "tittel": "Det har oppstått en teknisk feil",
-    "beskrivelse": "Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt"
-  },
-  "navigasjon": {
-    "forrigeSteg": "Forrige steg",
-    "tilOppsummering": "Til oppsummering"
-  }
+	"side": {
+		"tittel": "Søknad om dagpenger: Dokumentasjon",
+		"overskrift": "Dokumentasjon"
+	},
+	"forklarendeTekst": {
+		"description": {
+			"intro": "Du må laste opp dokumentasjon som bekrefter opplysningene i søknaden. Du får raskere svar på søknaden din hvis vi har all dokumentasjonen når vi starter behandlingen. Du kan bruke filformatene PDF, JPG og PNG.",
+			"bilder": {
+				"tittel": "Slik bruker du bilder som dokumentasjon i søknaden:",
+				"taBilde": "Ta bilde av dokumentet med smarttelefon eller nettbrett",
+				"sjekkLesbarhet": "Sjekk at dokumentet er lett å lese",
+				"lastOpp": "Last opp bildene her"
+			}
+		}
+	},
+	"manglerDokumenterLesMer": {
+		"label": "Mangler du noen dokumenter?",
+		"description": "Du kan sende inn det du har nå og ettersende resten innen 14 dager. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene."
+	},
+	"sendtTidligereLesMer": {
+		"label": "Har du sendt inn dokumentene til Nav tidligere?",
+		"description": "Hvis du har sendt inn dokumentene sammen med en tidligere søknad om dagpenger, trenger du ikke å sende det på nytt."
+	},
+	"dokumenterDuSkalSendeInn": {
+		"heading": "Dokumenter du skal sende inn"
+	},
+	"dokumentasjonskrav": {
+		"velgHvaDuVilGjore": {
+			"label": "Velg hva du vil gjøre",
+			"options": {
+				"sendNa": "Jeg vil laste opp nå",
+				"senderSenere": "Jeg sender det senere",
+				"sendtTidligere": "Jeg har sendt det i en tidligere søknad om dagpenger",
+				"senderIkke": "Jeg sender det ikke"
+			}
+		},
+		"senderSenereGrunn": {
+			"label": "Hva er grunnen til at du sender dokumentet senere?",
+			"description": "Frist for ettersending er 14 dager etter at du sendte søknaden."
+		},
+		"narSendteDuDokumentet": {
+			"label": "Når sendte du dokumentet?",
+			"description": "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt."
+		},
+		"senderIkkeInformasjonskort": {
+			"label": "Du kan få avslag på søknaden",
+			"description": "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet."
+		},
+		"senderIkkeGrunn": {
+			"label": "Hva er grunnen til at du ikke sender dokumentet?"
+		}
+	},
+	"dokumentasjonskravInnhold": {
+		"felles": {
+			"readMoreHeader": "Dette må dokumentasjonen inneholde",
+			"dokumentasjonSomViser": "Du må legge ved dokumentasjon som viser",
+			"skjemaSluttarsakLink": "Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)",
+			"skjemaPermitteringLink": "Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04)",
+			"pengestotteListe": {
+				"hvilkenPengestotte": "hvilken pengestøtte dette er",
+				"hvemUtbetaler": "hvem som utbetaler pengestøtten",
+				"hvorMye": "hvor mye du får",
+				"periode": "perioden den utbetales for"
+			}
+		},
+		"barn": {
+			"description": "Du må dokumentere at du har barn under 18 år. Dette kan du gjøre ved å legge til fødselsattest eller bostedsbevis for barnet."
+		},
+		"arbeidsavtale": {
+			"intro": "Du har lagt til et arbeidsforhold. Du må dokumentere arbeidsforholdet ved å sende oss arbeidsavtalen.",
+			"arbeidsavtalenMaInneholde": "Arbeidsavtalen må inneholde",
+			"liste": {
+				"startdato": "datoen du startet i jobben din",
+				"arbeidstid": "stillingsprosent eller avtalt arbeidstid",
+				"sluttdato": "sluttdato, hvis du har en midlertidig arbeidsavtale"
+			},
+			"skjema": {
+				"førLenke": "Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut skjemaet",
+				"etterLenke": ". Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte."
+			}
+		},
+		"oppsagt": {
+			"intro": "Du har krysset av for at du har blitt sagt opp.",
+			"liste": {
+				"dato": "datoen du fikk oppsigelsen",
+				"arsak": "årsaken til at du ble sagt opp"
+			},
+			"skjema": {
+				"førLenke": "For å dokumentere dette, kan du legge ved oppsigelsen du fikk av arbeidsgiveren din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
+				"etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren din om å dokumentere opplysningene på en annen måte."
+			}
+		},
+		"sagtOppSelv": {
+			"intro": "Du har krysset av for at du har sagt opp jobben.",
+			"liste": {
+				"dato": "datoen du ga oppsigelsen til arbeidsgiveren din",
+				"arsak": "årsaken til at du sa opp jobben din"
+			},
+			"skjema": {
+				"førLenke": "For å dokumentere dette, kan du legge ved oppsigelsen du ga arbeidsgiveren din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
+				"etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren din om å dokumentere opplysningene på en annen måte."
+			}
+		},
+		"avskjedigelse": {
+			"intro": "Du har krysset av for at du har blitt avskjediget.",
+			"liste": {
+				"dato": "datoen du ble avskjediget",
+				"arsak": "årsaken til at du ble avskjediget"
+			},
+			"skjema": {
+				"førLenke": "For å dokumentere dette, kan du sende oss avskjedigelsen du har fått fra arbeidsgiver. Hvis avskjedigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
+				"etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be arbeidsgiveren din om å dokumentere opplysningene på en annen måte."
+			}
+		},
+		"redusertArbeidstid": {
+			"intro": "Du har krysset av for at arbeidstiden din er redusert.",
+			"liste": {
+				"dato": "datoen arbeidstiden din ble redusert",
+				"arsak": "årsaken til at arbeidstiden din ble redusert",
+				"hvorMye": "hvor mye arbeidstiden din ble redusert"
+			},
+			"skjema": {
+				"førLenke": "Du må be arbeidsgiver om denne dokumentasjonen. Hvis dokumentene ikke inneholder opplysningene vi trenger, kan du bruke skjemaet",
+				"etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet."
+			}
+		},
+		"konkursOppsigelse": {
+			"intro": "Du har krysset av for at arbeidsgiveren din er konkurs. Du må legge ved brevet du har fått fra bostyreren eller konkursforvalteren.",
+			"liste": {
+				"konkurs": "at arbeidsgiveren din er konkurs",
+				"dato": "datoen konkursen er åpnet",
+				"boetTrerIkkeInn": "at boet ikke trer inn i arbeidsavtalen din"
+			},
+			"signert": "Brevet må være signert av bostyreren eller konkursforvalteren"
+		},
+		"permitteringsvarsel": {
+			"intro": "Du har krysset av for at du er permittert. Du må legge ved permitteringsvarselet som du har fått fra arbeidsgiveren din.",
+			"inneholde": "Permitteringsvarselet må inneholde informasjon om",
+			"liste": {
+				"arsak": "årsaken til at du ble permittert (permitteringsårsak)",
+				"grad": "hvor mange prosent du er permittert (permitteringsgrad)",
+				"startOgSlutt": "startdato og eventuell sluttdato for permitteringen",
+				"dato": "datoen du fikk permitteringsvarselet",
+				"enighet": "om partene på arbeidsplassen din er enige om permitteringen (JA/NEI)"
+			},
+			"gjelderDeg": "Det må komme frem at permitteringen gjelder deg.",
+			"skjema": {
+				"førLenke": "Hvis permitteringsvarselet ikke inneholder disse opplysningene kan du bruke skjemaet",
+				"etterLenke": ". Arbeidsgiveren din må fylle ut og signere skjemaet."
+			}
+		},
+		"rotasjon": {
+			"description": "Du har krysset av for at du jobbet rotasjon. Du må dokumentere hvilken rotasjonsordning du har hatt. Den siste rotasjonen må dokumenteres med timeliste eller lignende, som viser når du var på jobb og når du hadde avspasering."
+		},
+		"tjenestebevis": {
+			"description": "Du har krysset av for at du har avtjent verneplikt i minst tre av de siste tolv månedene. Du må sende inn tjenestebevis fra forsvaret der start- og sluttdato for tjenesteperioden kommer tydelig frem."
+		},
+		"utdanning": {
+			"description": "Du har krysset av for at du har avsluttet utdanning eller opplæring i løpet av de siste seks månedene. Du må dokumentere sluttdatoen for utdanningen eller opplæringen du har gjennomført. Du kan for eksempel sende oss et vitnemål eller en attest fra studiestedet ditt."
+		},
+		"reellArbeidssoker": {
+			"deltid": {
+				"description": "Du har krysset av for at du kun har mulighet til å ta deltidsjobb. Dette må du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du dokumentere dette."
+			},
+			"heleNorge": {
+				"description": "Du har krysset av for at du ikke kan ta jobb i hele Norge. Dette må du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du dokumentere dette."
+			},
+			"alleTyperArbeid": {
+				"description": "Du har krysset av for at du ikke har mulighet til å ta alle typer arbeid. Dette må du dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.",
+				"dokumentasjon": "Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid."
+			}
+		},
+		"andreUtbetalingerEllerGoder": {
+			"description": "Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver."
+		},
+		"annenPengestotte": {
+			"eos": {
+				"description": "Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet EØS-land."
+			},
+			"pensjon": {
+				"description": "Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav."
+			},
+			"gff": {
+				"description": "Du har krysset av for at du mottar eller har søkt om pengestøtte fra Garantikassen for fiskere."
+			}
+		},
+		"ukjent": "Ukjent dokumentasjonskrav."
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil",
+		"beskrivelse": "Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt"
+	},
+	"navigasjon": {
+		"forrigeSteg": "Forrige steg",
+		"tilOppsummering": "Til oppsummering"
+	}
 }
