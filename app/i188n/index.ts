@@ -28,7 +28,11 @@ void i18n
       "kvittering",
       "oppsummering",
       "personalia",
+      "reell-arbeidssoker",
       "soknadOversikt",
+      "tilleggsopplysninger",
+      "utdanning",
+      "verneplikt",
     ],
     defaultNS: "common",
 

@@ -17,10 +17,14 @@
       "dokumentasjon": "./public/locales/{languageTag}/dokumentasjon.json",
       "egen-naering": "./public/locales/{languageTag}/egen-naering.json",
       "ettersending": "./public/locales/{languageTag}/ettersending.json",
-      "kvitteringer": "./public/locales/{languageTag}/kvitteringer.json",
+      "kvittering": "./public/locales/{languageTag}/kvittering.json",
       "oppsummering": "./public/locales/{languageTag}/oppsummering.json",
       "personalia": "./public/locales/{languageTag}/personalia.json",
-      "soknadOversikt": "./public/locales/{languageTag}/soknadOversikt.json"
+      "reell-arbeidssoker": "./public/locales/{languageTag}/reell-arbeidssoker.json",
+      "soknadOversikt": "./public/locales/{languageTag}/soknadOversikt.json",
+      "tilleggsopplysninger": "./public/locales/{languageTag}/tilleggsopplysninger.json",
+      "utdanning": "./public/locales/{languageTag}/utdanning.json",
+      "verneplikt": "./public/locales/{languageTag}/verneplikt.json"
     },
     "variableReferencePattern": ["{{", "}}"]
   }

@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
@@ -6,7 +8,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.utdanning";
+import { action, loader } from "~/routes/$soknadId.utdanning";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -15,20 +17,23 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import {
   avsluttetUtdanningSiste6Måneder,
   handling,
+  lagUtdanningKomponenter,
   pdfGrunnlag,
-  utdanningKomponenter,
-  UtdanningSvar,
 } from "~/seksjon/utdanning/v1/utdanning.komponenter";
+import type { UtdanningSvar } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { utdanningSchema } from "~/seksjon/utdanning/v1/utdanning.schema";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function UtdanningViewV1() {
+  const { t } = useTranslation("utdanning");
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const utdanningKomponenter = useMemo(() => lagUtdanningKomponenter(t), [t]);
 
   const form = useForm({
     method: "PUT",
@@ -41,7 +46,7 @@ export function UtdanningViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [...lagSeksjonPayload(utdanningKomponenter, form.transient.value())],
     };
 
@@ -54,7 +59,7 @@ export function UtdanningViewV1() {
       seksjonId: "utdanning",
       spørsmålId: avsluttetUtdanningSiste6Måneder,
       skjemakode: "T2",
-      tittel: "Dokumentasjon av sluttdato for utdanning",
+      tittel: t("dokumentasjonskrav.utdanning.tittel"),
       type: DokumentasjonskravType.Utdanning,
     };
 
@@ -83,10 +88,10 @@ export function UtdanningViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form {...form.getFormProps()}>
           <VStack gap="space-24">
@@ -95,6 +100,7 @@ export function UtdanningViewV1() {
               if (komponent.visHvis && !komponent.visHvis(form.value())) {
                 return null;
               }
+
               return (
                 <Komponent
                   key={komponent.id}
@@ -106,10 +112,7 @@ export function UtdanningViewV1() {
             })}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

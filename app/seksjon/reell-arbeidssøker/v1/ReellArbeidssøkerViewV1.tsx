@@ -1,18 +1,14 @@
+import { useTranslation } from "react-i18next";
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useMemo } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import {
-  action,
-  loader,
-  SEKSJON_ID,
-  SEKSJON_NAVN,
-  SEKSJON_TITTEL,
-} from "~/routes/$soknadId.reell-arbeidssoker";
+import { action, loader, SEKSJON_ID } from "~/routes/$soknadId.reell-arbeidssoker";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -32,10 +28,10 @@ import {
   kanIkkeJobbeIHeleNorgeOmsorgForPleietrengendeINærFamilie,
   kanIkkeJobbeIHeleNorgeRedusertHelse,
   kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+  lagReellArbeidssøkerKomponenter,
   pdfGrunnlag,
-  reellArbeidssøkerKomponenter,
-  ReellArbeidssøkerSvar,
 } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
+import type { ReellArbeidssøkerSvar } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { reellArbeidssøkerSchema } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -43,10 +39,13 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function ReellArbeidssøkerViewV1() {
+  const { t } = useTranslation("reell-arbeidssoker");
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const reellArbeidssøkerKomponenter = useMemo(() => lagReellArbeidssøkerKomponenter(t), [t]);
 
   const form = useForm({
     method: "PUT",
@@ -100,10 +99,10 @@ export function ReellArbeidssøkerViewV1() {
     if (form.value(kanDuTaAlleTyperArbeid) === "nei") {
       const dokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
-        seksjonId: "reell-arbeidssoker",
+        seksjonId: SEKSJON_ID,
         spørsmålId: kanDuTaAlleTyperArbeid,
         skjemakode: "T9",
-        tittel: "Bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid",
+        tittel: t("dokumentasjonskrav.kanIkkeTaAlleTyperArbeid.tittel"),
         type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeTaAlleTyperArbeid,
       };
 
@@ -135,7 +134,7 @@ export function ReellArbeidssøkerViewV1() {
         seksjonId: SEKSJON_ID,
         spørsmålId: kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
         skjemakode: "T9",
-        tittel: "Bekreftelse fra relevant fagpersonell fordi du bare kan jobbe deltid",
+        tittel: t("dokumentasjonskrav.kanIkkeJobbeHeltidOgDeltid.tittel"),
         type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid,
       };
 
@@ -167,7 +166,7 @@ export function ReellArbeidssøkerViewV1() {
         seksjonId: SEKSJON_ID,
         spørsmålId: kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
         skjemakode: "T9",
-        tittel: "Bekreftelse fra relevant fagpersonell fordi du ikke kan jobbe i hele Norge",
+        tittel: t("dokumentasjonskrav.kanIkkeJobbeIHeleNorge.tittel"),
         type: DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeleNorge,
       };
 
@@ -179,7 +178,7 @@ export function ReellArbeidssøkerViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [...lagSeksjonPayload(reellArbeidssøkerKomponenter, form.transient.value())],
     };
 
@@ -188,9 +187,9 @@ export function ReellArbeidssøkerViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <Heading size="medium" level="2">
-        {SEKSJON_NAVN}
+        {t("side.overskrift")}
       </Heading>
       <Form {...form.getFormProps()}>
         <VStack gap="space-24">
@@ -211,10 +210,7 @@ export function ReellArbeidssøkerViewV1() {
           })}
 
           {actionData && (
-            <SeksjonTekniskFeil
-              tittel="Det har oppstått en teknisk feil"
-              beskrivelse={actionData.error}
-            />
+            <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
           )}
         </VStack>
       </Form>
