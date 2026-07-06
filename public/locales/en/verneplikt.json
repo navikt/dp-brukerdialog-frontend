@@ -1,27 +1,27 @@
 {
-  "felles": {
-    "svar": {
-      "ja": "Ja",
-      "nei": "Nei"
-    }
-  },
-  "side": {
-    "tittel": "Søknad om dagpenger: Verneplikt",
-    "overskrift": "Verneplikt"
-  },
-  "avtjentVerneplikt": {
-    "label": "Har du avtjent verneplikt i minst tre måneder de siste tolv månedene?",
-    "description": "Du kan ha rett til dagpenger hvis du har avtjent militærtjeneste eller obligatorisk sivilforsvarstjeneste i minst tre av de siste tolv månedene."
-  },
-  "dokumentasjonskrav": {
-    "tjenestebevis": {
-      "tittel": "Tjenestebevis"
-    }
-  },
-  "oppsummering": {
-    "ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen"
-  },
-  "tekniskFeil": {
-    "tittel": "Det har oppstått en teknisk feil"
-  }
+	"felles": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"side": {
+		"tittel": "Søknad om dagpenger: Verneplikt",
+		"overskrift": "Verneplikt"
+	},
+	"avtjentVerneplikt": {
+		"label": "Har du avtjent verneplikt i minst tre måneder de siste tolv månedene?",
+		"description": "Du kan ha rett til dagpenger hvis du har avtjent militærtjeneste eller obligatorisk sivilforsvarstjeneste i minst tre av de siste tolv månedene."
+	},
+	"dokumentasjonskrav": {
+		"tjenestebevis": {
+			"tittel": "Tjenestebevis"
+		}
+	},
+	"oppsummering": {
+		"ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	}
 }

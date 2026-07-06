@@ -1,21 +1,21 @@
 {
-  "side": {
-    "tittel": "Søknad om dagpenger: Søknadsoversikt",
-    "overskrift": "Søknad om dagpenger"
-  },
-  "innsendtSoknad": {
-    "beskrivelse": "Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad eller sende inn en ny?",
-    "vedleggsKnapp": "Send inn vedlegg til søknad sendt {{date}}"
-  },
-  "pabegyntSoknad": {
-    "beskrivelse": "Du har en påbegynt søknad, sist endret {{date}}. Vil du fortsette på denne eller starte en ny?",
-    "fortsettKnapp": "Fortsett påbegynt søknad",
-    "slettOgStartPaNyttKnapp": "Slett og start ny søknad"
-  },
-  "nySoknad": {
-    "startNySoknadKnapp": "Start ny søknad"
-  },
-  "tekniskFeil": {
-    "melding": "Det har oppstått en teknisk feil"
-  }
+	"side": {
+		"tittel": "Søknad om dagpenger: Søknadsoversikt",
+		"overskrift": "Søknad om dagpenger"
+	},
+	"innsendtSoknad": {
+		"beskrivelse": "Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad eller sende inn en ny?",
+		"vedleggsKnapp": "Send inn vedlegg til søknad sendt {{date}}"
+	},
+	"pabegyntSoknad": {
+		"beskrivelse": "Du har en påbegynt søknad, sist endret {{date}}. Vil du fortsette på denne eller starte en ny?",
+		"fortsettKnapp": "Fortsett påbegynt søknad",
+		"slettOgStartPaNyttKnapp": "Slett og start ny søknad"
+	},
+	"nySoknad": {
+		"startNySoknadKnapp": "Start ny søknad"
+	},
+	"tekniskFeil": {
+		"melding": "Det har oppstått en teknisk feil"
+	}
 }
