@@ -14,8 +14,6 @@ import { action } from "~/routes/_index";
 import { getEnv } from "~/utils/env.utils";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Søknadsoversikt";
-
 export function SøknadOversikt() {
   const { t } = useTranslation("soknadOversikt");
   const actionData = useActionData<typeof action>();
@@ -35,11 +33,11 @@ export function SøknadOversikt() {
 
   return (
     <main id="maincontent" tabIndex={-1}>
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <div className="soknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">
-          {t("heading")}
+          {t("side.overskrift")}
         </Heading>
       </div>
       <div className="innhold">
@@ -72,6 +70,7 @@ export function SøknadOversikt() {
               </VStack>
             </VStack>
           )}
+
           {påbegyntSøknad && (
             <VStack gap="space-16">
               <BodyLong>
@@ -88,11 +87,13 @@ export function SøknadOversikt() {
                     asButton
                   />
                 )}
+
                 {!påbegyntSøknad.erQuizSøknad && (
                   <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
                     <Button variant="primary">{t("pabegyntSoknad.fortsettKnapp")}</Button>
                   </Link>
                 )}
+
                 <HStack gap="space-16">
                   <Form method="post">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
