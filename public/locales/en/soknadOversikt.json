@@ -2,5 +2,8 @@
 	"side": {
 		"tittel": "Engelsk er gøy",
 		"overskrift": "Test tekst"
+	},
+	"innsendtSoknad": {
+		"beskrivelse": "Hello world"
 	}
 }
