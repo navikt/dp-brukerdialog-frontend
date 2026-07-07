@@ -7,6 +7,7 @@
   "languageTags": ["nb", "en", "nn"],
 
   "modules": ["https://cdn.jsdelivr.net/npm/@inlang/plugin-i18next@latest/dist/index.js"],
+
   "plugin.inlang.i18next": {
     "pathPattern": {
       "common": "./public/locales/{languageTag}/common.json",
@@ -27,5 +28,11 @@
       "verneplikt": "./public/locales/{languageTag}/verneplikt.json"
     },
     "variableReferencePattern": ["{{", "}}"]
+  },
+
+  "messageLintRuleLevels": {
+    "messageLintRule.inlang.missingTranslation": "error",
+    "messageLintRule.inlang.emptyPattern": "error",
+    "messageLintRule.inlang.messageWithoutSource": "warning"
   }
 }
