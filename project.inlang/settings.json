@@ -1,7 +1,11 @@
 {
   "$schema": "https://inlang.com/schema/project-settings",
+
   "baseLocale": "nb",
   "locales": ["nb", "en", "nn"],
+
+  "sourceLanguageTag": "nb",
+  "languageTags": ["nb", "en", "nn"],
 
   "modules": [
     "https://cdn.jsdelivr.net/npm/@inlang/plugin-i18next@latest/dist/index.js",
@@ -12,22 +16,22 @@
 
   "plugin.inlang.i18next": {
     "pathPattern": {
-      "01_soknadsoversikt": "./public/locales/{locale}/soknadOversikt.json",
-      "02_personalia": "./public/locales/{locale}/personalia.json",
-      "03_din_situasjon": "./public/locales/{locale}/din-situasjon.json",
-      "04_arbeidsforhold": "./public/locales/{locale}/arbeidsforhold.json",
-      "05_reell_arbeidssoker": "./public/locales/{locale}/reell-arbeidssoker.json",
-      "06_utdanning": "./public/locales/{locale}/utdanning.json",
-      "07_verneplikt": "./public/locales/{locale}/verneplikt.json",
-      "08_egen_naering": "./public/locales/{locale}/egen-naering.json",
-      "09_annen_pengestotte": "./public/locales/{locale}/annen-pengestotte.json",
-      "10_barnetillegg": "./public/locales/{locale}/barnetillegg.json",
-      "11_dokumentasjon": "./public/locales/{locale}/dokumentasjon.json",
-      "12_tilleggsopplysninger": "./public/locales/{locale}/tilleggsopplysninger.json",
-      "13_oppsummering": "./public/locales/{locale}/oppsummering.json",
-      "14_kvittering": "./public/locales/{locale}/kvittering.json",
-      "15_ettersending": "./public/locales/{locale}/ettersending.json",
-      "99_common": "./public/locales/{locale}/common.json"
+      "01_soknadsoversikt": "./public/locales/{languageTag}/soknadOversikt.json",
+      "02_personalia": "./public/locales/{languageTag}/personalia.json",
+      "03_din_situasjon": "./public/locales/{languageTag}/din-situasjon.json",
+      "04_arbeidsforhold": "./public/locales/{languageTag}/arbeidsforhold.json",
+      "05_reell_arbeidssoker": "./public/locales/{languageTag}/reell-arbeidssoker.json",
+      "06_utdanning": "./public/locales/{languageTag}/utdanning.json",
+      "07_verneplikt": "./public/locales/{languageTag}/verneplikt.json",
+      "08_egen_naering": "./public/locales/{languageTag}/egen-naering.json",
+      "09_annen_pengestotte": "./public/locales/{languageTag}/annen-pengestotte.json",
+      "10_barnetillegg": "./public/locales/{languageTag}/barnetillegg.json",
+      "11_dokumentasjon": "./public/locales/{languageTag}/dokumentasjon.json",
+      "12_tilleggsopplysninger": "./public/locales/{languageTag}/tilleggsopplysninger.json",
+      "13_oppsummering": "./public/locales/{languageTag}/oppsummering.json",
+      "14_kvittering": "./public/locales/{languageTag}/kvittering.json",
+      "15_ettersending": "./public/locales/{languageTag}/ettersending.json",
+      "99_common": "./public/locales/{languageTag}/common.json"
     },
     "variableReferencePattern": ["{{", "}}"]
   },
