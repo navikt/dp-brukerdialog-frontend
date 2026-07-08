@@ -37,6 +37,7 @@ import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeids
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
+import { KopierArbeidsforholdBanner } from "~/seksjon/arbeidsforhold/v1/komponenter/KopierArbeidsforholdBanner";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
@@ -58,6 +59,8 @@ export function ArbeidsforholdViewV1() {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const { tidligereArbeidsforhold } = loaderData;
 
   const form = useForm({
     method: "PUT",
@@ -190,6 +193,15 @@ export function ArbeidsforholdViewV1() {
                 harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
               ) && (
                 <VStack className="mt-16" gap="space-24">
+                  {tidligereArbeidsforhold !== null &&
+                    form.value(hvordanHarDuJobbet) ===
+                      tidligereArbeidsforhold.hvordanHarDuJobbet &&
+                    tidligereArbeidsforhold.registrerteArbeidsforhold.length > 0 && (
+                      <KopierArbeidsforholdBanner
+                        tidligereArbeidsforhold={tidligereArbeidsforhold}
+                        onKopier={setRegistrerteArbeidsforhold}
+                      />
+                    )}
                   {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
                     if (komponent.visHvis && !komponent.visHvis(form.value())) {
                       return null;

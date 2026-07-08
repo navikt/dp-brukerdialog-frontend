@@ -1,6 +1,10 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 import invariant from "tiny-invariant";
 import { hentSeksjon } from "~/models/hent-seksjon.server";
+import {
+  hentTidligereArbeidsforhold,
+  TidligereArbeidsforhold,
+} from "~/models/hent-tidligere-arbeidsforhold.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { ArbeidsforholdProvider } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
@@ -23,6 +27,7 @@ export type ArbeidsforholdSeksjon = {
     seksjonsvar?: SeksjonSvar;
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
+  tidligereArbeidsforhold: TidligereArbeidsforhold | null;
 };
 
 export const NYESTE_VERSJON = 1;
@@ -38,7 +43,10 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<ArbeidsforholdSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const [response, tidligereArbeidsforhold] = await Promise.all([
+    hentSeksjon(request, params.soknadId, SEKSJON_ID),
+    hentTidligereArbeidsforhold(request, params.soknadId),
+  ]);
 
   if (!response.ok) {
     return {
@@ -48,10 +56,12 @@ export async function loader({
         seksjonsvar: undefined,
       },
       dokumentasjonskrav: null,
+      tidligereArbeidsforhold,
     };
   }
 
-  return await response.json();
+  const seksjonData = await response.json();
+  return { ...seksjonData, tidligereArbeidsforhold };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
