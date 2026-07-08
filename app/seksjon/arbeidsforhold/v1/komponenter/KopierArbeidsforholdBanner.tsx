@@ -1,12 +1,19 @@
 import { FilesIcon } from "@navikt/aksel-icons";
-import { Alert, BodyShort, Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
+import { Alert, BodyShort, Button, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useRef, useState } from "react";
+import { lagDokumentasjonskrav } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.dokumentasjonskrav";
 import { TidligereArbeidsforhold } from "~/models/hent-tidligere-arbeidsforhold.server";
-import { Arbeidsforhold } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import {
+  Arbeidsforhold,
+  harDuJobbetSkiftTurnusEllerRotasjon,
+  hvordanHarDetteArbeidsforholdetEndretSeg,
+  navnetPåBedriften,
+} from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 type Props = {
   tidligereArbeidsforhold: TidligereArbeidsforhold;
-  onKopier: (arbeidsforhold: Arbeidsforhold[]) => void;
+  onKopier: (arbeidsforhold: Arbeidsforhold[], dokumentasjonskrav: Dokumentasjonskrav[]) => void;
 };
 
 export function KopierArbeidsforholdBanner({ tidligereArbeidsforhold, onKopier }: Props) {
@@ -16,10 +23,26 @@ export function KopierArbeidsforholdBanner({ tidligereArbeidsforhold, onKopier }
   const antall = tidligereArbeidsforhold.registrerteArbeidsforhold.length;
 
   function bekreftKopiering() {
+    const alleNyeDokumentasjonskrav: Dokumentasjonskrav[] = [];
+
     const kopierteMedNyId: Arbeidsforhold[] = tidligereArbeidsforhold.registrerteArbeidsforhold.map(
-      (arbeidsforhold) => ({ ...arbeidsforhold, id: crypto.randomUUID() })
+      (arbeidsforhold) => {
+        const nyeDokumentasjonskrav = lagDokumentasjonskrav(
+          arbeidsforhold[harDuJobbetSkiftTurnusEllerRotasjon] ?? "",
+          arbeidsforhold[hvordanHarDetteArbeidsforholdetEndretSeg] ?? "",
+          arbeidsforhold[navnetPåBedriften] ?? ""
+        );
+        alleNyeDokumentasjonskrav.push(...nyeDokumentasjonskrav);
+
+        return {
+          ...arbeidsforhold,
+          id: crypto.randomUUID(),
+          dokumentasjonskrav: nyeDokumentasjonskrav.map((krav) => krav.id),
+        };
+      }
     );
-    onKopier(kopierteMedNyId);
+
+    onKopier(kopierteMedNyId, alleNyeDokumentasjonskrav);
     setKopiert(true);
     ref.current?.close();
   }

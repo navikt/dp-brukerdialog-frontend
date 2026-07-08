@@ -199,7 +199,10 @@ export function ArbeidsforholdViewV1() {
                     tidligereArbeidsforhold.registrerteArbeidsforhold.length > 0 && (
                       <KopierArbeidsforholdBanner
                         tidligereArbeidsforhold={tidligereArbeidsforhold}
-                        onKopier={setRegistrerteArbeidsforhold}
+                        onKopier={(arbeidsforhold, dokumentasjonskravFraForrigeSøknad) => {
+                          setRegistrerteArbeidsforhold(arbeidsforhold);
+                          setDokumentasjonskrav(dokumentasjonskravFraForrigeSøknad);
+                        }}
                       />
                     )}
                   {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
