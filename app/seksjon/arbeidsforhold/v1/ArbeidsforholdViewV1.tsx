@@ -194,10 +194,9 @@ export function ArbeidsforholdViewV1() {
               ) && (
                 <VStack className="mt-16" gap="space-24">
                   {tidligereArbeidsforhold !== null &&
-                    form.value(hvordanHarDuJobbet) ===
-                      tidligereArbeidsforhold.hvordanHarDuJobbet &&
                     tidligereArbeidsforhold.registrerteArbeidsforhold.length > 0 && (
                       <KopierArbeidsforholdBanner
+                        key={form.value(hvordanHarDuJobbet)}
                         tidligereArbeidsforhold={tidligereArbeidsforhold}
                         onKopier={(arbeidsforhold, dokumentasjonskravFraForrigeSøknad) => {
                           setRegistrerteArbeidsforhold(arbeidsforhold);
