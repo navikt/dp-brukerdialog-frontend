@@ -18,9 +18,9 @@ import {
   jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
 import {
+  kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
-  kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
   kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
   kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
@@ -224,7 +224,8 @@ export const arbeidsforholdKomponenter: KomponentType[] = [
     label:
       "Har du jobbet i et annet EØS-land, Sveits eller Storbritannia i løpet av de siste 36 månedene?",
     description:
-      "Andre land i EØS: Belgia, Bulgaria, Danmark, Estland, Finland, Frankrike, Hellas, Irland, Island, Italia, Kroatia, Kypros, Latvia, Liechtenstein, Litauen, Luxembourg, Malta, Nederland, Polen, Portugal, Romania, Slovakia, Slovenia, Spania, Sverige, Tsjekkia, Tyskland, Ungarn og Østerrike.",
+      "<p>Hvis du bare har jobbet i Norge, skal du svare <b>Nei</b> på dette spørsmålet.</p>" +
+      "<p>Andre land i EØS: Belgia, Bulgaria, Danmark, Estland, Finland, Frankrike, Hellas, Irland, Island, Italia, Kroatia, Kypros, Latvia, Liechtenstein, Litauen, Luxembourg, Malta, Nederland, Polen, Portugal, Romania, Slovakia, Slovenia, Spania, Sverige, Tsjekkia, Tyskland, Ungarn og Østerrike.</p>",
     options: [
       {
         value: "ja",
