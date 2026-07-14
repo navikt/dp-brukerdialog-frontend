@@ -48,8 +48,8 @@ importers:
         specifier: 4.0.2
         version: 4.0.2
       '@react-router/fs-routes':
-        specifier: 7.17.0
-        version: 7.17.0(@react-router/dev@7.18.1(@react-router/serve@7.18.1(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3))(@types/node@25.9.5)(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite@7.3.5(@types/node@25.9.5)(yaml@2.9.0))(yaml@2.9.0))(typescript@5.9.3)
+        specifier: 7.18.1
+        version: 7.18.1(@react-router/dev@7.18.1(@react-router/serve@7.18.1(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3))(@types/node@25.9.5)(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite@7.3.5(@types/node@25.9.5)(yaml@2.9.0))(yaml@2.9.0))(typescript@5.9.3)
       '@react-router/node':
         specifier: 7.17.0
         version: 7.17.0(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)
@@ -1068,11 +1068,11 @@ packages:
       typescript:
         optional: true
 
-  '@react-router/fs-routes@7.17.0':
-    resolution: {integrity: sha512-5foAiQ6dvqsOxjnN2vOVR1s4RT60Z0RKQ72CHlJybMEzqPx+3hOrr14iFjXOl3FiaYshFSlbGgyzgG285xglBg==}
+  '@react-router/fs-routes@7.18.1':
+    resolution: {integrity: sha512-DwK89XlrXHRnvE1pHtBCzZDUGhi33gh/IBpNNkdnCSfxVxkiBToqpT1Mveve81Ddgrbp+vKmLgetLHlftigLGw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@react-router/dev': ^7.17.0
+      '@react-router/dev': ^7.18.1
       typescript: ^5.1.0 || ^6.0.0
     peerDependenciesMeta:
       typescript:
@@ -4786,7 +4786,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@react-router/fs-routes@7.17.0(@react-router/dev@7.18.1(@react-router/serve@7.18.1(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3))(@types/node@25.9.5)(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite@7.3.5(@types/node@25.9.5)(yaml@2.9.0))(yaml@2.9.0))(typescript@5.9.3)':
+  '@react-router/fs-routes@7.18.1(@react-router/dev@7.18.1(@react-router/serve@7.18.1(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3))(@types/node@25.9.5)(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite@7.3.5(@types/node@25.9.5)(yaml@2.9.0))(yaml@2.9.0))(typescript@5.9.3)':
     dependencies:
       '@react-router/dev': 7.18.1(@react-router/serve@7.18.1(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3))(@types/node@25.9.5)(react-router@7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite@7.3.5(@types/node@25.9.5)(yaml@2.9.0))(yaml@2.9.0)
       minimatch: 9.0.9
