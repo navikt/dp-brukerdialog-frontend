@@ -29,6 +29,4 @@ arbeidssokerregisteret_url: https://oppslag-v2-arbeidssoekerregisteret.intern.de
 arbeidssokerregistrering_url: https://arbeid.ansatt.dev.nav.no/arbeid/registrering
 dp_mine_dagpenger_url: https://arbeid.ansatt.dev.nav.no/arbeid/dagpenger/mine-dagpenger
 generell_innsending_url: https://fyllut-ettersending.intern.dev.nav.no/fyllut-ettersending/lospost?tema=DAG
-dp_soknad_url: http://dp-soknad/arbeid/dagpenger/soknadapi
-dp_soknadsdialog_url: https://arbeid.intern.dev.nav.no/gammel-dagpenger/dialog/soknad
 min_side_url: https://www.ansatt.dev.nav.no/minside/nb/
