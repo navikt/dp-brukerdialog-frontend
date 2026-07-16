@@ -2,7 +2,9 @@ import i18n from "i18next";
 import Backend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
-import { defaultLanguage, supportedLanguages } from "./languages";
+
+export const defaultLanguage = "nb" as const;
+export const supportedLanguages = ["nb", "en", "nn"] as const;
 
 const baseUrl = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
@@ -15,7 +17,6 @@ void i18n
   .init({
     fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
-
     ns: [
       "common",
       "annen-pengestotte",
@@ -35,22 +36,17 @@ void i18n
       "verneplikt",
     ],
     defaultNS: "common",
-
     backend: {
       loadPath: `${baseUrl}locales/{{lng}}/{{ns}}.json`,
     },
-
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
     },
-
     interpolation: {
       escapeValue: false,
     },
-
     load: "languageOnly",
-
     returnNull: false,
     returnEmptyString: false,
   });

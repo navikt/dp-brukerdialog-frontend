@@ -30,7 +30,7 @@ export const availableLanguages = [
   },
 ];
 
-export async function getDekoratorHTML(): Promise<DecoratorElements> {
+export async function getDekoratorHTML(language: DecoratorLocale): Promise<DecoratorElements> {
   const config: DecoratorFetchProps = {
     env: (getEnv("DEKORATOR_ENV") || "localhost") as DecoratorEnvProps["env"],
     localUrl: "https://dekoratoren.ekstern.dev.nav.no",
@@ -39,14 +39,15 @@ export async function getDekoratorHTML(): Promise<DecoratorElements> {
       chatbot: false,
       redirectToApp: true,
       level: "Level4",
-      // availableLanguages: availableLanguages,
+      language,
+      availableLanguages: availableLanguages,
     },
   };
 
   return await fetchDecoratorHtml(config);
 }
 
-export async function getDekoratorLanguage(request: Request): Promise<string> {
+export async function getDekoratorLanguage(request: Request): Promise<DecoratorLocale> {
   const cookieHeader = request.headers.get("Cookie");
   const match = cookieHeader?.match(/decorator-language=([^;]+)/);
 

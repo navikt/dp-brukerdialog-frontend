@@ -1,6 +1,8 @@
 import { Theme } from "@navikt/ds-react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   data,
   isRouteErrorResponse,
@@ -26,11 +28,10 @@ import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
 
-import indexStyles from "./index.css?url";
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
+import indexStyles from "./index.css?url";
 
-import "./i188n";
-import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import "./i18n";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -38,13 +39,13 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const decoratorFragments = await getDekoratorHTML();
+  const dekoratorLanguage = await getDekoratorLanguage(request);
+
+  const decoratorFragments = await getDekoratorHTML(dekoratorLanguage);
 
   if (!decoratorFragments) {
     logger.error("Kunne ikke hente dekoratør");
   }
-
-  const dekoratorLanguage = await getDekoratorLanguage(request);
 
   if (!dekoratorLanguage) {
     logger.error("Kunne ikke hente dekoratør språk");
@@ -77,16 +78,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
   const { decoratorFragments, env, language } = useLoaderData();
   const { DECORATOR_HEAD_ASSETS, DECORATOR_SCRIPTS, DECORATOR_HEADER, DECORATOR_FOOTER } =
     decoratorFragments;
 
   useInjectDecoratorScript(DECORATOR_SCRIPTS);
 
-  // Reload page on language change
-  onLanguageSelect(() => {
-    navigate(0);
-  });
+  useEffect(() => {
+    onLanguageSelect(({ locale }) => {
+      void i18n.changeLanguage(locale);
+      navigate(0);
+    });
+  }, [i18n, navigate]);
 
   return (
     <html lang="nb">
@@ -99,7 +103,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
-        <LanguageSwitcher />
         {children}
         <ScrollRestoration />
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
