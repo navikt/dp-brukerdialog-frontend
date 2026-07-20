@@ -1,0 +1,161 @@
+{
+	"felles": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"side": {
+		"tittel": "Søknad om dagpenger: Annen pengestøtte",
+		"overskrift": "Annen pengestøtte"
+	},
+	"fraTidligereArbeidsgiver": {
+		"leggTilKnapp": "Legg til utbetalinger eller goder",
+		"manglerFeilmelding": "Du må legge til utbetalinger eller økonomiske goder",
+		"mottarAndreUtbetalinger": {
+			"label": "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
+			"description": "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger."
+			}
+		},
+		"forklarendeTekst": {
+			"tittel": "Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver",
+			"description": "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver."
+		},
+		"modal": {
+			"hvemMottar": {
+				"label": "Hvem mottar du utbetalinger eller økonomiske goder fra?"
+			},
+			"lesMer": {
+				"label": "Dette mener vi med utbetalinger og økonomiske goder",
+				"utbetalinger": {
+					"tittel": "Utbetalinger",
+					"intro": "Med utbetalinger mener vi for eksempel:",
+					"sluttvederlag": "Sluttvederlag",
+					"etterlonn": "Etterlønn",
+					"andreUtbetalinger": "Andre utbetalinger som erstatter lønn",
+					"skalIkkeOppgi": "Du skal ikke oppgi utbetalinger som er lønn i oppsigelsestiden eller feriepenger."
+				},
+				"okonomiskeGoder": {
+					"tittel": "Økonomiske goder",
+					"intro": "Med økonomiske goder mener vi for eksempel:",
+					"bil": "Bil",
+					"abonnementer": "Abonnementer",
+					"andreGoder": "Andre goder med stor verdi",
+					"skalKunOppgi": "Du skal kun oppgi økonomiske goder du beholder etter at arbeidsforholdet er avsluttet."
+				}
+			},
+			"hvaFarEllerBeholder": {
+				"label": "Skriv inn hva du får eller beholder"
+			},
+			"dokumentasjonskrav": {
+				"label": "Avtalen om sluttvederlag, etterlønn eller andre økonomiske goder"
+			}
+		}
+	},
+	"norge": {
+		"overskrift": "Pengestøtte fra Norge",
+		"leggTilKnapp": "Legg til pengestøtte fra Norge",
+		"manglerFeilmelding": "Du må legge til pengestøtte fra Norge",
+		"mottarDuPengestotte": {
+			"label": "Mottar du pengestøtte fra andre enn Nav?",
+			"description": {
+				"pensjon": "Pensjon fra andre enn Nav",
+				"gff": "Dagpenger for fiskere eller garantilott fra Garantikassen for fiskere (GFF)"
+			},
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Hvis du mottar pengestøtte fra andre enn Nav, kan det ha betydning for retten din til dagpenger."
+			}
+		},
+		"forklarendeTekst": {
+			"tittel": "Dine pengestøtter fra Norge",
+			"description": "Du må legge til alle pengestøttene du mottar som ikke er fra Nav."
+		},
+		"modal": {
+			"hvilkenPengestotte": {
+				"label": "Hvilken pengestøtte fra andre enn Nav mottar du?",
+				"options": {
+					"pensjonFraAndreEnnNav": "Pensjon fra andre enn Nav",
+					"gff": "Dagpenger under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)"
+				}
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
+			},
+			"dokumentasjonskrav": {
+				"pensjonFraAndreEnnNav": "Dokumentasjon av pensjon fra andre enn Nav",
+				"gff": "Dokumentasjon av pengestøtte fra Garantikassen for fiskere"
+			},
+			"hvemUtbetaler": {
+				"label": "Hvem utbetaler pengestøtten?"
+			},
+			"periode": {
+				"label": "I hvilken periode har du mottatt pengestøtten?",
+				"fraDato": "Fra dato",
+				"tilDato": "Til dato",
+				"tilDatoDescription": "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her."
+			}
+		}
+	},
+	"eos": {
+		"overskrift": "Pengestøtte fra andre EØS-land",
+		"leggTilKnapp": "Legg til pengestøtte fra andre EØS-land",
+		"manglerFeilmelding": "Du må legge til pengestøtte fra andre EØS-land",
+		"harMottattEllerSokt": {
+			"label": "Har du de siste 36 måneder mottatt eller søkt om pengestøtte fra EØS-land, Sveits eller Storbritannia som ligner på:",
+			"description": {
+				"sykepenger": "Sykepenger",
+				"foreldrepenger": "Foreldrepenger eller svangerskapspenger",
+				"dagpenger": "Dagpenger / arbeidsledighetstrygd",
+				"pleiepenger": "Pleiepenger, omsorgspenger eller opplæringspenger"
+			},
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Hvis du mottar disse pengestøttene fra utlandet, kan det ha betydning for retten din til dagpenger."
+			}
+		},
+		"forklarendeTekst": {
+			"tittel": "Dine pengestøtter fra andre EØS-land",
+			"description": "Du må legge til alle pengestøttene du har mottatt fra andre EØS-land, Sveits eller Storbritannia de siste 36 månedene."
+		},
+		"modal": {
+			"hvilkenPengestotte": {
+				"label": "Mottar du, eller har du tidligere fått pengestøtte fra et annet EØS-land?",
+				"options": {
+					"sykepenger": "Sykepenger",
+					"foreldrepenger": "Foreldrepenger eller svangerskapspenger",
+					"dagpenger": "Dagpenger / arbeidsledighetstrygd",
+					"pleiepenger": "Pleiepenger, omsorgspenger eller opplæringspenger"
+				}
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
+			},
+			"dokumentasjonskrav": {
+				"label": "Dokumentasjon av pengestøtte fra et annet EØS-land"
+			},
+			"land": {
+				"label": "Hvilket land har du mottatt eller søkt om pengestøtten fra i løpet av de siste 36 månedene?"
+			},
+			"mottarFortsatt": {
+				"label": "Mottar du fortsatt pengestøtten?"
+			},
+			"fraNar": {
+				"label": "Fra hvilken dato har du mottatt pengestøtten?"
+			},
+			"periode": {
+				"label": "I hvilken periode mottok du pengestøtten?",
+				"fraDato": "Fra dato",
+				"tilDato": "Til dato"
+			}
+		}
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	}
+}

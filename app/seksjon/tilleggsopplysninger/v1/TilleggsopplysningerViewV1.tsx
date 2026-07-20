@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
@@ -6,29 +8,27 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import {
-  action,
-  loader,
-  SEKSJON_NAVN,
-  SEKSJON_TITTEL,
-} from "~/routes/$soknadId.tilleggsopplysninger";
+import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
 import { useSoknad } from "~/seksjon/soknad.context";
 import {
   handling,
+  lagTilleggsopplysningerKomponenter,
   pdfGrunnlag,
-  tilleggsopplysningerKomponenter,
-  TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
+import type { TilleggsopplysningerSvar } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function TilleggsopplysningerViewV1() {
+  const { t } = useTranslation("tilleggsopplysninger");
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const tilleggsopplysningerKomponenter = useMemo(() => lagTilleggsopplysningerKomponenter(t), [t]);
 
   const form = useForm({
     method: "PUT",
@@ -41,7 +41,7 @@ export function TilleggsopplysningerViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
     };
 
@@ -66,10 +66,10 @@ export function TilleggsopplysningerViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
@@ -91,10 +91,7 @@ export function TilleggsopplysningerViewV1() {
           </VStack>
 
           {actionData && (
-            <SeksjonTekniskFeil
-              tittel="Det har oppstått en teknisk feil"
-              beskrivelse={actionData.error}
-            />
+            <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
           )}
         </Form>
       </VStack>

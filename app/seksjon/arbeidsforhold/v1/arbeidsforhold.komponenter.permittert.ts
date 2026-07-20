@@ -1,10 +1,11 @@
+import type { TFunction } from "i18next";
+import { startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import {
-  ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegErPermittert,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
+import type { ArbeidsforholdModalSvar } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const permittertVarighetPåArbeidsforholdetFraOgMedDato =
   "permittertVarighetPåArbeidsforholdetFraOgMedDato";
@@ -22,11 +23,26 @@ export const permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr =
 export const permittertLønnsperiodeFraOgMedDato = "permittertLønnsperiodeFraOgMedDato";
 export const permittertLønnsperiodeTilOgMedDato = "permittertLønnsperiodeTilOgMedDato";
 
-export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
+type ArbeidsforholdT = TFunction;
+
+const jaNeiOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+const jaNeiVetIkkeOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+  { value: "vetIkke", label: t("felles.svar.vetIkke") },
+];
+
+export const lagArbeidsforholdModalJegErPermittertKomponenter = (
+  t: ArbeidsforholdT
+): KomponentType[] => [
   {
     id: permittertVarighetPåArbeidsforholdetFraOgMedDato,
     type: "dato",
-    label: "Når startet du i dette arbeidsforholdet?",
+    label: t("modal.permittert.varighetPaArbeidsforholdet.label"),
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
@@ -34,10 +50,9 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: permittertNårErDuPermittertFraOgMedDato,
     type: "periodeFra",
-    label: "Fra og med dato",
-    periodeLabel: "Når er du permittert?",
-    description:
-      "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen.",
+    label: t("felles.dato.fraOgMedDato"),
+    periodeLabel: t("modal.permittert.permitteringsperiode.label"),
+    description: t("modal.permittert.permitteringsperiode.description"),
     referanseId: permittertNårErDuPermittertTilOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
@@ -45,7 +60,7 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: permittertNårErDuPermittertTilOgMedDato,
     type: "periodeTil",
-    label: "Til og med dato",
+    label: t("felles.dato.tilOgMedDato"),
     optional: true,
     referanseId: permittertNårErDuPermittertFraOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -55,75 +70,52 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
     id: "permittertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "For å ha rett til dagpenger under permittering, må arbeidstiden din være redusert med minst 50 prosent. Årsaken til permitteringen må være mangel på arbeid eller andre forhold som arbeidsgiver ikke kan påvirke.",
+    label: t("modal.permittert.informasjonskort.label"),
+    description: t("modal.permittert.informasjonskort.description"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: "permittertArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
+    label: t("modal.permittert.dokumentasjonskrav.arbeidsavtale"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: "permittertPermitteringsvarselDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Permitteringsvarsel",
+    label: t("modal.permittert.dokumentasjonskrav.permitteringsvarsel"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
     type: "envalg",
-    label: "Er du midlertidig ansatt, og har kontrakt med sluttdato?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-      {
-        value: "vetIkke",
-        label: "Jeg vet ikke",
-      },
-    ],
+    label: t("modal.permittert.midlertidigArbeidsforhold.label"),
+    options: jaNeiVetIkkeOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin,
     type: "dato",
-    label: "Oppgi sluttdatoen i kontrakten din",
+    label: t("modal.permittert.kontraktsfestetSluttdato.label"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato] === "ja",
   },
   {
     id: permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
     type: "envalg",
-    label: "Er du permittert fra fiskeforedlings- eller fiskeoljeindustrien?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
+    label: t("modal.permittert.fiskeforedlingEllerFiskeolje.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertHvorMangeProsentErDuPermittert,
     type: "tall",
-    label: "Hvor mange prosent er du permittert?",
+    label: t("modal.permittert.hvorMangeProsent.label"),
     maksVerdi: 100,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
@@ -131,27 +123,17 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
     type: "envalg",
-    label: "Vet du når lønnspliktperioden til arbeidsgiveren din er?",
-    description:
-      "Du finner informasjon om arbeidsgivers lønnspliktperiode i permitteringsvarselet. Fra-datoen er den første dagen du ikke arbeider som normalt fordi du er permittert.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
+    label: t("modal.permittert.lonnspliktperiodeVetDuNar.label"),
+    description: t("modal.permittert.lonnspliktperiodeVetDuNar.description"),
+    options: jaNeiOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
   },
   {
     id: permittertLønnsperiodeFraOgMedDato,
     type: "periodeFra",
-    periodeLabel: "Fyll inn lønnspliktperioden",
-    label: "Fra og med dato",
+    periodeLabel: t("modal.permittert.lonnspliktperiode.label"),
+    label: t("felles.dato.fraOgMedDato"),
     referanseId: permittertLønnsperiodeTilOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
@@ -159,10 +141,15 @@ export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
   {
     id: permittertLønnsperiodeTilOgMedDato,
     type: "periodeTil",
-    label: "Til og med dato",
+    label: t("felles.dato.tilOgMedDato"),
     optional: true,
     referanseId: permittertLønnsperiodeFraOgMedDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as ArbeidsforholdT;
+
+export const arbeidsforholdModalJegErPermittertKomponenter =
+  lagArbeidsforholdModalJegErPermittertKomponenter(fallbackT);

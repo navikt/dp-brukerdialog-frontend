@@ -1,0 +1,414 @@
+{
+	"felles": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei",
+			"vetIkke": "Jeg vet ikke",
+			"harIkkeSvart": "Har ikke svart"
+		},
+		"dato": {
+			"fraDato": "Fra dato",
+			"tilDato": "Til dato",
+			"fraOgMedDato": "Fra og med dato",
+			"tilOgMedDato": "Til og med dato"
+		}
+	},
+	"side": {
+		"tittel": "Søknad om dagpenger: Arbeidsforhold",
+		"overskrift": "Arbeidsforhold"
+	},
+	"registrerteArbeidsforhold": {
+		"leggTilKnapp": "Legg til arbeidsforhold",
+		"manglerFeilmelding": "Du må legge til et arbeidsforhold"
+	},
+	"hvordanHarDuJobbet": {
+		"label": "Hvilke av de følgende alternativene passer best med hvordan du har jobbet?",
+		"options": {
+			"fastArbeidstidIMindreEnn6Maneder": "Jeg har hatt fast arbeidstid i mindre enn seks måneder",
+			"fastArbeidstidI6ManederEllerMer": "Jeg har hatt fast arbeidstid i seks måneder eller mer",
+			"varierendeArbeidstidDeSiste12Manedene": "Jeg har hatt varierende arbeidstid de siste 12 månedene",
+			"jobbetMerIGjennomsnitt": "Jeg har jobbet mer i gjennomsnitt de siste 36 månedene enn de siste 12 månedene",
+			"harIkkeJobbetDeSiste36Manedene": "Jeg har ikke vært i jobb de siste 36 månedene"
+		}
+	},
+	"arbeidstidLesMer": {
+		"label": "Les mer om arbeidstid",
+		"description": {
+			"intro": "Når vi vurderer om du har rett til dagpenger ser vi på hvor mye du har jobbet, og om arbeidstiden din er redusert med minst 50 prosent.",
+			"fastArbeidstid": {
+				"tittel": "Fast arbeidstid",
+				"description": "betyr at du har en arbeidsavtale med fast stillingsprosent eller fast antall arbeidstimer."
+			},
+			"varierendeArbeidstid": {
+				"tittel": "Varierende arbeidstid",
+				"description": "betyr at arbeidstiden din varierer per uke eller per måned. Du kan for eksempel ha hatt flere korte arbeidsforhold, jobbet som vikar eller ekstrahjelp."
+			}
+		}
+	},
+	"eosJobb": {
+		"label": "Har du jobbet i et annet EØS-land, Sveits eller Storbritannia i løpet av de siste 36 månedene?",
+		"description": "Andre land i EØS: Belgia, Bulgaria, Danmark, Estland, Finland, Frankrike, Hellas, Irland, Island, Italia, Kroatia, Kypros, Latvia, Liechtenstein, Litauen, Luxembourg, Malta, Nederland, Polen, Portugal, Romania, Slovakia, Slovenia, Spania, Sverige, Tsjekkia, Tyskland, Ungarn og Østerrike.",
+		"lesMer": {
+			"label": "Grunnen til at vi spør om dette og andre EØS land",
+			"description": "Hvis du har jobbet i et annet EØS-land, Sveits eller Storbritannia kan du ha rett til å få overført arbeidsperioder du har hatt der. Da vil de regnes med i vurderingen av retten til dagpenger i Norge."
+		}
+	},
+	"harIkkeJobbetInformasjonskort": {
+		"label": "Du kan få avslag på søknaden",
+		"description": {
+			"avslag": "Hvis du ikke har vært i arbeid, har du i utgangspunktet ikke rett til dagpenger. Du må derfor regne med å få avslag på søknaden din.",
+			"unntak": "Unntaket er hvis du har avtjent verneplikt i minst tre av de siste tolv månedene. Du legger ved dokumentasjon på at du har avtjent verneplikt senere i søknaden."
+		}
+	},
+	"forklarendeTekst": {
+		"tittel": "Dine arbeidsforhold",
+		"dokumentasjon": "Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.",
+		"eos": {
+			"fastArbeidstidIMindreEnn6Maneder": "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.",
+			"fastArbeidstidI6ManederEllerMer": "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 6 månedene.",
+			"varierendeArbeidstidDeSiste12Manedene": "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.",
+			"jobbetMerIGjennomsnitt": "Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits, Storbritannia og Norge de siste 36 månedene."
+		},
+		"norge": {
+			"fastArbeidstidIMindreEnn6Maneder": "Du må legge til alle arbeidsforholdene du har hatt de siste 12 månedene.",
+			"fastArbeidstidI6ManederEllerMer": "Du må legge til alle arbeidsforholdene du har hatt de siste 6 månedene.",
+			"varierendeArbeidstidDeSiste12Manedene": "Du må legge til alle arbeidsforholdene du har hatt de siste 12 månedene.",
+			"jobbetMerIGjennomsnitt": "Du må legge til alle arbeidsforhold du har hatt i løpet av de siste 36 månedene."
+		}
+	},
+	"modal": {
+		"navnetPaBedriften": {
+			"label": "Navnet på bedriften"
+		},
+		"hvilketLandJobbetDuI": {
+			"label": "Hvilket land jobbet du i?"
+		},
+		"pin": {
+			"label": "Oppgi personnummeret (PIN) som du hadde i dette landet"
+		},
+		"hvordanHarDetteArbeidsforholdetEndretSeg": {
+			"label": "Hvordan har dette arbeidsforholdet endret seg?",
+			"options": {
+				"arbeidsgiverenMinHarSagtMegOpp": "Arbeidsgiveren min har sagt meg opp",
+				"jegHarSagtOppSelv": "Jeg har sagt opp selv",
+				"jegHarFattAvskjed": "Jeg har fått avskjed",
+				"kontraktenErUttgatt": "Kontrakten er utgått",
+				"arbeidstidenErRedusert": "Arbeidstiden er redusert",
+				"arbeidsgiverErKonkurs": "Arbeidsgiver er konkurs",
+				"jegErPermittert": "Jeg er permittert",
+				"arbeidsforholdetErIkkeEndret": "Arbeidsforholdet er ikke endret"
+			}
+		},
+		"skiftTurnusRotasjon": {
+			"harDuJobbet": {
+				"label": "Har du jobbet skift, turnus eller rotasjon?",
+				"description": {
+					"skiftTurnus": "Skift eller turnus kan være når du har avtale om å arbeide ulike tider i ulike uker, som for eksempel dagtid en uke og kveldstid en uke, eller har fri hver tredje helg.",
+					"rotasjon": "En rotasjon er for eksempel at du arbeider to uker og har fri i to uker."
+				},
+				"options": {
+					"skiftEllerTurnus": "Ja, jeg har jobbet skift eller turnus",
+					"rotasjon": "Ja, jeg har jobbet rotasjon",
+					"ingenAvDelene": "Nei, ingen av delene"
+				}
+			},
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Vi må vite hvilken arbeidstidsordning du har for å gi deg dagpenger fra riktig dato."
+			},
+			"dokumentasjonskrav": {
+				"label": "Dokumentasjon av rotasjonsordningen og den siste arbeidsperioden din"
+			},
+			"hvilkenType": {
+				"label": "Hvilken type rotasjonsordning jobbet du?",
+				"options": {
+					"annenRotasjon": "Annen rotasjon"
+				}
+			},
+			"annenRotasjon": {
+				"label": "Annen rotasjon",
+				"description": "Beskriv kort den avtalte rotasjonsordningen din"
+			},
+			"sisteArbeidsperiode": {
+				"label": "Oppgi siste arbeidsperiode du hadde i den siste rotasjonen din"
+			}
+		},
+		"permittert": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Når startet du i dette arbeidsforholdet?"
+			},
+			"permitteringsperiode": {
+				"label": "Når er du permittert?",
+				"description": "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen."
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": "For å ha rett til dagpenger under permittering, må arbeidstiden din være redusert med minst 50 prosent. Årsaken til permitteringen må være mangel på arbeid eller andre forhold som arbeidsgiver ikke kan påvirke."
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale",
+				"permitteringsvarsel": "Permitteringsvarsel"
+			},
+			"midlertidigArbeidsforhold": {
+				"label": "Er du midlertidig ansatt, og har kontrakt med sluttdato?"
+			},
+			"kontraktsfestetSluttdato": {
+				"label": "Oppgi sluttdatoen i kontrakten din"
+			},
+			"fiskeforedlingEllerFiskeolje": {
+				"label": "Er du permittert fra fiskeforedlings- eller fiskeoljeindustrien?"
+			},
+			"hvorMangeProsent": {
+				"label": "Hvor mange prosent er du permittert?"
+			},
+			"lonnspliktperiodeVetDuNar": {
+				"label": "Vet du når lønnspliktperioden til arbeidsgiveren din er?",
+				"description": "Du finner informasjon om arbeidsgivers lønnspliktperiode i permitteringsvarselet. Fra-datoen er den første dagen du ikke arbeider som normalt fordi du er permittert."
+			},
+			"lonnspliktperiode": {
+				"label": "Fyll inn lønnspliktperioden"
+			}
+		},
+		"kontraktenErUtgatt": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Varighet på arbeidsforholdet"
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale"
+			},
+			"tilbudOmForlengelse": {
+				"label": "Har du fått tilbud om forlengelse av arbeidskontrakten eller tilbud om annen stilling hos arbeidsgiveren din?"
+			},
+			"hvaHarDuSvart": {
+				"label": "Hva har du svart på tilbudet?"
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": {
+					"karantene": "Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.",
+					"sokNa": "Det er viktig at du ikke venter med å søke om dagpenger.",
+					"meldekort": "Du må være registrert som arbeidssøker og sende meldekort i ventetiden."
+				}
+			},
+			"grunnTilIkkeTattImot": {
+				"label": "Hva er årsaken til at du ikke har tatt imot tilbudet?"
+			}
+		},
+		"konkurs": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Varighet på arbeidsforholdet"
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale",
+				"oppsigelse": "Oppsigelse fra bostyrer/konkursforvalter"
+			},
+			"midlertidigArbeidsforhold": {
+				"label": "Er dette et midlertidig arbeidsforhold med en kontraktfestet sluttdato?",
+				"description": "Vi må vite om du hadde en midlertidig arbeidskontrakt med fast sluttdato, for eksempel et vikariat. Svar ja hvis kontrakten din hadde en sluttdato, og nei hvis du var fast ansatt uten sluttdato."
+			},
+			"kontraktsfestetSluttdato": {
+				"label": "Oppgi den kontraktsfestede sluttdatoen for dette arbeidsforholdet"
+			},
+			"forskuddPaLonnsgarantimidler": {
+				"label": "Ønsker du å søke om forskudd på lønnsgarantimidler?",
+				"description": "Lønnsgarantimidler erstatter lønn som du ikke har fått utbetalt fordi arbeidsgiveren din går konkurs. Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd her."
+			},
+			"forskuddPaLonnsgarantimidlerLesMer": {
+				"label": "Les mer om hvem som bør søke om forskudd på lønnsgarantimidler",
+				"description": "<p>Når arbeidsgiveren din går konkurs, kan du i tillegg til dagpenger søke om:</p><ol><li><strong>Lønnsgarantimidler</strong><br/>Lønnsgarantiordningen skal sikre at du som arbeidstaker får utbetalt lønn, feriepenger og annet arbeidsvederlag som du har til gode når arbeidsgiveren din går konkurs. Send <a href=\"https://www.nav.no/soknader#lonnsgaranti\" target=\"_blank\" rel=\"noopener noreferrer\">søknad om lønnsgarantimidler</a> via bostyrer i konkursboet.</li><li><strong>Forskudd på lønnsgarantimidler i form av dagpenger</strong><br/>Du kan få forskudd på lønnsgarantimidler i form av dagpenger for den første måneden etter at arbeidsgiveren din er konkurs. Dette er fordi det kan ta lang tid å få svar på søknaden om lønnsgaranti. Du søker om forskudd ved å svare \"Ja\" på spørsmålet over.</li></ol><p>Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd. Du må da også sende en egen søknad om lønnsgarantimidler. Dette kan bostyrer hjelpe deg med.</p>"
+			},
+			"forskuddPaLonnsgarantimidlerVarselmelding": {
+				"label": "Informasjon",
+				"description": "<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href=\"https://www.nav.no/soknader#lonnsgaranti\" target=\"_blank\" rel=\"noopener noreferrer\">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>"
+			},
+			"dagpengerITilleggForskudd": {
+				"label": "Ønsker du å søke om dagpenger i tillegg til forskudd om lønnsgarantimidler?",
+				"description": "Lønnsgarantimidler erstatter lønn som du ikke har fått utbetalt fordi arbeidsgiveren din går konkurs. Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd her."
+			},
+			"dagpengerITilleggForskuddLesMer": {
+				"label": "Les om hvem som kan ha rett til dagpenger",
+				"description": "<p>Forskudd på lønnsgarantimidler blir utbetalt i inntil én måned.</p><p>Hvis du er uten arbeid etter at perioden med forskudd på lønnsgarantimidler er ferdig, kan du ha rett på dagpenger. Det kan du søke om ved å svare ja på dette spørsmålet</p>"
+			},
+			"trekkePengerFraKonkursboet": {
+				"label": "Godtar du at Nav trekker penger direkte fra konkursboet?",
+				"description": "Får du innvilget dagpenger for en periode du senere får dekket lønn for, har du fått dagpenger du egentlig ikke har rett til. For at du skal slippe å tilbakebetale dagpenger til Nav, vil vi trekke for mye utbetalt dagpenger direkte fra konkursboet."
+			},
+			"trekkePengerFraKonkursboetLesMer": {
+				"label": "Les om hvorfor vi vil trekke penger",
+				"description": "<p>Når arbeidsgiveren din er konkurs, kan du ha krav på å få dekket tapt lønn i oppsigelsestiden fra konkursboet (dividende). Dette kan være full lønn, eller deler av lønnen for en kort eller lengre periode. Fram til boet er gjort opp, er det usikkert hvor mye penger du har krav på. Har du krav på lønn, har du ikke samtidig krav på dagpenger.</p><p>Får du innvilget dagpenger for en periode du senere får dekket lønn for, har du derfor fått dagpenger du egentlig ikke har rett til. For at du skal slippe å tilbakebetale dagpenger til Nav, vil vi trekke for mye utbetalt dagpenger direkte fra konkursboet. Samlet sett taper du ikke penger på dette.</p><p>For at vi skal kunne trekke direkte fra boet, trenger vi en godkjenning fra deg.</p>"
+			},
+			"tilbakebetalingInformasjonskort": {
+				"label": "Du kan få krav om tilbakebetaling",
+				"description": "Hvis du ikke godtar at Nav trekker penger direkte fra konkursboet, kan du få krav om tilbakebetaling."
+			},
+			"trekkeForskuddFraLonnsgarantiordningen": {
+				"label": "Godtar du at Nav trekker forskuddet på lønnsgarantimidler direkte fra lønnsgarantiordningen?",
+				"description": "<p>Forskuddet skal dekke den første måneden du venter på svar på søknaden om lønnsgarantimidler. Når du får utbetalt lønnsgarantimidler, trekker vi forskuddet fra utbetalingen.</p><p>Du taper ikke penger på å svare \"Ja\".</p>"
+			},
+			"avslagForskuddInformasjonskort": {
+				"label": "Du kan få avslag på søknaden",
+				"description": "<p>Hvis du svarer \"Nei\" vil du få avslag på søknaden om forskudd på lønnsgarantimidler.</p><p>Vi må trekke forskuddet fra lønnsgarantimidlene dine for å hindre at du får dobbelt utbetaling for den første måneden.</p>"
+			},
+			"harSoktOmLonnsgarantimidler": {
+				"label": "Har du søkt om lønnsgarantimidler?",
+				"description": "For å ha rett til forskudd på lønnsgarantimidler må du søke lønnsgarantiordningen om lønnsgarantimidler. Dette kan bostyrer i konkursboet hjelpe deg med.",
+				"options": {
+					"neiMenSkalSoke": "Nei, men jeg skal søke om lønnsgarantimidler"
+				}
+			},
+			"harSoktOmLonnsgarantimidlerInformasjonskort": {
+				"label": "Du kan få avslag på søknaden",
+				"description": "Hvis du ikke søker om lønnsgarantimidler, har du ikke rett til forskudd, og du vil få avslag på søknaden din om forskudd på lønnsgarantimidler."
+			},
+			"dekkerLonnsgarantiordningen": {
+				"label": "Dekker lønnsgarantiordningen lønnskravet ditt?"
+			},
+			"utbetaltLonnEtterKonkurs": {
+				"label": "Har du fått utbetalt lønn for dager etter datoen arbeidsgiveren din gikk konkurs eller ble tvangsavviklet?"
+			},
+			"sisteDagUtbetaltLonn": {
+				"label": "Velg den siste dagen du har fått utbetalt lønn for"
+			}
+		},
+		"jegHarSagtOppSelv": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Varighet på arbeidsforholdet"
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": {
+					"narOgHvorfor": "Hvis du har sagt opp selv, må vi vite når og hvorfor.",
+					"dokumentere": "Derfor må du dokumentere grunnen og datoen du sa opp. Dette kan for eksempel stå i oppsigelsen som du legger ved.",
+					"ikkeRimeligGrunn": "Hvis du <strong>ikke hadde rimelig grunn</strong> til å si opp jobben din, får du ikke utbetalt dagpenger i 18 uker.",
+					"rimeligGrunn": "Hvis du hadde <strong>rimelig grunn</strong> til å si opp jobben din, får du utbetaling fra første dag du har rett til dagpenger. Rimelig grunn kan være at du ikke kan fortsette i jobben din på grunn av helseutfordringer, mobbing eller fordi arbeidsgiver nedbemanner. Dette må du dokumentere.",
+					"navVurderer": "Det er Nav som vurderer om grunnen til at du har sluttet får betydning for utbetalingen din.",
+					"meldekort": "Du må være registrert som arbeidssøker og sende meldekort i ventetiden."
+				}
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale",
+				"oppsigelse": "Oppsigelse"
+			},
+			"hvaVarArsaken": {
+				"label": "Hva er årsaken til at du har sagt opp?"
+			}
+		},
+		"jegErOppsagt": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Varighet på arbeidsforholdet"
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": {
+					"narOgHvorfor": "Hvis du har blitt sagt opp av arbeidsgiveren din, må vi vite når og hvorfor.",
+					"karantene": "Hvis du selv var skyld i oppsigelsen, vil du ikke få utbetalt dagpenger de 18 første ukene av dagpengeperioden din. Det er viktig at du ikke venter med å søke om dagpenger.",
+					"navVurderer": "Det er Nav som vurderer om grunnen for oppsigelsen får betydning for utbetalingen din.",
+					"meldekort": "Du må være registrert som arbeidssøker og sende meldekort i ventetiden."
+				}
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale",
+				"oppsigelse": "Oppsigelse"
+			},
+			"hvaVarArsaken": {
+				"label": "Hva var årsaken til at du ble sagt opp?"
+			},
+			"tilbudOmAnnenStilling": {
+				"label": "Har du fått tilbud om å fortsette hos arbeidsgiveren din i en annen stilling eller et annet sted i Norge?"
+			},
+			"hvaHarDuSvart": {
+				"label": "Hva har du svart på tilbudet?"
+			},
+			"tilbudAvslattInformasjonskort": {
+				"label": "Informasjon",
+				"description": {
+					"karantene": "Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.",
+					"sokNa": "Det er viktig at du ikke venter med å søke om dagpenger.",
+					"meldekort": "Du må være registrert som arbeidssøker og sende meldekort i ventetiden."
+				}
+			},
+			"grunnTilIkkeTattImot": {
+				"label": "Hva er årsaken til at du ikke har tatt imot tilbudet?"
+			}
+		},
+		"ikkeEndret": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Når startet du i dette arbeidsforholdet?"
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale"
+			},
+			"harDuTilleggsopplysninger": {
+				"label": "Har du tilleggsopplysninger til dette arbeidsforholdet?"
+			},
+			"tilleggsopplysninger": {
+				"label": "Tilleggsopplysninger"
+			}
+		},
+		"jegHarFattAvskjed": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Varighet på arbeidsforholdet"
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": {
+					"hvorfor": "Hvis du har fått avskjed fra arbeidsgiver, må vi vite hvorfor.",
+					"hvaBetyrAvskjed": "Avskjed betyr at du må slutte i jobben din umiddelbart, uten oppsigelsestid.",
+					"dokumentere": "Du må dokumentere eller beskrive grunnen og datoen for avskjeden. Dette kan for eksempel stå i avskjedsbrevet eller i møtereferat.",
+					"karantene": "Har du fått avskjed vil du normalt ikke få utbetalt dagpenger i 18 uker.",
+					"navVurderer": "Det er Nav som vurderer om grunnen til avskjeden får betydning for utbetalingen din.",
+					"meldekort": "Du må være registrert som arbeidssøker og sende meldekort i ventetiden."
+				}
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale",
+				"avskjedigelse": "Avskjedigelse"
+			},
+			"hvaVarArsaken": {
+				"label": "Hva var årsaken til at du ble avskjediget?"
+			}
+		},
+		"arbeidstidenErRedusert": {
+			"varighetPaArbeidsforholdet": {
+				"label": "Varighet på arbeidsforholdet"
+			},
+			"startetArbeidsforholdet": {
+				"description": "Når startet du i dette arbeidsforholdet?"
+			},
+			"redusertFra": {
+				"description": "Når ble arbeidstiden din redusert?"
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": "Hvis arbeidstiden din er redusert med minst 50 prosent, kan du søke om dagpenger for den reduserte arbeidstiden."
+			},
+			"dokumentasjonskrav": {
+				"arbeidsavtale": "Arbeidsavtale",
+				"redusertArbeidstid": "Dokumentasjon av redusert arbeidstid"
+			},
+			"hvaErArsaken": {
+				"label": "Hva er årsaken til at arbeidstiden din ble redusert?"
+			},
+			"tilbudOmAnnenStilling": {
+				"label": "Har du fått tilbud om å fortsette hos arbeidsgiveren din i en annen stilling eller et annet sted i Norge?"
+			},
+			"hvaHarDuSvart": {
+				"label": "Hva har du svart på tilbudet?"
+			},
+			"tilbudAvslattInformasjonskort": {
+				"label": "Informasjon",
+				"description": {
+					"karantene": "Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.",
+					"sokNa": "Det er viktig at du ikke venter med å søke om dagpenger.",
+					"meldekort": "Du må være registrert som arbeidssøker og sende meldekort i ventetiden."
+				}
+			},
+			"grunnTilIkkeTattImot": {
+				"label": "Hva er årsaken til at du ikke har tatt imot tilbudet?"
+			}
+		}
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	}
+}

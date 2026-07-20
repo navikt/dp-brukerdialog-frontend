@@ -1,0 +1,43 @@
+{
+	"felles": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		},
+		"informasjon": "Informasjon",
+		"avslagTittel": "Du kan få avslag på søknaden"
+	},
+	"side": {
+		"tittel": "Søknad om dagpenger: Utdanning",
+		"overskrift": "Utdanning"
+	},
+	"tarUtdanningEllerOpplaering": {
+		"label": "Tar du utdanning eller opplæring?",
+		"description": "Som hovedregel har du ikke rett til dagpenger når du er under utdanning eller opplæring."
+	},
+	"avsluttetUtdanningSiste6Maneder": {
+		"label": "Avsluttet du utdanning i løpet av de siste seks månedene?",
+		"informasjonskort": {
+			"description": "Du må dokumentere sluttdatoen. Du kan legge ved bekreftelse på når du avla siste avsluttende eksamen eller aktivitet. Hvis du har avbrutt skolegangen, kan du legge ved bekreftelse fra skolen på dette."
+		}
+	},
+	"planleggerStarteEllerFullforeStudier": {
+		"label": "Planlegger du å starte eller fullføre utdanning eller opplæring samtidig som du mottar dagpenger?"
+	},
+	"soknadOmBeholdeDagpenger": {
+		"informasjonskort": {
+			"description": "<p>For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href=\"https://www.nav.no/fyllut/nav040605\" target=\"_blank\" rel=\"noopener noreferrer\">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - Nav 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.</p><p>Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan vi avslå søknaden din om dagpenger.</p>"
+		}
+	},
+	"dokumentasjonskrav": {
+		"utdanning": {
+			"tittel": "Dokumentasjon av sluttdato for utdanning"
+		}
+	},
+	"oppsummering": {
+		"ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	}
+}

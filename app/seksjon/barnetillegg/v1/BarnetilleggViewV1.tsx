@@ -1,7 +1,8 @@
+import { useTranslation } from "react-i18next";
 import { PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
@@ -14,15 +15,15 @@ import {
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
-  barnetilleggForklarendeTekst,
-  barnetilleggKomponenter,
   BarnetilleggSvar,
   BarnFraPdl,
-  barnFraPdlSpørsmål,
   BarnLagtManuelt,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
-  leggTilBarnManueltSpørsmål,
+  lagBarnetilleggForklarendeTekst,
+  lagBarnetilleggKomponenter,
+  lagBarnFraPdlSpørsmål,
+  lagLeggTilBarnManueltSpørsmål,
   seksjonsvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
@@ -37,8 +38,7 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function BarnetilleggViewV1() {
-  const seksjonnavn = "Barnetillegg";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
+  const { t } = useTranslation("barnetillegg");
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -55,6 +55,14 @@ export function BarnetilleggViewV1() {
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useBarnetilleggContext();
+
+  const barnetilleggForklarendeTekst = useMemo(() => lagBarnetilleggForklarendeTekst(t), [t]);
+
+  const barnetilleggKomponenter = useMemo(() => lagBarnetilleggKomponenter(t), [t]);
+
+  const barnFraPdlSpørsmål = useMemo(() => lagBarnFraPdlSpørsmål(t), [t]);
+
+  const leggTilBarnManueltSpørsmål = useMemo(() => lagLeggTilBarnManueltSpørsmål(t), [t]);
 
   const form = useForm({
     method: "PUT",
@@ -132,7 +140,7 @@ export function BarnetilleggViewV1() {
 
   function lagPdfGrunnlag() {
     return {
-      navn: "Barnetillegg",
+      navn: t("side.overskrift"),
       spørsmål: [
         ...barnFraPdl.map((barn) => lagSeksjonPayload(barnFraPdlSpørsmål, barn)),
         ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
@@ -143,9 +151,9 @@ export function BarnetilleggViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{t("side.tittel")}</title>
       <Heading size="medium" level="2">
-        {seksjonnavn}
+        {t("side.overskrift")}
       </Heading>
       <VStack gap="space-24">
         {barnetilleggForklarendeTekst.map((komponent) => {
@@ -198,20 +206,17 @@ export function BarnetilleggViewV1() {
                 setModalData({ operasjon: ModalOperasjon.LeggTil });
               }}
             >
-              Legg til barn du forsørger
+              {t("barnManuelt.leggTilKnapp")}
             </Button>
           </HStack>
         )}
 
         {visLeggTilBarnFeilmelding && (
-          <InlineMessage status="error">Du må legge til barn du forsørger</InlineMessage>
+          <InlineMessage status="error">{t("barnManuelt.manglerFeilmelding")}</InlineMessage>
         )}
 
         {actionData && (
-          <SeksjonTekniskFeil
-            tittel="Det har oppstått en teknisk feil"
-            beskrivelse={actionData.error}
-          />
+          <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
         )}
       </VStack>
 

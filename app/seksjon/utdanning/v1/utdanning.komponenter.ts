@@ -1,4 +1,5 @@
-import { KomponentType } from "~/components/Komponent.types";
+import type { TFunction } from "i18next";
+import type { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const handling = "handling";
@@ -22,64 +23,61 @@ export type UtdanningSvar = {
   [planleggerÅStarteEllerFullføreStudierSamtidig]?: "ja" | "nei";
 };
 
-export const utdanningKomponenter: KomponentType[] = [
+type UtdanningT = TFunction;
+
+const jaNeiOptions = (t: UtdanningT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+export const lagUtdanningKomponenter = (t: UtdanningT): KomponentType[] => [
   {
     id: tarUtdanningEllerOpplæring,
     type: "envalg",
-    label: "Tar du utdanning eller opplæring?",
-    description:
-      "Som hovedregel har du ikke rett til dagpenger når du er under utdanning eller opplæring.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("tarUtdanningEllerOpplaering.label"),
+    description: t("tarUtdanningEllerOpplaering.description"),
+    options: jaNeiOptions(t),
   },
   {
     id: avsluttetUtdanningSiste6Måneder,
     type: "envalg",
-    label: "Avsluttet du utdanning i løpet av de siste seks månedene?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("avsluttetUtdanningSiste6Maneder.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: UtdanningSvar) => svar[tarUtdanningEllerOpplæring] === "nei",
   },
   {
     id: "avsluttetUtdanningSiste6MånederInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "Du må dokumentere sluttdatoen. Du kan legge ved bekreftelse på når du avla siste avsluttende eksamen eller aktivitet. Hvis du har avbrutt skolegangen, kan du legge ved bekreftelse fra skolen på dette.",
+    label: t("felles.informasjon"),
+    description: t("avsluttetUtdanningSiste6Maneder.informasjonskort.description"),
     visHvis: (svar: UtdanningSvar) => svar[avsluttetUtdanningSiste6Måneder] === "ja",
   },
   {
     id: "avsluttetUtdanningSiste6MånederDokumentkravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av sluttdato for utdanning",
+    label: t("dokumentasjonskrav.utdanning.tittel"),
     visHvis: (svar: UtdanningSvar) => svar[avsluttetUtdanningSiste6Måneder] === "ja",
   },
   {
     id: planleggerÅStarteEllerFullføreStudierSamtidig,
     type: "envalg",
-    label:
-      "Planlegger du å starte eller fullføre utdanning eller opplæring samtidig som du mottar dagpenger?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("planleggerStarteEllerFullforeStudier.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: UtdanningSvar) => svar[tarUtdanningEllerOpplæring] === "nei",
   },
   {
     id: "måSendeInnSøknadNav04-06.05Informasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      '<p>For å få innvilget dagpenger mens du tar utdanning eller opplæring, må du sende inn <a href="https://www.nav.no/fyllut/nav040605" target="_blank" rel="noopener noreferrer">Søknad om å beholde dagpengene mens du tar utdanning eller opplæring - Nav 04-06.05</a>, i tillegg til å sende inn denne søknaden om dagpenger.</p>' +
-      "<p>Hvis du ikke sender søknaden om å beholde dagpengene mens du tar utdanning eller opplæring, kan vi avslå søknaden din om dagpenger.</p>",
+    label: t("felles.avslagTittel"),
+    description: t("soknadOmBeholdeDagpenger.informasjonskort.description"),
     visHvis: (svar: UtdanningSvar) =>
       svar[tarUtdanningEllerOpplæring] === "ja" ||
       svar[planleggerÅStarteEllerFullføreStudierSamtidig] === "ja",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as UtdanningT;
+
+export const utdanningKomponenter = lagUtdanningKomponenter(fallbackT);

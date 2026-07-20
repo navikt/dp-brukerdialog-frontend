@@ -1,10 +1,11 @@
+import type { TFunction } from "i18next";
+import { startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import {
-  ArbeidsforholdModalSvar,
   arbeidsgiverenMinHarSagtMegOpp,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
+import type { ArbeidsforholdModalSvar } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const jegErOppsagtVarighetPåArbeidsforholdetFraDato =
   "jegErOppsagtVarighetPåArbeidsforholdetFraDato";
@@ -17,12 +18,27 @@ export const jegErOppsagtHvaHarDuSvartPåTilbudet = "jegErOppsagtHvaHarDuSvartP�
 export const jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
   "jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: KomponentType[] = [
+type ArbeidsforholdT = TFunction;
+
+const jaNeiOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+const jaNeiHarIkkeSvartOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+  { value: "harIkkeSvart", label: t("felles.svar.harIkkeSvart") },
+];
+
+export const lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter = (
+  t: ArbeidsforholdT
+): KomponentType[] => [
   {
     id: jegErOppsagtVarighetPåArbeidsforholdetFraDato,
     type: "periodeFra",
-    periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra dato",
+    periodeLabel: t("modal.jegErOppsagt.varighetPaArbeidsforholdet.label"),
+    label: t("felles.dato.fraDato"),
     referanseId: jegErOppsagtVarighetPåArbeidsforholdetTilDato,
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -31,7 +47,7 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
   {
     id: jegErOppsagtVarighetPåArbeidsforholdetTilDato,
     type: "periodeTil",
-    label: "Til dato",
+    label: t("felles.dato.tilDato"),
     referanseId: jegErOppsagtVarighetPåArbeidsforholdetFraDato,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
@@ -40,33 +56,33 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
     id: "jegEroOppsagtInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("modal.jegErOppsagt.informasjonskort.label"),
     description:
-      "<p>Hvis du har blitt sagt opp av arbeidsgiveren din, må vi vite når og hvorfor.</p>" +
-      "<p>Hvis du selv var skyld i oppsigelsen, vil du ikke få utbetalt dagpenger de 18 første ukene av dagpengeperioden din. Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
-      "<p>Det er Nav som vurderer om grunnen for oppsigelsen får betydning for utbetalingen din.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
+      `<p>${t("modal.jegErOppsagt.informasjonskort.description.narOgHvorfor")}</p>` +
+      `<p>${t("modal.jegErOppsagt.informasjonskort.description.karantene")}</p>` +
+      `<p>${t("modal.jegErOppsagt.informasjonskort.description.navVurderer")}</p>` +
+      `<p>${t("modal.jegErOppsagt.informasjonskort.description.meldekort")}</p>`,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
   {
     id: "jegErOppsagtArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
+    label: t("modal.jegErOppsagt.dokumentasjonskrav.arbeidsavtale"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
   {
     id: "jegErOppsagtOppsigelseDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Oppsigelse",
+    label: t("modal.jegErOppsagt.dokumentasjonskrav.oppsigelse"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
   {
     id: jegErOppsagtHvaVarÅrsaken,
     type: "langTekst",
-    label: "Hva var årsaken til at du ble sagt opp?",
+    label: t("modal.jegErOppsagt.hvaVarArsaken.label"),
     maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
@@ -74,24 +90,16 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
   {
     id: jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
     type: "envalg",
-    label:
-      "Har du fått tilbud om å fortsette hos arbeidsgiveren din i en annen stilling eller et annet sted i Norge?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("modal.jegErOppsagt.tilbudOmAnnenStilling.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
   },
   {
     id: jegErOppsagtHvaHarDuSvartPåTilbudet,
     type: "envalg",
-    label: "Hva har du svart på tilbudet?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-      { value: "harIkkeSvart", label: "Har ikke svart" },
-    ],
+    label: t("modal.jegErOppsagt.hvaHarDuSvart.label"),
+    options: jaNeiHarIkkeSvartOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[
         jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge
@@ -101,18 +109,23 @@ export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter: Kompo
     id: "oppsagtHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorgeInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("modal.jegErOppsagt.tilbudAvslattInformasjonskort.label"),
     description:
-      "<p>Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.</p>" +
-      "<p>Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
+      `<p>${t("modal.jegErOppsagt.tilbudAvslattInformasjonskort.description.karantene")}</p>` +
+      `<p>${t("modal.jegErOppsagt.tilbudAvslattInformasjonskort.description.sokNa")}</p>` +
+      `<p>${t("modal.jegErOppsagt.tilbudAvslattInformasjonskort.description.meldekort")}</p>`,
     visHvis: (svar: ArbeidsforholdModalSvar) => svar[jegErOppsagtHvaHarDuSvartPåTilbudet] === "nei",
   },
   {
     id: jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
     type: "langTekst",
-    label: "Hva er årsaken til at du ikke har tatt imot tilbudet?",
+    label: t("modal.jegErOppsagt.grunnTilIkkeTattImot.label"),
     maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) => svar[jegErOppsagtHvaHarDuSvartPåTilbudet] === "nei",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as ArbeidsforholdT;
+
+export const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter =
+  lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(fallbackT);

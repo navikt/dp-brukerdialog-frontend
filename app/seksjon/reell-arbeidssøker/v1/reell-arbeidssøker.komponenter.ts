@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -15,7 +16,8 @@ export const kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18År
   "kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov";
 export const kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov =
   "kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov";
-export const kanIkkeJobbeHeltidOgDeltidJegErPermittert = "kanIkkeJobbeHeltidOgDeltidJegErPermittert";
+export const kanIkkeJobbeHeltidOgDeltidJegErPermittert =
+  "kanIkkeJobbeHeltidOgDeltidJegErPermittert";
 export const kanIkkeJobbeHeltidOgDeltidHarFylt60 = "kanIkkeJobbeHeltidOgDeltidHarFylt60";
 export const kanIkkeJobbeHeltidOgDeltidAnnenSituasjon = "kanIkkeJobbeHeltidOgDeltidAnnenSituasjon";
 export const kanIkkeJobbeBådeHeltidOgDeltidAntallTimer =
@@ -73,142 +75,140 @@ export type ReellArbeidssøkerSvar = {
     | typeof kanIkkeJobbeIHeleNorgeHarFylt60
     | typeof kanIkkeJobbeIHeleNorgeAnnenSituasjon
   >;
+  [kanIkkeJobbeIHeleNorgeKortOmSituasjonen]?: string;
   [kanDuTaAlleTyperArbeid]?: "ja" | "nei";
   [kanDuTaAlleTyperArbeidHvilkeTyperArbeidKanDuIkkeTa]?: string;
   [erDuVilligTilÅBytteYrkeEllerGåNedILønn]?: "ja" | "nei";
 };
 
-export const reellArbeidssøkerKomponenter: KomponentType[] = [
+type ReellArbeidssøkerT = TFunction;
+
+const jaNeiOptions = (t: ReellArbeidssøkerT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+export const lagReellArbeidssøkerKomponenter = (t: ReellArbeidssøkerT): KomponentType[] => [
   {
     id: "reellArbeidssøkerForklarendeTekst",
     type: "forklarendeTekst",
     description:
-      "<p>For å få dagpenger må du være reell arbeidssøker. Det betyr at du må være" +
+      `<p>${t("forklarendeTekst.intro")}</p>` +
       "<ul>" +
-      "<li>registrert som arbeidssøker</li>" +
-      "<li>frisk nok til å jobbe i minst 50 prosent stilling</li>" +
-      "<li>villig til å delta i arbeidsmarkedstiltak</li>" +
-      "<li>villig til å ta alle typer jobber du har helse til, som er lønnet etter tariff eller sedvane</li>" +
-      "</ul></p>" +
-      "<p>Som hovedregel må du også være villig til å" +
+      `<li>${t("forklarendeTekst.krav.registrert")}</li>` +
+      `<li>${t("forklarendeTekst.krav.friskNok")}</li>` +
+      `<li>${t("forklarendeTekst.krav.tiltak")}</li>` +
+      `<li>${t("forklarendeTekst.krav.alleTyperJobber")}</li>` +
+      "</ul>" +
+      `<p>${t("forklarendeTekst.hovedregel.intro")}</p>` +
       "<ul>" +
-      "<li>ta arbeid hvor som helst i Norge</li>" +
-      "<li>ta arbeid på heltid og deltid</li>" +
-      "</ul></p>" +
-      "<p>I denne delen av søknaden må du svare på spørsmål om hvor og hvor mye du kan jobbe. Det er noen få unntak fra hovedreglene, som du kan lese mer om hvis du svarer «nei» på spørsmålene under.</p>",
+      `<li>${t("forklarendeTekst.hovedregel.heleNorge")}</li>` +
+      `<li>${t("forklarendeTekst.hovedregel.heltidDeltid")}</li>` +
+      "</ul>" +
+      `<p>${t("forklarendeTekst.avslutning")}</p>`,
   },
   {
     id: kanDuTaAlleTyperArbeid,
     type: "envalg",
-    label: "Kan du ta alle typer arbeid?",
-    description:
-      "Hvis du har redusert helse og ikke kan ta alle typer arbeid, kan vi ta hensyn til dette.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("kanTaAlleTyperArbeid.label"),
+    description: t("kanTaAlleTyperArbeid.description"),
+    options: jaNeiOptions(t),
   },
   {
     id: "kanDuTaAlleTyperArbeidLesMer",
     type: "lesMer",
-    label: "Dette regnes som redusert helse",
-    description:
-      "Med redusert helse mener vi for eksempel funksjonshemning, sykdom, allergier eller lignende som gjør at du ikke kan ta alle typer arbeid. Du må dokumentere hvilke typer arbeid du ikke kan ta på grunn av helsen din.",
+    label: t("kanTaAlleTyperArbeid.lesMer.label"),
+    description: t("kanTaAlleTyperArbeid.lesMer.description"),
   },
   {
     id: "kanDuTaAlleTyperArbeidInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
+    label: t("felles.avslagTittel"),
     description:
-      "<p>For å ha rett til dagpenger, må du være villig til å si ja til alle slags jobber som som du er i fysisk og psykisk i stand til å ta. Du må dokumentere at du har redusert helse.</p>" +
-      "<p>Hvis du ikke legger ved dokumentasjon på helsesituasjonen din, vil du mest sannsynlig få avslag på søknaden om dagpenger.</p>",
+      `<p>${t("kanTaAlleTyperArbeid.informasjonskort.rettTilDagpenger")}</p>` +
+      `<p>${t("kanTaAlleTyperArbeid.informasjonskort.manglerDokumentasjon")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuTaAlleTyperArbeid] === "nei",
   },
   {
     id: kanDuTaAlleTyperArbeidHvilkeTyperArbeidKanDuIkkeTa,
     type: "langTekst",
-    label: "Hvilke typer arbeid kan du ikke ta?",
+    label: t("kanTaAlleTyperArbeid.hvilkeTyperArbeid.label"),
     maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuTaAlleTyperArbeid] === "nei",
   },
   {
     id: "kanDuTaAlleTyperArbeidHvilkeTyperArbeidKanDuIkkeTaDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Bekreftelse fra lege eller annen behandler fordi du ikke kan ta alle typer arbeid",
+    label: t("dokumentasjonskrav.kanIkkeTaAlleTyperArbeid.tittel"),
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuTaAlleTyperArbeid] === "nei",
   },
   {
     id: erDuVilligTilÅBytteYrkeEllerGåNedILønn,
     type: "envalg",
-    label: "Er du villig til å bytte yrke eller gå ned i lønn?",
-    description:
-      "For å ha rett til dagpenger må du være villig til å ta alle typer jobber du kan utføre. Dette gjelder også jobber du ikke er utdannet til eller har arbeidserfaring fra. Dette betyr at du må være villig til å gå ned i lønn, hvis jobben er lønnet etter tariff eller sedvane.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("bytteYrkeEllerGaNedILonn.label"),
+    description: t("bytteYrkeEllerGaNedILonn.description"),
+    options: jaNeiOptions(t),
   },
   {
     id: "erDuVilligTilÅBytteYrkeEllerGåNedILønnInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      '<p>For å ha rett til dagpenger må du være villig til å bytte yrke eller gå ned i lønn. Hvis du svarer "Nei" på spørsmålet vil du mest sannsynlig få avslag på søknaden din om dagpenger.</p>',
+    label: t("felles.avslagTittel"),
+    description: `<p>${t("bytteYrkeEllerGaNedILonn.informasjonskort.description")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[erDuVilligTilÅBytteYrkeEllerGåNedILønn] === "nei",
   },
   {
     id: kanDuJobbeBådeHeltidOgDeltid,
     type: "envalg",
-    label: "Kan du jobbe både heltid og deltid?",
-    description:
-      "Som hovedregel må du kunne ta både hel- og deltidsjobb for å ha rett til dagpenger. Det er noen få unntak fra hovedregelen. Svarer du «nei» på dette spørsmålet må du oppgi årsaken og hvor mye du kan jobbe.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("heltidOgDeltid.label"),
+    description: t("heltidOgDeltid.description"),
+    options: jaNeiOptions(t),
   },
   {
     id: kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
     type: "flervalg",
-    label: "Velg årsaken som gjelder deg",
-    description:
-      "Du kan krysse av for flere alternativer. Med mindre Nav har opplysningene allerede, så må du dokumentere årsaken.",
+    label: t("heltidOgDeltid.situasjon.label"),
+    description: t("heltidOgDeltid.situasjon.description"),
     options: [
       {
         value: kanIkkeJobbeHeltidOgDeltidRedusertHelse,
-        label: "Redusert helse, fysisk eller psykisk",
+        label: t("situasjonOptions.redusertHelse"),
       },
       {
         value: kanIkkeJobbeHeltidOgDeltidOmsorgForBarnUnderEttÅr,
-        label: "Omsorg for barn under ett år",
+        label: t("situasjonOptions.omsorgForBarnUnderEttAr"),
       },
       {
         value: kanIkkeJobbeHeltidOgDeltidOmsorgForPleietrengendeINærFamilie,
-        label:
-          "Omsorgsansvar for pleietrengende i nær familie, for eksempel barn, foreldre eller ektefelle",
+        label: t("situasjonOptions.omsorgForPleietrengende"),
       },
       {
         value: kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
-        label:
-          "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn til og med 7. klasse",
+        label: t("situasjonOptions.eneansvarBarnTilOgMed7Klasse"),
       },
       {
         value: kanIkkeJobbeHeltidOgDeltidEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-        label:
-          "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn under 18 år med spesielle behov",
+        label: t("situasjonOptions.eneansvarBarnSpesielleBehov"),
       },
       {
         value:
           kanIkkeJobbeHeltidOgDeltidDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-        label:
-          "Den andre forelderen jobber skift, turnus eller utenfor nærområdet. Og dere har ansvar for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
+        label: t("situasjonOptions.annenForelderSkift"),
       },
-      { value: kanIkkeJobbeHeltidOgDeltidJegErPermittert, label: "Jeg er permittert" },
-      { value: kanIkkeJobbeHeltidOgDeltidHarFylt60, label: "Har fylt 60 år" },
-      { value: kanIkkeJobbeHeltidOgDeltidAnnenSituasjon, label: "Annen situasjon" },
+      {
+        value: kanIkkeJobbeHeltidOgDeltidJegErPermittert,
+        label: t("situasjonOptions.permittert"),
+      },
+      {
+        value: kanIkkeJobbeHeltidOgDeltidHarFylt60,
+        label: t("situasjonOptions.harFylt60"),
+      },
+      {
+        value: kanIkkeJobbeHeltidOgDeltidAnnenSituasjon,
+        label: t("situasjonOptions.annenSituasjon"),
+      },
     ],
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
@@ -216,11 +216,11 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: "kanIkkeJobbeHeltidOgDeltidJegErPermittertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("felles.informasjon"),
     description:
-      "<p>Når du er permittert er du kanskje mindre tilgjengelig for å ta annet deltids- eller fulltidsarbeid. Permitteringsgraden og hvor lenge du er permittert, kan begrense hvor mye du kan jobbe.</p>" +
-      "<p>Skriv kort om situasjonen din og forklar hvorfor du ikke kan ta annet deltids- eller fulltidsarbeid. Du må si ja til jobb som kan kombineres med permitteringen din.</p>" +
-      "<p>Hvis det skjer endringer i situasjonen din, må du gi beskjed til oss, slik at vi kan gjøre en ny vurdering.</p>",
+      `<p>${t("heltidOgDeltid.permittertInformasjonskort.permitteringsgrad")}</p>` +
+      `<p>${t("heltidOgDeltid.permittertInformasjonskort.forklarSituasjon")}</p>` +
+      `<p>${t("heltidOgDeltid.permittertInformasjonskort.giBeskjed")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeHeltidOgDeltidJegErPermittert
@@ -230,9 +230,8 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: "kanIkkeJobbeHeltidOgDeltidHarFylt60Informasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "<p>Siden du er over 60 år, kan du søke om dagpenger selv om du bare ønsker å jobbe deltid. Du trenger ikke begrunne valget ditt, men du må føre opp hvor mange timer du vil arbeide per uke. Dette antallet vil anses som full arbeidstid for deg, og vil bli lagt til grunn ved beregning av dagpengene.</p>",
+    label: t("felles.informasjon"),
+    description: `<p>${t("heltidOgDeltid.harFylt60Informasjonskort.description")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeHeltidOgDeltidHarFylt60
@@ -242,9 +241,8 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: "kanIkkeJobbeHeltidOgDeltidAnnenSituasjonInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      '<p>Hvis du svarer "Annen situasjon" og du ikke kan dokumentere svært gode grunner til at du ikke kan jobbe heltid, vil du sannsynligvis få avslag på søknaden din om dagpenger.</p>',
+    label: t("felles.avslagTittel"),
+    description: `<p>${t("heltidOgDeltid.annenSituasjonInformasjonskort.description")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeHeltidOgDeltidAnnenSituasjon
@@ -253,7 +251,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
   {
     id: "kanIkkeJobbeHeltidOgDeltidDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Bekreftelse fra relevant fagpersonell fordi du bare kan jobbe deltid",
+    label: t("dokumentasjonskrav.kanIkkeJobbeHeltidOgDeltid.tittel"),
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeHeltidOgDeltidRedusertHelse
@@ -275,7 +273,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
   {
     id: kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen,
     type: "langTekst",
-    label: "Skriv kort om situasjonen din",
+    label: t("heltidOgDeltid.kortOmSituasjonen.label"),
     maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg]?.includes(
@@ -289,87 +287,86 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
   {
     id: kanIkkeJobbeBådeHeltidOgDeltidAntallTimer,
     type: "tall",
-    label: "Skriv inn antall timer du kan jobbe per uke",
-    description: "For å få rett til dagpenger må du normalt kunne jobbe minst 18,75 timer per uke.",
+    label: t("heltidOgDeltid.antallTimer.label"),
+    description: t("heltidOgDeltid.antallTimer.description"),
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
   {
     id: "kanIkkeJobbeBådeHeltidOgDeltidAntallTimerLesMer",
     type: "lesMer",
-    label: "Hvis du har uføretrygd",
-    description: "Hvis du har uføretrygd må du kunne jobbe minst 11,25 timer per uke.",
+    label: t("heltidOgDeltid.antallTimer.lesMer.label"),
+    description: t("heltidOgDeltid.antallTimer.lesMer.description"),
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeBådeHeltidOgDeltid] === "nei",
   },
   {
     id: kanDuJobbeIHeleNorge,
     type: "envalg",
-    label: "Kan du jobbe i hele Norge?",
-    description:
-      "Som hovedregel må du være villig til å ta arbeid i hele Norge for å ha rett til dagpenger. Det er noen få unntak fra hovedregelen. Svarer du «nei» på dette spørsmålet må du oppgi årsaken.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("heleNorge.label"),
+    description: t("heleNorge.description"),
+    options: jaNeiOptions(t),
   },
   {
     id: kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
     type: "flervalg",
-    label: "Velg årsaken som gjelder deg",
-    description:
-      "Du kan krysse av for flere alternativer. Med mindre Nav har opplysningene allerede, så må du dokumentere årsaken.",
+    label: t("heleNorge.situasjon.label"),
+    description: t("heleNorge.situasjon.description"),
     options: [
       {
         value: kanIkkeJobbeIHeleNorgeRedusertHelse,
-        label: "Redusert helse, fysisk eller psykisk",
+        label: t("situasjonOptions.redusertHelse"),
       },
       {
         value: kanIkkeJobbeIHeleNorgeOmsorgForBarnUnderEttÅr,
-        label: "Omsorg for barn under ett år",
+        label: t("situasjonOptions.omsorgForBarnUnderEttAr"),
       },
       {
         value: kanIkkeJobbeIHeleNorgeOmsorgForPleietrengendeINærFamilie,
-        label:
-          "Omsorgsansvar for pleietrengende i nær familie, for eksempel barn, foreldre eller ektefelle",
+        label: t("situasjonOptions.omsorgForPleietrengende"),
       },
       {
         value: kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse,
-        label:
-          "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn til og med 7. klasse",
+        label: t("situasjonOptions.eneansvarBarnTilOgMed7Klasse"),
       },
       {
         value: kanIkkeJobbeIHeleNorgeEneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov,
-        label:
-          "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn under 18 år med spesielle behov",
+        label: t("situasjonOptions.eneansvarBarnSpesielleBehov"),
       },
       {
         value:
           kanIkkeJobbeIHeleNorgeDenAndreForeldrenJobberSkiftEllerLignendeOgAnsvarForBarnTilOgMed7KlasseEllerMedSpesielleBehov,
-        label:
-          "Den andre forelderen jobber skift, turnus eller utenfor nærområdet, og dere har ansvar for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
+        label: t("situasjonOptions.annenForelderSkiftHeleNorge"),
       },
-      { value: kanIkkeJobbeIHeleNorgeJegErPermittert, label: "Jeg er permittert" },
-      { value: kanIkkeJobbeIHeleNorgeHarFylt60, label: "Har fylt 60 år" },
-      { value: kanIkkeJobbeIHeleNorgeAnnenSituasjon, label: "Annen situasjon" },
+      {
+        value: kanIkkeJobbeIHeleNorgeJegErPermittert,
+        label: t("situasjonOptions.permittert"),
+      },
+      {
+        value: kanIkkeJobbeIHeleNorgeHarFylt60,
+        label: t("situasjonOptions.harFylt60"),
+      },
+      {
+        value: kanIkkeJobbeIHeleNorgeAnnenSituasjon,
+        label: t("situasjonOptions.annenSituasjon"),
+      },
     ],
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeIHeleNorge] === "nei",
   },
   {
     id: "kanIkkeJobbeIHeleNorgeSitasjonenSomGjelderDegLesMer",
     type: "lesMer",
-    label: "Hvis ingen av disse situasjonene passer deg",
-    description:
-      "Hvis du har svart nei og ingen av disse situasjonene gjelder for deg, kan du få avslag på søknaden din om dagpenger. Du kan allikevel velge annen situasjon og få dagpengesøknaden din behandlet.",
+    label: t("heleNorge.ingenPasserLesMer.label"),
+    description: t("heleNorge.ingenPasserLesMer.description"),
     visHvis: (svar: ReellArbeidssøkerSvar) => svar[kanDuJobbeIHeleNorge] === "nei",
   },
   {
     id: "kanIkkeJobbeIHeleNorgeJegErPermittertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("felles.informasjon"),
     description:
-      "<p>Når du er permittert er du som regel ikke like tilgjengelig for å jobbe i hele Norge. Permitteringsgraden og hvor lenge du er permittert, kan sette noen begrensinger for hvor i landet du kan jobbe.</p>" +
-      "<p>Skriv kort om situasjonen din og forklar hvorfor du ikke kan jobbe i hele Norge. Du kan ikke begrense jobbsøkingen mer enn det som er nødvendig på bakgrunn av permitteringen din.</p>" +
-      "<p>Hvis det skjer endringer i situasjonen din, må du gi beskjed til oss, slik at vi kan gjøre en ny vurdering.</p>",
+      `<p>${t("heleNorge.permittertInformasjonskort.tilgjengelighet")}</p>` +
+      `<p>${t("heleNorge.permittertInformasjonskort.forklarSituasjon")}</p>` +
+      `<p>${t("heleNorge.permittertInformasjonskort.giBeskjed")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeIHeleNorgeJegErPermittert
@@ -379,9 +376,8 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: "kanIkkeJobbeIHeleNorgeHarFylt60Informasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "<p>Siden du er over 60 år, kan du ha rett til dagpenger selv om du ikke ønsker å ta jobb i hele landet. Du trenger heller ikke være villig til å ta arbeid på heltid. Du trenger ikke begrunne valget ditt.</p>",
+    label: t("felles.informasjon"),
+    description: `<p>${t("heleNorge.harFylt60Informasjonskort.description")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeIHeleNorgeHarFylt60
@@ -391,9 +387,8 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
     id: "kanIkkeJobbeIHeleNorgeAnnenSituasjonInformasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      '<p>Hvis du svarer "Annen situasjon" og du ikke kan dokumentere svært gode grunner til at du ikke kan jobbe i hele Norge, vil du sannsynligvis få avslag på søknaden din om dagpenger.</p>',
+    label: t("felles.avslagTittel"),
+    description: `<p>${t("heleNorge.annenSituasjonInformasjonskort.description")}</p>`,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeIHeleNorgeAnnenSituasjon
@@ -402,7 +397,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
   {
     id: "kanIkkeJobbeIHeleNorgeDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Bekreftelse fra relevant fagpersonell fordi du ikke kan jobbe i hele Norge",
+    label: t("dokumentasjonskrav.kanIkkeJobbeIHeleNorge.tittel"),
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
         kanIkkeJobbeIHeleNorgeRedusertHelse
@@ -424,7 +419,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
   {
     id: kanIkkeJobbeIHeleNorgeKortOmSituasjonen,
     type: "langTekst",
-    label: "Skriv kort om situasjonen din",
+    label: t("heleNorge.kortOmSituasjonen.label"),
     maksLengde: 500,
     visHvis: (svar: ReellArbeidssøkerSvar) =>
       svar[kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg]?.includes(
@@ -436,3 +431,7 @@ export const reellArbeidssøkerKomponenter: KomponentType[] = [
       false,
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as ReellArbeidssøkerT;
+
+export const reellArbeidssøkerKomponenter = lagReellArbeidssøkerKomponenter(fallbackT);

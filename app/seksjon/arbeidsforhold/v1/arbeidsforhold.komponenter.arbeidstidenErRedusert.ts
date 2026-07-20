@@ -1,10 +1,11 @@
+import type { TFunction } from "i18next";
+import { startOfDay, subYears } from "date-fns";
 import { KomponentType } from "~/components/Komponent.types";
 import {
-  ArbeidsforholdModalSvar,
   arbeidstidenErRedusert,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
+import type { ArbeidsforholdModalSvar } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 
 export const arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet =
   "arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet";
@@ -18,13 +19,28 @@ export const arbeidstidenErRedusertHvaHarDuSvartPåTilbudet =
 export const arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
   "arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType[] = [
+type ArbeidsforholdT = TFunction;
+
+const jaNeiOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+const jaNeiHarIkkeSvartOptions = (t: ArbeidsforholdT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+  { value: "harIkkeSvart", label: t("felles.svar.harIkkeSvart") },
+];
+
+export const lagArbeidsforholdModalArbeidstidenErRedusertKomponenter = (
+  t: ArbeidsforholdT
+): KomponentType[] => [
   {
     id: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
     type: "periodeFra",
-    periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra dato",
-    description: "Når startet du i dette arbeidsforholdet?",
+    periodeLabel: t("modal.arbeidstidenErRedusert.varighetPaArbeidsforholdet.label"),
+    label: t("felles.dato.fraDato"),
+    description: t("modal.arbeidstidenErRedusert.startetArbeidsforholdet.description"),
     referanseId: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
     fraOgMed: startOfDay(subYears(new Date(), 100)),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
@@ -33,8 +49,8 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
   {
     id: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
     type: "periodeTil",
-    label: "Til dato",
-    description: "Når ble arbeidstiden din redusert?",
+    label: t("felles.dato.tilDato"),
+    description: t("modal.arbeidstidenErRedusert.redusertFra.description"),
     referanseId: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
@@ -43,30 +59,29 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     id: "arbeidstidenErRedusertInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "Hvis arbeidstiden din er redusert med minst 50 prosent, kan du søke om dagpenger for den reduserte arbeidstiden.",
+    label: t("modal.arbeidstidenErRedusert.informasjonskort.label"),
+    description: t("modal.arbeidstidenErRedusert.informasjonskort.description"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
   },
   {
     id: "arbeidstidenErRedusertArbeidsavtaleDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
+    label: t("modal.arbeidstidenErRedusert.dokumentasjonskrav.arbeidsavtale"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
   },
   {
     id: "arbeidstidenErRedusertDokumentasjonskravindikator",
     type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av redusert arbeidstid",
+    label: t("modal.arbeidstidenErRedusert.dokumentasjonskrav.redusertArbeidstid"),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
   },
   {
     id: arbeidstidenErRedusertHvaErÅrsaken,
     type: "langTekst",
-    label: "Hva er årsaken til at arbeidstiden din ble redusert?",
+    label: t("modal.arbeidstidenErRedusert.hvaErArsaken.label"),
     maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
@@ -74,24 +89,16 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
   {
     id: arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
     type: "envalg",
-    label:
-      "Har du fått tilbud om å fortsette hos arbeidsgiveren din i en annen stilling eller et annet sted i Norge?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("modal.arbeidstidenErRedusert.tilbudOmAnnenStilling.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
   },
   {
     id: arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
     type: "envalg",
-    label: "Hva har du svart på tilbudet?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-      { value: "harIkkeSvart", label: "Har ikke svart" },
-    ],
+    label: t("modal.arbeidstidenErRedusert.hvaHarDuSvart.label"),
+    options: jaNeiHarIkkeSvartOptions(t),
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[
         arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge
@@ -101,20 +108,25 @@ export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType
     id: "arbeidstidenErRedusertHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverInformasjonskort",
     type: "informasjonskort",
     variant: "informasjon",
-    label: "Informasjon",
+    label: t("modal.arbeidstidenErRedusert.tilbudAvslattInformasjonskort.label"),
     description:
-      "<p>Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.</p>" +
-      "<p>Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
+      `<p>${t("modal.arbeidstidenErRedusert.tilbudAvslattInformasjonskort.description.karantene")}</p>` +
+      `<p>${t("modal.arbeidstidenErRedusert.tilbudAvslattInformasjonskort.description.sokNa")}</p>` +
+      `<p>${t("modal.arbeidstidenErRedusert.tilbudAvslattInformasjonskort.description.meldekort")}</p>`,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
   },
   {
     id: arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
     type: "langTekst",
-    label: "Hva er årsaken til at du ikke har tatt imot tilbudet?",
+    label: t("modal.arbeidstidenErRedusert.grunnTilIkkeTattImot.label"),
     maksLengde: 500,
     visHvis: (svar: ArbeidsforholdModalSvar) =>
       svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as ArbeidsforholdT;
+
+export const arbeidsforholdModalArbeidstidenErRedusertKomponenter =
+  lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(fallbackT);

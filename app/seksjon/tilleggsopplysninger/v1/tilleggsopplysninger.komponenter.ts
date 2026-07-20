@@ -1,4 +1,6 @@
-import { KomponentType } from "~/components/Komponent.types";
+import type { TFunction } from "i18next";
+import type { KomponentType } from "~/components/Komponent.types";
+import { fallbackT } from "~/utils/i18n.utils";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const harTilleggsopplysninger = "harTilleggsopplysninger";
@@ -10,21 +12,27 @@ export type TilleggsopplysningerSvar = {
   [tilleggsopplysninger]?: string;
 };
 
-export const tilleggsopplysningerKomponenter: KomponentType[] = [
-  {
-    id: harTilleggsopplysninger,
-    type: "envalg",
-    label: "Har du noen flere opplysninger du mener er viktige for søknaden din?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: tilleggsopplysninger,
-    type: "langTekst",
-    label: "Skriv inn tilleggsopplysningene her",
-    maksLengde: 500,
-    visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
-  },
-];
+export function lagTilleggsopplysningerKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: harTilleggsopplysninger,
+      type: "envalg",
+      label: t("harTilleggsopplysninger.label"),
+      options: [
+        { value: "ja", label: t("felles.svar.ja") },
+        { value: "nei", label: t("felles.svar.nei") },
+      ],
+    },
+    {
+      id: tilleggsopplysninger,
+      type: "langTekst",
+      label: t("tilleggsopplysninger.label"),
+      maksLengde: 500,
+      visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
+    },
+  ];
+}
+
+export const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(
+  fallbackT as TFunction
+);

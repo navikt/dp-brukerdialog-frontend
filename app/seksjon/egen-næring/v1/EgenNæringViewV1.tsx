@@ -1,34 +1,31 @@
+import { useTranslation } from "react-i18next";
 import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import {
-  action,
-  loader,
-  SEKSJON_NAVN,
-  SEKSJON_TITTEL,
-  SeksjonSvar
-} from "~/routes/$soknadId.egen-naring";
+import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukKomponenter,
+  handling,
+  lagEgenNæringEgenNæringsvirksomhetKomponenter,
+  lagEgenNæringEgetGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
+  pdfGrunnlag,
+  seksjonsvar,
+} from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import type {
   EgenNæringSvar,
   Gårdsbruk,
-  handling,
-  leggTilGårdsbrukKomponenter,
-  leggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
-  pdfGrunnlag,
-  seksjonsvar
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukDetaljer";
@@ -41,12 +38,30 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function EgenNæringViewV1() {
+  const { t } = useTranslation("egen-naering");
   const næringsvirksomhetModalRef = useRef<HTMLDialogElement>(null);
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const egenNæringEgenNæringsvirksomhetKomponenter = useMemo(
+    () => lagEgenNæringEgenNæringsvirksomhetKomponenter(t),
+    [t]
+  );
+
+  const egenNæringEgetGårdsbrukKomponenter = useMemo(
+    () => lagEgenNæringEgetGårdsbrukKomponenter(t),
+    [t]
+  );
+
+  const leggTilNæringsvirksomhetKomponenter = useMemo(
+    () => lagLeggTilNæringsvirksomhetKomponenter(t),
+    [t]
+  );
+
+  const leggTilGårdsbrukKomponenter = useMemo(() => lagLeggTilGårdsbrukKomponenter(t), [t]);
 
   const {
     næringsvirksomheter,
@@ -56,7 +71,7 @@ export function EgenNæringViewV1() {
     næringsvirksomhetModalData,
     setNæringsvirksomhetModalData,
     gårdsbrukModalData,
-    setGårdsbrukModalData
+    setGårdsbrukModalData,
   } = useEgenNæringContext();
 
   const [visNæringsvirksomhetFeilmelding, setVisNæringsvirksomhetFeilmelding] = useState(false);
@@ -66,7 +81,7 @@ export function EgenNæringViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: egenNæringSchema,
-    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon }
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetKomponenter);
@@ -101,7 +116,7 @@ export function EgenNæringViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [
         ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetKomponenter, form.transient.value()),
         ...næringsvirksomheter.map((enVirksomhet) =>
@@ -110,8 +125,8 @@ export function EgenNæringViewV1() {
         ...lagSeksjonPayload(egenNæringEgetGårdsbrukKomponenter, form.transient.value()),
         ...gårdsbruk.map((etGårdsbruk) =>
           lagSeksjonPayload(leggTilGårdsbrukKomponenter, etGårdsbruk)
-        )
-      ]
+        ),
+      ],
     };
 
     return JSON.stringify(pdfPayload);
@@ -124,7 +139,7 @@ export function EgenNæringViewV1() {
       [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
       næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
       [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null
+      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
     };
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -163,7 +178,7 @@ export function EgenNæringViewV1() {
         [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
         næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
         [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null
+        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
       };
 
       form.setValue(handling, Seksjonshandling.neste);
@@ -175,10 +190,10 @@ export function EgenNæringViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form {...form.getFormProps()}>
           <VStack gap="space-24">
@@ -215,11 +230,13 @@ export function EgenNæringViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til næringsvirksomhet
+                    {t("næringsvirksomhet.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visNæringsvirksomhetFeilmelding && (
-                  <InlineMessage status="error">Du må legge til en næringsvirksomhet</InlineMessage>
+                  <InlineMessage status="error">
+                    {t("næringsvirksomhet.manglerFeilmelding")}
+                  </InlineMessage>
                 )}
               </VStack>
             )}
@@ -252,22 +269,19 @@ export function EgenNæringViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til gårdsbruk
+                    {t("gårdsbruk.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visGårdsbrukFeilmelding && (
                   <InlineMessage status="error" aria-live="polite">
-                    Du må legge til et gårdsbruk
+                    {t("gårdsbruk.manglerFeilmelding")}
                   </InlineMessage>
                 )}
               </VStack>
             )}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

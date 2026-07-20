@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
@@ -6,29 +8,32 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.verneplikt";
+import { action, loader } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { handling } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { useSoknad } from "~/seksjon/soknad.context";
 import {
   avtjentVerneplikt,
+  handling,
+  lagVernepliktKomponenter,
   pdfGrunnlag,
-  vernepliktKomponenter,
-  VernepliktSvar,
 } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
+import type { VernepliktSvar } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { vernepliktSchema } from "~/seksjon/verneplikt/v1/verneplikt.schema";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
+  const { t } = useTranslation("verneplikt");
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const vernepliktKomponenter = useMemo(() => lagVernepliktKomponenter(t), [t]);
 
   const form = useForm({
     method: "PUT",
@@ -41,7 +46,7 @@ export default function VernepliktViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [...lagSeksjonPayload(vernepliktKomponenter, form.transient.value())],
     };
 
@@ -53,12 +58,12 @@ export default function VernepliktViewV1() {
       id: crypto.randomUUID(),
       seksjonId: "verneplikt",
       spørsmålId: avtjentVerneplikt,
-      tittel: "Tjenestebevis",
+      tittel: t("dokumentasjonskrav.tjenestebevis.tittel"),
       skjemakode: "T3",
       type: DokumentasjonskravType.Tjenestebevis,
     };
 
-    return form.transient.value("avtjentVerneplikt") === "ja"
+    return form.transient.value(avtjentVerneplikt) === "ja"
       ? JSON.stringify([dokumentasjonskrav])
       : "null";
   }
@@ -83,10 +88,10 @@ export default function VernepliktViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form {...form.getFormProps()}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
@@ -109,10 +114,7 @@ export default function VernepliktViewV1() {
         </Form>
 
         {actionData && (
-          <SeksjonTekniskFeil
-            tittel="Det har oppstått en teknisk feil"
-            beskrivelse={actionData.error}
-          />
+          <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
         )}
       </VStack>
 

@@ -1,5 +1,6 @@
-import { KomponentType } from "~/components/Komponent.types";
+import type { TFunction } from "i18next";
 import { endOfDay } from "date-fns";
+import { KomponentType } from "~/components/Komponent.types";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -50,145 +51,143 @@ export type PersonaliaSvar = {
   [hvorforReistDuFraNorge]?: string;
 };
 
-export const personaliaSpørsmål: KomponentType[] = [
+type PersonaliaT = TFunction;
+
+const jaNeiOptions = (t: PersonaliaT) => [
+  { value: "ja", label: t("felles.svar.ja") },
+  { value: "nei", label: t("felles.svar.nei") },
+];
+
+export const lagPersonaliaSpørsmål = (t: PersonaliaT): KomponentType[] => [
   {
     id: fornavnFraPdl,
     type: "registeropplysning",
-    label: "Fornavn",
+    label: t("registeropplysninger.fornavn"),
   },
   {
     id: mellomnavnFraPdl,
     type: "registeropplysning",
-    label: "Mellomnavn",
+    label: t("registeropplysninger.mellomnavn"),
   },
   {
     id: etternavnFraPdl,
     type: "registeropplysning",
-    label: "Etternavn",
+    label: t("registeropplysninger.etternavn"),
   },
   {
     id: fødselsnummerFraPdl,
     type: "registeropplysning",
-    label: "Fødselsnummer",
+    label: t("registeropplysninger.fodselsnummer"),
   },
   {
     id: adresselinje1FraPdl,
     type: "registeropplysning",
-    label: "Adresselinje 1",
+    label: t("registeropplysninger.adresselinje1"),
   },
   {
     id: adresselinje2FraPdl,
     type: "registeropplysning",
-    label: "Adresselinje 2",
+    label: t("registeropplysninger.adresselinje2"),
   },
   {
     id: adresselinje3FraPdl,
     type: "registeropplysning",
-    label: "Adresselinje 3",
+    label: t("registeropplysninger.adresselinje3"),
   },
   {
     id: postnummerFraPdl,
     type: "registeropplysning",
-    label: "Postnummer",
+    label: t("registeropplysninger.postnummer"),
   },
   {
     id: poststedFraPdl,
     type: "registeropplysning",
-    label: "Poststed",
+    label: t("registeropplysninger.poststed"),
   },
   {
     id: landkodeFraPdl,
     type: "registeropplysning",
-    label: "Landkode",
+    label: t("registeropplysninger.landkode"),
   },
   {
     id: landFraPdl,
     type: "registeropplysning",
-    label: "Land",
+    label: t("registeropplysninger.land"),
   },
   {
     id: kontonummerFraKontoregister,
     type: "registeropplysning",
-    label: "Kontonummer",
+    label: t("registeropplysninger.kontonummer"),
   },
   {
     id: "viHarRegistretAtDuErOver67Informasjonskort",
     type: "informasjonskort",
     variant: "advarsel",
-    label: "Vi har registrert at du er over 67 år",
-    description:
-      '<p>Du har ikke rett til dagpenger lenger enn ut måneden du fyller 67 år. Hvis du ikke har søkt om alderspensjon, kan du <a href="https://www.nav.no/soknader#alderspensjon" target="_blank" rel="noopener noreferrer">søke om alderspensjon her</a>.</p>',
+    label: t("over67.label"),
+    description: t("over67.description"),
     visHvis: (svar: PersonaliaSvar) => Number(svar[alderFraPdl]) >= 67,
   },
   {
     id: "personaliaBostedslandForklarendeTekst",
     type: "forklarendeTekst",
-    description: "<h3>Bostedsland</h3>",
+    description: `<h3>${t("bostedsland.heading")}</h3>`,
   },
   {
     id: folkeregistrertAdresseErNorgeStemmerDet,
     type: "envalg",
-    label: "Du er folkeregistrert i Norge. Er Norge bostedslandet ditt?",
-    description:
-      "Bostedslandet ditt er det landet du eier eller leier bolig i og tilbringer mesteparten av tiden din, også når du ikke jobber.",
+    label: t("folkeregistrertAdresseErNorgeStemmerDet.label"),
+    description: t("folkeregistrertAdresseErNorgeStemmerDet.description"),
     options: [
-      { value: "ja", label: "Ja, Norge er bostedslandet mitt" },
-      { value: "nei", label: "Nei, Norge er ikke bostedslandet mitt" },
+      {
+        value: "ja",
+        label: t("folkeregistrertAdresseErNorgeStemmerDet.options.ja"),
+      },
+      {
+        value: "nei",
+        label: t("folkeregistrertAdresseErNorgeStemmerDet.options.nei"),
+      },
     ],
     visHvis: (svar: PersonaliaSvar) => svar[landFraPdl] === "NORGE",
   },
 ];
 
-export const personaliaBostedslandSpørsmål: KomponentType[] = [
+export const lagPersonaliaBostedslandSpørsmål = (t: PersonaliaT): KomponentType[] => [
   {
     id: bostedsland,
     type: "land",
-    label: "Hvilket land bor du i?",
-    description:
-      "Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge.",
+    label: t("bostedsland.sporsmal.label"),
+    description: t("bostedsland.sporsmal.description"),
     visHvis: (svar: PersonaliaSvar) =>
       svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
   {
     id: "bostedslandLesMer",
     type: "lesMer",
-    label: "For deg som har pendlet mellom EØS-Land og Sveits",
-    description:
-      "Hvis du bor i et EØS-land og jobber i et annet, er du en EØS-pendler. Det er egne regler for hvor du skal søke om penger hvis du blir arbeidsledig eller permittert og du har tilknytning til flere EØS-land.<br/><br/>" +
-      "Hvilket land du skal søke om penger fra avhenger av" +
-      "<ul>" +
-      "<li>hvilket land du sist jobbet i</li>" +
-      "<li>hvilket land du bor i</li>" +
-      "<li>om du er permittert eller delvis arbeidsledig, eller om du er helt arbeidsledig</li>" +
-      "</ul>" +
-      'Er du usikker på hva du skal svare, kan du lese <a href="https://nav.no/dagpenger#eos" target="_blank" rel="noopener noreferrer">mer om hvor du skal søke penger fra</a>.',
+    label: t("bostedsland.lesMer.label"),
+    description: t("bostedsland.lesMer.description"),
     visHvis: (svar: PersonaliaSvar) =>
       svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
   },
   {
     id: reistTilbakeTilBostedslandet,
     type: "envalg",
-    label:
-      "Har du reist tilbake til bostedslandet ditt etter at du ble arbeidsledig eller permittert?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("reistTilbakeTilBostedslandet.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: PersonaliaSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NOR",
   },
   {
     id: avreiseDatoFra,
     type: "periodeFra",
-    label: "Fra dato",
+    label: t("felles.dato.fraDato"),
     tilOgMed: endOfDay(new Date()),
-    periodeLabel: "Avreise dato",
+    periodeLabel: t("avreiseDato.periodeLabel"),
     referanseId: avreiseDatoTil,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
     id: avreiseDatoTil,
     type: "periodeTil",
-    label: "Til dato",
+    label: t("felles.dato.tilDato"),
     optional: true,
     referanseId: avreiseDatoFra,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
@@ -196,28 +195,28 @@ export const personaliaBostedslandSpørsmål: KomponentType[] = [
   {
     id: hvorforReistDuFraNorge,
     type: "langTekst",
-    label: "Hvorfor reiste du fra Norge?",
+    label: t("hvorforReistDuFraNorge.label"),
     maksLengde: 500,
     visHvis: (svar: PersonaliaSvar) => svar[reistTilbakeTilBostedslandet] === "ja",
   },
   {
     id: reisteDuHjemTilLandetDuBorI,
     type: "envalg",
-    label: "Reiste du hjem til landet du bor i en gang i uken eller mer, mens du jobbet i Norge?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("reisteDuHjemTilLandetDuBorI.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: PersonaliaSvar) => !!svar[bostedsland] && svar[bostedsland] !== "NOR",
   },
   {
     id: reisteDuITaktMedRotasjon,
     type: "envalg",
-    label: "Reiste du i takt med rotasjon?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
+    label: t("reisteDuITaktMedRotasjon.label"),
+    options: jaNeiOptions(t),
     visHvis: (svar: PersonaliaSvar) => svar[reisteDuHjemTilLandetDuBorI] === "nei",
   },
 ];
+
+const fallbackT = ((key: string) => key) as unknown as PersonaliaT;
+
+export const personaliaSpørsmål = lagPersonaliaSpørsmål(fallbackT);
+
+export const personaliaBostedslandSpørsmål = lagPersonaliaBostedslandSpørsmål(fallbackT);

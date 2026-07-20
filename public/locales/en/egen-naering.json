@@ -1,0 +1,123 @@
+{
+	"felles": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		},
+		"informasjon": "Informasjon",
+		"flervalgDescription": "Du kan krysse av for flere",
+		"knapper": {
+			"endreSvar": "Endre svar",
+			"fjern": "Fjern"
+		}
+	},
+	"side": {
+		"tittel": "Søknad om dagpenger: Egen næring",
+		"overskrift": "Egen næring"
+	},
+	"egenNaeringsvirksomhet": {
+		"driverDuEgenNaeringsvirksomhet": {
+			"label": "Driver du egen næringsvirksomhet?"
+		},
+		"lesMer": {
+			"label": "For deg som driver eget aksjeselskap",
+			"description": "Hvis du er ansatt i ditt eget aksjeselskap, må du legge til arbeidsforholdet i forrige steg. På dette spørsmålet skal du kun legge til egen næring, som enkeltpersonsforetak."
+		},
+		"informasjonskort": {
+			"description": "Selv om du driver egen næring må du være villig til å ta annet arbeid."
+		}
+	},
+	"egetGardsbruk": {
+		"driverDuEgetGardsbruk": {
+			"label": "Driver du eget gårdsbruk?"
+		},
+		"informasjonskort": {
+			"annetArbeid": "Selv om du driver et eget gårdsbruk må du være villig til å ta annet arbeid.",
+			"merEnn50Prosent": "Hvis du jobber mer enn 50 prosent av tidligere arbeidstid har du ikke rett til dagpenger.",
+			"vurdering": "Når du driver gårdsbruk tar Nav utgangspunkt i størrelsen på bruket, arbeidsomfang, mekaniseringsgrad og beliggenhet."
+		}
+	},
+	"leggTilNaeringsvirksomhet": {
+		"virksomhetensNavn": {
+			"label": "Virksomhetens navn"
+		},
+		"organisasjonsnummer": {
+			"label": "Virksomhetens organisasjonsnummer"
+		},
+		"narBleArbeidstidenRedusert": {
+			"label": "Når ble arbeidstiden redusert"
+		},
+		"timerPerUkeFor": {
+			"label": "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert"
+		},
+		"timerPerUkeNa": {
+			"label": "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
+			"description": {
+				"rettTilDagpenger": "For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger.",
+				"ikkeRedusert": "Hvis arbeidstiden din i egen næring ikke er redusert, kan du skrive inn samme antall timer som i spørsmålet over."
+			}
+		}
+	},
+	"leggTilGardsbruk": {
+		"gardsbruketsNavn": {
+			"label": "Gårdsbrukets navn"
+		},
+		"organisasjonsnummer": {
+			"label": "Gårdsbrukets organisasjonsnummer"
+		},
+		"typeGardsbruk": {
+			"label": "Hvilken type gårdsbruk driver du?",
+			"options": {
+				"dyr": "Dyr",
+				"jord": "Jord",
+				"skog": "Skog",
+				"annet": "Annet"
+			}
+		},
+		"hvemEierGardsbruket": {
+			"label": "Hvem eier gårdsbruket?",
+			"options": {
+				"jeg": "Jeg",
+				"samboerEktefelle": "Samboer/ektefelle",
+				"andre": "Andre"
+			}
+		},
+		"prosentInntektDeg": {
+			"label": "Hvor mange prosent av inntekten går til deg?"
+		},
+		"prosentInntektSamboerEktefelle": {
+			"label": "Hvor mange prosent av inntekten går til samboer/ektefelle?"
+		},
+		"prosentInntektAndre": {
+			"label": "Hvor mange prosent av inntekten går til andre?"
+		},
+		"arbeidstimerTotaltValgtAr": {
+			"label": "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år? Velg hvilket år du oppgir timer for først"
+		},
+		"arbeidstimerTotaltAntallTimer": {
+			"label": "Skriv hvor mange arbeidstimer som ble brukt"
+		},
+		"beregningArbeidstimer": {
+			"label": "Forklar kort hvordan du har beregnet antall arbeidstimer totalt"
+		}
+	},
+	"næringsvirksomhet": {
+		"leggTilKnapp": "Legg til næringsvirksomhet",
+		"manglerFeilmelding": "Du må legge til en næringsvirksomhet"
+	},
+	"gårdsbruk": {
+		"leggTilKnapp": "Legg til gårdsbruk",
+		"manglerFeilmelding": "Du må legge til et gårdsbruk"
+	},
+	"gardsbrukDetaljer": {
+		"prosentAvInntektenGarTilMeg": "{{prosent}}% av inntekten går til meg",
+		"arbeidstimerBruktIAr": "{{timer}} arbeidstimer brukt i {{ar}}"
+	},
+	"naeringsvirksomhetDetaljer": {
+		"timerForReduksjon": "{{timer}} timer arbeidstid per uke før reduksjon",
+		"timerNa": "{{timer}} timer arbeidstid per uke nå"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	}
+}

@@ -1,15 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { FormScope } from "@rvf/react-router";
+import { useMemo } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { useTranslation } from "react-i18next";
 import { Komponent } from "~/components/Komponent";
 import { ForklarendeTekst, HeadingTekst, KomponentType } from "~/components/Komponent.types";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
-import { SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.dokumentasjon";
 import {
-  dokumentasjonKomponenter,
-  dokumentasjonskravKomponenter
+  lagDokumentasjonKomponenter,
+  lagDokumentasjonskravKomponenter,
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonskravKomponent } from "~/seksjon/dokumentasjon/v1/DokumentasjonskravKomponent";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
@@ -19,13 +20,19 @@ import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
 
 export function DokumentasjonViewV1() {
+  const { t } = useTranslation("dokumentasjon");
+
+  const dokumentasjonKomponenter = useMemo(() => lagDokumentasjonKomponenter(t), [t]);
+
+  const dokumentasjonskravKomponenter = useMemo(() => lagDokumentasjonskravKomponenter(t), [t]);
+
   const {
     dokumentasjonskrav,
     lagrer,
     harTekniskFeil,
     setValideringsTeller,
     setPdfGrunnlag,
-    bundleOgLagreDokumentasjonskrav
+    bundleOgLagreDokumentasjonskrav,
   } = useDokumentasjonskravContext();
 
   function lagreSvar() {
@@ -39,8 +46,8 @@ export function DokumentasjonViewV1() {
       .flat();
 
     const pdfGrunnlag = {
-      navn: SEKSJON_NAVN,
-      spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag]
+      navn: t("side.overskrift"),
+      spørsmål: [...seksjonsBeskrivelsePdfGrunnlag, ...dokumentasjonskravPdfGrunnlag],
     };
 
     setPdfGrunnlag(JSON.stringify(pdfGrunnlag));
@@ -52,7 +59,7 @@ export function DokumentasjonViewV1() {
       type: "headingTekst",
       nivå: "3",
       størrelse: "small",
-      label: dokumentasjonskrav.tittel
+      label: dokumentasjonskrav.tittel,
     };
 
     const beskrivelse: ForklarendeTekst = {
@@ -60,7 +67,7 @@ export function DokumentasjonViewV1() {
       type: "forklarendeTekst",
       description: renderToStaticMarkup(
         <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
-      )
+      ),
     };
 
     const skjemaSvar = lagSeksjonPayload(
@@ -73,7 +80,7 @@ export function DokumentasjonViewV1() {
         return {
           id: fil.id,
           type: "forklarendeTekst",
-          description: fil.filnavn
+          description: fil.filnavn,
         };
       }) || [];
 
@@ -82,11 +89,12 @@ export function DokumentasjonViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
+
         {dokumentasjonKomponenter.map((komponent) => {
           return (
             <Komponent
@@ -106,8 +114,8 @@ export function DokumentasjonViewV1() {
 
         {!lagrer && harTekniskFeil && (
           <SeksjonTekniskFeil
-            tittel="Det har oppstått en teknisk feil"
-            beskrivelse="Vi klarte ikke å sende inn dokumentasjonen. Prøv nytt"
+            tittel={t("tekniskFeil.tittel")}
+            beskrivelse={t("tekniskFeil.beskrivelse")}
           />
         )}
 
@@ -121,7 +129,7 @@ export function DokumentasjonViewV1() {
               disabled={lagrer}
               onClick={() => bundleOgLagreDokumentasjonskrav(Seksjonshandling.tilbakenavigering)}
             >
-              Forrige steg
+              {t("navigasjon.forrigeSteg")}
             </Button>
             <Button
               variant="primary"
@@ -131,7 +139,7 @@ export function DokumentasjonViewV1() {
               onClick={() => lagreSvar()}
               disabled={lagrer}
             >
-              Til oppsummering
+              {t("navigasjon.tilOppsummering")}
             </Button>
           </HStack>
         </VStack>

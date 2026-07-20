@@ -1,12 +1,13 @@
+import { useTranslation } from "react-i18next";
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
-  Gårdsbruk,
   gårdsbruketsNavn,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
   hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
   hvorMangeProsentAvInntektenGårTilDeg,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
+import type { Gårdsbruk } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 
 interface IProps {
@@ -15,6 +16,7 @@ interface IProps {
 }
 
 export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
+  const { t } = useTranslation("egen-naering");
   const { gårdsbruk, setGårdsbruk, setGårdsbrukModalData } = useEgenNæringContext();
 
   function fjernGårdsbruk() {
@@ -25,11 +27,15 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
     <Box padding="space-16" background="sunken" borderRadius="16">
       <h3 style={{ marginTop: "0" }}>{etGårdsbruk[gårdsbruketsNavn]}</h3>
       <BodyShort spacing>
-        {etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg]}% av inntekten går til meg
+        {t("gardsbrukDetaljer.prosentAvInntektenGarTilMeg", {
+          prosent: etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg],
+        })}
         <br />
-        {etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]}{" "}
-        arbeidstimer brukt i{" "}
-        {etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]}
+        {t("gardsbrukDetaljer.arbeidstimerBruktIAr", {
+          timer:
+            etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer],
+          ar: etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr],
+        })}
       </BodyShort>
       <HStack gap="space-16">
         <Button
@@ -45,7 +51,7 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
             });
           }}
         >
-          Endre svar
+          {t("felles.knapper.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -53,7 +59,7 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
           onClick={fjernGårdsbruk}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("felles.knapper.fjern")}
         </Button>
       </HStack>
     </Box>

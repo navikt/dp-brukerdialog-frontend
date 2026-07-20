@@ -17,6 +17,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLoaderData, useParams, useSearchParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { stegISøknaden } from "~/routes/$soknadId";
@@ -36,14 +37,13 @@ import {
 import { DokumentasjonSomSkalSendesAvDeg } from "./DokumentasjonSomSkalSendesAvDeg";
 
 export default function KvitteringView() {
+  const { t } = useTranslation("kvittering");
   const { soknadId } = useParams();
   const [searchParams] = useSearchParams();
-  const seksjonnavn = "Søknad mottatt";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const loaderData = useLoaderData<typeof loader>();
   const dokumentasjonskrav = loaderData?.dokumentasjonskrav || [];
   const seksjoner =
-    loaderData?.seksjoner.filter(
+    (loaderData?.seksjoner ?? []).filter(
       (s: any) => s.seksjonId !== "dokumentasjon" && s.seksjonId !== "startside"
     ) || [];
 
@@ -69,91 +69,83 @@ export default function KvitteringView() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-32">
         <VStack gap="space-32">
           <HStack justify="space-between">
             <VStack>
-              <Heading size="medium">{seksjonnavn}</Heading>
+              <Heading size="medium">{t("side.overskrift")}</Heading>
             </VStack>
             {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
               <Tag variant="warning" size="xsmall">
-                Mangler dokumentasjon
+                {t("tag.manglerDokumentasjon")}
               </Tag>
             )}
           </HStack>
 
           {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
             <BodyLong>
-              Vi har fått søknaden din, men vi mangler dokumenter for å kunne behandle søknaden. Når
-              du har sendt alle dokumentene vil vi behandle søknaden, og du vil få beskjed når
-              svaret er klart. Se hvor lang tid{" "}
+              {t("intro.medMangler.forLenke")}{" "}
               <EksterneLenke
                 href="https://www.nav.no/saksbehandlingstider#dagpenger"
-                tekst="saksbehandlingstiden"
+                tekst={t("intro.saksbehandlingstidLenke")}
               />{" "}
-              for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
-              Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
+              {t("intro.etterLenke")}
             </BodyLong>
           )}
+
           {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
             <BodyLong>
-              Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Se hvor lang tid{" "}
+              {t("intro.utenMangler.forLenke")}{" "}
               <EksterneLenke
                 href="https://www.nav.no/saksbehandlingstider#dagpenger"
-                tekst="saksbehandlingstiden"
+                tekst={t("intro.saksbehandlingstidLenke")}
               />{" "}
-              for dagpenger er nå. Hvis vi trenger flere dokumenter, vil du få beskjed om dette.
-              Saksbehandlingstiden kan da bli lengre enn det som er oppgitt.
+              {t("intro.etterLenke")}
             </BodyLong>
           )}
+
           {loaderData.erRegistrertArbeidssøker === true && (
             <InfoCard data-color="info">
               <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                <InfoCard.Title>Du er registrert som arbeidssøker</InfoCard.Title>
+                <InfoCard.Title>{t("arbeidssoker.registrert.tittel")}</InfoCard.Title>
               </InfoCard.Header>
               <InfoCard.Content>
-                <BodyLong>
-                  For å ha rett til dagpenger, må du være registrert som arbeidssøker. Du er
-                  allerede registrert som arbeidssøker.
-                </BodyLong>
+                <BodyLong>{t("arbeidssoker.registrert.beskrivelse")}</BodyLong>
               </InfoCard.Content>
             </InfoCard>
           )}
+
           {loaderData.erRegistrertArbeidssøker === false && (
             <InfoCard data-color="warning">
               <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-                <InfoCard.Title>Du er ikke registrert som arbeidssøker</InfoCard.Title>
+                <InfoCard.Title>{t("arbeidssoker.ikkeRegistrert.tittel")}</InfoCard.Title>
               </InfoCard.Header>
               <InfoCard.Content>
                 <BodyLong>
-                  Du er ikke registrert som arbeidssøker, og du risikerer å få avslag på søknaden
-                  din. Du må være registrert som arbeidssøker for å ha rett til dagpenger.{" "}
+                  {t("arbeidssoker.ikkeRegistrert.forLenke")}{" "}
                   <EksterneLenke
                     href="https://arbeidssokerregistrering.nav.no/"
-                    tekst="Registrer deg som arbeidssøker"
+                    tekst={t("arbeidssoker.registrerLenke")}
                   />
                   .
                 </BodyLong>
               </InfoCard.Content>
             </InfoCard>
           )}
+
           {loaderData.erRegistrertArbeidssøker === "ERROR" && (
             <LocalAlert status="error">
               <LocalAlert.Header>
-                <LocalAlert.Title>Oppslag mot Arbedidssøkerregistreret feilet</LocalAlert.Title>
+                <LocalAlert.Title>{t("arbeidssoker.oppslagFeilet.tittel")}</LocalAlert.Title>
               </LocalAlert.Header>
               <LocalAlert.Content>
-                <BodyShort spacing>
-                  For å ha rett på dagpenger må du være registrert som arbeidssøker. Vi prøvde å
-                  sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi
-                  dessverre ikke.
-                </BodyShort>
+                <BodyShort spacing>{t("arbeidssoker.oppslagFeilet.beskrivelse")}</BodyShort>
                 <BodyShort>
-                  Hvis du er usikker på om du er registrert som arbeidssøker, må du{" "}
+                  {t("arbeidssoker.oppslagFeilet.forLenke")}{" "}
                   <EksterneLenke
                     href="https://arbeidssokerregistrering.nav.no/"
-                    tekst="egistrere deg som arbeidssøker"
+                    tekst={t("arbeidssoker.registrerLenke")}
                   />
                 </BodyShort>
               </LocalAlert.Content>
@@ -161,36 +153,29 @@ export default function KvitteringView() {
           )}
 
           <VStack gap="space-16">
-            <Heading size="medium">Dokumentasjon</Heading>
+            <Heading size="medium">{t("dokumentasjon.heading")}</Heading>
             <InfoCard data-color="info">
               <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
-                <InfoCard.Title>Sende inn dokumentasjon</InfoCard.Title>
+                <InfoCard.Title>{t("dokumentasjon.infoCard.tittel")}</InfoCard.Title>
               </InfoCard.Header>
               <InfoCard.Content>
                 <BodyLong spacing weight="semibold">
-                  Frist for ettersending av dokumentasjon er 14 dager etter at du sendte søknaden
+                  {t("dokumentasjon.infoCard.frist")}
                 </BodyLong>
-                <BodyLong>
-                  Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er
-                  ansvarlig for at dokumentasjonen sendes til oss. Hvis du ikke sender alle
-                  dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige
-                  opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle
-                  dokumentene.
-                </BodyLong>
+                <BodyLong>{t("dokumentasjon.infoCard.beskrivelse")}</BodyLong>
               </InfoCard.Content>
             </InfoCard>
 
-            <ReadMore header="Har du fått brev om manglende opplysninger?">
-              Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal
-              sendes inn og frist for å sende inn. Brev du har fått ligger i{" "}
+            <ReadMore header={t("dokumentasjon.manglendeOpplysninger.header")}>
+              {t("dokumentasjon.manglendeOpplysninger.forDokumentliste")}{" "}
               <EksterneLenke
                 href="https://www.nav.no/arbeid/dagpenger/mine-dagpenger#dokumentliste"
-                tekst="dokumentlisten på Mine dagpenger"
+                tekst={t("dokumentasjon.manglendeOpplysninger.dokumentlisteLenke")}
               />
-              . Når du har dokumentene klare kan du{" "}
+              {t("dokumentasjon.manglendeOpplysninger.mellomLenker")}{" "}
               <EksterneLenke
                 href="https://www.nav.no/dagpenger/dialog/generell-innsending/"
-                tekst="sende dem inn her"
+                tekst={t("dokumentasjon.manglendeOpplysninger.innsendingLenke")}
               />
               .
             </ReadMore>
@@ -198,7 +183,7 @@ export default function KvitteringView() {
 
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">Dokumenter du har sendt inn</Heading>
+              <Heading size="small">{t("dokumenter.sendtInn.heading")}</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
@@ -207,7 +192,7 @@ export default function KvitteringView() {
 
           {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">Dokumenter du skal sende inn</Heading>
+              <Heading size="small">{t("dokumenter.skalSendes.heading")}</Heading>
               {dokumentasjonSomSkalSendesAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomSkalSendesAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
@@ -216,13 +201,13 @@ export default function KvitteringView() {
 
           <HStack>
             <Link to={`/${soknadId}/ettersending`}>
-              <Button variant="secondary">Send inn dokumenter</Button>
+              <Button variant="secondary">{t("knapper.sendInnDokumenter")}</Button>
             </Link>
           </HStack>
 
           {dokumentasjonSomIkkeSkalSendes.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">Dokumenter du ikke skal sende inn</Heading>
+              <Heading size="small">{t("dokumenter.ikkeSkalSendes.heading")}</Heading>
               {dokumentasjonSomIkkeSkalSendes.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonSomIkkeSkalSendes key={krav.id} dokummentasjonskrav={krav} />
               ))}
@@ -230,9 +215,9 @@ export default function KvitteringView() {
           )}
 
           <VStack gap="space-16">
-            <ExpansionCard aria-label="Dine svar">
+            <ExpansionCard aria-label={t("dineSvar.ariaLabel")}>
               <ExpansionCard.Header>
-                <ExpansionCard.Title>Dine svar</ExpansionCard.Title>
+                <ExpansionCard.Title>{t("dineSvar.tittel")}</ExpansionCard.Title>
               </ExpansionCard.Header>
               <ExpansionCard.Content>
                 <VStack gap="space-24">
@@ -262,7 +247,7 @@ export default function KvitteringView() {
                   window.location.href = getEnv("DP_MINE_DAGPENGER_URL");
                 }}
               >
-                Gå til mine dagpenger
+                {t("knapper.mineDagpenger")}
               </Button>
             </HStack>
           </VStack>
