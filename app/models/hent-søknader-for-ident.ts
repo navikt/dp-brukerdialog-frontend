@@ -1,22 +1,17 @@
 import { subDays } from "date-fns";
 
-export interface PåBegynteSøknader {
+export interface PåBegynteSøknad {
   soknadUuid: string;
   opprettet: string;
   sistEndretAvBruker?: string;
 }
 
-export interface InnsendteSøknader {
+export interface InnsendteSøknad {
   soknadUuid: string;
   forstInnsendt: string;
 }
 
-export interface QuizSøknader {
-  paabegynt?: PåBegynteSøknader | null;
-  innsendte?: InnsendteSøknader[];
-}
-
-export interface OrkestratorSoknad {
+export interface Søknad {
   søknadId: string;
   tittel: string;
   innsendtTimestamp?: string;
@@ -24,18 +19,10 @@ export interface OrkestratorSoknad {
   status: string;
 }
 
-export interface KombinertInnsendtSoknad extends InnsendteSøknader {
-  erQuizSøknad: boolean;
-}
-
-export interface PåbegyntSøknadMedKilde extends PåBegynteSøknader {
-  erQuizSøknad: boolean;
-}
-
-export function mapOrkestratorInnsendteSoknader(
-  orkestratorSoknader: OrkestratorSoknad[] | null | undefined
-): KombinertInnsendtSoknad[] {
-  const within30Days = subDays(Date.now(), 30);
+export function mapInnsendteSøknader(
+  orkestratorSoknader: Søknad[] | null | undefined
+): InnsendteSøknad[] {
+  const siste30Dager = subDays(Date.now(), 30);
 
   return (
     orkestratorSoknader
@@ -43,32 +30,11 @@ export function mapOrkestratorInnsendteSoknader(
       .filter(
         (soknad) =>
           soknad.innsendtTimestamp !== undefined &&
-          new Date(soknad.innsendtTimestamp) > within30Days
+          new Date(soknad.innsendtTimestamp) > siste30Dager
       )
       .map((soknad) => ({
         soknadUuid: soknad.søknadId,
         forstInnsendt: soknad.innsendtTimestamp!,
-        erQuizSøknad: false,
       })) || []
-  );
-}
-
-export function mapQuizInnsendteSoknader(
-  innsendte: InnsendteSøknader[] | undefined
-): KombinertInnsendtSoknad[] {
-  return (
-    innsendte?.map((soknad) => ({
-      ...soknad,
-      erQuizSøknad: true,
-    })) || []
-  );
-}
-
-export function KombinertOgSorterInnsendteSoknader(
-  orkestratorInnsendte: KombinertInnsendtSoknad[],
-  quizInnsendte: KombinertInnsendtSoknad[]
-): KombinertInnsendtSoknad[] {
-  return [...orkestratorInnsendte, ...quizInnsendte].sort(
-    (a, b) => new Date(b.forstInnsendt).getTime() - new Date(a.forstInnsendt).getTime()
   );
 }
