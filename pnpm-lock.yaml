@@ -66,8 +66,8 @@ importers:
         specifier: 7.0.5
         version: 7.0.5(@types/react@19.2.17)(react@19.2.7)(scheduler@0.27.0)(zod@4.4.3)
       '@sanity/client':
-        specifier: 7.23.1
-        version: 7.23.1
+        specifier: 7.23.2
+        version: 7.23.2
       classnames:
         specifier: 2.5.1
         version: 2.5.1
@@ -1283,8 +1283,8 @@ packages:
     peerDependencies:
       zod: '>= 3.11.0'
 
-  '@sanity/client@7.23.1':
-    resolution: {integrity: sha512-zCKrdmsfFRYKXndkw5rVi3tyvr54QIdE+ISuAxFeHfJFiwWHFNu6pL4G8JmRyfxsD7Q9zyrD4C5hczVVmwGbgg==}
+  '@sanity/client@7.23.2':
+    resolution: {integrity: sha512-WC0vsGGpe4IGVFBvYMFFPa3KLH0vzgZwzvHIN20IDmPjuifDHSCbpq299Yj7jJQb2xBMJ7zQj45RyOzOIC7PUA==}
     engines: {node: '>=20'}
 
   '@sanity/eventsource@5.0.4':
@@ -4961,7 +4961,7 @@ snapshots:
       - scheduler
       - use-sync-external-store
 
-  '@sanity/client@7.23.1':
+  '@sanity/client@7.23.2':
     dependencies:
       '@sanity/eventsource': 5.0.4
       get-it: 8.8.0
