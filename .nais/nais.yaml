@@ -33,7 +33,7 @@ spec:
     limits:
       memory: {{resources.limits.memory}}
     requests:
-      cpu: {{resources.limits.cpu}}
+      cpu: {{resources.requests.cpu}}
       memory: {{resources.requests.memory}}
   env:
     - name: SELF_URL
