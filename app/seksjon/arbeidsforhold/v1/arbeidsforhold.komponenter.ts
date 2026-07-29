@@ -184,11 +184,6 @@ export type ArbeidsforholdResponse = ArbeidsforholdSvar & {
 
 type ArbeidsforholdT = TFunction;
 
-const jaNeiOptions = (t: ArbeidsforholdT) => [
-  { value: "ja", label: t("felles.svar.ja") },
-  { value: "nei", label: t("felles.svar.nei") },
-];
-
 const lagForklarendeTekst = (t: ArbeidsforholdT, tekstKey: string) =>
   `<h3>${t("forklarendeTekst.tittel")}</h3>` +
   `<p>${t(tekstKey)}</p>` +
