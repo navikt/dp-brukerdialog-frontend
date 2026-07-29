@@ -20,10 +20,6 @@ const TOKEN_LIST = [
     env: "ARBEIDSSOKERREGISTERET_TOKEN",
     aud: "dev-gcp:paw:paw-arbeidssoekerregisteret-api-oppslag-v2",
   },
-  {
-    env: "DP_SOKNAD_TOKEN",
-    aud: "dev-gcp:teamdagpenger:dp-soknad",
-  },
 ];
 
 const IDENT_LIST = [

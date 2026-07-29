@@ -4,7 +4,7 @@ Instructions for AI coding agents working in this repository.
 
 ## Commands
 
-Package manager is **pnpm** (`pnpm@10.33.0`). Use `pnpm run` not `npm run`.
+Package manager is **pnpm** (`pnpm@11.13.0`). Use `pnpm run` not `npm run`.
 
 ```bash
 pnpm run build            # Production build (React Router SSR)
@@ -59,6 +59,7 @@ app/
 ### Routing conventions
 
 File-based routing via `@react-router/fs-routes` with `flatRoutes()`:
+
 - Pages: `$soknadId.tsx`, `$soknadId.[sectionName].tsx`
 - API routes: `api.internal.isalive.ts`, `api.dokumentasjonskrav.$soknadId.*.tsx`
 - Server data files: `*.server.ts` suffix — these only run on the server
@@ -66,6 +67,7 @@ File-based routing via `@react-router/fs-routes` with `flatRoutes()`:
 ### Path alias
 
 `~/*` resolves to `./app/*`. Use it for imports:
+
 ```typescript
 import { getEnv } from "~/utils/env.utils";
 ```
@@ -76,6 +78,7 @@ import { getEnv } from "~/utils/env.utils";
 
 Each section lives in `app/seksjon/<name>/` and may be versioned (e.g. `v1/`, `v2/`).
 A section typically contains:
+
 - `*.komponenter.ts` — defines form fields as a `KomponentType[]` array
 - `*.schema.ts` — Zod validation schema using `superRefine` + `valider()`
 - Tests (`*.test.ts`)
@@ -91,11 +94,13 @@ A section typically contains:
 4. Look at `verneplikt` as the simplest reference implementation
 
 **Component types** (from `~/components/Komponent.types`):
+
 - Questions: `envalg`, `flervalg`, `langTekst`, `kortTekst`, `dato`, `periodeFra`,
   `periodeTil`, `land`, `tall`, `nedtrekksliste`, `registeropplysning`
 - Info: `informasjonskort`, `lesMer`, `dokumentasjonskravindikator`, `forklarendeTekst`
 
 **Key utilities:**
+
 - `valider()` from `~/utils/validering.utils` — validates individual components in the schema
 - `Seksjonshandling` from `~/utils/Seksjonshandling` — enum for navigation actions
   (back/save-later skip validation)
@@ -104,6 +109,7 @@ A section typically contains:
 
 Data fetching lives in `app/models/*.server.ts` using React Router loaders/actions.
 These call backend services using OBO tokens:
+
 ```typescript
 const onBehalfOfToken = await hentSoknadOrkestratorOboToken(request);
 const response = await fetch(url, {
@@ -134,6 +140,7 @@ content that's managed there. Check `app/sanity/sanity.query.ts` for existing qu
 - **MSW:** Mock Service Worker for API mocking in development
 
 Tests live alongside source files. Pattern:
+
 ```typescript
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

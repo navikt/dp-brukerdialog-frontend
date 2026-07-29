@@ -64,10 +64,6 @@ spec:
       value: "{{generell_innsending_url}}"
     - name: ARBEIDSSOKERREGISTRERING_URL
       value: "{{arbeidssokerregistrering_url}}"
-    - name: DP_SOKNAD_URL
-      value: "{{dp_soknad_url}}"
-    - name: DP_SOKNADSDIALOG_URL
-      value: "{{dp_soknadsdialog_url}}"
     - name: MIN_SIDE_URL
       value: "{{min_side_url}}"
 
