@@ -109,7 +109,7 @@ jobs:
     name: Deploy til dev-gcp
     permissions:
       id-token: "write"
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rydd-opp-quiz-ting'
+    if: github.ref == 'refs/heads/main'
     needs: [build]
     runs-on: ubuntu-latest
     steps:
