@@ -1,16 +1,10 @@
 import { BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { Form, Link, useActionData, useNavigation } from "react-router";
-import { EksterneLenke } from "~/components/EksterneLenke";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
-import {
-  KombinertOgSorterInnsendteSoknader,
-  mapOrkestratorInnsendteSoknader,
-  mapQuizInnsendteSoknader,
-} from "~/models/hent-søknader-for-ident";
+import { mapInnsendteSøknader } from "~/models/hent-søknader-for-ident";
 import { action } from "~/routes/_index";
-import { getEnv } from "~/utils/env.utils";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export const SEKSJON_TITTEL = "Søknad om dagpenger: Søknadsoversikt";
@@ -18,18 +12,13 @@ export const SEKSJON_TITTEL = "Søknad om dagpenger: Søknadsoversikt";
 export function SøknadOversikt() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
-  const { søknader, quizSøknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
+  const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
 
   const sletterSøknad =
     (navigation.state === "submitting" || navigation.state === "loading") &&
     navigation.formData != null;
 
-  const orkestratorInnsendteSøknader = mapOrkestratorInnsendteSoknader(søknader);
-  const quizInnsendteSøknader = mapQuizInnsendteSoknader(quizSøknader);
-  const alleSøknader = KombinertOgSorterInnsendteSoknader(
-    orkestratorInnsendteSøknader,
-    quizInnsendteSøknader
-  );
+  const orkestratorInnsendteSøknader = mapInnsendteSøknader(søknader);
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -42,31 +31,21 @@ export function SøknadOversikt() {
       </div>
       <div className="innhold">
         <VStack gap="space-32">
-          {alleSøknader.length > 0 && (
+          {søknader.length > 0 && (
             <VStack gap="space-16">
               <BodyLong>
                 Du har nylig sendt inn en søknad. Vil du ettersende vedlegg til en innsendt søknad
                 eller sende inn en ny?
               </BodyLong>
               <VStack gap="space-8">
-                {alleSøknader.map((soknad) =>
-                  soknad.erQuizSøknad ? (
-                    <EksterneLenke
-                      key={soknad.soknadUuid}
-                      href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
-                      tekst={`Send inn vedlegg til søknad sendt ${formaterNorskDato(new Date(soknad.forstInnsendt))}`}
-                      variant="secondary"
-                      asButton
-                    />
-                  ) : (
-                    <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
-                      <Button variant="secondary">
-                        Send inn vedlegg til søknad sendt{" "}
-                        {formaterNorskDato(new Date(soknad.forstInnsendt))}
-                      </Button>
-                    </Link>
-                  )
-                )}
+                {orkestratorInnsendteSøknader.map((soknad) => (
+                  <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
+                    <Button variant="secondary">
+                      Send inn vedlegg til søknad sendt{" "}
+                      {formaterNorskDato(new Date(soknad.forstInnsendt))}
+                    </Button>
+                  </Link>
+                ))}
               </VStack>
             </VStack>
           )}
@@ -78,15 +57,7 @@ export function SøknadOversikt() {
                 på denne eller starte en ny?
               </BodyLong>
               <VStack gap="space-16">
-                {påbegyntSøknad.erQuizSøknad && (
-                  <EksterneLenke
-                    href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${påbegyntSøknad.soknadUuid}?fortsett=true`}
-                    tekst="Fortsett påbegynt søknad"
-                    variant="primary"
-                    asButton
-                  />
-                )}
-                {!påbegyntSøknad.erQuizSøknad && (
+                {påbegyntSøknad && (
                   <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
                     <Button variant="primary">Fortsett påbegynt søknad</Button>
                   </Link>
@@ -94,11 +65,6 @@ export function SøknadOversikt() {
                 <HStack gap="space-16">
                   <Form method="post">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
-                    <input
-                      type="hidden"
-                      name="erQuizSøknad"
-                      value={String(påbegyntSøknad.erQuizSøknad)}
-                    />
                     <Button type="submit" variant="secondary" loading={sletterSøknad}>
                       Slett og start ny søknad
                     </Button>
