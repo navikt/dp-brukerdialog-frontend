@@ -4,8 +4,8 @@ import invariant from "tiny-invariant";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.server";
 import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
-import { hentOrkestratorSøknader } from "~/models/hent-søknader";
-import { OrkestratorSoknad } from "~/models/hent-søknader-for-ident";
+import { hentSøknader } from "~/models/hent-søknader";
+import { Søknad } from "~/models/hent-søknader-for-ident";
 import { SoknadProvider } from "~/seksjon/soknad.context";
 import { validerSøknadId } from "~/utils/seksjon.utils";
 
@@ -78,11 +78,11 @@ export async function loader({
   const [progressResponse, sistOppdatertResponse, søknaderResponse] = await Promise.all([
     hentSøknadFremgangInfo(request, params.soknadId),
     hentSøknadSistOppdatert(request, params.soknadId),
-    hentOrkestratorSøknader(request),
+    hentSøknader(request),
   ]);
 
   if (søknaderResponse.ok) {
-    const søknader: OrkestratorSoknad[] = await søknaderResponse.json();
+    const søknader: Søknad[] = await søknaderResponse.json();
     const søknad = søknader.find((s) => s.søknadId === params.soknadId);
     const søknadFullført = søknad?.status === "INNSENDT" || søknad?.status === "JOURNALFØRT";
     const erPåKvitteringEllerEttersending = SIDER_TILGJENGELIG_ETTER_INNSENDING.includes(seksjonId);
