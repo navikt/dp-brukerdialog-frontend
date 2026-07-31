@@ -2,7 +2,6 @@ import { Theme } from "@navikt/ds-react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import {
   data,
   isRouteErrorResponse,
@@ -21,6 +20,7 @@ import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
 import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
+import i18n from "./i18n";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { sanityClient } from "./sanity/sanity.config";
 import { allTextsQuery } from "./sanity/sanity.query";
@@ -30,8 +30,6 @@ import { logger } from "./utils/logger.utils";
 
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
 import indexStyles from "./index.css?url";
-
-import "./i18n";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -77,7 +75,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
   const { decoratorFragments, env, language } = useLoaderData();
   const { DECORATOR_HEAD_ASSETS, DECORATOR_SCRIPTS, DECORATOR_HEADER, DECORATOR_FOOTER } =
     decoratorFragments;
