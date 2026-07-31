@@ -92,8 +92,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [i18n, navigate]);
 
   return (
-    <html lang="nb">
-      <head lang={language}>
+    <html lang={language}>
+      <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {parse(DECORATOR_HEAD_ASSETS, { trim: true })}
