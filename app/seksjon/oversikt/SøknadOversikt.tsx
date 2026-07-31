@@ -35,27 +35,6 @@ export function SøknadOversikt() {
             <VStack gap="space-16">
               <BodyLong>{t("innsendtSoknad.beskrivelse")}</BodyLong>
               <VStack gap="space-8">
-                {alleSøknader.map((soknad) =>
-                  soknad.erQuizSøknad ? (
-                    <EksterneLenke
-                      key={soknad.soknadUuid}
-                      href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${soknad.soknadUuid}/kvittering`}
-                      tekst={t("innsendtSoknad.vedleggsKnapp", {
-                        date: formaterNorskDato(new Date(soknad.forstInnsendt)),
-                      })}
-                      variant="secondary"
-                      asButton
-                    />
-                  ) : (
-                    <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
-                      <Button variant="secondary">
-                        {t("innsendtSoknad.vedleggsKnapp", {
-                          date: formaterNorskDato(new Date(soknad.forstInnsendt)),
-                        })}
-                      </Button>
-                    </Link>
-                  )
-                )}
                 {orkestratorInnsendteSøknader.map((soknad) => (
                   <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
                     <Button variant="secondary">
@@ -76,22 +55,6 @@ export function SøknadOversikt() {
                 })}
               </BodyLong>
               <VStack gap="space-16">
-                {påbegyntSøknad.erQuizSøknad && (
-                  <EksterneLenke
-                    href={`${getEnv("DP_SOKNADSDIALOG_URL")}/${påbegyntSøknad.soknadUuid}?fortsett=true`}
-                    tekst={t("pabegyntSoknad.fortsettKnapp")}
-                    variant="primary"
-                    asButton
-                  />
-                )}
-
-                {!påbegyntSøknad.erQuizSøknad && (
-                {påbegyntSøknad && (
-                  <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
-                    <Button variant="primary">{t("pabegyntSoknad.fortsettKnapp")}</Button>
-                  </Link>
-                )}
-
                 <HStack gap="space-16">
                   <Form method="post">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
