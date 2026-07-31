@@ -85,11 +85,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useInjectDecoratorScript(DECORATOR_SCRIPTS);
 
   useEffect(() => {
+    void i18n.changeLanguage(language);
+
     onLanguageSelect(({ locale }) => {
       void i18n.changeLanguage(locale);
       navigate(0);
     });
-  }, [i18n, navigate]);
+  }, [i18n, language, navigate]);
 
   return (
     <html lang={language}>
