@@ -95,7 +95,7 @@ export function GårdsbrukModal({ ref }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()} id={formId} action={formAction}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {leggTilGårdsbrukKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {

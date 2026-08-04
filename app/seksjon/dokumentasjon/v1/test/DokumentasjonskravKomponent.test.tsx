@@ -40,9 +40,6 @@ vi.mock("@rvf/react-router", () => ({
       formId: "test-form-id",
       action: "/test-action",
     },
-    getFormProps: () => ({
-      method: "put",
-    }),
     scope: (id: string) => ({ id }),
     validate: mocks.validate,
     formState: {

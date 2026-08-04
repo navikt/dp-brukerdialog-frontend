@@ -167,7 +167,7 @@ export function ArbeidsforholdViewV1() {
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
       <VStack gap="space-24">
-        <Form {...form.getFormProps()} id={formId} action={formAction}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-24">
             <Heading size="medium" level="2">
               {SEKSJON_NAVN}

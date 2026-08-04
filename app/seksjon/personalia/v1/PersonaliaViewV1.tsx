@@ -186,7 +186,7 @@ export function PersonaliaViewV1() {
             </BodyShort>
           </VStack>
         </VStack>
-        <Form {...form.getFormProps()} id={formId} action={formAction}>
+        <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={seksjon.versjon} />
           <VStack gap="space-24">
             {personaliaSpørsmål.map((komponent) => {

@@ -183,7 +183,7 @@ export function EgenNæringViewV1() {
         <Heading size="medium" level="2">
           {SEKSJON_NAVN}
         </Heading>
-        <Form {...form.getFormProps()} id={formId} action={formAction}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-24">
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {egenNæringEgenNæringsvirksomhetKomponenter.map((komponent) => {

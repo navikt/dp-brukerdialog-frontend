@@ -183,7 +183,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()} id={formId} action={formAction}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraNorgeModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(formValues)) {

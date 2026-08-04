@@ -95,7 +95,7 @@ export function OppsummeringView() {
             </ErrorMessage>
           )}
 
-          <Form {...form.getFormProps()} id={formId} action={formAction}>
+          <Form id={formId} action={formAction}>
             <HStack gap="space-16" className="mt-32">
               <Button
                 disabled={state === "submitting" || state === "loading"}
