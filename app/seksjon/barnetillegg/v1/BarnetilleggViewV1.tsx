@@ -64,6 +64,7 @@ export function BarnetilleggViewV1() {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggKomponenter);
 
@@ -151,7 +152,7 @@ export function BarnetilleggViewV1() {
       </Heading>
       <VStack gap="space-24">
         {barnetilleggForklarendeTekst.map((komponent) => {
-          if (komponent.visHvis && !komponent.visHvis(form.value())) {
+          if (komponent.visHvis && !komponent.visHvis(formValues)) {
             return null;
           }
 
@@ -171,7 +172,7 @@ export function BarnetilleggViewV1() {
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
           {barnetilleggKomponenter.map((spørsmål) => {
-            if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+            if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
               return null;
             }
 
@@ -179,7 +180,7 @@ export function BarnetilleggViewV1() {
               <Komponent
                 key={spørsmål.id}
                 props={spørsmål}
-                formValues={form.value()}
+                formValues={formValues}
                 formScope={form.scope(spørsmål.id as keyof BarnetilleggSvar)}
               />
             );

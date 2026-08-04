@@ -92,6 +92,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
 
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<PengestøtteFraNorgeModalSvar>(
     form,
@@ -185,7 +186,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
           <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraNorgeModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -194,7 +195,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
                     key={komponent.id}
                     props={komponent}
                     formScope={form.scope(komponent.id as keyof PengestøtteFraNorgeModalSvar)}
-                    formValues={form.value()}
+                    formValues={formValues}
                   />
                 );
               })}

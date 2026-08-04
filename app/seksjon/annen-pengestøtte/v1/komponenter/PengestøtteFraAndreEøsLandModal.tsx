@@ -91,6 +91,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   function leggTilPengestøtteFraAndreEøsLand(
     pengestøtteProps: PengestøtteFraAndreEøsLandModalSvar,
@@ -197,7 +198,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
           <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraAndreEøsLandModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -205,7 +206,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(
                       komponent.id as keyof PengestøtteFraAndreEøsLandModalSvar
                     )}

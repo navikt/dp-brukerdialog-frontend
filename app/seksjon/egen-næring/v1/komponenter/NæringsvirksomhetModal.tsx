@@ -69,6 +69,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   const modalOperasjon =
     næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
@@ -104,7 +105,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
           <Form id={formId} action={formAction}>
             <VStack gap="space-16">
               {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -112,7 +113,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(komponent.id as keyof LeggTilNæringsvirksomhetSvar)}
                   />
                 );

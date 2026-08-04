@@ -97,6 +97,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
 
@@ -354,7 +355,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={modalData.form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                   />
                 );
@@ -363,7 +364,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           <Form id={formId} action={formAction}>
             <VStack gap="space-24" className="mt-16">
               {alleModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -371,7 +372,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
                   />
                 );

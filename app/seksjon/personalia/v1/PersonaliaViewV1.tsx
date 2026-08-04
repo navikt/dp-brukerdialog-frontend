@@ -77,6 +77,7 @@ export function PersonaliaViewV1() {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   form.setValue(fornavnFraPdl, fornavn || "");
   form.setValue(mellomnavnFraPdl, mellomnavn || "");
@@ -189,7 +190,7 @@ export function PersonaliaViewV1() {
           <input type="hidden" name="versjon" value={seksjon.versjon} />
           <VStack gap="space-24">
             {personaliaSpørsmål.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -197,14 +198,14 @@ export function PersonaliaViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof PersonaliaSvar)}
                 />
               );
             })}
 
             {personaliaBostedslandSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                 return null;
               }
 
@@ -212,7 +213,7 @@ export function PersonaliaViewV1() {
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
                 />
               );

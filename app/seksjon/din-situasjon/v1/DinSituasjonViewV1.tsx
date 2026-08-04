@@ -34,6 +34,7 @@ export function DinSituasjonViewV1() {
 
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
 
@@ -73,7 +74,7 @@ export function DinSituasjonViewV1() {
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             {dinSituasjonKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -81,7 +82,7 @@ export function DinSituasjonViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof DinSituasjonSvar)}
                 />
               );

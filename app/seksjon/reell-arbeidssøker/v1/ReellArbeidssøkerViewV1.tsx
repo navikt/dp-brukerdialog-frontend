@@ -56,6 +56,7 @@ export function ReellArbeidssøkerViewV1() {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
@@ -198,7 +199,7 @@ export function ReellArbeidssøkerViewV1() {
         <VStack gap="space-24">
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           {reellArbeidssøkerKomponenter.map((komponent) => {
-            if (komponent.visHvis && !komponent.visHvis(form.value())) {
+            if (komponent.visHvis && !komponent.visHvis(formValues)) {
               return null;
             }
 
@@ -206,7 +207,7 @@ export function ReellArbeidssøkerViewV1() {
               <Komponent
                 key={komponent.id}
                 props={komponent}
-                formValues={form.value()}
+                formValues={formValues}
                 formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
               />
             );

@@ -68,6 +68,7 @@ export function ArbeidsforholdViewV1() {
 
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
 
@@ -173,7 +174,7 @@ export function ArbeidsforholdViewV1() {
             </Heading>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {arbeidsforholdKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -181,7 +182,7 @@ export function ArbeidsforholdViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                 />
               );
@@ -194,7 +195,7 @@ export function ArbeidsforholdViewV1() {
               ) && (
                 <VStack className="mt-16" gap="space-24">
                   {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-                    if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                    if (komponent.visHvis && !komponent.visHvis(formValues)) {
                       return null;
                     }
 
@@ -202,7 +203,7 @@ export function ArbeidsforholdViewV1() {
                       <Komponent
                         key={komponent.id}
                         props={komponent}
-                        formValues={form.value()}
+                        formValues={formValues}
                         formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                       />
                     );

@@ -38,6 +38,7 @@ export default function VernepliktViewV1() {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<VernepliktSvar>(form, vernepliktKomponenter);
 
@@ -94,7 +95,7 @@ export default function VernepliktViewV1() {
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             {vernepliktKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -102,7 +103,7 @@ export default function VernepliktViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof VernepliktSvar)}
                 />
               );

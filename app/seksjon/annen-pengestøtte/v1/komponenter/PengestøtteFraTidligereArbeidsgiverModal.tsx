@@ -81,6 +81,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
 
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   function leggTilPengestøtteFraTidligereArbeidsgiver(
     pengestøtteProps: PengestøtteFraTidligereArbeidsgiverModalSvar,
@@ -184,7 +185,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
           <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -192,7 +193,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(
                       komponent.id as keyof PengestøtteFraTidligereArbeidsgiverModalSvar
                     )}

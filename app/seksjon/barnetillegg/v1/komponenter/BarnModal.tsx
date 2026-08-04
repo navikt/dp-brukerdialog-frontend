@@ -80,6 +80,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
   });
 
   const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
@@ -165,7 +166,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
           <Form id={formId} action={formAction}>
             <VStack gap="space-16" className="mt-16">
               {leggTilBarnManueltSpørsmål.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                   return null;
                 }
 
@@ -173,7 +174,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
                   <Komponent
                     key={spørsmål.id}
                     props={spørsmål}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
                   />
                 );
