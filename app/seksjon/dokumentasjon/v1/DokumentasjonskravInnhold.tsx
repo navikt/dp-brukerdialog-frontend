@@ -38,7 +38,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
                   skjemaet{" "}
                   <EksterneLenke
-                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb4398396949d8c6efbb439839694b04dd5.pdf"
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
                     tekst="Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
                   />
                   . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
