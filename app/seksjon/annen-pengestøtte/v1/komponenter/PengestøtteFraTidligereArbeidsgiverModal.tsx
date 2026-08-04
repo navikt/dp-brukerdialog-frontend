@@ -79,6 +79,9 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     resetAfterSubmit: true,
   });
 
+
+  const { formId, action: formAction } = form.formOptions;
+
   function leggTilPengestøtteFraTidligereArbeidsgiver(
     pengestøtteProps: PengestøtteFraTidligereArbeidsgiverModalSvar,
     dokumentasjonskravTittel: string
@@ -178,7 +181,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

@@ -98,6 +98,8 @@ export function AnnenPengestøtteViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useNullstillSkjulteFelter<AnnenPengestøtteSvar>(form, annenPengestøtteKomponenter);
 
   useEffect(() => {
@@ -307,7 +309,7 @@ export function AnnenPengestøtteViewV1() {
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
       <VStack gap="space-24">
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             <Heading size="medium" level="2">

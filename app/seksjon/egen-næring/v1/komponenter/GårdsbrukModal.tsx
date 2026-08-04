@@ -59,6 +59,8 @@ export function GårdsbrukModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useNullstillSkjulteFelter<LeggTilGårdsbrukSvar>(form, leggTilGårdsbrukKomponenter);
 
   const modalOperasjon =
@@ -92,7 +94,7 @@ export function GårdsbrukModal({ ref }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {leggTilGårdsbrukKomponenter.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

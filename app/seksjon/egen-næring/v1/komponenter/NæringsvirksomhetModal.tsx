@@ -68,6 +68,8 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     resetAfterSubmit: true
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   const modalOperasjon =
     næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
 
@@ -99,7 +101,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-16">
               {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

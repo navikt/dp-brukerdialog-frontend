@@ -76,6 +76,8 @@ export function PersonaliaViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   form.setValue(fornavnFraPdl, fornavn || "");
   form.setValue(mellomnavnFraPdl, mellomnavn || "");
   form.setValue(etternavnFraPdl, etternavn || "");
@@ -183,7 +185,7 @@ export function PersonaliaViewV1() {
             </BodyShort>
           </VStack>
         </VStack>
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={seksjon.versjon} />
           <VStack gap="space-24">
             {personaliaSpørsmål.map((komponent) => {

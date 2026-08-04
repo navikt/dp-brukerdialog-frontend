@@ -63,6 +63,8 @@ export function BarnetilleggViewV1() {
     defaultValues: { ...loaderData.seksjon?.seksjonsvar, versjon: loaderData.seksjon?.versjon },
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useNullstillSkjulteFelter<BarnetilleggSvar>(form, barnetilleggKomponenter);
 
   useEffect(() => {
@@ -166,7 +168,7 @@ export function BarnetilleggViewV1() {
           <BarnFraPdlKomponent key={barn.id} barn={barn} />
         ))}
 
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
           {barnetilleggKomponenter.map((spørsmål) => {
             if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

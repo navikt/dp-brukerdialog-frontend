@@ -79,6 +79,8 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
       setModalData(undefined);
@@ -160,7 +162,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-16" className="mt-16">
               {leggTilBarnManueltSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {

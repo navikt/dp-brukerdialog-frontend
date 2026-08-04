@@ -90,6 +90,8 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   function leggTilPengestøtteFraAndreEøsLand(
     pengestøtteProps: PengestøtteFraAndreEøsLandModalSvar,
     dokumentasjonskravTittel: string
@@ -192,7 +194,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraAndreEøsLandModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

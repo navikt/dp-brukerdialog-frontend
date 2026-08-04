@@ -36,6 +36,8 @@ export function OppsummeringView() {
     defaultValues: {},
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   if (!loaderData) {
     return null;
   }
@@ -93,7 +95,7 @@ export function OppsummeringView() {
             </ErrorMessage>
           )}
 
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <HStack gap="space-16" className="mt-32">
               <Button
                 disabled={state === "submitting" || state === "loading"}

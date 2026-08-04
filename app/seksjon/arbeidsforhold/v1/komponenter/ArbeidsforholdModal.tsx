@@ -96,6 +96,8 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
 
   useEffect(() => {
@@ -358,7 +360,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                 );
               }
             })}
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24" className="mt-16">
               {alleModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

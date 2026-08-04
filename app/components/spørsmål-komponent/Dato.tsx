@@ -37,7 +37,7 @@ export function Dato({ props, formScope, ref }: IProps) {
         field.clearError();
         setError(undefined);
       }
-    }
+    },
   });
 
   return (

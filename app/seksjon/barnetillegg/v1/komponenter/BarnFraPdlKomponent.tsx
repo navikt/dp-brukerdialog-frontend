@@ -32,6 +32,8 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
     },
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useEffect(() => {
     if (validerBarnFraPdl) {
       form.validate();
@@ -65,7 +67,7 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
           BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
         </BodyShort>
       )}
-      <Form {...form.getFormProps()}>
+      <Form id={formId} action={formAction}>
         {barnFraPdlSpørsmål.map((spørsmål) => {
           if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
             return null;

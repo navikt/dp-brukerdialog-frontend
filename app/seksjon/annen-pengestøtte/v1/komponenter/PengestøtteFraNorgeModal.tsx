@@ -90,6 +90,9 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     resetAfterSubmit: true,
   });
 
+
+  const { formId, action: formAction } = form.formOptions;
+
   useNullstillSkjulteFelter<PengestøtteFraNorgeModalSvar>(
     form,
     pengestøtteFraNorgeModalKomponenter
@@ -179,7 +182,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraNorgeModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(form.value())) {

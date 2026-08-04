@@ -39,6 +39,8 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     defaultValues: hentFormDefaultValue()
   });
 
+  const { formId, action: formAction } = form.formOptions;
+
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   useEffect(() => {
@@ -125,7 +127,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   return (
     <Box padding="space-16" background="sunken" borderRadius="12">
       <VStack gap="space-24">
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-16">
             <Heading size="small" level="3">
               {dokumentasjonskrav.tittel}
