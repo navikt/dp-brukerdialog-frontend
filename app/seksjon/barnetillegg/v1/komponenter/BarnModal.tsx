@@ -163,7 +163,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form id={formId} action={formAction}>
+          <Form {...form.getFormProps()} id={formId} action={formAction}>
             <VStack gap="space-16" className="mt-16">
               {leggTilBarnManueltSpørsmål.map((spørsmål) => {
                 if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {

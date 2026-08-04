@@ -169,7 +169,7 @@ export function BarnetilleggViewV1() {
           <BarnFraPdlKomponent key={barn.id} barn={barn} />
         ))}
 
-        <Form id={formId} action={formAction}>
+        <Form {...form.getFormProps()} id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon?.versjon} />
           {barnetilleggKomponenter.map((spørsmål) => {
             if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {

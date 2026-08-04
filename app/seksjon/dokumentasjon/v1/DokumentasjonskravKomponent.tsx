@@ -128,7 +128,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   return (
     <Box padding="space-16" background="sunken" borderRadius="12">
       <VStack gap="space-24">
-        <Form id={formId} action={formAction}>
+        <Form {...form.getFormProps()} id={formId} action={formAction}>
           <VStack gap="space-16">
             <Heading size="small" level="3">
               {dokumentasjonskrav.tittel}

@@ -361,7 +361,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                 );
               }
             })}
-          <Form id={formId} action={formAction}>
+          <Form {...form.getFormProps()} id={formId} action={formAction}>
             <VStack gap="space-24" className="mt-16">
               {alleModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(formValues)) {

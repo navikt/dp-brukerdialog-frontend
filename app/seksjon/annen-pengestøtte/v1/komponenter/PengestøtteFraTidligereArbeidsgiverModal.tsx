@@ -182,7 +182,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form id={formId} action={formAction}>
+          <Form {...form.getFormProps()} id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(formValues)) {

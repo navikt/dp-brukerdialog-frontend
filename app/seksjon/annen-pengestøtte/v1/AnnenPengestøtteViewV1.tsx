@@ -310,7 +310,7 @@ export function AnnenPengestøtteViewV1() {
     <div className="innhold">
       <title>{SEKSJON_TITTEL}</title>
       <VStack gap="space-24">
-        <Form id={formId} action={formAction}>
+        <Form {...form.getFormProps()} id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             <Heading size="medium" level="2">

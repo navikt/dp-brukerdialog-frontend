@@ -102,7 +102,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form id={formId} action={formAction}>
+          <Form {...form.getFormProps()} id={formId} action={formAction}>
             <VStack gap="space-16">
               {leggTilNæringsvirksomhetKomponenter.map((komponent) => {
                 if (komponent.visHvis && !komponent.visHvis(formValues)) {
