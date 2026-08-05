@@ -18,7 +18,7 @@ export function SøknadOversikt() {
     (navigation.state === "submitting" || navigation.state === "loading") &&
     navigation.formData != null;
 
-  const orkestratorInnsendteSøknader = mapInnsendteSøknader(søknader);
+  const innsendteSøknader = mapInnsendteSøknader(søknader);
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -38,7 +38,7 @@ export function SøknadOversikt() {
                 eller sende inn en ny?
               </BodyLong>
               <VStack gap="space-8">
-                {orkestratorInnsendteSøknader.map((soknad) => (
+                {innsendteSøknader.map((soknad) => (
                   <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
                     <Button variant="secondary">
                       Send inn vedlegg til søknad sendt{" "}
@@ -57,11 +57,9 @@ export function SøknadOversikt() {
                 på denne eller starte en ny?
               </BodyLong>
               <VStack gap="space-16">
-                {påbegyntSøknad && (
-                  <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
-                    <Button variant="primary">Fortsett påbegynt søknad</Button>
-                  </Link>
-                )}
+                <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
+                  <Button>Fortsett påbegynt søknad</Button>
+                </Link>
                 <HStack gap="space-16">
                   <Form method="post">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
