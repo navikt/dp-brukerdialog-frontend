@@ -57,7 +57,7 @@ export function SøknadOversikt() {
                 på denne eller starte en ny?
               </BodyLong>
               <VStack gap="space-16">
-                <Link key={påbegyntSøknad.soknadUuid} to={`${påbegyntSøknad.soknadUuid}`}>
+                <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
                   <Button>Fortsett påbegynt søknad</Button>
                 </Link>
                 <HStack gap="space-16">
