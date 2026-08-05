@@ -39,7 +39,7 @@ export function SøknadOversikt() {
               </BodyLong>
               <VStack gap="space-8">
                 {orkestratorInnsendteSøknader.map((soknad) => (
-                  <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
+                  <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}`}>
                     <Button variant="secondary">
                       Send inn vedlegg til søknad sendt{" "}
                       {formaterNorskDato(new Date(soknad.forstInnsendt))}
@@ -57,12 +57,14 @@ export function SøknadOversikt() {
                 på denne eller starte en ny?
               </BodyLong>
               <VStack gap="space-16">
-                {påbegyntSøknad && (
-                  <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
-                    <Button variant="primary">Fortsett påbegynt søknad</Button>
-                  </Link>
-                )}
+                <Link
+                  key={påbegyntSøknad.soknadUuid}
+                  to={`${påbegyntSøknad.soknadUuid}/kvittering`}
+                >
+                  <Button>Fortsett påbegynt søknad</Button>
+                </Link>
                 <HStack gap="space-16">
+                  {" "}
                   <Form method="post">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
                     <Button type="submit" variant="secondary" loading={sletterSøknad}>
