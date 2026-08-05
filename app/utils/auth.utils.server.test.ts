@@ -84,7 +84,7 @@ describe("auth.utils.server", () => {
       await expect(hentSoknadOrkestratorOboToken(mockRequest)).rejects.toThrow(Response);
 
       expect(loggerUtils.logger.error).toHaveBeenCalledWith(
-        "Lokalt token mangler! Kjør 'npm run token' for å generere token."
+        "Lokalt token mangler! Kjør 'pnpm run token' for å generere token."
       );
       expect(oasis.expiresIn).not.toHaveBeenCalled();
     });

@@ -79,6 +79,9 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
       setModalData(undefined);
@@ -160,10 +163,10 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-16" className="mt-16">
               {leggTilBarnManueltSpørsmål.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                   return null;
                 }
 
@@ -171,14 +174,14 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
                   <Komponent
                     key={spørsmål.id}
                     props={spørsmål}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(spørsmål.id as keyof LeggTilBarnManueltSvar)}
                   />
                 );
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
+                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>
               </HStack>

@@ -69,6 +69,9 @@ export function EgenNæringViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon }
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<EgenNæringSvar>(form, egenNæringEgenNæringsvirksomhetKomponenter);
 
   useEffect(() => {
@@ -180,18 +183,18 @@ export function EgenNæringViewV1() {
         <Heading size="medium" level="2">
           {SEKSJON_NAVN}
         </Heading>
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-24">
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {egenNæringEgenNæringsvirksomhetKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
               return (
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof EgenNæringSvar)}
                 />
               );
@@ -224,7 +227,7 @@ export function EgenNæringViewV1() {
               </VStack>
             )}
             {egenNæringEgetGårdsbrukKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                 return null;
               }
 
@@ -232,7 +235,7 @@ export function EgenNæringViewV1() {
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(spørsmål.id as keyof EgenNæringSvar)}
                 />
               );

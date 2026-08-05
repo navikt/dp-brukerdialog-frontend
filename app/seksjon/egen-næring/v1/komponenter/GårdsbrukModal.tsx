@@ -59,6 +59,9 @@ export function GårdsbrukModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<LeggTilGårdsbrukSvar>(form, leggTilGårdsbrukKomponenter);
 
   const modalOperasjon =
@@ -92,10 +95,10 @@ export function GårdsbrukModal({ ref }: IProps) {
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {leggTilGårdsbrukKomponenter.map((spørsmål) => {
-                if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+                if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                   return null;
                 }
 
@@ -109,7 +112,7 @@ export function GårdsbrukModal({ ref }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
+                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>
               </HStack>

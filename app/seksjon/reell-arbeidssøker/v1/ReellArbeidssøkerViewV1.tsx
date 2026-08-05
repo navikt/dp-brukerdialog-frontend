@@ -55,6 +55,9 @@ export function ReellArbeidssøkerViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<ReellArbeidssøkerSvar>(form, reellArbeidssøkerKomponenter);
 
   function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
@@ -192,11 +195,11 @@ export function ReellArbeidssøkerViewV1() {
       <Heading size="medium" level="2">
         {SEKSJON_NAVN}
       </Heading>
-      <Form {...form.getFormProps()}>
+      <Form id={formId} action={formAction}>
         <VStack gap="space-24">
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           {reellArbeidssøkerKomponenter.map((komponent) => {
-            if (komponent.visHvis && !komponent.visHvis(form.value())) {
+            if (komponent.visHvis && !komponent.visHvis(formValues)) {
               return null;
             }
 
@@ -204,7 +207,7 @@ export function ReellArbeidssøkerViewV1() {
               <Komponent
                 key={komponent.id}
                 props={komponent}
-                formValues={form.value()}
+                formValues={formValues}
                 formScope={form.scope(komponent.id as keyof ReellArbeidssøkerSvar)}
               />
             );

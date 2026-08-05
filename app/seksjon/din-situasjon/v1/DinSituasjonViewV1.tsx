@@ -32,6 +32,10 @@ export function DinSituasjonViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
+
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
 
   function genererPdfGrunnlag() {
@@ -66,11 +70,11 @@ export function DinSituasjonViewV1() {
         <Heading size="medium" level="2">
           {SEKSJON_NAVN}
         </Heading>
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             {dinSituasjonKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -78,7 +82,7 @@ export function DinSituasjonViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof DinSituasjonSvar)}
                 />
               );

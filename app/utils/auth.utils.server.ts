@@ -7,8 +7,8 @@ function håndterLocalhostToken(tokenName: keyof IEnv) {
   const useMsw = getEnv("USE_MSW") === "true";
 
   if (!token) {
-    logger.error("Lokalt token mangler! Kjør 'npm run token' for å generere token.");
-    throw new Response("Lokalt token mangler. Kjør 'npm run token' for å generere token.", {
+    logger.error("Lokalt token mangler! Kjør 'pnpm run token' for å generere token.");
+    throw new Response("Lokalt token mangler. Kjør 'pnpm run token' for å generere token.", {
       status: 401,
       statusText: "Token mangler",
     });
@@ -17,7 +17,7 @@ function håndterLocalhostToken(tokenName: keyof IEnv) {
   if (expiresIn(token) <= 0 && !useMsw) {
     logger.error("Lokalt token utløpt! Oppdatere token på nytt!");
 
-    throw new Response("Lokalt token er utløpt. Kjør 'npm run token' for å generere nytt token.", {
+    throw new Response("Lokalt token er utløpt. Kjør 'pnpm run token' for å generere nytt token.", {
       status: 401,
       statusText: "Token utløpt",
     });
