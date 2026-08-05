@@ -95,9 +95,10 @@ export function OppsummeringView() {
             </ErrorMessage>
           )}
 
-          <Form id={formId} action={formAction}>
+          <Form id={formId} action={formAction} method="put">
             <HStack gap="space-16" className="mt-32">
               <Button
+                type="button"
                 disabled={state === "submitting" || state === "loading"}
                 variant="secondary"
                 icon={<ArrowLeftIcon aria-hidden />}
@@ -105,7 +106,9 @@ export function OppsummeringView() {
               >
                 Forrige steg
               </Button>
-              <Button disabled={state === "submitting" || state === "loading"}>Send søknad</Button>
+              <Button type="submit" disabled={state === "submitting" || state === "loading"}>
+                Send søknad
+              </Button>
             </HStack>
           </Form>
         </VStack>

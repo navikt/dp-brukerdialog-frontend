@@ -8,7 +8,7 @@ import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.co
 import {
   leggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
-  Næringsvirksomhet
+  Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
@@ -26,7 +26,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     næringsvirksomheter,
     setNæringsvirksomheter,
     næringsvirksomhetModalData,
-    setNæringsvirksomhetModalData
+    setNæringsvirksomhetModalData,
   } = useEgenNæringContext();
 
   const form = useForm({
@@ -35,7 +35,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     validationBehaviorConfig: {
       initial: "onSubmit",
       whenTouched: "onSubmit",
-      whenSubmitted: "onBlur"
+      whenSubmitted: "onBlur",
     },
     defaultValues: næringsvirksomhetModalData?.næringsvirksomhet ?? {},
     handleSubmit: (næringsvirksomhet) => {
@@ -65,7 +65,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
       setNæringsvirksomhetModalData(undefined);
       ref.current?.close();
     },
-    resetAfterSubmit: true
+    resetAfterSubmit: true,
   });
 
   const { formId, action: formAction } = form.formOptions;
@@ -120,7 +120,11 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>
