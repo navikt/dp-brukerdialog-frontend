@@ -20,9 +20,6 @@ import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
-import { sanityClient } from "./sanity/sanity.config";
-import { allTextsQuery } from "./sanity/sanity.query";
-import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
 
@@ -47,20 +44,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     logger.error("Kunne ikke hente dekoratør språk");
   }
 
-  const sanityData = await sanityClient.fetch<SanityData>(allTextsQuery, {
-    baseLang: "nb",
-    lang: dekoratorLanguage,
-  });
-
   return data({
     decoratorFragments,
     language: dekoratorLanguage,
-    sanityData,
     env: {
       IS_LOCALHOST: getEnv("IS_LOCALHOST"),
       APP_ENV: getEnv("APP_ENV"),
       BASE_PATH: getEnv("BASE_PATH"),
-      SANITY_DATASET: getEnv("SANITY_DATASET"),
       DP_SOKNAD_ORKESTRATOR_URL: getEnv("DP_SOKNAD_ORKESTRATOR_URL"),
       DP_MINE_DAGPENGER_URL: getEnv("DP_MINE_DAGPENGER_URL"),
       GENERELL_INNSENDING_URL: getEnv("GENERELL_INNSENDING_URL"),
