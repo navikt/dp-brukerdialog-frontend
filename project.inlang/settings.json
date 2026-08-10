@@ -1,6 +1,9 @@
 {
+  "$schema": "https://inlang.com/schema/project-settings",
   "baseLocale": "nb",
   "locales": ["nb", "en", "nn"],
+  "sourceLanguageTag": "nb",
+  "languageTags": ["nb", "en", "nn"],
   "modules": [
     "https://cdn.jsdelivr.net/npm/@inlang/plugin-i18next@latest/dist/index.js",
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-missing-translation@latest/dist/index.js",
