@@ -24,7 +24,7 @@ const namespaceTilSeksjonPath: Record<string, string> = {
   verneplikt: "verneplikt",
 };
 
-const oversettelser = import.meta.glob("../seksjon/**/tekst/*.json");
+const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
 
 const appSeksjonBackend = {
   type: "backend" as const,
@@ -39,8 +39,8 @@ const appSeksjonBackend = {
     }
 
     const filPath = versjon
-      ? `../seksjon/${seksjonPath}/${versjon}/tekst/${language}.json`
-      : `../seksjon/${seksjonPath}/tekst/${language}.json`;
+      ? `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`
+      : `../seksjon/${seksjonPath}/locales/${language}.json`;
 
     const lastOversettelse = oversettelser[filPath] as
       undefined | (() => Promise<{ default: Record<string, unknown> } | Record<string, unknown>>);
