@@ -3,11 +3,13 @@ import { Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { FormScope } from "@rvf/react-router";
 import { useMemo } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { useTranslation } from "react-i18next";
+import { useLoaderData } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { ForklarendeTekst, HeadingTekst, KomponentType } from "~/components/Komponent.types";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { loader } from "~/routes/$soknadId.dokumentasjon";
 import {
   lagDokumentasjonKomponenter,
   lagDokumentasjonskravKomponenter,
@@ -20,7 +22,8 @@ import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
 
 export function DokumentasjonViewV1() {
-  const { t } = useTranslation("dokumentasjon");
+  const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("dokumentasjon", loaderData.seksjon.versjon);
 
   const dokumentasjonKomponenter = useMemo(() => lagDokumentasjonKomponenter(t), [t]);
 

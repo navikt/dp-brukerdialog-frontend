@@ -17,7 +17,7 @@ import { validerSvar } from "~/utils/validering.utils";
 import { handling, lagDinSituasjonKomponenter, pdfGrunnlag } from "./din-situasjon.komponenter";
 import type { DinSituasjonSvar } from "./din-situasjon.komponenter";
 
-export function DinSituasjonViewV1() {
+export function DinSituasjonViewV2() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const { t } = useVersjonertTranslation("din-situasjon", loaderData.seksjon.versjon);

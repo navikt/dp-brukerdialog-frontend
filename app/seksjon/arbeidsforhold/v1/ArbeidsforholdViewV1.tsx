@@ -41,10 +41,11 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function ArbeidsforholdViewV1() {
-  const { t } = useTranslation("arbeidsforhold");
+  const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("arbeidsforhold", loaderData.seksjon.versjon);
 
   const arbeidsforholdKomponenter = useMemo(() => lagArbeidsforholdKomponenter(t), [t]);
 
@@ -102,7 +103,6 @@ export function ArbeidsforholdViewV1() {
 
   const ref = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
-  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [visManglerArbeidsforholdFeilmelding, setVisManglerArbeidsforholdFeilmelding] =
     useState(false);
@@ -122,7 +122,6 @@ export function ArbeidsforholdViewV1() {
     schema: arbeidsforholdSchema,
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
-
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();

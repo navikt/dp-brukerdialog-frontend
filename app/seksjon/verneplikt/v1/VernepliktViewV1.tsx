@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
@@ -8,6 +7,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
@@ -27,9 +27,9 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
-  const { t } = useTranslation("verneplikt");
-  const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("verneplikt", loaderData.seksjon.versjon);
+  const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 

@@ -1,12 +1,9 @@
 {
   "$schema": "https://inlang.com/schema/project-settings",
-
   "baseLocale": "nb",
   "locales": ["nb", "en", "nn"],
-
   "sourceLanguageTag": "nb",
   "languageTags": ["nb", "en", "nn"],
-
   "modules": [
     "https://cdn.jsdelivr.net/npm/@inlang/plugin-i18next@latest/dist/index.js",
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-missing-translation@latest/dist/index.js",
@@ -14,29 +11,28 @@
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-without-source@latest/dist/index.js",
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-identical-pattern@latest/dist/index.js"
   ],
-
   "plugin.inlang.i18next": {
     "pathPattern": {
-      "01_soknadsoversikt": "./public/locales/{languageTag}/soknadOversikt.json",
-      "02_personalia": "./public/locales/{languageTag}/personalia.json",
-      "03_din_situasjon": "./public/locales/{languageTag}/din-situasjon.json",
-      "04_arbeidsforhold": "./public/locales/{languageTag}/arbeidsforhold.json",
-      "05_reell_arbeidssoker": "./public/locales/{languageTag}/reell-arbeidssoker.json",
-      "06_utdanning": "./public/locales/{languageTag}/utdanning.json",
-      "07_verneplikt": "./public/locales/{languageTag}/verneplikt.json",
-      "08_egen_naering": "./public/locales/{languageTag}/egen-naering.json",
-      "09_annen_pengestotte": "./public/locales/{languageTag}/annen-pengestotte.json",
-      "10_barnetillegg": "./public/locales/{languageTag}/barnetillegg.json",
-      "11_dokumentasjon": "./public/locales/{languageTag}/dokumentasjon.json",
-      "12_tilleggsopplysninger": "./public/locales/{languageTag}/tilleggsopplysninger.json",
-      "13_oppsummering": "./public/locales/{languageTag}/oppsummering.json",
-      "14_kvittering": "./public/locales/{languageTag}/kvittering.json",
-      "15_ettersending": "./public/locales/{languageTag}/ettersending.json",
-      "99_common": "./public/locales/{languageTag}/common.json"
+      "01_soknadsoversikt": "./app/seksjon/oversikt/locales/{languageTag}.json",
+      "02_personalia": "./app/seksjon/personalia/v1/locales/{languageTag}.json",
+      "03_din_situasjon": "./app/seksjon/din-situasjon/v1/locales/{languageTag}.json",
+      "03_din_situasjon_v2": "./app/seksjon/din-situasjon/v2/locales/{languageTag}.json",
+      "04_arbeidsforhold": "./app/seksjon/arbeidsforhold/v1/locales/{languageTag}.json",
+      "05_reell_arbeidssoker": "./app/seksjon/reell-arbeidssøker/v1/locales/{languageTag}.json",
+      "06_utdanning": "./app/seksjon/utdanning/v1/locales/{languageTag}.json",
+      "07_verneplikt": "./app/seksjon/verneplikt/v1/locales/{languageTag}.json",
+      "08_egen_naering": "./app/seksjon/egen-næring/v1/locales/{languageTag}.json",
+      "09_annen_pengestotte": "./app/seksjon/annen-pengestøtte/v1/locales/{languageTag}.json",
+      "10_barnetillegg": "./app/seksjon/barnetillegg/v1/locales/{languageTag}.json",
+      "11_dokumentasjon": "./app/seksjon/dokumentasjon/v1/locales/{languageTag}.json",
+      "12_tilleggsopplysninger": "./app/seksjon/tilleggsopplysninger/v1/locales/{languageTag}.json",
+      "13_oppsummering": "./app/seksjon/oppsummering/locales/{languageTag}.json",
+      "14_kvittering": "./app/seksjon/kvittering/locales/{languageTag}.json",
+      "15_ettersending": "./app/seksjon/ettersending/locales/{languageTag}.json",
+      "99_common": "./app/seksjon/common/locales/{languageTag}.json"
     },
     "variableReferencePattern": ["{{", "}}"]
   },
-
   "messageLintRuleLevels": {
     "messageLintRule.inlang.missingTranslation": "error",
     "messageLintRule.inlang.emptyPattern": "error",

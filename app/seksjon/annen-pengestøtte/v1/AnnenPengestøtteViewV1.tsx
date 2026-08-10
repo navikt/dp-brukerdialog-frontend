@@ -9,6 +9,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.annen-pengestotte";
 import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
@@ -52,10 +53,10 @@ import {
   pengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { useTranslation } from "react-i18next";
 
 export function AnnenPengestøtteViewV1() {
-  const { t } = useTranslation("annen-pengestotte");
+  const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("annen-pengestotte", loaderData.seksjon.versjon);
   const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter = useMemo(
     () => lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t),
     [t]
@@ -72,8 +73,6 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-
-  const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [
     visPengestøtteFraTidligereArbeidsgiverFeilmelding,

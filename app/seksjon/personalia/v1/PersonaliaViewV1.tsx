@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import { BodyLong, BodyShort, Heading, Label, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useMemo } from "react";
@@ -9,6 +8,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { action, loader } from "~/routes/$soknadId.personalia";
 import {
   adresselinje1FraPdl,
@@ -37,9 +37,9 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function PersonaliaViewV1() {
-  const { t } = useTranslation("personalia");
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("personalia", loaderData.seksjon.versjon);
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
