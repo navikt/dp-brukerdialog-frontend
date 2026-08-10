@@ -38,8 +38,9 @@ export function SøknadOversikt() {
                 {innsendteSøknader.map((soknad) => (
                   <Link key={soknad.soknadUuid} to={`${soknad.soknadUuid}/kvittering`}>
                     <Button variant="secondary">
-                      Send inn vedlegg til søknad sendt{" "}
-                      {formaterNorskDato(new Date(soknad.forstInnsendt))}
+                      {t("innsendtSoknad.vedleggsKnapp", {
+                        date: formaterNorskDato(new Date(soknad.forstInnsendt)),
+                      })}
                     </Button>
                   </Link>
                 ))}
@@ -56,7 +57,7 @@ export function SøknadOversikt() {
               </BodyLong>
               <VStack gap="space-16">
                 <Link to={`/${påbegyntSøknad.soknadUuid}/personalia`}>
-                  <Button>Fortsett påbegynt søknad</Button>
+                  <Button>{t("pabegyntSoknad.fortsettKnapp")}</Button>
                 </Link>
                 <HStack gap="space-16">
                   <Form method="post">
