@@ -11,6 +11,8 @@ import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/Arbeidsforhold
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/ArbeidsforholdViewV2";
+import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
@@ -25,7 +27,7 @@ export type ArbeidsforholdSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-export const NYESTE_VERSJON = 1;
+export const NYESTE_VERSJON = 2;
 export const SEKSJON_ID = "arbeidsforhold";
 export const SEKSJON_NAVN = "Arbeidsforhold";
 export const SEKSJON_TITTEL = "Søknad om dagpenger: Arbeidsforhold";
@@ -100,17 +102,26 @@ export default function ArbeidsforholdSeksjon() {
           <ArbeidsforholdViewV1 />
         </ArbeidsforholdProvider>
       );
+    case 2:
+      return (
+        <ArbeidsforholdProviderV2
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+        >
+          <ArbeidsforholdViewV2 />
+        </ArbeidsforholdProviderV2>
+      );
     default:
       console.error(
         `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
-        <ArbeidsforholdProvider
+        <ArbeidsforholdProviderV2
           registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
-          <ArbeidsforholdViewV1 />
-        </ArbeidsforholdProvider>
+          <ArbeidsforholdViewV2 />
+        </ArbeidsforholdProviderV2>
       );
   }
 }
