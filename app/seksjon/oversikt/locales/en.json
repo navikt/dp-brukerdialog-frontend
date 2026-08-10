@@ -5,5 +5,8 @@
 	},
 	"innsendtSoknad": {
 		"beskrivelse": "Hello world"
+	},
+	"pabegyntSoknad": {
+		"slettOgStartPaNyttKnapp": "Send inn {date}"
 	}
 }
