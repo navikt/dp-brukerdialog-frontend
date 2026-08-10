@@ -39,6 +39,9 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     defaultValues: hentFormDefaultValue()
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<DokumentasjonskravSvar>(form, dokumentasjonskravKomponenter);
 
   useEffect(() => {
@@ -125,7 +128,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
   return (
     <Box padding="space-16" background="sunken" borderRadius="12">
       <VStack gap="space-24">
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-16">
             <Heading size="small" level="3">
               {dokumentasjonskrav.tittel}
@@ -136,7 +139,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
             )}
 
             {dokumentasjonskravKomponenter.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                 return null;
               }
 
@@ -144,7 +147,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(spørsmål.id as keyof DokumentasjonskravSvar)}
                 />
               );

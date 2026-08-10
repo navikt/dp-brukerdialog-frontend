@@ -96,6 +96,9 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     resetAfterSubmit: true,
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
 
   useEffect(() => {
@@ -352,16 +355,16 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={modalData.form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                   />
                 );
               }
             })}
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24" className="mt-16">
               {alleModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -369,14 +372,18 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(komponent.id as keyof ArbeidsforholdModalSvar)}
                   />
                 );
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>

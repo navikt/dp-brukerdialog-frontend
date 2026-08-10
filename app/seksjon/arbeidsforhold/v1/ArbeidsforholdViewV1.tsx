@@ -123,6 +123,10 @@ export function ArbeidsforholdViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
+
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
 
   useEffect(() => {
@@ -220,14 +224,14 @@ export function ArbeidsforholdViewV1() {
     <div className="innhold">
       <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-24">
             <Heading size="medium" level="2">
               {t("side.overskrift")}
             </Heading>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {arbeidsforholdKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -235,7 +239,7 @@ export function ArbeidsforholdViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                 />
               );
@@ -248,7 +252,7 @@ export function ArbeidsforholdViewV1() {
               ) && (
                 <VStack className="mt-16" gap="space-24">
                   {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-                    if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                    if (komponent.visHvis && !komponent.visHvis(formValues)) {
                       return null;
                     }
 
@@ -256,7 +260,7 @@ export function ArbeidsforholdViewV1() {
                       <Komponent
                         key={komponent.id}
                         props={komponent}
-                        formValues={form.value()}
+                        formValues={formValues}
                         formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                       />
                     );

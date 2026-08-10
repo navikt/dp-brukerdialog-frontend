@@ -79,6 +79,10 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     resetAfterSubmit: true,
   });
 
+
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   function leggTilPengestøtteFraTidligereArbeidsgiver(
     pengestøtteProps: PengestøtteFraTidligereArbeidsgiverModalSvar,
     dokumentasjonskravTittel: string
@@ -178,10 +182,10 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
           </Heading>
         </Modal.Header>
         <Modal.Body>
-          <Form {...form.getFormProps()}>
+          <Form id={formId} action={formAction}>
             <VStack gap="space-24">
               {pengestøtteFraTidligereArbeidsgiverModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(form.value())) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
@@ -189,7 +193,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
                   <Komponent
                     key={komponent.id}
                     props={komponent}
-                    formValues={form.value()}
+                    formValues={formValues}
                     formScope={form.scope(
                       komponent.id as keyof PengestøtteFraTidligereArbeidsgiverModalSvar
                     )}
@@ -198,7 +202,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="submit" icon={<FloppydiskIcon aria-hidden />}>
+                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
                   Lagre og lukk
                 </Button>
               </HStack>

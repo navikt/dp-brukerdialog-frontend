@@ -45,7 +45,6 @@ export function PersonaliaViewV1() {
   const actionData = useActionData<typeof action>();
 
   const personaliaSpørsmål = useMemo(() => lagPersonaliaSpørsmål(t), [t]);
-
   const personaliaBostedslandSpørsmål = useMemo(() => lagPersonaliaBostedslandSpørsmål(t), [t]);
 
   const form = useForm({
@@ -54,6 +53,9 @@ export function PersonaliaViewV1() {
     schema: personaliaSchema,
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
+
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
 
   useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
 
@@ -186,12 +188,11 @@ export function PersonaliaViewV1() {
             </BodyShort>
           </VStack>
         </VStack>
-
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={seksjon.versjon} />
           <VStack gap="space-24">
             {personaliaSpørsmål.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -199,14 +200,14 @@ export function PersonaliaViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof PersonaliaSvar)}
                 />
               );
             })}
 
             {personaliaBostedslandSpørsmål.map((spørsmål) => {
-              if (spørsmål.visHvis && !spørsmål.visHvis(form.value())) {
+              if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                 return null;
               }
 
@@ -214,7 +215,7 @@ export function PersonaliaViewV1() {
                 <Komponent
                   key={spørsmål.id}
                   props={spørsmål}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(spørsmål.id as keyof PersonaliaSvar)}
                 />
               );

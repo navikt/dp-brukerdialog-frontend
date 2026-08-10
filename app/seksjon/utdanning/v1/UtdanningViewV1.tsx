@@ -42,6 +42,9 @@ export function UtdanningViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
   useNullstillSkjulteFelter<UtdanningSvar>(form, utdanningKomponenter);
 
   function genererPdfGrunnlag() {
@@ -93,11 +96,11 @@ export function UtdanningViewV1() {
         <Heading size="medium" level="2">
           {t("side.overskrift")}
         </Heading>
-        <Form {...form.getFormProps()}>
+        <Form id={formId} action={formAction}>
           <VStack gap="space-24">
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {utdanningKomponenter.map((komponent) => {
-              if (komponent.visHvis && !komponent.visHvis(form.value())) {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
 
@@ -105,7 +108,7 @@ export function UtdanningViewV1() {
                 <Komponent
                   key={komponent.id}
                   props={komponent}
-                  formValues={form.value()}
+                  formValues={formValues}
                   formScope={form.scope(komponent.id as keyof UtdanningSvar)}
                 />
               );

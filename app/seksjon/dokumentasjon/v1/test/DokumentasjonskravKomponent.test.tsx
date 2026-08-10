@@ -9,13 +9,13 @@ import { DokumentasjonskravKomponent } from "../DokumentasjonskravKomponent";
 import type { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   DokumentasjonskravFeilType,
-  DokumentasjonskravType
+  DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 import {
   dokumentkravSvarSenderSenere,
   dokumentkravSvarSendNå,
-  velgHvaDuVilGjøre
+  velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 
 const mocks = vi.hoisted(() => ({
@@ -23,23 +23,30 @@ const mocks = vi.hoisted(() => ({
   valideringsTeller: 0,
   formValues: {} as Record<string, string | undefined>,
   formIsValid: true,
-  validate: vi.fn()
+  validate: vi.fn(),
 }));
 
 vi.mock("react-router", () => ({
-  Form: ({ children }: { children: ReactNode }) => <form>{children}</form>
+  Form: ({ children, id, action }: { children: ReactNode; id?: string; action?: string }) => (
+    <form id={id} action={action}>
+      {children}
+    </form>
+  ),
 }));
 
 vi.mock("@rvf/react-router", () => ({
   useForm: () => ({
-    getFormProps: () => ({}),
+    formOptions: {
+      formId: "test-form-id",
+      action: "/test-action",
+    },
     scope: (id: string) => ({ id }),
     validate: mocks.validate,
     formState: {
-      isValid: mocks.formIsValid
+      isValid: mocks.formIsValid,
     },
     transient: {
-      value: () => mocks.formValues
+      value: () => mocks.formValues,
     },
     value: (field?: string) => {
       if (!field) {
@@ -47,45 +54,45 @@ vi.mock("@rvf/react-router", () => ({
       }
 
       return mocks.formValues[field];
-    }
-  })
+    },
+  }),
 }));
 
 vi.mock("../dokumentasjonskrav.context", () => ({
   useDokumentasjonskravContext: () => ({
     oppdaterEtDokumentasjonskrav: mocks.oppdaterEtDokumentasjonskrav,
-    valideringsTeller: mocks.valideringsTeller
-  })
+    valideringsTeller: mocks.valideringsTeller,
+  }),
 }));
 
 vi.mock("~/hooks/useNullstillSkjulteFelter", () => ({
-  useNullstillSkjulteFelter: vi.fn()
+  useNullstillSkjulteFelter: vi.fn(),
 }));
 
 vi.mock("~/components/FilOpplasting", () => ({
-  FilOpplasting: () => <div data-testid="filopplasting">FilOpplasting</div>
+  FilOpplasting: () => <div data-testid="filopplasting">FilOpplasting</div>,
 }));
 
 vi.mock("~/components/Komponent", () => ({
   Komponent: ({ props }: { props: { id: string } }) => (
     <div data-testid={`komponent-${props.id}`}>{props.id}</div>
-  )
+  ),
 }));
 
 vi.mock("../DokumentasjonskravInnhold", () => ({
   DokumentasjonskravInnhold: ({ type }: { type: DokumentasjonskravType }) => (
     <div data-testid="dokumentasjonskrav-innhold">{type}</div>
-  )
+  ),
 }));
 
 vi.mock("../dokumentasjonskrav.schema", () => ({
-  dokumentasjonskravSchema: {}
+  dokumentasjonskravSchema: {},
 }));
 
 vi.mock("@navikt/ds-react", () => ({
   Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   VStack: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Heading: ({ children }: { children: ReactNode }) => <h3>{children}</h3>
+  Heading: ({ children }: { children: ReactNode }) => <h3>{children}</h3>,
 }));
 
 function lagDokumentasjonskrav(overrides: Partial<Dokumentasjonskrav> = {}): Dokumentasjonskrav {
@@ -96,7 +103,7 @@ function lagDokumentasjonskrav(overrides: Partial<Dokumentasjonskrav> = {}): Dok
     skjemakode: "TEST_SKJEMA",
     seksjonId: "seksjon-123",
     type: DokumentasjonskravType.Barn,
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -111,13 +118,13 @@ beforeEach(() => {
 describe("DokumentasjonskravKomponent", () => {
   it("viser FilOpplasting når bruker har valgt å sende dokumentasjon nå", () => {
     mocks.formValues = {
-      [velgHvaDuVilGjøre]: dokumentkravSvarSendNå
+      [velgHvaDuVilGjøre]: dokumentkravSvarSendNå,
     };
 
     render(
       <DokumentasjonskravKomponent
         dokumentasjonskrav={lagDokumentasjonskrav({
-          svar: dokumentkravSvarSendNå
+          svar: dokumentkravSvarSendNå,
         })}
       />
     );
@@ -131,13 +138,13 @@ describe("DokumentasjonskravKomponent", () => {
 
   it("viser ikke FilOpplasting når bruker har valgt å sende dokumentasjon senere", () => {
     mocks.formValues = {
-      [velgHvaDuVilGjøre]: dokumentkravSvarSenderSenere
+      [velgHvaDuVilGjøre]: dokumentkravSvarSenderSenere,
     };
 
     render(
       <DokumentasjonskravKomponent
         dokumentasjonskrav={lagDokumentasjonskrav({
-          svar: dokumentkravSvarSenderSenere
+          svar: dokumentkravSvarSenderSenere,
         })}
       />
     );
@@ -148,13 +155,13 @@ describe("DokumentasjonskravKomponent", () => {
   it("validerer skjema når valideringsTeller er større enn 0", async () => {
     mocks.valideringsTeller = 1;
     mocks.formValues = {
-      [velgHvaDuVilGjøre]: dokumentkravSvarSenderSenere
+      [velgHvaDuVilGjøre]: dokumentkravSvarSenderSenere,
     };
 
     render(
       <DokumentasjonskravKomponent
         dokumentasjonskrav={lagDokumentasjonskrav({
-          svar: dokumentkravSvarSenderSenere
+          svar: dokumentkravSvarSenderSenere,
         })}
       />
     );
@@ -167,14 +174,14 @@ describe("DokumentasjonskravKomponent", () => {
   it("setter MANGLER_FILER når validering er startet, bruker sender nå og ingen filer finnes", async () => {
     mocks.valideringsTeller = 1;
     mocks.formValues = {
-      [velgHvaDuVilGjøre]: dokumentkravSvarSendNå
+      [velgHvaDuVilGjøre]: dokumentkravSvarSendNå,
     };
 
     render(
       <DokumentasjonskravKomponent
         dokumentasjonskrav={lagDokumentasjonskrav({
           svar: dokumentkravSvarSendNå,
-          filer: []
+          filer: [],
         })}
       />
     );
@@ -182,7 +189,7 @@ describe("DokumentasjonskravKomponent", () => {
     await waitFor(() => {
       expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
         expect.objectContaining({
-          feil: DokumentasjonskravFeilType.MANGLER_FILER
+          feil: DokumentasjonskravFeilType.MANGLER_FILER,
         })
       );
     });
@@ -191,7 +198,7 @@ describe("DokumentasjonskravKomponent", () => {
   it("setter ikke MANGLER_FILER når bruker sender nå og filer finnes", async () => {
     mocks.valideringsTeller = 1;
     mocks.formValues = {
-      [velgHvaDuVilGjøre]: dokumentkravSvarSendNå
+      [velgHvaDuVilGjøre]: dokumentkravSvarSendNå,
     };
 
     render(
@@ -203,9 +210,9 @@ describe("DokumentasjonskravKomponent", () => {
               id: "file-1",
               filnavn: "test.pdf",
               storrelse: 7,
-              filsti: "tmp/test.pdf"
-            }
-          ]
+              filsti: "tmp/test.pdf",
+            },
+          ],
         })}
       />
     );
@@ -216,7 +223,7 @@ describe("DokumentasjonskravKomponent", () => {
 
     expect(mocks.oppdaterEtDokumentasjonskrav).not.toHaveBeenCalledWith(
       expect.objectContaining({
-        feil: DokumentasjonskravFeilType.MANGLER_FILER
+        feil: DokumentasjonskravFeilType.MANGLER_FILER,
       })
     );
   });
@@ -224,13 +231,13 @@ describe("DokumentasjonskravKomponent", () => {
   it("setter VALIDERINGSFEIL når skjemaet ikke er gyldig", async () => {
     mocks.formIsValid = false;
     mocks.formValues = {
-      [velgHvaDuVilGjøre]: dokumentkravSvarSenderSenere
+      [velgHvaDuVilGjøre]: dokumentkravSvarSenderSenere,
     };
 
     render(
       <DokumentasjonskravKomponent
         dokumentasjonskrav={lagDokumentasjonskrav({
-          svar: dokumentkravSvarSenderSenere
+          svar: dokumentkravSvarSenderSenere,
         })}
       />
     );
@@ -238,7 +245,7 @@ describe("DokumentasjonskravKomponent", () => {
     await waitFor(() => {
       expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
         expect.objectContaining({
-          feil: DokumentasjonskravFeilType.VALIDERINGSFEIL
+          feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
         })
       );
     });

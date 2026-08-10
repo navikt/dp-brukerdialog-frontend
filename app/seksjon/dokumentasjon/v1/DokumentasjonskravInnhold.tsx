@@ -11,7 +11,7 @@ const SLUTTARSAK_SKJEMA_URL =
   "https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf";
 
 const ARBEIDSAVTALE_SKJEMA_URL =
-  "https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb4398396949d8c6efbb439839694b04dd5.pdf";
+  "https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf";
 
 const PERMITTERING_SKJEMA_URL =
   "https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf";
