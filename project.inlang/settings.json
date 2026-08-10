@@ -13,8 +13,8 @@
   ],
   "plugin.inlang.i18next": {
     "pathPattern": {
-      "soknadsoversikt": "./app/seksjon/oversikt/locales/{languageTag}.json",
-      "personalia": "./app/seksjon/personalia/v1/locales/{languageTag}.json",
+      "Søknadoversikt": "./app/seksjon/oversikt/locales/{languageTag}.json",
+      "Personalia": "./app/seksjon/personalia/v1/locales/{languageTag}.json",
       "din_situasjon": "./app/seksjon/din-situasjon/v2/locales/{languageTag}.json",
       "arbeidsforhold": "./app/seksjon/arbeidsforhold/v1/locales/{languageTag}.json",
       "reell_arbeidssoker": "./app/seksjon/reell-arbeidssøker/v1/locales/{languageTag}.json",
