@@ -7,6 +7,6 @@
 		"beskrivelse": "Hello world"
 	},
 	"pabegyntSoknad": {
-		"slettOgStartPaNyttKnapp": "Send inn {date}"
+		"slettOgStartPaNyttKnapp": "Send inn {{date}}"
 	}
 }
