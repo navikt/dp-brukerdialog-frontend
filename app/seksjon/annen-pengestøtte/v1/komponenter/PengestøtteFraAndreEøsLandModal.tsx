@@ -43,7 +43,7 @@ export type PengestøtteFraAndreEøsLand = PengestøtteFraAndreEøsLandModalSvar
 };
 
 export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId, versjon }: IProps) {
-  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   const pengestøtteFraAndreEøsLandModalKomponenter = useMemo(
     () => lagPengestøtteFraAndreEøsLandModalKomponenter(t),
     [t]

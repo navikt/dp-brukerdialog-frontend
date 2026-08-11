@@ -26,7 +26,7 @@ interface IProps {
 export function PengestøtteFraAndreEøsLandDetaljer({
   pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
 }: IProps) {
-  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   const pengestøtteFraAndreEøsLandModalKomponenter = useMemo(
     () => lagPengestøtteFraAndreEøsLandModalKomponenter(t),
     [t]

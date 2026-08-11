@@ -12,7 +12,7 @@ export function ReellArbeidssøkerOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("reell-arbeidssoker", 1);
+  const { t } = useVersjonertTranslation("reell-arbeidssøker", 1);
 
   const reellArbeidssøkerKomponenter = useMemo(() => lagReellArbeidssøkerKomponenter(t), [t]);
 

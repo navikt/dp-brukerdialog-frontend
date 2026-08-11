@@ -20,7 +20,7 @@ interface IProps {
 }
 
 export function NæringsvirksomhetModal({ ref }: IProps) {
-  const { t } = useVersjonertTranslation("egen-naering", 1);
+  const { t } = useVersjonertTranslation("egen-næring", 1);
   const leggTilNæringsvirksomhetKomponenter = useMemo(
     () => lagLeggTilNæringsvirksomhetKomponenter(t),
     [t]

@@ -21,7 +21,7 @@ interface IProps {
 }
 
 export function GårdsbrukModal({ ref }: IProps) {
-  const { t } = useVersjonertTranslation("egen-naering", 1);
+  const { t } = useVersjonertTranslation("egen-næring", 1);
   const leggTilGårdsbrukKomponenter = useMemo(() => lagLeggTilGårdsbrukKomponenter(t), [t]);
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =

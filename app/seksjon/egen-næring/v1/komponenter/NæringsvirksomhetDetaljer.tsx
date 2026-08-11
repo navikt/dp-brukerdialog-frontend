@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksomhetIndex }: IProps) {
-  const { t } = useVersjonertTranslation("egen-naering", 1);
+  const { t } = useVersjonertTranslation("egen-næring", 1);
   const { næringsvirksomheter, setNæringsvirksomheter, setNæringsvirksomhetModalData } =
     useEgenNæringContext();
 

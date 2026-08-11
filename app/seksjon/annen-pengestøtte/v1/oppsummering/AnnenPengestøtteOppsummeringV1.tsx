@@ -26,7 +26,7 @@ export function AnnenPengestøtteOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   if (!seksjonSvarene) return null;
 
   const data = seksjonSvarene as AnnenPengestøtteResponse;

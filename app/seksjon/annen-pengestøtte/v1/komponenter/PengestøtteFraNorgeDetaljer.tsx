@@ -24,7 +24,7 @@ interface IProps {
 export function PengestøtteFraNorgeDetaljer({
   pengestøtteFraNorge: pengestøtteFraNorgeProps,
 }: IProps) {
-  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   const pengestøtteFraNorgeModalKomponenter = useMemo(
     () => lagPengestøtteFraNorgeModalKomponenter(t),
     [t]

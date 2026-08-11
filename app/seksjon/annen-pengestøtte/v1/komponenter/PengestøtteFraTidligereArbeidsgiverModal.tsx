@@ -40,7 +40,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({
   seksjonId,
   versjon,
 }: IProps) {
-  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   const pengestøtteFraTidligereArbeidsgiverModalKomponenter = useMemo(
     () => lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t),
     [t]

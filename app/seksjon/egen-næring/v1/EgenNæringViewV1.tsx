@@ -42,7 +42,7 @@ export function EgenNæringViewV1() {
   const gårdsbrukModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("egen-naering", 1);
+  const { t } = useVersjonertTranslation("egen-næring", 1);
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 

@@ -22,7 +22,7 @@ export function EgenNæringOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("egen-naering", 1);
+  const { t } = useVersjonertTranslation("egen-næring", 1);
 
   const egenNæringEgenNæringsvirksomhetKomponenter = useMemo(
     () => lagEgenNæringEgenNæringsvirksomhetKomponenter(t),

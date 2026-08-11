@@ -56,7 +56,7 @@ import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtt
 
 export function AnnenPengestøtteViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter = useMemo(
     () => lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t),
     [t]

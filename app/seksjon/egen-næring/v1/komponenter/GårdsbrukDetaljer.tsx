@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
-  const { t } = useVersjonertTranslation("egen-naering", 1);
+  const { t } = useVersjonertTranslation("egen-næring", 1);
   const { gårdsbruk, setGårdsbruk, setGårdsbrukModalData } = useEgenNæringContext();
 
   function fjernGårdsbruk() {

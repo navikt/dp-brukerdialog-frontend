@@ -40,7 +40,7 @@ import { validerSvar } from "~/utils/validering.utils";
 
 export function ReellArbeidssøkerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("reell-arbeidssoker", 1);
+  const { t } = useVersjonertTranslation("reell-arbeidssøker", 1);
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();

@@ -9,7 +9,7 @@ import { action } from "~/routes/_index";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
-  const { t } = useTranslation("soknadOversikt");
+  const { t } = useTranslation("oversikt");
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
