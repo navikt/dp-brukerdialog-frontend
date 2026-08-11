@@ -1,8 +1,8 @@
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { Button, FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   lagDokumentasjonskravKomponenter,
@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
-  const { t } = useTranslation("dokumentasjon");
+  const { t } = useVersjonertTranslation("dokumentasjon", 1);
   const dokumentasjonskravKomponenter = useMemo(() => lagDokumentasjonskravKomponenter(t), [t]);
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 

@@ -45,7 +45,7 @@ import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function ArbeidsforholdViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("arbeidsforhold", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
 
   const arbeidsforholdKomponenter = useMemo(() => lagArbeidsforholdKomponenter(t), [t]);
 
@@ -305,7 +305,7 @@ export function ArbeidsforholdViewV1() {
         />
       </VStack>
 
-      {modalData && <ArbeidsforholdModal ref={ref} />}
+      {modalData && <ArbeidsforholdModal ref={ref} versjon={loaderData.seksjon.versjon} />}
 
       <SøknadFooter onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)} />
     </div>

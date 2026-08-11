@@ -20,7 +20,7 @@ import type { DinSituasjonSvar } from "./din-situasjon.komponenter";
 export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("din-situasjon", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("din-situasjon", 1);
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 

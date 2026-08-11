@@ -18,7 +18,7 @@ import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/anne
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -28,6 +28,7 @@ interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
   spørsmålId: string;
   seksjonId: string;
+  versjon: number | string | null | undefined;
 }
 
 export type PengestøtteFraNorge = PengestøtteFraNorgeModalSvar & {
@@ -35,8 +36,8 @@ export type PengestøtteFraNorge = PengestøtteFraNorgeModalSvar & {
   dokumentasjonskrav?: string[];
 };
 
-export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IProps) {
-  const { t } = useTranslation("annen-pengestotte");
+export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId, versjon }: IProps) {
+  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
   const pengestøtteFraNorgeModalKomponenter = useMemo(
     () => lagPengestøtteFraNorgeModalKomponenter(t),
     [t]

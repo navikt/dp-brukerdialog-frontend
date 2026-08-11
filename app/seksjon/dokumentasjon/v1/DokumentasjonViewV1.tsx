@@ -23,7 +23,7 @@ import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
 
 export function DokumentasjonViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("dokumentasjon", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("dokumentasjon", 1);
 
   const dokumentasjonKomponenter = useMemo(() => lagDokumentasjonKomponenter(t), [t]);
 

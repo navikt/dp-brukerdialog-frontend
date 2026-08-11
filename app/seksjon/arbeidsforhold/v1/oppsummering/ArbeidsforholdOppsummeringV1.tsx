@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
 import {
@@ -29,7 +29,7 @@ export function ArbeidsforholdOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("arbeidsforhold");
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
   if (!seksjonSvarene) return null;
 
   const data = seksjonSvarene as ArbeidsforholdResponse;

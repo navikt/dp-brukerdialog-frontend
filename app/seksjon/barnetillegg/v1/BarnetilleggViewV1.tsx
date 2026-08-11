@@ -40,7 +40,7 @@ import { validerSvar } from "~/utils/validering.utils";
 export function BarnetilleggViewV1() {
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("barnetillegg", loaderData.seksjon?.versjon);
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();

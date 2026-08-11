@@ -1,7 +1,7 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
@@ -24,7 +24,7 @@ interface IProps {
 export function PengestøtteFraNorgeDetaljer({
   pengestøtteFraNorge: pengestøtteFraNorgeProps,
 }: IProps) {
-  const { t } = useTranslation("annen-pengestotte");
+  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
   const pengestøtteFraNorgeModalKomponenter = useMemo(
     () => lagPengestøtteFraNorgeModalKomponenter(t),
     [t]

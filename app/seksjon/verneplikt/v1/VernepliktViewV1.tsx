@@ -28,7 +28,7 @@ import { validerSvar } from "~/utils/validering.utils";
 
 export default function VernepliktViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("verneplikt", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("verneplikt", 1);
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();

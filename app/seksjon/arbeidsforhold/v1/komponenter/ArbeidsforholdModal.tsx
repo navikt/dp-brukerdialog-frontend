@@ -42,14 +42,15 @@ import {
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
+  versjon: number | string | null | undefined;
 }
 
-export function ArbeidsforholdModal({ ref }: IProps) {
-  const { t } = useTranslation("arbeidsforhold");
+export function ArbeidsforholdModal({ ref, versjon }: IProps) {
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);

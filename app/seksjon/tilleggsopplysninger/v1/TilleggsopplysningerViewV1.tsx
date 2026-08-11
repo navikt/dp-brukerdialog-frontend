@@ -23,7 +23,7 @@ import { validerSvar } from "~/utils/validering.utils";
 
 export function TilleggsopplysningerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("tilleggsopplysninger", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();

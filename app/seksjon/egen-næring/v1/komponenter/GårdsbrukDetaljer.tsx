@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import {
@@ -16,7 +16,7 @@ interface IProps {
 }
 
 export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
-  const { t } = useTranslation("egen-naering");
+  const { t } = useVersjonertTranslation("egen-naering", 1);
   const { gårdsbruk, setGårdsbruk, setGårdsbrukModalData } = useEgenNæringContext();
 
   function fjernGårdsbruk() {

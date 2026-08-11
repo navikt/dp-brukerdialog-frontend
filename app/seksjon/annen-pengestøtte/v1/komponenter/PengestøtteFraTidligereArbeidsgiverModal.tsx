@@ -1,11 +1,11 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useTranslation } from "react-i18next";
 import { Form } from "react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
@@ -26,6 +26,7 @@ interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
   spørsmålId: string;
   seksjonId: string;
+  versjon: number | string | null | undefined;
 }
 
 export type PengestøtteFraTidligereArbeidsgiver = PengestøtteFraTidligereArbeidsgiverModalSvar & {
@@ -33,8 +34,13 @@ export type PengestøtteFraTidligereArbeidsgiver = PengestøtteFraTidligereArbei
   dokumentasjonskrav?: string[];
 };
 
-export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, seksjonId }: IProps) {
-  const { t } = useTranslation("annen-pengestotte");
+export function PengestøtteFraTidligereArbeidsgiverModal({
+  ref,
+  spørsmålId,
+  seksjonId,
+  versjon,
+}: IProps) {
+  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
   const pengestøtteFraTidligereArbeidsgiverModalKomponenter = useMemo(
     () => lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t),
     [t]

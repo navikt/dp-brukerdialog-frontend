@@ -3,8 +3,8 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Form } from "react-router";
-import { useTranslation } from "react-i18next";
 import { Komponent } from "~/components/Komponent";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
@@ -34,6 +34,7 @@ interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
   spørsmålId: string;
   seksjonId: string;
+  versjon: number | string | null | undefined;
 }
 
 export type PengestøtteFraAndreEøsLand = PengestøtteFraAndreEøsLandModalSvar & {
@@ -41,8 +42,8 @@ export type PengestøtteFraAndreEøsLand = PengestøtteFraAndreEøsLandModalSvar
   dokumentasjonskrav?: string[];
 };
 
-export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId }: IProps) {
-  const { t } = useTranslation("annen-pengestotte");
+export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId, versjon }: IProps) {
+  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
   const pengestøtteFraAndreEøsLandModalKomponenter = useMemo(
     () => lagPengestøtteFraAndreEøsLandModalKomponenter(t),
     [t]

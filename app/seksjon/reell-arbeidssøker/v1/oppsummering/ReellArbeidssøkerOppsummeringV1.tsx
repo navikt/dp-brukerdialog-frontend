@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -12,7 +12,7 @@ export function ReellArbeidssøkerOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("reell-arbeidssoker");
+  const { t } = useVersjonertTranslation("reell-arbeidssoker", 1);
 
   const reellArbeidssøkerKomponenter = useMemo(() => lagReellArbeidssøkerKomponenter(t), [t]);
 

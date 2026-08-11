@@ -1,10 +1,10 @@
 import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
@@ -30,7 +30,7 @@ interface IProps {
 }
 
 export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
-  const { t } = useTranslation("barnetillegg");
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
   const leggTilBarnManueltSpørsmål = useMemo(() => lagLeggTilBarnManueltSpørsmål(t), [t]);
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =

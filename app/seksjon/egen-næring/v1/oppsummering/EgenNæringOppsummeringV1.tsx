@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import {
   driverDuEgenNæringsvirksomhet,
@@ -22,7 +22,7 @@ export function EgenNæringOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("egen-naering");
+  const { t } = useVersjonertTranslation("egen-naering", 1);
 
   const egenNæringEgenNæringsvirksomhetKomponenter = useMemo(
     () => lagEgenNæringEgenNæringsvirksomhetKomponenter(t),

@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
@@ -26,7 +26,7 @@ export function PersonaliaOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("personalia");
+  const { t } = useVersjonertTranslation("personalia", 1);
   const personaliaBostedslandSpørsmål = useMemo(() => lagPersonaliaBostedslandSpørsmål(t), [t]);
   const seksjonSvar = Object.entries(seksjonSvarene);
 

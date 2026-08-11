@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   lagPengestøtteFraAndreEøsLandKomponenter,
@@ -26,7 +26,7 @@ export function AnnenPengestøtteOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("annen-pengestotte");
+  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
   if (!seksjonSvarene) return null;
 
   const data = seksjonSvarene as AnnenPengestøtteResponse;

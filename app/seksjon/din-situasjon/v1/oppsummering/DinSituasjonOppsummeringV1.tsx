@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { lagDinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
@@ -12,7 +12,7 @@ export function DinSituasjonOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("din-situasjon");
+  const { t } = useVersjonertTranslation("din-situasjon", 1);
   const dinSituasjonKomponenter = useMemo(() => lagDinSituasjonKomponenter(t), [t]);
 
   if (!seksjonSvarene) return null;

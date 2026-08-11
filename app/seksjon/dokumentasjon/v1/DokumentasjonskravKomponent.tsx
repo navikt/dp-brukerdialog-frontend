@@ -1,11 +1,11 @@
 import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
@@ -28,7 +28,7 @@ interface DokumentasjonskravProps {
 }
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
-  const { t } = useTranslation("dokumentasjon");
+  const { t } = useVersjonertTranslation("dokumentasjon", 1);
   const dokumentasjonskravKomponenter = useMemo(() => lagDokumentasjonskravKomponenter(t), [t]);
   const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
   const [tidligereBegrunnelse, setTidligereBegrunnelse] = useState<string | undefined>(

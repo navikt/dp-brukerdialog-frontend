@@ -56,7 +56,7 @@ import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtt
 
 export function AnnenPengestøtteViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("annen-pengestotte", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("annen-pengestotte", 1);
   const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter = useMemo(
     () => lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t),
     [t]
@@ -456,6 +456,7 @@ export function AnnenPengestøtteViewV1() {
           ref={pengestøtteFraTidligereArbeidsgiverModalRef}
           spørsmålId={mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver}
           seksjonId="annen-pengestotte"
+          versjon={loaderData.seksjon.versjon}
         />
       )}
       {pengestøtteFraAndreEøsLandModalData && (
@@ -463,6 +464,7 @@ export function AnnenPengestøtteViewV1() {
           ref={pengestøtteFraAndreEøsLandModalRef}
           spørsmålId={harMottattEllerSøktOmPengestøtteFraAndreEøsLand}
           seksjonId="annen-pengestotte"
+          versjon={loaderData.seksjon.versjon}
         />
       )}
       {pengestøtteFraNorgeModalData && (
@@ -470,6 +472,7 @@ export function AnnenPengestøtteViewV1() {
           ref={pengestøtteFraNorgeModalRef}
           spørsmålId={mottarDuPengestøtteFraAndreEnnNav}
           seksjonId="annen-pengestotte"
+          versjon={loaderData.seksjon.versjon}
         />
       )}
 

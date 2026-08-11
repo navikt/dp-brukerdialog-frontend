@@ -1,5 +1,5 @@
 import { BodyLong, BodyShort, List, ReadMore, VStack } from "@navikt/ds-react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { DokumentasjonskravType } from "../dokumentasjon.types";
 
@@ -17,7 +17,7 @@ const PERMITTERING_SKJEMA_URL =
   "https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf";
 
 export function DokumentasjonskravInnhold({ type }: IProps) {
-  const { t } = useTranslation("dokumentasjon");
+  const { t } = useVersjonertTranslation("dokumentasjon", 1);
 
   const k = (key: string) => `dokumentasjonskravInnhold.${key}`;
 

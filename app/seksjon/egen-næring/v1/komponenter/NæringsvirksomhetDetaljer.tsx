@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export function NæringsvirksomhetDetaljer({ næringsvirksomhet, næringsvirksomhetIndex }: IProps) {
-  const { t } = useTranslation("egen-naering");
+  const { t } = useVersjonertTranslation("egen-naering", 1);
   const { næringsvirksomheter, setNæringsvirksomheter, setNæringsvirksomhetModalData } =
     useEgenNæringContext();
 

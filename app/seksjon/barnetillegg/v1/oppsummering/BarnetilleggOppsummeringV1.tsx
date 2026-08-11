@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
@@ -22,7 +22,7 @@ export function BarnetilleggOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("barnetillegg");
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
   const barnetilleggKomponenter = useMemo(() => lagBarnetilleggKomponenter(t), [t]);
   const leggTilBarnManueltSpørsmål = useMemo(() => lagLeggTilBarnManueltSpørsmål(t), [t]);
 

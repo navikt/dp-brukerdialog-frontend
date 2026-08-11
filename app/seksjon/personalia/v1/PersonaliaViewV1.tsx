@@ -39,7 +39,7 @@ import { validerSvar } from "~/utils/validering.utils";
 export function PersonaliaViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("personalia", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("personalia", 1);
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();

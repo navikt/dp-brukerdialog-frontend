@@ -7,22 +7,22 @@ export const supportedLanguages = ["nb", "en", "nn"] as const;
 const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
 
 const namespaceTilSeksjonPath: Record<string, string> = {
-  soknadsOversikt: "Søknadsoversikt",
-  personalia: "Personalia",
-  "din-situasjon": "Din situasjon",
-  arbeidsforhold: "Arbeidsforhold",
-  "annen-pengestotte": "Annen pengestøtte",
-  "egen-naering": "Egen næring",
-  verneplikt: "Verneplikt",
-  utdanning: "Utdanning",
-  barnetillegg: "Barnetillegg",
-  "reell-arbeidssoker": "Reell arbeidssøker",
-  tilleggsopplysninger: "Tilleggsopplysninger",
-  dokumentasjon: "Dokumentasjon",
-  oppsummering: "Oppsummering",
-  kvittering: "Kvittering",
-  ettersending: "Ettersending",
-  common: "Common",
+  soknadOversikt: "oversikt",
+  personalia: "personalia",
+  "din-situasjon": "din-situasjon",
+  arbeidsforhold: "arbeidsforhold",
+  "annen-pengestotte": "annen-pengestøtte",
+  "egen-naering": "egen-næring",
+  verneplikt: "verneplikt",
+  utdanning: "utdanning",
+  barnetillegg: "barnetillegg",
+  "reell-arbeidssoker": "reell-arbeidssøker",
+  tilleggsopplysninger: "tilleggsopplysninger",
+  dokumentasjon: "dokumentasjon",
+  oppsummering: "oppsummering",
+  kvittering: "kvittering",
+  ettersending: "ettersending",
+  common: "common",
 };
 
 const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
@@ -74,7 +74,7 @@ void i18n
     fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
     ns: [
-      "soknadsOversikt",
+      "soknadOversikt",
       "personalia",
       "din-situasjon",
       "arbeidsforhold",

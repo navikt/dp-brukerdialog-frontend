@@ -28,7 +28,7 @@ import { validerSvar } from "~/utils/validering.utils";
 
 export function UtdanningViewV1() {
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("utdanning", loaderData.seksjon.versjon);
+  const { t } = useVersjonertTranslation("utdanning", 1);
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
