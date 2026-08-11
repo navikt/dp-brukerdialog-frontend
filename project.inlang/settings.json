@@ -15,7 +15,7 @@
     "pathPattern": {
       "Søknadoversikt ": "./app/seksjon/oversikt/locales/{languageTag}.json",
       "Personalia ": "./app/seksjon/personalia/v1/locales/{languageTag}.json",
-      "Din situasjon ": "./app/seksjon/din-situasjon/v2/locales/{languageTag}.json",
+      "Din situasjon ": "./app/seksjon/din-situasjon/v1/locales/{languageTag}.json",
       "Arbeidsforhold ": "./app/seksjon/arbeidsforhold/v1/locales/{languageTag}.json",
       "Reell arbeidssøker ": "./app/seksjon/reell-arbeidssøker/v1/locales/{languageTag}.json",
       "Utdanning ": "./app/seksjon/utdanning/v1/locales/{languageTag}.json",
