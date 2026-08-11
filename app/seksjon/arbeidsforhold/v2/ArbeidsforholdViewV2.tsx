@@ -1,0 +1,259 @@
+import { BriefcaseIcon } from "@navikt/aksel-icons";
+import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
+import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
+import { Komponent } from "~/components/Komponent";
+import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
+import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
+import { SøknadFooter } from "~/components/SøknadFooter";
+import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.arbeidsforhold";
+import {
+  ModalOperasjon,
+  useArbeidsforholdContext,
+} from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
+import {
+  Arbeidsforhold,
+  arbeidsforholdForklarendeTekstKomponenter,
+  arbeidsforholdKomponenter,
+  arbeidsforholdModalKomponenter,
+  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  ArbeidsforholdResponse,
+  ArbeidsforholdSvar,
+  handling,
+  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  harIkkeJobbetDeSiste36Månedene,
+  hvordanHarDuJobbet,
+  pdfGrunnlag,
+  seksjonsvar,
+} from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter";
+import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.avskjediget";
+import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.ikkeEndret";
+import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.jegErOppsagt";
+import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.konkurs";
+import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter.permittert";
+import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.schema";
+import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v2/komponenter/ArbeidsforholdModal";
+import { useSoknad } from "~/seksjon/soknad.context";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { validerSvar } from "~/utils/validering.utils";
+import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v2/komponenter/ArbeidsforholdDetaljer";
+
+export function ArbeidsforholdViewV2() {
+  const ref = useRef<HTMLDialogElement>(null);
+  const { state } = useNavigation();
+  const loaderData = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const [visManglerArbeidsforholdFeilmelding, setVisManglerArbeidsforholdFeilmelding] =
+    useState(false);
+  const {
+    registrerteArbeidsforhold,
+    setRegistrerteArbeidsforhold,
+    modalData,
+    setModalData,
+    setDokumentasjonskrav,
+    dokumentasjonskrav,
+  } = useArbeidsforholdContext();
+  const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: arbeidsforholdSchema,
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
+  });
+
+  const { formId, action: formAction } = form.formOptions;
+  const formValues = form.value();
+
+  useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
+
+  useEffect(() => {
+    if (modalData) {
+      ref.current?.showModal();
+    }
+  }, [modalData]);
+
+  useEffect(() => {
+    setVisManglerArbeidsforholdFeilmelding(false);
+  }, [registrerteArbeidsforhold.length]);
+
+  useEffect(() => {
+    if (form.value(hvordanHarDuJobbet) === harIkkeJobbetDeSiste36Månedene) {
+      setRegistrerteArbeidsforhold([]);
+      setDokumentasjonskrav([]);
+    }
+  }, [form.value(hvordanHarDuJobbet)]);
+
+  function lagArbeidsforholdResponse(): ArbeidsforholdResponse {
+    return {
+      [hvordanHarDuJobbet]: form.transient.value(hvordanHarDuJobbet),
+      [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]:
+        form.transient.value(
+          harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+        ),
+      registrerteArbeidsforhold: registrerteArbeidsforhold,
+    };
+  }
+
+  function genererPdfGrunnlag() {
+    const pdfPayload = {
+      navn: SEKSJON_NAVN,
+      spørsmål: [
+        ...lagSeksjonPayload(arbeidsforholdKomponenter, form.transient.value()),
+        ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
+        ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
+          lagSeksjonPayload(
+            arbeidsforholdModalKomponenter
+              .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
+              .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
+              .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
+              .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
+              .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
+              .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
+              .concat(arbeidsforholdModalJegErPermittertKomponenter)
+              .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
+              .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter),
+            etArbeidsforhold
+          )
+        ),
+      ],
+    };
+
+    return JSON.stringify(pdfPayload);
+  }
+
+  function hentDokumentasjonskrav() {
+    return dokumentasjonskrav.length > 0 ? JSON.stringify(dokumentasjonskrav) : "null";
+  }
+
+  function mellomlagreSvar(ønsketHandling: Seksjonshandling) {
+    const arbeidsforholdResponse = lagArbeidsforholdResponse();
+
+    form.setValue(handling, ønsketHandling);
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+    form.setValue(seksjonsvar, JSON.stringify(arbeidsforholdResponse));
+    form.submit();
+  }
+
+  async function lagreSvar() {
+    const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
+
+    const manglerArbeidsforhold =
+      form.value(hvordanHarDuJobbet) &&
+      form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
+      registrerteArbeidsforhold.length === 0;
+
+    if (manglerArbeidsforhold) {
+      setVisManglerArbeidsforholdFeilmelding(true);
+      return;
+    }
+
+    if (klarTilLagring) {
+      form.setValue(handling, Seksjonshandling.neste);
+      form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+      form.setValue("dokumentasjonskrav", hentDokumentasjonskrav());
+      form.setValue(seksjonsvar, JSON.stringify(lagArbeidsforholdResponse()));
+      form.submit();
+    }
+  }
+
+  return (
+    <div className="innhold">
+      <title>{SEKSJON_TITTEL}</title>
+      <VStack gap="space-24">
+        <Form id={formId} action={formAction}>
+          <VStack gap="space-24">
+            <Heading size="medium" level="2">
+              {SEKSJON_NAVN}
+            </Heading>
+            <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
+            {arbeidsforholdKomponenter.map((komponent) => {
+              if (komponent.visHvis && !komponent.visHvis(formValues)) {
+                return null;
+              }
+
+              return (
+                <Komponent
+                  key={komponent.id}
+                  props={komponent}
+                  formValues={formValues}
+                  formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
+                />
+              );
+            })}
+
+            {form.value(hvordanHarDuJobbet) &&
+              form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
+              form.value(
+                harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+              ) && (
+                <VStack className="mt-16" gap="space-24">
+                  {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+                    if (komponent.visHvis && !komponent.visHvis(formValues)) {
+                      return null;
+                    }
+
+                    return (
+                      <Komponent
+                        key={komponent.id}
+                        props={komponent}
+                        formValues={formValues}
+                        formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
+                      />
+                    );
+                  })}
+                  {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
+                    <ArbeidsforholdDetaljer
+                      key={arbeidsforhold.id}
+                      arbeidsforhold={arbeidsforhold}
+                    />
+                  ))}
+                  <HStack>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      icon={<BriefcaseIcon aria-hidden />}
+                      onClick={() => {
+                        setModalData({
+                          operasjon: ModalOperasjon.LeggTil,
+                          form: form,
+                        });
+                      }}
+                    >
+                      Legg til arbeidsforhold
+                    </Button>
+                  </HStack>
+                  {visManglerArbeidsforholdFeilmelding && (
+                    <InlineMessage status="error">Du må legge til et arbeidsforhold</InlineMessage>
+                  )}
+                </VStack>
+              )}
+
+            {actionData && (
+              <SeksjonTekniskFeil
+                tittel="Det har oppstått en teknisk feil"
+                beskrivelse={actionData.error}
+              />
+            )}
+          </VStack>
+        </Form>
+        <SeksjonNavigasjon
+          onForrigeSteg={() => mellomlagreSvar(Seksjonshandling.tilbakenavigering)}
+          onNesteSteg={lagreSvar}
+          lagrer={state === "submitting" || state === "loading"}
+        />
+      </VStack>
+
+      {modalData && <ArbeidsforholdModal ref={ref} />}
+
+      <SøknadFooter onFortsettSenere={() => mellomlagreSvar(Seksjonshandling.fortsettSenere)} />
+    </div>
+  );
+}

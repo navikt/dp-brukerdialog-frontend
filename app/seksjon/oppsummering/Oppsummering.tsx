@@ -8,6 +8,8 @@ import { UtdanningOppsummeringV1 } from "~/seksjon/utdanning/v1/oppsummering/Utd
 import { BarnetilleggOppsummeringV1 } from "~/seksjon/barnetillegg/v1/oppsummering/BarnetilleggOppsummeringV1";
 import { ReellArbeidssøkerOppsummeringV1 } from "~/seksjon/reell-arbeidssøker/v1/oppsummering/ReellArbeidssøkerOppsummeringV1";
 import { TilleggsopplysningerOppsummeringV1 } from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggsopplysningerOppsummeringV1";
+import { ArbeidsforholdOppsummeringV2 } from "~/seksjon/arbeidsforhold/v2/oppsummering/ArbeidsforholdOppsummeringV2";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
 type OppsummeringProps = {
   seksjonsId: string;
@@ -23,6 +25,7 @@ export function Oppsummering({
   redigerbar = true,
 }: OppsummeringProps) {
   const seksjonSvarene = JSON.parse(seksjonsData);
+  const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
   switch (seksjonsId) {
     case "din-situasjon":
@@ -36,6 +39,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon din-situasjon: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <DinSituasjonOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -55,6 +61,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon personalia: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <PersonaliaOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -73,9 +82,20 @@ export function Oppsummering({
               redigerbar={redigerbar}
             />
           );
-        default:
+        case 2:
           return (
-            <ArbeidsforholdOppsummeringV1
+            <ArbeidsforholdOppsummeringV2
+              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
+            />
+          );
+        default:
+          console.error(
+            `Ukjent versjon for seksjon arbeidsforhold: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
+          return (
+            <ArbeidsforholdOppsummeringV2
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
@@ -94,6 +114,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon annen-pengestotte: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <AnnenPengestøtteOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -113,6 +136,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon egen-naring: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <EgenNæringOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -132,6 +158,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon verneplikt: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <VernepliktOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -152,6 +181,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon utdanning: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <UtdanningOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -172,6 +204,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon barnetillegg: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <BarnetilleggOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -192,6 +227,9 @@ export function Oppsummering({
             />
           );
         default:
+          console.error(
+            `Ukjent versjon for seksjon reell-arbeidssoker: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <ReellArbeidssøkerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
@@ -213,6 +251,9 @@ export function Oppsummering({
           );
 
         default:
+          console.error(
+            `Ukjent versjon for seksjon tilleggsopplysninger: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
+          );
           return (
             <TilleggsopplysningerOppsummeringV1
               seksjonSvarene={seksjonSvarene.seksjonsvar}
