@@ -95,6 +95,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {env.APP_ENV && env.APP_ENV.includes("prod") && (
+          <style>{`language-selector { display: none !important; }`}</style>
+        )}
         {parse(DECORATOR_HEAD_ASSETS, { trim: true })}
         <Meta />
         <Links />
