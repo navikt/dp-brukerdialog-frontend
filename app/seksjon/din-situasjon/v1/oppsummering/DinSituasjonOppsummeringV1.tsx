@@ -1,7 +1,7 @@
 import { FormSummary } from "@navikt/ds-react";
 import { useMemo } from "react";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
-import { lagDinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { dinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
@@ -13,7 +13,6 @@ export function DinSituasjonOppsummeringV1({
   redigerbar,
 }: SeksjonProps) {
   const { t } = useVersjonertTranslation("din-situasjon", 1);
-  const dinSituasjonKomponenter = useMemo(() => lagDinSituasjonKomponenter(t), [t]);
 
   if (!seksjonSvarene) return null;
 
@@ -30,7 +29,7 @@ export function DinSituasjonOppsummeringV1({
         )}
 
         {dinSituasjonEntries.map(([key, value]) => {
-          const spørsmål = dinSituasjonKomponenter.find((s) => s.id === key);
+          const spørsmål = dinSituasjonKomponenter(t).find((s) => s.id === key);
 
           if (spørsmål && !erInformasjonsFelt(spørsmål)) {
             return (

@@ -1,9 +1,11 @@
+import type { TFunction } from "i18next";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 export const defaultLanguage = "nb" as const;
 export const supportedLanguages = ["nb", "en", "nn"] as const;
+export const fallbackT = ((key: string) => key) as unknown as TFunction;
 const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
 
 const namespaceTilSeksjonPath: Record<string, string> = {

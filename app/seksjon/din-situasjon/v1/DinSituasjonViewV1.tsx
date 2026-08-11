@@ -1,6 +1,5 @@
 import { Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useMemo } from "react";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
@@ -14,8 +13,8 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
-import { handling, lagDinSituasjonKomponenter, pdfGrunnlag } from "./din-situasjon.komponenter";
 import type { DinSituasjonSvar } from "./din-situasjon.komponenter";
+import { dinSituasjonKomponenter, handling, pdfGrunnlag } from "./din-situasjon.komponenter";
 
 export function DinSituasjonViewV1() {
   const { state } = useNavigation();
@@ -23,8 +22,6 @@ export function DinSituasjonViewV1() {
   const { t } = useVersjonertTranslation("din-situasjon", 1);
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-
-  const dinSituasjonKomponenter = useMemo(() => lagDinSituasjonKomponenter(t), [t]);
 
   const form = useForm({
     method: "PUT",
@@ -36,12 +33,12 @@ export function DinSituasjonViewV1() {
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
+  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter(t));
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: t("side.overskrift"),
-      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
+      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter(t), form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
@@ -73,7 +70,7 @@ export function DinSituasjonViewV1() {
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
-            {dinSituasjonKomponenter.map((komponent) => {
+            {dinSituasjonKomponenter(t).map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }

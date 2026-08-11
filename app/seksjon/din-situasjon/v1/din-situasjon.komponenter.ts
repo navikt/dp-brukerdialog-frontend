@@ -1,5 +1,5 @@
-import type { TFunction } from "i18next";
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -17,75 +17,69 @@ export type DinSituasjonSvar = {
   [hvilkenDatoSøkerDuGjenopptakFra]?: string;
 };
 
-type DinSituasjonT = TFunction;
-
-const jaNeiVetIkkeOptions = (t: DinSituasjonT) => [
-  { value: "ja", label: t("felles.svar.ja") },
-  { value: "nei", label: t("felles.svar.nei") },
-  { value: "vetikke", label: t("felles.svar.vetIkke") },
-];
-
-export const lagDinSituasjonKomponenter = (t: DinSituasjonT): KomponentType[] => [
-  {
-    id: harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
-    type: "envalg",
-    label: t("dagpengerSiste52Uker.label"),
-    options: jaNeiVetIkkeOptions(t),
-  },
-  {
-    id: årsakTilAtDagpengeneBleStanset,
-    type: "langTekst",
-    label: t("arsakTilAtDagpengeneBleStanset.label"),
-    description: t("arsakTilAtDagpengeneBleStanset.description"),
-    maksLengde: 500,
-    visHvis: (svar: DinSituasjonSvar) =>
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
-  },
-  {
-    id: hvilkenDatoSøkerDuGjenopptakFra,
-    type: "dato",
-    label: t("gjenopptakFraDato.label"),
-    description: t("gjenopptakFraDato.description"),
-    fraOgMed: startOfDay(subMonths(new Date(), 6)),
-    tilOgMed: endOfDay(addMonths(new Date(), 3)),
-    visHvis: (svar: DinSituasjonSvar) =>
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
-  },
-  {
-    id: "hvilkenDatoSøkerDuGjenopptakFraLesMer",
-    type: "lesMer",
-    label: t("gjenopptakFraDato.lesMer.label"),
-    description: t("gjenopptakFraDato.lesMer.description"),
-    visHvis: (svar: DinSituasjonSvar) =>
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
-  },
-  {
-    id: hvilkenDatoSøkerDuDagpengerFra,
-    type: "dato",
-    label: t("dagpengerFraDato.label"),
-    description: t("dagpengerFraDato.description"),
-    fraOgMed: startOfDay(subMonths(new Date(), 6)),
-    tilOgMed: endOfDay(addMonths(new Date(), 3)),
-    visHvis: (svar: DinSituasjonSvar) =>
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
-  },
-  {
-    id: "hvilkenDatoSøkerDuDagpengerFraLesMer",
-    type: "lesMer",
-    label: t("dagpengerFraDato.lesMer.label"),
-    description:
-      `<p>${t("dagpengerFraDato.lesMer.description.beregning")}</p>` +
-      `<p><strong>${t("dagpengerFraDato.lesMer.description.eksempelTittel")}</strong><br/>${t(
-        "dagpengerFraDato.lesMer.description.eksempel"
-      )}</p>` +
-      `<p>${t("dagpengerFraDato.lesMer.description.helg")}</p>`,
-    visHvis: (svar: DinSituasjonSvar) =>
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
-      svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
-  },
-];
-
-const fallbackT = ((key: string) => key) as unknown as DinSituasjonT;
-
-export const dinSituasjonKomponenter = lagDinSituasjonKomponenter(fallbackT);
+export function dinSituasjonKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
+      type: "envalg",
+      label: t("dagpengerSiste52Uker.label"),
+      options: [
+        { value: "ja", label: t("felles.svar.ja") },
+        { value: "nei", label: t("felles.svar.nei") },
+        { value: "vetikke", label: t("felles.svar.vetIkke") },
+      ],
+    },
+    {
+      id: årsakTilAtDagpengeneBleStanset,
+      type: "langTekst",
+      label: t("arsakTilAtDagpengeneBleStanset.label"),
+      description: t("arsakTilAtDagpengeneBleStanset.description"),
+      maksLengde: 500,
+      visHvis: (svar: DinSituasjonSvar) =>
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
+    },
+    {
+      id: hvilkenDatoSøkerDuGjenopptakFra,
+      type: "dato",
+      label: t("gjenopptakFraDato.label"),
+      description: t("gjenopptakFraDato.description"),
+      fraOgMed: startOfDay(subMonths(new Date(), 6)),
+      tilOgMed: endOfDay(addMonths(new Date(), 3)),
+      visHvis: (svar: DinSituasjonSvar) =>
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
+    },
+    {
+      id: "hvilkenDatoSøkerDuGjenopptakFraLesMer",
+      type: "lesMer",
+      label: t("gjenopptakFraDato.lesMer.label"),
+      description: t("gjenopptakFraDato.lesMer.description"),
+      visHvis: (svar: DinSituasjonSvar) =>
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
+    },
+    {
+      id: hvilkenDatoSøkerDuDagpengerFra,
+      type: "dato",
+      label: t("dagpengerFraDato.label"),
+      description: t("dagpengerFraDato.description"),
+      fraOgMed: startOfDay(subMonths(new Date(), 6)),
+      tilOgMed: endOfDay(addMonths(new Date(), 3)),
+      visHvis: (svar: DinSituasjonSvar) =>
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
+    },
+    {
+      id: "hvilkenDatoSøkerDuDagpengerFraLesMer",
+      type: "lesMer",
+      label: t("dagpengerFraDato.lesMer.label"),
+      description:
+        `<p>${t("dagpengerFraDato.lesMer.description.beregning")}</p>` +
+        `<p><strong>${t("dagpengerFraDato.lesMer.description.eksempelTittel")}</strong><br/>${t(
+          "dagpengerFraDato.lesMer.description.eksempel"
+        )}</p>` +
+        `<p>${t("dagpengerFraDato.lesMer.description.helg")}</p>`,
+      visHvis: (svar: DinSituasjonSvar) =>
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
+        svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",
+    },
+  ];
+}
