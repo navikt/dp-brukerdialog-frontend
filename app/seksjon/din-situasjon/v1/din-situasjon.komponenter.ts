@@ -24,9 +24,9 @@ export function dinSituasjonKomponenter(t: TFunction): KomponentType[] {
       type: "envalg",
       label: t("dagpengerSiste52Uker.label"),
       options: [
-        { value: "ja", label: t("felles.svar.ja") },
-        { value: "nei", label: t("felles.svar.nei") },
-        { value: "vetikke", label: t("felles.svar.vetIkke") },
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+        { value: "vetikke", label: t("envalg.svar.vetIkke") },
       ],
     },
     {

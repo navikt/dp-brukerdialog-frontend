@@ -1,11 +1,4 @@
 {
-  "felles": {
-    "svar": {
-      "ja": "Ja",
-      "nei": "Nei",
-      "vetIkke": "Vet ikke"
-    }
-  },
   "side": {
     "tittel": "Søknad om dagpenger: Din situasjon",
     "overskrift": "Din situasjon"
@@ -40,5 +33,12 @@
   },
   "tekniskFeil": {
     "tittel": "Det har oppstått en teknisk feil"
+  },
+  "envalg": {
+    "svar": {
+      "ja": "Ja",
+      "nei": "Nei",
+      "vetIkke": "Vet ikke"
+    }
   }
 }
