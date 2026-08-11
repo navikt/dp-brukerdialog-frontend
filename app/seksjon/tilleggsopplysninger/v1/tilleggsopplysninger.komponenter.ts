@@ -1,6 +1,5 @@
 import type { TFunction } from "i18next";
 import type { KomponentType } from "~/components/Komponent.types";
-import { fallbackT } from "~/utils/i18n.utils";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const harTilleggsopplysninger = "harTilleggsopplysninger";
@@ -33,6 +32,6 @@ export function lagTilleggsopplysningerKomponenter(t: TFunction): KomponentType[
   ];
 }
 
-export const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(
-  fallbackT as TFunction
-);
+const fallbackT = ((key: string) => key) as unknown as TFunction;
+
+export const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(fallbackT);

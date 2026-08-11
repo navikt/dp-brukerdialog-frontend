@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 
 export const defaultLanguage = "nb" as const;
 export const supportedLanguages = ["nb", "en", "nn"] as const;
+const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
 
 const namespaceTilSeksjonPath: Record<string, string> = {
   common: "common",
@@ -101,6 +102,34 @@ void i18n
     load: "languageOnly",
     returnNull: false,
     returnEmptyString: false,
+    parseMissingKeyHandler: (key, _defaultValue, options) => {
+      const namespaceVerdi = options?.ns;
+      const namespace =
+        typeof namespaceVerdi === "string"
+          ? namespaceVerdi
+          : Array.isArray(namespaceVerdi)
+            ? namespaceVerdi[0]
+            : "unknown";
+
+      const [baseNamespace] = namespace.split("/");
+      const seksjonPath = namespaceTilSeksjonPath[baseNamespace] ?? baseNamespace;
+
+      const språkVerdi = options?.lng;
+      const språk =
+        typeof språkVerdi === "string"
+          ? språkVerdi
+          : Array.isArray(språkVerdi)
+            ? språkVerdi.join(",")
+            : (i18n.resolvedLanguage ?? "unknown");
+
+      if (loggManglendeOversettelserLokalt) {
+        console.info(
+          `[i18n] Mangler oversettelse: side=${seksjonPath}, namespace=${namespace}, språk=${språk}, nøkkel=${key}`
+        );
+      }
+
+      return key;
+    },
   });
 
 i18n.on("languageChanged", (language) => {
