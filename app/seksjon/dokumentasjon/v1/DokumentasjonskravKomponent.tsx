@@ -1,6 +1,7 @@
 import { Box, Heading, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Form } from "react-router";
 import { FilOpplasting } from "~/components/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
@@ -8,7 +9,7 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";
 import { useDokumentasjonskravContext } from "./dokumentasjonskrav.context";
 import {
-  dokumentasjonskravKomponenter,
+  lagDokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
   dokumentkravSvarSenderIkke,
   dokumentkravSvarSenderSenere,
@@ -17,7 +18,7 @@ import {
   hvaErGrunnenTilAtDuIkkeSenderDokumentet,
   hvaErGrunnenTilAtDuSenderDokumentetSenere,
   nårSendteDuDokumentet,
-  velgHvaDuVilGjøre
+  velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.komponenter";
 import { dokumentasjonskravSchema } from "./dokumentasjonskrav.schema";
 import { DokumentasjonskravInnhold } from "./DokumentasjonskravInnhold";
@@ -27,6 +28,8 @@ interface DokumentasjonskravProps {
 }
 
 export function DokumentasjonskravKomponent({ dokumentasjonskrav }: DokumentasjonskravProps) {
+  const { t } = useTranslation("dokumentasjon");
+  const dokumentasjonskravKomponenter = useMemo(() => lagDokumentasjonskravKomponenter(t), [t]);
   const { oppdaterEtDokumentasjonskrav, valideringsTeller } = useDokumentasjonskravContext();
   const [tidligereBegrunnelse, setTidligereBegrunnelse] = useState<string | undefined>(
     dokumentasjonskrav.begrunnelse
@@ -36,7 +39,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     method: "PUT",
     submitSource: "state",
     schema: dokumentasjonskravSchema,
-    defaultValues: hentFormDefaultValue()
+    defaultValues: hentFormDefaultValue(),
   });
 
   const { formId, action: formAction } = form.formOptions;
@@ -67,7 +70,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       begrunnelse: begrunnelse,
       filer: svar === dokumentkravSvarSendNå ? dokumentasjonskrav.filer : undefined,
       feil: undefined,
-      skjemaSvar: form.transient.value()
+      skjemaSvar: form.transient.value(),
     };
 
     if (svar !== dokumentasjonskrav.svar) {
@@ -94,7 +97,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
     if (!form.formState.isValid) {
       oppdaterEtDokumentasjonskrav({
         ...dokumentasjonskrav,
-        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL
+        feil: DokumentasjonskravFeilType.VALIDERINGSFEIL,
       });
     }
 
@@ -102,7 +105,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       if (!dokumentasjonskrav.filer || dokumentasjonskrav.filer.length === 0) {
         oppdaterEtDokumentasjonskrav({
           ...dokumentasjonskrav,
-          feil: DokumentasjonskravFeilType.MANGLER_FILER
+          feil: DokumentasjonskravFeilType.MANGLER_FILER,
         });
       }
   }, [form, valideringsTeller]);
@@ -121,7 +124,7 @@ export function DokumentasjonskravKomponent({ dokumentasjonskrav }: Dokumentasjo
       [hvaErGrunnenTilAtDuIkkeSenderDokumentet]:
         dokumentasjonskrav.svar === dokumentkravSvarSenderIkke
           ? dokumentasjonskrav.begrunnelse
-          : undefined
+          : undefined,
     };
   }
 

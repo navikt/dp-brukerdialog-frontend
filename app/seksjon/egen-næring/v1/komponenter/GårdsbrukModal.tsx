@@ -1,17 +1,18 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   Gårdsbruk,
-  leggTilGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
   LeggTilGårdsbrukSvar,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 
@@ -20,6 +21,8 @@ interface IProps {
 }
 
 export function GårdsbrukModal({ ref }: IProps) {
+  const { t } = useTranslation("egen-naering");
+  const leggTilGårdsbrukKomponenter = useMemo(() => lagLeggTilGårdsbrukKomponenter(t), [t]);
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
@@ -112,7 +115,11 @@ export function GårdsbrukModal({ ref }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>

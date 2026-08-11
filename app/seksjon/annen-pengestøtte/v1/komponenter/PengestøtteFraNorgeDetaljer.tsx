@@ -1,11 +1,13 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
-  pengestøtteFraNorgeModalKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
   ModalOperasjon,
@@ -22,6 +24,11 @@ interface IProps {
 export function PengestøtteFraNorgeDetaljer({
   pengestøtteFraNorge: pengestøtteFraNorgeProps,
 }: IProps) {
+  const { t } = useTranslation("annen-pengestotte");
+  const pengestøtteFraNorgeModalKomponenter = useMemo(
+    () => lagPengestøtteFraNorgeModalKomponenter(t),
+    [t]
+  );
   const {
     pengestøtteFraNorge,
     setPengestøtteFraNorge,

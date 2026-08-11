@@ -1,10 +1,12 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   Arbeidsforhold,
-  arbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalKomponenter,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   navnetPåBedriften,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
@@ -47,6 +49,8 @@ interface IProps {
 }
 
 function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
+  const { t } = useTranslation("arbeidsforhold");
+  const arbeidsforholdModalKomponenter = useMemo(() => lagArbeidsforholdModalKomponenter(t), [t]);
   const {
     registrerteArbeidsforhold,
     setRegistrerteArbeidsforhold,

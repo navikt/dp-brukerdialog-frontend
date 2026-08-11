@@ -1,10 +1,11 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useTranslation } from "react-i18next";
 import { Form } from "react-router";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { pengestøtteFraAndreEøsLandModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
@@ -16,10 +17,9 @@ import {
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   hvemMottarDuUtbetalingerEllerGoderFra,
-  pengestøtteFraTidligereArbeidsgiverModalKomponenter,
+  lagPengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
-import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
 interface IProps {
@@ -34,6 +34,11 @@ export type PengestøtteFraTidligereArbeidsgiver = PengestøtteFraTidligereArbei
 };
 
 export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const { t } = useTranslation("annen-pengestotte");
+  const pengestøtteFraTidligereArbeidsgiverModalKomponenter = useMemo(
+    () => lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t),
+    [t]
+  );
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
@@ -78,7 +83,6 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     },
     resetAfterSubmit: true,
   });
-
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
@@ -144,7 +148,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
 
   useNullstillSkjulteFelter<PengestøtteFraTidligereArbeidsgiverModalSvar>(
     form,
-    pengestøtteFraAndreEøsLandModalKomponenter
+    pengestøtteFraTidligereArbeidsgiverModalKomponenter
   );
 
   const modalOperasjon =
@@ -202,7 +206,11 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>

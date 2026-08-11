@@ -42,6 +42,11 @@ const appSeksjonBackend = {
       ? `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`
       : `../seksjon/${seksjonPath}/locales/${language}.json`;
 
+    if (!(filPath in oversettelser)) {
+      callback(null, {});
+      return;
+    }
+
     const lastOversettelse = oversettelser[filPath] as
       undefined | (() => Promise<{ default: Record<string, unknown> } | Record<string, unknown>>);
 

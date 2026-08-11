@@ -1,15 +1,17 @@
 import { FormSummary } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
-  barnetilleggKomponenter,
+  lagBarnetilleggKomponenter,
+  lagLeggTilBarnManueltSpørsmål,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
-  leggTilBarnManueltSpørsmål,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -20,6 +22,10 @@ export function BarnetilleggOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useTranslation("barnetillegg");
+  const barnetilleggKomponenter = useMemo(() => lagBarnetilleggKomponenter(t), [t]);
+  const leggTilBarnManueltSpørsmål = useMemo(() => lagLeggTilBarnManueltSpørsmål(t), [t]);
+
   if (!seksjonSvarene) return null;
 
   const barnetilleggSvar = seksjonSvarene as SeksjonSvar;
@@ -81,15 +87,15 @@ export function BarnetilleggOppsummeringV1({
                     <FormSummary.Value>{barn[bostedsland]}</FormSummary.Value>
                   </FormSummary.Answer>
                   <FormSummary.Answer>
-                    <FormSummary.Label>Forsørger du barnet?</FormSummary.Label>
+                    <FormSummary.Label>{t("barn.forsorgerDuBarnet.label")}</FormSummary.Label>
                     <FormSummary.Value>
                       {barnetilleggSvar.barnLagtManuelt?.find(
                         (b) => b.fødselsdato === barn[fødselsdato]
                       )
-                        ? "Ja"
+                        ? t("felles.svar.ja")
                         : barn[forsørgerDuBarnet] === "ja"
-                          ? "Ja"
-                          : "Nei"}
+                          ? t("felles.svar.ja")
+                          : t("felles.svar.nei")}
                     </FormSummary.Value>
                   </FormSummary.Answer>
                 </FormSummary.Answers>

@@ -49,8 +49,8 @@ import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandKomponenter,
-  pengestøtteFraAndreEøsLandModalKomponenter,
+  lagPengestøtteFraAndreEøsLandKomponenter,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
 
@@ -66,6 +66,14 @@ export function AnnenPengestøtteViewV1() {
 
   const pengestøtteFraNorgeModalKomponenter = useMemo(
     () => lagPengestøtteFraNorgeModalKomponenter(t),
+    [t]
+  );
+  const pengestøtteFraAndreEøsLandKomponenter = useMemo(
+    () => lagPengestøtteFraAndreEøsLandKomponenter(t),
+    [t]
+  );
+  const pengestøtteFraAndreEøsLandModalKomponenter = useMemo(
+    () => lagPengestøtteFraAndreEøsLandModalKomponenter(t),
     [t]
   );
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);

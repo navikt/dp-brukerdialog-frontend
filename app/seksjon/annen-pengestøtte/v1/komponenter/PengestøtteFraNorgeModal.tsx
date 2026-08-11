@@ -7,7 +7,7 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
-  pengestøtteFraNorgeModalKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
@@ -16,8 +16,9 @@ import {
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.schema";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useTranslation } from "react-i18next";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -35,6 +36,11 @@ export type PengestøtteFraNorge = PengestøtteFraNorgeModalSvar & {
 };
 
 export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const { t } = useTranslation("annen-pengestotte");
+  const pengestøtteFraNorgeModalKomponenter = useMemo(
+    () => lagPengestøtteFraNorgeModalKomponenter(t),
+    [t]
+  );
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
@@ -89,7 +95,6 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     },
     resetAfterSubmit: true,
   });
-
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
@@ -201,7 +206,11 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>

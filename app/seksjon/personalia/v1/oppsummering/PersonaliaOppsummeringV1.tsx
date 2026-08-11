@@ -1,4 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
@@ -11,9 +13,9 @@ import {
   fornavnFraPdl,
   fødselsnummerFraPdl,
   kontonummerFraKontoregister,
+  lagPersonaliaBostedslandSpørsmål,
   landFraPdl,
   mellomnavnFraPdl,
-  personaliaBostedslandSpørsmål,
   postnummerFraPdl,
   poststedFraPdl,
 } from "~/seksjon/personalia/v1/personalia.komponenter";
@@ -24,6 +26,8 @@ export function PersonaliaOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useTranslation("personalia");
+  const personaliaBostedslandSpørsmål = useMemo(() => lagPersonaliaBostedslandSpørsmål(t), [t]);
   const seksjonSvar = Object.entries(seksjonSvarene);
 
   function finnRegisterverdi(key: string, registerverdier: [string, string][]) {

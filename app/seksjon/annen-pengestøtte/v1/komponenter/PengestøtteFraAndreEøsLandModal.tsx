@@ -1,8 +1,9 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form } from "react-router";
+import { useTranslation } from "react-i18next";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
@@ -12,7 +13,7 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalKomponenter,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
@@ -41,6 +42,11 @@ export type PengestøtteFraAndreEøsLand = PengestøtteFraAndreEøsLandModalSvar
 };
 
 export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const { t } = useTranslation("annen-pengestotte");
+  const pengestøtteFraAndreEøsLandModalKomponenter = useMemo(
+    () => lagPengestøtteFraAndreEøsLandModalKomponenter(t),
+    [t]
+  );
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
@@ -215,7 +221,11 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>

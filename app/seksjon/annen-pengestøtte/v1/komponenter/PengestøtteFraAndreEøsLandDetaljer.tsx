@@ -1,12 +1,14 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
   fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
-  pengestøtteFraAndreEøsLandModalKomponenter,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   ModalOperasjon,
@@ -24,6 +26,11 @@ interface IProps {
 export function PengestøtteFraAndreEøsLandDetaljer({
   pengestøtteFraAndreEøsLand: pengestøtteFraAndreEøsLandProps,
 }: IProps) {
+  const { t } = useTranslation("annen-pengestotte");
+  const pengestøtteFraAndreEøsLandModalKomponenter = useMemo(
+    () => lagPengestøtteFraAndreEøsLandModalKomponenter(t),
+    [t]
+  );
   const {
     pengestøtteFraAndreEøsLand,
     setPengestøtteFraAndreEøsLand,

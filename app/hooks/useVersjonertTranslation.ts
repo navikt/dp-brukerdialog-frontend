@@ -8,5 +8,5 @@ export function useVersjonertTranslation(namespace: string, versjon: Versjon) {
     ? versjonTekst
     : versjonTekst && `v${versjonTekst}`;
 
-  return useTranslation(versjonMappe ? [`${namespace}/${versjonMappe}`, namespace] : [namespace]);
+  return useTranslation(versjonMappe ? `${namespace}/${versjonMappe}` : namespace);
 }

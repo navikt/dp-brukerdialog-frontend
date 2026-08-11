@@ -1,10 +1,12 @@
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { Button, FormSummary } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
-  dokumentasjonskravKomponenter,
-  velgHvaDuVilGjøre
+  lagDokumentasjonskravKomponenter,
+  velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
@@ -16,6 +18,8 @@ interface IProps {
 }
 
 export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
+  const { t } = useTranslation("dokumentasjon");
+  const dokumentasjonskravKomponenter = useMemo(() => lagDokumentasjonskravKomponenter(t), [t]);
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
   const alleDokumentasjonskrav = (dokumentasjonskrav ?? []).flatMap(

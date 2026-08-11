@@ -1,5 +1,7 @@
 import { FormSummary } from "@navikt/ds-react";
-import { dinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { lagDinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
@@ -10,6 +12,9 @@ export function DinSituasjonOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useTranslation("din-situasjon");
+  const dinSituasjonKomponenter = useMemo(() => lagDinSituasjonKomponenter(t), [t]);
+
   if (!seksjonSvarene) return null;
 
   const dinSituasjonEntries = Object.entries(seksjonSvarene);

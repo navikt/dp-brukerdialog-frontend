@@ -4,7 +4,6 @@ import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonSvar } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
-import { DinSituasjonViewV2 } from "~/seksjon/din-situasjon/v2/DinSituasjonViewV2";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   filtrerSeksjonsvar,
@@ -13,7 +12,7 @@ import {
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
-export const NYESTE_VERSJON = 2;
+export const NYESTE_VERSJON = 1;
 export const SEKSJON_ID = "din-situasjon";
 export const SEKSJON_NAVN = "Din situasjon";
 export const SEKSJON_TITTEL = "Søknad om dagpenger: Din situasjon";
@@ -86,14 +85,12 @@ export default function DinSituasjonSeksjon() {
   const { soknadId } = useParams();
 
   switch (seksjon?.versjon ?? NYESTE_VERSJON) {
-    case 2:
-      return <DinSituasjonViewV2 />;
     case 1:
       return <DinSituasjonViewV1 />;
     default:
       console.error(
         `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
-      return <DinSituasjonViewV2 />;
+      return <DinSituasjonViewV1 />;
   }
 }

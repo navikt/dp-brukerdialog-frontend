@@ -110,9 +110,6 @@ export function OppsummeringView() {
               <Button type="submit" disabled={state === "submitting" || state === "loading"}>
                 {t("knapper.sendSoknad")}
               </Button>
-              <Button type="submit" disabled={state === "submitting" || state === "loading"}>
-                Send søknad
-              </Button>
             </HStack>
           </Form>
         </VStack>

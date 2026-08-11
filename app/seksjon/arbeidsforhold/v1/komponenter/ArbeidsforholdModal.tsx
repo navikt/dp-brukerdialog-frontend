@@ -10,9 +10,9 @@ import {
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   arbeidsforholdetErIkkeEndret,
-  arbeidsforholdForklarendeTekstKomponenter,
-  arbeidsforholdModalKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  lagArbeidsforholdForklarendeTekstKomponenter,
+  lagArbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
   arbeidsgiverenMinHarSagtMegOpp,
@@ -27,27 +27,29 @@ import {
   navnetPåBedriften,
   rotasjon,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function ArbeidsforholdModal({ ref }: IProps) {
+  const { t } = useTranslation("arbeidsforhold");
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
@@ -60,16 +62,25 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
 
-  const alleModalKomponenter = arbeidsforholdModalKomponenter
-    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
-    .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
-    .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-    .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
-    .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
-    .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
-    .concat(arbeidsforholdModalJegErPermittertKomponenter)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-    .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter);
+  const arbeidsforholdForklarendeTekstKomponenter = useMemo(
+    () => lagArbeidsforholdForklarendeTekstKomponenter(t),
+    [t]
+  );
+
+  const alleModalKomponenter = useMemo(
+    () =>
+      lagArbeidsforholdModalKomponenter(t)
+        .concat(lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t))
+        .concat(lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t))
+        .concat(lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t))
+        .concat(lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t))
+        .concat(lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t))
+        .concat(lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t))
+        .concat(lagArbeidsforholdModalJegErPermittertKomponenter(t))
+        .concat(lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t))
+        .concat(lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t)),
+    [t]
+  );
 
   const form = useForm({
     submitSource: "state",

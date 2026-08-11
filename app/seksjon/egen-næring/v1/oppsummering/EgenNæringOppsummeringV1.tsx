@@ -1,12 +1,14 @@
 import { FormSummary } from "@navikt/ds-react";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukKomponenter,
-  leggTilGårdsbrukKomponenter,
-  leggTilNæringsvirksomhetKomponenter,
+  lagEgenNæringEgenNæringsvirksomhetKomponenter,
+  lagEgenNæringEgetGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 import { KomponentType } from "~/components/Komponent.types";
@@ -20,6 +22,25 @@ export function EgenNæringOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useTranslation("egen-naering");
+
+  const egenNæringEgenNæringsvirksomhetKomponenter = useMemo(
+    () => lagEgenNæringEgenNæringsvirksomhetKomponenter(t),
+    [t]
+  );
+
+  const egenNæringEgetGårdsbrukKomponenter = useMemo(
+    () => lagEgenNæringEgetGårdsbrukKomponenter(t),
+    [t]
+  );
+
+  const leggTilNæringsvirksomhetKomponenter = useMemo(
+    () => lagLeggTilNæringsvirksomhetKomponenter(t),
+    [t]
+  );
+
+  const leggTilGårdsbrukKomponenter = useMemo(() => lagLeggTilGårdsbrukKomponenter(t), [t]);
+
   if (!seksjonSvarene) return null;
 
   const egenNæringSvar = seksjonSvarene as EgenNæringSeksjon;

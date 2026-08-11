@@ -1,6 +1,8 @@
 import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import {
@@ -12,14 +14,13 @@ import {
   BarnLagtManuelt,
   etternavn,
   fornavnOgMellomnavn,
-  leggTilBarnManueltSpørsmål,
+  lagLeggTilBarnManueltSpørsmål,
   LeggTilBarnManueltSvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
 interface IProps {
@@ -29,6 +30,8 @@ interface IProps {
 }
 
 export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
+  const { t } = useTranslation("barnetillegg");
+  const leggTilBarnManueltSpørsmål = useMemo(() => lagLeggTilBarnManueltSpørsmål(t), [t]);
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
@@ -181,7 +184,11 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   Lagre og lukk
                 </Button>
               </HStack>

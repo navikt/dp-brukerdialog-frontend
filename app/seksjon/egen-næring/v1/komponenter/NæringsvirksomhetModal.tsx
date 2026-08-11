@@ -1,24 +1,30 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
-  leggTilNæringsvirksomhetKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
 }
 
 export function NæringsvirksomhetModal({ ref }: IProps) {
+  const { t } = useTranslation("egen-naering");
+  const leggTilNæringsvirksomhetKomponenter = useMemo(
+    () => lagLeggTilNæringsvirksomhetKomponenter(t),
+    [t]
+  );
   const endringerErIkkeLagretModalRef = useRef<HTMLDialogElement>(null);
   const [stengModalSelvOmDetErUlagredeEndringer, setStengModalSelvOmDetErUlagredeEndringer] =
     useState(false);
