@@ -14,8 +14,6 @@ import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export const NYESTE_VERSJON = 1;
 export const SEKSJON_ID = "din-situasjon";
-export const SEKSJON_NAVN = "Din situasjon";
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Din situasjon";
 export const NESTE_SEKSJON_ID = "arbeidsforhold";
 export const FORRIGE_SEKSJON_ID = "personalia";
 

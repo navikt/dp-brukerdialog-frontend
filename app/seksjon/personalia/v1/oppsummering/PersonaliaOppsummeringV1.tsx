@@ -1,5 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import {
@@ -13,10 +14,10 @@ import {
   kontonummerFraKontoregister,
   landFraPdl,
   mellomnavnFraPdl,
-  personaliaBostedslandSpørsmål,
+  lagPersonaliaBostedslandKomponenter,
   postnummerFraPdl,
   poststedFraPdl,
-} from "~/seksjon/personalia/v1/personalia.komponenter";
+} from "../personalia.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
 export function PersonaliaOppsummeringV1({
@@ -24,7 +25,9 @@ export function PersonaliaOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useVersjonertTranslation("personalia", 1);
   const seksjonSvar = Object.entries(seksjonSvarene);
+  const personaliaBostedslandKomponenter = lagPersonaliaBostedslandKomponenter(t);
 
   function finnRegisterverdi(key: string, registerverdier: [string, string][]) {
     return registerverdier.find((verdi) => verdi[0] === key)?.[1];
@@ -33,11 +36,11 @@ export function PersonaliaOppsummeringV1({
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Personalia</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
-          <FormSummary.Label>Navn</FormSummary.Label>
+          <FormSummary.Label>{t("oppsummering.navn")}</FormSummary.Label>
           <FormSummary.Value>
             {`${finnRegisterverdi(fornavnFraPdl, seksjonSvar)} `}
             {`${finnRegisterverdi(mellomnavnFraPdl, seksjonSvar)} `}
@@ -45,17 +48,17 @@ export function PersonaliaOppsummeringV1({
           </FormSummary.Value>
         </FormSummary.Answer>
         <FormSummary.Answer>
-          <FormSummary.Label>Fødselsnummer</FormSummary.Label>
+          <FormSummary.Label>{t("oppsummering.fødselsnummer")}</FormSummary.Label>
           <FormSummary.Value>
             {finnRegisterverdi(fødselsnummerFraPdl, seksjonSvar)}
           </FormSummary.Value>
         </FormSummary.Answer>
         <FormSummary.Answer>
-          <FormSummary.Label>Alder</FormSummary.Label>
+          <FormSummary.Label>{t("oppsummering.alder")}</FormSummary.Label>
           <FormSummary.Value>{finnRegisterverdi(alderFraPdl, seksjonSvar)}</FormSummary.Value>
         </FormSummary.Answer>
         <FormSummary.Answer>
-          <FormSummary.Label>Folkeregistrert adresse</FormSummary.Label>
+          <FormSummary.Label>{t("oppsummering.folkeregistrertAdresse")}</FormSummary.Label>
           <FormSummary.Value>
             {finnRegisterverdi(adresselinje1FraPdl, seksjonSvar)}{" "}
             {finnRegisterverdi(adresselinje1FraPdl, seksjonSvar) && <br />}
@@ -70,16 +73,16 @@ export function PersonaliaOppsummeringV1({
           </FormSummary.Value>
         </FormSummary.Answer>
         <FormSummary.Answer>
-          <FormSummary.Label>Kontonummer</FormSummary.Label>
+          <FormSummary.Label>{t("oppsummering.kontonummer")}</FormSummary.Label>
           <FormSummary.Value>
             {finnRegisterverdi(kontonummerFraKontoregister, seksjonSvar) ||
-              "Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på Min side."}
+              t("oppsummering.manglerKontonummer")}
           </FormSummary.Value>
         </FormSummary.Answer>
-        {!seksjonSvar.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
+        {!seksjonSvar.length && <div>{t("oppsummering.ingenSvar")}</div>}
 
         {seksjonSvar.map(([key, value]) => {
-          const spørsmål = personaliaBostedslandSpørsmål.find((s) => s.id === key);
+          const spørsmål = personaliaBostedslandKomponenter.find((s) => s.id === key);
           if (spørsmål && !erInformasjonsFelt(spørsmål)) {
             return (
               <FormSummary.Answer key={key}>
@@ -93,7 +96,7 @@ export function PersonaliaOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Personalia"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );

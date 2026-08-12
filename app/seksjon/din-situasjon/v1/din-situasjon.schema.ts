@@ -1,6 +1,9 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { valider } from "~/utils/validering.utils";
 import {
-  dinSituasjonKomponenter,
+  lagDinSituasjonKomponenter,
   DinSituasjonSvar,
   handling,
   harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,
@@ -9,8 +12,6 @@ import {
   pdfGrunnlag,
   årsakTilAtDagpengeneBleStanset,
 } from "./din-situasjon.komponenter";
-import { valider } from "~/utils/validering.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const dinSituasjonSchema = z
   .object({
@@ -32,7 +33,7 @@ export const dinSituasjonSchema = z
       return;
     }
 
-    dinSituasjonKomponenter.forEach((spørsmål) => {
+    lagDinSituasjonKomponenter(fallbackT).forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof DinSituasjonSvar];
       valider(spørsmål, svar, synlig, context);

@@ -1,9 +1,10 @@
 import { FormSummary } from "@navikt/ds-react";
-import { dinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
+import { lagDinSituasjonKomponenter } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function DinSituasjonOppsummeringV1({
   seksjonSvarene,
@@ -11,7 +12,8 @@ export function DinSituasjonOppsummeringV1({
   redigerbar,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
-
+  const { t } = useVersjonertTranslation("din-situasjon", 1);
+  const oversattDinSituasjonKomponenter = lagDinSituasjonKomponenter(t);
   const dinSituasjonEntries = Object.entries(seksjonSvarene);
 
   return (
@@ -25,7 +27,7 @@ export function DinSituasjonOppsummeringV1({
         )}
 
         {dinSituasjonEntries.map(([key, value]) => {
-          const spørsmål = dinSituasjonKomponenter.find((s) => s.id === key);
+          const spørsmål = oversattDinSituasjonKomponenter.find((s) => s.id === key);
 
           if (spørsmål && !erInformasjonsFelt(spørsmål)) {
             return (
