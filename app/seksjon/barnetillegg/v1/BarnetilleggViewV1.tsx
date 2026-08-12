@@ -8,21 +8,22 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import {
-  barnetilleggForklarendeTekst,
-  barnetilleggKomponenter,
   BarnetilleggSvar,
   BarnFraPdl,
-  barnFraPdlSpørsmål,
+  lagBarnetilleggForklarendeTekst,
+  lagBarnetilleggKomponenter,
+  lagBarnFraPdlKomponenter,
   BarnLagtManuelt,
   forsørgerDuBarnet,
   forsørgerDuBarnSomIkkeVisesHer,
-  leggTilBarnManueltSpørsmål,
+  lagLeggTilBarnManueltModalKomponenter,
   seksjonsvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
 import { barnetilleggSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
@@ -37,12 +38,11 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
 export function BarnetilleggViewV1() {
-  const seksjonnavn = "Barnetillegg";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
   const ref = useRef<HTMLDialogElement>(null);
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const [visLeggTilBarnFeilmelding, setVisLeggTilBarnFeilmelding] = useState(false);
   const {
@@ -55,6 +55,11 @@ export function BarnetilleggViewV1() {
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useBarnetilleggContext();
+
+  const barnetilleggForklarendeTekst = lagBarnetilleggForklarendeTekst(t);
+  const barnetilleggKomponenter = lagBarnetilleggKomponenter(t);
+  const barnFraPdlSpørsmål = lagBarnFraPdlKomponenter(t);
+  const leggTilBarnManueltSpørsmål = lagLeggTilBarnManueltModalKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -135,7 +140,7 @@ export function BarnetilleggViewV1() {
 
   function lagPdfGrunnlag() {
     return {
-      navn: "Barnetillegg",
+      navn: t("side.overskrift"),
       spørsmål: [
         ...barnFraPdl.map((barn) => lagSeksjonPayload(barnFraPdlSpørsmål, barn)),
         ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
@@ -146,9 +151,9 @@ export function BarnetilleggViewV1() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{t("side.tittel")}</title>
       <Heading size="medium" level="2">
-        {seksjonnavn}
+        {t("side.overskrift")}
       </Heading>
       <VStack gap="space-24">
         {barnetilleggForklarendeTekst.map((komponent) => {
@@ -201,20 +206,17 @@ export function BarnetilleggViewV1() {
                 setModalData({ operasjon: ModalOperasjon.LeggTil });
               }}
             >
-              Legg til barn du forsørger
+              {t("leggTilBarn.knapp")}
             </Button>
           </HStack>
         )}
 
         {visLeggTilBarnFeilmelding && (
-          <InlineMessage status="error">Du må legge til barn du forsørger</InlineMessage>
+          <InlineMessage status="error">{t("leggTilBarn.feil")}</InlineMessage>
         )}
 
         {actionData && (
-          <SeksjonTekniskFeil
-            tittel="Det har oppstått en teknisk feil"
-            beskrivelse={actionData.error}
-          />
+          <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
         )}
       </VStack>
 
