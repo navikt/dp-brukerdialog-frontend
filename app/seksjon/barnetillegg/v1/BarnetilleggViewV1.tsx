@@ -58,8 +58,8 @@ export function BarnetilleggViewV1() {
 
   const barnetilleggForklarendeTekst = lagBarnetilleggForklarendeTekst(t);
   const barnetilleggKomponenter = lagBarnetilleggKomponenter(t);
-  const barnFraPdlSpørsmål = lagBarnFraPdlKomponenter(t);
-  const leggTilBarnManueltSpørsmål = lagLeggTilBarnManueltModalKomponenter(t);
+  const barnFraPdlKomponenter = lagBarnFraPdlKomponenter(t);
+  const leggTilBarnManueltModalKomponenter = lagLeggTilBarnManueltModalKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -142,9 +142,11 @@ export function BarnetilleggViewV1() {
     return {
       navn: t("side.overskrift"),
       spørsmål: [
-        ...barnFraPdl.map((barn) => lagSeksjonPayload(barnFraPdlSpørsmål, barn)),
+        ...barnFraPdl.map((barn) => lagSeksjonPayload(barnFraPdlKomponenter, barn)),
         ...lagSeksjonPayload(barnetilleggKomponenter, form.transient.value()),
-        ...barnLagtManuelt.map((barn) => lagSeksjonPayload(leggTilBarnManueltSpørsmål, barn)),
+        ...barnLagtManuelt.map((barn) =>
+          lagSeksjonPayload(leggTilBarnManueltModalKomponenter, barn)
+        ),
       ],
     };
   }
