@@ -50,15 +50,15 @@ const appSeksjonBackend = {
       return;
     }
 
-    const lastOversettelse = oversettelser[filPath] as
+    const hentOversettelse = oversettelser[filPath] as
       undefined | (() => Promise<{ default: Record<string, unknown> } | Record<string, unknown>>);
 
-    if (!lastOversettelse) {
+    if (!hentOversettelse) {
       callback(null, {});
       return;
     }
 
-    void lastOversettelse()
+    void hentOversettelse()
       .then((modul) => {
         callback(null, "default" in modul ? modul.default : modul);
       })
