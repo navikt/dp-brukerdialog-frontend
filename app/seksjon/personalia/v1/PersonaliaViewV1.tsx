@@ -153,7 +153,7 @@ export function PersonaliaViewV1() {
             </BodyShort>
           </VStack>
           <VStack>
-            <Label as="p">{t("opplysninger.fodselsnummer")}</Label>
+            <Label as="p">{t("opplysninger.fødselsnummer")}</Label>
             <BodyShort>{formattertIdent}</BodyShort>
           </VStack>
           <VStack>

@@ -15,7 +15,7 @@
   },
   "opplysninger": {
     "navn": "Navn",
-    "fodselsnummer": "Fødselsnummer",
+    "fødselsnummer": "Fødselsnummer",
     "alder": "Alder",
     "folkeregistrertAdresse": "Folkeregistrert adresse",
     "kontonummer": "Kontonummer",
@@ -26,7 +26,7 @@
   },
   "oppsummering": {
     "navn": "Navn",
-    "fodselsnummer": "Fødselsnummer",
+    "fødselsnummer": "Fødselsnummer",
     "alder": "Alder",
     "folkeregistrertAdresse": "Folkeregistrert adresse",
     "kontonummer": "Kontonummer",
@@ -37,7 +37,7 @@
     "fornavn": "Fornavn",
     "mellomnavn": "Mellomnavn",
     "etternavn": "Etternavn",
-    "fodselsnummer": "Fødselsnummer",
+    "fødselsnummer": "Fødselsnummer",
     "adresselinje1": "Adresselinje 1",
     "adresselinje2": "Adresselinje 2",
     "adresselinje3": "Adresselinje 3",
@@ -61,7 +61,7 @@
   },
   "bostedsland": {
     "heading": "Bostedsland",
-    "sporsmal": {
+    "spørsmål": {
       "label": "Hvilket land bor du i?",
       "description": "Med bostedsland mener vi ditt vanlige oppholdssted, som er der du eier eller leier bolig og tilbringer mesteparten av tiden din. Du må som hovedregel oppholde deg i Norge for å ha rett til dagpenger fra Norge."
     },

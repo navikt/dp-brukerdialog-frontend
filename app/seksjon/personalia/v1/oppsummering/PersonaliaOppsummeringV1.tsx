@@ -48,7 +48,7 @@ export function PersonaliaOppsummeringV1({
           </FormSummary.Value>
         </FormSummary.Answer>
         <FormSummary.Answer>
-          <FormSummary.Label>{t("oppsummering.fodselsnummer")}</FormSummary.Label>
+          <FormSummary.Label>{t("oppsummering.fødselsnummer")}</FormSummary.Label>
           <FormSummary.Value>
             {finnRegisterverdi(fødselsnummerFraPdl, seksjonSvar)}
           </FormSummary.Value>

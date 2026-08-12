@@ -76,7 +76,7 @@ export function lagPersonaliaKomponenter(t: TFunction): KomponentType[] {
     {
       id: fødselsnummerFraPdl,
       type: "registeropplysning",
-      label: t("registeropplysninger.fodselsnummer"),
+      label: t("registeropplysninger.fødselsnummer"),
     },
     {
       id: adresselinje1FraPdl,
@@ -150,8 +150,8 @@ export function lagPersonaliaBostedslandKomponenter(t: TFunction): KomponentType
     {
       id: bostedsland,
       type: "land",
-      label: t("bostedsland.sporsmal.label"),
-      description: t("bostedsland.sporsmal.description"),
+      label: t("bostedsland.spørsmål.label"),
+      description: t("bostedsland.spørsmål.description"),
       visHvis: (svar: PersonaliaSvar) =>
         svar[landFraPdl] !== "NORGE" || svar[folkeregistrertAdresseErNorgeStemmerDet] === "nei",
     },
