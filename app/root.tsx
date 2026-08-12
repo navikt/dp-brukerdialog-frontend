@@ -1,6 +1,7 @@
 import { Theme } from "@navikt/ds-react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
+import { useEffect } from "react";
 import {
   data,
   isRouteErrorResponse,
@@ -25,9 +26,10 @@ import { allTextsQuery } from "./sanity/sanity.query";
 import { SanityData } from "./sanity/sanity.types";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
+import i18n from "./i18n";
 
-import indexStyles from "./index.css?url";
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
+import indexStyles from "./index.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -35,13 +37,13 @@ export const links: LinksFunction = () => [
 ];
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const decoratorFragments = await getDekoratorHTML();
+  const dekoratorLanguage = await getDekoratorLanguage(request);
+
+  const decoratorFragments = await getDekoratorHTML(dekoratorLanguage);
 
   if (!decoratorFragments) {
     logger.error("Kunne ikke hente dekoratør");
   }
-
-  const dekoratorLanguage = await getDekoratorLanguage(request);
 
   if (!dekoratorLanguage) {
     logger.error("Kunne ikke hente dekoratør språk");
@@ -79,16 +81,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   useInjectDecoratorScript(DECORATOR_SCRIPTS);
 
-  // Reload page on language change
-  onLanguageSelect(() => {
-    navigate(0);
-  });
+  useEffect(() => {
+    void i18n.changeLanguage(language);
+
+    onLanguageSelect(({ locale }) => {
+      void i18n.changeLanguage(locale);
+      navigate(0);
+    });
+  }, [i18n, language, navigate]);
 
   return (
     <html lang={language}>
-      <head lang={language}>
+      <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {env.APP_ENV && env.APP_ENV.includes("prod") && (
+          <style>{`language-selector { display: none !important; }`}</style>
+        )}
         {parse(DECORATOR_HEAD_ASSETS, { trim: true })}
         <Meta />
         <Links />
