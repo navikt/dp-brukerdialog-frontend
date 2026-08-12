@@ -17,7 +17,7 @@ export type DinSituasjonSvar = {
   [hvilkenDatoSøkerDuGjenopptakFra]?: string;
 };
 
-export function dinSituasjonKomponenter(t: TFunction): KomponentType[] {
+export function lagDinSituasjonKomponenter(t: TFunction): KomponentType[] {
   return [
     {
       id: harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene,

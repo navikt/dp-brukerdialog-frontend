@@ -29,8 +29,8 @@ import {
   landkodeFraPdl,
   mellomnavnFraPdl,
   pdfGrunnlag,
-  personaliaBostedslandKomponenter,
-  personaliaKomponenter,
+  lagPersonaliaBostedslandKomponenter,
+  lagPersonaliaKomponenter,
   postnummerFraPdl,
   poststedFraPdl,
 } from "./personalia.komponenter";
@@ -43,8 +43,8 @@ export function PersonaliaViewV1() {
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
 
-  const personaliaSpørsmålListe = personaliaKomponenter(t);
-  const personaliaBostedslandSpørsmålListe = personaliaBostedslandKomponenter(t);
+  const personaliaKomponenter = lagPersonaliaKomponenter(t);
+  const personaliaBostedslandKomponenter = lagPersonaliaBostedslandKomponenter(t);
 
   if (!personalia) {
     return (
@@ -100,7 +100,7 @@ export function PersonaliaViewV1() {
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
-  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmålListe);
+  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandKomponenter);
 
   async function lagreSvar() {
     const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
@@ -109,8 +109,8 @@ export function PersonaliaViewV1() {
       const pdfPayload = {
         navn: t("side.overskrift"),
         spørsmål: [
-          ...lagSeksjonPayload(personaliaSpørsmålListe, form.transient.value()),
-          ...lagSeksjonPayload(personaliaBostedslandSpørsmålListe, form.transient.value()),
+          ...lagSeksjonPayload(personaliaKomponenter, form.transient.value()),
+          ...lagSeksjonPayload(personaliaBostedslandKomponenter, form.transient.value()),
         ],
       };
       form.setValue(handling, Seksjonshandling.neste);
@@ -123,8 +123,8 @@ export function PersonaliaViewV1() {
     const pdfPayload = {
       navn: t("side.overskrift"),
       spørsmål: [
-        ...lagSeksjonPayload(personaliaSpørsmålListe, form.transient.value()),
-        ...lagSeksjonPayload(personaliaBostedslandSpørsmålListe, form.transient.value()),
+        ...lagSeksjonPayload(personaliaKomponenter, form.transient.value()),
+        ...lagSeksjonPayload(personaliaBostedslandKomponenter, form.transient.value()),
       ],
     };
 
@@ -195,7 +195,7 @@ export function PersonaliaViewV1() {
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={seksjon.versjon} />
           <VStack gap="space-24">
-            {personaliaSpørsmålListe.map((komponent) => {
+            {personaliaKomponenter.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
@@ -210,7 +210,7 @@ export function PersonaliaViewV1() {
               );
             })}
 
-            {personaliaBostedslandSpørsmålListe.map((spørsmål) => {
+            {personaliaBostedslandKomponenter.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                 return null;
               }

@@ -14,7 +14,7 @@ import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import type { DinSituasjonSvar } from "./din-situasjon.komponenter";
-import { dinSituasjonKomponenter, handling, pdfGrunnlag } from "./din-situasjon.komponenter";
+import { lagDinSituasjonKomponenter, handling, pdfGrunnlag } from "./din-situasjon.komponenter";
 
 export function DinSituasjonViewV1() {
   const { state } = useNavigation();
@@ -22,6 +22,7 @@ export function DinSituasjonViewV1() {
   const { t } = useVersjonertTranslation("din-situasjon", 1);
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+  const dinSituasjonKomponenter = lagDinSituasjonKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -33,12 +34,12 @@ export function DinSituasjonViewV1() {
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter(t));
+  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
       navn: t("side.overskrift"),
-      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter(t), form.transient.value())],
+      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
@@ -70,7 +71,7 @@ export function DinSituasjonViewV1() {
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
-            {dinSituasjonKomponenter(t).map((komponent) => {
+            {dinSituasjonKomponenter.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }

@@ -56,7 +56,7 @@ const jaNeiOptions = (t: TFunction) => [
   { value: "nei", label: t("envalg.svar.nei") },
 ];
 
-export function personaliaKomponenter(t: TFunction): KomponentType[] {
+export function lagPersonaliaKomponenter(t: TFunction): KomponentType[] {
   return [
     {
       id: fornavnFraPdl,
@@ -145,7 +145,7 @@ export function personaliaKomponenter(t: TFunction): KomponentType[] {
   ];
 }
 
-export function personaliaBostedslandKomponenter(t: TFunction): KomponentType[] {
+export function lagPersonaliaBostedslandKomponenter(t: TFunction): KomponentType[] {
   return [
     {
       id: bostedsland,

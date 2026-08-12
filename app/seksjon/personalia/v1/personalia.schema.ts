@@ -18,8 +18,8 @@ import {
   landkodeFraPdl,
   mellomnavnFraPdl,
   pdfGrunnlag,
-  personaliaBostedslandKomponenter,
-  personaliaKomponenter,
+  lagPersonaliaBostedslandKomponenter,
+  lagPersonaliaKomponenter,
   PersonaliaSvar,
   postnummerFraPdl,
   poststedFraPdl,
@@ -64,8 +64,8 @@ export const personaliaSchema = z
       return;
     }
 
-    personaliaKomponenter(fallbackT)
-      .concat(personaliaBostedslandKomponenter(fallbackT))
+    lagPersonaliaKomponenter(fallbackT)
+      .concat(lagPersonaliaBostedslandKomponenter(fallbackT))
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
         const svar = data[spørsmål.id as keyof PersonaliaSvar];

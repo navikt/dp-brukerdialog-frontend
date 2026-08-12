@@ -14,7 +14,7 @@ import {
   kontonummerFraKontoregister,
   landFraPdl,
   mellomnavnFraPdl,
-  personaliaBostedslandKomponenter,
+  lagPersonaliaBostedslandKomponenter,
   postnummerFraPdl,
   poststedFraPdl,
 } from "../personalia.komponenter";
@@ -27,7 +27,7 @@ export function PersonaliaOppsummeringV1({
 }: SeksjonProps) {
   const { t } = useVersjonertTranslation("personalia", 1);
   const seksjonSvar = Object.entries(seksjonSvarene);
-  const personaliaBostedslandSpørsmålListe = personaliaBostedslandKomponenter(t);
+  const personaliaBostedslandKomponenter = lagPersonaliaBostedslandKomponenter(t);
 
   function finnRegisterverdi(key: string, registerverdier: [string, string][]) {
     return registerverdier.find((verdi) => verdi[0] === key)?.[1];
@@ -82,7 +82,7 @@ export function PersonaliaOppsummeringV1({
         {!seksjonSvar.length && <div>{t("oppsummering.ingenSvar")}</div>}
 
         {seksjonSvar.map(([key, value]) => {
-          const spørsmål = personaliaBostedslandSpørsmålListe.find((s) => s.id === key);
+          const spørsmål = personaliaBostedslandKomponenter.find((s) => s.id === key);
           if (spørsmål && !erInformasjonsFelt(spørsmål)) {
             return (
               <FormSummary.Answer key={key}>
