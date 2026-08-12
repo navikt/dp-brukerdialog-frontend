@@ -91,7 +91,7 @@ void i18n
       // "oppsummering",
       // "kvittering",
       // "ettersending",
-      // "common",
+      "common",
     ],
     defaultNS: "common",
     detection: {
