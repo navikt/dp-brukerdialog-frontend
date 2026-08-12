@@ -6,22 +6,20 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.din-situasjon";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
-import {
-  dinSituasjonKomponenter,
-  DinSituasjonSvar,
-  handling,
-  pdfGrunnlag,
-} from "./din-situasjon.komponenter";
+import type { DinSituasjonSvar } from "./din-situasjon.komponenter";
+import { dinSituasjonKomponenter, handling, pdfGrunnlag } from "./din-situasjon.komponenter";
 
 export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("din-situasjon", 1);
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
 
@@ -32,16 +30,15 @@ export function DinSituasjonViewV1() {
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
-
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
 
-  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter);
+  useNullstillSkjulteFelter<DinSituasjonSvar>(form, dinSituasjonKomponenter(t));
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
-      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter, form.transient.value())],
+      navn: t("side.overskrift"),
+      spørsmål: [...lagSeksjonPayload(dinSituasjonKomponenter(t), form.transient.value())],
     };
 
     return JSON.stringify(pdfPayload);
@@ -65,15 +62,15 @@ export function DinSituasjonViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
-            {dinSituasjonKomponenter.map((komponent) => {
+            {dinSituasjonKomponenter(t).map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
@@ -89,10 +86,7 @@ export function DinSituasjonViewV1() {
             })}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

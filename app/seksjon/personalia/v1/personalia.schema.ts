@@ -18,8 +18,8 @@ import {
   landkodeFraPdl,
   mellomnavnFraPdl,
   pdfGrunnlag,
-  personaliaBostedslandSpørsmål,
-  personaliaSpørsmål,
+  personaliaBostedslandKomponenter,
+  personaliaKomponenter,
   PersonaliaSvar,
   postnummerFraPdl,
   poststedFraPdl,
@@ -28,6 +28,7 @@ import {
   reistTilbakeTilBostedslandet,
   seksjonsvar,
 } from "./personalia.komponenter";
+import { fallbackT } from "~/i18n";
 import { valider } from "~/utils/validering.utils";
 
 export const personaliaSchema = z
@@ -63,9 +64,11 @@ export const personaliaSchema = z
       return;
     }
 
-    personaliaSpørsmål.concat(personaliaBostedslandSpørsmål).forEach((spørsmål) => {
-      const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
-      const svar = data[spørsmål.id as keyof PersonaliaSvar];
-      valider(spørsmål, svar, synlig, context);
-    });
+    personaliaKomponenter(fallbackT)
+      .concat(personaliaBostedslandKomponenter(fallbackT))
+      .forEach((spørsmål) => {
+        const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
+        const svar = data[spørsmål.id as keyof PersonaliaSvar];
+        valider(spørsmål, svar, synlig, context);
+      });
   });

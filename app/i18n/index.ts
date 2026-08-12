@@ -10,8 +10,8 @@ const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window ==
 
 const namespaceTilSeksjonPath: Record<string, string> = {
   oversikt: "oversikt",
-  // personalia: "personalia",
-  // "din-situasjon": "din-situasjon",
+  personalia: "personalia",
+  "din-situasjon": "din-situasjon",
   // arbeidsforhold: "arbeidsforhold",
   // "annen-pengestøtte": "annen-pengestøtte",
   // "egen-næring": "egen-næring",
@@ -77,8 +77,8 @@ void i18n
     supportedLngs: [...supportedLanguages],
     ns: [
       "oversikt",
-      // "personalia",
-      // "din-situasjon",
+      "personalia",
+      "din-situasjon",
       // "arbeidsforhold",
       // "annen-pengestøtte",
       // "egen-næring",

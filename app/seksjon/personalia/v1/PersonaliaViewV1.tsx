@@ -1,13 +1,20 @@
 import { BodyLong, BodyShort, Heading, Label, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
-import { Form, useActionData, useLoaderData, useNavigation, useParams } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { Komponent } from "~/components/Komponent";
 import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.personalia";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { action, loader } from "~/routes/$soknadId.personalia";
+import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
+import { useSoknad } from "~/seksjon/soknad.context";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { validerSvar } from "~/utils/validering.utils";
+import type { PersonaliaSvar } from "./personalia.komponenter";
 import {
   adresselinje1FraPdl,
   adresselinje2FraPdl,
@@ -22,40 +29,36 @@ import {
   landkodeFraPdl,
   mellomnavnFraPdl,
   pdfGrunnlag,
-  personaliaBostedslandSpørsmål,
-  personaliaSpørsmål,
-  PersonaliaSvar,
+  personaliaBostedslandKomponenter,
+  personaliaKomponenter,
   postnummerFraPdl,
   poststedFraPdl,
-} from "~/seksjon/personalia/v1/personalia.komponenter";
-import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
-import { useSoknad } from "~/seksjon/soknad.context";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { validerSvar } from "~/utils/validering.utils";
+} from "./personalia.komponenter";
 
 export function PersonaliaViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
+  const { t } = useVersjonertTranslation("personalia", 1);
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
 
+  const personaliaSpørsmålListe = personaliaKomponenter(t);
+  const personaliaBostedslandSpørsmålListe = personaliaBostedslandKomponenter(t);
+
   if (!personalia) {
     return (
       <div className="innhold">
-        <title>{SEKSJON_TITTEL}</title>
+        <title>{t("side.tittel")}</title>
         <VStack gap="space-24">
           <Heading size="medium" level="2">
-            {SEKSJON_NAVN}
+            {t("side.overskrift")}
           </Heading>
           <LocalAlert status="error">
             <LocalAlert.Header>
-              <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+              <LocalAlert.Title>{t("tekniskFeil.tittel")}</LocalAlert.Title>
             </LocalAlert.Header>
-            <LocalAlert.Content>
-              Vi klarte ikke å hente dine personalia opplysninger. Prøv igjen senere.
-            </LocalAlert.Content>
+            <LocalAlert.Content>{t("personaliaIkkeHentet.beskrivelse")}</LocalAlert.Content>
           </LocalAlert>
         </VStack>
         <SøknadFooter onFortsettSenere={mellomlagreSvar} />
@@ -97,17 +100,17 @@ export function PersonaliaViewV1() {
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
 
-  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmål);
+  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandSpørsmålListe);
 
   async function lagreSvar() {
     const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);
 
     if (klarTilLagring) {
       const pdfPayload = {
-        navn: SEKSJON_NAVN,
+        navn: t("side.overskrift"),
         spørsmål: [
-          ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-          ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+          ...lagSeksjonPayload(personaliaSpørsmålListe, form.transient.value()),
+          ...lagSeksjonPayload(personaliaBostedslandSpørsmålListe, form.transient.value()),
         ],
       };
       form.setValue(handling, Seksjonshandling.neste);
@@ -118,10 +121,10 @@ export function PersonaliaViewV1() {
 
   function mellomlagreSvar() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [
-        ...lagSeksjonPayload(personaliaSpørsmål, form.transient.value()),
-        ...lagSeksjonPayload(personaliaBostedslandSpørsmål, form.transient.value()),
+        ...lagSeksjonPayload(personaliaSpørsmålListe, form.transient.value()),
+        ...lagSeksjonPayload(personaliaBostedslandSpørsmålListe, form.transient.value()),
       ],
     };
 
@@ -132,35 +135,34 @@ export function PersonaliaViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <BodyLong>
-          Hvis opplysningene vi har om deg ikke stemmer, må du endre disse hos Folkeregisteret.
-          Kontonummer kan du legge til eller endre på{" "}
-          <EksterneLenke href="https://www.nav.no/minside" tekst=" Min side" />
+          {t("intro.forLenke")}{" "}
+          <EksterneLenke href="https://www.nav.no/minside" tekst={t("intro.minSideLenke")} />
         </BodyLong>
 
         <VStack gap="space-24">
           <VStack>
-            <Label as="p">Navn</Label>
+            <Label as="p">{t("opplysninger.navn")}</Label>
             <BodyShort>
               {fornavn} {mellomnavn} {etternavn}
             </BodyShort>
           </VStack>
           <VStack>
-            <Label as="p">Fødselsnummer</Label>
+            <Label as="p">{t("opplysninger.fodselsnummer")}</Label>
             <BodyShort>{formattertIdent}</BodyShort>
           </VStack>
           <VStack>
-            <Label as="p">Alder</Label>
+            <Label as="p">{t("opplysninger.alder")}</Label>
             <BodyShort>{alder}</BodyShort>
           </VStack>
           {folkeregistrertAdresse && (
             <VStack>
-              <Label as="p">Folkeregistrert adresse</Label>
+              <Label as="p">{t("opplysninger.folkeregistrertAdresse")}</Label>
               <BodyShort>
                 {folkeregistrertAdresse.adresselinje1}{" "}
                 {folkeregistrertAdresse.adresselinje1 && <br />}
@@ -175,12 +177,16 @@ export function PersonaliaViewV1() {
             </VStack>
           )}
           <VStack>
-            <Label as="p">Kontonummer</Label>
+            <Label as="p">{t("opplysninger.kontonummer")}</Label>
             <BodyShort>
               {formattertKontonummer || (
                 <span>
-                  Vi har ikke registrert kontonummeret ditt, og anbefaler at du legger det inn på{" "}
-                  <EksterneLenke href="https://www.nav.no/minside" tekst="Min side" />.
+                  {t("opplysninger.manglerKontonummer.forLenke")}{" "}
+                  <EksterneLenke
+                    href="https://www.nav.no/minside"
+                    tekst={t("opplysninger.manglerKontonummer.minSideLenke")}
+                  />
+                  .
                 </span>
               )}
             </BodyShort>
@@ -189,7 +195,7 @@ export function PersonaliaViewV1() {
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={seksjon.versjon} />
           <VStack gap="space-24">
-            {personaliaSpørsmål.map((komponent) => {
+            {personaliaSpørsmålListe.map((komponent) => {
               if (komponent.visHvis && !komponent.visHvis(formValues)) {
                 return null;
               }
@@ -204,7 +210,7 @@ export function PersonaliaViewV1() {
               );
             })}
 
-            {personaliaBostedslandSpørsmål.map((spørsmål) => {
+            {personaliaBostedslandSpørsmålListe.map((spørsmål) => {
               if (spørsmål.visHvis && !spørsmål.visHvis(formValues)) {
                 return null;
               }
@@ -220,10 +226,7 @@ export function PersonaliaViewV1() {
             })}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>
