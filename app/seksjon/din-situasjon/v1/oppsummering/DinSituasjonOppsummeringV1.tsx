@@ -19,12 +19,10 @@ export function DinSituasjonOppsummeringV1({
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Din Situasjon</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
-        {!dinSituasjonEntries.length && (
-          <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
-        )}
+        {!dinSituasjonEntries.length && <div>{t("oppsummering.ingenSvar")}</div>}
 
         {dinSituasjonEntries.map(([key, value]) => {
           const spørsmål = oversattDinSituasjonKomponenter.find((s) => s.id === key);
@@ -42,7 +40,7 @@ export function DinSituasjonOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Din situasjon"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );

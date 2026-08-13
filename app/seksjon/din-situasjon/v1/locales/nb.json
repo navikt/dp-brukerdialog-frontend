@@ -40,5 +40,8 @@
         "helg": "Hvis 5. mars er en lørdag, får vi inn inntekten din mandag 7. mars. Da må du søke dagpenger fra tirsdag 8. mars hvis du vil ha med inntekten din fra februar i beregningen."
       }
     }
+  },
+  "oppsummering": {
+    "ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen"
   }
 }

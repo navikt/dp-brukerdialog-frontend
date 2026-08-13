@@ -1,6 +1,7 @@
-import { tilleggsopplysningerKomponenter } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { lagTilleggsopplysningerKomponenter } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -12,17 +13,17 @@ export function TilleggsopplysningerOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
+  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
+  const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(t);
   const tilleggsopplysningerSvar = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Tilleggsopplysninger</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
-        {!tilleggsopplysningerSvar.length && (
-          <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
-        )}
+        {!tilleggsopplysningerSvar.length && <div>{t("oppsummering.ingenSvar")}</div>}
         {tilleggsopplysningerKomponenter.map((spørsmål) => {
           const svar = tilleggsopplysningerSvar.find((svar) => svar[0] === spørsmål.id);
           if (svar && !erInformasjonsFelt(spørsmål)) {
@@ -38,7 +39,7 @@ export function TilleggsopplysningerOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Tilleggsopplysninger"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );
