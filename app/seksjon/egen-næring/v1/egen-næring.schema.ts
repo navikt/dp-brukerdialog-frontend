@@ -5,8 +5,8 @@ import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
   dyr,
-  egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukKomponenter,
+  lagEgenNæringEgenNæringsvirksomhetKomponenter,
+  lagEgenNæringEgetGårdsbrukKomponenter,
   EgenNæringSvar,
   gårdsbruketsNavn,
   hvemEierGårdsbruket,
@@ -21,9 +21,9 @@ import {
   hvorMangeTimerJobbetPerUkeNå,
   jeg,
   jord,
-  leggTilGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
   LeggTilGårdsbrukSvar,
-  leggTilNæringsvirksomhetKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
   nårBleArbeidstidenRedusert,
   organisasjonsnummer,
@@ -36,6 +36,7 @@ import {
 import { valider } from "~/utils/validering.utils";
 import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { fallbackT } from "~/i18n";
 
 export const egenNæringSchema = z
   .object({
@@ -54,8 +55,8 @@ export const egenNæringSchema = z
       return;
     }
 
-    egenNæringEgenNæringsvirksomhetKomponenter
-      .concat(egenNæringEgetGårdsbrukKomponenter)
+    lagEgenNæringEgenNæringsvirksomhetKomponenter(fallbackT)
+      .concat(lagEgenNæringEgetGårdsbrukKomponenter(fallbackT))
       .forEach((spørsmål) => {
         const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
         const svar = data[spørsmål.id as keyof EgenNæringSvar];
@@ -72,7 +73,7 @@ export const leggTilNæringsvirksomhetSchema = z
     [hvorMangeTimerJobbetPerUkeNå]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    leggTilNæringsvirksomhetKomponenter.forEach((spørsmål) => {
+    lagLeggTilNæringsvirksomhetKomponenter(fallbackT).forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilNæringsvirksomhetSvar];
       valider(spørsmål, svar, synlig, context);
@@ -95,7 +96,7 @@ export const leggTilGårdsbrukSchema = z
     [hvordanHarDuBeregnetAntallArbeidstimerTotalt]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    leggTilGårdsbrukKomponenter.forEach((spørsmål) => {
+    lagLeggTilGårdsbrukKomponenter(fallbackT).forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilGårdsbrukSvar];
       valider(spørsmål, svar, synlig, context);

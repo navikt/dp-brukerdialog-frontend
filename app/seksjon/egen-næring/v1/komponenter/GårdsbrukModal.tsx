@@ -3,11 +3,12 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   Gårdsbruk,
-  leggTilGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
   LeggTilGårdsbrukSvar,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilGårdsbrukSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
@@ -25,6 +26,8 @@ export function GårdsbrukModal({ ref }: IProps) {
     useState(false);
   const { gårdsbruk, setGårdsbruk, gårdsbrukModalData, setGårdsbrukModalData } =
     useEgenNæringContext();
+  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const leggTilGårdsbrukKomponenter = lagLeggTilGårdsbrukKomponenter(t);
 
   const form = useForm({
     submitSource: "state",
@@ -65,7 +68,9 @@ export function GårdsbrukModal({ ref }: IProps) {
   useNullstillSkjulteFelter<LeggTilGårdsbrukSvar>(form, leggTilGårdsbrukKomponenter);
 
   const modalOperasjon =
-    gårdsbrukModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+    gårdsbrukModalData?.operasjon === ModalOperasjon.LeggTil
+      ? t("gårdsbruk.modal.leggTilTittel")
+      : t("gårdsbruk.modal.redigerTittel");
 
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
@@ -91,7 +96,7 @@ export function GårdsbrukModal({ ref }: IProps) {
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="space-8">{modalOperasjon} gårdsbruk</HStack>
+            <HStack gap="space-8">{modalOperasjon}</HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -113,7 +118,7 @@ export function GårdsbrukModal({ ref }: IProps) {
 
               <HStack className="mt-16" justify="end">
                 <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
-                  Lagre og lukk
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

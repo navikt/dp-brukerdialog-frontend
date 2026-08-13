@@ -8,6 +8,7 @@ import {
   hvorMangeProsentAvInntektenGårTilDeg,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   etGårdsbruk: Gårdsbruk;
@@ -16,6 +17,7 @@ interface IProps {
 
 export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
   const { gårdsbruk, setGårdsbruk, setGårdsbrukModalData } = useEgenNæringContext();
+  const { t } = useVersjonertTranslation("egen-næring", 1);
 
   function fjernGårdsbruk() {
     setGårdsbruk(gårdsbruk.filter((_, i) => i !== gårdsbrukIndex));
@@ -25,11 +27,15 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
     <Box padding="space-16" background="sunken" borderRadius="16">
       <h3 style={{ marginTop: "0" }}>{etGårdsbruk[gårdsbruketsNavn]}</h3>
       <BodyShort spacing>
-        {etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg]}% av inntekten går til meg
+        {t("gårdsbruk.detaljer.prosentTilMeg", {
+          prosent: etGårdsbruk[hvorMangeProsentAvInntektenGårTilDeg],
+        })}
         <br />
-        {etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer]}{" "}
-        arbeidstimer brukt i{" "}
-        {etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr]}
+        {t("gårdsbruk.detaljer.arbeidstimer", {
+          antall:
+            etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer],
+          år: etGårdsbruk[hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr],
+        })}
       </BodyShort>
       <HStack gap="space-16">
         <Button
@@ -45,7 +51,7 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
             });
           }}
         >
-          Endre svar
+          {t("detaljer.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -53,7 +59,7 @@ export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
           onClick={fjernGårdsbruk}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("detaljer.fjern")}
         </Button>
       </HStack>
     </Box>
