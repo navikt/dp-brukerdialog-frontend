@@ -2,11 +2,12 @@ import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   BarnFraPdl,
-  barnFraPdlSpørsmål,
+  lagBarnFraPdlKomponenter,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -23,6 +24,8 @@ interface IProps {
 
 export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
   const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const barnFraPdlSpørsmål = lagBarnFraPdlKomponenter(t);
 
   const form = useForm({
     submitSource: "state",
@@ -60,12 +63,14 @@ export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
       </Heading>
       {barnProps[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barnProps[fødselsdato]))}
+          {t("barnFraPdl.født", { dato: formaterNorskDato(new Date(barnProps[fødselsdato])) })}
         </BodyShort>
       )}
       {barnProps[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
+          {t("barnFraPdl.borI", {
+            land: finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase(),
+          })}
         </BodyShort>
       )}
       <Form id={formId} action={formAction}>

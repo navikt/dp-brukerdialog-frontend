@@ -1,6 +1,8 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { valider } from "~/utils/validering.utils";
 import {
-  barnetilleggKomponenter,
   BarnetilleggSvar,
   bostedsland,
   etternavn,
@@ -9,13 +11,12 @@ import {
   forsørgerDuBarnSomIkkeVisesHer,
   fødselsdato,
   handling,
-  leggTilBarnManueltSpørsmål,
+  lagBarnetilleggKomponenter,
+  lagLeggTilBarnManueltModalKomponenter,
   LeggTilBarnManueltSvar,
   pdfGrunnlag,
   seksjonsvar,
 } from "./barnetillegg.komponenter";
-import { valider } from "~/utils/validering.utils";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const barnetilleggSchema = z
   .object({
@@ -34,7 +35,7 @@ export const barnetilleggSchema = z
       return;
     }
 
-    barnetilleggKomponenter.forEach((komponent) => {
+    lagBarnetilleggKomponenter(fallbackT).forEach((komponent) => {
       const synlig = !komponent.visHvis || komponent.visHvis(data);
       const svar = data[komponent.id as keyof BarnetilleggSvar];
       valider(komponent, svar, synlig, context);
@@ -69,7 +70,7 @@ export const leggTilBarnManueltSchema = z
     [bostedsland]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    leggTilBarnManueltSpørsmål.forEach((spørsmål) => {
+    lagLeggTilBarnManueltModalKomponenter(fallbackT).forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof LeggTilBarnManueltSvar];
       valider(spørsmål, svar, synlig, context);
