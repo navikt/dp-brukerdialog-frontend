@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
   jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
@@ -181,288 +182,296 @@ export type ArbeidsforholdResponse = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: ArbeidsforholdModalSvar[];
 };
 
-export const arbeidsforholdKomponenter: KomponentType[] = [
-  {
-    id: hvordanHarDuJobbet,
-    type: "envalg",
-    label: "Hvilke av de følgende alternativene passer best med hvordan du har jobbet?",
-    options: [
-      {
-        value: fastArbeidstidIMindreEnn6Måneder,
-        label: "Jeg har hatt fast arbeidstid i mindre enn seks måneder",
-      },
-      {
-        value: fastArbeidstidI6MånederEllerMer,
-        label: "Jeg har hatt fast arbeidstid i seks måneder eller mer",
-      },
-      {
-        value: varierendeArbeidstidDeSiste12Månedene,
-        label: "Jeg har hatt varierende arbeidstid de siste 12 månedene",
-      },
-      {
-        value: jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
-        label: "Jeg har jobbet mer i gjennomsnitt de siste 36 månedene enn de siste 12 månedene",
-      },
-      {
-        value: harIkkeJobbetDeSiste36Månedene,
-        label: "Jeg har ikke vært i jobb de siste 36 månedene",
-      },
-    ],
-  },
-  {
-    id: "lesMerOmArbeidstidLesMer",
-    type: "lesMer",
-    label: "Les mer om arbeidstid",
-    description:
-      "<p>Når vi vurderer om du har rett til dagpenger ser vi på hvor mye du har jobbet, og om arbeidstiden din er redusert med minst 50 prosent.</p>" +
-      "<p><ul><li><strong>Fast arbeidstid</strong> betyr at du har en arbeidsavtale med fast stillingsprosent eller fast antall arbeidstimer.</li>" +
-      "<li><strong>Varierende arbeidstid</strong> betyr at arbeidstiden din varierer per uke eller per måned. Du kan for eksempel ha hatt flere korte arbeidsforhold, jobbet som vikar eller ekstrahjelp.</li></ul></p>",
-  },
-  {
-    id: harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
-    type: "envalg",
-    label:
-      "Har du jobbet i et annet EØS-land, Sveits eller Storbritannia i løpet av de siste 36 månedene?",
-    description:
-      "<p>Hvis du bare har jobbet i Norge, skal du svare <b>Nei</b> på dette spørsmålet.</p>" +
-      "<p>Andre land i EØS: Belgia, Bulgaria, Danmark, Estland, Finland, Frankrike, Hellas, Irland, Island, Italia, Kroatia, Kypros, Latvia, Liechtenstein, Litauen, Luxembourg, Malta, Nederland, Polen, Portugal, Romania, Slovakia, Slovenia, Spania, Sverige, Tsjekkia, Tyskland, Ungarn og Østerrike.</p>",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      (svar[hvordanHarDuJobbet] && svar[hvordanHarDuJobbet] !== harIkkeJobbetDeSiste36Månedene) ||
-      false,
-  },
-  {
-    id: "harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneLesMer",
-    type: "lesMer",
-    label: "Grunnen til at vi spør om dette og andre EØS land",
-    description:
-      "Hvis du har jobbet i et annet EØS-land, Sveits eller Storbritannia kan du ha rett til å få overført arbeidsperioder du har hatt der. Da vil de regnes med i vurderingen av retten til dagpenger i Norge.",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      (svar[hvordanHarDuJobbet] && svar[hvordanHarDuJobbet] !== harIkkeJobbetDeSiste36Månedene) ||
-      false,
-  },
-  {
-    id: "harIkkeJobbetDeSiste36MånedeneInformasjonskort",
-    type: "informasjonskort",
-    variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      "<p>Hvis du ikke har vært i arbeid, har du i utgangspunktet ikke rett til dagpenger. Du må derfor regne med å få avslag på søknaden din.</p>" +
-      "<p>Unntaket er hvis du har avtjent verneplikt i minst tre av de siste tolv månedene. Du legger ved dokumentasjon på at du har avtjent verneplikt senere i søknaden.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[hvordanHarDuJobbet] === harIkkeJobbetDeSiste36Månedene,
-  },
-];
+export function lagArbeidsforholdKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: hvordanHarDuJobbet,
+      type: "envalg",
+      label: t("hvordanHarDuJobbet.label"),
+      options: [
+        {
+          value: fastArbeidstidIMindreEnn6Måneder,
+          label: t("hvordanHarDuJobbet.svar.fastArbeidstidIMindreEnn6Måneder"),
+        },
+        {
+          value: fastArbeidstidI6MånederEllerMer,
+          label: t("hvordanHarDuJobbet.svar.fastArbeidstidI6MånederEllerMer"),
+        },
+        {
+          value: varierendeArbeidstidDeSiste12Månedene,
+          label: t("hvordanHarDuJobbet.svar.varierendeArbeidstidDeSiste12Månedene"),
+        },
+        {
+          value: jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+          label: t(
+            "hvordanHarDuJobbet.svar.jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene"
+          ),
+        },
+        {
+          value: harIkkeJobbetDeSiste36Månedene,
+          label: t("hvordanHarDuJobbet.svar.harIkkeJobbetDeSiste36Månedene"),
+        },
+      ],
+    },
+    {
+      id: "lesMerOmArbeidstidLesMer",
+      type: "lesMer",
+      label: t("lesMerOmArbeidstidLesMer.label"),
+      description: t("lesMerOmArbeidstidLesMer.description"),
+    },
+    {
+      id: harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+      type: "envalg",
+      label: t("harDuJobbetIEøs.label"),
+      description: t("harDuJobbetIEøs.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        (svar[hvordanHarDuJobbet] && svar[hvordanHarDuJobbet] !== harIkkeJobbetDeSiste36Månedene) ||
+        false,
+    },
+    {
+      id: "harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36MånedeneLesMer",
+      type: "lesMer",
+      label: t("harDuJobbetIEøsLesMer.label"),
+      description: t("harDuJobbetIEøsLesMer.description"),
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        (svar[hvordanHarDuJobbet] && svar[hvordanHarDuJobbet] !== harIkkeJobbetDeSiste36Månedene) ||
+        false,
+    },
+    {
+      id: "harIkkeJobbetDeSiste36MånedeneInformasjonskort",
+      type: "informasjonskort",
+      variant: "advarsel",
+      label: t("harIkkeJobbetDeSiste36MånedeneInformasjonskort.label"),
+      description: t("harIkkeJobbetDeSiste36MånedeneInformasjonskort.description"),
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[hvordanHarDuJobbet] === harIkkeJobbetDeSiste36Månedene,
+    },
+  ];
+}
 
-export const arbeidsforholdForklarendeTekstKomponenter: KomponentType[] = [
-  {
-    id: "harJobbetIEøsOgFastArbeidstidIMindreEnn6MånederForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
-      svar[hvordanHarDuJobbet] === fastArbeidstidIMindreEnn6Måneder,
-  },
-  {
-    id: "harJobbetIEøsOgFastArbeidstidI6MånederEllerMerForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 6 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
-      svar[hvordanHarDuJobbet] === fastArbeidstidI6MånederEllerMer,
-  },
-  {
-    id: "harJobbetIEøsOgVarierendeArbeidstidDeSiste12MånedeneForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits eller Storbritannia de siste 36 månedene og alle arbeidsforhold du har hatt i Norge de siste 12 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
-      svar[hvordanHarDuJobbet] === varierendeArbeidstidDeSiste12Månedene,
-  },
-  {
-    id: "harJobbetIEøsOgJobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12MånedeneForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt i EØS-land, Sveits, Storbritannia og Norge de siste 36 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja" &&
-      svar[hvordanHarDuJobbet] === jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
-  },
-  {
-    id: "harIkkeJobbetIEøsOgfastArbeidstidIMindreEnn6MånederForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt de siste 12 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
-      svar[hvordanHarDuJobbet] === fastArbeidstidIMindreEnn6Måneder,
-  },
-  {
-    id: "harIkkeJobbetIEøsOgfastArbeidstidI6MånederEllerMerForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt de siste 6 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
-      svar[hvordanHarDuJobbet] === fastArbeidstidI6MånederEllerMer,
-  },
-  {
-    id: "harIkkeJobbetIEøsOgVarierendeArbeidstidDeSiste12MånedeneForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforholdene du har hatt de siste 12 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
-      svar[hvordanHarDuJobbet] === varierendeArbeidstidDeSiste12Månedene,
-  },
-  {
-    id: "harIkkeJobbetIEøsOgJobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12MånedeneForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<h3>Dine arbeidsforhold</h3>" +
-      "<p>Du må legge til alle arbeidsforhold du har hatt i løpet av de siste 36 månedene.</p>" +
-      "<p>Du trenger ikke å legge ved dokumentasjon du har sendt inn i forbindelse med en tidligere søknad om dagpenger.</p>",
-    visHvis: (svar: ArbeidsforholdSvar) =>
-      svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "nei" &&
-      svar[hvordanHarDuJobbet] === jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
-  },
-];
+export function lagArbeidsforholdForklarendeTekstKomponenter(t: TFunction): KomponentType[] {
+  const overskrift = t("dineArbeidsforhold.overskrift");
+  const ingenDokumentasjon = t("dineArbeidsforhold.ingenDokumentasjon");
 
-export const arbeidsforholdModalKomponenter: KomponentType[] = [
-  {
-    id: navnetPåBedriften,
-    type: "kortTekst",
-    label: "Navnet på bedriften",
-    maksLengde: 200,
-  },
-  {
-    id: hvilketLandJobbetDuI,
-    type: "land",
-    label: "Hvilket land jobbet du i?",
-  },
-  {
-    id: oppgiPersonnummeretPinDuHaddeIDetteLandet,
-    type: "kortTekst",
-    label: "Oppgi personnummeret (PIN) som du hadde i dette landet",
-    maksLengde: 30,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      (svar[hvilketLandJobbetDuI] && svar[hvilketLandJobbetDuI] !== "NOR") || false,
-  },
-  {
-    id: hvordanHarDetteArbeidsforholdetEndretSeg,
-    type: "envalg",
-    label: "Hvordan har dette arbeidsforholdet endret seg?",
-    options: [
-      { value: arbeidsgiverenMinHarSagtMegOpp, label: "Arbeidsgiveren min har sagt meg opp" },
-      { value: jegHarSagtOppSelv, label: "Jeg har sagt opp selv" },
-      { value: jegHarFåttAvskjed, label: "Jeg har fått avskjed" },
-      { value: kontraktenErUtgått, label: "Kontrakten er utgått" },
-      { value: arbeidstidenErRedusert, label: "Arbeidstiden er redusert" },
-      { value: arbeidsgiverErKonkurs, label: "Arbeidsgiver er konkurs" },
-      { value: jegErPermittert, label: "Jeg er permittert" },
-      { value: arbeidsforholdetErIkkeEndret, label: "Arbeidsforholdet er ikke endret" },
-    ],
-  },
-];
+  return [
+    {
+      id: "harJobbetIEøsOgFastArbeidstidIMindreEnn6MånederForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.eøs12Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "ja" && svar[hvordanHarDuJobbet] === fastArbeidstidIMindreEnn6Måneder,
+    },
+    {
+      id: "harJobbetIEøsOgFastArbeidstidI6MånederEllerMerForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.eøs6Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "ja" && svar[hvordanHarDuJobbet] === fastArbeidstidI6MånederEllerMer,
+    },
+    {
+      id: "harJobbetIEøsOgVarierendeArbeidstidDeSiste12MånedeneForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.eøs12Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "ja" && svar[hvordanHarDuJobbet] === varierendeArbeidstidDeSiste12Månedene,
+    },
+    {
+      id: "harJobbetIEøsOgJobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12MånedeneForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.eøs36Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "ja" &&
+        svar[hvordanHarDuJobbet] === jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+    },
+    {
+      id: "harIkkeJobbetIEøsOgfastArbeidstidIMindreEnn6MånederForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.norge12Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "nei" && svar[hvordanHarDuJobbet] === fastArbeidstidIMindreEnn6Måneder,
+    },
+    {
+      id: "harIkkeJobbetIEøsOgfastArbeidstidI6MånederEllerMerForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.norge6Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "nei" && svar[hvordanHarDuJobbet] === fastArbeidstidI6MånederEllerMer,
+    },
+    {
+      id: "harIkkeJobbetIEøsOgVarierendeArbeidstidDeSiste12MånedeneForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.norge12Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "nei" && svar[hvordanHarDuJobbet] === varierendeArbeidstidDeSiste12Månedene,
+    },
+    {
+      id: "harIkkeJobbetIEøsOgJobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12MånedeneForklarendeTekst",
+      type: "forklarendeTekst",
+      description: overskrift + t("dineArbeidsforhold.norge36Måneder") + ingenDokumentasjon,
+      visHvis: (svar: ArbeidsforholdSvar) =>
+        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ===
+          "nei" &&
+        svar[hvordanHarDuJobbet] === jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+    },
+  ];
+}
 
-export const arbeidsforholdModalSkiftTurnusRotasjonKomponenter: KomponentType[] = [
-  {
-    id: harDuJobbetSkiftTurnusEllerRotasjon,
-    type: "envalg",
-    label: "Har du jobbet skift, turnus eller rotasjon?",
-    description:
-      "<p>Skift eller turnus kan være når du har avtale om å arbeide ulike tider i ulike uker, som for eksempel dagtid en uke og kveldstid en uke, eller har fri hver tredje helg.</p>" +
-      "<p>En rotasjon er for eksempel at du arbeider to uker og har fri i to uker.</p>",
-    options: [
-      { value: skiftEllerTurns, label: "Ja, jeg har jobbet skift eller turnus" },
-      { value: rotasjon, label: "Ja, jeg har jobbet rotasjon" },
-      { value: hverkenSkiftTurnusEllerRotasjon, label: "Nei, ingen av delene" },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== undefined,
-  },
-  {
-    id: "harDuJobbetSkiftTurnusEllerRotasjonLesMer",
-    type: "lesMer",
-    label: "Grunnen til at vi spør om dette",
-    description:
-      "<p>Vi må vite hvilken arbeidstidsordning du har for å gi deg dagpenger fra riktig dato.</p>",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      (svar[hvordanHarDetteArbeidsforholdetEndretSeg] &&
-        svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== arbeidsforholdetErIkkeEndret) ||
-      false,
-  },
-  {
-    id: "jegHarJobbetRotasjonDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av rotasjonsordningen og den siste arbeidsperioden din",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
-  },
-  {
-    id: hvilkenTypeRotasjonsordningJobbetDu,
-    type: "envalg",
-    label: "Hvilke type rotasjonsordning jobbet du?",
-    options: [
-      { value: "2-4-rotasjon", label: "2:4" },
-      { value: "2-3-rotasjon", label: "2:3" },
-      { value: "1-1-rotasjon", label: "1:1" },
-      { value: annenRotasjon, label: "Annen rotasjon" },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
-  },
-  {
-    id: annenRotasjonBeskrivelse,
-    type: "langTekst",
-    maksLengde: 500,
-    label: "Annen rotasjon",
-    description: "Beskriv kort den avtalte rotasjonsordningen din",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvilkenTypeRotasjonsordningJobbetDu] == annenRotasjon,
-  },
-  {
-    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
-    type: "periodeFra",
-    periodeLabel: "Oppgi siste arbeidsperiode du hadde i den siste rotasjonen din",
-    label: "Fra dato",
-    referanseId: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
-    fraOgMed: startOfDay(subYears(new Date(), 5)),
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
-  },
-  {
-    id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
-    type: "periodeTil",
-    label: "Til dato",
-    referanseId: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
-  },
-];
+export function lagArbeidsforholdModalKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: navnetPåBedriften,
+      type: "kortTekst",
+      label: t("navnetPåBedriften.label"),
+      maksLengde: 200,
+    },
+    {
+      id: hvilketLandJobbetDuI,
+      type: "land",
+      label: t("hvilketLandJobbetDuI.label"),
+    },
+    {
+      id: oppgiPersonnummeretPinDuHaddeIDetteLandet,
+      type: "kortTekst",
+      label: t("oppgiPersonnummeretPinDuHaddeIDetteLandet.label"),
+      maksLengde: 30,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        (svar[hvilketLandJobbetDuI] && svar[hvilketLandJobbetDuI] !== "NOR") || false,
+    },
+    {
+      id: hvordanHarDetteArbeidsforholdetEndretSeg,
+      type: "envalg",
+      label: t("hvordanHarDetteArbeidsforholdetEndretSeg.label"),
+      options: [
+        {
+          value: arbeidsgiverenMinHarSagtMegOpp,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.arbeidsgiverenMinHarSagtMegOpp"),
+        },
+        {
+          value: jegHarSagtOppSelv,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.jegHarSagtOppSelv"),
+        },
+        {
+          value: jegHarFåttAvskjed,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.jegHarFåttAvskjed"),
+        },
+        {
+          value: kontraktenErUtgått,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.kontraktenErUtgått"),
+        },
+        {
+          value: arbeidstidenErRedusert,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.arbeidstidenErRedusert"),
+        },
+        {
+          value: arbeidsgiverErKonkurs,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.arbeidsgiverErKonkurs"),
+        },
+        {
+          value: jegErPermittert,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.jegErPermittert"),
+        },
+        {
+          value: arbeidsforholdetErIkkeEndret,
+          label: t("hvordanHarDetteArbeidsforholdetEndretSeg.svar.arbeidsforholdetErIkkeEndret"),
+        },
+      ],
+    },
+  ];
+}
+
+export function lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(
+  t: TFunction
+): KomponentType[] {
+  return [
+    {
+      id: harDuJobbetSkiftTurnusEllerRotasjon,
+      type: "envalg",
+      label: t("harDuJobbetSkiftTurnusEllerRotasjon.label"),
+      description: t("harDuJobbetSkiftTurnusEllerRotasjon.description"),
+      options: [
+        {
+          value: skiftEllerTurns,
+          label: t("harDuJobbetSkiftTurnusEllerRotasjon.svar.skiftEllerTurnus"),
+        },
+        { value: rotasjon, label: t("harDuJobbetSkiftTurnusEllerRotasjon.svar.rotasjon") },
+        {
+          value: hverkenSkiftTurnusEllerRotasjon,
+          label: t("harDuJobbetSkiftTurnusEllerRotasjon.svar.hverken"),
+        },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== undefined,
+    },
+    {
+      id: "harDuJobbetSkiftTurnusEllerRotasjonLesMer",
+      type: "lesMer",
+      label: t("harDuJobbetSkiftTurnusEllerRotasjonLesMer.label"),
+      description: t("harDuJobbetSkiftTurnusEllerRotasjonLesMer.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        (svar[hvordanHarDetteArbeidsforholdetEndretSeg] &&
+          svar[hvordanHarDetteArbeidsforholdetEndretSeg] !== arbeidsforholdetErIkkeEndret) ||
+        false,
+    },
+    {
+      id: "jegHarJobbetRotasjonDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("jegHarJobbetRotasjonDokumentasjonskravindikator.label"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
+    },
+    {
+      id: hvilkenTypeRotasjonsordningJobbetDu,
+      type: "envalg",
+      label: t("hvilkenTypeRotasjonsordningJobbetDu.label"),
+      options: [
+        { value: "2-4-rotasjon", label: t("hvilkenTypeRotasjonsordningJobbetDu.svar.toFire") },
+        { value: "2-3-rotasjon", label: t("hvilkenTypeRotasjonsordningJobbetDu.svar.toTre") },
+        { value: "1-1-rotasjon", label: t("hvilkenTypeRotasjonsordningJobbetDu.svar.enEn") },
+        {
+          value: annenRotasjon,
+          label: t("hvilkenTypeRotasjonsordningJobbetDu.svar.annenRotasjon"),
+        },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
+    },
+    {
+      id: annenRotasjonBeskrivelse,
+      type: "langTekst",
+      maksLengde: 500,
+      label: t("annenRotasjonBeskrivelse.label"),
+      description: t("annenRotasjonBeskrivelse.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvilkenTypeRotasjonsordningJobbetDu] == annenRotasjon,
+    },
+    {
+      id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
+      type: "periodeFra",
+      periodeLabel: t("oppgiSisteArbeidsperiode.periodeLabel"),
+      label: t("oppgiSisteArbeidsperiode.fraLabel"),
+      referanseId: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
+      fraOgMed: startOfDay(subYears(new Date(), 5)),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
+    },
+    {
+      id: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato,
+      type: "periodeTil",
+      label: t("oppgiSisteArbeidsperiode.tilLabel"),
+      referanseId: oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[harDuJobbetSkiftTurnusEllerRotasjon] == rotasjon,
+    },
+  ];
+}

@@ -1,11 +1,12 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   Arbeidsforhold,
-  arbeidsforholdModalKomponenter,
   hvordanHarDetteArbeidsforholdetEndretSeg,
+  lagArbeidsforholdModalKomponenter,
   navnetPåBedriften,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import {
@@ -47,6 +48,8 @@ interface IProps {
 }
 
 export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
+  const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(t);
   const {
     registrerteArbeidsforhold,
     setRegistrerteArbeidsforhold,
@@ -80,124 +83,144 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
           <br />
           {arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetFraDato] && (
             <span>
-              {"Arbeidsforholdet varte fra " +
-                formaterNorskDato(
+              {t("detaljer.varteFra", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetFraDato])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetTilDato] && (
             <span>
-              {" til " +
-                formaterNorskDato(
+              {t("detaljer.til", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[jegErOppsagtVarighetPåArbeidsforholdetTilDato])
-                )}
+                ),
+              })}
             </span>
           )}
 
           {arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato] && (
             <span>
-              {"Arbeidsforholdet varte fra " +
-                formaterNorskDato(
+              {t("detaljer.varteFra", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato] && (
             <span>
-              {" til " +
-                formaterNorskDato(
+              {t("detaljer.til", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato])
-                )}
+                ),
+              })}
             </span>
           )}
 
           {arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato] && (
             <span>
-              {"Arbeidsforholdet varte fra " +
-                formaterNorskDato(
+              {t("detaljer.varteFra", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato] && (
             <span>
-              {" til " +
-                formaterNorskDato(
+              {t("detaljer.til", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato])
-                )}
+                ),
+              })}
             </span>
           )}
 
           {arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato] && (
             <span>
-              {"Arbeidsforholdet varte fra " +
-                formaterNorskDato(
+              {t("detaljer.varteFra", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato] && (
             <span>
-              {" til " +
-                formaterNorskDato(
+              {t("detaljer.til", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato])
-                )}
+                ),
+              })}
             </span>
           )}
 
           {arbeidsforhold[arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet] && (
             <span>
-              {"Arbeidsforholdet startet " +
-                formaterNorskDato(
+              {t("detaljer.startet", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert] && (
-            <>
-              Arbeidstiden ble redusert{" "}
-              {formaterNorskDato(
-                new Date(arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert])
-              )}
-            </>
+            <span>
+              {t("detaljer.arbeidstidenBleRedusert", {
+                dato: formaterNorskDato(
+                  new Date(
+                    arbeidsforhold[arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert]
+                  )
+                ),
+              })}
+            </span>
           )}
 
           {arbeidsforhold[konkursVarighetPåArbeidsforholdetFraDato] && (
             <span>
-              {"Arbeidsforholdet varte fra " +
-                formaterNorskDato(
+              {t("detaljer.varteFra", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[konkursVarighetPåArbeidsforholdetFraDato])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[konkursVarighetPåArbeidsforholdetTilDato] && (
             <span>
-              {" til " +
-                formaterNorskDato(
+              {t("detaljer.til", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[konkursVarighetPåArbeidsforholdetTilDato])
-                )}
+                ),
+              })}
             </span>
           )}
 
           {arbeidsforhold[permittertVarighetPåArbeidsforholdetFraOgMedDato] && (
             <span>
-              {"Arbeidsforholdet startet " +
-                formaterNorskDato(
+              {t("detaljer.startet", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[permittertVarighetPåArbeidsforholdetFraOgMedDato])
-                )}
+                ),
+              })}
             </span>
           )}
           {arbeidsforhold[permittertNårErDuPermittertFraOgMedDato] && (
             <>
-              {arbeidsforhold[permittertHvorMangeProsentErDuPermittert]}% permittert fra{" "}
-              {formaterNorskDato(new Date(arbeidsforhold[permittertNårErDuPermittertFraOgMedDato]))}{" "}
+              {t("detaljer.permittertFra", {
+                prosent: arbeidsforhold[permittertHvorMangeProsentErDuPermittert],
+                dato: formaterNorskDato(
+                  new Date(arbeidsforhold[permittertNårErDuPermittertFraOgMedDato])
+                ),
+              })}{" "}
               {arbeidsforhold[permittertNårErDuPermittertTilOgMedDato] && (
                 <>
-                  til{" "}
-                  {formaterNorskDato(
-                    new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato])
-                  )}
+                  {t("detaljer.permittertTil", {
+                    dato: formaterNorskDato(
+                      new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato])
+                    ),
+                  })}
                 </>
               )}
             </>
@@ -205,10 +228,11 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
 
           {arbeidsforhold[ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato] && (
             <span>
-              {"Arbeidsforholdet startet " +
-                formaterNorskDato(
+              {t("detaljer.startet", {
+                dato: formaterNorskDato(
                   new Date(arbeidsforhold[ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato])
-                )}
+                ),
+              })}
             </span>
           )}
         </>
@@ -226,7 +250,7 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
             });
           }}
         >
-          Endre svar
+          {t("navigasjon.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -234,7 +258,7 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
           onClick={fjernArbeidsforhold}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("navigasjon.fjern")}
         </Button>
       </HStack>
     </Box>

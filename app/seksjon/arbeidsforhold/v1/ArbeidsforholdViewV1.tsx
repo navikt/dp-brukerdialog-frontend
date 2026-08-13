@@ -8,32 +8,33 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.arbeidsforhold";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   Arbeidsforhold,
-  arbeidsforholdForklarendeTekstKomponenter,
-  arbeidsforholdKomponenter,
-  arbeidsforholdModalKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdResponse,
   ArbeidsforholdSvar,
   handling,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
+  lagArbeidsforholdForklarendeTekstKomponenter,
+  lagArbeidsforholdKomponenter,
+  lagArbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   pdfGrunnlag,
   seksjonsvar,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
@@ -58,6 +59,29 @@ export function ArbeidsforholdViewV1() {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
+
+  const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(t);
+  const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);
+  const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(t);
+  const arbeidsforholdModalSkiftTurnusRotasjonKomponenter =
+    lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t);
+  const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter =
+    lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t);
+  const arbeidsforholdModalJegHarSagtOppSelvKomponenter =
+    lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t);
+  const arbeidsforholdModalJegHarFåttAvskjedKomponenter =
+    lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t);
+  const arbeidsforholdModalKontraktenErUtgåttKomponenter =
+    lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t);
+  const arbeidsforholdModalArbeidstidenErRedusertKomponenter =
+    lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t);
+  const arbeidsforholdModalArbeidsgiverErKonkursKomponenter =
+    lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t);
+  const arbeidsforholdModalJegErPermittertKomponenter =
+    lagArbeidsforholdModalJegErPermittertKomponenter(t);
+  const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter =
+    lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -101,7 +125,7 @@ export function ArbeidsforholdViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [
         ...lagSeksjonPayload(arbeidsforholdKomponenter, form.transient.value()),
         ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
@@ -164,12 +188,12 @@ export function ArbeidsforholdViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Form id={formId} action={formAction}>
           <VStack gap="space-24">
             <Heading size="medium" level="2">
-              {SEKSJON_NAVN}
+              {t("side.overskrift")}
             </Heading>
             <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
             {arbeidsforholdKomponenter.map((komponent) => {
@@ -225,20 +249,19 @@ export function ArbeidsforholdViewV1() {
                         });
                       }}
                     >
-                      Legg til arbeidsforhold
+                      {t("navigasjon.leggTilArbeidsforhold")}
                     </Button>
                   </HStack>
                   {visManglerArbeidsforholdFeilmelding && (
-                    <InlineMessage status="error">Du må legge til et arbeidsforhold</InlineMessage>
+                    <InlineMessage status="error">
+                      {t("navigasjon.manglerArbeidsforhold")}
+                    </InlineMessage>
                   )}
                 </VStack>
               )}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

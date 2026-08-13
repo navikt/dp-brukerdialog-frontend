@@ -4,15 +4,13 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   ModalOperasjon,
   useArbeidsforholdContext,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
   arbeidsforholdetErIkkeEndret,
-  arbeidsforholdForklarendeTekstKomponenter,
-  arbeidsforholdModalKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
   arbeidsgiverenMinHarSagtMegOpp,
@@ -24,17 +22,20 @@ import {
   jegHarFåttAvskjed,
   jegHarSagtOppSelv,
   kontraktenErUtgått,
+  lagArbeidsforholdForklarendeTekstKomponenter,
+  lagArbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   navnetPåBedriften,
   rotasjon,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdModalSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
 import {
   Dokumentasjonskrav,
@@ -59,17 +60,20 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     setDokumentasjonskrav,
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
 
-  const alleModalKomponenter = arbeidsforholdModalKomponenter
-    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
-    .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
-    .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-    .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
-    .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
-    .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
-    .concat(arbeidsforholdModalJegErPermittertKomponenter)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-    .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter);
+  const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);
+
+  const alleModalKomponenter = lagArbeidsforholdModalKomponenter(t)
+    .concat(lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t))
+    .concat(lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t))
+    .concat(lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t))
+    .concat(lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t))
+    .concat(lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t))
+    .concat(lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t))
+    .concat(lagArbeidsforholdModalJegErPermittertKomponenter(t))
+    .concat(lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t))
+    .concat(lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t));
 
   const form = useForm({
     submitSource: "state",
@@ -178,7 +182,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
@@ -186,7 +190,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "T8",
-            tittel: `Oppsigelse - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.oppsigelse", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp,
           }
         );
@@ -198,7 +202,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
@@ -206,7 +210,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "T8",
-            tittel: `Oppsigelse - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.oppsigelse", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv,
           }
         );
@@ -218,7 +222,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
@@ -226,7 +230,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "T8",
-            tittel: `Avskjedigelse - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.avskjedigelse", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdAvskjedigelse,
           }
         );
@@ -238,7 +242,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           seksjonId: "arbeidsforhold",
           spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
           skjemakode: "O2",
-          tittel: `Arbeidsavtale - ${bedriftNavn}`,
+          tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
           type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
         });
         break;
@@ -249,7 +253,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
@@ -257,7 +261,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "T8",
-            tittel: `Redusert arbeidstid - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.redusertArbeidstid", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid,
           }
         );
@@ -269,7 +273,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
@@ -277,7 +281,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "M7",
-            tittel: `Oppsigelse fra bostyrer/konkursforvalter - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.oppsigelseFraBostyrer", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter,
           }
         );
@@ -289,7 +293,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "O2",
-            tittel: `Arbeidsavtale - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
           },
           {
@@ -297,7 +301,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
             seksjonId: "arbeidsforhold",
             spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
             skjemakode: "T6",
-            tittel: `Permitteringsvarsel - ${bedriftNavn}`,
+            tittel: t("dokumentasjonskrav.permitteringsvarsel", { bedrift: bedriftNavn }),
             type: DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel,
           }
         );
@@ -310,7 +314,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
         seksjonId: "arbeidsforhold",
         spørsmålId: harDuJobbetSkiftTurnusEllerRotasjon,
         skjemakode: "M6",
-        tittel: `Dokumentasjon av rotasjonsordningen - ${bedriftNavn}`,
+        tittel: t("dokumentasjonskrav.rotasjonsordning", { bedrift: bedriftNavn }),
         type: DokumentasjonskravType.ArbeidsforholdRotasjon,
       });
     }
@@ -319,9 +323,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
   }
 
   const modalTittel =
-    modalData?.operasjon === ModalOperasjon.LeggTil
-      ? "Legg til arbeidsforhold"
-      : "Rediger arbeidsforhold";
+    modalData?.operasjon === ModalOperasjon.LeggTil ? t("modal.leggTil") : t("modal.rediger");
   return (
     <>
       <Modal
@@ -384,7 +386,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   onClick={() => form.submit()}
                   icon={<FloppydiskIcon aria-hidden />}
                 >
-                  Lagre og lukk
+                  {t("navigasjon.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

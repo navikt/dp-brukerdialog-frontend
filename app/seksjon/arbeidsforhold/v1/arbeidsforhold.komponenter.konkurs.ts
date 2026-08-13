@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
   ArbeidsforholdModalSvar,
@@ -28,294 +29,221 @@ export const konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinG
 export const konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn =
   "konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn";
 
-export const arbeidsforholdModalArbeidsgiverErKonkursKomponenter: KomponentType[] = [
-  {
-    id: konkursVarighetPåArbeidsforholdetFraDato,
-    type: "periodeFra",
-    periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra dato",
-    referanseId: konkursVarighetPåArbeidsforholdetTilDato,
-    fraOgMed: startOfDay(subYears(new Date(), 100)),
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: konkursVarighetPåArbeidsforholdetTilDato,
-    type: "periodeTil",
-    label: "Til dato",
-    referanseId: konkursVarighetPåArbeidsforholdetFraDato,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: "konkursArbeidsavtaleDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: "konkursOppsigelseDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Oppsigelse fra bostyrer/konkursforvalter",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
-    type: "envalg",
-    label: "Er dette et midlertidig arbeidsforhold med en kontraktfestet sluttdato?",
-    description:
-      "Vi må vite om du hadde en midlertidig arbeidskontrakt med fast sluttdato, for eksempel et vikariat. Svar ja hvis kontrakten din hadde en sluttdato, og nei hvis du var fast ansatt uten sluttdato.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-      {
-        value: "vetIkke",
-        label: "Jeg vet ikke",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
-    type: "dato",
-    label: "Oppgi den kontraktsfestede sluttdatoen for dette arbeidsforholdet",
-    fraOgMed: startOfDay(subMonths(new Date(), 9)),
-    tilOgMed: endOfDay(addYears(new Date(), 100)),
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato] === "ja",
-  },
-  {
-    id: konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
-    type: "envalg",
-    label: "Ønsker du å søke om forskudd på lønnsgarantimidler?",
-    description:
-      "Lønnsgarantimidler erstatter lønn som du ikke har fått utbetalt fordi arbeidsgiveren din går konkurs. Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd her.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerLesMer",
-    type: "lesMer",
-    label: "Les mer om hvem som bør søke om forskudd på lønnsgarantimidler",
-    description:
-      "<p>Når arbeidsgiveren din går konkurs, kan du i tillegg til dagpenger søke om:</p>" +
-      '<ol><li><strong>Lønnsgarantimidler</strong><br/>Lønnsgarantiordningen skal sikre at du som arbeidstaker får utbetalt lønn, feriepenger og annet arbeidsvederlag som du har til gode når arbeidsgiveren din går konkurs. Send <a href="https://www.nav.no/soknader#lonnsgaranti" target="_blank" rel="noopener noreferrer">søknad om lønnsgarantimidler</a> via bostyrer i konkursboet.</li>' +
-      '<li><strong>Forskudd på lønnsgarantimidler i form av dagpenger</strong><br/>Du kan få forskudd på lønnsgarantimidler i form av dagpenger for den første måneden etter at arbeidsgiveren din er konkurs. Dette er fordi det kan ta lang tid å få svar på søknaden om lønnsgaranti. Du søker om forskudd ved å svare "Ja" på spørsmålet over.</li></ol>' +
-      "<p>Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd. Du må da også sende en egen søknad om lønnsgarantimidler. Dette kan bostyrer hjelpe deg med.</p>",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerVarselemdling",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description:
-      '<p>Det er viktig at du i tillegg til denne søknaden sender egen <a href="https://www.nav.no/soknader#lonnsgaranti" target="_blank" rel="noopener noreferrer">søknad om lønnsgarantimidler</a>. Dette kan du få hjelp til av bobestyrer i konkursboet.</p>',
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
-    type: "envalg",
-    label: "Ønsker du å søke om dagpenger i tillegg til forskudd om lønnsgarantimidler?",
-    description:
-      "Lønnsgarantimidler erstatter lønn som du ikke har fått utbetalt fordi arbeidsgiveren din går konkurs. Er du usikker på om du har rett på lønnsgarantimidler, anbefaler vi at du søker om forskudd her.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: "konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidlerLesMer",
-    type: "lesMer",
-    label: "Les om hvem som kan ha rett til dagpenger",
-    description:
-      "<p>Forskudd på lønnsgarantimidler blir utbetalt i inntil én måned.</p>" +
-      "<p>Hvis du er uten arbeid etter at perioden med forskudd på lønnsgarantimidler er ferdig, kan du ha rett på dagpenger. Det kan du søke om ved å svare ja på dette spørsmålet</p>",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet,
-    type: "envalg",
-    label: "Godtar du at Nav trekker penger direkte fra konkursboet?",
-    description:
-      "Får du innvilget dagpenger for en periode du senere får dekket lønn for, har du fått dagpenger du egentlig ikke har rett til. For at du skal slippe å tilbakebetale dagpenger til Nav, vil vi trekke for mye utbetalt dagpenger direkte fra konkursboet.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: "konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboetLesMer",
-    type: "lesMer",
-    label: "Les om hvorfor vi vil trekke penger",
-    description:
-      "<p>Når arbeidsgiveren din er konkurs, kan du ha krav på å få dekket tapt lønn i oppsigelsestiden fra konkursboet (dividende). Dette kan være full lønn, eller deler av lønnen for en kort eller lengre periode. Fram til boet er gjort opp, er det usikkert hvor mye penger du har krav på. Har du krav på lønn, har du ikke samtidig krav på dagpenger.</p>" +
-      "<p>Får du innvilget dagpenger for en periode du senere får dekket lønn for, har du derfor fått dagpenger du egentlig ikke har rett til. For at du skal slippe å tilbakebetale dagpenger til Nav, vil vi trekke for mye utbetalt dagpenger direkte fra konkursboet. Samlet sett taper du ikke penger på dette.</p>" +
-      "<p>For at vi skal kunne trekke direkte fra boet, trenger vi en godkjenning fra deg.</p>",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
-  },
-  {
-    id: "godtarDuAtNavTrekkerPengerDirekteFraKonkursboetInformasjonskort",
-    type: "informasjonskort",
-    variant: "advarsel",
-    label: "Du kan få krav om tilbakebetaling",
-    description:
-      "Hvis du ikke godtar at Nav trekker penger direkte fra konkursboet, kan du få krav om tilbakebetaling.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet] === "nei",
-  },
-  {
-    id: konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
-    type: "envalg",
-    label:
-      "Godtar du at Nav trekker forskuddet på lønnsgarantimidler direkte fra lønnsgarantiordningen?",
-    description:
-      "<p>Forskuddet skal dekke den første måneden du venter på svar på søknaden om lønnsgarantimidler. Når du får utbetalt lønnsgarantimidler, trekker vi forskuddet fra utbetalingen.</p>" +
-      '<p>Du taper ikke penger på å svare "Ja".</p>',
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: "konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningenInformasjonskort",
-    type: "informasjonskort",
-    variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      '<p>Hvis du svarer "Nei" vil du få avslag på søknaden om forskudd på lønnsgarantimidler.</p>' +
-      "<p>Vi må trekke forskuddet fra lønnsgarantimidlene dine for å hindre at du får dobbelt utbetaling for den første måneden.</p>",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[
-        konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen
-      ] === "nei",
-  },
-  {
-    id: konkursHarDuSøktOmLønnsgarantimidler,
-    type: "envalg",
-    label: "Har du søkt om lønnsgarantimidler?",
-    description:
-      "For å ha rett til forskudd på lønnsgarantimidler må du søke lønnsgarantiordningen om lønnsgarantimidler. Dette kan bostyrer i konkursboet hjelpe deg med.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "neiMenSkalSøke",
-        label: "Nei, men jeg skal søke om lønnsgarantimidler",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: "konkursHarDuSøktOmLønnsgarantimidlerInformasjonskort",
-    type: "informasjonskort",
-    variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      "Hvis du ikke søker om lønnsgarantimidler, har du ikke rett til forskudd, og du vil få avslag på søknaden din om forskudd på lønnsgarantimidler.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursHarDuSøktOmLønnsgarantimidler] === "nei",
-  },
-  {
-    id: konkursDekkerLønnsgarantiordningenKravetDitt,
-    type: "envalg",
-    label: "Dekker lønnsgarantiordningen lønnskravet ditt?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-      {
-        value: "vetIkke",
-        label: "Jeg vet ikke",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
-    type: "envalg",
-    label:
-      "Har du fått utbetalt lønn for dager etter datoen arbeidsgiveren din gikk konkurs eller ble tvangsavviklet?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
-  },
-  {
-    id: konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
-    type: "dato",
-    label: "Velg den siste dagen du har fått utbetalt lønn for",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[
-        konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet
-      ] === "ja",
-  },
-];
+export function lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(
+  t: TFunction
+): KomponentType[] {
+  return [
+    {
+      id: konkursVarighetPåArbeidsforholdetFraDato,
+      type: "periodeFra",
+      periodeLabel: t("felles.varighetPåArbeidsforholdet"),
+      label: t("felles.fraDato"),
+      referanseId: konkursVarighetPåArbeidsforholdetTilDato,
+      fraOgMed: startOfDay(subYears(new Date(), 100)),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: konkursVarighetPåArbeidsforholdetTilDato,
+      type: "periodeTil",
+      label: t("felles.tilDato"),
+      referanseId: konkursVarighetPåArbeidsforholdetFraDato,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "konkursArbeidsavtaleDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsavtale"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "konkursOppsigelseDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("konkurs.oppsigelseDokumentasjonskravindikator"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
+      type: "envalg",
+      label: t("konkurs.erDetteEtMidlertidigArbeidsforhold.label"),
+      description: t("konkurs.erDetteEtMidlertidigArbeidsforhold.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+        { value: "vetIkke", label: t("envalg.svar.vetIkke") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: konkursOppgiDenKontraktsfestedeSluttdatoenPåDetteArbeidsforholdet,
+      type: "dato",
+      label: t("konkurs.oppgiSluttdato.label"),
+      fraOgMed: startOfDay(subMonths(new Date(), 9)),
+      tilOgMed: endOfDay(addYears(new Date(), 100)),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato] === "ja",
+    },
+    {
+      id: konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
+      type: "envalg",
+      label: t("konkurs.ønskerDuÅSøkeOmForskudd.label"),
+      description: t("konkurs.ønskerDuÅSøkeOmForskudd.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerLesMer",
+      type: "lesMer",
+      label: t("konkurs.ønskerDuÅSøkeOmForskuddLesMer.label"),
+      description: t("konkurs.ønskerDuÅSøkeOmForskuddLesMer.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidlerVarselemdling",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("felles.informasjon"),
+      description: t("konkurs.ønskerDuÅSøkeOmForskuddVarselmelding.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
+      type: "envalg",
+      label: t("konkurs.ønskerDuÅSøkeOmDagpengerITillegg.label"),
+      description: t("konkurs.ønskerDuÅSøkeOmDagpengerITillegg.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: "konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidlerLesMer",
+      type: "lesMer",
+      label: t("konkurs.ønskerDuÅSøkeOmDagpengerITilleggLesMer.label"),
+      description: t("konkurs.ønskerDuÅSøkeOmDagpengerITilleggLesMer.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet,
+      type: "envalg",
+      label: t("konkurs.godtarDuTrekkFraKonkursboet.label"),
+      description: t("konkurs.godtarDuTrekkFraKonkursboet.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboetLesMer",
+      type: "lesMer",
+      label: t("konkurs.godtarDuTrekkFraKonkursboetLesMer.label"),
+      description: t("konkurs.godtarDuTrekkFraKonkursboetLesMer.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "godtarDuAtNavTrekkerPengerDirekteFraKonkursboetInformasjonskort",
+      type: "informasjonskort",
+      variant: "advarsel",
+      label: t("konkurs.godtarDuTrekkFraKonkursboetInformasjonskort.label"),
+      description: t("konkurs.godtarDuTrekkFraKonkursboetInformasjonskort.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursGodtarDuAtNavTrekkerPengerDirekteFraKonkursboet] === "nei",
+    },
+    {
+      id: konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
+      type: "envalg",
+      label: t("konkurs.godtarDuTrekkFraLønnsgarantiordningen.label"),
+      description: t("konkurs.godtarDuTrekkFraLønnsgarantiordningen.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: "konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningenInformasjonskort",
+      type: "informasjonskort",
+      variant: "advarsel",
+      label: t("konkurs.godtarDuTrekkFraLønnsgarantiordningenInformasjonskort.label"),
+      description: t("konkurs.godtarDuTrekkFraLønnsgarantiordningenInformasjonskort.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[
+          konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen
+        ] === "nei",
+    },
+    {
+      id: konkursHarDuSøktOmLønnsgarantimidler,
+      type: "envalg",
+      label: t("konkurs.harDuSøktOmLønnsgarantimidler.label"),
+      description: t("konkurs.harDuSøktOmLønnsgarantimidler.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        {
+          value: "neiMenSkalSøke",
+          label: t("konkurs.harDuSøktOmLønnsgarantimidler.svar.neiMenSkalSøke"),
+        },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: "konkursHarDuSøktOmLønnsgarantimidlerInformasjonskort",
+      type: "informasjonskort",
+      variant: "advarsel",
+      label: t("konkurs.harDuSøktOmLønnsgarantimidlerInformasjonskort.label"),
+      description: t("konkurs.harDuSøktOmLønnsgarantimidlerInformasjonskort.description"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursHarDuSøktOmLønnsgarantimidler] === "nei",
+    },
+    {
+      id: konkursDekkerLønnsgarantiordningenKravetDitt,
+      type: "envalg",
+      label: t("konkurs.dekkerLønnsgarantiordningenKravet.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+        { value: "vetIkke", label: t("envalg.svar.vetIkke") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet,
+      type: "envalg",
+      label: t("konkurs.harDuFåttUtbetaltLønn.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler] === "ja",
+    },
+    {
+      id: konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavvikletSisteDagDetBleUtbetaltLønn,
+      type: "dato",
+      label: t("konkurs.sisteDagMedLønn.label"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[
+          konkursHarDuFåttUtbetaltLønnForDagerEtterDatoenArbeidsgiverenDinGikkKonkursEllerBleTvangsavviklet
+        ] === "ja",
+    },
+  ];
+}
