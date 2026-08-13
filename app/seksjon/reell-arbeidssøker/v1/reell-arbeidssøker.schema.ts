@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
 import { valider } from "~/utils/validering.utils";
 import {
   erDuVilligTilÅBytteYrkeEllerGåNedILønn,
@@ -30,11 +31,13 @@ import {
   kanIkkeJobbeIHeleNorgeOmsorgForPleietrengendeINærFamilie,
   kanIkkeJobbeIHeleNorgeRedusertHelse,
   kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
+  lagReellArbeidssøkerKomponenter,
   pdfGrunnlag,
-  reellArbeidssøkerKomponenter,
   ReellArbeidssøkerSvar,
 } from "./reell-arbeidssøker.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+
+const reellArbeidssøkerKomponenter = lagReellArbeidssøkerKomponenter(fallbackT);
 
 export const reellArbeidssøkerSchema = z
   .object({
