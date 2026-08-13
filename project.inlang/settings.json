@@ -19,6 +19,8 @@
       "#Verneplikt": "./app/seksjon/verneplikt/v1/locales/{languageTag}.json",
       "#Utdanning": "./app/seksjon/utdanning/v1/locales/{languageTag}.json",
       "#Barnetillegg": "./app/seksjon/barnetillegg/v1/locales/{languageTag}.json",
+      "#Tilleggsopplysninger": "./app/seksjon/tilleggsopplysninger/v1/locales/{languageTag}.json",
+      "#Oppsummering": "./app/seksjon/oppsummering/locales/{languageTag}.json",
       "#Common ": "./app/i18n/locales/{languageTag}.json"
     },
     "variableReferencePattern": ["{{", "}}"]

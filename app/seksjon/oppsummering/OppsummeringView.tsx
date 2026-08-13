@@ -9,6 +9,7 @@ import {
   VStack,
 } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useTranslation } from "react-i18next";
 import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
 import { z } from "zod";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
@@ -21,8 +22,7 @@ import { getEnv } from "~/utils/env.utils";
 const schema = z.object({});
 
 export function OppsummeringView() {
-  const seksjonnavn = "Se over før du sender inn";
-  const seksjonHeadTitle = `Søknad om dagpenger: ${seksjonnavn}`;
+  const { t } = useTranslation("oppsummering");
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -44,30 +44,24 @@ export function OppsummeringView() {
 
   return (
     <div className="innhold">
-      <title>{seksjonHeadTitle}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-80">
         <VStack gap="space-24">
           <Heading size="medium" level="2">
-            {seksjonnavn}
+            {t("side.overskrift")}
           </Heading>
           <InfoCard data-color="warning">
             <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
-              <InfoCard.Title>Søknaden din er ikke sendt enda</InfoCard.Title>
+              <InfoCard.Title>{t("varsel.tittel")}</InfoCard.Title>
             </InfoCard.Header>
             <InfoCard.Content>
-              <BodyLong>Husk å trykke på "Send søknad" nederst på siden før du avslutter.</BodyLong>
+              <BodyLong>{t("varsel.beskrivelse")}</BodyLong>
             </InfoCard.Content>
           </InfoCard>
-          <BodyLong>
-            Nå kan du se over at alt er riktig før du sender inn søknaden. Ved behov kan du endre
-            opplysningene.
-          </BodyLong>
-          <BodyLong>
-            Når du har sendt inn søknaden kommer du til en kvitteringsside med informasjon om veien
-            videre. Der kan du også ettersende dokumentasjon som mangler.
-          </BodyLong>
+          <BodyLong>{t("innhold.beskrivelse1")}</BodyLong>
+          <BodyLong>{t("innhold.beskrivelse2")}</BodyLong>
           <Heading size="medium" level="2">
-            Dine svar
+            {t("innhold.dineSvarOverskrift")}
           </Heading>
 
           {stegISøknaden.map((seksjon) => {
@@ -104,10 +98,10 @@ export function OppsummeringView() {
                 icon={<ArrowLeftIcon aria-hidden />}
                 onClick={() => navigate(-1)}
               >
-                Forrige steg
+                {t("navigasjon.forrigeSteg")}
               </Button>
               <Button type="submit" disabled={state === "submitting" || state === "loading"}>
-                Send søknad
+                {t("navigasjon.sendSøknad")}
               </Button>
             </HStack>
           </Form>

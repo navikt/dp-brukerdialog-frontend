@@ -1,4 +1,5 @@
 import { ActionFunctionArgs, LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { useTranslation } from "react-i18next";
 import invariant from "tiny-invariant";
 import { hentAlleSeksjoner } from "~/models/hent-alle-seksjoner.server";
 import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
@@ -52,10 +53,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function OppsummeringSide() {
+  const { t } = useTranslation("oppsummering");
   const loaderData = useLoaderData<typeof loader>();
 
   if (!loaderData) {
-    return <div>Kunne ikke hente seksjoner</div>;
+    return <div>{t("feil.kunneIkkeHenteSeksjoner")}</div>;
   }
 
   return <OppsummeringView />;

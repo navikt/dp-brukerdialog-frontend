@@ -6,17 +6,13 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import {
-  action,
-  loader,
-  SEKSJON_NAVN,
-  SEKSJON_TITTEL,
-} from "~/routes/$soknadId.tilleggsopplysninger";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
 import { useSoknad } from "~/seksjon/soknad.context";
 import {
   handling,
+  lagTilleggsopplysningerKomponenter,
   pdfGrunnlag,
-  tilleggsopplysningerKomponenter,
   TilleggsopplysningerSvar,
 } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { tilleggsopplysningerSchema } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.schema";
@@ -29,6 +25,8 @@ export function TilleggsopplysningerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
+  const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -44,7 +42,7 @@ export function TilleggsopplysningerViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [...lagSeksjonPayload(tilleggsopplysningerKomponenter, form.transient.value())],
     };
 
@@ -69,10 +67,10 @@ export function TilleggsopplysningerViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
@@ -94,10 +92,7 @@ export function TilleggsopplysningerViewV1() {
           </VStack>
 
           {actionData && (
-            <SeksjonTekniskFeil
-              tittel="Det har oppstått en teknisk feil"
-              beskrivelse={actionData.error}
-            />
+            <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
           )}
         </Form>
       </VStack>

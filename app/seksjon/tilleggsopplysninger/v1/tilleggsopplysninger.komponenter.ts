@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -10,21 +11,23 @@ export type TilleggsopplysningerSvar = {
   [tilleggsopplysninger]?: string;
 };
 
-export const tilleggsopplysningerKomponenter: KomponentType[] = [
-  {
-    id: harTilleggsopplysninger,
-    type: "envalg",
-    label: "Har du noen flere opplysninger du mener er viktige for søknaden din?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: tilleggsopplysninger,
-    type: "langTekst",
-    label: "Skriv inn tilleggsopplysningene her",
-    maksLengde: 500,
-    visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
-  },
-];
+export function lagTilleggsopplysningerKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: harTilleggsopplysninger,
+      type: "envalg",
+      label: t("harTilleggsopplysninger.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+    {
+      id: tilleggsopplysninger,
+      type: "langTekst",
+      label: t("tilleggsopplysninger.label"),
+      maksLengde: 500,
+      visHvis: (svar: TilleggsopplysningerSvar) => svar[harTilleggsopplysninger] === "ja",
+    },
+  ];
+}

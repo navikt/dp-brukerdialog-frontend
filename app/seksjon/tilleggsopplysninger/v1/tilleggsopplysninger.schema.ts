@@ -1,14 +1,17 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
 import {
   handling,
   harTilleggsopplysninger,
+  lagTilleggsopplysningerKomponenter,
   pdfGrunnlag,
   tilleggsopplysninger,
-  tilleggsopplysningerKomponenter,
   TilleggsopplysningerSvar,
 } from "./tilleggsopplysninger.komponenter";
 import { valider } from "~/utils/validering.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+
+const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(fallbackT);
 
 export const tilleggsopplysningerSchema = z
   .object({
