@@ -1,4 +1,5 @@
 import { BodyLong, BodyShort, List, ReadMore, VStack } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { DokumentasjonskravType } from "../dokumentasjon.types";
 
@@ -7,41 +8,51 @@ interface IProps {
 }
 
 export function DokumentasjonskravInnhold({ type }: IProps) {
+  const { t } = useTranslation("dokumentasjon");
+
+  function pengestøtteInnhold(beskrivelse: string) {
+    return (
+      <VStack gap="space-8">
+        <BodyLong>{beskrivelse}</BodyLong>
+        <ReadMore header={t("krav.innhold")}>
+          <VStack gap="space-8">
+            <BodyShort>{t("krav.pengestøtteListe.innledning")}</BodyShort>
+            <List as="ul">
+              <List.Item>{t("krav.pengestøtteListe.hvilken")}</List.Item>
+              <List.Item>{t("krav.pengestøtteListe.hvem")}</List.Item>
+              <List.Item>{t("krav.pengestøtteListe.hvorMye")}</List.Item>
+              <List.Item>{t("krav.pengestøtteListe.periode")}</List.Item>
+            </List>
+          </VStack>
+        </ReadMore>
+      </VStack>
+    );
+  }
+
   function renderDokumentasjonskravInnhold() {
     switch (type) {
       case DokumentasjonskravType.Barn:
-        return (
-          <BodyLong>
-            Du må dokumentere at du har barn under 18 år. Dette kan du gjøre ved å legge til
-            fødselsattest eller bostedsbevis for barnet.
-          </BodyLong>
-        );
+        return <BodyLong>{t("krav.barn.beskrivelse")}</BodyLong>;
 
       case DokumentasjonskravType.ArbeidsforholdArbeidsavtale:
         return (
           <VStack gap="space-8">
-            <BodyShort>
-              Du har lagt til et arbeidsforhold. Du må dokumentere arbeidsforholdet ved å sende oss
-              arbeidsavtalen.
-            </BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.arbeidsavtale.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Arbeidsavtalen må inneholde</BodyShort>
+                <BodyShort>{t("krav.arbeidsavtale.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>datoen du startet i jobben din</List.Item>
-                  <List.Item>stillingsprosent eller avtalt arbeidstid</List.Item>
-                  <List.Item>sluttdato, hvis du har en midlertidig arbeidsavtale</List.Item>
+                  <List.Item>{t("krav.arbeidsavtale.punkt1")}</List.Item>
+                  <List.Item>{t("krav.arbeidsavtale.punkt2")}</List.Item>
+                  <List.Item>{t("krav.arbeidsavtale.punkt3")}</List.Item>
                 </List>
                 <BodyLong>
-                  Arbeidsavtalen må inneholde datoen du startet i jobben din stillingsprosent eller
-                  avtalt arbeidstid avt endt oppsigelsestid sluttdato, hvis du har en midlertidig
-                  arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut
-                  skjemaet{" "}
+                  {t("krav.arbeidsavtale.utdypningFør")}{" "}
                   <EksterneLenke
                     href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
-                    tekst="Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                    tekst={t("krav.arbeidsavtale.lenke")}
                   />
-                  . Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte.
+                  {t("krav.arbeidsavtale.utdypningEtter")}
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -51,24 +62,21 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp:
         return (
           <VStack gap="space-8">
-            <BodyShort>Du har krysset av for at du har blitt sagt opp.</BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.sagtOpp.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <BodyShort>{t("krav.sagtOpp.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>datoen du fikk oppsigelsen</List.Item>
-                  <List.Item>årsaken til at du ble sagt opp</List.Item>
+                  <List.Item>{t("krav.sagtOpp.punkt1")}</List.Item>
+                  <List.Item>{t("krav.sagtOpp.punkt2")}</List.Item>
                 </List>
                 <BodyLong>
-                  For å dokumentere dette, kan du legge ved oppsigelsen du fikk av arbeidsgiveren
-                  din. Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke
-                  skjemaet.
+                  {t("krav.sagtOpp.utdypningFør")}{" "}
                   <EksterneLenke
-                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439694b04dd5.pdf"
-                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
+                    tekst={t("krav.sagtOpp.lenke")}
                   />
-                  . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
-                  arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
+                  {t("krav.sagtOpp.utdypningEtter")}
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -78,23 +86,21 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv:
         return (
           <VStack gap="space-8">
-            <BodyShort>Du har krysset av for at du har sagt opp jobben.</BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.sagtOppSelv.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <BodyShort>{t("krav.sagtOppSelv.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>datoen du ga oppsigelsen til arbeidsgiveren din</List.Item>
-                  <List.Item>årsaken til at du sa opp jobben din</List.Item>
+                  <List.Item>{t("krav.sagtOppSelv.punkt1")}</List.Item>
+                  <List.Item>{t("krav.sagtOppSelv.punkt2")}</List.Item>
                 </List>
                 <BodyLong>
-                  For å dokumentere dette, kan du legge ved oppsigelsen du ga arbeidsgiveren din.
-                  Hvis oppsigelsen ikke inneholder opplysningene vi trenger, kan du bruke skjemaet{" "}
+                  {t("krav.sagtOppSelv.utdypningFør")}{" "}
                   <EksterneLenke
                     href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
-                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                    tekst={t("krav.sagtOppSelv.lenke")}
                   />
-                  . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
-                  arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
+                  {t("krav.sagtOppSelv.utdypningEtter")}
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -104,24 +110,21 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdAvskjedigelse:
         return (
           <VStack gap="space-8">
-            <BodyShort>Du har krysset av for at du har blitt avskjediget.</BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.avskjedigelse.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <BodyShort>{t("krav.avskjedigelse.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>datoen du ble avskjediget</List.Item>
-                  <List.Item>årsaken til at du ble avskjediget</List.Item>
+                  <List.Item>{t("krav.avskjedigelse.punkt1")}</List.Item>
+                  <List.Item>{t("krav.avskjedigelse.punkt2")}</List.Item>
                 </List>
                 <BodyLong>
-                  For å dokumentere dette, kan du sende oss avskjedigelsen du har fått fra
-                  arbeidsgiver. Hvis avskjedigelsen ikke inneholder opplysningene vi trenger, kan du
-                  bruke skjemaet{" "}
+                  {t("krav.avskjedigelse.utdypningFør")}{" "}
                   <EksterneLenke
                     href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
-                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                    tekst={t("krav.avskjedigelse.lenke")}
                   />
-                  . Arbeidsgiveren din må fylle ut og signere skjemaet. Du kan også be
-                  arbeidsgiveren din om å dokumentere opplysningene på en annen måte.
+                  {t("krav.avskjedigelse.utdypningEtter")}
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -131,23 +134,22 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid:
         return (
           <VStack gap="space-8">
-            <BodyShort>Du har krysset av for at arbeidstiden din er redusert.</BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.redusertArbeidstid.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <BodyShort>{t("krav.redusertArbeidstid.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>datoen arbeidstiden din ble redusert</List.Item>
-                  <List.Item>årsaken til at arbeidstiden din ble redusert</List.Item>
-                  <List.Item>hvor mye arbeidstiden din ble redusert</List.Item>
+                  <List.Item>{t("krav.redusertArbeidstid.punkt1")}</List.Item>
+                  <List.Item>{t("krav.redusertArbeidstid.punkt2")}</List.Item>
+                  <List.Item>{t("krav.redusertArbeidstid.punkt3")}</List.Item>
                 </List>
                 <BodyLong>
-                  Du må be arbeidsgiver om denne dokumentasjonen. Hvis dokumentene ikke inneholder
-                  opplysningene vi trenger, kan du bruke skjemaet{" "}
+                  {t("krav.redusertArbeidstid.utdypningFør")}{" "}
                   <EksterneLenke
                     href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
-                    tekst=" Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)"
+                    tekst={t("krav.redusertArbeidstid.lenke")}
                   />
-                  . Arbeidsgiveren din må fylle ut og signere skjemaet.
+                  {t("krav.redusertArbeidstid.utdypningEtter")}
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -157,19 +159,16 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter:
         return (
           <VStack gap="space-8">
-            <BodyShort>
-              Du har krysset av for at arbeidsgiveren din er konkurs. Du må legge ved brevet du har
-              fått fra bostyreren eller konkursforvalteren.
-            </BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.konkurs.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Du legge ved dokumentasjon som viser</BodyShort>
+                <BodyShort>{t("krav.konkurs.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>at arbeidsgiveren din er konkurs</List.Item>
-                  <List.Item>datoen konkursen er åpnet</List.Item>
-                  <List.Item>at boet ikke trer inn i arbeidsavtalen din</List.Item>
+                  <List.Item>{t("krav.konkurs.punkt1")}</List.Item>
+                  <List.Item>{t("krav.konkurs.punkt2")}</List.Item>
+                  <List.Item>{t("krav.konkurs.punkt3")}</List.Item>
                 </List>
-                <BodyLong>Brevet må være signert av bostyreren eller konkursforvalteren</BodyLong>
+                <BodyLong>{t("krav.konkurs.utdypning")}</BodyLong>
               </VStack>
             </ReadMore>
           </VStack>
@@ -178,31 +177,25 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel:
         return (
           <VStack gap="space-8">
-            <BodyShort>
-              Du har krysset av for at du er permittert. Du må legge ved permitteringsvarselet som
-              du har fått fra arbeidsgiveren din.
-            </BodyShort>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
+            <BodyShort>{t("krav.permittering.beskrivelse")}</BodyShort>
+            <ReadMore header={t("krav.innhold")}>
               <VStack gap="space-8">
-                <BodyShort>Permitteringsvarselet må inneholde informasjon om</BodyShort>
+                <BodyShort>{t("krav.permittering.innledning")}</BodyShort>
                 <List as="ul">
-                  <List.Item>årsaken til at du ble permittert (permitteringsårsak)</List.Item>
-                  <List.Item>hvor mange prosent du er permittert (permitteringsgrad)</List.Item>
-                  <List.Item>startdato og eventuell sluttdato for permitteringen</List.Item>
-                  <List.Item>datoen du fikk permitteringsvarselet</List.Item>
-                  <List.Item>
-                    om partene på arbeidsplassen din er enige om permitteringen (JA/NEI)
-                  </List.Item>
+                  <List.Item>{t("krav.permittering.punkt1")}</List.Item>
+                  <List.Item>{t("krav.permittering.punkt2")}</List.Item>
+                  <List.Item>{t("krav.permittering.punkt3")}</List.Item>
+                  <List.Item>{t("krav.permittering.punkt4")}</List.Item>
+                  <List.Item>{t("krav.permittering.punkt5")}</List.Item>
                 </List>
-                <BodyShort>Det må komme frem at permitteringen gjelder deg. skjemaet.</BodyShort>
+                <BodyShort>{t("krav.permittering.gjelderDeg")}</BodyShort>
                 <BodyLong>
-                  Hvis permitteringsvarselet ikke inneholder disse opplysningene kan du bruke
-                  skjemaet{" "}
+                  {t("krav.permittering.utdypningFør")}{" "}
                   <EksterneLenke
                     href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/4f473293d31eee48921daecc72b1157e2a06542f.pdf"
-                    tekst=" Bekreftelse på arbeidsforhold og permittering (NAV 04-08.04)"
+                    tekst={t("krav.permittering.lenke")}
                   />
-                  . Arbeidsgiveren din må fylle ut og signere skjemaet.
+                  {t("krav.permittering.utdypningEtter")}
                 </BodyLong>
               </VStack>
             </ReadMore>
@@ -210,152 +203,43 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
         );
 
       case DokumentasjonskravType.ArbeidsforholdRotasjon:
-        return (
-          <BodyLong>
-            Du har krysset av for at du jobbet rotasjon. Du må dokumentere hvilken rotasjonsordning
-            du har hatt. Den siste rotasjonen må dokumenteres med timeliste eller lignende, som
-            viser når du var på jobb og når du hadde avspasering.
-          </BodyLong>
-        );
+        return <BodyLong>{t("krav.rotasjon.beskrivelse")}</BodyLong>;
 
       case DokumentasjonskravType.Tjenestebevis:
-        return (
-          <BodyLong>
-            Du har krysset av for at du har avtjent verneplikt i minst tre av de siste tolv
-            månedene. Du må sende inn tjenestebevis fra forsvaret der start- og sluttdato for
-            tjenesteperioden kommer tydelig frem.
-          </BodyLong>
-        );
+        return <BodyLong>{t("krav.tjenestebevis.beskrivelse")}</BodyLong>;
 
       case DokumentasjonskravType.Utdanning:
-        return (
-          <BodyLong>
-            Du har krysset av for at du har avsluttet utdanning eller opplæring i løpet av de siste
-            seks månedene. Du må dokumentere sluttdatoen for utdanningen eller opplæringen du har
-            gjennomført. Du kan for eksempel sende oss et vitnemål eller en attest fra studiestedet
-            ditt.
-          </BodyLong>
-        );
+        return <BodyLong>{t("krav.utdanning.beskrivelse")}</BodyLong>;
 
       case DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid:
-        return (
-          <BodyLong>
-            Du har krysset av for at du kun har mulighet til å ta deltidsjobb. Dette må du
-            dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er
-            fordi den andre forelderen jobber skift, turnus eller utenfor nærområdet må du
-            dokumentere dette.
-          </BodyLong>
-        );
+        return <BodyLong>{t("krav.kanIkkeJobbeHeltidOgDeltid.beskrivelse")}</BodyLong>;
 
       case DokumentasjonskravType.ReellArbeidssøkerKanIkkeJobbeHeleNorge:
-        return (
-          <BodyLong>
-            Du har krysset av for at du ikke kan ta jobb i hele Norge. Dette må du dokumentere med
-            bekreftelse fra relevant fagpersonell, for eksempel lege. Hvis det er fordi den andre
-            forelderen jobber skift, turnus eller utenfor nærområdet må du dokumentere dette.
-          </BodyLong>
-        );
+        return <BodyLong>{t("krav.kanIkkeJobbeHeleNorge.beskrivelse")}</BodyLong>;
 
       case DokumentasjonskravType.ReellArbeidssøkerKanIkkeTaAlleTyperArbeid:
         return (
           <>
-            <BodyLong>
-              Du har krysset av for at du ikke har mulighet til å ta alle typer arbeid. Dette må du
-              dokumentere med bekreftelse fra relevant fagpersonell, for eksempel lege.
-            </BodyLong>
-            <BodyLong>
-              Dokumentasjonen må inneholde bekreftelse fra lege eller annen behandler fordi du ikke
-              kan ta alle typer arbeid.
-            </BodyLong>
+            <BodyLong>{t("krav.kanIkkeTaAlleTyperArbeid.beskrivelse")}</BodyLong>
+            <BodyLong>{t("krav.kanIkkeTaAlleTyperArbeid.utdypning")}</BodyLong>
           </>
         );
 
       case DokumentasjonskravType.AndreUtbetalingerEllerGoderFraTidligereArbeidsgiver:
-        return (
-          <VStack gap="space-8">
-            <BodyLong>
-              Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske
-              goder fra arbeidsgiver.
-            </BodyLong>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="space-8">
-                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
-                <List as="ul">
-                  <List.Item>hvilken pengestøtte dette er</List.Item>
-                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
-                  <List.Item>hvor mye du får</List.Item>
-                  <List.Item>perioden den utbetales for</List.Item>
-                </List>
-              </VStack>
-            </ReadMore>
-          </VStack>
-        );
+        return pengestøtteInnhold(t("krav.andreUtbetalinger.beskrivelse"));
 
       case DokumentasjonskravType.AnnenPengestøtteFraAndreEøsLand:
-        return (
-          <VStack gap="space-8">
-            <BodyLong>
-              Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet
-              EØS-land.
-            </BodyLong>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="space-8">
-                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
-                <List as="ul">
-                  <List.Item>hvilken pengestøtte dette er</List.Item>
-                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
-                  <List.Item>hvor mye du får</List.Item>
-                  <List.Item>perioden den utbetales for</List.Item>
-                </List>
-              </VStack>
-            </ReadMore>
-          </VStack>
-        );
+        return pengestøtteInnhold(t("krav.pengestøtteEøs.beskrivelse"));
 
       case DokumentasjonskravType.AnnenPengestøtteFraNorgePensjonFraAndre:
-        return (
-          <VStack gap="space-8">
-            <BodyLong>
-              Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav.
-            </BodyLong>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="space-8">
-                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
-                <List as="ul">
-                  <List.Item>hvilken pengestøtte dette er</List.Item>
-                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
-                  <List.Item>hvor mye du får</List.Item>
-                  <List.Item>perioden den utbetales for</List.Item>
-                </List>
-              </VStack>
-            </ReadMore>
-          </VStack>
-        );
+        return pengestøtteInnhold(t("krav.pensjonFraAndre.beskrivelse"));
 
       case DokumentasjonskravType.AnnenPengestøtteFraNorgePengestøtteFraGff:
-        return (
-          <VStack gap="space-8">
-            <BodyLong>
-              Du har krysset av for at du mottar eller har søkt om pengestøtte fra Garantikassen for
-              fiskere.
-            </BodyLong>
-            <ReadMore header="Dette må dokumentasjonen inneholde">
-              <VStack gap="space-8">
-                <BodyShort>Du må legge ved dokumentasjon som viser</BodyShort>
-                <List as="ul">
-                  <List.Item>hvilken pengestøtte dette er</List.Item>
-                  <List.Item>hvem som utbetaler pengestøtten</List.Item>
-                  <List.Item>hvor mye du får</List.Item>
-                  <List.Item>perioden den utbetales for</List.Item>
-                </List>
-              </VStack>
-            </ReadMore>
-          </VStack>
-        );
+        return pengestøtteInnhold(t("krav.pengestøtteGff.beskrivelse"));
 
       default:
         console.error(`Ukjent dokumentasjonskrav: ${type}`);
-        return <p>Ukjent dokumentasjonskrav.</p>;
+        return <p>{t("krav.ukjent")}</p>;
     }
   }
 

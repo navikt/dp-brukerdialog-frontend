@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
 import { valider } from "~/utils/validering.utils";
 import {
-  dokumentasjonskravKomponenter,
   DokumentasjonskravSvar,
   dokumentkravEttersendt,
   dokumentkravSvarSenderIkke,
@@ -10,11 +10,14 @@ import {
   dokumentkravSvarSendtTidligere,
   hvaErGrunnenTilAtDuIkkeSenderDokumentet,
   hvaErGrunnenTilAtDuSenderDokumentetSenere,
+  lagDokumentasjonskravKomponenter,
   nårSendteDuDokumentet,
   velgHvaDuVilGjøre,
 } from "./dokumentasjonskrav.komponenter";
 
 const kortTekstMaksLengde = 200;
+
+const dokumentasjonskravKomponenter = lagDokumentasjonskravKomponenter(fallbackT);
 
 export const dokumentasjonskravSchema = z
   .object({

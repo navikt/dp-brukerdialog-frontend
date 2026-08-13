@@ -39,6 +39,20 @@ vi.mock("react-router", () => ({
   }),
 }));
 
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) =>
+      ({
+        "opplasting.lastOpp": "Last opp dokument",
+        "opplasting.beskrivelse": `Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`,
+        "opplasting.lasterOpp": "Laster opp...",
+        "feil.filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendes inn.",
+        "feil.filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn.",
+        "feil.manglerFil": "Du må laste opp minst en fil før dokumentasjonen kan sendes inn.",
+      })[key] ?? key,
+  }),
+}));
+
 vi.mock("~/seksjon/dokumentasjon/v1/dokumentasjonskrav.context", () => ({
   useDokumentasjonskravContext: () => ({
     oppdaterEtDokumentasjonskrav: mocks.oppdaterEtDokumentasjonskrav,
