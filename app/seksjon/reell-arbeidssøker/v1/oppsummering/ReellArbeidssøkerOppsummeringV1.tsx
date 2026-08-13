@@ -1,8 +1,9 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import { reellArbeidssøkerKomponenter } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
+import { lagReellArbeidssøkerKomponenter } from "~/seksjon/reell-arbeidssøker/v1/reell-arbeidssøker.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 
 export function ReellArbeidssøkerOppsummeringV1({
@@ -12,17 +13,17 @@ export function ReellArbeidssøkerOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
+  const { t } = useVersjonertTranslation("reell-arbeidssøker", 1);
+  const reellArbeidssøkerKomponenter = lagReellArbeidssøkerKomponenter(t);
   const reellArbeidssøkerSvar = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Reell arbeidssøker</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
-        {!reellArbeidssøkerSvar.length && (
-          <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>
-        )}
+        {!reellArbeidssøkerSvar.length && <div>{t("oppsummering.ingenSvar")}</div>}
 
         {reellArbeidssøkerKomponenter.map((spørsmål) => {
           const svar = reellArbeidssøkerSvar.find((svar) => svar[0] === spørsmål.id);
@@ -39,7 +40,7 @@ export function ReellArbeidssøkerOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Reell arbeidssøker"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );

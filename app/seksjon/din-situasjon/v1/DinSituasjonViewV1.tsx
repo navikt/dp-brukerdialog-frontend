@@ -19,9 +19,9 @@ import { lagDinSituasjonKomponenter, handling, pdfGrunnlag } from "./din-situasj
 export function DinSituasjonViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("din-situasjon", 1);
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { t } = useVersjonertTranslation("din-situasjon", 1);
   const dinSituasjonKomponenter = lagDinSituasjonKomponenter(t);
 
   const form = useForm({
