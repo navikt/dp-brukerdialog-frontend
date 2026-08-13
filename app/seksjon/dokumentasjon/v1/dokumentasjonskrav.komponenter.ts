@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
 export const velgHvaDuVilGjøre = "velgHvaDuVilGjøre";
@@ -24,90 +25,85 @@ export type DokumentasjonskravSvar = {
   [hvaErGrunnenTilAtDuIkkeSenderDokumentet]?: string;
 };
 
-export const dokumentasjonKomponenter: KomponentType[] = [
-  {
-    id: "dokumentasjonForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<p>Du må laste opp dokumentasjon som bekrefter opplysningene i søknaden. Du får raskere svar på søknaden din hvis vi har all dokumentasjonen når vi starter behandlingen. Du kan bruke filformatene PDF, JPG og PNG.</p>" +
-      "<p>Slik bruker du bilder som dokumentasjon i søknaden:</p>" +
-      "<ol><li>Ta bilde av dokumentet med smarttelefon eller nettbrett</li>" +
-      "<li>Sjekk at dokumentet er lett å lese</li>" +
-      "<li>Last opp bildene her</li></ol>",
-  },
-  {
-    id: "dokumentasjonManglerDuNoenDokumenterLesMer",
-    type: "lesMer",
-    label: "Mangler du noen dokumenter?",
-    description:
-      "<p>Du kan sende inn det du har nå og ettersende resten innen 14 dager. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene.</p>",
-  },
-  {
-    id: "dokumentasjonHarDuSendtInnDokumentasjonTilNavTidligereLesMer",
-    type: "lesMer",
-    label: "Har du sendt inn dokumentene til Nav tidligere?",
-    description:
-      "<p>Hvis du har sendt inn dokumentene sammen med en tidligere søknad om dagpenger, trenger du ikke å sende det på nytt.</p>",
-  },
-  {
-    id: "dokumentasjonDokumenterDuSkalSendeInnForklarendeTekst",
-    type: "headingTekst",
-    nivå: "3",
-    størrelse: "small",
-    label: "Dokumenter du skal sende inn",
-  },
-];
+export function lagDokumentasjonKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: "dokumentasjonForklarendeTekst",
+      type: "forklarendeTekst",
+      description: t("info.forklarendeTekst"),
+    },
+    {
+      id: "dokumentasjonManglerDuNoenDokumenterLesMer",
+      type: "lesMer",
+      label: t("info.manglerDokumenterTittel"),
+      description: t("info.manglerDokumenter"),
+    },
+    {
+      id: "dokumentasjonHarDuSendtInnDokumentasjonTilNavTidligereLesMer",
+      type: "lesMer",
+      label: t("info.sendtTidligereTittel"),
+      description: t("info.sendtTidligere"),
+    },
+    {
+      id: "dokumentasjonDokumenterDuSkalSendeInnForklarendeTekst",
+      type: "headingTekst",
+      nivå: "3",
+      størrelse: "small",
+      label: t("info.dokumenterDuSkalSendeInn"),
+    },
+  ];
+}
 
-export const dokumentasjonskravKomponenter: KomponentType[] = [
-  {
-    id: velgHvaDuVilGjøre,
-    type: "envalg",
-    label: "Velg hva du vil gjøre",
-    options: [
-      { value: dokumentkravSvarSendNå, label: "Jeg vil laste opp nå" },
-      { value: dokumentkravSvarSenderSenere, label: "Jeg sender det senere" },
-      {
-        value: dokumentkravSvarSendtTidligere,
-        label: "Jeg har sendt det i en tidligere søknad om dagpenger",
-      },
-      { value: dokumentkravSvarSenderIkke, label: "Jeg sender det ikke" },
-    ],
-  },
-  {
-    id: hvaErGrunnenTilAtDuSenderDokumentetSenere,
-    type: "langTekst",
-    label: "Hva er grunnen til at du sender dokumentet senere?",
-    description: "Frist for ettersending er 14 dager etter at du sendte søknaden.",
-    maksLengde: 500,
-    visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderSenere,
-  },
-  {
-    id: nårSendteDuDokumentet,
-    type: "langTekst",
-    label: "Når sendte du dokumentet?",
-    description:
-      "Er du usikker på om du har sendt dokumentet i en tidligere søknad om dagpenger, bør du sende det på nytt.",
-    maksLengde: 500,
-    visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSendtTidligere,
-  },
-  {
-    id: "jegSenderIkkeInformasjonskort",
-    type: "informasjonskort",
-    variant: "advarsel",
-    label: "Du kan få avslag på søknaden",
-    description:
-      "Du vil mest sannsynlig få avslag på søknaden din hvis du ikke sender inn dokumentene vi trenger for å behandle saken din. Ta kontakt med Nav hvis du ikke får tak i dokumentet.",
-    visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
-  },
-  {
-    id: hvaErGrunnenTilAtDuIkkeSenderDokumentet,
-    type: "langTekst",
-    label: "Hva er grunnen til at du ikke sender dokumentet?",
-    maksLengde: 500,
-    visHvis: (svar: DokumentasjonskravSvar) =>
-      svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
-  },
-];
+export function lagDokumentasjonskravKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: velgHvaDuVilGjøre,
+      type: "envalg",
+      label: t("skjema.velgHvaDuVilGjøre.label"),
+      options: [
+        { value: dokumentkravSvarSendNå, label: t("skjema.svar.sendNå") },
+        { value: dokumentkravSvarSenderSenere, label: t("skjema.svar.senderSenere") },
+        {
+          value: dokumentkravSvarSendtTidligere,
+          label: t("skjema.svar.sendtTidligere"),
+        },
+        { value: dokumentkravSvarSenderIkke, label: t("skjema.svar.senderIkke") },
+      ],
+    },
+    {
+      id: hvaErGrunnenTilAtDuSenderDokumentetSenere,
+      type: "langTekst",
+      label: t("skjema.hvaErGrunnenTilAtDuSenderDokumentetSenere.label"),
+      description: t("skjema.hvaErGrunnenTilAtDuSenderDokumentetSenere.description"),
+      maksLengde: 500,
+      visHvis: (svar: DokumentasjonskravSvar) =>
+        svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderSenere,
+    },
+    {
+      id: nårSendteDuDokumentet,
+      type: "langTekst",
+      label: t("skjema.nårSendteDuDokumentet.label"),
+      description: t("skjema.nårSendteDuDokumentet.description"),
+      maksLengde: 500,
+      visHvis: (svar: DokumentasjonskravSvar) =>
+        svar[velgHvaDuVilGjøre] === dokumentkravSvarSendtTidligere,
+    },
+    {
+      id: "jegSenderIkkeInformasjonskort",
+      type: "informasjonskort",
+      variant: "advarsel",
+      label: t("skjema.jegSenderIkkeInformasjonskort.label"),
+      description: t("skjema.jegSenderIkkeInformasjonskort.description"),
+      visHvis: (svar: DokumentasjonskravSvar) =>
+        svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
+    },
+    {
+      id: hvaErGrunnenTilAtDuIkkeSenderDokumentet,
+      type: "langTekst",
+      label: t("skjema.hvaErGrunnenTilAtDuIkkeSenderDokumentet.label"),
+      maksLengde: 500,
+      visHvis: (svar: DokumentasjonskravSvar) =>
+        svar[velgHvaDuVilGjøre] === dokumentkravSvarSenderIkke,
+    },
+  ];
+}

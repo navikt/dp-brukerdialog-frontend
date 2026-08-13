@@ -1,10 +1,11 @@
 import { DownloadIcon } from "@navikt/aksel-icons";
 import { Button, FormSummary } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
-  dokumentasjonskravKomponenter,
-  velgHvaDuVilGjøre
+  lagDokumentasjonskravKomponenter,
+  velgHvaDuVilGjøre,
 } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { lastnedDokument } from "~/utils/dokument.utils";
@@ -16,7 +17,10 @@ interface IProps {
 }
 
 export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
+  const { t } = useTranslation("dokumentasjon");
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
+
+  const dokumentasjonskravKomponenter = lagDokumentasjonskravKomponenter(t);
 
   const alleDokumentasjonskrav = (dokumentasjonskrav ?? []).flatMap(
     (alleDokumentasjonskravForSeksjon) => {
@@ -27,7 +31,7 @@ export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Dokumentasjon</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("oppsummering.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
         {alleDokumentasjonskrav.map((dokumentasjonskrav) => {
@@ -55,7 +59,7 @@ export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
                     lastnedDokument(dokumentasjonskrav.bundle?.filsti, dokumentasjonskrav.tittel)
                   }
                 >
-                  Last ned opplastet dokument
+                  {t("oppsummering.lastNed")}
                 </Button>
               )}
             </FormSummary.Answer>
@@ -65,7 +69,7 @@ export function DokumentasjonOppsummering({ dokumentasjonskrav }: IProps) {
       <FormSummaryFooter
         seksjonsUrl={`${getEnv("BASE_PATH")}/${søknadId}/dokumentasjon`}
         redigerbar={true}
-        seksjonnavn="Dokumentasjon"
+        seksjonnavn={t("oppsummering.overskrift")}
       />
     </FormSummary>
   );

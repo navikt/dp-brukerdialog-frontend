@@ -1,5 +1,6 @@
 import { Box, ErrorMessage, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import {
   Dokumentasjonskrav,
@@ -25,6 +26,7 @@ interface IProps {
 }
 
 export function FilOpplasting({ dokumentasjonskrav }: IProps) {
+  const { t } = useTranslation("dokumentasjon");
   const { soknadId } = useParams();
   const { oppdaterEtDokumentasjonskrav } = useDokumentasjonskravContext();
 
@@ -200,8 +202,11 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
             className="mt-16 fileUpload"
-            label="Last opp dokument"
-            description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
+            label={t("opplasting.lastOpp")}
+            description={t("opplasting.beskrivelse", {
+              maks: hentMaksFilStørrelseMB(),
+              typer: hentTillatteFiltyperTekst(),
+            })}
             fileLimit={{ max: MAX_ANTALL_FILER, current: dokumentasjonskrav.filer?.length ?? 0 }}
             accept={hentTillatteFiltyperString()}
             onSelect={(filer) => lastOppfiler(filer)}
@@ -214,7 +219,7 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
             key={fil.id}
             file={fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }}
             status={fil.lasterOpp ? "uploading" : "idle"}
-            translations={{ uploading: "Laster opp..." }}
+            translations={{ uploading: t("opplasting.lasterOpp") }}
             error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
             button={{
               action: "delete",
@@ -225,16 +230,12 @@ export function FilOpplasting({ dokumentasjonskrav }: IProps) {
         {dokumentasjonskrav.feil === DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL &&
           antallFeil > 0 && (
             <ErrorMessage>
-              Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+              {antallFeil > 1 ? t("feil.filerMedFeilFlertall") : t("feil.filerMedFeil")}
             </ErrorMessage>
           )}
 
         {dokumentasjonskrav.feil === DokumentasjonskravFeilType.MANGLER_FILER &&
-          dokumentkravFiler.length === 0 && (
-            <ErrorMessage>
-              Du må laste opp minst en fil før dokumentasjonen kan sendes inn.
-            </ErrorMessage>
-          )}
+          dokumentkravFiler.length === 0 && <ErrorMessage>{t("feil.manglerFil")}</ErrorMessage>}
       </VStack>
     </Box>
   );
