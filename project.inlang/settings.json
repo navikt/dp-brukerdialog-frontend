@@ -16,6 +16,7 @@
       "#Oversikt": "./app/seksjon/oversikt/locales/{languageTag}.json",
       "#Personalia": "./app/seksjon/personalia/v1/locales/{languageTag}.json",
       "#Din situasjon": "./app/seksjon/din-situasjon/v1/locales/{languageTag}.json",
+      "#Verneplikt": "./app/seksjon/verneplikt/v1/locales/{languageTag}.json",
       "#Common ": "./app/i18n/locales/{languageTag}.json"
     },
     "variableReferencePattern": ["{{", "}}"]

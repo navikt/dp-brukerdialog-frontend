@@ -1,6 +1,7 @@
-import { vernepliktKomponenter } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { lagVernepliktKomponenter } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
@@ -13,15 +14,17 @@ export function VernepliktOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
+  const { t } = useVersjonertTranslation("verneplikt", 1);
+  const vernepliktKomponenter = lagVernepliktKomponenter(t);
   const vernepliktSvar = Object.entries(seksjonSvarene);
 
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Verneplikt</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
-        {!vernepliktSvar.length && <div>Du har ikke svart på noen spørsmål i denne seksjonen</div>}
+        {!vernepliktSvar.length && <div>{t("oppsummering.ingenSvar")}</div>}
         {vernepliktKomponenter.map((spørsmål) => {
           const svar = vernepliktSvar.find((svar) => svar[0] === spørsmål.id);
           if (svar && !erInformasjonsFelt(spørsmål)) {
@@ -37,7 +40,7 @@ export function VernepliktOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Verneplikt"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );
