@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
   ArbeidsforholdModalSvar,
@@ -18,103 +19,102 @@ export const arbeidstidenErRedusertHvaHarDuSvartPåTilbudet =
 export const arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet =
   "arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet";
 
-export const arbeidsforholdModalArbeidstidenErRedusertKomponenter: KomponentType[] = [
-  {
-    id: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-    type: "periodeFra",
-    periodeLabel: "Varighet på arbeidsforholdet",
-    label: "Fra dato",
-    description: "Når startet du i dette arbeidsforholdet?",
-    referanseId: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
-    fraOgMed: startOfDay(subYears(new Date(), 100)),
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
-    type: "periodeTil",
-    label: "Til dato",
-    description: "Når ble arbeidstiden din redusert?",
-    referanseId: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: "arbeidstidenErRedusertInformasjonskort",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "Hvis arbeidstiden din er redusert med minst 50 prosent, kan du søke om dagpenger for den reduserte arbeidstiden.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: "arbeidstidenErRedusertArbeidsavtaleDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: "arbeidstidenErRedusertDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av redusert arbeidstid",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: arbeidstidenErRedusertHvaErÅrsaken,
-    type: "langTekst",
-    label: "Hva er årsaken til at arbeidstiden din ble redusert?",
-    maksLengde: 500,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
-    type: "envalg",
-    label:
-      "Har du fått tilbud om å fortsette hos arbeidsgiveren din i en annen stilling eller et annet sted i Norge?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
-  },
-  {
-    id: arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
-    type: "envalg",
-    label: "Hva har du svart på tilbudet?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-      { value: "harIkkeSvart", label: "Har ikke svart" },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[
-        arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge
-      ] === "ja",
-  },
-  {
-    id: "arbeidstidenErRedusertHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverInformasjonskort",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "<p>Hvis du har svart nei til et tilbud om å fortsette hos arbeidsgiveren din, vil du ikke få utbetalt dagpenger de første 18 ukene av dagpengeperioden din.</p>" +
-      "<p>Det er viktig at du ikke venter med å søke om dagpenger.</p>" +
-      "<p>Du må være registrert som arbeidssøker og sende meldekort i ventetiden.</p>",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
-  },
-  {
-    id: arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
-    type: "langTekst",
-    label: "Hva er årsaken til at du ikke har tatt imot tilbudet?",
-    maksLengde: 500,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
-  },
-];
+export function lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(
+  t: TFunction
+): KomponentType[] {
+  return [
+    {
+      id: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
+      type: "periodeFra",
+      periodeLabel: t("felles.varighetPåArbeidsforholdet"),
+      label: t("felles.fraDato"),
+      description: t("arbeidstidenErRedusert.fraDatoDescription"),
+      referanseId: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
+      fraOgMed: startOfDay(subYears(new Date(), 100)),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
+      type: "periodeTil",
+      label: t("felles.tilDato"),
+      description: t("arbeidstidenErRedusert.tilDatoDescription"),
+      referanseId: arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: "arbeidstidenErRedusertInformasjonskort",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("felles.informasjon"),
+      description: t("arbeidstidenErRedusert.informasjonskort"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: "arbeidstidenErRedusertArbeidsavtaleDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsavtale"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: "arbeidstidenErRedusertDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("arbeidstidenErRedusert.dokumentasjonskravindikator"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: arbeidstidenErRedusertHvaErÅrsaken,
+      type: "langTekst",
+      label: t("arbeidstidenErRedusert.hvaErÅrsaken"),
+      maksLengde: 500,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
+      type: "envalg",
+      label: t("felles.harDuFåttTilbudOmÅFortsette"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
+      type: "envalg",
+      label: t("felles.hvaHarDuSvartPåTilbudet"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+        { value: "harIkkeSvart", label: t("envalg.svar.harIkkeSvart") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[
+          arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge
+        ] === "ja",
+    },
+    {
+      id: "arbeidstidenErRedusertHvaHarDuSvartPåTilbudetOmÅFortsetteHosArbeidsgiverInformasjonskort",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("felles.informasjon"),
+      description: t("felles.avslåttTilbudInformasjonskort"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
+    },
+    {
+      id: arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
+      type: "langTekst",
+      label: t("felles.hvaErÅrsakenTilAtDuIkkeHarTattImotTilbudet"),
+      maksLengde: 500,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[arbeidstidenErRedusertHvaHarDuSvartPåTilbudet] === "nei",
+    },
+  ];
+}

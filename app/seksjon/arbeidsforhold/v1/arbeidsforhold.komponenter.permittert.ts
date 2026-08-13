@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
   ArbeidsforholdModalSvar,
@@ -22,147 +23,125 @@ export const permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr =
 export const permittertLønnsperiodeFraOgMedDato = "permittertLønnsperiodeFraOgMedDato";
 export const permittertLønnsperiodeTilOgMedDato = "permittertLønnsperiodeTilOgMedDato";
 
-export const arbeidsforholdModalJegErPermittertKomponenter: KomponentType[] = [
-  {
-    id: permittertVarighetPåArbeidsforholdetFraOgMedDato,
-    type: "dato",
-    label: "Når startet du i dette arbeidsforholdet?",
-    fraOgMed: startOfDay(subYears(new Date(), 100)),
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertNårErDuPermittertFraOgMedDato,
-    type: "periodeFra",
-    label: "Fra og med dato",
-    periodeLabel: "Når er du permittert?",
-    description:
-      "Hvis du har hatt flere permitteringsperioder skal du oppgi dato for den siste permitteringen.",
-    referanseId: permittertNårErDuPermittertTilOgMedDato,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertNårErDuPermittertTilOgMedDato,
-    type: "periodeTil",
-    label: "Til og med dato",
-    optional: true,
-    referanseId: permittertNårErDuPermittertFraOgMedDato,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: "permittertInformasjonskort",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "For å ha rett til dagpenger under permittering, må arbeidstiden din være redusert med minst 50 prosent. Årsaken til permitteringen må være mangel på arbeid eller andre forhold som arbeidsgiver ikke kan påvirke.",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: "permittertArbeidsavtaleDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: "permittertPermitteringsvarselDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Permitteringsvarsel",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
-    type: "envalg",
-    label: "Er du midlertidig ansatt, og har kontrakt med sluttdato?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-      {
-        value: "vetIkke",
-        label: "Jeg vet ikke",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin,
-    type: "dato",
-    label: "Oppgi sluttdatoen i kontrakten din",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato] === "ja",
-  },
-  {
-    id: permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
-    type: "envalg",
-    label: "Er du permittert fra fiskeforedlings- eller fiskeoljeindustrien?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertHvorMangeProsentErDuPermittert,
-    type: "tall",
-    label: "Hvor mange prosent er du permittert?",
-    maksVerdi: 100,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
-    type: "envalg",
-    label: "Vet du når lønnspliktperioden til arbeidsgiveren din er?",
-    description:
-      "Du finner informasjon om arbeidsgivers lønnspliktperiode i permitteringsvarselet. Fra-datoen er den første dagen du ikke arbeider som normalt fordi du er permittert.",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
-  },
-  {
-    id: permittertLønnsperiodeFraOgMedDato,
-    type: "periodeFra",
-    periodeLabel: "Fyll inn lønnspliktperioden",
-    label: "Fra og med dato",
-    referanseId: permittertLønnsperiodeTilOgMedDato,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
-  },
-  {
-    id: permittertLønnsperiodeTilOgMedDato,
-    type: "periodeTil",
-    label: "Til og med dato",
-    optional: true,
-    referanseId: permittertLønnsperiodeFraOgMedDato,
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
-  },
-];
+export function lagArbeidsforholdModalJegErPermittertKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: permittertVarighetPåArbeidsforholdetFraOgMedDato,
+      type: "dato",
+      label: t("permittert.nårStartetArbeidsforholdet"),
+      fraOgMed: startOfDay(subYears(new Date(), 100)),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertNårErDuPermittertFraOgMedDato,
+      type: "periodeFra",
+      label: t("felles.fraOgMedDato"),
+      periodeLabel: t("permittert.nårErDuPermittert.periodeLabel"),
+      description: t("permittert.nårErDuPermittert.description"),
+      referanseId: permittertNårErDuPermittertTilOgMedDato,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertNårErDuPermittertTilOgMedDato,
+      type: "periodeTil",
+      label: t("felles.tilOgMedDato"),
+      optional: true,
+      referanseId: permittertNårErDuPermittertFraOgMedDato,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: "permittertInformasjonskort",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("felles.informasjon"),
+      description: t("permittert.informasjonskort"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: "permittertArbeidsavtaleDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsavtale"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: "permittertPermitteringsvarselDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("permittert.permitteringsvarsel"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
+      type: "envalg",
+      label: t("permittert.erDuMidlertidigAnsatt.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+        { value: "vetIkke", label: t("envalg.svar.vetIkke") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin,
+      type: "dato",
+      label: t("permittert.oppgiSluttdato.label"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato] === "ja",
+    },
+    {
+      id: permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
+      type: "envalg",
+      label: t("permittert.erDuPermittertFraFiskeindustrien.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertHvorMangeProsentErDuPermittert,
+      type: "tall",
+      label: t("permittert.hvorMangeProsentErDuPermittert.label"),
+      maksVerdi: 100,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
+      type: "envalg",
+      label: t("permittert.vetDuNårLønnspliktperiodenEr.label"),
+      description: t("permittert.vetDuNårLønnspliktperiodenEr.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: permittertLønnsperiodeFraOgMedDato,
+      type: "periodeFra",
+      periodeLabel: t("permittert.lønnspliktperiode.periodeLabel"),
+      label: t("felles.fraOgMedDato"),
+      referanseId: permittertLønnsperiodeTilOgMedDato,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
+    },
+    {
+      id: permittertLønnsperiodeTilOgMedDato,
+      type: "periodeTil",
+      label: t("felles.tilOgMedDato"),
+      optional: true,
+      referanseId: permittertLønnsperiodeFraOgMedDato,
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr] === "ja",
+    },
+  ];
+}

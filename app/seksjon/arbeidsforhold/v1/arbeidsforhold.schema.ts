@@ -1,42 +1,42 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
 import {
-  arbeidsforholdModalArbeidstidenErRedusertKomponenter,
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
   arbeidstidenErRedusertHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
   arbeidstidenErRedusertHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   arbeidstidenErRedusertHvaErÅrsaken,
   arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
+  lagArbeidsforholdModalArbeidstidenErRedusertKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import {
-  arbeidsforholdModalJegHarFåttAvskjedKomponenter,
   jegHarFåttAvskjedHvaVarÅrsaken,
   jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
   jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
+  lagArbeidsforholdModalJegHarFåttAvskjedKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
 import {
-  arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
   ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
+  lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 import {
-  arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter,
   jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   jegErOppsagtHvaHarDuSvartPåTilbudet,
   jegErOppsagtHvaVarÅrsaken,
   jegErOppsagtVarighetPåArbeidsforholdetFraDato,
   jegErOppsagtVarighetPåArbeidsforholdetTilDato,
+  lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
 import {
-  arbeidsforholdModalJegHarSagtOppSelvKomponenter,
   jegHarSagtOppHvaVarÅrsaken,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
+  lagArbeidsforholdModalJegHarSagtOppSelvKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
-  arbeidsforholdModalArbeidsgiverErKonkursKomponenter,
   konkursDekkerLønnsgarantiordningenKravetDitt,
   konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
   konkursGodtarDuAtNavTrekkerForskuddetOmLønnsgarantimidlerDirekteFraLønnsgarantiordningen,
@@ -49,17 +49,17 @@ import {
   konkursVarighetPåArbeidsforholdetTilDato,
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
+  lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
 import {
-  arbeidsforholdModalKontraktenErUtgåttKomponenter,
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
   kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
   kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
+  lagArbeidsforholdModalKontraktenErUtgåttKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import {
-  arbeidsforholdModalJegErPermittertKomponenter,
   permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
   permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
   permittertHvorMangeProsentErDuPermittert,
@@ -70,13 +70,11 @@ import {
   permittertOppgiDenKontraktsfestedeSluttdatoenIKontraktenDin,
   permittertVarighetPåArbeidsforholdetFraOgMedDato,
   permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
+  lagArbeidsforholdModalJegErPermittertKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { valider } from "~/utils/validering.utils";
 import {
   annenRotasjonBeskrivelse,
-  arbeidsforholdKomponenter,
-  arbeidsforholdModalKomponenter,
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
   fastArbeidstidI6MånederEllerMer,
@@ -90,6 +88,9 @@ import {
   hvordanHarDetteArbeidsforholdetEndretSeg,
   hvordanHarDuJobbet,
   jobbetMerIGjennomsnittDeSiste36MånedeneEnnDeSiste12Månedene,
+  lagArbeidsforholdKomponenter,
+  lagArbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   navnetPåBedriften,
   oppgiPersonnummeretPinDuHaddeIDetteLandet,
   oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto,
@@ -98,6 +99,27 @@ import {
   seksjonsvar,
   varierendeArbeidstidDeSiste12Månedene,
 } from "./arbeidsforhold.komponenter";
+
+const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(fallbackT);
+const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(fallbackT);
+const arbeidsforholdModalSkiftTurnusRotasjonKomponenter =
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(fallbackT);
+const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter =
+  lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(fallbackT);
+const arbeidsforholdModalJegHarSagtOppSelvKomponenter =
+  lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(fallbackT);
+const arbeidsforholdModalJegHarFåttAvskjedKomponenter =
+  lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(fallbackT);
+const arbeidsforholdModalKontraktenErUtgåttKomponenter =
+  lagArbeidsforholdModalKontraktenErUtgåttKomponenter(fallbackT);
+const arbeidsforholdModalArbeidstidenErRedusertKomponenter =
+  lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(fallbackT);
+const arbeidsforholdModalArbeidsgiverErKonkursKomponenter =
+  lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(fallbackT);
+const arbeidsforholdModalJegErPermittertKomponenter =
+  lagArbeidsforholdModalJegErPermittertKomponenter(fallbackT);
+const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter =
+  lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(fallbackT);
 
 export const arbeidsforholdSchema = z
   .object({

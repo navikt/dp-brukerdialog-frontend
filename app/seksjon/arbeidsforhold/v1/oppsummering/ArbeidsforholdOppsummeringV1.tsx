@@ -1,23 +1,24 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
-  arbeidsforholdModalSkiftTurnusRotasjonKomponenter,
-  arbeidsforholdModalKomponenter,
   ArbeidsforholdResponse,
-  arbeidsforholdKomponenter,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
+  lagArbeidsforholdKomponenter,
+  lagArbeidsforholdModalKomponenter,
+  lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
-import { arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
-import { arbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { arbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
-import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { arbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
-import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
-import { arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.ikkeEndret";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -29,7 +30,9 @@ export function ArbeidsforholdOppsummeringV1({
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
 
+  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
   const data = seksjonSvarene as ArbeidsforholdResponse;
+  const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(t);
 
   const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
     spørsmålListe.find((spørsmål) => spørsmål.id === id);
@@ -42,28 +45,28 @@ export function ArbeidsforholdOppsummeringV1({
       harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
     );
 
-  const alleArbeidsforholdModalSpørsmål = arbeidsforholdModalKomponenter
-    .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
-    .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
-    .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-    .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
-    .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
-    .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
-    .concat(arbeidsforholdModalJegErPermittertKomponenter)
-    .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-    .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter);
+  const alleArbeidsforholdModalSpørsmål = lagArbeidsforholdModalKomponenter(t)
+    .concat(lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t))
+    .concat(lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t))
+    .concat(lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t))
+    .concat(lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t))
+    .concat(lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t))
+    .concat(lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t))
+    .concat(lagArbeidsforholdModalJegErPermittertKomponenter(t))
+    .concat(lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t))
+    .concat(lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t));
 
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Arbeidsforhold</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("oppsummering.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
           <FormSummary.Label>{hvordanHarDuJobbetSpørsmål?.label}</FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={hvordanHarDuJobbetSpørsmål!}
-            svar={data[hvordanHarDuJobbet] ?? "Ubesvart"}
+            svar={data[hvordanHarDuJobbet] ?? t("oppsummering.ubesvart")}
           />
         </FormSummary.Answer>
         {data[hvordanHarDuJobbet] !== harIkkeJobbetDeSiste36Månedene && (
@@ -79,7 +82,7 @@ export function ArbeidsforholdOppsummeringV1({
               }
               svar={
                 data[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] ??
-                "Ubesvart"
+                t("oppsummering.ubesvart")
               }
             />
           </FormSummary.Answer>
@@ -87,7 +90,10 @@ export function ArbeidsforholdOppsummeringV1({
 
         {data.registrerteArbeidsforhold?.map((arbeidsforholdModalSvar, index) => (
           <FormSummary.Answer>
-            <FormSummary.Label> {`Arbeidsforhold ${index + 1}`}</FormSummary.Label>
+            <FormSummary.Label>
+              {" "}
+              {t("oppsummering.arbeidsforhold", { nummer: index + 1 })}
+            </FormSummary.Label>
             <FormSummary.Value>
               <FormSummary.Answers>
                 {Object.entries(arbeidsforholdModalSvar).map((arbeidsforholdModalSvar) => {
@@ -111,7 +117,7 @@ export function ArbeidsforholdOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Arbeidsforhold"
+        seksjonnavn={t("oppsummering.overskrift")}
       />
     </FormSummary>
   );

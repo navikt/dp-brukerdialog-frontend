@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
   arbeidsforholdetErIkkeEndret,
@@ -13,45 +14,43 @@ export const ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet =
 export const ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet =
   "ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet";
 
-export const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter: KomponentType[] = [
-  {
-    id: ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
-    type: "dato",
-    label: "Når startet du i dette arbeidsforholdet?",
-    fraOgMed: startOfDay(subYears(new Date(), 100)),
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
-  },
-  {
-    id: "ikkeEndretArbeidsavtaleDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Arbeidsavtale",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
-  },
-  {
-    id: ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
-    type: "envalg",
-    label: "Har du tilleggsopplysninger til dette arbeidsforholdet?",
-    options: [
-      {
-        value: "ja",
-        label: "Ja",
-      },
-      {
-        value: "nei",
-        label: "Nei",
-      },
-    ],
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
-  },
-  {
-    id: ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
-    type: "langTekst",
-    maksLengde: 500,
-    label: "Tilleggsopplysninger",
-    visHvis: (svar: ArbeidsforholdModalSvar) =>
-      svar[ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet] === "ja",
-  },
-];
+export function lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(
+  t: TFunction
+): KomponentType[] {
+  return [
+    {
+      id: ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
+      type: "dato",
+      label: t("ikkeEndret.nårStartetArbeidsforholdet"),
+      fraOgMed: startOfDay(subYears(new Date(), 100)),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
+    },
+    {
+      id: "ikkeEndretArbeidsavtaleDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsavtale"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
+    },
+    {
+      id: ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
+      type: "envalg",
+      label: t("ikkeEndret.harDuTilleggsopplysninger.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
+    },
+    {
+      id: ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
+      type: "langTekst",
+      maksLengde: 500,
+      label: t("ikkeEndret.tilleggsopplysninger.label"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet] === "ja",
+    },
+  ];
+}
