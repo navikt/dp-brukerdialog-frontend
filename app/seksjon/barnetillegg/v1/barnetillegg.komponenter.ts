@@ -1,5 +1,6 @@
-import { KomponentType } from "~/components/Komponent.types";
 import { endOfDay } from "date-fns";
+import type { TFunction } from "i18next";
+import { KomponentType } from "~/components/Komponent.types";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -30,30 +31,33 @@ export type BarnetilleggSvar = {
   [forsørgerDuBarnSomIkkeVisesHer]?: "ja" | "nei";
 };
 
-export const barnetilleggForklarendeTekst: KomponentType[] = [
-  {
-    id: "barnetilleggForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<p>Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.</p>" +
-      "<p>Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12 måneder.</p>" +
-      "<p>Hvis vi har opplysninger om at du er forelder til noen barn så vises de under.</p>",
-  },
-];
+export function lagBarnetilleggForklarendeTekst(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: "barnetilleggForklarendeTekst",
+      type: "forklarendeTekst",
+      description:
+        `<p>${t("forklarendeTekst.avsnitt1")}</p>` +
+        `<p>${t("forklarendeTekst.avsnitt2")}</p>` +
+        `<p>${t("forklarendeTekst.avsnitt3")}</p>`,
+    },
+  ];
+}
 
-export const barnetilleggKomponenter: KomponentType[] = [
-  {
-    id: forsørgerDuBarnSomIkkeVisesHer,
-    type: "envalg",
-    label: "Forsørger du barn som ikke vises her?",
-    description:
-      "Hvis du har forsørgeransvar for barn under 18 år som ikke vises her, kan du legge dem til.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-];
+export function lagBarnetilleggKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: forsørgerDuBarnSomIkkeVisesHer,
+      type: "envalg",
+      label: t("forsørgerDuBarnSomIkkeVisesHer.label"),
+      description: t("forsørgerDuBarnSomIkkeVisesHer.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+  ];
+}
 
 export const fornavnOgMellomnavn = "fornavnOgMellomnavn";
 export const etternavn = "etternavn";
@@ -61,37 +65,39 @@ export const fødselsdato = "fødselsdato";
 export const bostedsland = "bostedsland";
 export const forsørgerDuBarnet = "forsørgerDuBarnet";
 
-export const barnFraPdlSpørsmål: KomponentType[] = [
-  {
-    id: fornavnOgMellomnavn,
-    type: "registeropplysning",
-    label: "Fornavn og mellomnavn",
-  },
-  {
-    id: etternavn,
-    type: "registeropplysning",
-    label: "Etternavn",
-  },
-  {
-    id: fødselsdato,
-    type: "registeropplysning",
-    label: "Fødsesldato",
-  },
-  {
-    id: bostedsland,
-    type: "registeropplysning",
-    label: "Bostedsland",
-  },
-  {
-    id: forsørgerDuBarnet,
-    type: "envalg",
-    label: "Forsørger du barnet?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-];
+export function lagBarnFraPdlKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: fornavnOgMellomnavn,
+      type: "registeropplysning",
+      label: t("barnFraPdl.fornavnOgMellomnavn.label"),
+    },
+    {
+      id: etternavn,
+      type: "registeropplysning",
+      label: t("barnFraPdl.etternavn.label"),
+    },
+    {
+      id: fødselsdato,
+      type: "registeropplysning",
+      label: t("barnFraPdl.fødselsdato.label"),
+    },
+    {
+      id: bostedsland,
+      type: "registeropplysning",
+      label: t("barnFraPdl.bostedsland.label"),
+    },
+    {
+      id: forsørgerDuBarnet,
+      type: "envalg",
+      label: t("barnFraPdl.forsørgerDuBarnet.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+  ];
+}
 
 export type LeggTilBarnManueltSvar = {
   [fornavnOgMellomnavn]?: string;
@@ -100,39 +106,41 @@ export type LeggTilBarnManueltSvar = {
   [bostedsland]?: string;
 };
 
-export const leggTilBarnManueltSpørsmål: KomponentType[] = [
-  {
-    id: fornavnOgMellomnavn,
-    type: "kortTekst",
-    label: "Fornavn og mellomnavn",
-    maksLengde: 200,
-  },
-  {
-    id: etternavn,
-    type: "kortTekst",
-    label: "Etternavn",
-    maksLengde: 200,
-  },
-  {
-    id: fødselsdato,
-    type: "dato",
-    label: "Fødselsdato",
-    tilOgMed: endOfDay(new Date()),
-  },
-  {
-    id: bostedsland,
-    type: "land",
-    label: "Hvilket land bor barnet i?",
-  },
-  {
-    id: "lesMerOmBarnetBostedLesMer",
-    type: "lesMer",
-    label: "Les mer om barnets bosted",
-    description: "Bostedet du oppgir må være det landet barnet faktisk oppholder seg i til vanlig.",
-  },
-  {
-    id: "barnLagtTilManueltDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Fødselsattest/bostedsbevis",
-  },
-];
+export function lagLeggTilBarnManueltModalKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: fornavnOgMellomnavn,
+      type: "kortTekst",
+      label: t("leggTilBarnManuelt.fornavnOgMellomnavn.label"),
+      maksLengde: 200,
+    },
+    {
+      id: etternavn,
+      type: "kortTekst",
+      label: t("leggTilBarnManuelt.etternavn.label"),
+      maksLengde: 200,
+    },
+    {
+      id: fødselsdato,
+      type: "dato",
+      label: t("leggTilBarnManuelt.fødselsdato.label"),
+      tilOgMed: endOfDay(new Date()),
+    },
+    {
+      id: bostedsland,
+      type: "land",
+      label: t("leggTilBarnManuelt.bostedsland.label"),
+    },
+    {
+      id: "lesMerOmBarnetBostedLesMer",
+      type: "lesMer",
+      label: t("leggTilBarnManuelt.lesMer.label"),
+      description: t("leggTilBarnManuelt.lesMer.description"),
+    },
+    {
+      id: "barnLagtTilManueltDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("leggTilBarnManuelt.dokumentasjonskravindikator.label"),
+    },
+  ];
+}
