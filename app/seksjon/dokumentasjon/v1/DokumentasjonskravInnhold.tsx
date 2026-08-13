@@ -71,9 +71,9 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                   <List.Item>{t("krav.sagtOpp.punkt2")}</List.Item>
                 </List>
                 <BodyLong>
-                  {t("krav.sagtOpp.utdypningFør")}
+                  {t("krav.sagtOpp.utdypningFør")}{" "}
                   <EksterneLenke
-                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439694b04dd5.pdf"
+                    href="https://cdn.sanity.io/files/gx9wf39f/soknadsveiviser-p/25dc1dbc777af7749d8c6efbb439839694b04dd5.pdf"
                     tekst={t("krav.sagtOpp.lenke")}
                   />
                   {t("krav.sagtOpp.utdypningEtter")}
