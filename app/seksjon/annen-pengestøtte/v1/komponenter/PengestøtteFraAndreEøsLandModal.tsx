@@ -11,8 +11,8 @@ import {
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
@@ -24,6 +24,7 @@ import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -53,6 +54,9 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraAndreEøsLandSchema,
@@ -73,7 +77,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
         skjemaData[fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]!
       ).toUpperCase();
 
-      const dokumentasjonskravTittel = `Pengestøtte fra andre EØS-land - ${støtteType} (${land})  `;
+      const dokumentasjonskravTittel = t("eøs.dokumentasjonskravTittel", { støtteType, land });
 
       if (pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil) {
         leggTilPengestøtteFraAndreEøsLand(skjemaData, dokumentasjonskravTittel);
@@ -170,8 +174,8 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
 
   const modalOperasjon =
     pengestøtteFraAndreEøsLandModalData?.operasjon === ModalOperasjon.LeggTil
-      ? "Legg til"
-      : "Rediger";
+      ? t("modal.leggTil")
+      : t("modal.rediger");
 
   return (
     <>
@@ -191,7 +195,9 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="space-8">{modalOperasjon} pengestøtte fra andre EØS-land</HStack>
+            <HStack gap="space-8">
+              {modalOperasjon} {t("eøs.modal.heading")}
+            </HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -216,7 +222,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
 
               <HStack className="mt-16" justify="end">
                 <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
-                  Lagre og lukk
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

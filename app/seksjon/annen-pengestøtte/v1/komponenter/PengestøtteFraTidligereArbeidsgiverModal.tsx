@@ -4,7 +4,7 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { pengestøtteFraAndreEøsLandModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
+import { lagPengestøtteFraAndreEøsLandModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   ModalOperasjon,
   useAnnenPengestøtteContext,
@@ -16,11 +16,12 @@ import {
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
   hvemMottarDuUtbetalingerEllerGoderFra,
-  pengestøtteFraTidligereArbeidsgiverModalKomponenter,
+  lagPengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -46,6 +47,11 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const pengestøtteFraTidligereArbeidsgiverModalKomponenter =
+    lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraTidligereArbeidsgiverSchema,
@@ -62,7 +68,9 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
         return;
       }
 
-      const dokumentasjonskravTittel = `Dokumentasjon av sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver - ${skjemaData[hvemMottarDuUtbetalingerEllerGoderFra]}  `;
+      const dokumentasjonskravTittel = t("tidligereArbeidsgiver.dokumentasjonskravTittel", {
+        navn: skjemaData[hvemMottarDuUtbetalingerEllerGoderFra],
+      });
 
       if (pengestøtteFraTidligereArbeidsgiverModalData?.operasjon === ModalOperasjon.LeggTil) {
         leggTilPengestøtteFraTidligereArbeidsgiver(skjemaData, dokumentasjonskravTittel);
@@ -149,8 +157,8 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
 
   const modalOperasjon =
     pengestøtteFraTidligereArbeidsgiverModalData?.operasjon === ModalOperasjon.LeggTil
-      ? "Legg til"
-      : "Rediger";
+      ? t("modal.leggTil")
+      : t("modal.rediger");
 
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
@@ -177,8 +185,8 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
             <HStack gap="space-8">
-              {modalOperasjon} utbetalinger eller økonomiske goder fra tidligere arbeidsgiver
-            </HStack>
+                {modalOperasjon} {t("tidligereArbeidsgiver.modal.heading")}
+              </HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -203,7 +211,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
 
               <HStack className="mt-16" justify="end">
                 <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
-                  Lagre og lukk
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>
