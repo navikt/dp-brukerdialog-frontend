@@ -9,6 +9,7 @@ import {
   hvaFårEllerBeholderDu,
   hvemMottarDuUtbetalingerEllerGoderFra,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   pengestøtteFraTidligereArbeidsgiver: PengestøtteFraTidligereArbeidsgiver;
@@ -24,6 +25,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
 
   function fjernPengestøtteFraTidligereArbeidsgiver() {
     setPengestøtteFraTidligereArbeidsgiver(
@@ -60,7 +62,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
             });
           }}
         >
-          Endre svar
+          {t("detaljer.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -68,7 +70,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
           onClick={fjernPengestøtteFraTidligereArbeidsgiver}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("detaljer.fjern")}
         </Button>
       </HStack>
     </Box>

@@ -5,7 +5,7 @@ import {
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
-  pengestøtteFraNorgeModalKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
   ModalOperasjon,
@@ -14,6 +14,7 @@ import {
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { PengestøtteFraNorge } from "./PengestøtteFraNorgeModal";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   pengestøtteFraNorge: PengestøtteFraNorge;
@@ -29,6 +30,8 @@ export function PengestøtteFraNorgeDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
 
   function fjernPengestøtteFraNorge() {
     setPengestøtteFraNorge(
@@ -59,7 +62,7 @@ export function PengestøtteFraNorgeDetaljer({
           </>
         )}
         <>
-          Fra og med&nbsp;
+          {t("detaljer.fraOgMed")}&nbsp;
           {formaterNorskDato(
             new Date(
               pengestøtteFraNorgeProps[iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]!
@@ -69,7 +72,7 @@ export function PengestøtteFraNorgeDetaljer({
             iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato
           ] && (
             <>
-              , til og med&nbsp;
+              , {t("detaljer.tilOgMed")}&nbsp;
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraNorgeProps[
@@ -94,7 +97,7 @@ export function PengestøtteFraNorgeDetaljer({
             });
           }}
         >
-          Endre svar
+          {t("detaljer.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -102,7 +105,7 @@ export function PengestøtteFraNorgeDetaljer({
           onClick={fjernPengestøtteFraNorge}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("detaljer.fjern")}
         </Button>
       </HStack>
     </Box>

@@ -9,17 +9,17 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { action, loader, SEKSJON_NAVN, SEKSJON_TITTEL } from "~/routes/$soknadId.annen-pengestotte";
-import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
+import { lagPengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
+  lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+  lagPengestøtteFraNorgeKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeKomponenter,
-  pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
-  annenPengestøtteKomponenter,
+  lagAnnenPengestøtteKomponenter,
   AnnenPengestøtteResponse,
   AnnenPengestøtteSvar,
   pdfGrunnlag,
@@ -48,10 +48,11 @@ import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { validerSvar } from "~/utils/validering.utils";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandKomponenter,
-  pengestøtteFraAndreEøsLandModalKomponenter,
+  lagPengestøtteFraAndreEøsLandKomponenter,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function AnnenPengestøtteViewV1() {
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);
@@ -59,6 +60,17 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+
+  const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter =
+    lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t);
+  const pengestøtteFraTidligereArbeidsgiverModalKomponenter =
+    lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t);
+  const pengestøtteFraNorgeKomponenter = lagPengestøtteFraNorgeKomponenter(t);
+  const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
+  const pengestøtteFraAndreEøsLandKomponenter = lagPengestøtteFraAndreEøsLandKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+  const annenPengestøtteKomponenter = lagAnnenPengestøtteKomponenter(t);
 
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -175,7 +187,7 @@ export function AnnenPengestøtteViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [
         ...lagSeksjonPayload(
           mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
@@ -308,13 +320,13 @@ export function AnnenPengestøtteViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Form id={formId} action={formAction}>
           <input type="hidden" name="versjon" value={loaderData.seksjon.versjon} />
           <VStack gap="space-24">
             <Heading size="medium" level="2">
-              {SEKSJON_NAVN}
+              {t("side.overskrift")}
             </Heading>
             {mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter.map(
               (komponent) => render(komponent)
@@ -343,19 +355,19 @@ export function AnnenPengestøtteViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til utbetalinger eller goder
+                    {t("tidligereArbeidsgiver.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visPengestøtteFraTidligereArbeidsgiverFeilmelding && (
                   <InlineMessage status="error">
-                    Du må legge til utbetalinger eller økonomiske goder
+                    {t("tidligereArbeidsgiver.manglerFeilmelding")}
                   </InlineMessage>
                 )}
               </VStack>
             )}
 
             <Heading size="small" level="3" className="mt-16">
-              Pengestøtte fra Norge
+              {t("norge.heading")}
             </Heading>
 
             {pengestøtteFraNorgeKomponenter.map((komponent) => render(komponent))}
@@ -377,19 +389,19 @@ export function AnnenPengestøtteViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til pengestøtte fra Norge
+                    {t("norge.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
                   <InlineMessage status="error">
-                    Du må legge til pengestøtte fra Norge
+                    {t("norge.manglerFeilmelding")}
                   </InlineMessage>
                 )}
               </VStack>
             )}
 
             <Heading size="small" level="3" className="mt-16">
-              Pengestøtte fra andre EØS-land
+              {t("eøs.heading")}
             </Heading>
 
             {pengestøtteFraAndreEøsLandKomponenter.map((komponent) => {
@@ -417,12 +429,12 @@ export function AnnenPengestøtteViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til pengestøtte fra andre EØS-land
+                    {t("eøs.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
                   <InlineMessage status="error">
-                    Du må legge til pengestøtte fra andre EØS-land
+                    {t("eøs.manglerFeilmelding")}
                   </InlineMessage>
                 )}
               </VStack>
@@ -430,7 +442,7 @@ export function AnnenPengestøtteViewV1() {
 
             {actionData && (
               <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
+                tittel={t("tekniskFeil.tittel")}
                 beskrivelse={actionData.error}
               />
             )}

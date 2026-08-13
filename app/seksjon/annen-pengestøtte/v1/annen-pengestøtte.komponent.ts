@@ -1,13 +1,15 @@
+import { TFunction } from "i18next";
+import { KomponentType } from "~/components/Komponent.types";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandKomponenter,
+  lagPengestøtteFraAndreEøsLandKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
+  lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+  lagPengestøtteFraNorgeKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { PengestøtteFraTidligereArbeidsgiverModalSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
@@ -28,7 +30,8 @@ export type AnnenPengestøtteResponse = AnnenPengestøtteSvar & {
   pengestøtteFraAndreEøsLand?: PengestøtteFraAndreEøsLandModalSvar[];
 };
 
-export const annenPengestøtteKomponenter =
-  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter
-    .concat(pengestøtteFraNorgeKomponenter)
-    .concat(pengestøtteFraAndreEøsLandKomponenter);
+export function lagAnnenPengestøtteKomponenter(t: TFunction): KomponentType[] {
+  return lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t)
+    .concat(lagPengestøtteFraNorgeKomponenter(t))
+    .concat(lagPengestøtteFraAndreEøsLandKomponenter(t));
+}

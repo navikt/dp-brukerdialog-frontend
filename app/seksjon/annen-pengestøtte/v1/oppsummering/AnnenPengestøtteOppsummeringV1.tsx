@@ -1,15 +1,15 @@
 import { FormSummary } from "@navikt/ds-react";
 import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandKomponenter,
-  pengestøtteFraAndreEøsLandModalKomponenter,
+  lagPengestøtteFraAndreEøsLandKomponenter,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
+  lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
+  lagPengestøtteFraNorgeKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
-  mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeKomponenter,
-  pengestøtteFraNorgeModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
@@ -17,7 +17,8 @@ import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v1/annen
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
-import { pengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { lagPengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function AnnenPengestøtteOppsummeringV1({
   seksjonSvarene,
@@ -25,8 +26,18 @@ export function AnnenPengestøtteOppsummeringV1({
   redigerbar,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
 
   const data = seksjonSvarene as AnnenPengestøtteResponse;
+
+  const pengestøtteFraAndreEøsLandKomponenter = lagPengestøtteFraAndreEøsLandKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+  const pengestøtteFraNorgeKomponenter = lagPengestøtteFraNorgeKomponenter(t);
+  const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
+  const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter =
+    lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t);
+  const pengestøtteFraTidligereArbeidsgiverModalKomponenter =
+    lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t);
 
   const finnSpørsmål = (spørsmålListe: KomponentType[], id: string) =>
     spørsmålListe.find((spørsmål) => spørsmål.id === id);
@@ -49,7 +60,7 @@ export function AnnenPengestøtteOppsummeringV1({
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Annen pengestøtte</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
@@ -60,7 +71,7 @@ export function AnnenPengestøtteOppsummeringV1({
             spørsmål={mottaLønnEllerAndreGoderFraTidligereArbeidsgiver!}
             svar={
               data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] ??
-              "Ubesvart"
+              t("oppsummering.ubesvart")
             }
           />
         </FormSummary.Answer>
@@ -69,7 +80,7 @@ export function AnnenPengestøtteOppsummeringV1({
             <FormSummary.Answer>
               <FormSummary.Label>
                 {" "}
-                {`Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver ${index + 1}`}
+                {t("oppsummering.tidligereArbeidsgiverNr", { nr: index + 1 })}
               </FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
@@ -99,13 +110,13 @@ export function AnnenPengestøtteOppsummeringV1({
           <FormSummary.Label>{mottarPengestøtteFraNorge?.label}</FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={mottarPengestøtteFraNorge!}
-            svar={data[mottarDuPengestøtteFraAndreEnnNav] ?? "Ubesvart"}
+            svar={data[mottarDuPengestøtteFraAndreEnnNav] ?? t("oppsummering.ubesvart")}
           />
         </FormSummary.Answer>
         {data[mottarDuPengestøtteFraAndreEnnNav] === "ja" &&
           data.pengestøtteFraNorge?.map((pengestøtte, index) => (
             <FormSummary.Answer>
-              <FormSummary.Label> {`Pengestøtte fra Norge ${index + 1}`}</FormSummary.Label>
+              <FormSummary.Label> {t("oppsummering.norgeNr", { nr: index + 1 })}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
@@ -136,14 +147,14 @@ export function AnnenPengestøtteOppsummeringV1({
           </FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={mottattEllerSøktOmPengestøtteFraAndreEøsLand!}
-            svar={data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] ?? "Ubesvart"}
+            svar={data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] ?? t("oppsummering.ubesvart")}
           />
         </FormSummary.Answer>
 
         {data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] === "ja" &&
           data.pengestøtteFraAndreEøsLand?.map((pengestøtte, index) => (
             <FormSummary.Answer>
-              <FormSummary.Label> {`Pengestøtte fra EØS-land ${index + 1}`}</FormSummary.Label>
+              <FormSummary.Label> {t("oppsummering.eøsNr", { nr: index + 1 })}</FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(pengestøtte).map((enPengestøtte) => {
@@ -172,7 +183,7 @@ export function AnnenPengestøtteOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Annen pengestøtte"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );

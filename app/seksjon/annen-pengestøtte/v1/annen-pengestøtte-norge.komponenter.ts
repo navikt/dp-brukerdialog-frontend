@@ -1,6 +1,7 @@
 import { KomponentType } from "~/components/Komponent.types";
 import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
 import { startOfDay, subYears } from "date-fns";
+import { TFunction } from "i18next";
 
 export const mottarDuPengestøtteFraAndreEnnNav = "mottarDuPengestøtteFraAndreEnnNav";
 export const hvilkenPengestøtteFraAndreEnnNavMottarDu = "hvilkenPengestøtteFraAndreEnnNavMottarDu";
@@ -17,137 +18,128 @@ export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgi
 
 export type PengestøtteFraNorgeModalSvar = {
   [hvilkenPengestøtteFraAndreEnnNavMottarDu]?:
-    | typeof pensjonFraAndreEnnNav
-    | typeof dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere;
+    typeof pensjonFraAndreEnnNav | typeof dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere;
   [hvemUtbetalerPengestøtten]?: string;
   [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato]?: string;
   [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato]?: string;
 };
 
-export const pengestøtteFraNorgeKomponenter: KomponentType[] = [
-  {
-    id: mottarDuPengestøtteFraAndreEnnNav,
-    type: "envalg",
-    label: "Mottar du pengestøtte fra andre enn Nav?",
-    description:
-      "<p><ul>" +
-      "<li>Pensjon fra andre enn Nav</li>" +
-      "<li>Dagpenger for fiskere eller garantilott fra Garantikassen for fiskere (GFF)</li>" +
-      "</ul></p>",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: "mottarDuPengestøtteFraAndreEnnNavLesMer",
-    type: "lesMer",
-    label: "Grunnen til at vi spør om dette",
-    description:
-      "Hvis du mottar pengestøtte fra andre enn Nav, kan det ha betydning for retten din til dagpenger.",
-  },
-  {
-    id: "mottarDuPengestøtteFraAndreEnnNavForklarendeTekst",
-    type: "forklarendeTekst",
-    description:
-      "<strong>Dine pengestøtter fra Norge</strong><br />" +
-      "Du må legge til alle pengestøttene du mottar som som ikke er fra Nav.",
-    visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuPengestøtteFraAndreEnnNav] === "ja",
-  },
-];
+export function lagPengestøtteFraNorgeKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: mottarDuPengestøtteFraAndreEnnNav,
+      type: "envalg",
+      label: t("norge.mottar.label"),
+      description: t("norge.mottar.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+    {
+      id: "mottarDuPengestøtteFraAndreEnnNavLesMer",
+      type: "lesMer",
+      label: t("norge.mottar.lesMer.label"),
+      description: t("norge.mottar.lesMer.description"),
+    },
+    {
+      id: "mottarDuPengestøtteFraAndreEnnNavForklarendeTekst",
+      type: "forklarendeTekst",
+      description: t("norge.mottar.forklarendeTekst"),
+      visHvis: (svar: AnnenPengestøtteSvar) => svar[mottarDuPengestøtteFraAndreEnnNav] === "ja",
+    },
+  ];
+}
 
-export const pengestøtteFraNorgeModalKomponenter: KomponentType[] = [
-  {
-    id: hvilkenPengestøtteFraAndreEnnNavMottarDu,
-    type: "envalg",
-    label: "Hvilken pengestøtte fra andre enn Nav mottar du?",
-    options: [
-      { value: pensjonFraAndreEnnNav, label: "Pensjon fra andre enn Nav" },
-      {
-        value: dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
-        label:
-          "Dagpenger under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)",
-      },
-    ],
-  },
-  {
-    id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar.",
-  },
-  {
-    id: "hvilkePengestøtteFraAndreEnnNavMottarDuPensjonFraAndreEnnNavDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av pensjon fra andre enn Nav",
-    visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
-      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === pensjonFraAndreEnnNav,
-  },
-  {
-    id: "hvilkePengestøtteFraAndreEnnNavMottarDuPengestøtteFraGffDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Dokumentasjon av pengestøtte fra Garantikassen for fiskere",
-    visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
-      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] ===
-      dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
-  },
-  {
-    id: hvemUtbetalerPengestøtten,
-    type: "kortTekst",
-    label: "Hvem utbetaler pengestøtten?",
-    maksLengde: 200,
-    visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
-      svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === "pensjonFraAndreEnnNav",
-  },
-  {
-    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
-    type: "periodeFra",
-    periodeLabel: "I hvilken periode har du mottatt pengestøtten?",
-    label: "Fra dato",
-    fraOgMed: startOfDay(subYears(new Date(), 20)),
-    referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
-  },
-  {
-    id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
-    type: "periodeTil",
-    label: "Til dato",
-    description:
-      "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her.",
-    optional: true,
-    referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
-  },
-];
+export function lagPengestøtteFraNorgeModalKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: hvilkenPengestøtteFraAndreEnnNavMottarDu,
+      type: "envalg",
+      label: t("norge.modal.hvilken.label"),
+      options: [
+        { value: pensjonFraAndreEnnNav, label: t("norge.modal.hvilken.options.pensjon") },
+        {
+          value: dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
+          label: t("norge.modal.hvilken.options.dagpenger"),
+        },
+      ],
+    },
+    {
+      id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("norge.modal.informasjonskort.label"),
+      description: t("norge.modal.informasjonskort.description"),
+    },
+    {
+      id: "hvilkePengestøtteFraAndreEnnNavMottarDuPensjonFraAndreEnnNavDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("norge.modal.dokumentasjonskrav.pensjon"),
+      visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
+        svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === pensjonFraAndreEnnNav,
+    },
+    {
+      id: "hvilkePengestøtteFraAndreEnnNavMottarDuPengestøtteFraGffDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("norge.modal.dokumentasjonskrav.gff"),
+      visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
+        svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] ===
+        dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
+    },
+    {
+      id: hvemUtbetalerPengestøtten,
+      type: "kortTekst",
+      label: t("norge.modal.hvemUtbetaler.label"),
+      maksLengde: 200,
+      visHvis: (svar: PengestøtteFraNorgeModalSvar) =>
+        svar[hvilkenPengestøtteFraAndreEnnNavMottarDu] === "pensjonFraAndreEnnNav",
+    },
+    {
+      id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
+      type: "periodeFra",
+      periodeLabel: t("norge.modal.periode.periodeLabel"),
+      label: t("norge.modal.periode.fraDato"),
+      fraOgMed: startOfDay(subYears(new Date(), 20)),
+      referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
+    },
+    {
+      id: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
+      type: "periodeTil",
+      label: t("norge.modal.periode.tilDato"),
+      description: t("norge.modal.periode.tilDatoDescription"),
+      optional: true,
+      referanseId: iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
+    },
+  ];
+}
 
-export const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter: KomponentType[] =
-  [
+export function lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(
+  t: TFunction
+): KomponentType[] {
+  return [
     {
       id: mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
       type: "envalg",
-      label:
-        "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
-      description:
-        "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
+      label: t("tidligereArbeidsgiver.mottar.label"),
+      description: t("tidligereArbeidsgiver.mottar.description"),
       options: [
-        { value: "ja", label: "Ja" },
-        { value: "nei", label: "Nei" },
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
       ],
     },
     {
       id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverLesMer",
       type: "lesMer",
-      label: "Grunnen til at vi spør om dette",
-      description:
-        "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger.",
+      label: t("tidligereArbeidsgiver.mottar.lesMer.label"),
+      description: t("tidligereArbeidsgiver.mottar.lesMer.description"),
     },
     {
       id: "mottarDuAndreUtbetalingerEllerGoderFraTidligereArbeidsgiverForklarendeTekst",
       type: "forklarendeTekst",
-      description:
-        "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />" +
-        "Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver.",
+      description: t("tidligereArbeidsgiver.mottar.forklarendeTekst"),
       visHvis: (svar: AnnenPengestøtteSvar) =>
         svar[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja",
     },
   ];
+}

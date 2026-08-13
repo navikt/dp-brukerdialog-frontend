@@ -7,7 +7,7 @@ import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import {
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
-  pengestøtteFraNorgeModalKomponenter,
+  lagPengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
@@ -18,6 +18,7 @@ import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/anne
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -47,6 +48,9 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
+
   const form = useForm({
     submitSource: "state",
     schema: pengestøtteFraNorgeSchema,
@@ -73,7 +77,10 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
           ? ""
           : ` (${enPengestøtteFraNorge[hvemUtbetalerPengestøtten]})`;
 
-      const dokumentasjonskravTittel = `Pengestøtte fra Norge - ${støtteType}${hvemUtbetalerStøtten}`;
+      const dokumentasjonskravTittel = t("norge.dokumentasjonskravTittel", {
+        støtteType,
+        hvem: hvemUtbetalerStøtten,
+      });
 
       if (pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil) {
         leggTilPengestøtteFraNorge(enPengestøtteFraNorge, dokumentasjonskravTittel);
@@ -153,7 +160,9 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
   }
 
   const modalOperasjon =
-    pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+    pengestøtteFraNorgeModalData?.operasjon === ModalOperasjon.LeggTil
+      ? t("modal.leggTil")
+      : t("modal.rediger");
 
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
@@ -179,7 +188,9 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="space-8">{modalOperasjon} pengestøtte fra Norge</HStack>
+            <HStack gap="space-8">
+              {modalOperasjon} {t("norge.modal.heading")}
+            </HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -202,7 +213,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
 
               <HStack className="mt-16" justify="end">
                 <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
-                  Lagre og lukk
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

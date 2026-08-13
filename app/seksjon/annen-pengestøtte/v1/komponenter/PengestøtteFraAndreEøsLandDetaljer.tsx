@@ -6,7 +6,7 @@ import {
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
-  pengestøtteFraAndreEøsLandModalKomponenter,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-eøs.komponenter";
 import {
   ModalOperasjon,
@@ -16,6 +16,7 @@ import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { PengestøtteFraAndreEøsLand } from "./PengestøtteFraAndreEøsLandModal";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand;
@@ -31,6 +32,8 @@ export function PengestøtteFraAndreEøsLandDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
+  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
 
   function fjernPengestøtteFraAndreEøsLand() {
     setPengestøtteFraAndreEøsLand(
@@ -67,7 +70,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
             iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato
           ] && (
             <>
-              Mottatt fra og med&nbsp;
+              {t("detaljer.mottattFraOgMed")}&nbsp;
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraAndreEøsLandProps[
@@ -75,7 +78,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
                   ]
                 )
               )}
-              , til og med&nbsp;
+              , {t("detaljer.tilOgMed")}&nbsp;
               {formaterNorskDato(
                 new Date(
                   pengestøtteFraAndreEøsLandProps[
@@ -87,7 +90,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           )}
         {pengestøtteFraAndreEøsLandProps[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato] && (
           <>
-            Motatt fra og med{" "}
+            {t("detaljer.motattFraOgMed")}{" "}
             {formaterNorskDato(
               new Date(
                 pengestøtteFraAndreEøsLandProps[fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato]
@@ -109,7 +112,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
             });
           }}
         >
-          Endre svar
+          {t("detaljer.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -117,7 +120,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
           onClick={fjernPengestøtteFraAndreEøsLand}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("detaljer.fjern")}
         </Button>
       </HStack>
     </Box>

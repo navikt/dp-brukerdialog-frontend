@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
 import {
-  annenPengestøtteKomponenter,
+  lagAnnenPengestøtteKomponenter,
   AnnenPengestøtteSvar,
   handling,
   pdfGrunnlag,
@@ -15,8 +16,8 @@ import {
   hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
+  lagPengestøtteFraAndreEøsLandModalKomponenter,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
-  pengestøtteFraAndreEøsLandModalKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   sykepenger,
@@ -25,8 +26,8 @@ import {
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   hvemUtbetalerPengestøtten,
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
+  lagPengestøtteFraNorgeModalKomponenter,
   mottarDuPengestøtteFraAndreEnnNav,
-  pengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
   dagpengerUnderArbeidsledighetEllerGarantiLottForFiskere,
   pensjonFraAndreEnnNav,
@@ -37,7 +38,7 @@ import { valider } from "~/utils/validering.utils";
 import {
   hvaFårEllerBeholderDu,
   hvemMottarDuUtbetalingerEllerGoderFra,
-  pengestøtteFraTidligereArbeidsgiverModalKomponenter,
+  lagPengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -63,7 +64,7 @@ export const annenPengestøtteSchema = z
       return;
     }
 
-    annenPengestøtteKomponenter.forEach((komponent) => {
+    lagAnnenPengestøtteKomponenter(fallbackT).forEach((komponent) => {
       const synlig = !komponent.visHvis || komponent.visHvis(data);
       const svar = data[komponent.id as keyof AnnenPengestøtteSvar];
       valider(komponent, svar, synlig, context);
@@ -76,7 +77,7 @@ export const pengestøtteFraTidligereArbeidsgiverSchema = z
     [hvaFårEllerBeholderDu]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    pengestøtteFraTidligereArbeidsgiverModalKomponenter.forEach((komponent) => {
+    lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(fallbackT).forEach((komponent) => {
       const synlig = !komponent.visHvis || komponent.visHvis(data);
       const svar = data[komponent.id as keyof PengestøtteFraTidligereArbeidsgiverModalSvar];
       valider(komponent, svar, synlig, context);
@@ -104,7 +105,7 @@ export const pengestøtteFraAndreEøsLandSchema = z
       .optional(),
   })
   .superRefine((data, context) => {
-    pengestøtteFraAndreEøsLandModalKomponenter.forEach((komponent) => {
+    lagPengestøtteFraAndreEøsLandModalKomponenter(fallbackT).forEach((komponent) => {
       const synlig = !komponent.visHvis || komponent.visHvis(data);
       const svar = data[komponent.id as keyof PengestøtteFraAndreEøsLandModalSvar];
       valider(komponent, svar, synlig, context);
@@ -121,7 +122,7 @@ export const pengestøtteFraNorgeSchema = z
     [iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato]: z.string().optional(),
   })
   .superRefine((data, context) => {
-    pengestøtteFraNorgeModalKomponenter.forEach((komponent) => {
+    lagPengestøtteFraNorgeModalKomponenter(fallbackT).forEach((komponent) => {
       const synlig = !komponent.visHvis || komponent.visHvis(data);
       const svar = data[komponent.id as keyof PengestøtteFraNorgeModalSvar];
       valider(komponent, svar, synlig, context);
