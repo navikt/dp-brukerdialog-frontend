@@ -21,6 +21,8 @@
       "#Barnetillegg": "./app/seksjon/barnetillegg/v1/locales/{languageTag}.json",
       "#Tilleggsopplysninger": "./app/seksjon/tilleggsopplysninger/v1/locales/{languageTag}.json",
       "#Oppsummering": "./app/seksjon/oppsummering/locales/{languageTag}.json",
+      "#Kvittering": "./app/seksjon/kvittering/locales/{languageTag}.json",
+      "#Ettersending": "./app/seksjon/ettersending/locales/{languageTag}.json",
       "#Common ": "./app/i18n/locales/{languageTag}.json"
     },
     "variableReferencePattern": ["{{", "}}"]

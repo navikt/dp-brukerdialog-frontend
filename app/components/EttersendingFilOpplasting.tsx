@@ -1,11 +1,12 @@
 import { Box, ErrorMessage, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravFeilType,
   DokumentkravFil,
-  FilOpplastingFeilType
+  FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { useEttersending } from "~/seksjon/ettersending/ettersending.context";
 import {
@@ -15,7 +16,7 @@ import {
   hentTillatteFiltyperTekst,
   MAX_ANTALL_FILER,
   MAX_FIL_STØRRELSE,
-  TILLATTE_FILFORMAT
+  TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { getEnv } from "~/utils/env.utils";
 import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/v1/DokumentasjonskravInnhold";
@@ -25,6 +26,7 @@ interface IProps {
 }
 
 export function EttersendingFilOpplasting({ ettersending }: IProps) {
+  const { t } = useTranslation("ettersending");
   const { soknadId } = useParams();
   const { oppdaterEttersending, valideringStartet } = useEttersending();
 
@@ -45,33 +47,33 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FilOpplastingFeilType.UGYLDIG_FORMAT
+          feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
         });
       } else if (erDuplikat) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FilOpplastingFeilType.DUPLIKAT_FIL
+          feil: FilOpplastingFeilType.DUPLIKAT_FIL,
         });
       } else if (fil.file.size > MAX_FIL_STØRRELSE) {
         filerMedFeil.push({
           id: crypto.randomUUID(),
           filnavn: fil.file.name,
-          feil: FilOpplastingFeilType.FIL_FOR_STOR
+          feil: FilOpplastingFeilType.FIL_FOR_STOR,
         });
       } else {
         filerKlarTilOpplasting.push({
           id: crypto.randomUUID(),
           file: fil.file,
           filnavn: fil.file.name,
-          lasterOpp: true
+          lasterOpp: true,
         });
       }
     });
 
     oppdaterEttersending({
       ...ettersending,
-      filer: [...ettersendingFiler, ...filerKlarTilOpplasting, ...filerMedFeil]
+      filer: [...ettersendingFiler, ...filerKlarTilOpplasting, ...filerMedFeil],
     });
 
     if (filerKlarTilOpplasting.length > 0) {
@@ -94,7 +96,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
               storrelse: fil.file.size,
               lasterOpp: false,
               feil: FilOpplastingFeilType.TEKNISK_FEIL,
-              id: fil.id
+              id: fil.id,
             };
           }
 
@@ -104,7 +106,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
             ...filer[0], // Mellomlagring returnerer en liste
             lasterOpp: false,
             feil: undefined,
-            id: fil.id
+            id: fil.id,
           };
         })
       );
@@ -115,8 +117,8 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         ...ettersending,
         filer: oppdaterteFiler.map((fil) => ({
           ...fil,
-          ...responser.find((respons) => respons?.id === fil.id)
-        }))
+          ...responser.find((respons) => respons?.id === fil.id),
+        })),
       });
     }
   }
@@ -130,7 +132,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
         feil: oppdaterteFiler.some((fil) => fil.feil)
           ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
-          : undefined
+          : undefined,
       });
 
       return;
@@ -144,7 +146,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${soknadId}/${ettersending.id}/slett-fil`,
         {
           method: "POST",
-          body: formData
+          body: formData,
         }
       );
 
@@ -158,7 +160,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         oppdaterEttersending({
           ...ettersending,
           filer: oppdaterteFiler,
-          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
         });
 
         return;
@@ -171,7 +173,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filer: oppdaterteFiler.length > 0 ? oppdaterteFiler : undefined,
         feil: oppdaterteFiler.some((fil) => fil.feil)
           ? DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
-          : undefined
+          : undefined,
       });
 
       return await response.text();
@@ -185,7 +187,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
       oppdaterEttersending({
         ...ettersending,
         filer: oppdaterteFiler,
-        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
       });
     }
   }
@@ -195,10 +197,10 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
       <VStack gap="space-16">
         <HStack justify="space-between">
           <Heading size="small" level="3">
-            {ettersending.tittel || "Dokumentasjon"}
+            {ettersending.tittel || t("opplasting.dokumentasjon")}
           </Heading>
           <Tag variant="warning" size="xsmall">
-            Mangler
+            {t("opplasting.mangler")}
           </Tag>
         </HStack>
 
@@ -207,8 +209,11 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
             className="mt-16 fileUpload"
-            label="Last opp dokument"
-            description={`Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`}
+            label={t("opplasting.lastOpp")}
+            description={t("opplasting.beskrivelse", {
+              maks: hentMaksFilStørrelseMB(),
+              typer: hentTillatteFiltyperTekst(),
+            })}
             fileLimit={{ max: MAX_ANTALL_FILER, current: ettersendingFiler.length }}
             accept={hentTillatteFiltyperString()}
             onSelect={(filer) => lastOppfiler(filer)}
@@ -224,11 +229,11 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
                 fil.file instanceof File ? fil.file : { name: fil.filnavn, size: fil.storrelse }
               }
               status={fil.lasterOpp ? "uploading" : "idle"}
-              translations={{ uploading: "Laster opp..." }}
+              translations={{ uploading: t("opplasting.lasterOpp") }}
               error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
               button={{
                 action: "delete",
-                onClick: () => slettEnFil(fil)
+                onClick: () => slettEnFil(fil),
               }}
             />
           ))}
@@ -236,7 +241,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
       )}
       {valideringStartet && antallFeil > 0 && (
         <ErrorMessage className="mt-16">
-          Du må rette feilen{antallFeil > 1 ? "e" : ""} over før dokumentasjon kan sendes inn.
+          {t(antallFeil > 1 ? "feil.filerMedFeilFlertall" : "feil.filerMedFeil")}
         </ErrorMessage>
       )}
     </Box>
