@@ -1,26 +1,27 @@
 import { FloppydiskIcon, PersonPencilIcon, PersonPlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { Komponent } from "~/components/Komponent";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
-import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   BarnLagtManuelt,
   etternavn,
   fornavnOgMellomnavn,
-  leggTilBarnManueltSpørsmål,
+  lagLeggTilBarnManueltModalKomponenter,
   LeggTilBarnManueltSvar,
 } from "~/seksjon/barnetillegg/v1/barnetillegg.komponenter";
+import { leggTilBarnManueltSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { useEffect, useRef, useState } from "react";
-import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -40,6 +41,9 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useBarnetilleggContext();
+
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const leggTilBarnManueltSpørsmål = lagLeggTilBarnManueltModalKomponenter(t);
 
   const form = useForm({
     submitSource: "state",
@@ -101,7 +105,9 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       seksjonId: seksjonId,
       spørsmålId: spørsmålId,
       skjemakode: "X8",
-      tittel: `Fødselsattest/bostedsbevis for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+      tittel: t("dokumentasjonskrav.leggTilBarn", {
+        navn: `${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+      }),
       type: DokumentasjonskravType.Barn,
     };
 
@@ -120,7 +126,9 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       modalData?.barn?.dokumentasjonskrav?.includes(krav.id)
         ? {
             ...krav,
-            tittel: `Dokumentasjon for ${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+            tittel: t("dokumentasjonskrav.redigerBarn", {
+              navn: `${barnProps[fornavnOgMellomnavn]} ${barnProps[etternavn]}`,
+            }),
           }
         : krav
     );
@@ -136,7 +144,8 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
       <PersonPencilIcon aria-hidden />
     );
 
-  const modalOperasjon = modalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+  const modalOperasjon =
+    modalData?.operasjon === ModalOperasjon.LeggTil ? t("modal.leggTil") : t("modal.rediger");
 
   return (
     <>
@@ -158,7 +167,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
           <Heading level="1" size="medium" id="modal-heading">
             <HStack gap="space-8">
               {modalIkon}
-              {modalOperasjon} barn du forsørger
+              {t("modal.tittel", { operasjon: modalOperasjon })}
             </HStack>
           </Heading>
         </Modal.Header>
@@ -181,8 +190,12 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
-                  Lagre og lukk
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

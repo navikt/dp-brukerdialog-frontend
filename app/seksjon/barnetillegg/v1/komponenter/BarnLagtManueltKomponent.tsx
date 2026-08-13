@@ -1,5 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
@@ -19,6 +20,7 @@ interface IProps {
 }
 
 export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
+  const { t } = useVersjonertTranslation("barnetillegg", 1);
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,
@@ -42,12 +44,14 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
       </Heading>
       {barnProps[fødselsdato] && (
         <BodyShort size="medium" spacing>
-          Født {formaterNorskDato(new Date(barnProps[fødselsdato]))}
+          {t("barnFraPdl.født", { dato: formaterNorskDato(new Date(barnProps[fødselsdato])) })}
         </BodyShort>
       )}
       {barnProps[bostedsland] && (
         <BodyShort size="small" spacing>
-          BOR I {finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase()}
+          {t("barnFraPdl.borI", {
+            land: finnLandnavnMedLocale(barnProps[bostedsland]).toUpperCase(),
+          })}
         </BodyShort>
       )}
       <HStack gap="space-16" paddingBlock="space-6">
@@ -59,7 +63,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
             setModalData({ operasjon: ModalOperasjon.Rediger, barn: barnProps });
           }}
         >
-          Endre svar
+          {t("barnLagtManuelt.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -67,7 +71,7 @@ export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
           onClick={fjernBarn}
           icon={<TrashIcon aria-hidden />}
         >
-          Fjern
+          {t("barnLagtManuelt.fjern")}
         </Button>
       </HStack>
     </Box>
