@@ -35,7 +35,7 @@ import { arbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/a
 import { arbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 import { arbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.permittert";
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.schema";
-import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
+import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v1/komponenter/ArbeidsforholdModal";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -65,7 +65,6 @@ export function ArbeidsforholdViewV1() {
     schema: arbeidsforholdSchema,
     defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
-
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();

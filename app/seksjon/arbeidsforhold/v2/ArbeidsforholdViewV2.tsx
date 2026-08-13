@@ -42,7 +42,7 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
-import ArbeidsforholdDetaljer from "~/seksjon/arbeidsforhold/v2/komponenter/ArbeidsforholdDetaljer";
+import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v2/komponenter/ArbeidsforholdDetaljer";
 
 export function ArbeidsforholdViewV2() {
   const ref = useRef<HTMLDialogElement>(null);
