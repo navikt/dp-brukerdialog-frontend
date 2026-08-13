@@ -87,7 +87,7 @@ export default function KvitteringView() {
 
           {dokumentasjonSomSkalSendesAvDeg.length > 0 && (
             <BodyLong>
-              {t("innhold.manglerDokumentasjon")} Se hvor lang tid{" "}
+              {t("innhold.manglerDokumentasjon")}{" "}
               <EksterneLenke
                 href="https://www.nav.no/saksbehandlingstider#dagpenger"
                 tekst={t("innhold.saksbehandlingstidLenke")}
@@ -97,7 +97,7 @@ export default function KvitteringView() {
           )}
           {dokumentasjonSomSkalSendesAvDeg.length === 0 && (
             <BodyLong>
-              {t("innhold.søknadMottatt")} Se hvor lang tid{" "}
+              {t("innhold.søknadMottatt")}{" "}
               <EksterneLenke
                 href="https://www.nav.no/saksbehandlingstider#dagpenger"
                 tekst={t("innhold.saksbehandlingstidLenke")}
