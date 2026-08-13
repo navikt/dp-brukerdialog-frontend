@@ -1,17 +1,18 @@
 import { z } from "zod";
+import { fallbackT } from "~/i18n";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { valider } from "~/utils/validering.utils";
 import {
   avsluttetUtdanningSiste6Måneder,
   dokumenterAvsluttetUtdanningSiste6MånederNå,
   handling,
+  lagUtdanningKomponenter,
   lasteOppSenereBegrunnelse,
   naarSendtDokumentasjonTidligere,
   pdfGrunnlag,
   planleggerÅStarteEllerFullføreStudierSamtidig,
   senderIkkeDokumentasjonBegrunnelse,
   tarUtdanningEllerOpplæring,
-  utdanningKomponenter,
   UtdanningSvar,
 } from "./utdanning.komponenter";
 
@@ -37,7 +38,7 @@ export const utdanningSchema = z
       return;
     }
 
-    utdanningKomponenter.forEach((spørsmål) => {
+    lagUtdanningKomponenter(fallbackT).forEach((spørsmål) => {
       const synlig = !spørsmål.visHvis || spørsmål.visHvis(data);
       const svar = data[spørsmål.id as keyof UtdanningSvar];
       valider(spørsmål, svar, synlig, context);
