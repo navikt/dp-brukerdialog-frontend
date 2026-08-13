@@ -1,4 +1,5 @@
 import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import { DokumentasjonskravInnhold } from "../dokumentasjon/v1/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 
@@ -7,6 +8,7 @@ interface IProps {
 }
 
 export function DokumentasjonSomSkalSendesAvDeg({ dokumentasjonskrav }: IProps) {
+  const { t } = useTranslation("kvittering");
   return (
     <Box padding="space-16" background="sunken" borderRadius="12">
       <VStack gap="space-16">
@@ -15,13 +17,13 @@ export function DokumentasjonSomSkalSendesAvDeg({ dokumentasjonskrav }: IProps) 
             {dokumentasjonskrav.tittel}
           </Heading>
           <Tag variant="warning" size="xsmall">
-            Mangler
+            {t("dokumentkort.mangler")}
           </Tag>
         </HStack>
 
-        <BodyShort>Skal sendes av deg</BodyShort>
+        <BodyShort>{t("dokumentkort.skalSendesAvDeg")}</BodyShort>
 
-        <ReadMore header="Dette må dokumentasjonen inneholde">
+        <ReadMore header={t("dokumentkort.innhold")}>
           <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
         </ReadMore>
       </VStack>

@@ -9,13 +9,13 @@ import { EttersendingFilOpplasting } from "../EttersendingFilOpplasting";
 
 import type {
   Dokumentasjonskrav,
-  DokumentkravFil
+  DokumentkravFil,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 import {
   DokumentasjonskravFeilType,
   DokumentasjonskravType,
-  FilOpplastingFeilType
+  FilOpplastingFeilType,
 } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 import {
@@ -23,35 +23,50 @@ import {
   MAX_FIL_STØRRELSE,
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
-  hentTillatteFiltyperTekst
+  hentTillatteFiltyperTekst,
 } from "~/utils/dokument.utils";
 
 const mocks = vi.hoisted(() => ({
   oppdaterEttersending: vi.fn(),
-  valideringStartet: false
+  valideringStartet: false,
 }));
 
 vi.mock("react-router", () => ({
   useParams: () => ({
-    soknadId: "soknad-123"
-  })
+    soknadId: "soknad-123",
+  }),
+}));
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string) =>
+      ({
+        "opplasting.dokumentasjon": "Dokumentasjon",
+        "opplasting.mangler": "Mangler",
+        "opplasting.lastOpp": "Last opp dokument",
+        "opplasting.beskrivelse": `Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`,
+        "opplasting.lasterOpp": "Laster opp...",
+        "feil.filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendes inn.",
+        "feil.filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn.",
+      })[key] ?? key,
+  }),
 }));
 
 vi.mock("~/seksjon/ettersending/ettersending.context", () => ({
   useEttersending: () => ({
     oppdaterEttersending: mocks.oppdaterEttersending,
-    valideringStartet: mocks.valideringStartet
-  })
+    valideringStartet: mocks.valideringStartet,
+  }),
 }));
 
 vi.mock("~/utils/env.utils", () => ({
-  getEnv: () => ""
+  getEnv: () => "",
 }));
 
 vi.mock("~/seksjon/dokumentasjon/v1/DokumentasjonskravInnhold", () => ({
   DokumentasjonskravInnhold: ({ type }: { type: DokumentasjonskravType }) => (
     <div data-testid="dokumentasjonskrav-innhold">{type}</div>
-  )
+  ),
 }));
 
 vi.mock("@navikt/ds-react", () => ({
@@ -61,7 +76,7 @@ vi.mock("@navikt/ds-react", () => ({
   Heading: ({ children }: { children: ReactNode }) => <h3>{children}</h3>,
   Tag: ({ children }: { children: ReactNode }) => <span>{children}</span>,
   ErrorMessage: ({ children }: { children: ReactNode }) => <div role="alert">{children}</div>,
-  FileObject: class FileObject {}
+  FileObject: class FileObject {},
 }));
 
 vi.mock("@navikt/ds-react/FileUpload", () => ({
@@ -70,7 +85,7 @@ vi.mock("@navikt/ds-react/FileUpload", () => ({
     description,
     accept,
     fileLimit,
-    onSelect
+    onSelect,
   }: {
     label: string;
     description: string;
@@ -92,7 +107,7 @@ vi.mock("@navikt/ds-react/FileUpload", () => ({
         data-max={fileLimit.max}
         onChange={(event) => {
           const files = Array.from(event.currentTarget.files ?? []).map((file) => ({
-            file
+            file,
           }));
 
           onSelect(files);
@@ -105,7 +120,7 @@ vi.mock("@navikt/ds-react/FileUpload", () => ({
     file,
     status,
     error,
-    button
+    button,
   }: {
     file: { name?: string; size?: number };
     status: string;
@@ -123,7 +138,7 @@ vi.mock("@navikt/ds-react/FileUpload", () => ({
         </button>
       )}
     </div>
-  )
+  ),
 }));
 
 function lagEttersending(overrides: Partial<Dokumentasjonskrav> = {}): Dokumentasjonskrav {
@@ -135,7 +150,7 @@ function lagEttersending(overrides: Partial<Dokumentasjonskrav> = {}): Dokumenta
     seksjonId: "seksjon-123",
     type: DokumentasjonskravType.Barn,
     filer: undefined,
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -148,10 +163,10 @@ function mockFetchOk() {
         {
           filnavn: "test.pdf",
           storrelse: 7,
-          filsti: "tmp/test.pdf"
-        }
+          filsti: "tmp/test.pdf",
+        },
       ],
-      text: async () => "ok"
+      text: async () => "ok",
     })
   );
 }
@@ -195,7 +210,7 @@ describe("EttersendingFilOpplasting", () => {
     render(
       <EttersendingFilOpplasting
         ettersending={lagEttersending({
-          tittel: undefined
+          tittel: undefined,
         })}
       />
     );
@@ -209,7 +224,7 @@ describe("EttersendingFilOpplasting", () => {
     render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
 
     const file = new File(["content"], "test.pdf", {
-      type: "application/pdf"
+      type: "application/pdf",
     });
 
     await user.upload(screen.getByLabelText("Last opp dokument"), file);
@@ -219,7 +234,7 @@ describe("EttersendingFilOpplasting", () => {
         "/api/dokumentasjonskrav/soknad-123/ettersending-123/last-opp-fil",
         expect.objectContaining({
           method: "POST",
-          body: expect.any(FormData)
+          body: expect.any(FormData),
         })
       );
     });
@@ -233,9 +248,9 @@ describe("EttersendingFilOpplasting", () => {
           expect.objectContaining({
             filnavn: "test.pdf",
             lasterOpp: true,
-            file
-          })
-        ]
+            file,
+          }),
+        ],
       })
     );
 
@@ -248,9 +263,9 @@ describe("EttersendingFilOpplasting", () => {
             storrelse: 7,
             filsti: "tmp/test.pdf",
             lasterOpp: false,
-            feil: undefined
-          })
-        ]
+            feil: undefined,
+          }),
+        ],
       })
     );
   });
@@ -261,7 +276,7 @@ describe("EttersendingFilOpplasting", () => {
     render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
 
     const file = new File(["content"], "test.txt", {
-      type: "text/plain"
+      type: "text/plain",
     });
 
     await user.upload(screen.getByLabelText("Last opp dokument"), file);
@@ -273,9 +288,9 @@ describe("EttersendingFilOpplasting", () => {
         filer: [
           expect.objectContaining({
             filnavn: "test.txt",
-            feil: FilOpplastingFeilType.UGYLDIG_FORMAT
-          })
-        ]
+            feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
+          }),
+        ],
       })
     );
   });
@@ -287,19 +302,19 @@ describe("EttersendingFilOpplasting", () => {
       id: "existing-file",
       filnavn: "test.pdf",
       storrelse: 7,
-      filsti: "tmp/existing.pdf"
+      filsti: "tmp/existing.pdf",
     };
 
     render(
       <EttersendingFilOpplasting
         ettersending={lagEttersending({
-          filer: [eksisterendeFil]
+          filer: [eksisterendeFil],
         })}
       />
     );
 
     const file = new File(["content"], "test.pdf", {
-      type: "application/pdf"
+      type: "application/pdf",
     });
 
     await user.upload(screen.getByLabelText("Last opp dokument"), file);
@@ -312,9 +327,9 @@ describe("EttersendingFilOpplasting", () => {
           eksisterendeFil,
           expect.objectContaining({
             filnavn: "test.pdf",
-            feil: FilOpplastingFeilType.DUPLIKAT_FIL
-          })
-        ]
+            feil: FilOpplastingFeilType.DUPLIKAT_FIL,
+          }),
+        ],
       })
     );
   });
@@ -325,7 +340,7 @@ describe("EttersendingFilOpplasting", () => {
     render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
 
     const file = new File([new Uint8Array(MAX_FIL_STØRRELSE + 1)], "stor.pdf", {
-      type: "application/pdf"
+      type: "application/pdf",
     });
 
     await user.upload(screen.getByLabelText("Last opp dokument"), file);
@@ -337,9 +352,9 @@ describe("EttersendingFilOpplasting", () => {
         filer: [
           expect.objectContaining({
             filnavn: "stor.pdf",
-            feil: FilOpplastingFeilType.FIL_FOR_STOR
-          })
-        ]
+            feil: FilOpplastingFeilType.FIL_FOR_STOR,
+          }),
+        ],
       })
     );
   });
@@ -352,14 +367,14 @@ describe("EttersendingFilOpplasting", () => {
       vi.fn().mockResolvedValue({
         ok: false,
         json: async () => [],
-        text: async () => ""
+        text: async () => "",
       })
     );
 
     render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
 
     const file = new File(["content"], "test.pdf", {
-      type: "application/pdf"
+      type: "application/pdf",
     });
 
     await user.upload(screen.getByLabelText("Last opp dokument"), file);
@@ -376,9 +391,9 @@ describe("EttersendingFilOpplasting", () => {
             filnavn: "test.pdf",
             storrelse: 7,
             lasterOpp: false,
-            feil: FilOpplastingFeilType.TEKNISK_FEIL
-          })
-        ]
+            feil: FilOpplastingFeilType.TEKNISK_FEIL,
+          }),
+        ],
       })
     );
   });
@@ -393,9 +408,9 @@ describe("EttersendingFilOpplasting", () => {
             {
               id: "file-1",
               filnavn: "test.pdf",
-              storrelse: 7
-            }
-          ]
+              storrelse: 7,
+            },
+          ],
         })}
       />
     );
@@ -407,7 +422,7 @@ describe("EttersendingFilOpplasting", () => {
     expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: undefined,
-        feil: undefined
+        feil: undefined,
       })
     );
   });
@@ -423,9 +438,9 @@ describe("EttersendingFilOpplasting", () => {
               id: "file-1",
               filnavn: "test.pdf",
               storrelse: 7,
-              filsti: "tmp/test.pdf"
-            }
-          ]
+              filsti: "tmp/test.pdf",
+            },
+          ],
         })}
       />
     );
@@ -437,7 +452,7 @@ describe("EttersendingFilOpplasting", () => {
         "/api/dokumentasjonskrav/soknad-123/ettersending-123/slett-fil",
         expect.objectContaining({
           method: "POST",
-          body: expect.any(FormData)
+          body: expect.any(FormData),
         })
       );
     });
@@ -445,7 +460,7 @@ describe("EttersendingFilOpplasting", () => {
     expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: undefined,
-        feil: undefined
+        feil: undefined,
       })
     );
   });
@@ -458,7 +473,7 @@ describe("EttersendingFilOpplasting", () => {
       vi.fn().mockResolvedValue({
         ok: false,
         json: async () => [],
-        text: async () => ""
+        text: async () => "",
       })
     );
 
@@ -470,9 +485,9 @@ describe("EttersendingFilOpplasting", () => {
               id: "file-1",
               filnavn: "test.pdf",
               storrelse: 7,
-              filsti: "tmp/test.pdf"
-            }
-          ]
+              filsti: "tmp/test.pdf",
+            },
+          ],
         })}
       />
     );
@@ -485,10 +500,10 @@ describe("EttersendingFilOpplasting", () => {
           filer: [
             expect.objectContaining({
               id: "file-1",
-              feil: FilOpplastingFeilType.SLETTING_FEIL
-            })
+              feil: FilOpplastingFeilType.SLETTING_FEIL,
+            }),
           ],
-          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL
+          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
         })
       );
     });
@@ -502,9 +517,9 @@ describe("EttersendingFilOpplasting", () => {
             {
               id: "file-1",
               filnavn: "test.txt",
-              feil: FilOpplastingFeilType.UGYLDIG_FORMAT
-            }
-          ]
+              feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
+            },
+          ],
         })}
       />
     );
@@ -524,9 +539,9 @@ describe("EttersendingFilOpplasting", () => {
             {
               id: "file-1",
               filnavn: "test.txt",
-              feil: FilOpplastingFeilType.UGYLDIG_FORMAT
-            }
-          ]
+              feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
+            },
+          ],
         })}
       />
     );

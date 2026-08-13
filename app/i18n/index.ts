@@ -22,8 +22,8 @@ const namespaceTilSeksjonPath: Record<string, string> = {
   tilleggsopplysninger: "tilleggsopplysninger",
   // dokumentasjon: "dokumentasjon",
   oppsummering: "oppsummering",
-  // kvittering: "kvittering",
-  // ettersending: "ettersending",
+  kvittering: "kvittering",
+  ettersending: "ettersending",
   common: "common",
 };
 
@@ -89,8 +89,8 @@ void i18n
       "tilleggsopplysninger",
       // "dokumentasjon",
       "oppsummering",
-      // "kvittering",
-      // "ettersending",
+      "kvittering",
+      "ettersending",
       "common",
     ],
     defaultNS: "common",
