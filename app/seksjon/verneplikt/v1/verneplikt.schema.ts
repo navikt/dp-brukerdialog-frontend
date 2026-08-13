@@ -1,13 +1,16 @@
 import { z } from "zod";
-import { handling } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
+import { fallbackT } from "~/i18n";
 import { valider } from "~/utils/validering.utils";
 import {
   avtjentVerneplikt,
+  handling,
+  lagVernepliktKomponenter,
   pdfGrunnlag,
-  vernepliktKomponenter,
   VernepliktSvar,
 } from "./verneplikt.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
+
+const vernepliktKomponenter = lagVernepliktKomponenter(fallbackT);
 
 export const vernepliktSchema = z
   .object({

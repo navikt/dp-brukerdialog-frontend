@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
 export const pdfGrunnlag = "pdfGrunnlag";
@@ -8,22 +9,23 @@ export type VernepliktSvar = {
   [avtjentVerneplikt]?: "ja" | "nei";
 };
 
-export const vernepliktKomponenter: KomponentType[] = [
-  {
-    id: avtjentVerneplikt,
-    type: "envalg",
-    label: "Har du avtjent verneplikt i minst tre måneder de siste tolv månedene?",
-    description:
-      "Du kan ha rett til dagpenger hvis du har avtjent militærtjeneste eller obligatorisk sivilforsvarstjeneste i minst tre av de siste tolv månedene.",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: "avtjentVernepliktDokumentasjonskravindikator",
-    type: "dokumentasjonskravindikator",
-    label: "Tjenestebevis",
-    visHvis: (svar: VernepliktSvar) => svar[avtjentVerneplikt] === "ja",
-  },
-];
+export function lagVernepliktKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: avtjentVerneplikt,
+      type: "envalg",
+      label: t("avtjentVerneplikt.label"),
+      description: t("avtjentVerneplikt.description"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+    {
+      id: "avtjentVernepliktDokumentasjonskravindikator",
+      type: "dokumentasjonskravindikator",
+      label: t("avtjentVernepliktDokumentasjonskravindikator.label"),
+      visHvis: (svar: VernepliktSvar) => svar[avtjentVerneplikt] === "ja",
+    },
+  ];
+}
