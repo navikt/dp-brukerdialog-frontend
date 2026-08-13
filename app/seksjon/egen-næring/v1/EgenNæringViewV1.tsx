@@ -8,24 +8,23 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import {
   action,
   loader,
-  SEKSJON_NAVN,
-  SEKSJON_TITTEL,
   SeksjonSvar
 } from "~/routes/$soknadId.egen-naring";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukKomponenter,
+  lagEgenNæringEgenNæringsvirksomhetKomponenter,
+  lagEgenNæringEgetGårdsbrukKomponenter,
   EgenNæringSvar,
   Gårdsbruk,
   handling,
-  leggTilGårdsbrukKomponenter,
-  leggTilNæringsvirksomhetKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
   pdfGrunnlag,
   seksjonsvar
@@ -47,6 +46,13 @@ export function EgenNæringViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
+  const { t } = useVersjonertTranslation("egen-næring", 1);
+
+  const egenNæringEgenNæringsvirksomhetKomponenter =
+    lagEgenNæringEgenNæringsvirksomhetKomponenter(t);
+  const egenNæringEgetGårdsbrukKomponenter = lagEgenNæringEgetGårdsbrukKomponenter(t);
+  const leggTilNæringsvirksomhetKomponenter = lagLeggTilNæringsvirksomhetKomponenter(t);
+  const leggTilGårdsbrukKomponenter = lagLeggTilGårdsbrukKomponenter(t);
 
   const {
     næringsvirksomheter,
@@ -104,7 +110,7 @@ export function EgenNæringViewV1() {
 
   function genererPdfGrunnlag() {
     const pdfPayload = {
-      navn: SEKSJON_NAVN,
+      navn: t("side.overskrift"),
       spørsmål: [
         ...lagSeksjonPayload(egenNæringEgenNæringsvirksomhetKomponenter, form.transient.value()),
         ...næringsvirksomheter.map((enVirksomhet) =>
@@ -178,10 +184,10 @@ export function EgenNæringViewV1() {
 
   return (
     <div className="innhold">
-      <title>{SEKSJON_TITTEL}</title>
+      <title>{t("side.tittel")}</title>
       <VStack gap="space-24">
         <Heading size="medium" level="2">
-          {SEKSJON_NAVN}
+          {t("side.overskrift")}
         </Heading>
         <Form id={formId} action={formAction}>
           <VStack gap="space-24">
@@ -218,11 +224,13 @@ export function EgenNæringViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til næringsvirksomhet
+                    {t("næringsvirksomhet.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visNæringsvirksomhetFeilmelding && (
-                  <InlineMessage status="error">Du må legge til en næringsvirksomhet</InlineMessage>
+                  <InlineMessage status="error">
+                    {t("næringsvirksomhet.manglerFeilmelding")}
+                  </InlineMessage>
                 )}
               </VStack>
             )}
@@ -255,12 +263,12 @@ export function EgenNæringViewV1() {
                     icon={<PlusIcon aria-hidden />}
                     iconPosition="left"
                   >
-                    Legg til gårdsbruk
+                    {t("gårdsbruk.leggTilKnapp")}
                   </Button>
                 </HStack>
                 {visGårdsbrukFeilmelding && (
                   <InlineMessage status="error" aria-live="polite">
-                    Du må legge til et gårdsbruk
+                    {t("gårdsbruk.manglerFeilmelding")}
                   </InlineMessage>
                 )}
               </VStack>
@@ -268,7 +276,7 @@ export function EgenNæringViewV1() {
 
             {actionData && (
               <SeksjonTekniskFeil
-                tittel="Det har oppstått en teknisk feil"
+                tittel={t("tekniskFeil.tittel")}
                 beskrivelse={actionData.error}
               />
             )}

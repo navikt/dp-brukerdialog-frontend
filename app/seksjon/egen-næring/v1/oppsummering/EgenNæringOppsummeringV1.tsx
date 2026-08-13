@@ -3,10 +3,10 @@ import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import {
   driverDuEgenNæringsvirksomhet,
   driverDuEgetGårdsbruk,
-  egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukKomponenter,
-  leggTilGårdsbrukKomponenter,
-  leggTilNæringsvirksomhetKomponenter,
+  lagEgenNæringEgenNæringsvirksomhetKomponenter,
+  lagEgenNæringEgetGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 
 import { KomponentType } from "~/components/Komponent.types";
@@ -14,6 +14,7 @@ import { SeksjonSvar as EgenNæringSeksjon } from "~/routes/$soknadId.egen-narin
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function EgenNæringOppsummeringV1({
   seksjonSvarene,
@@ -21,6 +22,13 @@ export function EgenNæringOppsummeringV1({
   redigerbar,
 }: SeksjonProps) {
   if (!seksjonSvarene) return null;
+  const { t } = useVersjonertTranslation("egen-næring", 1);
+
+  const egenNæringEgenNæringsvirksomhetKomponenter =
+    lagEgenNæringEgenNæringsvirksomhetKomponenter(t);
+  const egenNæringEgetGårdsbrukKomponenter = lagEgenNæringEgetGårdsbrukKomponenter(t);
+  const leggTilNæringsvirksomhetKomponenter = lagLeggTilNæringsvirksomhetKomponenter(t);
+  const leggTilGårdsbrukKomponenter = lagLeggTilGårdsbrukKomponenter(t);
 
   const egenNæringSvar = seksjonSvarene as EgenNæringSeksjon;
 
@@ -38,7 +46,7 @@ export function EgenNæringOppsummeringV1({
   return (
     <FormSummary>
       <FormSummary.Header>
-        <FormSummary.Heading level="2">Egen næring</FormSummary.Heading>
+        <FormSummary.Heading level="2">{t("side.overskrift")}</FormSummary.Heading>
       </FormSummary.Header>
       <FormSummary.Answers>
         <FormSummary.Answer>
@@ -46,16 +54,18 @@ export function EgenNæringOppsummeringV1({
           {driverDuEgenNæringsvirksomhetSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenNæringsvirksomhetSpørsmål}
-              svar={egenNæringSvar[driverDuEgenNæringsvirksomhet] ?? "Ikke besvart"}
+              svar={egenNæringSvar[driverDuEgenNæringsvirksomhet] ?? t("oppsummering.ikkeBesvart")}
             />
           ) : (
-            "Ikke besvart"
+            t("oppsummering.ikkeBesvart")
           )}
         </FormSummary.Answer>
         {egenNæringSvar[driverDuEgenNæringsvirksomhet] === "ja" &&
           egenNæringSvar["næringsvirksomheter"]?.map((næringsvirksomhet, index) => (
             <FormSummary.Answer key={index}>
-              <FormSummary.Label>Egen næringsvirksomhet {index + 1}</FormSummary.Label>
+              <FormSummary.Label>
+                {t("næringsvirksomhet.oppsummering.nr", { nr: index + 1 })}
+              </FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(næringsvirksomhet).map((arbeidsforholdModalSvar) => {
@@ -84,16 +94,18 @@ export function EgenNæringOppsummeringV1({
           {driverDuEgenGårdsbrukSpørsmål ? (
             <OppsummeringsSvar
               spørsmål={driverDuEgenGårdsbrukSpørsmål}
-              svar={egenNæringSvar[driverDuEgetGårdsbruk] ?? "Ikke besvart"}
+              svar={egenNæringSvar[driverDuEgetGårdsbruk] ?? t("oppsummering.ikkeBesvart")}
             />
           ) : (
-            "Ikke besvart"
+            t("oppsummering.ikkeBesvart")
           )}
         </FormSummary.Answer>
         {egenNæringSvar[driverDuEgetGårdsbruk] === "ja" &&
           egenNæringSvar["gårdsbruk"]?.map((gårdsbruk, index) => (
             <FormSummary.Answer key={index}>
-              <FormSummary.Label>Eget gårdsbruk {index + 1}</FormSummary.Label>
+              <FormSummary.Label>
+                {t("gårdsbruk.oppsummering.nr", { nr: index + 1 })}
+              </FormSummary.Label>
               <FormSummary.Value>
                 <FormSummary.Answers>
                   {Object.entries(gårdsbruk).map((arbeidsforholdModalSvar) => {
@@ -120,7 +132,7 @@ export function EgenNæringOppsummeringV1({
       <FormSummaryFooter
         seksjonsUrl={seksjonsUrl}
         redigerbar={redigerbar}
-        seksjonnavn="Egen næring"
+        seksjonnavn={t("side.overskrift")}
       />
     </FormSummary>
   );
