@@ -3,10 +3,11 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
+import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
-  leggTilNæringsvirksomhetKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
   LeggTilNæringsvirksomhetSvar,
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
@@ -28,6 +29,8 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     næringsvirksomhetModalData,
     setNæringsvirksomhetModalData,
   } = useEgenNæringContext();
+  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const leggTilNæringsvirksomhetKomponenter = lagLeggTilNæringsvirksomhetKomponenter(t);
 
   const form = useForm({
     submitSource: "state",
@@ -72,7 +75,9 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
   const formValues = form.value();
 
   const modalOperasjon =
-    næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil ? "Legg til" : "Rediger";
+    næringsvirksomhetModalData?.operasjon === ModalOperasjon.LeggTil
+      ? t("næringsvirksomhet.modal.leggTilTittel")
+      : t("næringsvirksomhet.modal.redigerTittel");
 
   useEffect(() => {
     if (stengModalSelvOmDetErUlagredeEndringer) {
@@ -98,7 +103,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            <HStack gap="space-8">{modalOperasjon} næringsvirksomhet</HStack>
+            <HStack gap="space-8">{modalOperasjon}</HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -125,7 +130,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
                   onClick={() => form.submit()}
                   icon={<FloppydiskIcon aria-hidden />}
                 >
-                  Lagre og lukk
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

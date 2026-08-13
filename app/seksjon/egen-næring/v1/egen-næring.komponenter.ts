@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
 export const seksjonsvar = "seksjonsvar";
@@ -67,55 +68,55 @@ export type EgenNæringSvar = {
   [driverDuEgetGårdsbruk]?: "ja" | "nei";
 };
 
-export const egenNæringEgenNæringsvirksomhetKomponenter: KomponentType[] = [
-  {
-    id: driverDuEgenNæringsvirksomhet,
-    type: "envalg",
-    label: "Driver du egen næringsvirksomhet?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: "driverDuEgenNæringsvirksomhetLesMer",
-    type: "lesMer",
-    label: "For deg som driver eget aksjeselskap",
-    description:
-      "Hvis du er ansatt i ditt eget aksjeselskap, må du legge til arbeidsforholdet i forrige steg. På dette spørsmålet skal du kun legge til egen næring, som enkeltpersonsforetak.",
-  },
-  {
-    id: "driverDuEgenNæringsvirksomhetInformasjonskort",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description: "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>",
-    visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
-  },
-];
+export function lagEgenNæringEgenNæringsvirksomhetKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: driverDuEgenNæringsvirksomhet,
+      type: "envalg",
+      label: t("næringsvirksomhet.driverDuEgenNæringsvirksomhet.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+    {
+      id: "driverDuEgenNæringsvirksomhetLesMer",
+      type: "lesMer",
+      label: t("næringsvirksomhet.lesMer.label"),
+      description: t("næringsvirksomhet.lesMer.description"),
+    },
+    {
+      id: "driverDuEgenNæringsvirksomhetInformasjonskort",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("næringsvirksomhet.informasjonskort.label"),
+      description: t("næringsvirksomhet.informasjonskort.description"),
+      visHvis: (svar: EgenNæringSvar) => svar[driverDuEgenNæringsvirksomhet] === "ja",
+    },
+  ];
+}
 
-export const egenNæringEgetGårdsbrukKomponenter: KomponentType[] = [
-  {
-    id: driverDuEgetGårdsbruk,
-    type: "envalg",
-    label: "Driver du eget gårdsbruk?",
-    options: [
-      { value: "ja", label: "Ja" },
-      { value: "nei", label: "Nei" },
-    ],
-  },
-  {
-    id: "driverDuEgetGårdsbrukInformasjonskort",
-    type: "informasjonskort",
-    variant: "informasjon",
-    label: "Informasjon",
-    description:
-      "<p>Selv om du driver et eget gårdsbruk må du være villig til å ta annet arbeid.</p>" +
-      "<p>Hvis du jobber mer enn 50 prosent av tidligere arbeidstid har du ikke rett til dagpenger.</p>" +
-      "<p>Når du driver gårdsbruk tar Nav utgangspunkt i størrelsen på bruket, arbeidsomfang, mekaniseringsgrad og beliggenhet.</p>",
-    visHvis: (svar: EgenNæringSvar) => svar[driverDuEgetGårdsbruk] === "ja",
-  },
-];
+export function lagEgenNæringEgetGårdsbrukKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: driverDuEgetGårdsbruk,
+      type: "envalg",
+      label: t("gårdsbruk.driverDuEgetGårdsbruk.label"),
+      options: [
+        { value: "ja", label: t("envalg.svar.ja") },
+        { value: "nei", label: t("envalg.svar.nei") },
+      ],
+    },
+    {
+      id: "driverDuEgetGårdsbrukInformasjonskort",
+      type: "informasjonskort",
+      variant: "informasjon",
+      label: t("gårdsbruk.informasjonskort.label"),
+      description: t("gårdsbruk.informasjonskort.description"),
+      visHvis: (svar: EgenNæringSvar) => svar[driverDuEgetGårdsbruk] === "ja",
+    },
+  ];
+}
 
 export type LeggTilNæringsvirksomhetSvar = {
   [organisasjonsnummer]?: string;
@@ -123,38 +124,37 @@ export type LeggTilNæringsvirksomhetSvar = {
   [hvorMangeTimerJobbetPerUkeNå]?: number;
 };
 
-export const leggTilNæringsvirksomhetKomponenter: KomponentType[] = [
-  {
-    id: virksomhetensNavn,
-    type: "kortTekst",
-    label: "Virksomhetens navn",
-    maksLengde: 200,
-  },
-  {
-    id: organisasjonsnummer,
-    type: "kortTekst",
-    label: "Virksomhetens organisasjonsnummer",
-  },
-  {
-    id: nårBleArbeidstidenRedusert,
-    type: "dato",
-    label: "Når ble arbeidstiden redusert",
-  },
-  {
-    id: hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
-    type: "tall",
-    label:
-      "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert",
-  },
-  {
-    id: hvorMangeTimerJobbetPerUkeNå,
-    type: "tall",
-    label: "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
-    description:
-      "<p>For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger.</p>" +
-      "<p>Hvis arbeidstiden din i egen næring ikke er redusert, kan du skrive inn samme antall timer som i spørsmålet over.</p>",
-  },
-];
+export function lagLeggTilNæringsvirksomhetKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: virksomhetensNavn,
+      type: "kortTekst",
+      label: t("næringsvirksomhet.felt.virksomhetensNavn.label"),
+      maksLengde: 200,
+    },
+    {
+      id: organisasjonsnummer,
+      type: "kortTekst",
+      label: t("næringsvirksomhet.felt.organisasjonsnummer.label"),
+    },
+    {
+      id: nårBleArbeidstidenRedusert,
+      type: "dato",
+      label: t("næringsvirksomhet.felt.nårBleArbeidstidenRedusert.label"),
+    },
+    {
+      id: hvorMangeTimerJobbetPerUkeFørArbeidstidenBleRedusert,
+      type: "tall",
+      label: t("næringsvirksomhet.felt.timerFørReduksjon.label"),
+    },
+    {
+      id: hvorMangeTimerJobbetPerUkeNå,
+      type: "tall",
+      label: t("næringsvirksomhet.felt.timerNå.label"),
+      description: t("næringsvirksomhet.felt.timerNå.description"),
+    },
+  ];
+}
 
 export type LeggTilGårdsbrukSvar = {
   [gårdsbruketsNavn]?: string;
@@ -169,80 +169,81 @@ export type LeggTilGårdsbrukSvar = {
   [hvordanHarDuBeregnetAntallArbeidstimerTotalt]?: string;
 };
 
-export const leggTilGårdsbrukKomponenter: KomponentType[] = [
-  {
-    id: gårdsbruketsNavn,
-    type: "kortTekst",
-    label: "Gårdsbrukets navn",
-    maksLengde: 200,
-  },
-  {
-    id: organisasjonsnummer,
-    type: "kortTekst",
-    label: "Gårdsbrukets organisasjonsnummer",
-    maksLengde: 30,
-  },
-  {
-    id: hvilkeTypeGårdsbrukDriverDu,
-    type: "flervalg",
-    label: "Hvilken type gårdsbruk driver du?",
-    description: "Du kan krysse av for flere",
-    options: [
-      { value: dyr, label: "Dyr" },
-      { value: jord, label: "Jord" },
-      { value: skog, label: "Skog" },
-      { value: annet, label: "Annet" },
-    ],
-  },
-  {
-    id: hvemEierGårdsbruket,
-    type: "flervalg",
-    label: "Hvem eier gårdsbruket?",
-    description: "Du kan krysse av for flere",
-    options: [
-      { value: jeg, label: "Jeg" },
-      { value: samboerEktefelle, label: "Samboer/ektefelle" },
-      { value: andre, label: "Andre" },
-    ],
-  },
-  {
-    id: hvorMangeProsentAvInntektenGårTilDeg,
-    type: "tall",
-    label: "Hvor mange prosent av inntekten går til deg?",
-    maksVerdi: 100,
-    visHvis: (svar: LeggTilGårdsbrukSvar) => svar[hvemEierGårdsbruket]?.includes(jeg) || false,
-  },
-  {
-    id: hvorMangeProsentAvInntektenGårTilSamboerEktefelle,
-    type: "tall",
-    label: "Hvor mange prosent av inntekten går til samboer/ektefelle?",
-    maksVerdi: 100,
-    visHvis: (svar: LeggTilGårdsbrukSvar) =>
-      svar[hvemEierGårdsbruket]?.includes(samboerEktefelle) || false,
-  },
-  {
-    id: hvorMangeProsentAvInntektenGårTilAndre,
-    type: "tall",
-    label: "Hvor mange prosent av inntekten går til andre?",
-    maksVerdi: 100,
-    visHvis: (svar: LeggTilGårdsbrukSvar) => svar[hvemEierGårdsbruket]?.includes(andre) || false,
-  },
-  {
-    id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
-    type: "nedtrekksliste",
-    options: genererÅrstallOptions(),
-    label:
-      "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år? Velg hvilket år du oppgir timer for først",
-  },
-  {
-    id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
-    type: "tall",
-    label: "Skriv hvor mange arbeidstimer som ble brukt",
-  },
-  {
-    id: hvordanHarDuBeregnetAntallArbeidstimerTotalt,
-    type: "langTekst",
-    label: "Forklar kort hvordan du har beregnet antall arbeidstimer totalt",
-    maksLengde: 500,
-  },
-];
+export function lagLeggTilGårdsbrukKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: gårdsbruketsNavn,
+      type: "kortTekst",
+      label: t("gårdsbruk.felt.gårdsbruketsNavn.label"),
+      maksLengde: 200,
+    },
+    {
+      id: organisasjonsnummer,
+      type: "kortTekst",
+      label: t("gårdsbruk.felt.organisasjonsnummer.label"),
+      maksLengde: 30,
+    },
+    {
+      id: hvilkeTypeGårdsbrukDriverDu,
+      type: "flervalg",
+      label: t("gårdsbruk.felt.hvilkeTypeGårdsbruk.label"),
+      description: t("gårdsbruk.felt.hvilkeTypeGårdsbruk.description"),
+      options: [
+        { value: dyr, label: t("gårdsbruk.felt.hvilkeTypeGårdsbruk.options.dyr") },
+        { value: jord, label: t("gårdsbruk.felt.hvilkeTypeGårdsbruk.options.jord") },
+        { value: skog, label: t("gårdsbruk.felt.hvilkeTypeGårdsbruk.options.skog") },
+        { value: annet, label: t("gårdsbruk.felt.hvilkeTypeGårdsbruk.options.annet") },
+      ],
+    },
+    {
+      id: hvemEierGårdsbruket,
+      type: "flervalg",
+      label: t("gårdsbruk.felt.hvemEier.label"),
+      description: t("gårdsbruk.felt.hvemEier.description"),
+      options: [
+        { value: jeg, label: t("gårdsbruk.felt.hvemEier.options.jeg") },
+        { value: samboerEktefelle, label: t("gårdsbruk.felt.hvemEier.options.samboerEktefelle") },
+        { value: andre, label: t("gårdsbruk.felt.hvemEier.options.andre") },
+      ],
+    },
+    {
+      id: hvorMangeProsentAvInntektenGårTilDeg,
+      type: "tall",
+      label: t("gårdsbruk.felt.prosentTilDeg.label"),
+      maksVerdi: 100,
+      visHvis: (svar: LeggTilGårdsbrukSvar) => svar[hvemEierGårdsbruket]?.includes(jeg) || false,
+    },
+    {
+      id: hvorMangeProsentAvInntektenGårTilSamboerEktefelle,
+      type: "tall",
+      label: t("gårdsbruk.felt.prosentTilSamboerEktefelle.label"),
+      maksVerdi: 100,
+      visHvis: (svar: LeggTilGårdsbrukSvar) =>
+        svar[hvemEierGårdsbruket]?.includes(samboerEktefelle) || false,
+    },
+    {
+      id: hvorMangeProsentAvInntektenGårTilAndre,
+      type: "tall",
+      label: t("gårdsbruk.felt.prosentTilAndre.label"),
+      maksVerdi: 100,
+      visHvis: (svar: LeggTilGårdsbrukSvar) => svar[hvemEierGårdsbruket]?.includes(andre) || false,
+    },
+    {
+      id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrValgtÅr,
+      type: "nedtrekksliste",
+      options: genererÅrstallOptions(),
+      label: t("gårdsbruk.felt.arbeidstimerValgtÅr.label"),
+    },
+    {
+      id: hvorMangeArbeidstimerBlirBruktPåGårdsbruketTotaltILøpetAvEtÅrAntallTimer,
+      type: "tall",
+      label: t("gårdsbruk.felt.arbeidstimerAntallTimer.label"),
+    },
+    {
+      id: hvordanHarDuBeregnetAntallArbeidstimerTotalt,
+      type: "langTekst",
+      label: t("gårdsbruk.felt.hvordanBeregnet.label"),
+      maksLengde: 500,
+    },
+  ];
+}

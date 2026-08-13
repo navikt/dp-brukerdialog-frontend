@@ -18,6 +18,7 @@
       "#Din situasjon": "./app/seksjon/din-situasjon/v1/locales/{languageTag}.json",
       "#Arbeidsforhold": "./app/seksjon/arbeidsforhold/v2/locales/{languageTag}.json",
       "#Annen pengestøtte": "./app/seksjon/annen-pengestøtte/v1/locales/{languageTag}.json",
+      "#Egen næring": "./app/seksjon/egen-næring/v1/locales/{languageTag}.json",
       "#Verneplikt": "./app/seksjon/verneplikt/v1/locales/{languageTag}.json",
       "#Utdanning": "./app/seksjon/utdanning/v1/locales/{languageTag}.json",
       "#Barnetillegg": "./app/seksjon/barnetillegg/v1/locales/{languageTag}.json",

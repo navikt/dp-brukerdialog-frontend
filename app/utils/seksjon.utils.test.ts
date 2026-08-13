@@ -1,11 +1,18 @@
 import { describe, expect, it } from "vitest";
 import {
-  egenNæringEgenNæringsvirksomhetKomponenter,
-  egenNæringEgetGårdsbrukKomponenter,
-  leggTilGårdsbrukKomponenter,
-  leggTilNæringsvirksomhetKomponenter,
+  lagEgenNæringEgenNæringsvirksomhetKomponenter,
+  lagEgenNæringEgetGårdsbrukKomponenter,
+  lagLeggTilGårdsbrukKomponenter,
+  lagLeggTilNæringsvirksomhetKomponenter,
 } from "../seksjon/egen-næring/v1/egen-næring.komponenter";
 import { lagSeksjonPayload, validerSøknadId } from "./seksjon.utils";
+import { fallbackT } from "~/i18n";
+
+const egenNæringEgenNæringsvirksomhetKomponenter =
+  lagEgenNæringEgenNæringsvirksomhetKomponenter(fallbackT);
+const egenNæringEgetGårdsbrukKomponenter = lagEgenNæringEgetGårdsbrukKomponenter(fallbackT);
+const leggTilGårdsbrukKomponenter = lagLeggTilGårdsbrukKomponenter(fallbackT);
+const leggTilNæringsvirksomhetKomponenter = lagLeggTilNæringsvirksomhetKomponenter(fallbackT);
 
 describe("lagSeksjonPayload", () => {
   const formData = {
