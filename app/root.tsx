@@ -19,6 +19,7 @@ import { Route } from "./+types/root";
 import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
 import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
+import { VisNøklerKnapp } from "./components/VisNøklerKnapp";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { sanityClient } from "./sanity/sanity.config";
@@ -103,6 +104,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <VisNøklerKnapp />
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
         {children}
         <ScrollRestoration />
