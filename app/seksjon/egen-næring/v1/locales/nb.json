@@ -1,136 +1,136 @@
 {
-  "side": {
-    "tittel": "Søknad om dagpenger: Egen næring",
-    "overskrift": "Egen næring"
-  },
-  "tekniskFeil": {
-    "tittel": "Det har oppstått en teknisk feil"
-  },
-  "envalg": {
-    "svar": {
-      "ja": "Ja",
-      "nei": "Nei"
-    }
-  },
-  "modal": {
-    "lagreOgLukk": "Lagre og lukk"
-  },
-  "detaljer": {
-    "endreSvar": "Endre svar",
-    "fjern": "Fjern"
-  },
-  "næringsvirksomhet": {
-    "driverDuEgenNæringsvirksomhet": {
-      "label": "Driver du egen næringsvirksomhet?"
-    },
-    "lesMer": {
-      "label": "For deg som driver eget aksjeselskap",
-      "description": "Hvis du er ansatt i ditt eget aksjeselskap, må du legge til arbeidsforholdet i forrige steg. På dette spørsmålet skal du kun legge til egen næring, som enkeltpersonsforetak."
-    },
-    "informasjonskort": {
-      "label": "Informasjon",
-      "description": "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>"
-    },
-    "leggTilKnapp": "Legg til næringsvirksomhet",
-    "manglerFeilmelding": "Du må legge til en næringsvirksomhet",
-    "modal": {
-      "leggTilTittel": "Legg til næringsvirksomhet",
-      "redigerTittel": "Rediger næringsvirksomhet"
-    },
-    "felt": {
-      "virksomhetensNavn": {
-        "label": "Virksomhetens navn"
-      },
-      "organisasjonsnummer": {
-        "label": "Virksomhetens organisasjonsnummer"
-      },
-      "nårBleArbeidstidenRedusert": {
-        "label": "Når ble arbeidstiden redusert"
-      },
-      "timerFørReduksjon": {
-        "label": "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert"
-      },
-      "timerNå": {
-        "label": "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
-        "description": "<p>For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger.</p><p>Hvis arbeidstiden din i egen næring ikke er redusert, kan du skrive inn samme antall timer som i spørsmålet over.</p>"
-      }
-    },
-    "detaljer": {
-      "timerFør": "{{timer}} timer arbeidstid per uke før reduksjon",
-      "timerNå": "{{timer}} timer arbeidstid per uke nå"
-    },
-    "oppsummering": {
-      "nr": "Egen næringsvirksomhet {{nr}}"
-    }
-  },
-  "gårdsbruk": {
-    "driverDuEgetGårdsbruk": {
-      "label": "Driver du eget gårdsbruk?"
-    },
-    "informasjonskort": {
-      "label": "Informasjon",
-      "description": "<p>Selv om du driver et eget gårdsbruk må du være villig til å ta annet arbeid.</p><p>Hvis du jobber mer enn 50 prosent av tidligere arbeidstid har du ikke rett til dagpenger.</p><p>Når du driver gårdsbruk tar Nav utgangspunkt i størrelsen på bruket, arbeidsomfang, mekaniseringsgrad og beliggenhet.</p>"
-    },
-    "leggTilKnapp": "Legg til gårdsbruk",
-    "manglerFeilmelding": "Du må legge til et gårdsbruk",
-    "modal": {
-      "leggTilTittel": "Legg til gårdsbruk",
-      "redigerTittel": "Rediger gårdsbruk"
-    },
-    "felt": {
-      "gårdsbruketsNavn": {
-        "label": "Gårdsbrukets navn"
-      },
-      "organisasjonsnummer": {
-        "label": "Gårdsbrukets organisasjonsnummer"
-      },
-      "hvilkeTypeGårdsbruk": {
-        "label": "Hvilken type gårdsbruk driver du?",
-        "description": "Du kan krysse av for flere",
-        "options": {
-          "dyr": "Dyr",
-          "jord": "Jord",
-          "skog": "Skog",
-          "annet": "Annet"
-        }
-      },
-      "hvemEier": {
-        "label": "Hvem eier gårdsbruket?",
-        "description": "Du kan krysse av for flere",
-        "options": {
-          "jeg": "Jeg",
-          "samboerEktefelle": "Samboer/ektefelle",
-          "andre": "Andre"
-        }
-      },
-      "prosentTilDeg": {
-        "label": "Hvor mange prosent av inntekten går til deg?"
-      },
-      "prosentTilSamboerEktefelle": {
-        "label": "Hvor mange prosent av inntekten går til samboer/ektefelle?"
-      },
-      "prosentTilAndre": {
-        "label": "Hvor mange prosent av inntekten går til andre?"
-      },
-      "arbeidstimerValgtÅr": {
-        "label": "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år? Velg hvilket år du oppgir timer for først"
-      },
-      "arbeidstimerAntallTimer": {
-        "label": "Skriv hvor mange arbeidstimer som ble brukt"
-      },
-      "hvordanBeregnet": {
-        "label": "Forklar kort hvordan du har beregnet antall arbeidstimer totalt"
-      }
-    },
-    "detaljer": {
-      "prosentTilMeg": "{{prosent}}% av inntekten går til meg",
-      "arbeidstimer": "{{antall}} arbeidstimer brukt i {{år}}"
-    },
-    "oppsummering": {
-      "nr": "Eget gårdsbruk {{nr}}"
-    }
-  },
-  "oppsummering": {
-    "ikkeBesvart": "Ikke besvart"
-  }
+	"side": {
+		"tittel": "Søknad om dagpenger: Egen næring",
+		"overskrift": "Egen næring"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"modal": {
+		"lagreOgLukk": "Lagre og lukk"
+	},
+	"detaljer": {
+		"endreSvar": "Endre svar",
+		"fjern": "Fjern"
+	},
+	"næringsvirksomhet": {
+		"driverDuEgenNæringsvirksomhet": {
+			"label": "Driver du egen næringsvirksomhet?"
+		},
+		"lesMer": {
+			"label": "For deg som driver eget aksjeselskap",
+			"description": "Hvis du er ansatt i ditt eget aksjeselskap, må du legge til arbeidsforholdet i forrige steg. På dette spørsmålet skal du kun legge til egen næring, som enkeltpersonsforetak."
+		},
+		"informasjonskort": {
+			"label": "Informasjon",
+			"description": "<p>Selv om du driver egen næring må du være villig til å ta annet arbeid.</p>"
+		},
+		"leggTilKnapp": "Legg til næringsvirksomhet",
+		"manglerFeilmelding": "Du må legge til en næringsvirksomhet",
+		"modal": {
+			"leggTilTittel": "Legg til næringsvirksomhet",
+			"redigerTittel": "Rediger næringsvirksomhet"
+		},
+		"felt": {
+			"virksomhetensNavn": {
+				"label": "Virksomhetens navn"
+			},
+			"organisasjonsnummer": {
+				"label": "Virksomhetens organisasjonsnummer"
+			},
+			"nårBleArbeidstidenRedusert": {
+				"label": "Når ble arbeidstiden redusert"
+			},
+			"timerFørReduksjon": {
+				"label": "Skriv inn hvor mange timer du jobbet per uke i egen næring før arbeidstiden ble redusert"
+			},
+			"timerNå": {
+				"label": "Skriv inn hvor mange timer du jobber per uke i egen næring nå",
+				"description": "<p>For å vurdere om du har rett til dagpenger, må vi vite din nåværende ukentlige arbeidstid. Hvis du jobber mer enn 50 prosent av den totale arbeidstiden du hadde før, har du ikke rett til dagpenger.</p><p>Hvis arbeidstiden din i egen næring ikke er redusert, kan du skrive inn samme antall timer som i spørsmålet over.</p>"
+			}
+		},
+		"detaljer": {
+			"timerFør": "{{timer}} timer arbeidstid per uke før reduksjon",
+			"timerNå": "{{timer}} timer arbeidstid per uke nå"
+		},
+		"oppsummering": {
+			"nr": "Egen næringsvirksomhet {{nr}}"
+		}
+	},
+	"gårdsbruk": {
+		"driverDuEgetGårdsbruk": {
+			"label": "Driver du eget gårdsbruk?"
+		},
+		"informasjonskort": {
+			"label": "Informasjon",
+			"description": "<p>Selv om du driver et eget gårdsbruk må du være villig til å ta annet arbeid.</p><p>Hvis du jobber mer enn 50 prosent av tidligere arbeidstid har du ikke rett til dagpenger.</p><p>Når du driver gårdsbruk tar Nav utgangspunkt i størrelsen på bruket, arbeidsomfang, mekaniseringsgrad og beliggenhet.</p>"
+		},
+		"leggTilKnapp": "Legg til gårdsbruk",
+		"manglerFeilmelding": "Du må legge til et gårdsbruk",
+		"modal": {
+			"leggTilTittel": "Legg til gårdsbruk",
+			"redigerTittel": "Rediger gårdsbruk"
+		},
+		"felt": {
+			"gårdsbruketsNavn": {
+				"label": "Gårdsbrukets navn"
+			},
+			"organisasjonsnummer": {
+				"label": "Gårdsbrukets organisasjonsnummer"
+			},
+			"hvilkeTypeGårdsbruk": {
+				"label": "Hvilken type gårdsbruk driver du?",
+				"description": "Du kan krysse av for flere",
+				"options": {
+					"dyr": "Dyr",
+					"jord": "Jord",
+					"skog": "Skog",
+					"annet": "Annet"
+				}
+			},
+			"hvemEier": {
+				"label": "Hvem eier gårdsbruket?",
+				"description": "Du kan krysse av for flere",
+				"options": {
+					"jeg": "Jeg",
+					"samboerEktefelle": "Samboer/ektefelle",
+					"andre": "Andre"
+				}
+			},
+			"prosentTilDeg": {
+				"label": "Hvor mange prosent av inntekten går til deg?"
+			},
+			"prosentTilSamboerEktefelle": {
+				"label": "Hvor mange prosent av inntekten går til samboer/ektefelle?"
+			},
+			"prosentTilAndre": {
+				"label": "Hvor mange prosent av inntekten går til andre?"
+			},
+			"arbeidstimerValgtÅr": {
+				"label": "Hvor mange arbeidstimer blir brukt på gårdsbruket totalt i løpet av ett år? Velg hvilket år du oppgir timer for først"
+			},
+			"arbeidstimerAntallTimer": {
+				"label": "Skriv hvor mange arbeidstimer som ble brukt"
+			},
+			"hvordanBeregnet": {
+				"label": "Forklar kort hvordan du har beregnet antall arbeidstimer totalt"
+			}
+		},
+		"detaljer": {
+			"prosentTilMeg": "{{prosent}}% av inntekten går til meg",
+			"arbeidstimer": "{{antall}} arbeidstimer brukt i {{år}}"
+		},
+		"oppsummering": {
+			"nr": "Eget gårdsbruk {{nr}}"
+		}
+	},
+	"oppsummering": {
+		"ikkeBesvart": "Ikke besvart"
+	}
 }
