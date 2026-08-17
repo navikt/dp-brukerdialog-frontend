@@ -34,7 +34,7 @@ export const namespaceTilSeksjonPath: Record<string, string> = {
   common: "common",
 };
 
-export const visNøkkelPostProcessor = {
+export const visTNøkkel = {
   type: "postProcessor" as const,
   name: "visNøkkel",
   process(value: string, key: string | string[], options?: { ns?: string | string[] }) {
@@ -95,7 +95,7 @@ void i18n
   .use(appSeksjonBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
-  .use(visNøkkelPostProcessor)
+  .use(visTNøkkel)
   .init({
     fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
