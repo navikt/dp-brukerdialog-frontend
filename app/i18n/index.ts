@@ -3,18 +3,19 @@ import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import {
-  abonnerPåVisNøkler,
-  erVisNøklerAktivert,
-  NØKKEL_MARKØR_PREFIX,
-  NØKKEL_MARKØR_SUFFIX,
-} from "../utils/vis-nokler.utils";
+  erVisTNøklerAktivert,
+  lagTekstnøkkelMarkør,
+  lyttPåVisNøklerAktivering,
+  namespaceTilVisningsnavn,
+} from "./index.utils";
 
 export const defaultLanguage = "nb" as const;
 export const supportedLanguages = ["nb", "en", "nn"] as const;
 export const fallbackT = ((key: string) => key) as unknown as TFunction;
 const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
+const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
 
-const namespaceTilSeksjonPath: Record<string, string> = {
+export const namespaceTilSeksjonPath: Record<string, string> = {
   oversikt: "oversikt",
   personalia: "personalia",
   "din-situasjon": "din-situasjon",
@@ -33,14 +34,11 @@ const namespaceTilSeksjonPath: Record<string, string> = {
   common: "common",
 };
 
-const namespaceTilVisningsnavn = (seksjonPath: string) =>
-  `#${seksjonPath.charAt(0).toUpperCase()}${seksjonPath.slice(1).replace(/-/g, " ")}`;
-
-const visNøkkelPostProcessor = {
+export const visNøkkelPostProcessor = {
   type: "postProcessor" as const,
   name: "visNøkkel",
   process(value: string, key: string | string[], options?: { ns?: string | string[] }) {
-    if (!erVisNøklerAktivert()) {
+    if (!erVisTNøklerAktivert()) {
       return value;
     }
     const nøkkel = Array.isArray(key) ? key[0] : key;
@@ -50,11 +48,9 @@ const visNøkkelPostProcessor = {
     const seksjonPath = namespaceTilSeksjonPath[baseNamespace];
     const visningsnavn = seksjonPath ? namespaceTilVisningsnavn(seksjonPath) : undefined;
     const fullNøkkel = visningsnavn ? `${visningsnavn}:${nøkkel}` : nøkkel;
-    return `${value}${NØKKEL_MARKØR_PREFIX}${fullNøkkel}${NØKKEL_MARKØR_SUFFIX}`;
+    return `${value}${lagTekstnøkkelMarkør(fullNøkkel)}`;
   },
 };
-
-const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
 
 const appSeksjonBackend = {
   type: "backend" as const,
@@ -170,9 +166,9 @@ i18n.on("languageChanged", (language) => {
 });
 
 if (typeof window !== "undefined") {
-  document.body?.classList.toggle("vis-nokler-aktiv", erVisNøklerAktivert());
-  abonnerPåVisNøkler(() => {
-    document.body.classList.toggle("vis-nokler-aktiv", erVisNøklerAktivert());
+  document.body?.classList.toggle("vis-nokler-aktiv", erVisTNøklerAktivert());
+  lyttPåVisNøklerAktivering(() => {
+    document.body.classList.toggle("vis-nokler-aktiv", erVisTNøklerAktivert());
     i18n.emit("languageChanged", i18n.language);
   });
 }

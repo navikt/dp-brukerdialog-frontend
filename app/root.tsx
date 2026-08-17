@@ -19,7 +19,7 @@ import { Route } from "./+types/root";
 import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
 import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
-import { VisNøklerKnapp } from "./components/VisNøklerKnapp";
+import { OversettingNøklerKnapp } from "./components/OversettingNøklerKnapp";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { sanityClient } from "./sanity/sanity.config";
@@ -96,7 +96,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {env.APP_ENV && env.APP_ENV.includes("prod") && (
+        {getEnv("APP_ENV") === "prod" && (
           <style>{`language-selector { display: none !important; }`}</style>
         )}
         {parse(DECORATOR_HEAD_ASSETS, { trim: true })}
@@ -104,7 +104,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <VisNøklerKnapp />
+        {getEnv("APP_ENV") === "dev" && <OversettingNøklerKnapp />}
         <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
         {children}
         <ScrollRestoration />
