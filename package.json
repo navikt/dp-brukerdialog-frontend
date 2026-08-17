@@ -98,7 +98,7 @@
     "node": ">=24.11.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css}": [
+    "*.{ts,tsx,json}": [
       "prettier --write"
     ],
     "*.{ts,tsx}": [
