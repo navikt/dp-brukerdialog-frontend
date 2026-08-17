@@ -1,4 +1,5 @@
 # .husky/pre-commit
+pnpm lint-staged
 pnpm run typecheck
 pnpm run test
 pnpm run build

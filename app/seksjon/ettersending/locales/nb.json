@@ -1,41 +1,41 @@
 {
-    "side": {
-        "tittel": "Søknad om dagpenger: Ettersending",
-        "overskrift": "Ettersending"
-    },
-    "innhold": {
-        "frist": "Frist for innsendinger er 14 dager etter at du sendte søknaden.",
-        "beskrivelse": "Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er ansvarlig for at dokumentasjonen sendes til oss. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene.",
-        "brevTittel": "Har du fått brev om manglende opplysninger?",
-        "brev": "Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal sendes inn og frist for å sende inn. Brev du har fått ligger i",
-        "dokumentlisteLenke": "dokumentlisten på Mine dagpenger",
-        "brevMellom": "Når du har dokumentene klare kan du",
-        "sendInnLenke": "sende dem inn her. Dette kan forlenge tiden det tar å behandle søknaden din.",
-        "andreDokumenter": "Andre dokumenter",
-        "andreDokumenterBeskrivelse": "Du kan sende inn andre dokumenter hvis du mener det er relevant i saken din. Dette er helt valgfritt.",
-        "sendAndreDokumenter": "Jeg vil sende inn andre dokumenter"
-    },
-    "feil": {
-        "teknisk": "Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv på nytt.",
-        "manglerFil": "Du må laste opp minst en fil før dokumentasjonen kan sendes inn.",
-        "filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendes inn.",
-        "filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn."
-    },
-    "dokumenter": {
-        "sendt": "Dokumenter du har sendt inn",
-        "skalIkkeSendes": "Dokumenter du ikke skal sende inn"
-    },
-    "opplasting": {
-        "dokumentasjon": "Dokumentasjon",
-        "mangler": "Mangler",
-        "lastOpp": "Last opp dokument",
-        "beskrivelse": "Maks filstørrelse er {{maks}} MB, og tillatte filtyper er {{typer}}.",
-        "lasterOpp": "Laster opp..."
-    },
-    "navigasjon": {
-        "sendInnDokumenter": "Send inn dokumenter",
-        "avbryt": "Avbryt",
-        "kvittering": "Kvittering",
-        "gåTilMineDagpenger": "Gå til mine dagpenger"
-    }
+	"side": {
+		"tittel": "Søknad om dagpenger: Ettersending",
+		"overskrift": "Ettersending"
+	},
+	"innhold": {
+		"frist": "Frist for innsendinger er 14 dager etter at du sendte søknaden.",
+		"beskrivelse": "Vi trenger dokumentasjonen for å vurdere om du har rett til dagpenger. Du er ansvarlig for at dokumentasjonen sendes til oss. Hvis du ikke sender alle dokumentene innen fristen kan du få avslag på søknaden, fordi Nav mangler viktige opplysninger i saken din. Ta kontakt hvis du ikke rekker å ettersende alle dokumentene.",
+		"brevTittel": "Har du fått brev om manglende opplysninger?",
+		"brev": "Hvis du har fått brev om manglende opplysninger vil det stå i brevet hva som skal sendes inn og frist for å sende inn. Brev du har fått ligger i",
+		"dokumentlisteLenke": "dokumentlisten på Mine dagpenger",
+		"brevMellom": "Når du har dokumentene klare kan du",
+		"sendInnLenke": "sende dem inn her. Dette kan forlenge tiden det tar å behandle søknaden din.",
+		"andreDokumenter": "Andre dokumenter",
+		"andreDokumenterBeskrivelse": "Du kan sende inn andre dokumenter hvis du mener det er relevant i saken din. Dette er helt valgfritt.",
+		"sendAndreDokumenter": "Jeg vil sende inn andre dokumenter"
+	},
+	"feil": {
+		"teknisk": "Det har oppstått en teknisk feil. Vi klarte ikke å sende inn dokumentasjonen. Prøv på nytt.",
+		"manglerFil": "Du må laste opp minst en fil før dokumentasjonen kan sendes inn.",
+		"filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendes inn.",
+		"filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn."
+	},
+	"dokumenter": {
+		"sendt": "Dokumenter du har sendt inn",
+		"skalIkkeSendes": "Dokumenter du ikke skal sende inn"
+	},
+	"opplasting": {
+		"dokumentasjon": "Dokumentasjon",
+		"mangler": "Mangler",
+		"lastOpp": "Last opp dokument",
+		"beskrivelse": "Maks filstørrelse er {{maks}} MB, og tillatte filtyper er {{typer}}.",
+		"lasterOpp": "Laster opp..."
+	},
+	"navigasjon": {
+		"sendInnDokumenter": "Send inn dokumenter",
+		"avbryt": "Avbryt",
+		"kvittering": "Kvittering",
+		"gåTilMineDagpenger": "Gå til mine dagpenger"
+	}
 }
