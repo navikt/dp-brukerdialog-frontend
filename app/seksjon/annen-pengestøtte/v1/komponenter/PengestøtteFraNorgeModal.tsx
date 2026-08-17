@@ -97,7 +97,6 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     resetAfterSubmit: true,
   });
 
-
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
 
@@ -212,7 +211,11 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>

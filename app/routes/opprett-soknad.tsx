@@ -123,7 +123,7 @@ export default function OpprettSoknadSide() {
           <Form {...form.getFormProps()}>
             <Box
               padding="space-16"
-              background={!!form.value("bekreftVilkår") ? "success-moderate" : "sunken"}
+              background={form.value("bekreftVilkår") ? "success-moderate" : "sunken"}
               borderRadius="8"
             >
               <Checkbox name="bekreftVilkår" error={!!form.error("bekreftVilkår")}>

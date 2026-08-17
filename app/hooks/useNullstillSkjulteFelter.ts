@@ -20,7 +20,7 @@ export function useNullstillSkjulteFelter<T extends Record<string, any>>(
         komponent.type === "forklarendeTekst";
 
       if (!erInformasjonKomponent && komponent.visHvis && !komponent.visHvis(formValues)) {
-        //@ts-ignore
+        // @ts-expect-error Ukjent RVF types
         form.setValue(komponent.id, undefined);
       }
     });

@@ -7,9 +7,10 @@ import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export function UtdanningOppsummeringV1({ seksjonSvarene, seksjonsUrl, redigerbar }: SeksjonProps) {
+  const { t } = useVersjonertTranslation("utdanning", 1);
+
   if (!seksjonSvarene) return null;
 
-  const { t } = useVersjonertTranslation("utdanning", 1);
   const utdanningKomponenter = lagUtdanningKomponenter(t);
   const utdanningSvar = Object.entries(seksjonSvarene);
 

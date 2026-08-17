@@ -21,8 +21,9 @@ export function EgenNæringOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return null;
   const { t } = useVersjonertTranslation("egen-næring", 1);
+
+  if (!seksjonSvarene) return null;
 
   const egenNæringEgenNæringsvirksomhetKomponenter =
     lagEgenNæringEgenNæringsvirksomhetKomponenter(t);

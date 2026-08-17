@@ -7,11 +7,10 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "copy-env": "cp .env.example .env",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "token": "node ./token-generator.cjs",
+    "token": "node ./scripts/token-generator.cjs",
     "prepare": "husky",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
@@ -62,6 +61,8 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
+    "@eslint/js": "^10.0.1",
     "@inquirer/prompts": "8.5.2",
     "@playwright/test": "^1.62.0",
     "@react-router/dev": "^7.18.1",
@@ -77,14 +78,14 @@
     "@vitest/coverage-v8": "4.1.10",
     "@vitest/ui": "4.1.10",
     "autoprefixer": "10.5.4",
-    "eslint": "8.57.1",
+    "eslint": "10.8.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-prettier": "5.5.6",
-    "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "^16.5.0",
     "husky": "9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "17.2.0",
@@ -98,11 +99,17 @@
     "node": ">=24.11.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,json}": [
-      "prettier --write"
-    ],
     "*.{ts,tsx}": [
       "eslint --fix"
+    ],
+    "*.{ts,tsx,json,css}": [
+      "prettier --write"
+    ],
+    "app/**/locales/*.json": [
+      "node scripts/strip-trailing-newline.cjs"
+    ],
+    "i18n/**/*.json": [
+      "node scripts/strip-trailing-newline.cjs"
     ]
   }
 }

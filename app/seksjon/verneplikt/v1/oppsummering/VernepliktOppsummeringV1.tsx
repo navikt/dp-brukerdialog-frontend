@@ -2,7 +2,6 @@ import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { lagVernepliktKomponenter } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
-
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
@@ -12,9 +11,10 @@ export function VernepliktOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useVersjonertTranslation("verneplikt", 1);
+
   if (!seksjonSvarene) return null;
 
-  const { t } = useVersjonertTranslation("verneplikt", 1);
   const vernepliktKomponenter = lagVernepliktKomponenter(t);
   const vernepliktSvar = Object.entries(seksjonSvarene);
 

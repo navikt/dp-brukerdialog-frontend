@@ -11,9 +11,10 @@ export function ReellArbeidssøkerOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useVersjonertTranslation("reell-arbeidssøker", 1);
+
   if (!seksjonSvarene) return null;
 
-  const { t } = useVersjonertTranslation("reell-arbeidssøker", 1);
   const reellArbeidssøkerKomponenter = lagReellArbeidssøkerKomponenter(t);
   const reellArbeidssøkerSvar = Object.entries(seksjonSvarene);
 
