@@ -8,6 +8,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "lint": "eslint",
+    "copy-env": "cp .env.example .env",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "token": "node ./scripts/token-generator.cjs",
