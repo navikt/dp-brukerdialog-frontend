@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { LoaderFunctionArgs, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { hentDokumentasjonskrav as hentDokumentasjonskravene } from "~/models/hent-dokumentasjonskrav.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";

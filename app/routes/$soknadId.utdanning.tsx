@@ -14,8 +14,6 @@ import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export const NYESTE_VERSJON = 1;
 export const SEKSJON_ID = "utdanning";
-export const SEKSJON_NAVN = "Utdanning";
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Utdanning";
 export const NESTE_SEKSJON_ID = "barnetillegg";
 export const FORRIGE_SEKSJON_ID = "verneplikt";
 

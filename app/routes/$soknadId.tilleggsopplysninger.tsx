@@ -14,8 +14,6 @@ import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 
 export const NYESTE_VERSJON = 1;
 export const SEKSJON_ID = "tilleggsopplysninger";
-export const SEKSJON_NAVN = "Tilleggsopplysninger";
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Tilleggsopplysninger";
 export const NESTE_SEKSJON_ID = "dokumentasjon";
 export const FORRIGE_SEKSJON_ID = "reell-arbeidssoker";
 
