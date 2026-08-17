@@ -1,86 +1,86 @@
 {
-    "side": {
-        "tittel": "Søknad om dagpenger: Barnetillegg",
-        "overskrift": "Barnetillegg"
-    },
-    "tekniskFeil": {
-        "tittel": "Det har oppstått en teknisk feil"
-    },
-    "forklarendeTekst": {
-        "avsnitt1": "Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.",
-        "avsnitt2": "Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12 måneder.",
-        "avsnitt3": "Hvis vi har opplysninger om at du er forelder til noen barn så vises de under."
-    },
-    "forsørgerDuBarnSomIkkeVisesHer": {
-        "label": "Forsørger du barn som ikke vises her?",
-        "description": "Hvis du har forsørgeransvar for barn under 18 år som ikke vises her, kan du legge dem til."
-    },
-    "barnFraPdl": {
-        "fornavnOgMellomnavn": {
-            "label": "Fornavn og mellomnavn"
-        },
-        "etternavn": {
-            "label": "Etternavn"
-        },
-        "fødselsdato": {
-            "label": "Fødselsdato"
-        },
-        "bostedsland": {
-            "label": "Bostedsland"
-        },
-        "forsørgerDuBarnet": {
-            "label": "Forsørger du barnet?"
-        },
-        "født": "Født {{dato}}",
-        "borI": "Bor i {{land}}"
-    },
-    "leggTilBarnManuelt": {
-        "fornavnOgMellomnavn": {
-            "label": "Fornavn og mellomnavn"
-        },
-        "etternavn": {
-            "label": "Etternavn"
-        },
-        "fødselsdato": {
-            "label": "Fødselsdato"
-        },
-        "bostedsland": {
-            "label": "Hvilket land bor barnet i?"
-        },
-        "lesMer": {
-            "label": "Les mer om barnets bosted",
-            "description": "Bostedet du oppgir må være det landet barnet faktisk oppholder seg i til vanlig."
-        },
-        "dokumentasjonskravindikator": {
-            "label": "Fødselsattest/bostedsbevis"
-        }
-    },
-    "leggTilBarn": {
-        "knapp": "Legg til barn du forsørger",
-        "feil": "Du må legge til barn du forsørger"
-    },
-    "barnLagtManuelt": {
-        "endreSvar": "Endre svar",
-        "fjern": "Fjern"
-    },
-    "modal": {
-        "leggTil": "Legg til",
-        "rediger": "Rediger",
-        "tittel": "{{operasjon}} barn du forsørger",
-        "lagreOgLukk": "Lagre og lukk"
-    },
-    "dokumentasjonskrav": {
-        "leggTilBarn": "Fødselsattest/bostedsbevis for {{navn}}",
-        "redigerBarn": "Dokumentasjon for {{navn}}"
-    },
-    "oppsummering": {
-        "ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen",
-        "barn": "Barn {{nummer}}"
-    },
-    "envalg": {
-        "svar": {
-            "ja": "Ja",
-            "nei": "Nei"
-        }
-    }
+	"side": {
+		"tittel": "Søknad om dagpenger: Barnetillegg",
+		"overskrift": "Barnetillegg"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	},
+	"forklarendeTekst": {
+		"avsnitt1": "Hvis du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.",
+		"avsnitt2": "Barnet må være bosatt i Norge, et annet EØS-land, Sveits eller Storbritannia. Du får ikke barnetillegg hvis barnet oppholder seg utenfor disse områdene mer enn 90 dager i løpet av 12 måneder.",
+		"avsnitt3": "Hvis vi har opplysninger om at du er forelder til noen barn så vises de under."
+	},
+	"forsørgerDuBarnSomIkkeVisesHer": {
+		"label": "Forsørger du barn som ikke vises her?",
+		"description": "Hvis du har forsørgeransvar for barn under 18 år som ikke vises her, kan du legge dem til."
+	},
+	"barnFraPdl": {
+		"fornavnOgMellomnavn": {
+			"label": "Fornavn og mellomnavn"
+		},
+		"etternavn": {
+			"label": "Etternavn"
+		},
+		"fødselsdato": {
+			"label": "Fødselsdato"
+		},
+		"bostedsland": {
+			"label": "Bostedsland"
+		},
+		"forsørgerDuBarnet": {
+			"label": "Forsørger du barnet?"
+		},
+		"født": "Født {{dato}}",
+		"borI": "Bor i {{land}}"
+	},
+	"leggTilBarnManuelt": {
+		"fornavnOgMellomnavn": {
+			"label": "Fornavn og mellomnavn"
+		},
+		"etternavn": {
+			"label": "Etternavn"
+		},
+		"fødselsdato": {
+			"label": "Fødselsdato"
+		},
+		"bostedsland": {
+			"label": "Hvilket land bor barnet i?"
+		},
+		"lesMer": {
+			"label": "Les mer om barnets bosted",
+			"description": "Bostedet du oppgir må være det landet barnet faktisk oppholder seg i til vanlig."
+		},
+		"dokumentasjonskravindikator": {
+			"label": "Fødselsattest/bostedsbevis"
+		}
+	},
+	"leggTilBarn": {
+		"knapp": "Legg til barn du forsørger",
+		"feil": "Du må legge til barn du forsørger"
+	},
+	"barnLagtManuelt": {
+		"endreSvar": "Endre svar",
+		"fjern": "Fjern"
+	},
+	"modal": {
+		"leggTil": "Legg til",
+		"rediger": "Rediger",
+		"tittel": "{{operasjon}} barn du forsørger",
+		"lagreOgLukk": "Lagre og lukk"
+	},
+	"dokumentasjonskrav": {
+		"leggTilBarn": "Fødselsattest/bostedsbevis for {{navn}}",
+		"redigerBarn": "Dokumentasjon for {{navn}}"
+	},
+	"oppsummering": {
+		"ingenSvar": "Du har ikke svart på noen spørsmål i denne seksjonen",
+		"barn": "Barn {{nummer}}"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	}
 }

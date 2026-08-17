@@ -98,6 +98,9 @@
     "node": ">=24.11.0"
   },
   "lint-staged": {
+    "*.{ts,tsx,json}": [
+      "prettier --write"
+    ],
     "*.{ts,tsx}": [
       "eslint --fix"
     ]

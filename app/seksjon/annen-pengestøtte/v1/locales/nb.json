@@ -1,154 +1,154 @@
 {
-    "side": {
-        "tittel": "Søknad om dagpenger: Annen pengestøtte",
-        "overskrift": "Annen pengestøtte"
-    },
-    "tekniskFeil": {
-        "tittel": "Det har oppstått en teknisk feil"
-    },
-    "envalg": {
-        "svar": {
-            "ja": "Ja",
-            "nei": "Nei"
-        }
-    },
-    "modal": {
-        "leggTil": "Legg til",
-        "rediger": "Rediger",
-        "lagreOgLukk": "Lagre og lukk"
-    },
-    "detaljer": {
-        "endreSvar": "Endre svar",
-        "fjern": "Fjern",
-        "fraOgMed": "Fra og med",
-        "mottattFraOgMed": "Mottatt fra og med",
-        "motattFraOgMed": "Motatt fra og med",
-        "tilOgMed": "til og med"
-    },
-    "tidligereArbeidsgiver": {
-        "mottar": {
-            "label": "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
-            "description": "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
-            "lesMer": {
-                "label": "Grunnen til at vi spør om dette",
-                "description": "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger."
-            },
-            "forklarendeTekst": "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver."
-        },
-        "leggTilKnapp": "Legg til utbetalinger eller goder",
-        "manglerFeilmelding": "Du må legge til utbetalinger eller økonomiske goder",
-        "modal": {
-            "heading": "utbetalinger eller økonomiske goder fra tidligere arbeidsgiver",
-            "hvemMottar": {
-                "label": "Hvem mottar du utbetalinger eller økonomiske goder fra?"
-            },
-            "lesMer": {
-                "label": "Dette mener vi med utbetalinger og økonomiske goder",
-                "description": "<p><strong>Utbetalinger</strong><br/>Med utbetalinger mener vi for eksempel:</p><p><ul><li>Sluttvederlag</li><li>Etterlønn</li><li>Andre utbetalinger som erstatter lønn</li></ul></p><p>Du skal ikke oppgi utbetalinger som er lønn i oppsigelsestiden eller feriepenger.</p><p><strong>Økonomiske goder</strong><br/>Med økonomisk goder mener vi for eksempel:</p><p><ul><li>Bil</li><li>Abonnementer</li><li>Andre goder med stor verdi</li></ul></p><p>Du skal kun oppgi økonomiske goder du beholder etter at arbeidsforholdet er avsluttet.</p>"
-            },
-            "hvaFår": {
-                "label": "Skriv inn hva du får eller beholder"
-            },
-            "dokumentasjonskrav": {
-                "label": "Avtalen om sluttvederlag, etterlønn eller andre økonomiske goder"
-            }
-        },
-        "dokumentasjonskravTittel": "Dokumentasjon av sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver - {{navn}}  "
-    },
-    "norge": {
-        "heading": "Pengestøtte fra Norge",
-        "mottar": {
-            "label": "Mottar du pengestøtte fra andre enn Nav?",
-            "description": "<p><ul><li>Pensjon fra andre enn Nav</li><li>Dagpenger for fiskere eller garantilott fra Garantikassen for fiskere (GFF)</li></ul></p>",
-            "lesMer": {
-                "label": "Grunnen til at vi spør om dette",
-                "description": "Hvis du mottar pengestøtte fra andre enn Nav, kan det ha betydning for retten din til dagpenger."
-            },
-            "forklarendeTekst": "<strong>Dine pengestøtter fra Norge</strong><br />Du må legge til alle pengestøttene du mottar som som ikke er fra Nav."
-        },
-        "leggTilKnapp": "Legg til pengestøtte fra Norge",
-        "manglerFeilmelding": "Du må legge til pengestøtte fra Norge",
-        "modal": {
-            "heading": "pengestøtte fra Norge",
-            "hvilken": {
-                "label": "Hvilken pengestøtte fra andre enn Nav mottar du?",
-                "options": {
-                    "pensjon": "Pensjon fra andre enn Nav",
-                    "dagpenger": "Dagpenger under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)"
-                }
-            },
-            "informasjonskort": {
-                "label": "Informasjon",
-                "description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
-            },
-            "dokumentasjonskrav": {
-                "pensjon": "Dokumentasjon av pensjon fra andre enn Nav",
-                "gff": "Dokumentasjon av pengestøtte fra Garantikassen for fiskere"
-            },
-            "hvemUtbetaler": {
-                "label": "Hvem utbetaler pengestøtten?"
-            },
-            "periode": {
-                "periodeLabel": "I hvilken periode har du mottatt pengestøtten?",
-                "fraDato": "Fra dato",
-                "tilDato": "Til dato",
-                "tilDatoDescription": "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her."
-            }
-        },
-        "dokumentasjonskravTittel": "Pengestøtte fra Norge - {{støtteType}}{{hvem}}"
-    },
-    "eøs": {
-        "heading": "Pengestøtte fra andre EØS-land",
-        "mottar": {
-            "label": "Har du de siste 36 måneder mottatt eller søkt om pengestøtte fra EØS-land, Sveits eller Storbritannia som ligner på:",
-            "description": "<p><ul><li>Sykepenger</li><li>Foreldrepenger eller svangerskapspenger</li><li>Dagpenger / arbeidsledighetstrygd</li><li>Pleiepenger, omsorgspenger eller opplæringspenger</li></ul></p>",
-            "lesMer": {
-                "label": "Grunnen til at vi spør om dette",
-                "description": "Hvis du mottar disse pengestøttene fra utlandet, kan det ha betydning for retten din til dagpenger."
-            },
-            "forklarendeTekst": "<strong>Dine pengestøtter fra andre EØS-land</strong><br/>Du må legge til alle pengestøttene du har mottatt fra andre EØS-land, Sveits eller Storbritannia de siste 36 månedene."
-        },
-        "leggTilKnapp": "Legg til pengestøtte fra andre EØS-land",
-        "manglerFeilmelding": "Du må legge til pengestøtte fra andre EØS-land",
-        "modal": {
-            "heading": "pengestøtte fra andre EØS-land",
-            "hvilken": {
-                "label": "Mottar du, eller har du tidligere fått pengestøtte fra et annet EØS-land?",
-                "options": {
-                    "sykepenger": "Sykepenger",
-                    "foreldrepenger": "Foreldrepenger eller svangerskapspenger",
-                    "dagpenger": "Dagpenger / arbeidsledighetstrygd",
-                    "pleiepenger": "Pleiepenger, omsorgspenger eller opplæringspenger"
-                }
-            },
-            "informasjonskort": {
-                "label": "Informasjon",
-                "description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
-            },
-            "dokumentasjonskrav": {
-                "label": "Dokumentasjon av pengestøtte fra et annet EØS-land"
-            },
-            "land": {
-                "label": "Hvilket land har du mottatt eller søkt om pengestøtten fra i løpet av de siste 36 månedene?"
-            },
-            "mottarFortsatt": {
-                "label": "Mottar du fortsatt pengestøtten?"
-            },
-            "fraNår": {
-                "label": "Fra hvilken dato har du mottatt pengestøtten?"
-            },
-            "periode": {
-                "periodeLabel": "I hvilken periode mottok du pengesøtten?",
-                "fraDato": "Fra dato",
-                "tilDato": "Til dato"
-            }
-        },
-        "dokumentasjonskravTittel": "Pengestøtte fra andre EØS-land - {{støtteType}} ({{land}})  "
-    },
-    "oppsummering": {
-        "ubesvart": "Ubesvart",
-        "tidligereArbeidsgiverNr": "Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver {{nr}}",
-        "norgeNr": "Pengestøtte fra Norge {{nr}}",
-        "eøsNr": "Pengestøtte fra EØS-land {{nr}}"
-    }
+	"side": {
+		"tittel": "Søknad om dagpenger: Annen pengestøtte",
+		"overskrift": "Annen pengestøtte"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått en teknisk feil"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"modal": {
+		"leggTil": "Legg til",
+		"rediger": "Rediger",
+		"lagreOgLukk": "Lagre og lukk"
+	},
+	"detaljer": {
+		"endreSvar": "Endre svar",
+		"fjern": "Fjern",
+		"fraOgMed": "Fra og med",
+		"mottattFraOgMed": "Mottatt fra og med",
+		"motattFraOgMed": "Motatt fra og med",
+		"tilOgMed": "til og med"
+	},
+	"tidligereArbeidsgiver": {
+		"mottar": {
+			"label": "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
+			"description": "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Hvis du mottar utbetalinger eller økonomiske goder fra tidligere arbeidsgiver, kan det ha betydning for retten din til dagpenger."
+			},
+			"forklarendeTekst": "<strong>Dine utbetalinger og økonomiske goder fra tidligere arbeidsgiver</strong><br />Du må legge til utbetalinger og økonomiske goder du har fått fra din tidligere arbeidsgiver."
+		},
+		"leggTilKnapp": "Legg til utbetalinger eller goder",
+		"manglerFeilmelding": "Du må legge til utbetalinger eller økonomiske goder",
+		"modal": {
+			"heading": "utbetalinger eller økonomiske goder fra tidligere arbeidsgiver",
+			"hvemMottar": {
+				"label": "Hvem mottar du utbetalinger eller økonomiske goder fra?"
+			},
+			"lesMer": {
+				"label": "Dette mener vi med utbetalinger og økonomiske goder",
+				"description": "<p><strong>Utbetalinger</strong><br/>Med utbetalinger mener vi for eksempel:</p><p><ul><li>Sluttvederlag</li><li>Etterlønn</li><li>Andre utbetalinger som erstatter lønn</li></ul></p><p>Du skal ikke oppgi utbetalinger som er lønn i oppsigelsestiden eller feriepenger.</p><p><strong>Økonomiske goder</strong><br/>Med økonomisk goder mener vi for eksempel:</p><p><ul><li>Bil</li><li>Abonnementer</li><li>Andre goder med stor verdi</li></ul></p><p>Du skal kun oppgi økonomiske goder du beholder etter at arbeidsforholdet er avsluttet.</p>"
+			},
+			"hvaFår": {
+				"label": "Skriv inn hva du får eller beholder"
+			},
+			"dokumentasjonskrav": {
+				"label": "Avtalen om sluttvederlag, etterlønn eller andre økonomiske goder"
+			}
+		},
+		"dokumentasjonskravTittel": "Dokumentasjon av sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver - {{navn}}  "
+	},
+	"norge": {
+		"heading": "Pengestøtte fra Norge",
+		"mottar": {
+			"label": "Mottar du pengestøtte fra andre enn Nav?",
+			"description": "<p><ul><li>Pensjon fra andre enn Nav</li><li>Dagpenger for fiskere eller garantilott fra Garantikassen for fiskere (GFF)</li></ul></p>",
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Hvis du mottar pengestøtte fra andre enn Nav, kan det ha betydning for retten din til dagpenger."
+			},
+			"forklarendeTekst": "<strong>Dine pengestøtter fra Norge</strong><br />Du må legge til alle pengestøttene du mottar som som ikke er fra Nav."
+		},
+		"leggTilKnapp": "Legg til pengestøtte fra Norge",
+		"manglerFeilmelding": "Du må legge til pengestøtte fra Norge",
+		"modal": {
+			"heading": "pengestøtte fra Norge",
+			"hvilken": {
+				"label": "Hvilken pengestøtte fra andre enn Nav mottar du?",
+				"options": {
+					"pensjon": "Pensjon fra andre enn Nav",
+					"dagpenger": "Dagpenger under arbeidsløshet eller garantilott fra Garantikassen for fiskere (GFF)"
+				}
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
+			},
+			"dokumentasjonskrav": {
+				"pensjon": "Dokumentasjon av pensjon fra andre enn Nav",
+				"gff": "Dokumentasjon av pengestøtte fra Garantikassen for fiskere"
+			},
+			"hvemUtbetaler": {
+				"label": "Hvem utbetaler pengestøtten?"
+			},
+			"periode": {
+				"periodeLabel": "I hvilken periode har du mottatt pengestøtten?",
+				"fraDato": "Fra dato",
+				"tilDato": "Til dato",
+				"tilDatoDescription": "Hvis du ikke vet hvor lenge du skal motta pengestøtten, så legger du ikke til en dato her."
+			}
+		},
+		"dokumentasjonskravTittel": "Pengestøtte fra Norge - {{støtteType}}{{hvem}}"
+	},
+	"eøs": {
+		"heading": "Pengestøtte fra andre EØS-land",
+		"mottar": {
+			"label": "Har du de siste 36 måneder mottatt eller søkt om pengestøtte fra EØS-land, Sveits eller Storbritannia som ligner på:",
+			"description": "<p><ul><li>Sykepenger</li><li>Foreldrepenger eller svangerskapspenger</li><li>Dagpenger / arbeidsledighetstrygd</li><li>Pleiepenger, omsorgspenger eller opplæringspenger</li></ul></p>",
+			"lesMer": {
+				"label": "Grunnen til at vi spør om dette",
+				"description": "Hvis du mottar disse pengestøttene fra utlandet, kan det ha betydning for retten din til dagpenger."
+			},
+			"forklarendeTekst": "<strong>Dine pengestøtter fra andre EØS-land</strong><br/>Du må legge til alle pengestøttene du har mottatt fra andre EØS-land, Sveits eller Storbritannia de siste 36 månedene."
+		},
+		"leggTilKnapp": "Legg til pengestøtte fra andre EØS-land",
+		"manglerFeilmelding": "Du må legge til pengestøtte fra andre EØS-land",
+		"modal": {
+			"heading": "pengestøtte fra andre EØS-land",
+			"hvilken": {
+				"label": "Mottar du, eller har du tidligere fått pengestøtte fra et annet EØS-land?",
+				"options": {
+					"sykepenger": "Sykepenger",
+					"foreldrepenger": "Foreldrepenger eller svangerskapspenger",
+					"dagpenger": "Dagpenger / arbeidsledighetstrygd",
+					"pleiepenger": "Pleiepenger, omsorgspenger eller opplæringspenger"
+				}
+			},
+			"informasjonskort": {
+				"label": "Informasjon",
+				"description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
+			},
+			"dokumentasjonskrav": {
+				"label": "Dokumentasjon av pengestøtte fra et annet EØS-land"
+			},
+			"land": {
+				"label": "Hvilket land har du mottatt eller søkt om pengestøtten fra i løpet av de siste 36 månedene?"
+			},
+			"mottarFortsatt": {
+				"label": "Mottar du fortsatt pengestøtten?"
+			},
+			"fraNår": {
+				"label": "Fra hvilken dato har du mottatt pengestøtten?"
+			},
+			"periode": {
+				"periodeLabel": "I hvilken periode mottok du pengesøtten?",
+				"fraDato": "Fra dato",
+				"tilDato": "Til dato"
+			}
+		},
+		"dokumentasjonskravTittel": "Pengestøtte fra andre EØS-land - {{støtteType}} ({{land}})  "
+	},
+	"oppsummering": {
+		"ubesvart": "Ubesvart",
+		"tidligereArbeidsgiverNr": "Utbetalinger eller økonomiske goder fra tidligere arbeidsgiver {{nr}}",
+		"norgeNr": "Pengestøtte fra Norge {{nr}}",
+		"eøsNr": "Pengestøtte fra EØS-land {{nr}}"
+	}
 }
