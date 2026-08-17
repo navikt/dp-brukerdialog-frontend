@@ -95,3 +95,43 @@
 .block {
   display: block;
 }
+
+.vis-nokler-knapp {
+  position: fixed;
+  bottom: 5rem;
+  right: 5rem;
+  z-index: 1000000;
+  padding: var(--ax-space-4);
+}
+
+.vis-nokkel-merke {
+  position: relative;
+  display: inline-block;
+  margin-left: var(--ax-space-4);
+  padding: 0 0.25rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--ax-bg-success-strong-hover);
+  cursor: pointer;
+}
+
+.vis-nokkel-merke::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--ax-bg-neutral-strong);
+  color: white;
+  font-size: 0.85rem;
+  border-radius: var(--ax-space-4);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000000;
+}
+
+.vis-nokkel-merke:hover::after {
+  opacity: 1;
+}

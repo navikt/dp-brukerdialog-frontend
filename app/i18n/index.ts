@@ -2,13 +2,20 @@ import type { TFunction } from "i18next";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
+import {
+  erVisTNøklerAktivert,
+  lagTekstnøkkelMarkør,
+  lyttPåVisNøklerAktivering,
+  namespaceTilVisningsnavn,
+} from "./index.utils";
 
 export const defaultLanguage = "nb" as const;
 export const supportedLanguages = ["nb", "en", "nn"] as const;
 export const fallbackT = ((key: string) => key) as unknown as TFunction;
 const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
+const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
 
-const namespaceTilSeksjonPath: Record<string, string> = {
+export const namespaceTilSeksjonPath: Record<string, string> = {
   oversikt: "oversikt",
   personalia: "personalia",
   "din-situasjon": "din-situasjon",
@@ -27,7 +34,23 @@ const namespaceTilSeksjonPath: Record<string, string> = {
   common: "common",
 };
 
-const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
+export const visTNøkkel = {
+  type: "postProcessor" as const,
+  name: "visNøkkel",
+  process(value: string, key: string | string[], options?: { ns?: string | string[] }) {
+    if (!erVisTNøklerAktivert()) {
+      return value;
+    }
+    const nøkkel = Array.isArray(key) ? key[0] : key;
+    const namespaceVerdi = options?.ns;
+    const namespace = Array.isArray(namespaceVerdi) ? namespaceVerdi[0] : namespaceVerdi;
+    const [baseNamespace] = (namespace ?? "").split("/");
+    const seksjonPath = namespaceTilSeksjonPath[baseNamespace];
+    const visningsnavn = seksjonPath ? namespaceTilVisningsnavn(seksjonPath) : undefined;
+    const fullNøkkel = visningsnavn ? `${visningsnavn}:${nøkkel}` : nøkkel;
+    return `${value}${lagTekstnøkkelMarkør(fullNøkkel)}`;
+  },
+};
 
 const appSeksjonBackend = {
   type: "backend" as const,
@@ -72,9 +95,11 @@ void i18n
   .use(appSeksjonBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
+  .use(visTNøkkel)
   .init({
     fallbackLng: defaultLanguage,
     supportedLngs: [...supportedLanguages],
+    postProcess: ["visNøkkel"],
     ns: [
       "oversikt",
       "personalia",
@@ -139,5 +164,13 @@ i18n.on("languageChanged", (language) => {
     document.documentElement.lang = language;
   }
 });
+
+if (typeof window !== "undefined") {
+  document.body?.classList.toggle("vis-nokler-aktiv", erVisTNøklerAktivert());
+  lyttPåVisNøklerAktivering(() => {
+    document.body.classList.toggle("vis-nokler-aktiv", erVisTNøklerAktivert());
+    i18n.emit("languageChanged", i18n.language);
+  });
+}
 
 export default i18n;
