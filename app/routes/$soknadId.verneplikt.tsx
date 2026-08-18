@@ -11,7 +11,7 @@ import {
   normaliserFormData,
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig, hentSeksjonNavigasjon } from "./seksjoner.config";
+import { hentSeksjonConfig, hentSeksjonNavigasjon } from "~/seksjon/seksjoner.config";
 
 const { seksjonId, nyesteVersjon } = hentSeksjonConfig("verneplikt");
 const { nesteSeksjonId, forrigeSeksjonId } = hentSeksjonNavigasjon(seksjonId);

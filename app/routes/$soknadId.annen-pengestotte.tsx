@@ -11,7 +11,7 @@ import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøt
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig, hentSeksjonNavigasjon } from "./seksjoner.config";
+import { hentSeksjonConfig, hentSeksjonNavigasjon } from "~/seksjon/seksjoner.config";
 
 const { seksjonId, nyesteVersjon } = hentSeksjonConfig("annen-pengestotte");
 const { nesteSeksjonId, forrigeSeksjonId } = hentSeksjonNavigasjon(seksjonId);

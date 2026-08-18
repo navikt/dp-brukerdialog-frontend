@@ -32,7 +32,7 @@ import {
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { filtrerSeksjonsvar, normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling, seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig, hentSeksjonNavigasjon } from "./seksjoner.config";
+import { hentSeksjonConfig, hentSeksjonNavigasjon } from "~/seksjon/seksjoner.config";
 
 const { seksjonId, nyesteVersjon } = hentSeksjonConfig("personalia");
 const { nesteSeksjonId } = hentSeksjonNavigasjon(seksjonId);

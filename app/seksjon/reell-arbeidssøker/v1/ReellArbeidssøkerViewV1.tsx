@@ -8,7 +8,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
-import { hentSeksjonConfig } from "~/routes/seksjoner.config";
+import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,

@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { useNavigate, useParams } from "react-router";
-import { hentSeksjonConfig } from "~/routes/seksjoner.config";
+import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
 import {
   Bundle,
   Dokumentasjonskrav,

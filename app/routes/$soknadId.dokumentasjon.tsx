@@ -5,7 +5,7 @@ import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { DokumentasjonskravProvider } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.context";
 import { DokumentasjonViewV1 } from "~/seksjon/dokumentasjon/v1/DokumentasjonViewV1";
-import { hentSeksjonConfig, hentSeksjonNavigasjon } from "./seksjoner.config";
+import { hentSeksjonConfig, hentSeksjonNavigasjon } from "~/seksjon/seksjoner.config";
 
 export type DokumentasjonskravSeksjon = {
   seksjon: {
@@ -23,6 +23,7 @@ export async function loader({
   params,
 }: LoaderFunctionArgs): Promise<DokumentasjonskravSeksjon | Response> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
 
   const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
   const seksjonResponse = await hentSeksjon(request, params.soknadId, seksjonId);

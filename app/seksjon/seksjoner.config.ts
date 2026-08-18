@@ -1,16 +1,14 @@
 type Konfig = {
   seksjonId: seksjonId;
-  nyesteVersjon?: number;
+  nyesteVersjon: number;
 };
 
 export type SeksjonNavigasjon = {
-  forrigeSeksjonId?: seksjonId;
-  nesteSeksjonId?: seksjonId;
+  forrigeSeksjonId: seksjonId | null;
+  nesteSeksjonId: seksjonId | null;
 };
 
-export type SeksjonConfig = Konfig & {
-  nyesteVersjon: number;
-};
+export type SeksjonConfig = Konfig;
 
 type seksjonId =
   | "personalia"
@@ -27,7 +25,7 @@ type seksjonId =
   | "oppsummering"
   | "kvittering";
 
-export const seksjonKonfig = [
+export const seksjonKonfig: Konfig[] = [
   { seksjonId: "personalia", nyesteVersjon: 1 },
   { seksjonId: "din-situasjon", nyesteVersjon: 1 },
   { seksjonId: "arbeidsforhold", nyesteVersjon: 2 },
@@ -39,18 +37,18 @@ export const seksjonKonfig = [
   { seksjonId: "reell-arbeidssoker", nyesteVersjon: 1 },
   { seksjonId: "tilleggsopplysninger", nyesteVersjon: 1 },
   { seksjonId: "dokumentasjon", nyesteVersjon: 1 },
-  { seksjonId: "oppsummering" },
-  { seksjonId: "kvittering" },
-] as const satisfies readonly Konfig[];
+  { seksjonId: "oppsummering", nyesteVersjon: 1 },
+  { seksjonId: "kvittering", nyesteVersjon: 1 },
+];
 
 export function hentSeksjonConfig(seksjonId: seksjonId): SeksjonConfig {
   const seksjon = seksjonKonfig.find((seksjon) => seksjon.seksjonId === seksjonId);
 
-  if (!seksjon || !("nyesteVersjon" in seksjon) || typeof seksjon.nyesteVersjon !== "number") {
-    throw new Error(`Mangler versjon for seksjon: ${seksjonId}`);
+  if (!seksjon) {
+    throw new Error(`Ukjent seksjon: ${seksjonId}`);
   }
 
-  return { ...seksjon, nyesteVersjon: seksjon.nyesteVersjon };
+  return seksjon;
 }
 
 export function hentSeksjonNavigasjon(seksjonId: seksjonId): SeksjonNavigasjon {
@@ -61,7 +59,7 @@ export function hentSeksjonNavigasjon(seksjonId: seksjonId): SeksjonNavigasjon {
   }
 
   return {
-    forrigeSeksjonId: seksjonKonfig[indeks - 1]?.seksjonId,
-    nesteSeksjonId: seksjonKonfig[indeks + 1]?.seksjonId,
+    forrigeSeksjonId: seksjonKonfig[indeks - 1]?.seksjonId ?? null,
+    nesteSeksjonId: seksjonKonfig[indeks + 1]?.seksjonId ?? null,
   };
 }
