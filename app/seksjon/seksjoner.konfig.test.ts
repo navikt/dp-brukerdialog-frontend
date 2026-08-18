@@ -1,121 +1,83 @@
 import { describe, expect, it } from "vitest";
-import { hentSeksjonKonfig as hentSeksjonConfigFraKonfig } from "~/seksjon/seksjoner.konfig";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
-function hentSeksjonConfig(seksjonId: Parameters<typeof hentSeksjonConfigFraKonfig>[0]) {
-  const { seksjonId: id, nyesteVersjon } = hentSeksjonConfigFraKonfig(seksjonId);
-  return { seksjonId: id, nyesteVersjon };
-}
-
-function hentSeksjonNavigasjon(seksjonId: Parameters<typeof hentSeksjonConfigFraKonfig>[0]) {
-  const { forrigeSeksjonId, nesteSeksjonId } = hentSeksjonConfigFraKonfig(seksjonId);
-  return { forrigeSeksjonId, nesteSeksjonId };
-}
-
-describe("hentSeksjonConfig", () => {
-  it("returnerer seksjonsconfig og navigasjon i samme objekt", () => {
-    expect(hentSeksjonConfigFraKonfig("din-situasjon")).toEqual({
-      seksjonId: "din-situasjon",
-      nyesteVersjon: 1,
-      forrigeSeksjonId: "personalia",
-      nesteSeksjonId: "arbeidsforhold",
-    });
-  });
-
+describe("hentSeksjonKonfig", () => {
   it("returnerer config for alle seksjoner", () => {
-    expect(hentSeksjonConfig("personalia")).toEqual({ seksjonId: "personalia", nyesteVersjon: 1 });
-    expect(hentSeksjonConfig("din-situasjon")).toEqual({
-      seksjonId: "din-situasjon",
+    expect(hentSeksjonKonfig("personalia")).toEqual({
+      seksjonId: "personalia",
       nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("arbeidsforhold")).toEqual({
-      seksjonId: "arbeidsforhold",
-      nyesteVersjon: 2,
-    });
-    expect(hentSeksjonConfig("annen-pengestotte")).toEqual({
-      seksjonId: "annen-pengestotte",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("egen-naring")).toEqual({
-      seksjonId: "egen-naring",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("verneplikt")).toEqual({ seksjonId: "verneplikt", nyesteVersjon: 1 });
-    expect(hentSeksjonConfig("utdanning")).toEqual({ seksjonId: "utdanning", nyesteVersjon: 1 });
-    expect(hentSeksjonConfig("barnetillegg")).toEqual({
-      seksjonId: "barnetillegg",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("reell-arbeidssoker")).toEqual({
-      seksjonId: "reell-arbeidssoker",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("tilleggsopplysninger")).toEqual({
-      seksjonId: "tilleggsopplysninger",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("dokumentasjon")).toEqual({
-      seksjonId: "dokumentasjon",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("oppsummering")).toEqual({
-      seksjonId: "oppsummering",
-      nyesteVersjon: 1,
-    });
-    expect(hentSeksjonConfig("kvittering")).toEqual({ seksjonId: "kvittering", nyesteVersjon: 1 });
-  });
-});
-
-describe("hentSeksjonNavigasjon", () => {
-  it("returnerer korrekt navigasjon for alle seksjoner", () => {
-    expect(hentSeksjonNavigasjon("personalia")).toEqual({
       forrigeSeksjonId: null,
       nesteSeksjonId: "din-situasjon",
     });
-    expect(hentSeksjonNavigasjon("din-situasjon")).toEqual({
+    expect(hentSeksjonKonfig("din-situasjon")).toEqual({
+      seksjonId: "din-situasjon",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "personalia",
       nesteSeksjonId: "arbeidsforhold",
     });
-    expect(hentSeksjonNavigasjon("arbeidsforhold")).toEqual({
+    expect(hentSeksjonKonfig("arbeidsforhold")).toEqual({
+      seksjonId: "arbeidsforhold",
+      nyesteVersjon: 2,
       forrigeSeksjonId: "din-situasjon",
       nesteSeksjonId: "annen-pengestotte",
     });
-    expect(hentSeksjonNavigasjon("annen-pengestotte")).toEqual({
+    expect(hentSeksjonKonfig("annen-pengestotte")).toEqual({
+      seksjonId: "annen-pengestotte",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "arbeidsforhold",
       nesteSeksjonId: "egen-naring",
     });
-    expect(hentSeksjonNavigasjon("egen-naring")).toEqual({
+    expect(hentSeksjonKonfig("egen-naring")).toEqual({
+      seksjonId: "egen-naring",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "annen-pengestotte",
       nesteSeksjonId: "verneplikt",
     });
-    expect(hentSeksjonNavigasjon("verneplikt")).toEqual({
+    expect(hentSeksjonKonfig("verneplikt")).toEqual({
+      seksjonId: "verneplikt",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "egen-naring",
       nesteSeksjonId: "utdanning",
     });
-    expect(hentSeksjonNavigasjon("utdanning")).toEqual({
+    expect(hentSeksjonKonfig("utdanning")).toEqual({
+      seksjonId: "utdanning",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "verneplikt",
       nesteSeksjonId: "barnetillegg",
     });
-    expect(hentSeksjonNavigasjon("barnetillegg")).toEqual({
+    expect(hentSeksjonKonfig("barnetillegg")).toEqual({
+      seksjonId: "barnetillegg",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "utdanning",
       nesteSeksjonId: "reell-arbeidssoker",
     });
-    expect(hentSeksjonNavigasjon("reell-arbeidssoker")).toEqual({
+    expect(hentSeksjonKonfig("reell-arbeidssoker")).toEqual({
+      seksjonId: "reell-arbeidssoker",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "barnetillegg",
       nesteSeksjonId: "tilleggsopplysninger",
     });
-    expect(hentSeksjonNavigasjon("tilleggsopplysninger")).toEqual({
+    expect(hentSeksjonKonfig("tilleggsopplysninger")).toEqual({
+      seksjonId: "tilleggsopplysninger",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "reell-arbeidssoker",
       nesteSeksjonId: "dokumentasjon",
     });
-    expect(hentSeksjonNavigasjon("dokumentasjon")).toEqual({
+    expect(hentSeksjonKonfig("dokumentasjon")).toEqual({
+      seksjonId: "dokumentasjon",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "tilleggsopplysninger",
       nesteSeksjonId: "oppsummering",
     });
-    expect(hentSeksjonNavigasjon("oppsummering")).toEqual({
+    expect(hentSeksjonKonfig("oppsummering")).toEqual({
+      seksjonId: "oppsummering",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "dokumentasjon",
       nesteSeksjonId: "kvittering",
     });
-    expect(hentSeksjonNavigasjon("kvittering")).toEqual({
+    expect(hentSeksjonKonfig("kvittering")).toEqual({
+      seksjonId: "kvittering",
+      nyesteVersjon: 1,
       forrigeSeksjonId: "oppsummering",
       nesteSeksjonId: null,
     });
