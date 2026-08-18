@@ -105,7 +105,7 @@ export default function OpprettSoknadSide() {
   return (
     <main id="maincontent" tabIndex={-1}>
       <title>Søknad om dagpenger</title>
-      <div className="soknad-header">
+      <div className="søknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">
           Søknad om dagpenger
