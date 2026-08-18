@@ -8,7 +8,7 @@ import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -38,7 +38,7 @@ import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
 
-const { seksjonId } = hentSeksjonConfig("reell-arbeidssoker");
+const { seksjonId } = hentSeksjonKonfig("reell-arbeidssoker");
 
 export function ReellArbeidssøkerViewV1() {
   const loaderData = useLoaderData<typeof loader>();

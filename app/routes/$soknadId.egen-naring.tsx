@@ -14,10 +14,10 @@ import {
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
-  hentSeksjonConfig("egen-naring");
+  hentSeksjonKonfig("egen-naring");
 
 export type SeksjonSvar = EgenNæringSvar & {
   [næringsvirksomheter]?: Næringsvirksomhet[] | null;

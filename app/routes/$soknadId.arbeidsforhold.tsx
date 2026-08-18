@@ -13,7 +13,7 @@ import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.se
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/ArbeidsforholdViewV2";
 import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
@@ -29,7 +29,7 @@ export type ArbeidsforholdSeksjon = {
 };
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
-  hentSeksjonConfig("arbeidsforhold");
+  hentSeksjonKonfig("arbeidsforhold");
 
 export async function loader({
   request,

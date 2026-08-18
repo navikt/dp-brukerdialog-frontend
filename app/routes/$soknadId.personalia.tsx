@@ -32,9 +32,9 @@ import {
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { filtrerSeksjonsvar, normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling, seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
-const { seksjonId, nyesteVersjon, nesteSeksjonId } = hentSeksjonConfig("personalia");
+const { seksjonId, nyesteVersjon, nesteSeksjonId } = hentSeksjonKonfig("personalia");
 
 export type Personalia = {
   person: Person;

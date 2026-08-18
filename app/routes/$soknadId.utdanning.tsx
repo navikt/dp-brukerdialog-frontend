@@ -11,10 +11,10 @@ import {
   normaliserFormData,
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
-  hentSeksjonConfig("utdanning");
+  hentSeksjonKonfig("utdanning");
 
 type UtdanningSeksjon = {
   seksjon: {

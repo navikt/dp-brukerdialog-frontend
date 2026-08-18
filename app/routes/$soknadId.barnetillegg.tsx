@@ -13,7 +13,7 @@ import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { navigerEtterLagring } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
 export type SeksjonSvar = BarnetilleggSvar & {
   barnFraPdl?: BarnFraPdl[] | null;
@@ -30,7 +30,7 @@ export type BarnetilleggSeksjon = {
 };
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
-  hentSeksjonConfig("barnetillegg");
+  hentSeksjonKonfig("barnetillegg");
 
 export async function loader({
   request,

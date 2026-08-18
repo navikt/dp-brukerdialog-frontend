@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hentSeksjonConfig as hentSeksjonConfigFraKonfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig as hentSeksjonConfigFraKonfig } from "~/seksjon/seksjoner.konfig";
 
 function hentSeksjonConfig(seksjonId: Parameters<typeof hentSeksjonConfigFraKonfig>[0]) {
   const { seksjonId: id, nyesteVersjon } = hentSeksjonConfigFraKonfig(seksjonId);

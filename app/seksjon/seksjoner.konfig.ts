@@ -1,11 +1,11 @@
-export type SeksjonConfig = {
+export type SeksjonKonfig = {
   seksjonId: seksjonId;
   nyesteVersjon: number;
   forrigeSeksjonId: seksjonId | null;
   nesteSeksjonId: seksjonId | null;
 };
 
-type SeksjonGrunnlag = Pick<SeksjonConfig, "seksjonId" | "nyesteVersjon">;
+type SeksjonGrunnlag = Pick<SeksjonKonfig, "seksjonId" | "nyesteVersjon">;
 
 type seksjonId =
   | "personalia"
@@ -38,7 +38,7 @@ export const seksjonKonfig: SeksjonGrunnlag[] = [
   { seksjonId: "kvittering", nyesteVersjon: 1 },
 ];
 
-export function hentSeksjonConfig(seksjonId: seksjonId): SeksjonConfig {
+export function hentSeksjonKonfig(seksjonId: seksjonId): SeksjonKonfig {
   const indeks = seksjonKonfig.findIndex((seksjon) => seksjon.seksjonId === seksjonId);
 
   if (indeks === -1) {

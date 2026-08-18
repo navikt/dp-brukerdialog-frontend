@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { useNavigate, useParams } from "react-router";
-import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import {
   Bundle,
   Dokumentasjonskrav,
@@ -23,7 +23,7 @@ import {
   dokumentkravSvarSendtTidligere,
 } from "./dokumentasjonskrav.komponenter";
 
-const { seksjonId, nyesteVersjon } = hentSeksjonConfig("dokumentasjon");
+const { seksjonId, nyesteVersjon } = hentSeksjonKonfig("dokumentasjon");
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
 const NESTE_STEG = "../oppsummering";
