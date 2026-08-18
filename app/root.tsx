@@ -89,7 +89,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       void i18n.changeLanguage(locale);
       navigate(0);
     });
-  }, [i18n, language, navigate]);
+  }, [language, navigate]);
 
   return (
     <html lang={language}>

@@ -11,9 +11,10 @@ export function TilleggsopplysningerOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
+
   if (!seksjonSvarene) return null;
 
-  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
   const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(t);
   const tilleggsopplysningerSvar = Object.entries(seksjonSvarene);
 

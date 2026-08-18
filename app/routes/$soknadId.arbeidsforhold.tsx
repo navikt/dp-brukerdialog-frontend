@@ -29,8 +29,6 @@ export type ArbeidsforholdSeksjon = {
 
 export const NYESTE_VERSJON = 2;
 export const SEKSJON_ID = "arbeidsforhold";
-export const SEKSJON_NAVN = "Arbeidsforhold";
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Arbeidsforhold";
 export const NESTE_SEKSJON_ID = "annen-pengestotte";
 export const FORRIGE_SEKSJON_ID = "din-situasjon";
 

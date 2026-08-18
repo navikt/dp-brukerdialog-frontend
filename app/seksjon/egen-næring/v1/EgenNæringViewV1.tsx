@@ -9,11 +9,7 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
-import {
-  action,
-  loader,
-  SeksjonSvar
-} from "~/routes/$soknadId.egen-naring";
+import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
   driverDuEgenNæringsvirksomhet,
@@ -27,7 +23,7 @@ import {
   lagLeggTilNæringsvirksomhetKomponenter,
   Næringsvirksomhet,
   pdfGrunnlag,
-  seksjonsvar
+  seksjonsvar,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { egenNæringSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
 import { GårdsbrukDetaljer } from "~/seksjon/egen-næring/v1/komponenter/GårdsbrukDetaljer";
@@ -62,7 +58,7 @@ export function EgenNæringViewV1() {
     næringsvirksomhetModalData,
     setNæringsvirksomhetModalData,
     gårdsbrukModalData,
-    setGårdsbrukModalData
+    setGårdsbrukModalData,
   } = useEgenNæringContext();
 
   const [visNæringsvirksomhetFeilmelding, setVisNæringsvirksomhetFeilmelding] = useState(false);
@@ -72,7 +68,7 @@ export function EgenNæringViewV1() {
     method: "PUT",
     submitSource: "state",
     schema: egenNæringSchema,
-    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon }
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
   });
 
   const { formId, action: formAction } = form.formOptions;
@@ -119,8 +115,8 @@ export function EgenNæringViewV1() {
         ...lagSeksjonPayload(egenNæringEgetGårdsbrukKomponenter, form.transient.value()),
         ...gårdsbruk.map((etGårdsbruk) =>
           lagSeksjonPayload(leggTilGårdsbrukKomponenter, etGårdsbruk)
-        )
-      ]
+        ),
+      ],
     };
 
     return JSON.stringify(pdfPayload);
@@ -133,7 +129,7 @@ export function EgenNæringViewV1() {
       [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
       næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
       [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null
+      gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
     };
 
     form.setValue(pdfGrunnlag, genererPdfGrunnlag());
@@ -172,7 +168,7 @@ export function EgenNæringViewV1() {
         [driverDuEgenNæringsvirksomhet]: form.value(driverDuEgenNæringsvirksomhet),
         næringsvirksomheter: næringsvirksomheter.length > 0 ? næringsvirksomheter : null,
         [driverDuEgetGårdsbruk]: form.value(driverDuEgetGårdsbruk),
-        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null
+        gårdsbruk: gårdsbruk.length > 0 ? gårdsbruk : null,
       };
 
       form.setValue(handling, Seksjonshandling.neste);
@@ -275,10 +271,7 @@ export function EgenNæringViewV1() {
             )}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel={t("tekniskFeil.tittel")}
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

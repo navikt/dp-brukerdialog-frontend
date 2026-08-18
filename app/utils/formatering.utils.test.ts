@@ -1,4 +1,4 @@
-import { expect, it, test } from "vitest";
+import { expect, test } from "vitest";
 import { formaterDatoSvar } from "./formatering.utils";
 
 test("formaterDatoSvar returnerer dato på norsk format hvis spørsmålet er av type dato", () => {
@@ -26,7 +26,7 @@ test("formaterDatoSvar returnerer uendret input hvis spørsmålet er av en annen
 });
 
 test("formaterDatoSvar returnerer uendret input hvis spørsmålet er av en annen type enn dato, periodeFra eller periodeTil og svaret ikke er en dato", () => {
-  expect(formaterDatoSvar({ type: "kortTekst", id: "id", label: "label" }, "Dette er ikke en dato.")).toEqual(
-    "Dette er ikke en dato."
-  );
+  expect(
+    formaterDatoSvar({ type: "kortTekst", id: "id", label: "label" }, "Dette er ikke en dato.")
+  ).toEqual("Dette er ikke en dato.");
 });

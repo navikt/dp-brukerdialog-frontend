@@ -1,7 +1,6 @@
 import { Button } from "@navikt/ds-react";
 import { useEffect, useState } from "react";
-import { TKEY_REGEX } from "../i18n/index.utils";
-import { erVisTNøklerAktivert, settVisTNøkler } from "../i18n/index.utils";
+import { TKEY_REGEX, erVisTNøklerAktivert, settVisTNøkler } from "../i18n/index.utils";
 
 export function OversettingNøklerKnapp() {
   const [aktiv, setAktiv] = useState(false);

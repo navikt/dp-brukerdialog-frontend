@@ -1,7 +1,7 @@
 import { KomponentType } from "~/components/Komponent.types";
 
 export function generateMermaidFlow(komponenter: KomponentType[]): string {
-  let lines: string[] = ["flowchart TD"];
+  const lines: string[] = ["flowchart TD"];
   const main = komponenter[0];
   if (!main) return "";
 

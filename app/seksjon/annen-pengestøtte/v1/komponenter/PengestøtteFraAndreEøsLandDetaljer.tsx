@@ -33,7 +33,8 @@ export function PengestøtteFraAndreEøsLandDetaljer({
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
   const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
-  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter =
+    lagPengestøtteFraAndreEøsLandModalKomponenter(t);
 
   function fjernPengestøtteFraAndreEøsLand() {
     setPengestøtteFraAndreEøsLand(

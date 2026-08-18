@@ -25,13 +25,15 @@ export function AnnenPengestøtteOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return null;
   const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+
+  if (!seksjonSvarene) return null;
 
   const data = seksjonSvarene as AnnenPengestøtteResponse;
 
   const pengestøtteFraAndreEøsLandKomponenter = lagPengestøtteFraAndreEøsLandKomponenter(t);
-  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter =
+    lagPengestøtteFraAndreEøsLandModalKomponenter(t);
   const pengestøtteFraNorgeKomponenter = lagPengestøtteFraNorgeKomponenter(t);
   const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
   const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter =
@@ -147,7 +149,9 @@ export function AnnenPengestøtteOppsummeringV1({
           </FormSummary.Label>
           <OppsummeringsSvar
             spørsmål={mottattEllerSøktOmPengestøtteFraAndreEøsLand!}
-            svar={data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] ?? t("oppsummering.ubesvart")}
+            svar={
+              data[harMottattEllerSøktOmPengestøtteFraAndreEøsLand] ?? t("oppsummering.ubesvart")
+            }
           />
         </FormSummary.Answer>
 

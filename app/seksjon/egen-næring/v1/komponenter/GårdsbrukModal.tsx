@@ -117,7 +117,11 @@ export function GårdsbrukModal({ ref }: IProps) {
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>

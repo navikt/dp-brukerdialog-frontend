@@ -49,7 +49,7 @@ function finnAktivSteg(seksjoner: FremgangSteg[], urlPath: string) {
   const pathParts = url.pathname.split("/");
   const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
 
-  let seksjonIndeks = seksjoner.findIndex((seksjon) => seksjon.path === seksjonsIdFraUrl);
+  const seksjonIndeks = seksjoner.findIndex((seksjon) => seksjon.path === seksjonsIdFraUrl);
 
   if (seksjonIndeks === -1) {
     return seksjoner.findIndex((data) => data.fullført === false);

@@ -69,7 +69,8 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraNorgeKomponenter = lagPengestøtteFraNorgeKomponenter(t);
   const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
   const pengestøtteFraAndreEøsLandKomponenter = lagPengestøtteFraAndreEøsLandKomponenter(t);
-  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter =
+    lagPengestøtteFraAndreEøsLandModalKomponenter(t);
   const annenPengestøtteKomponenter = lagAnnenPengestøtteKomponenter(t);
 
   const loaderData = useLoaderData<typeof loader>();
@@ -393,9 +394,7 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraNorgeFeilmelding && (
-                  <InlineMessage status="error">
-                    {t("norge.manglerFeilmelding")}
-                  </InlineMessage>
+                  <InlineMessage status="error">{t("norge.manglerFeilmelding")}</InlineMessage>
                 )}
               </VStack>
             )}
@@ -433,18 +432,13 @@ export function AnnenPengestøtteViewV1() {
                   </Button>
                 </HStack>
                 {visMottattEllerSøktOmPengestøtteFraAndreEøsLandFeilmelding && (
-                  <InlineMessage status="error">
-                    {t("eøs.manglerFeilmelding")}
-                  </InlineMessage>
+                  <InlineMessage status="error">{t("eøs.manglerFeilmelding")}</InlineMessage>
                 )}
               </VStack>
             )}
 
             {actionData && (
-              <SeksjonTekniskFeil
-                tittel={t("tekniskFeil.tittel")}
-                beskrivelse={actionData.error}
-              />
+              <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
             )}
           </VStack>
         </Form>

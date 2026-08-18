@@ -11,8 +11,10 @@ export function DinSituasjonOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return null;
   const { t } = useVersjonertTranslation("din-situasjon", 1);
+
+  if (!seksjonSvarene) return null;
+
   const oversattDinSituasjonKomponenter = lagDinSituasjonKomponenter(t);
   const dinSituasjonEntries = Object.entries(seksjonSvarene);
 

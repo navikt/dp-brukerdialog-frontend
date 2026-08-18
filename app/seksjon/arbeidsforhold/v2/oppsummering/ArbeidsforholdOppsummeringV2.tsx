@@ -28,9 +28,10 @@ export function ArbeidsforholdOppsummeringV2({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
+  const { t } = useVersjonertTranslation("arbeidsforhold", 2);
+
   if (!seksjonSvarene) return null;
 
-  const { t } = useVersjonertTranslation("arbeidsforhold", 2);
   const data = seksjonSvarene as ArbeidsforholdResponse;
   const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(t);
 

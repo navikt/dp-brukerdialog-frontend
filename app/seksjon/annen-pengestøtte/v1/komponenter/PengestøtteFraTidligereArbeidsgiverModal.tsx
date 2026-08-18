@@ -50,7 +50,8 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
   const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
   const pengestøtteFraTidligereArbeidsgiverModalKomponenter =
     lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t);
-  const pengestøtteFraAndreEøsLandModalKomponenter = lagPengestøtteFraAndreEøsLandModalKomponenter(t);
+  const pengestøtteFraAndreEøsLandModalKomponenter =
+    lagPengestøtteFraAndreEøsLandModalKomponenter(t);
 
   const form = useForm({
     submitSource: "state",
@@ -86,7 +87,6 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     },
     resetAfterSubmit: true,
   });
-
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
@@ -185,8 +185,8 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
             <HStack gap="space-8">
-                {modalOperasjon} {t("tidligereArbeidsgiver.modal.heading")}
-              </HStack>
+              {modalOperasjon} {t("tidligereArbeidsgiver.modal.heading")}
+            </HStack>
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -210,7 +210,11 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
               })}
 
               <HStack className="mt-16" justify="end">
-                <Button type="button" onClick={() => form.submit()} icon={<FloppydiskIcon aria-hidden />}>
+                <Button
+                  type="button"
+                  onClick={() => form.submit()}
+                  icon={<FloppydiskIcon aria-hidden />}
+                >
                   {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>

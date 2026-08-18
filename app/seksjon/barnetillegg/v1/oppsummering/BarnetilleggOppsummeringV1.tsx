@@ -5,7 +5,6 @@ import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   lagBarnetilleggKomponenter,
   lagBarnFraPdlKomponenter,
-  lagLeggTilBarnManueltModalKomponenter,
   bostedsland,
   etternavn,
   fornavnOgMellomnavn,
@@ -22,9 +21,9 @@ export function BarnetilleggOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  if (!seksjonSvarene) return null;
-
   const { t } = useVersjonertTranslation("barnetillegg", 1);
+
+  if (!seksjonSvarene) return null;
 
   const barnetilleggSvar = seksjonSvarene as SeksjonSvar;
   const entries = Object.entries(barnetilleggSvar);
@@ -36,17 +35,12 @@ export function BarnetilleggOppsummeringV1({
 
   const barnetilleggKomponenter = lagBarnetilleggKomponenter(t);
   const barnFraPdlSpørsmål = lagBarnFraPdlKomponenter(t);
-  const leggTilBarnManueltSpørsmål = lagLeggTilBarnManueltModalKomponenter(t);
 
   const forsørgerDuBarnetSpørsmål = barnetilleggKomponenter.find(
     (s) => s.id === forsørgerDuBarnSomIkkeVisesHer
   )!;
 
   const alleBarna = barnetilleggSvar.barnFraPdl?.concat(barnetilleggSvar.barnLagtManuelt ?? []);
-
-  function finnLabelNavn(id: string) {
-    return leggTilBarnManueltSpørsmål.find((spørsmål) => spørsmål.id === id)?.label;
-  }
 
   function finnBarnFraPdlLabelNavn(id: string) {
     return barnFraPdlSpørsmål.find((spørsmål) => spørsmål.id === id)?.label;

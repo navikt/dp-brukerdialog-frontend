@@ -9,19 +9,19 @@ import {
   jegHarSagtOppSelv,
   kontraktenErUtgått,
   navnetPåBedriften,
-  oppgiPersonnummeretPinDuHaddeIDetteLandet
+  oppgiPersonnummeretPinDuHaddeIDetteLandet,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import {
   jegHarSagtOppHvaVarÅrsaken,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
-  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato
+  jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
   kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
   kontraktenErUtgåttHarDuFåttTilbudOmForlengelseAvArbeidskontraktenEllerTilbudOmEnAnnenStillingHosArbeidsgiver,
-  kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato
+  kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter.kontraktenErUtgått";
 
 export const mockArbeidsforhold: ArbeidsforholdResponse = {
@@ -34,7 +34,7 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
       [jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato]: "2025-09-24",
       [hvordanHarDetteArbeidsforholdetEndretSeg]: jegHarSagtOppSelv,
       [jegHarSagtOppHvaVarÅrsaken]: "Det var for store sko å fylle.",
-      [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon
+      [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon,
     },
     {
       [navnetPåBedriften]: "VAKKER TØNNE AS",
@@ -46,9 +46,9 @@ export const mockArbeidsforhold: ArbeidsforholdResponse = {
         "ja",
       [kontraktenErUtgåttHvaHarDuSvartPåTilbudet]: "nei",
       [kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet]: "Tønner er ikke min greie.",
-      [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon
-    }
+      [harDuJobbetSkiftTurnusEllerRotasjon]: hverkenSkiftTurnusEllerRotasjon,
+    },
   ],
   [hvordanHarDuJobbet]: "fastArbeidstidI6MånederEllerMer",
-  [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: "ja"
+  [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: "ja",
 };

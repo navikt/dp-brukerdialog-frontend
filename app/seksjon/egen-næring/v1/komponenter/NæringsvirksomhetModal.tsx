@@ -1,7 +1,9 @@
 import { FloppydiskIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
+import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { Komponent } from "~/components/Komponent";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
@@ -12,8 +14,6 @@ import {
   Næringsvirksomhet,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { leggTilNæringsvirksomhetSchema } from "~/seksjon/egen-næring/v1/egen-næring.schema";
-import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;

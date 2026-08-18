@@ -42,9 +42,17 @@ export function PersonaliaViewV1() {
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();
-
   const personaliaKomponenter = lagPersonaliaKomponenter(t);
   const personaliaBostedslandKomponenter = lagPersonaliaBostedslandKomponenter(t);
+
+  const form = useForm({
+    method: "PUT",
+    submitSource: "state",
+    schema: personaliaSchema,
+    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
+  });
+
+  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandKomponenter);
 
   if (!personalia) {
     return (
@@ -72,13 +80,6 @@ export function PersonaliaViewV1() {
   const formattertIdent = ident.replace(/(.{6})(.{5})/, `$1 $2`);
   const formattertKontonummer = personalia.kontonummer?.replace(/(.{4})(.{2})(.{5})/, "$1 $2 $3");
 
-  const form = useForm({
-    method: "PUT",
-    submitSource: "state",
-    schema: personaliaSchema,
-    defaultValues: { ...loaderData.seksjon.seksjonsvar, versjon: loaderData.seksjon.versjon },
-  });
-
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
 
@@ -99,8 +100,6 @@ export function PersonaliaViewV1() {
 
   form.setValue(alderFraPdl, alder?.toString() || "");
   form.setValue(kontonummerFraKontoregister, personalia.kontonummer || "");
-
-  useNullstillSkjulteFelter<PersonaliaSvar>(form, personaliaBostedslandKomponenter);
 
   async function lagreSvar() {
     const klarTilLagring = await validerSvar(form, økeSubmitTeller, setKomponentIdTilFokus);

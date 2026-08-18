@@ -16,8 +16,6 @@ export type DokumentasjonskravSeksjon = {
 
 export const NYESTE_VERSJON = 1;
 export const SEKSJON_ID = "dokumentasjon";
-export const SEKSJON_NAVN = "Dokumentasjon";
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Dokumentasjon";
 export const NESTE_SEKSJON_ID = "oppsummering";
 export const FORRIGE_SEKSJON_ID = "tilleggsopplysninger";
 
