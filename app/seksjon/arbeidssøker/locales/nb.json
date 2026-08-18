@@ -1,0 +1,21 @@
+{
+	"side": {
+		"tittel": "Søknad om dagpenger: Arbeidssøker",
+		"overskrift": "Søknad om dagpenger"
+	},
+	"tekniskFeil": {
+		"beskjed": "Vi kunne ikke sjekke om du er registrert som arbeidssøker. Du kan forsøke å registrere deg, eller gå videre til søknaden."
+	},
+	"informasjon": {
+		"overskrift": "Du må være registrert som arbeidssøker for å ha rett til dagpenger",
+		"beskrivelse": "Du kan tidligst få dagpenger fra datoen du både har registrert deg som arbeidssøker og sendt søknad om dagpenger"
+	},
+	"handlinger": {
+		"registrer": "Registrer deg som arbeidssøker",
+		"avbryt": "Avbryt"
+	},
+	"soknad": {
+		"lenketekst": "Jeg vil søke om dagpenger likevel",
+		"beskrivelse": "og er klar over at jeg mest sannsynlig vil få avslag på søknaden"
+	}
+}
