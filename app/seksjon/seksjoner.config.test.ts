@@ -1,7 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { hentSeksjonConfig, hentSeksjonNavigasjon } from "~/seksjon/seksjoner.config";
+import { hentSeksjonConfig as hentSeksjonConfigFraKonfig } from "~/seksjon/seksjoner.config";
+
+function hentSeksjonConfig(seksjonId: Parameters<typeof hentSeksjonConfigFraKonfig>[0]) {
+  const { seksjonId: id, nyesteVersjon } = hentSeksjonConfigFraKonfig(seksjonId);
+  return { seksjonId: id, nyesteVersjon };
+}
+
+function hentSeksjonNavigasjon(seksjonId: Parameters<typeof hentSeksjonConfigFraKonfig>[0]) {
+  const { forrigeSeksjonId, nesteSeksjonId } = hentSeksjonConfigFraKonfig(seksjonId);
+  return { forrigeSeksjonId, nesteSeksjonId };
+}
 
 describe("hentSeksjonConfig", () => {
+  it("returnerer seksjonsconfig og navigasjon i samme objekt", () => {
+    expect(hentSeksjonConfigFraKonfig("din-situasjon")).toEqual({
+      seksjonId: "din-situasjon",
+      nyesteVersjon: 1,
+      forrigeSeksjonId: "personalia",
+      nesteSeksjonId: "arbeidsforhold",
+    });
+  });
+
   it("returnerer config for alle seksjoner", () => {
     expect(hentSeksjonConfig("personalia")).toEqual({ seksjonId: "personalia", nyesteVersjon: 1 });
     expect(hentSeksjonConfig("din-situasjon")).toEqual({

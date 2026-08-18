@@ -5,7 +5,7 @@ import { hentSeksjon } from "~/models/hent-seksjon.server";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { DokumentasjonskravProvider } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.context";
 import { DokumentasjonViewV1 } from "~/seksjon/dokumentasjon/v1/DokumentasjonViewV1";
-import { hentSeksjonConfig, hentSeksjonNavigasjon } from "~/seksjon/seksjoner.config";
+import { hentSeksjonConfig } from "~/seksjon/seksjoner.config";
 
 export type DokumentasjonskravSeksjon = {
   seksjon: {
@@ -15,8 +15,7 @@ export type DokumentasjonskravSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[];
 };
 
-const { seksjonId, nyesteVersjon } = hentSeksjonConfig("dokumentasjon");
-const { nesteSeksjonId } = hentSeksjonNavigasjon(seksjonId);
+const { seksjonId, nyesteVersjon, nesteSeksjonId } = hentSeksjonConfig("dokumentasjon");
 
 export async function loader({
   request,
