@@ -64,12 +64,14 @@ const appSeksjonBackend = {
       return;
     }
 
-    const filPath =
-      baseNamespace === "common"
-        ? `./locales/${language}.json`
-        : versjon
-          ? `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`
-          : `../seksjon/${seksjonPath}/locales/${language}.json`;
+    let filPath: string;
+    if (baseNamespace === "common") {
+      filPath = `./locales/${language}.json`;
+    } else if (versjon) {
+      filPath = `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`;
+    } else {
+      filPath = `../seksjon/${seksjonPath}/locales/${language}.json`;
+    }
 
     if (!(filPath in oversettelser)) {
       callback(null, {});
