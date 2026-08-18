@@ -11,7 +11,7 @@
 		"fortsettSenere": "Fortsett senere",
 		"lagretMelding": "Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir automatisk slettet hvis du ikke gjør noe innen 7 dager."
 	},
-	"slettSoknad": {
+	"slettSøknad": {
 		"feil": "Feil ved sletting av søknad",
 		"apneKnapp": "Slett søknaden",
 		"bekreftelseTittel": "Er du sikker på at du vil slette søknaden?",
@@ -21,6 +21,6 @@
 		"slettetTittel": "Søknaden din er slettet",
 		"slettetBeskrivelse": "Søknaden og alle svarene dine er slettet.",
 		"lukkKnapp": "Lukk",
-		"startNySoknadKnapp": "Start ny søknad"
+		"startNySøknadKnapp": "Start ny søknad"
 	}
 }

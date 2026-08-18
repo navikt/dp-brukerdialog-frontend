@@ -22,12 +22,12 @@ export function SlettSøknadModal({ søknadId }: IProps) {
         method: "DELETE",
       });
       if (!response.ok) {
-        throw new Error(t("slettSoknad.feil"));
+        throw new Error(t("slettSøknad.feil"));
       }
       sletteSøknadSpørsmålModal.current?.close();
       slettetSøknadBekreftelseModal.current?.showModal();
     } catch (error) {
-      console.error(t("slettSoknad.feil"), error);
+      console.error(t("slettSøknad.feil"), error);
     }
   }
 
@@ -41,25 +41,25 @@ export function SlettSøknadModal({ søknadId }: IProps) {
           sletteSøknadSpørsmålModal.current?.showModal();
         }}
       >
-        {t("slettSoknad.apneKnapp")}
+        {t("slettSøknad.apneKnapp")}
       </Button>
       <Modal
         ref={sletteSøknadSpørsmålModal}
-        header={{ heading: t("slettSoknad.bekreftelseTittel") }}
+        header={{ heading: t("slettSøknad.bekreftelseTittel") }}
       >
         <Modal.Body>
           <VStack gap="space-24">
-            <BodyLong>{t("slettSoknad.bekreftelseBeskrivelse")}</BodyLong>
+            <BodyLong>{t("slettSøknad.bekreftelseBeskrivelse")}</BodyLong>
             <HStack gap="space-32">
               <Button variant="danger" type="button" onClick={() => slettSøknad()}>
-                {t("slettSoknad.slettKnapp")}
+                {t("slettSøknad.slettKnapp")}
               </Button>
               <Button
                 type="button"
                 variant="tertiary"
                 onClick={() => sletteSøknadSpørsmålModal.current?.close()}
               >
-                {t("slettSoknad.avbrytKnapp")}
+                {t("slettSøknad.avbrytKnapp")}
               </Button>
             </HStack>
           </VStack>
@@ -67,11 +67,11 @@ export function SlettSøknadModal({ søknadId }: IProps) {
       </Modal>
       <Modal
         ref={slettetSøknadBekreftelseModal}
-        header={{ heading: t("slettSoknad.slettetTittel") }}
+        header={{ heading: t("slettSøknad.slettetTittel") }}
       >
         <Modal.Body>
           <VStack gap="space-24">
-            <BodyLong>{t("slettSoknad.slettetBeskrivelse")}</BodyLong>
+            <BodyLong>{t("slettSøknad.slettetBeskrivelse")}</BodyLong>
             <HStack gap="space-32">
               <Button
                 variant="primary"
@@ -82,7 +82,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
                   window.location.href = `${getEnv("DP_MINE_DAGPENGER_URL")}`;
                 }}
               >
-                {t("slettSoknad.lukkKnapp")}
+                {t("slettSøknad.lukkKnapp")}
               </Button>
               <Button
                 type="button"
@@ -92,7 +92,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
                   return navigate("/arbeidssoker");
                 }}
               >
-                {t("slettSoknad.startNySoknadKnapp")}
+                {t("slettSøknad.startNySøknadKnapp")}
               </Button>
             </HStack>
           </VStack>
