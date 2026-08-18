@@ -140,7 +140,7 @@ export default function SoknadIdLayoutSide() {
   return (
     <SoknadProvider>
       <main id="maincontent" tabIndex={-1}>
-        <div className="soknad-header">
+        <div className="søknad-header">
           <SøknadIkon />
           <Heading size="large" level="1">
             Søknad om dagpenger
