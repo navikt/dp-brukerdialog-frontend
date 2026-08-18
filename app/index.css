@@ -11,7 +11,7 @@
   padding: var(--ax-space-16);
 }
 
-.soknad-header {
+.søknad-header {
   display: flex;
   align-items: center;
   gap: var(--ax-space-16);

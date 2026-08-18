@@ -23,7 +23,7 @@ export function SøknadOversikt() {
   return (
     <main id="maincontent" tabIndex={-1}>
       <title>{t("side.tittel")}</title>
-      <div className="soknad-header">
+      <div className="søknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">
           {t("side.overskrift")}
