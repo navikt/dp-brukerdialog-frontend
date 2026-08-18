@@ -33,7 +33,7 @@ export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
             type="button"
             onClick={onClick}
           >
-            {t("footer.fortsettSenere")}
+            {t("footer.fortsettSenereKnapp")}
           </Button>
           <SlettSøknadModal søknadId={søknadId} />
         </HStack>

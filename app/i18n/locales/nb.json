@@ -8,12 +8,12 @@
 		"nesteSteg": "Neste steg"
 	},
 	"footer": {
-		"fortsettSenere": "Fortsett senere",
-		"lagretMelding": "Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir automatisk slettet hvis du ikke gjør noe innen 7 dager."
+		"fortsettSenereKnapp": "Fortsett senere",
+		"lagretMelding": "Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir automatisk slettet hvis du ikke gjør noe innen 7 dager.",
+		"slettSøknadKnapp": "Slett søknaden"
 	},
-	"slettSøknad": {
+	"slettSøknadModal": {
 		"feil": "Feil ved sletting av søknad",
-		"apneKnapp": "Slett søknaden",
 		"bekreftelseTittel": "Er du sikker på at du vil slette søknaden?",
 		"bekreftelseBeskrivelse": "Alle svarene dine blir slettet og du må begynne på nytt hvis du skal søke om dagpenger.",
 		"slettKnapp": "Slett søknaden",
