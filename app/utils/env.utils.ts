@@ -22,7 +22,6 @@ export type IEnv = {
   ARBEIDSSOKERREGISTRERING_URL: string;
   GENERELL_INNSENDING_URL: string;
   FARO_URL: string;
-  MIN_SIDE_URL: string;
 };
 
 export function getEnv(value: keyof IEnv) {
