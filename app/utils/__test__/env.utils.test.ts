@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { getEnv } from "./env.utils";
+import { getEnv } from "../env.utils";
 
 describe("getEnv", () => {
   const originalProcessEnv = process.env;

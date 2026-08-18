@@ -1,6 +1,7 @@
 import { Button, HStack, VStack } from "@navikt/ds-react";
-import { SistOppdatert } from "./SistOppdatert";
 import { ArrowLeftIcon, ArrowRightIcon } from "@navikt/aksel-icons";
+import { useTranslation } from "react-i18next";
+import { SistOppdatert } from "./SistOppdatert";
 
 interface IProps {
   onForrigeSteg?: () => void;
@@ -9,6 +10,8 @@ interface IProps {
 }
 
 export function SeksjonNavigasjon({ onForrigeSteg, onNesteSteg, lagrer }: IProps) {
+  const { t } = useTranslation("common");
+
   return (
     <VStack className="seksjon-navigasjon" gap="space-16">
       <SistOppdatert />
@@ -21,7 +24,7 @@ export function SeksjonNavigasjon({ onForrigeSteg, onNesteSteg, lagrer }: IProps
             onClick={onForrigeSteg}
             disabled={lagrer}
           >
-            Forrige steg
+            {t("navigasjon.forrigeSteg")}
           </Button>
         )}
 
@@ -33,7 +36,7 @@ export function SeksjonNavigasjon({ onForrigeSteg, onNesteSteg, lagrer }: IProps
           icon={<ArrowRightIcon aria-hidden />}
           disabled={lagrer}
         >
-          Neste steg
+          {t("navigasjon.nesteSteg")}
         </Button>
       </HStack>
     </VStack>

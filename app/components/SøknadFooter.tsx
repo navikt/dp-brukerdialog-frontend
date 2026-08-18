@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Alert, Button, HStack } from "@navikt/ds-react";
 import { FloppydiskIcon } from "@navikt/aksel-icons";
+import { Alert, Button, HStack } from "@navikt/ds-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SlettSøknadModal } from "~/components/SlettSøknadModal";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
@@ -10,6 +11,7 @@ interface SøknadFooterProps {
 
 export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
   const [visMelding, setVisMelding] = useState(false);
+  const { t } = useTranslation("common");
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
   function onClick() {
@@ -31,14 +33,13 @@ export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
             type="button"
             onClick={onClick}
           >
-            Fortsett senere
+            {t("footer.fortsettSenere")}
           </Button>
           <SlettSøknadModal søknadId={søknadId} />
         </HStack>
         {visMelding && (
           <Alert variant="success" className="mt-32">
-            Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir
-            automatisk slettet hvis du ikke gjør noe innen 7 dager.
+            {t("footer.lagretMelding")}
           </Alert>
         )}
       </div>

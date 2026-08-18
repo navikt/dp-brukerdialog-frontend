@@ -1,6 +1,7 @@
 import { TrashIcon } from "@navikt/aksel-icons";
 import { BodyLong, Box, Button, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { getEnv } from "~/utils/env.utils";
 
@@ -12,6 +13,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
   const sletteSøknadSpørsmålModal = useRef<HTMLDialogElement>(null);
   const slettetSøknadBekreftelseModal = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
   const [laster, setLaster] = useState(false);
 
   async function slettSøknad() {
@@ -20,12 +22,12 @@ export function SlettSøknadModal({ søknadId }: IProps) {
         method: "DELETE",
       });
       if (!response.ok) {
-        throw new Error("Feil ved sletting av søknad");
+        throw new Error(t("slettSoknad.feil"));
       }
       sletteSøknadSpørsmålModal.current?.close();
       slettetSøknadBekreftelseModal.current?.showModal();
     } catch (error) {
-      console.error("Feil ved sletting av søknad:", error);
+      console.error(t("slettSoknad.feil"), error);
     }
   }
 
@@ -39,37 +41,37 @@ export function SlettSøknadModal({ søknadId }: IProps) {
           sletteSøknadSpørsmålModal.current?.showModal();
         }}
       >
-        Slett søknaden
+        {t("slettSoknad.apneKnapp")}
       </Button>
       <Modal
         ref={sletteSøknadSpørsmålModal}
-        header={{ heading: "Er du sikker på at du vil slette søknaden?" }}
+        header={{ heading: t("slettSoknad.bekreftelseTittel") }}
       >
         <Modal.Body>
           <VStack gap="space-24">
-            <BodyLong>
-              Alle svarene dine blir slettet og du må begynne på nytt hvis du skal søke om
-              dagpenger.
-            </BodyLong>
+            <BodyLong>{t("slettSoknad.bekreftelseBeskrivelse")}</BodyLong>
             <HStack gap="space-32">
               <Button variant="danger" type="button" onClick={() => slettSøknad()}>
-                Slett søknaden
+                {t("slettSoknad.slettKnapp")}
               </Button>
               <Button
                 type="button"
                 variant="tertiary"
                 onClick={() => sletteSøknadSpørsmålModal.current?.close()}
               >
-                Nei, ikke slett søknaden
+                {t("slettSoknad.avbrytKnapp")}
               </Button>
             </HStack>
           </VStack>
         </Modal.Body>
       </Modal>
-      <Modal ref={slettetSøknadBekreftelseModal} header={{ heading: "Søknaden din er slettet" }}>
+      <Modal
+        ref={slettetSøknadBekreftelseModal}
+        header={{ heading: t("slettSoknad.slettetTittel") }}
+      >
         <Modal.Body>
           <VStack gap="space-24">
-            <BodyLong>Søknaden og alle svarene dine er slettet.</BodyLong>
+            <BodyLong>{t("slettSoknad.slettetBeskrivelse")}</BodyLong>
             <HStack gap="space-32">
               <Button
                 variant="primary"
@@ -80,7 +82,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
                   window.location.href = `${getEnv("DP_MINE_DAGPENGER_URL")}`;
                 }}
               >
-                Lukk
+                {t("slettSoknad.lukkKnapp")}
               </Button>
               <Button
                 type="button"
@@ -90,7 +92,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
                   return navigate("/arbeidssoker");
                 }}
               >
-                Start ny søknad
+                {t("slettSoknad.startNySoknadKnapp")}
               </Button>
             </HStack>
           </VStack>

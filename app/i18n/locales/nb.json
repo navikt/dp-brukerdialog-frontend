@@ -1,5 +1,26 @@
 {
 	"lagre": "Lagre",
 	"avbryt": "Avbryt",
-	"tilbake": "Tilbake"
+	"tilbake": "Tilbake",
+	"sistOppdatert": "Sist lagret: {{dato}}",
+	"navigasjon": {
+		"forrigeSteg": "Forrige steg",
+		"nesteSteg": "Neste steg"
+	},
+	"footer": {
+		"fortsettSenere": "Fortsett senere",
+		"lagretMelding": "Vi har lagret søknaden din. Du kan lukke siden og fortsette senere. Søknaden blir automatisk slettet hvis du ikke gjør noe innen 7 dager."
+	},
+	"slettSoknad": {
+		"feil": "Feil ved sletting av søknad",
+		"apneKnapp": "Slett søknaden",
+		"bekreftelseTittel": "Er du sikker på at du vil slette søknaden?",
+		"bekreftelseBeskrivelse": "Alle svarene dine blir slettet og du må begynne på nytt hvis du skal søke om dagpenger.",
+		"slettKnapp": "Slett søknaden",
+		"avbrytKnapp": "Nei, ikke slett søknaden",
+		"slettetTittel": "Søknaden din er slettet",
+		"slettetBeskrivelse": "Søknaden og alle svarene dine er slettet.",
+		"lukkKnapp": "Lukk",
+		"startNySoknadKnapp": "Start ny søknad"
+	}
 }

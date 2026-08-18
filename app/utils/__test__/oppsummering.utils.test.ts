@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { KomponentType } from "~/components/Komponent.types";
-import { erInformasjonsFelt } from "./oppsummering.utils";
+import { erInformasjonsFelt } from "../oppsummering.utils";
 
 describe("oppsummering.utils", () => {
   describe("erInformasjonsFelt", () => {

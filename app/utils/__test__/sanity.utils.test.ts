@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { TypedObject } from "@portabletext/types";
 import { toHTML } from "@portabletext/to-html";
-import { portableTextToKomponenter } from "./sanity.utils";
+import { portableTextToKomponenter } from "../sanity.utils";
 
 vi.mock("@portabletext/to-html", () => ({
   toHTML: vi.fn(),

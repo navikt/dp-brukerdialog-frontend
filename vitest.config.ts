@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     include: ["**/*.test.{ts,tsx}"],
     exclude: ["**/node_modules/**", "**/.react-router/**"],
-    setupFiles: ["./app/components/test/setup.ts"],
+    setupFiles: ["./vitest.setup.ts"],
     coverage: {
       include: ["**/*.{ts,tsx}"],
       exclude: [

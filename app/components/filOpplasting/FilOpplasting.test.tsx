@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
 
 import type { ReactNode } from "react";
+import "@testing-library/jest-dom/vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { EttersendingFilOpplasting } from "../EttersendingFilOpplasting";
+import { FilOpplasting } from "./FilOpplasting";
 
 import type {
   Dokumentasjonskrav,
@@ -26,9 +27,10 @@ import {
   hentTillatteFiltyperTekst,
 } from "~/utils/dokument.utils";
 
+import { dokumentkravSvarSendNå } from "~/seksjon/dokumentasjon/v1/dokumentasjonskrav.komponenter";
+
 const mocks = vi.hoisted(() => ({
-  oppdaterEttersending: vi.fn(),
-  valideringStartet: false,
+  oppdaterEtDokumentasjonskrav: vi.fn(),
 }));
 
 vi.mock("react-router", () => ({
@@ -41,21 +43,19 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) =>
       ({
-        "opplasting.dokumentasjon": "Dokumentasjon",
-        "opplasting.mangler": "Mangler",
         "opplasting.lastOpp": "Last opp dokument",
         "opplasting.beskrivelse": `Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`,
         "opplasting.lasterOpp": "Laster opp...",
         "feil.filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendes inn.",
         "feil.filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn.",
+        "feil.manglerFil": "Du må laste opp minst en fil før dokumentasjonen kan sendes inn.",
       })[key] ?? key,
   }),
 }));
 
-vi.mock("~/seksjon/ettersending/ettersending.context", () => ({
-  useEttersending: () => ({
-    oppdaterEttersending: mocks.oppdaterEttersending,
-    valideringStartet: mocks.valideringStartet,
+vi.mock("~/seksjon/dokumentasjon/v1/dokumentasjonskrav.context", () => ({
+  useDokumentasjonskravContext: () => ({
+    oppdaterEtDokumentasjonskrav: mocks.oppdaterEtDokumentasjonskrav,
   }),
 }));
 
@@ -63,18 +63,9 @@ vi.mock("~/utils/env.utils", () => ({
   getEnv: () => "",
 }));
 
-vi.mock("~/seksjon/dokumentasjon/v1/DokumentasjonskravInnhold", () => ({
-  DokumentasjonskravInnhold: ({ type }: { type: DokumentasjonskravType }) => (
-    <div data-testid="dokumentasjonskrav-innhold">{type}</div>
-  ),
-}));
-
 vi.mock("@navikt/ds-react", () => ({
   Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   VStack: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  HStack: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Heading: ({ children }: { children: ReactNode }) => <h3>{children}</h3>,
-  Tag: ({ children }: { children: ReactNode }) => <span>{children}</span>,
   ErrorMessage: ({ children }: { children: ReactNode }) => <div role="alert">{children}</div>,
   FileObject: class FileObject {},
 }));
@@ -94,11 +85,11 @@ vi.mock("@navikt/ds-react/FileUpload", () => ({
     onSelect: (files: Array<{ file: File }>) => void;
   }) => (
     <div>
-      <label htmlFor="ettersending-file-upload">{label}</label>
+      <label htmlFor="file-upload">{label}</label>
       <p>{description}</p>
 
       <input
-        id="ettersending-file-upload"
+        id="file-upload"
         aria-label={label}
         type="file"
         multiple
@@ -141,15 +132,20 @@ vi.mock("@navikt/ds-react/FileUpload", () => ({
   ),
 }));
 
-function lagEttersending(overrides: Partial<Dokumentasjonskrav> = {}): Dokumentasjonskrav {
+function lagDokumentasjonskrav(overrides: Partial<Dokumentasjonskrav> = {}): Dokumentasjonskrav {
   return {
-    id: "ettersending-123",
+    id: "krav-123",
     spørsmålId: "sporsmal-123",
-    tittel: "Ettersending test",
+    tittel: "Testkrav",
     skjemakode: "TEST_SKJEMA",
     seksjonId: "seksjon-123",
     type: DokumentasjonskravType.Barn,
+    svar: undefined,
+    begrunnelse: "Eksisterende begrunnelse",
     filer: undefined,
+    bundle: undefined,
+    feil: undefined,
+    skjemaSvar: undefined,
     ...overrides,
   };
 }
@@ -172,8 +168,7 @@ function mockFetchOk() {
 }
 
 beforeEach(() => {
-  mocks.oppdaterEttersending.mockClear();
-  mocks.valideringStartet = false;
+  mocks.oppdaterEtDokumentasjonskrav.mockClear();
   mockFetchOk();
 });
 
@@ -182,17 +177,11 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("EttersendingFilOpplasting", () => {
-  it("viser tittel, status og opplastingsfelt med beskrivelse", () => {
-    render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
+describe("FilOpplasting", () => {
+  it("viser opplastingsfelt med beskrivelse", () => {
+    render(<FilOpplasting dokumentasjonskrav={lagDokumentasjonskrav()} />);
 
     const input = screen.getByLabelText("Last opp dokument");
-
-    expect(screen.getByRole("heading", { name: "Ettersending test" })).toBeInTheDocument();
-    expect(screen.getByText("Mangler")).toBeInTheDocument();
-    expect(screen.getByTestId("dokumentasjonskrav-innhold")).toHaveTextContent(
-      DokumentasjonskravType.Barn
-    );
 
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute("data-max", String(MAX_ANTALL_FILER));
@@ -206,22 +195,10 @@ describe("EttersendingFilOpplasting", () => {
     ).toBeInTheDocument();
   });
 
-  it("bruker fallback-tittel når tittel mangler", () => {
-    render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
-          tittel: undefined,
-        })}
-      />
-    );
-
-    expect(screen.getByRole("heading", { name: "Dokumentasjon" })).toBeInTheDocument();
-  });
-
-  it("laster opp gyldig fil og oppdaterer ettersending", async () => {
+  it("laster opp gyldig fil og oppdaterer dokumentasjonskravet", async () => {
     const user = userEvent.setup();
 
-    render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
+    render(<FilOpplasting dokumentasjonskrav={lagDokumentasjonskrav()} />);
 
     const file = new File(["content"], "test.pdf", {
       type: "application/pdf",
@@ -231,7 +208,7 @@ describe("EttersendingFilOpplasting", () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        "/api/dokumentasjonskrav/soknad-123/ettersending-123/last-opp-fil",
+        "/api/dokumentasjonskrav/soknad-123/krav-123/last-opp-fil",
         expect.objectContaining({
           method: "POST",
           body: expect.any(FormData),
@@ -239,9 +216,9 @@ describe("EttersendingFilOpplasting", () => {
       );
     });
 
-    expect(mocks.oppdaterEttersending).toHaveBeenCalledTimes(2);
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledTimes(2);
 
-    expect(mocks.oppdaterEttersending).toHaveBeenNthCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
         filer: [
@@ -251,10 +228,11 @@ describe("EttersendingFilOpplasting", () => {
             file,
           }),
         ],
+        feil: undefined,
       })
     );
 
-    expect(mocks.oppdaterEttersending).toHaveBeenNthCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
         filer: [
@@ -266,6 +244,9 @@ describe("EttersendingFilOpplasting", () => {
             feil: undefined,
           }),
         ],
+        begrunnelse: undefined,
+        svar: dokumentkravSvarSendNå,
+        feil: undefined,
       })
     );
   });
@@ -273,7 +254,7 @@ describe("EttersendingFilOpplasting", () => {
   it("setter feil når filformatet ikke er tillatt", async () => {
     const user = userEvent.setup();
 
-    render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
+    render(<FilOpplasting dokumentasjonskrav={lagDokumentasjonskrav()} />);
 
     const file = new File(["content"], "test.txt", {
       type: "text/plain",
@@ -283,7 +264,7 @@ describe("EttersendingFilOpplasting", () => {
 
     expect(fetch).not.toHaveBeenCalled();
 
-    expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: [
           expect.objectContaining({
@@ -291,6 +272,7 @@ describe("EttersendingFilOpplasting", () => {
             feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
           }),
         ],
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
       })
     );
   });
@@ -306,8 +288,8 @@ describe("EttersendingFilOpplasting", () => {
     };
 
     render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
+      <FilOpplasting
+        dokumentasjonskrav={lagDokumentasjonskrav({
           filer: [eksisterendeFil],
         })}
       />
@@ -321,7 +303,7 @@ describe("EttersendingFilOpplasting", () => {
 
     expect(fetch).not.toHaveBeenCalled();
 
-    expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: [
           eksisterendeFil,
@@ -330,6 +312,7 @@ describe("EttersendingFilOpplasting", () => {
             feil: FilOpplastingFeilType.DUPLIKAT_FIL,
           }),
         ],
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
       })
     );
   });
@@ -337,7 +320,7 @@ describe("EttersendingFilOpplasting", () => {
   it("setter feil når filen er for stor", async () => {
     const user = userEvent.setup();
 
-    render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
+    render(<FilOpplasting dokumentasjonskrav={lagDokumentasjonskrav()} />);
 
     const file = new File([new Uint8Array(MAX_FIL_STØRRELSE + 1)], "stor.pdf", {
       type: "application/pdf",
@@ -347,7 +330,7 @@ describe("EttersendingFilOpplasting", () => {
 
     expect(fetch).not.toHaveBeenCalled();
 
-    expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: [
           expect.objectContaining({
@@ -355,6 +338,7 @@ describe("EttersendingFilOpplasting", () => {
             feil: FilOpplastingFeilType.FIL_FOR_STOR,
           }),
         ],
+        feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
       })
     );
   });
@@ -371,7 +355,7 @@ describe("EttersendingFilOpplasting", () => {
       })
     );
 
-    render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
+    render(<FilOpplasting dokumentasjonskrav={lagDokumentasjonskrav()} />);
 
     const file = new File(["content"], "test.pdf", {
       type: "application/pdf",
@@ -380,10 +364,10 @@ describe("EttersendingFilOpplasting", () => {
     await user.upload(screen.getByLabelText("Last opp dokument"), file);
 
     await waitFor(() => {
-      expect(mocks.oppdaterEttersending).toHaveBeenCalledTimes(2);
+      expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledTimes(2);
     });
 
-    expect(mocks.oppdaterEttersending).toHaveBeenNthCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
         filer: [
@@ -402,8 +386,8 @@ describe("EttersendingFilOpplasting", () => {
     const user = userEvent.setup();
 
     render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
+      <FilOpplasting
+        dokumentasjonskrav={lagDokumentasjonskrav({
           filer: [
             {
               id: "file-1",
@@ -419,7 +403,7 @@ describe("EttersendingFilOpplasting", () => {
 
     expect(fetch).not.toHaveBeenCalled();
 
-    expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: undefined,
         feil: undefined,
@@ -431,8 +415,8 @@ describe("EttersendingFilOpplasting", () => {
     const user = userEvent.setup();
 
     render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
+      <FilOpplasting
+        dokumentasjonskrav={lagDokumentasjonskrav({
           filer: [
             {
               id: "file-1",
@@ -449,7 +433,7 @@ describe("EttersendingFilOpplasting", () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        "/api/dokumentasjonskrav/soknad-123/ettersending-123/slett-fil",
+        "/api/dokumentasjonskrav/soknad-123/krav-123/slett-fil",
         expect.objectContaining({
           method: "POST",
           body: expect.any(FormData),
@@ -457,7 +441,7 @@ describe("EttersendingFilOpplasting", () => {
       );
     });
 
-    expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
+    expect(mocks.oppdaterEtDokumentasjonskrav).toHaveBeenCalledWith(
       expect.objectContaining({
         filer: undefined,
         feil: undefined,
@@ -465,76 +449,26 @@ describe("EttersendingFilOpplasting", () => {
     );
   });
 
-  it("setter slettefeil når sletting via API feiler", async () => {
-    const user = userEvent.setup();
-
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({
-        ok: false,
-        json: async () => [],
-        text: async () => "",
-      })
-    );
-
+  it("viser feilmelding når filer mangler", () => {
     render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
-          filer: [
-            {
-              id: "file-1",
-              filnavn: "test.pdf",
-              storrelse: 7,
-              filsti: "tmp/test.pdf",
-            },
-          ],
-        })}
-      />
-    );
-
-    await user.click(screen.getByRole("button", { name: "Slett test.pdf" }));
-
-    await waitFor(() => {
-      expect(mocks.oppdaterEttersending).toHaveBeenCalledWith(
-        expect.objectContaining({
-          filer: [
-            expect.objectContaining({
-              id: "file-1",
-              feil: FilOpplastingFeilType.SLETTING_FEIL,
-            }),
-          ],
-          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
-        })
-      );
-    });
-  });
-
-  it("viser ikke feilmelding for filfeil før validering er startet", () => {
-    render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
-          filer: [
-            {
-              id: "file-1",
-              filnavn: "test.txt",
-              feil: FilOpplastingFeilType.UGYLDIG_FORMAT,
-            },
-          ],
+      <FilOpplasting
+        dokumentasjonskrav={lagDokumentasjonskrav({
+          filer: [],
+          feil: DokumentasjonskravFeilType.MANGLER_FILER,
         })}
       />
     );
 
     expect(
-      screen.queryByText("Du må rette feilen over før dokumentasjon kan sendes inn.")
-    ).not.toBeInTheDocument();
+      screen.getByText("Du må laste opp minst en fil før dokumentasjonen kan sendes inn.")
+    ).toBeInTheDocument();
   });
 
-  it("viser feilmelding når validering er startet og en fil har feil", () => {
-    mocks.valideringStartet = true;
-
+  it("viser feilmelding når en opplastet fil har feil", () => {
     render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
+      <FilOpplasting
+        dokumentasjonskrav={lagDokumentasjonskrav({
+          feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
           filer: [
             {
               id: "file-1",

@@ -19,7 +19,7 @@ import {
   TILLATTE_FILFORMAT,
 } from "~/utils/dokument.utils";
 import { getEnv } from "~/utils/env.utils";
-import { DokumentasjonskravInnhold } from "../seksjon/dokumentasjon/v1/DokumentasjonskravInnhold";
+import { DokumentasjonskravInnhold } from "../../seksjon/dokumentasjon/v1/DokumentasjonskravInnhold";
 
 interface IProps {
   ettersending: Dokumentasjonskrav;

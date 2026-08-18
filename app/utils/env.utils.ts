@@ -26,7 +26,9 @@ export type IEnv = {
 };
 
 export function getEnv(value: keyof IEnv) {
-  const env = typeof window !== "undefined" ? window.env : process.env;
+  if (typeof window !== "undefined") {
+    return window.env?.[value] || "";
+  }
 
-  return env[value] || "";
+  return process.env[value] || "";
 }

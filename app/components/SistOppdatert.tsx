@@ -1,9 +1,11 @@
 import { BodyShort } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { formaterNorskDatoMedKlokkeslett } from "~/utils/formatering.utils";
 
 export function SistOppdatert() {
   const { sistOppdatert } = useTypedRouteLoaderData("routes/$soknadId");
+  const { t } = useTranslation("common");
 
   if (!sistOppdatert) {
     return null;
@@ -11,7 +13,7 @@ export function SistOppdatert() {
 
   return (
     <BodyShort textColor="subtle" size="small">
-      {`Sist lagret: ${formaterNorskDatoMedKlokkeslett(sistOppdatert)}`}
+      {t("sistOppdatert", { dato: formaterNorskDatoMedKlokkeslett(sistOppdatert) })}
     </BodyShort>
   );
 }
