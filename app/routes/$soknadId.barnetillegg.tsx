@@ -13,6 +13,7 @@ import { BarnetilleggViewV1 } from "~/seksjon/barnetillegg/v1/BarnetilleggViewV1
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { navigerEtterLagring } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { hentSeksjonConfig, hentSeksjonNavigasjon } from "./seksjoner.config";
 
 export type SeksjonSvar = BarnetilleggSvar & {
   barnFraPdl?: BarnFraPdl[] | null;
@@ -28,10 +29,8 @@ export type BarnetilleggSeksjon = {
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
 };
 
-export const NYESTE_VERSJON = 1;
-export const SEKSJON_ID = "barnetillegg";
-export const NESTE_SEKSJON_ID = "reell-arbeidssoker";
-export const FORRIGE_SEKSJON_ID = "utdanning";
+const { seksjonId, nyesteVersjon } = hentSeksjonConfig("barnetillegg");
+const { nesteSeksjonId, forrigeSeksjonId } = hentSeksjonNavigasjon(seksjonId);
 
 export async function loader({
   request,
@@ -39,7 +38,7 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<BarnetilleggSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const seksjonResponse = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const seksjonResponse = await hentSeksjon(request, params.soknadId, seksjonId);
 
   if (seksjonResponse.ok) {
     return await seksjonResponse.json();
@@ -50,8 +49,8 @@ export async function loader({
   if (!barnFraPdlResponse.ok) {
     return {
       seksjon: {
-        seksjonId: SEKSJON_ID,
-        versjon: NYESTE_VERSJON,
+        seksjonId,
+        versjon: nyesteVersjon,
       },
       dokumentasjonskrav: null,
     };
@@ -61,8 +60,8 @@ export async function loader({
 
   return {
     seksjon: {
-      seksjonId: SEKSJON_ID,
-      versjon: NYESTE_VERSJON,
+      seksjonId,
+      versjon: nyesteVersjon,
       seksjonsvar: {
         barnFraPdl: barnFraPdl,
       },
@@ -83,7 +82,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      seksjonId: SEKSJON_ID,
+      seksjonId,
       versjon: Number(versjon),
       seksjonsvar: JSON.parse(seksjonsvar),
     }),
@@ -91,7 +90,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return {
@@ -99,7 +98,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
+  invariant(forrigeSeksjonId, `Mangler forrige seksjon for ${seksjonId}`);
+
+  return navigerEtterLagring(params.soknadId, handling, nesteSeksjonId, forrigeSeksjonId);
 }
 
 export default function BarntilleggSeksjon() {
@@ -107,7 +109,7 @@ export default function BarntilleggSeksjon() {
   const { seksjon, dokumentasjonskrav } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? nyesteVersjon) {
     case 1:
       return (
         <BarnetilleggProvider

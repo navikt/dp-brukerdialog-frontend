@@ -108,7 +108,7 @@
   position: relative;
   display: inline-block;
   margin-left: var(--ax-space-4);
-  padding: 0.25rem;
+  padding: 0 0.25rem;
   font-size: 1rem;
   font-weight: bold;
   color: var(--ax-bg-success-strong-hover);

@@ -11,11 +11,10 @@ import {
   normaliserFormData,
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { hentSeksjonConfig, hentSeksjonNavigasjon } from "./seksjoner.config";
 
-export const NYESTE_VERSJON = 1;
-export const SEKSJON_ID = "utdanning";
-export const NESTE_SEKSJON_ID = "barnetillegg";
-export const FORRIGE_SEKSJON_ID = "verneplikt";
+const { seksjonId, nyesteVersjon } = hentSeksjonConfig("utdanning");
+const { nesteSeksjonId, forrigeSeksjonId } = hentSeksjonNavigasjon(seksjonId);
 
 type UtdanningSeksjon = {
   seksjon: {
@@ -29,7 +28,7 @@ type UtdanningSeksjon = {
 export async function loader({ request, params }: LoaderFunctionArgs): Promise<UtdanningSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const response = await hentSeksjon(request, params.soknadId, seksjonId);
 
   if (response.ok) {
     return await response.json();
@@ -37,8 +36,8 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<U
 
   return {
     seksjon: {
-      seksjonId: SEKSJON_ID,
-      versjon: NYESTE_VERSJON,
+      seksjonId,
+      versjon: nyesteVersjon,
     },
     dokumentasjonskrav: null,
   };
@@ -56,7 +55,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      seksjonId: SEKSJON_ID,
+      seksjonId,
       seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
@@ -64,7 +63,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return {
@@ -72,7 +71,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
+  invariant(forrigeSeksjonId, `Mangler forrige seksjon for ${seksjonId}`);
+
+  return navigerEtterLagring(params.soknadId, handling, nesteSeksjonId, forrigeSeksjonId);
 }
 
 export default function UtdanningSeksjon() {
@@ -80,7 +82,7 @@ export default function UtdanningSeksjon() {
   const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? nyesteVersjon) {
     case 1:
       return <UtdanningViewV1 />;
     default:
