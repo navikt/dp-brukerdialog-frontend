@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { normaliserFormData } from "./action.utils.server";
+import { normaliserFormData } from "../action.utils.server";
 
 test("normaliserFormData håndterer mockReellArbeidssøker riktig", () => {
   const råFormData = {

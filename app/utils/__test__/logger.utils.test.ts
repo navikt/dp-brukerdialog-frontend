@@ -26,7 +26,7 @@ vi.mock("pino", () => ({
 async function hentLogger() {
   vi.resetModules();
 
-  const { logger } = await import("./logger.utils");
+  const { logger } = await import("../logger.utils");
 
   return logger;
 }

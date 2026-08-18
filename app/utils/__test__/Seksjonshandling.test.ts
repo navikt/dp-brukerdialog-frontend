@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { Seksjonshandling, seksjonshandlingSchema } from "./Seksjonshandling";
+import { Seksjonshandling, seksjonshandlingSchema } from "../Seksjonshandling";
 
 describe("Seksjonshandling", () => {
   describe("Seksjonshandling enum", () => {

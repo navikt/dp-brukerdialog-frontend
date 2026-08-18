@@ -13,7 +13,7 @@ export const defaultLanguage = "nb" as const;
 export const supportedLanguages = ["nb", "en", "nn"] as const;
 export const fallbackT = ((key: string) => key) as unknown as TFunction;
 const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
-const oversettelser = import.meta.glob("../seksjon/**/locales/*.json");
+const oversettelser = import.meta.glob(["../seksjon/**/locales/*.json", "./locales/*.json"]);
 
 export const namespaceTilSeksjonPath: Record<string, string> = {
   oversikt: "oversikt",
@@ -65,9 +65,14 @@ const appSeksjonBackend = {
       return;
     }
 
-    const filPath = versjon
-      ? `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`
-      : `../seksjon/${seksjonPath}/locales/${language}.json`;
+    let filPath: string;
+    if (baseNamespace === "common") {
+      filPath = `./locales/${language}.json`;
+    } else if (versjon) {
+      filPath = `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`;
+    } else {
+      filPath = `../seksjon/${seksjonPath}/locales/${language}.json`;
+    }
 
     if (!(filPath in oversettelser)) {
       callback(null, {});

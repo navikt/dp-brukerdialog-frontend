@@ -22,7 +22,7 @@ vi.mock("@grafana/faro-web-tracing", () => ({
 async function hentInitFaro() {
   vi.resetModules();
 
-  const { initFaro } = await import("./faro.utils");
+  const { initFaro } = await import("../faro.utils");
 
   return initFaro;
 }
