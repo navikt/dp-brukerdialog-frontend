@@ -108,9 +108,9 @@ void i18n
     supportedLngs: [...supportedLanguages],
     postProcess: ["visNøkkel"],
     ns: [
-      "opprett-soknad",
       "oversikt",
       "arbeidssøker",
+      "opprett-soknad",
       "personalia",
       "din-situasjon",
       "arbeidsforhold",
