@@ -3,7 +3,7 @@ import { useForm } from "@rvf/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form } from "react-router";
-import { FilOpplasting } from "~/components/FilOpplasting";
+import { FilOpplasting } from "~/components/filOpplasting/FilOpplasting";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { Dokumentasjonskrav, DokumentasjonskravFeilType } from "../dokumentasjon.types";

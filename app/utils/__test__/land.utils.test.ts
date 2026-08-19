@@ -7,7 +7,7 @@ import {
   EØS_LAND,
   OFTE_VALGTE_LAND,
   FLERE_LAND,
-} from "./land.utils";
+} from "../land.utils";
 
 describe("land.utils", () => {
   describe("finnLandnavnMedLocale", () => {

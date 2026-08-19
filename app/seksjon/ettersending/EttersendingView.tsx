@@ -12,7 +12,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { EksterneLenke } from "~/components/EksterneLenke";
-import { EttersendingFilOpplasting } from "~/components/EttersendingFilOpplasting";
+import { EttersendingFilOpplasting } from "~/components/filOpplasting/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import {

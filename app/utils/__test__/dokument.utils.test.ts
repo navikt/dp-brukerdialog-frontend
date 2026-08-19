@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { FilOpplastingFeilType } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { getEnv } from "./env.utils";
+import { getEnv } from "../env.utils";
 import {
   hentFilFeilmelding,
   hentMaksFilStørrelseMB,
   hentTillatteFiltyperString,
   hentTillatteFiltyperTekst,
   lastnedDokument,
-} from "./dokument.utils";
+} from "../dokument.utils";
 
-vi.mock("./env.utils", () => ({
+vi.mock("../env.utils", () => ({
   getEnv: vi.fn(),
 }));
 

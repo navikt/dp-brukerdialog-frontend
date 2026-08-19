@@ -69,7 +69,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
       GENERELL_INNSENDING_URL: getEnv("GENERELL_INNSENDING_URL"),
       ARBEIDSSOKERREGISTRERING_URL: getEnv("ARBEIDSSOKERREGISTRERING_URL"),
       FARO_URL: getEnv("FARO_URL"),
-      MIN_SIDE_URL: getEnv("MIN_SIDE_URL"),
     },
   });
 }

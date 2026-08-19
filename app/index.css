@@ -11,7 +11,7 @@
   padding: var(--ax-space-16);
 }
 
-.soknad-header {
+.søknad-header {
   display: flex;
   align-items: center;
   gap: var(--ax-space-16);
@@ -108,10 +108,11 @@
   position: relative;
   display: inline-block;
   margin-left: var(--ax-space-4);
-  padding: 0 0.25rem;
+  padding: 0.25rem;
   font-size: 1rem;
   font-weight: bold;
   color: var(--ax-bg-success-strong-hover);
+  background-color: white;
   cursor: pointer;
 }
 

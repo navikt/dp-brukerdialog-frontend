@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { KomponentType } from "~/components/Komponent.types";
-import { generateMermaidFlow } from "./mermaid.utils";
+import { generateMermaidFlow } from "../mermaid.utils";
 
 describe("mermaid.utils", () => {
   describe("generateMermaidFlow", () => {

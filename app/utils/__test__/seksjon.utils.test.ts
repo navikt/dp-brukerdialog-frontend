@@ -4,8 +4,8 @@ import {
   lagEgenNæringEgetGårdsbrukKomponenter,
   lagLeggTilGårdsbrukKomponenter,
   lagLeggTilNæringsvirksomhetKomponenter,
-} from "../seksjon/egen-næring/v1/egen-næring.komponenter";
-import { lagSeksjonPayload, validerSøknadId } from "./seksjon.utils";
+} from "../../seksjon/egen-næring/v1/egen-næring.komponenter";
+import { lagSeksjonPayload, validerSøknadId } from "../seksjon.utils";
 import { fallbackT } from "~/i18n";
 
 const egenNæringEgenNæringsvirksomhetKomponenter =

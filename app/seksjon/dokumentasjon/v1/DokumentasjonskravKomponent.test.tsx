@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { DokumentasjonskravKomponent } from "../DokumentasjonskravKomponent";
+import { DokumentasjonskravKomponent } from "./DokumentasjonskravKomponent";
 
 import type { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import {
@@ -58,7 +58,7 @@ vi.mock("@rvf/react-router", () => ({
   }),
 }));
 
-vi.mock("../dokumentasjonskrav.context", () => ({
+vi.mock("./dokumentasjonskrav.context", () => ({
   useDokumentasjonskravContext: () => ({
     oppdaterEtDokumentasjonskrav: mocks.oppdaterEtDokumentasjonskrav,
     valideringsTeller: mocks.valideringsTeller,
@@ -69,7 +69,7 @@ vi.mock("~/hooks/useNullstillSkjulteFelter", () => ({
   useNullstillSkjulteFelter: vi.fn(),
 }));
 
-vi.mock("~/components/FilOpplasting", () => ({
+vi.mock("~/components/filOpplasting/FilOpplasting", () => ({
   FilOpplasting: () => <div data-testid="filopplasting">FilOpplasting</div>,
 }));
 
@@ -79,7 +79,7 @@ vi.mock("~/components/Komponent", () => ({
   ),
 }));
 
-vi.mock("../DokumentasjonskravInnhold", () => ({
+vi.mock("./DokumentasjonskravInnhold", () => ({
   DokumentasjonskravInnhold: ({ type }: { type: DokumentasjonskravType }) => (
     <div data-testid="dokumentasjonskrav-innhold">{type}</div>
   ),

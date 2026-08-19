@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@navikt/oasis");
-vi.mock("./env.utils");
-vi.mock("./logger.utils", () => ({
+vi.mock("../env.utils");
+vi.mock("../logger.utils", () => ({
   logger: {
     error: vi.fn(),
     info: vi.fn(),
@@ -15,9 +15,9 @@ import {
   hentMellomlagringOboToken,
   hentOnBehalfOfToken,
   hentSoknadOrkestratorOboToken,
-} from "./auth.utils.server";
-import { getEnv } from "./env.utils";
-import * as loggerUtils from "./logger.utils";
+} from "../auth.utils.server";
+import { getEnv } from "../env.utils";
+import * as loggerUtils from "../logger.utils";
 
 describe("auth.utils.server", () => {
   const mockRequest = new Request("http://localhost:3000");

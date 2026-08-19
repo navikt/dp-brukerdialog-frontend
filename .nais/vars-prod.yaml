@@ -1,7 +1,5 @@
 ingresses:
   - https://www.nav.no/dagpenger/dialog/soknad
-  - https://www.nav.no/ny-dagpenger/dialog/soknad
-  - https://www.nav.no/gammel-dagpenger/dialog/soknad
 base_path: "/dagpenger/dialog/soknad"
 dekorator:
   url: https://www.nav.no/dekoratoren
@@ -29,4 +27,3 @@ arbeidssokerregisteret_url: https://oppslag-v2-arbeidssoekerregisteret.intern.na
 arbeidssokerregistrering_url: https://www.nav.no/registrer-arbeidssoker
 dp_mine_dagpenger_url: https://www.nav.no/arbeid/dagpenger/mine-dagpenger
 generell_innsending_url: https://www.nav.no/fyllut-ettersending/lospost?tema=DAG
-min_side_url: https://www.nav.no/minside/nb/

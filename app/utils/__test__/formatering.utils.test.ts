@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { formaterDatoSvar } from "./formatering.utils";
+import { formaterDatoSvar } from "../formatering.utils";
 
 test("formaterDatoSvar returnerer dato på norsk format hvis spørsmålet er av type dato", () => {
   expect(formaterDatoSvar({ type: "dato", id: "id", label: "label" }, "2025-12-31")).toEqual(

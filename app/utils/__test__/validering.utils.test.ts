@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { KomponentType } from "~/components/Komponent.types";
-import { valider, validerSvar } from "./validering.utils";
+import { valider, validerSvar } from "../validering.utils";
 
 describe("validering.utils", () => {
   const context = {
