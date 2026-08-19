@@ -15,17 +15,18 @@ import { useForm } from "@rvf/react-router";
 import { useTranslation } from "react-i18next";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
-import { KomponentType } from "~/components/Komponent.types";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { portableTextToKomponenter } from "~/utils/sanity.utils";
 import { Route } from "./+types/opprett-soknad";
-import { lagPdfInnhold } from "./opprett-soknad.pdf";
+import {
+  bekreftVilkår,
+  lagOpprettSoknadKomponenter,
+  pdfGrunnlag,
+} from "./opprett-soknad.komponenter";
 
 const SEKSJON_ID = "startside";
-const SEKSJON_NAVN = "Startside";
 const NESTE_SEKSJON_ID = "personalia";
 
 export async function action({ request }: Route.ActionArgs) {
@@ -39,14 +40,14 @@ export async function action({ request }: Route.ActionArgs) {
 
   const soknadId = await opprettSøknadResponse.text();
   const formData = await request.formData();
-  const pdfGrunnlag = formData.get("pdfGrunnlag");
+  const pdfGrunnlagVerdi = formData.get(pdfGrunnlag);
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
       versjon: 1,
     }),
-    pdfGrunnlag,
+    pdfGrunnlag: pdfGrunnlagVerdi,
   };
 
   const lagreSeksjonResponse = await lagreSeksjon(
@@ -68,44 +69,33 @@ export default function OpprettSoknadSide() {
   const { state } = useNavigation();
   const actionData = useActionData<typeof action>();
 
-  const bekreftVilkårTekst = t("vilkar.bekreftelse");
+  const opprettSoknadKomponenter = lagOpprettSoknadKomponenter(t);
 
   const form = useForm({
     method: "POST",
     submitSource: "state",
     schema: z.object({
-      bekreftVilkår: z.boolean().refine((val) => val, {
+      [bekreftVilkår]: z.boolean().refine((val) => val, {
         message: t("vilkar.validering"),
       }),
-      pdfGrunnlag: z.string().optional(),
+      [pdfGrunnlag]: z.string().optional(),
     }),
     defaultValues: {
-      bekreftVilkår: false,
+      [bekreftVilkår]: false,
     },
   });
 
+  function genererPdfGrunnlag() {
+    return JSON.stringify({
+      navn: t("side.overskrift"),
+      spørsmål: lagSeksjonPayload(opprettSoknadKomponenter, {
+        [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
+      }),
+    });
+  }
+
   function opprettSøknad() {
-    const bekreftVilkårKomponent: KomponentType = {
-      id: "bekreftVilkår",
-      type: "envalg",
-      label: bekreftVilkårTekst,
-      options: [
-        { value: "ja", label: t("vilkar.ja") },
-        { value: "nei", label: t("vilkar.nei") },
-      ],
-    };
-
-    const pdfGrunnlag = {
-      navn: SEKSJON_NAVN,
-      spørsmål: [
-        ...portableTextToKomponenter(lagPdfInnhold(t)),
-        ...lagSeksjonPayload([bekreftVilkårKomponent], {
-          bekreftVilkår: form.transient.value().bekreftVilkår ? "ja" : "nei",
-        }),
-      ],
-    };
-
-    form.setValue("pdfGrunnlag", JSON.stringify(pdfGrunnlag));
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
     form.submit();
   }
 
@@ -113,7 +103,7 @@ export default function OpprettSoknadSide() {
     <main id="maincontent" tabIndex={-1}>
       <title>{t("side.tittel")}</title>
 
-      <div className="soknad-header">
+      <div className="søknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">
           {t("side.overskrift")}
@@ -239,11 +229,11 @@ export default function OpprettSoknadSide() {
           <Form {...form.getFormProps()}>
             <Box
               padding="space-16"
-              background={form.value("bekreftVilkår") ? "success-moderate" : "sunken"}
+              background={form.value(bekreftVilkår) ? "success-moderate" : "sunken"}
               borderRadius="8"
             >
-              <Checkbox name="bekreftVilkår" error={!!form.error("bekreftVilkår")}>
-                {bekreftVilkårTekst}
+              <Checkbox name={bekreftVilkår} error={!!form.error(bekreftVilkår)}>
+                {t("vilkar.bekreftelse")}
               </Checkbox>
             </Box>
 
