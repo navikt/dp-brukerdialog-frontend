@@ -39,8 +39,8 @@ importers:
         specifier: 4.1.4
         version: 4.1.4
       '@portabletext/react':
-        specifier: 6.2.0
-        version: 6.2.0(react@19.2.8)
+        specifier: 8.0.0
+        version: 8.0.0(react@19.2.8)
       '@portabletext/to-html':
         specifier: ^5.0.2
         version: 5.0.2
@@ -1043,11 +1043,11 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@portabletext/react@6.2.0':
-    resolution: {integrity: sha512-Z0J/AWrvg7GyDfEBQRRhi6ZpxLOsN4/QbU8KhTwfa6r2ELiRaMa4gkHE9wfs3V1ozNDrTG4IRr+8yBnHNDnAqA==}
-    engines: {node: '>=20.19 <22 || >=22.12'}
+  '@portabletext/react@8.0.0':
+    resolution: {integrity: sha512-xXWm0LvJrWPqv1BI2wR95q/+YNQW2hFl0wG26hoF0YUoQFhXz5jWZHlsvTtLx/IkFcPd+LCsfoYRgEHnLJslIQ==}
+    engines: {node: '>=22.12'}
     peerDependencies:
-      react: ^18.2 || ^19
+      react: ^19
 
   '@portabletext/to-html@5.0.2':
     resolution: {integrity: sha512-w59PcErj5JXUCv9tbV2npqJmcnORTAftCMLp0vc9FnWrXL3C9qYvuB2MQbdHsZEOesF3VmwqUsYUgjm7PX4JTw==}
@@ -1056,6 +1056,10 @@ packages:
   '@portabletext/toolkit@5.0.2':
     resolution: {integrity: sha512-Njc1LE1PMJkTx/wEPqZ6sOWGgFgX2B47fxpOQ/Ia4ByhsZoA5Sq8dNvvV5F052j/xE8TbOLiBEjS848FkKADDQ==}
     engines: {node: '>=20.19 <22 || >=22.12'}
+
+  '@portabletext/toolkit@6.0.0':
+    resolution: {integrity: sha512-+qSqe0KnefuZfNLUhzQRTpbSKxslZof+3pNwxg0DC8dfZ1yLKyyBUw6iR7EpDL+SJlrnpiBfEcfmEuFitK1NSQ==}
+    engines: {node: '>=22.12'}
 
   '@portabletext/types@4.0.2':
     resolution: {integrity: sha512-djfIGU9n6DRrunlvj2nIDAp17URo/nA4jSXGvf+Gupx8NLLy9fmJBZ3GL8yhqn9lSVc+cKCharjOa3aOBnWbRw==}
@@ -4659,9 +4663,9 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@portabletext/react@6.2.0(react@19.2.8)':
+  '@portabletext/react@8.0.0(react@19.2.8)':
     dependencies:
-      '@portabletext/toolkit': 5.0.2
+      '@portabletext/toolkit': 6.0.0
       '@portabletext/types': 4.0.2
       react: 19.2.8
 
@@ -4671,6 +4675,10 @@ snapshots:
       '@portabletext/types': 4.0.2
 
   '@portabletext/toolkit@5.0.2':
+    dependencies:
+      '@portabletext/types': 4.0.2
+
+  '@portabletext/toolkit@6.0.0':
     dependencies:
       '@portabletext/types': 4.0.2
 
