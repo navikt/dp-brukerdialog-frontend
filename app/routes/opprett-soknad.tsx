@@ -1,21 +1,32 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import { Box, Button, Checkbox, Heading, LocalAlert, VStack } from "@navikt/ds-react";
-import { PortableText } from "@portabletext/react";
+import {
+  BodyLong,
+  Box,
+  Button,
+  Checkbox,
+  Heading,
+  Link,
+  List,
+  LocalAlert,
+  ReadMore,
+  VStack,
+} from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
+import { useTranslation } from "react-i18next";
 import { Form, redirect, useActionData, useNavigation } from "react-router";
 import { z } from "zod";
-import { KomponentType } from "~/components/Komponent.types";
 import { SøknadIkon } from "~/components/SøknadIkon";
-import { useSanity } from "~/hooks/useSanity";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
-import { SanityReadMore } from "~/sanity/components/SanityReadMore";
-import { portableTextToKomponenter } from "~/utils/sanity.utils";
-import { Route } from "./+types/opprett-soknad";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { Route } from "./+types/opprett-soknad";
+import {
+  bekreftVilkår,
+  lagOpprettSoknadKomponenter,
+  pdfGrunnlag,
+} from "./opprett-soknad.komponenter";
 
 const SEKSJON_ID = "startside";
-const SEKSJON_NAVN = "Startside";
 const NESTE_SEKSJON_ID = "personalia";
 
 export async function action({ request }: Route.ActionArgs) {
@@ -29,14 +40,14 @@ export async function action({ request }: Route.ActionArgs) {
 
   const soknadId = await opprettSøknadResponse.text();
   const formData = await request.formData();
-  const pdfGrunnlag = formData.get("pdfGrunnlag");
+  const pdfGrunnlagVerdi = formData.get(pdfGrunnlag);
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
       seksjonId: SEKSJON_ID,
       versjon: 1,
     }),
-    pdfGrunnlag: pdfGrunnlag,
+    pdfGrunnlag: pdfGrunnlagVerdi,
   };
 
   const lagreSeksjonResponse = await lagreSeksjon(
@@ -54,100 +65,197 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function OpprettSoknadSide() {
-  const { hentInfosideTekst } = useSanity();
+  const { t } = useTranslation("opprett-soknad");
   const { state } = useNavigation();
   const actionData = useActionData<typeof action>();
 
-  const vilkårTekst = hentInfosideTekst("infoside.opprett-søknad");
-  const bekreftVilkårTekst = "Jeg bekrefter at jeg vil svare så riktig som jeg kan";
-
-  function opprettSøknad() {
-    if (!vilkårTekst?.body) return;
-
-    const bekreftVilkårKomponent: KomponentType = {
-      id: "bekreftVilkår",
-      type: "envalg",
-      label: bekreftVilkårTekst,
-      options: [
-        { value: "ja", label: "Ja" },
-        { value: "nei", label: "Nei" },
-      ],
-    };
-
-    const pdfGrunnlag = {
-      navn: SEKSJON_NAVN,
-      spørsmål: [
-        ...portableTextToKomponenter(vilkårTekst.body),
-        ...lagSeksjonPayload([{ ...bekreftVilkårKomponent, id: "bekreftVilkår" }], {
-          bekreftVilkår: form.transient.value().bekreftVilkår ? "ja" : "nei",
-        }),
-      ],
-    };
-
-    form.setValue("pdfGrunnlag", JSON.stringify(pdfGrunnlag));
-    form.submit();
-  }
+  const opprettSoknadKomponenter = lagOpprettSoknadKomponenter(t);
 
   const form = useForm({
     method: "POST",
     submitSource: "state",
     schema: z.object({
-      bekreftVilkår: z.boolean().refine((val) => val, {
-        message: "Du må godta vilkårene",
+      [bekreftVilkår]: z.boolean().refine((val) => val, {
+        message: t("vilkar.validering"),
       }),
-      pdfGrunnlag: z.string().optional(),
+      [pdfGrunnlag]: z.string().optional(),
     }),
     defaultValues: {
-      bekreftVilkår: false,
+      [bekreftVilkår]: false,
     },
   });
 
+  function genererPdfGrunnlag() {
+    return JSON.stringify({
+      navn: t("side.overskrift"),
+      spørsmål: lagSeksjonPayload(opprettSoknadKomponenter, {
+        [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
+      }),
+    });
+  }
+
+  function opprettSøknad() {
+    form.setValue(pdfGrunnlag, genererPdfGrunnlag());
+    form.submit();
+  }
+
   return (
     <main id="maincontent" tabIndex={-1}>
-      <title>Søknad om dagpenger</title>
+      <title>{t("side.tittel")}</title>
+
       <div className="søknad-header">
         <SøknadIkon />
         <Heading size="large" level="1">
-          Søknad om dagpenger
+          {t("side.overskrift")}
         </Heading>
       </div>
+
       <div className="innhold">
-        {vilkårTekst?.body && (
-          <PortableText
-            value={vilkårTekst.body}
-            components={{ types: { readMore: SanityReadMore } }}
-          />
-        )}
+        <VStack gap="space-32">
+          <BodyLong>
+            {t("intro.tekst")} <Link href="https://www.nav.no/dagpenger">{t("intro.lenke")}</Link>
+          </BodyLong>
+
+          <section>
+            <Heading size="medium" level="2" spacing>
+              {t("krav.overskrift")}
+            </Heading>
+
+            <List as="ol">
+              <List.Item>
+                <strong>{t("krav.registrertArbeidssoker.tittel")}</strong>
+
+                <BodyLong>{t("krav.registrertArbeidssoker.avsnitt1")}</BodyLong>
+                <BodyLong>{t("krav.registrertArbeidssoker.avsnitt2")}</BodyLong>
+              </List.Item>
+
+              <List.Item>
+                <strong>{t("krav.endretSituasjon.tittel")}</strong>
+                <BodyLong>{t("krav.endretSituasjon.tekst")}</BodyLong>
+              </List.Item>
+
+              <List.Item>
+                <strong>{t("krav.reellJobbsoker.tittel")}</strong>
+                <BodyLong>{t("krav.reellJobbsoker.tekst")}</BodyLong>
+              </List.Item>
+            </List>
+          </section>
+
+          <section>
+            <Heading size="medium" level="2" spacing>
+              {t("slikSokerDu.overskrift")}
+            </Heading>
+
+            <VStack gap="space-16">
+              <BodyLong>{t("slikSokerDu.avsnitt1")}</BodyLong>
+              <BodyLong>{t("slikSokerDu.avsnitt2")}</BodyLong>
+              <BodyLong>{t("slikSokerDu.avsnitt3")}</BodyLong>
+            </VStack>
+          </section>
+
+          <section>
+            <Heading size="medium" level="2" spacing>
+              {t("informasjonOmDeg.overskrift")}
+            </Heading>
+
+            <BodyLong spacing>{t("informasjonOmDeg.intro")}</BodyLong>
+
+            <ReadMore header={t("informasjonOmDeg.lesMer.tittel")} variant="ghost">
+              <VStack gap="space-16">
+                <BodyLong>{t("informasjonOmDeg.lesMer.intro")}</BodyLong>
+
+                <div>
+                  <BodyLong>{t("informasjonOmDeg.lesMer.henterOverskrift")}</BodyLong>
+
+                  <List>
+                    <List.Item>{t("informasjonOmDeg.lesMer.henter.personinformasjon")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.henter.inntekt")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.henter.arbeidsforhold")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.henter.egenNaring")}</List.Item>
+                  </List>
+                </div>
+
+                <BodyLong>{t("informasjonOmDeg.lesMer.andreOpplysninger")}</BodyLong>
+
+                <div>
+                  <BodyLong>{t("informasjonOmDeg.lesMer.delerOverskrift")}</BodyLong>
+
+                  <List>
+                    <List.Item>{t("informasjonOmDeg.lesMer.deler.dagpenger")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.deler.lanekassen")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.deler.pensjonskasser")}</List.Item>
+                  </List>
+                </div>
+
+                <BodyLong>{t("informasjonOmDeg.lesMer.annenBruk")}</BodyLong>
+
+                <BodyLong>
+                  <Link href="https://www.nav.no/personvernerklaering">
+                    {t("informasjonOmDeg.lesMer.personvernLenke")}
+                  </Link>
+                </BodyLong>
+              </VStack>
+            </ReadMore>
+          </section>
+
+          <section>
+            <Heading size="medium" level="2" spacing>
+              {t("automatiskBehandling.overskrift")}
+            </Heading>
+
+            <BodyLong spacing>
+              {t("automatiskBehandling.tekst")}{" "}
+              <Link href="https://www.nav.no/personvernerklaering#dine-rettigheter">
+                {t("automatiskBehandling.rettigheterLenke")}
+              </Link>
+            </BodyLong>
+
+            <BodyLong>{t("automatiskBehandling.inntekt")}</BodyLong>
+          </section>
+
+          <section>
+            <Heading size="medium" level="2" spacing>
+              {t("riktigeOpplysninger.overskrift")}
+            </Heading>
+
+            <BodyLong>
+              {t("riktigeOpplysninger.tekst")}{" "}
+              <Link href="https://www.nav.no/endringer">{t("riktigeOpplysninger.lenke")}</Link>
+            </BodyLong>
+          </section>
+        </VStack>
 
         <VStack gap="space-32" className="mt-56">
           <Form {...form.getFormProps()}>
             <Box
               padding="space-16"
-              background={form.value("bekreftVilkår") ? "success-moderate" : "sunken"}
+              background={form.value(bekreftVilkår) ? "success-moderate" : "sunken"}
               borderRadius="8"
             >
-              <Checkbox name="bekreftVilkår" error={!!form.error("bekreftVilkår")}>
-                {bekreftVilkårTekst}
+              <Checkbox name={bekreftVilkår} error={!!form.error(bekreftVilkår)}>
+                {t("vilkar.bekreftelse")}
               </Checkbox>
             </Box>
 
-            {actionData && actionData.error && (
+            {actionData?.error && (
               <LocalAlert status="error" className="mt-16">
                 <LocalAlert.Header>
-                  <LocalAlert.Title>Det har oppstått en teknisk feil</LocalAlert.Title>
+                  <LocalAlert.Title>{t("tekniskFeil.melding")}</LocalAlert.Title>
                 </LocalAlert.Header>
+
                 <LocalAlert.Content>{actionData.error}</LocalAlert.Content>
               </LocalAlert>
             )}
 
             <Button
+              type="button"
               iconPosition="right"
               className="mt-32"
               icon={<ArrowRightIcon aria-hidden />}
-              onClick={() => opprettSøknad()}
+              onClick={opprettSøknad}
               loading={state === "submitting" || state === "loading"}
             >
-              Start søknad
+              {t("knapper.startSoknad")}
             </Button>
           </Form>
         </VStack>
