@@ -17,7 +17,6 @@ resources:
 loginservice:
   url: https://loginservice.dev.nav.no/login
 app_env: dev
-sanity_dataset: development
 unleash:
   server_api_url: https://teamdagpenger-unleash-api.nav.cloud.nais.io/api
   environment: development
