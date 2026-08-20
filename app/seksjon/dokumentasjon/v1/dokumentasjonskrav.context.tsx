@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { useNavigate, useParams } from "react-router";
-import { NYESTE_VERSJON, SEKSJON_ID } from "~/routes/$soknadId.dokumentasjon";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import {
   Bundle,
   Dokumentasjonskrav,
@@ -22,6 +22,8 @@ import {
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
 } from "./dokumentasjonskrav.komponenter";
+
+const { seksjonId, nyesteVersjon } = hentSeksjonKonfig("dokumentasjon");
 
 const FORRIGE_STEG = "../tilleggsopplysninger";
 const NESTE_STEG = "../oppsummering";
@@ -275,7 +277,7 @@ function DokumentasjonskravProvider({
       formData.append("pdfGrunnlag", pdfGrunnlag);
 
       const response = await fetch(
-        `${getEnv("BASE_PATH")}/api/${soknadId}/${SEKSJON_ID}/${NYESTE_VERSJON}`,
+        `${getEnv("BASE_PATH")}/api/${soknadId}/${seksjonId}/${nyesteVersjon}`,
         {
           method: "PUT",
           body: formData,
@@ -283,7 +285,7 @@ function DokumentasjonskravProvider({
       );
 
       if (!response.ok) {
-        console.error(`Feil ved lagring av seksjon ${SEKSJON_ID} for søknadId: ${soknadId}`);
+        console.error(`Feil ved lagring av seksjon ${seksjonId} for søknadId: ${soknadId}`);
         setHarTekniskFeil(true);
         return false;
       }

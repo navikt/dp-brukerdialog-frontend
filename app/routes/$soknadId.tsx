@@ -1,4 +1,5 @@
 import { FormProgress, Heading } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import { LoaderFunctionArgs, Outlet, redirect, useLoaderData, useLocation } from "react-router";
 import invariant from "tiny-invariant";
 import { SøknadIkon } from "~/components/SøknadIkon";
@@ -132,6 +133,7 @@ export async function loader({
 }
 
 export default function SoknadIdLayoutSide() {
+  const { t } = useTranslation("common");
   const loaderData = useLoaderData<typeof loader>();
   const progressData = loaderData?.søknadProgress;
   const location = useLocation();
@@ -143,7 +145,7 @@ export default function SoknadIdLayoutSide() {
         <div className="søknad-header">
           <SøknadIkon />
           <Heading size="large" level="1">
-            Søknad om dagpenger
+            {t("søknadTittel")}
           </Heading>
         </div>
         {!erEttersending && (
