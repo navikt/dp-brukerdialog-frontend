@@ -22,7 +22,6 @@ export default defineConfig({
         "**/*.schema.ts",
         "**/api.internal.*.ts",
         "**/mocks/**",
-        "**/sanity/**",
         "**/*.test.{ts,tsx}",
         "**/test/**",
         "app/entry.client.tsx",

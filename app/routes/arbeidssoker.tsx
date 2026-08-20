@@ -3,7 +3,7 @@ import {
   hentArbeidssøkerperioder,
   IArbeidssokerperioder,
 } from "~/models/hent-arbeidssøkerperioder.server";
-import { Arbeidssøker } from "~/seksjon/arbeidssøker/Arbeidssøker";
+import { ArbeidssøkerView } from "~/seksjon/arbeidssøker/ArbeidssøkerView";
 import { Route } from "./+types/arbeidssoker";
 
 type LoaderData = {
@@ -32,7 +32,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData 
 export default function ArbeidssokerSide() {
   return (
     <main id="maincontent" tabIndex={-1}>
-      <Arbeidssøker />
+      <ArbeidssøkerView />
     </main>
   );
 }

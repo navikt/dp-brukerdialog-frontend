@@ -11,7 +11,6 @@ export type IEnv = {
   NAIS_CLUSTER_NAME: string;
   IS_LOCALHOST: string;
   DEKORATOR_ENV: string;
-  SANITY_DATASET: string;
   DP_SOKNAD_ORKESTRATOR_TOKEN: string;
   DP_SOKNAD_ORKESTRATOR_URL: string;
   DP_MELLOMLAGRING_TOKEN: string;

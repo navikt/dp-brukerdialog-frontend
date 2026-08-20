@@ -9,7 +9,7 @@
   },
   "krav": {
     "overskrift": "Når du søker dagpenger må du:",
-    "registrertArbeidssoker": {
+    "registrertArbeidssøker": {
       "tittel": "Være registrert som arbeidssøker og sende meldekort hver 14. dag",
       "avsnitt1": "Du må være registrert som arbeidssøker og sende meldekort i hele perioden du mottar dagpenger, også mens du venter på svar på søknaden.",
       "avsnitt2": "På hvert meldekort bekrefter du at du fortsatt vil være registrert som arbeidssøker, og du gir informasjon til Nav for at vi skal kunne beregne hvor mye du skal få i dagpenger."
@@ -18,12 +18,12 @@
       "tittel": "Gi beskjed hvis situasjonen din endrer seg",
       "tekst": "I tillegg til å sende meldekort er det viktig at du gir oss beskjed hvis situasjonen din endrer seg, for eksempel hvis du er tilbake i jobb, er syk eller oppholder deg i utlandet."
     },
-    "reellJobbsoker": {
+    "reellJobbsøker": {
       "tittel": "Være reell jobbsøker",
       "tekst": "I søknaden må du svare på spørsmål om du er frisk nok til å jobbe og om du kan ta alle typer arbeid hvor som helst i Norge. Du må i tillegg være aktiv jobbsøker og takke ja til arbeidsmarkedstiltak."
     }
   },
-  "slikSokerDu": {
+  "slikSøkerDu": {
     "overskrift": "Slik søker du",
     "avsnitt1": "I søknaden stiller vi kun spørsmål som er relevante i din situasjon. Antall spørsmål og tiden det tar å søke vil derfor kunne variere. De fleste bruker 20-30 minutter.",
     "avsnitt2": "Noen av opplysningene du gir i søknaden må du dokumentere. Du får beskjed underveis i søknaden om hvilken dokumentasjon du må sende inn.",
@@ -40,7 +40,7 @@
         "personinformasjon": "personinformasjon, opplysninger om bosted og familieforhold fra folkeregisteret",
         "inntekt": "inntektsinformasjon og skattekort fra Skatteetaten",
         "arbeidsforhold": "opplysninger om arbeidsforhold fra arbeidsgiver- og arbeidstakerregisteret. Vi kan også hente informasjon om arbeidsforhold og trygdeperioder fra myndighetene i andre EØS-land",
-        "egenNaring": "informasjon om egen næring fra Brønnøysundregisteret"
+        "egenNæring": "informasjon om egen næring fra Brønnøysundregisteret"
       },
       "andreOpplysninger": "Vi kan også hente inn tidligere opplysninger du har gitt oss, eller opplysninger du gir oss i andre sammenhenger, hvis det er relevant og nødvendig.",
       "delerOverskrift": "Vi deler:",
@@ -64,14 +64,14 @@
     "tekst": "Det er viktig at du gir oss riktige opplysninger slik at vi kan behandle saken din.",
     "lenke": "Les mer om viktigheten av å gi riktige opplysninger."
   },
-  "vilkar": {
+  "vilkår": {
     "bekreftelse": "Jeg bekrefter at jeg vil svare så riktig som jeg kan",
     "validering": "Du må godta vilkårene",
     "ja": "Ja",
     "nei": "Nei"
   },
   "knapper": {
-    "startSoknad": "Start søknad"
+    "startSøknad": "Start søknad"
   },
   "tekniskFeil": {
     "melding": "Det har oppstått en teknisk feil"

@@ -30,10 +30,7 @@ describe("getEnv", () => {
 
   it("skal returnere verdi for ulike env-variabler", () => {
     process.env.DP_SOKNAD_ORKESTRATOR_URL = "http://fake-dp-soknad-orkestrator-url";
-    process.env.SANITY_DATASET = "development";
-
     expect(getEnv("DP_SOKNAD_ORKESTRATOR_URL")).toBe("http://fake-dp-soknad-orkestrator-url");
-    expect(getEnv("SANITY_DATASET")).toBe("development");
   });
 
   it("skal returnere verdi fra window.env i browser", () => {
@@ -45,7 +42,6 @@ describe("getEnv", () => {
         NAIS_CLUSTER_NAME: "dev-gcp",
         IS_LOCALHOST: "false",
         DEKORATOR_ENV: "dev",
-        SANITY_DATASET: "development",
         DP_SOKNAD_ORKESTRATOR_TOKEN: "token",
         DP_SOKNAD_ORKESTRATOR_URL: "http://fake-dp-soknad-orkestrator-url",
         DP_MELLOMLAGRING_TOKEN: "token",

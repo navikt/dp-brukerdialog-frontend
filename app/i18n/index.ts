@@ -18,7 +18,7 @@ const oversettelser = import.meta.glob(["../seksjon/**/locales/*.json", "./local
 export const namespaceTilSeksjonPath: Record<string, string> = {
   oversikt: "oversikt",
   arbeidssøker: "arbeidssøker",
-  "opprett-soknad": "opprett-soknad",
+  "opprett-søknad": "opprett-søknad",
   personalia: "personalia",
   "din-situasjon": "din-situasjon",
   arbeidsforhold: "arbeidsforhold",
@@ -110,7 +110,7 @@ void i18n
     ns: [
       "oversikt",
       "arbeidssøker",
-      "opprett-soknad",
+      "opprett-søknad",
       "personalia",
       "din-situasjon",
       "arbeidsforhold",
