@@ -28,14 +28,14 @@ export function OpprettSøknadView() {
   const { state } = useNavigation();
   const actionData = useActionData();
 
-  const opprettSoknadKomponenter = lagOpprettSøknadKomponenter(t);
+  const opprettSøknadKomponenter = lagOpprettSøknadKomponenter(t);
 
   const form = useForm({
     method: "POST",
     submitSource: "state",
     schema: z.object({
       [bekreftVilkår]: z.boolean().refine((val) => val, {
-        message: t("vilkar.validering"),
+        message: t("vilkår.validering"),
       }),
       [pdfGrunnlag]: z.string().optional(),
     }),
@@ -47,7 +47,7 @@ export function OpprettSøknadView() {
   function genererPdfGrunnlag() {
     return JSON.stringify({
       navn: t("side.overskrift"),
-      spørsmål: lagSeksjonPayload(opprettSoknadKomponenter, {
+      spørsmål: lagSeksjonPayload(opprettSøknadKomponenter, {
         [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
       }),
     });
@@ -82,10 +82,10 @@ export function OpprettSøknadView() {
 
             <List as="ol">
               <List.Item>
-                <strong>{t("krav.registrertArbeidssoker.tittel")}</strong>
+                <strong>{t("krav.registrertArbeidssøker.tittel")}</strong>
 
-                <BodyLong>{t("krav.registrertArbeidssoker.avsnitt1")}</BodyLong>
-                <BodyLong>{t("krav.registrertArbeidssoker.avsnitt2")}</BodyLong>
+                <BodyLong>{t("krav.registrertArbeidssøker.avsnitt1")}</BodyLong>
+                <BodyLong>{t("krav.registrertArbeidssøker.avsnitt2")}</BodyLong>
               </List.Item>
 
               <List.Item>
@@ -94,21 +94,21 @@ export function OpprettSøknadView() {
               </List.Item>
 
               <List.Item>
-                <strong>{t("krav.reellJobbsoker.tittel")}</strong>
-                <BodyLong>{t("krav.reellJobbsoker.tekst")}</BodyLong>
+                <strong>{t("krav.reellJobbsøker.tittel")}</strong>
+                <BodyLong>{t("krav.reellJobbsøker.tekst")}</BodyLong>
               </List.Item>
             </List>
           </section>
 
           <section>
             <Heading size="medium" level="2" spacing>
-              {t("slikSokerDu.overskrift")}
+              {t("slikSøkerDu.overskrift")}
             </Heading>
 
             <VStack gap="space-16">
-              <BodyLong>{t("slikSokerDu.avsnitt1")}</BodyLong>
-              <BodyLong>{t("slikSokerDu.avsnitt2")}</BodyLong>
-              <BodyLong>{t("slikSokerDu.avsnitt3")}</BodyLong>
+              <BodyLong>{t("slikSøkerDu.avsnitt1")}</BodyLong>
+              <BodyLong>{t("slikSøkerDu.avsnitt2")}</BodyLong>
+              <BodyLong>{t("slikSøkerDu.avsnitt3")}</BodyLong>
             </VStack>
           </section>
 
@@ -130,7 +130,7 @@ export function OpprettSøknadView() {
                     <List.Item>{t("informasjonOmDeg.lesMer.henter.personinformasjon")}</List.Item>
                     <List.Item>{t("informasjonOmDeg.lesMer.henter.inntekt")}</List.Item>
                     <List.Item>{t("informasjonOmDeg.lesMer.henter.arbeidsforhold")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.henter.egenNaring")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.henter.egenNæring")}</List.Item>
                   </List>
                 </div>
 
@@ -192,7 +192,7 @@ export function OpprettSøknadView() {
               borderRadius="8"
             >
               <Checkbox name={bekreftVilkår} error={!!form.error(bekreftVilkår)}>
-                {t("vilkar.bekreftelse")}
+                {t("vilkår.bekreftelse")}
               </Checkbox>
             </Box>
 
@@ -214,7 +214,7 @@ export function OpprettSøknadView() {
               onClick={opprettSøknad}
               loading={state === "submitting" || state === "loading"}
             >
-              {t("knapper.startSoknad")}
+              {t("knapper.startSøknad")}
             </Button>
           </Form>
         </VStack>
