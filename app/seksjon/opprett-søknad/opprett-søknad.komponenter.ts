@@ -4,7 +4,7 @@ import type { KomponentType } from "~/components/Komponent.types";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const bekreftVilkår = "bekreftVilkår";
 
-export function lagOpprettSoknadKomponenter(t: TFunction): KomponentType[] {
+export function lagOpprettSøknadKomponenter(t: TFunction): KomponentType[] {
   return [
     {
       id: "intro",

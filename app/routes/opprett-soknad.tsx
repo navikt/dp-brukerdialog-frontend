@@ -2,8 +2,8 @@ import { redirect } from "react-router";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { OpprettSøknadView } from "~/seksjon/opprett-søknad/OpprettSøknadView";
+import { pdfGrunnlag } from "../seksjon/opprett-søknad/opprett-søknad.komponenter";
 import { Route } from "./+types/opprett-soknad";
-import { pdfGrunnlag } from "../seksjon/opprett-søknad/opprett-soknad.komponenter";
 
 const SEKSJON_ID = "startside";
 const NESTE_SEKSJON_ID = "personalia";

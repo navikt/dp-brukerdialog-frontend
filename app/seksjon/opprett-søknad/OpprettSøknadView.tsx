@@ -19,16 +19,16 @@ import { SøknadIkon } from "~/components/SøknadIkon";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
   bekreftVilkår,
-  lagOpprettSoknadKomponenter,
+  lagOpprettSøknadKomponenter,
   pdfGrunnlag,
-} from "./opprett-soknad.komponenter";
+} from "./opprett-søknad.komponenter";
 
 export function OpprettSøknadView() {
-  const { t } = useTranslation("opprett-soknad");
+  const { t } = useTranslation("opprett-søknad");
   const { state } = useNavigation();
-  const actionData = useActionData() as { error?: string } | undefined;
+  const actionData = useActionData();
 
-  const opprettSoknadKomponenter = lagOpprettSoknadKomponenter(t);
+  const opprettSoknadKomponenter = lagOpprettSøknadKomponenter(t);
 
   const form = useForm({
     method: "POST",
