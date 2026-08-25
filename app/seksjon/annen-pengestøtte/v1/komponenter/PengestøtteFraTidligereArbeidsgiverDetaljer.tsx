@@ -9,7 +9,7 @@ import {
   hvaFårEllerBeholderDu,
   hvemMottarDuUtbetalingerEllerGoderFra,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   pengestøtteFraTidligereArbeidsgiver: PengestøtteFraTidligereArbeidsgiver;
@@ -25,7 +25,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
 
   function fjernPengestøtteFraTidligereArbeidsgiver() {
     setPengestøtteFraTidligereArbeidsgiver(

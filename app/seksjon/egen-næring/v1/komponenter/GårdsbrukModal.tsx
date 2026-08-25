@@ -3,7 +3,7 @@ import { Button, Heading, HStack, Modal, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
@@ -26,7 +26,7 @@ export function GårdsbrukModal({ ref }: IProps) {
     useState(false);
   const { gårdsbruk, setGårdsbruk, gårdsbrukModalData, setGårdsbrukModalData } =
     useEgenNæringContext();
-  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const { t } = useTranslation("egen-næring/v1");
   const leggTilGårdsbrukKomponenter = lagLeggTilGårdsbrukKomponenter(t);
 
   const form = useForm({

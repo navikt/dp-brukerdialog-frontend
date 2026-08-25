@@ -8,7 +8,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.egen-naring";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
@@ -42,7 +42,7 @@ export function EgenNæringViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const { t } = useTranslation("egen-næring/v1");
 
   const egenNæringEgenNæringsvirksomhetKomponenter =
     lagEgenNæringEgenNæringsvirksomhetKomponenter(t);

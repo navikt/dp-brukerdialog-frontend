@@ -6,7 +6,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader } from "~/routes/$soknadId.tilleggsopplysninger";
 import { useSoknad } from "~/seksjon/soknad.context";
 import {
@@ -25,7 +25,7 @@ export function TilleggsopplysningerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
+  const { t } = useTranslation("tilleggsopplysninger/v1");
   const tilleggsopplysningerKomponenter = lagTilleggsopplysningerKomponenter(t);
 
   const form = useForm({

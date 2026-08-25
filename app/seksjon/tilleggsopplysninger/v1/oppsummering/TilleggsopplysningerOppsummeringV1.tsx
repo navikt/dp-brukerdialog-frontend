@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { lagTilleggsopplysningerKomponenter } from "~/seksjon/tilleggsopplysninger/v1/tilleggsopplysninger.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
@@ -11,7 +11,7 @@ export function TilleggsopplysningerOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("tilleggsopplysninger", 1);
+  const { t } = useTranslation("tilleggsopplysninger/v1");
 
   if (!seksjonSvarene) return null;
 

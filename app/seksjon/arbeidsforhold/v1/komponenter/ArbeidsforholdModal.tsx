@@ -4,7 +4,7 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import {
   ModalOperasjon,
   useArbeidsforholdContext,
@@ -60,7 +60,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     setDokumentasjonskrav,
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
-  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
+  const { t } = useTranslation("arbeidsforhold/v1");
 
   const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);
 

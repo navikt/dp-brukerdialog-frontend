@@ -1,7 +1,7 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import {
   ArbeidsforholdResponse,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -28,7 +28,7 @@ export function ArbeidsforholdOppsummeringV2({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("arbeidsforhold", 2);
+  const { t } = useTranslation("arbeidsforhold/v2");
 
   if (!seksjonSvarene) return null;
 

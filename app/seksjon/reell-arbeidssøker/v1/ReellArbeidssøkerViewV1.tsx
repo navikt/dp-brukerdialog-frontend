@@ -6,7 +6,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
 import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import {
@@ -45,7 +45,7 @@ export function ReellArbeidssøkerViewV1() {
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useVersjonertTranslation("reell-arbeidssøker", 1);
+  const { t } = useTranslation("reell-arbeidssøker/v1");
   const reellArbeidssøkerKomponenter = lagReellArbeidssøkerKomponenter(t);
 
   const form = useForm({

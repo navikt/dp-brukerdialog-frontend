@@ -1,5 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
+import { useTranslation } from "react-i18next";
 import {
   fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte,
   fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato,
@@ -16,7 +17,6 @@ import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { PengestøtteFraAndreEøsLand } from "./PengestøtteFraAndreEøsLandModal";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 interface IProps {
   pengestøtteFraAndreEøsLand: PengestøtteFraAndreEøsLand;
@@ -32,7 +32,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
   const pengestøtteFraAndreEøsLandModalKomponenter =
     lagPengestøtteFraAndreEøsLandModalKomponenter(t);
 

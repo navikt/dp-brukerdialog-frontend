@@ -133,7 +133,7 @@ export async function loader({
 }
 
 export default function SoknadIdLayoutSide() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("felles");
   const loaderData = useLoaderData<typeof loader>();
   const progressData = loaderData?.søknadProgress;
   const location = useLocation();

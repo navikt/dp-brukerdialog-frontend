@@ -6,7 +6,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader } from "~/routes/$soknadId.verneplikt";
 import {
   Dokumentasjonskrav,
@@ -29,7 +29,7 @@ export default function VernepliktViewV1() {
   const actionData = useActionData<typeof action>();
   const loaderData = useLoaderData<typeof loader>();
   const { state } = useNavigation();
-  const { t } = useVersjonertTranslation("verneplikt", 1);
+  const { t } = useTranslation("verneplikt/v1");
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const vernepliktKomponenter = lagVernepliktKomponenter(t);
 

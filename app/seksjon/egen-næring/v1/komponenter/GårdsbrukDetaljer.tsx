@@ -8,7 +8,7 @@ import {
   hvorMangeProsentAvInntektenGårTilDeg,
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { ModalOperasjon, useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   etGårdsbruk: Gårdsbruk;
@@ -17,7 +17,7 @@ interface IProps {
 
 export function GårdsbrukDetaljer({ etGårdsbruk, gårdsbrukIndex }: IProps) {
   const { gårdsbruk, setGårdsbruk, setGårdsbrukModalData } = useEgenNæringContext();
-  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const { t } = useTranslation("egen-næring/v1");
 
   function fjernGårdsbruk() {
     setGårdsbruk(gårdsbruk.filter((_, i) => i !== gårdsbrukIndex));

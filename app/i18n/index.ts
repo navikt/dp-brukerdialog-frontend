@@ -9,32 +9,38 @@ import {
   namespaceTilVisningsnavn,
 } from "./index.utils";
 
-export const defaultLanguage = "nb" as const;
-export const supportedLanguages = ["nb", "en", "nn"] as const;
-export const fallbackT = ((key: string) => key) as unknown as TFunction;
-const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
-const oversettelser = import.meta.glob(["../seksjon/**/locales/*.json", "./locales/*.json"]);
+type Oversettelse = Record<string, unknown>;
+type OversettelseModul = { default: Oversettelse } | Oversettelse;
 
-export const namespaceTilSeksjonPath: Record<string, string> = {
-  oversikt: "oversikt",
-  arbeidssøker: "arbeidssøker",
-  "opprett-søknad": "opprett-søknad",
-  personalia: "personalia",
-  "din-situasjon": "din-situasjon",
-  arbeidsforhold: "arbeidsforhold",
-  "annen-pengestøtte": "annen-pengestøtte",
-  "egen-næring": "egen-næring",
-  verneplikt: "verneplikt",
-  utdanning: "utdanning",
-  barnetillegg: "barnetillegg",
-  "reell-arbeidssøker": "reell-arbeidssøker",
-  tilleggsopplysninger: "tilleggsopplysninger",
-  dokumentasjon: "dokumentasjon",
-  oppsummering: "oppsummering",
-  kvittering: "kvittering",
-  ettersending: "ettersending",
-  common: "common",
-};
+const oversettelsesfiler = import.meta.glob<OversettelseModul>([
+  "../seksjon/**/locales/*.json",
+  "./locales/*.json",
+]);
+
+const defaultLanguage = "nb";
+const supportedLanguages = ["nb", "en", "nn"];
+export const fallbackT = ((key: string) => key) as unknown as TFunction;
+
+const oversettelseNamespaces = [
+  "felles",
+  "oversikt",
+  "arbeidssøker",
+  "opprett-søknad",
+  "personalia",
+  "din-situasjon",
+  "arbeidsforhold",
+  "annen-pengestøtte",
+  "egen-næring",
+  "verneplikt",
+  "utdanning",
+  "barnetillegg",
+  "reell-arbeidssøker",
+  "tilleggsopplysninger",
+  "dokumentasjon",
+  "oppsummering",
+  "kvittering",
+  "ettersending",
+];
 
 export const visTNøkkel = {
   type: "postProcessor" as const,
@@ -47,48 +53,45 @@ export const visTNøkkel = {
     const namespaceVerdi = options?.ns;
     const namespace = Array.isArray(namespaceVerdi) ? namespaceVerdi[0] : namespaceVerdi;
     const [baseNamespace] = (namespace ?? "").split("/");
-    const seksjonPath = namespaceTilSeksjonPath[baseNamespace];
-    const visningsnavn = seksjonPath ? namespaceTilVisningsnavn(seksjonPath) : undefined;
+    const visningsnavn = oversettelseNamespaces.includes(baseNamespace)
+      ? namespaceTilVisningsnavn(baseNamespace)
+      : undefined;
     const fullNøkkel = visningsnavn ? `${visningsnavn}:${nøkkel}` : nøkkel;
     return `${value}${lagTekstnøkkelMarkør(fullNøkkel)}`;
   },
 };
 
-const appSeksjonBackend = {
+function hentOversettelseJson(namespace: string, language: string) {
+  const [baseNamespace, versjon] = namespace.split("/");
+
+  if (!oversettelseNamespaces.includes(baseNamespace)) {
+    throw new Error(`Ukjent namespace: ${namespace}`);
+  }
+
+  if (baseNamespace === "felles") {
+    return `./locales/${language}.json`;
+  }
+
+  if (versjon) {
+    return `../seksjon/${baseNamespace}/${versjon}/locales/${language}.json`;
+  }
+
+  return `../seksjon/${baseNamespace}/locales/${language}.json`;
+}
+
+const i18nOversettelseBackend = {
   type: "backend" as const,
   init() {},
   read(language: string, namespace: string, callback: (error: unknown, data: unknown) => void) {
-    const [baseNamespace, versjon] = namespace.split("/");
-    const seksjonPath = namespaceTilSeksjonPath[baseNamespace];
+    const filPath = hentOversettelseJson(namespace, language);
+    const hentFil = oversettelsesfiler[filPath];
 
-    if (!seksjonPath) {
-      callback(null, {});
+    if (!hentFil) {
+      callback(new Error(`Fant ikke oversettelsesfil: ${filPath}`), null);
       return;
     }
 
-    let filPath: string;
-    if (baseNamespace === "common") {
-      filPath = `./locales/${language}.json`;
-    } else if (versjon) {
-      filPath = `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`;
-    } else {
-      filPath = `../seksjon/${seksjonPath}/locales/${language}.json`;
-    }
-
-    if (!(filPath in oversettelser)) {
-      callback(null, {});
-      return;
-    }
-
-    const hentOversettelse = oversettelser[filPath] as
-      undefined | (() => Promise<{ default: Record<string, unknown> } | Record<string, unknown>>);
-
-    if (!hentOversettelse) {
-      callback(null, {});
-      return;
-    }
-
-    void hentOversettelse()
+    void hentFil()
       .then((modul) => {
         callback(null, "default" in modul ? modul.default : modul);
       })
@@ -99,35 +102,16 @@ const appSeksjonBackend = {
 };
 
 void i18n
-  .use(appSeksjonBackend)
-  .use(LanguageDetector)
   .use(initReactI18next)
+  .use(LanguageDetector)
+  .use(i18nOversettelseBackend)
   .use(visTNøkkel)
   .init({
     fallbackLng: defaultLanguage,
-    supportedLngs: [...supportedLanguages],
+    supportedLngs: supportedLanguages,
     postProcess: ["visNøkkel"],
-    ns: [
-      "oversikt",
-      "arbeidssøker",
-      "opprett-søknad",
-      "personalia",
-      "din-situasjon",
-      "arbeidsforhold",
-      "annen-pengestøtte",
-      "egen-næring",
-      "verneplikt",
-      "utdanning",
-      "barnetillegg",
-      "reell-arbeidssøker",
-      "tilleggsopplysninger",
-      "dokumentasjon",
-      "oppsummering",
-      "kvittering",
-      "ettersending",
-      "common",
-    ],
-    defaultNS: "common",
+    ns: oversettelseNamespaces,
+    defaultNS: "felles",
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
@@ -138,32 +122,7 @@ void i18n
     load: "languageOnly",
     returnNull: false,
     returnEmptyString: false,
-    parseMissingKeyHandler: (key, _defaultValue, options) => {
-      const namespaceVerdi = options?.ns;
-      const namespace =
-        typeof namespaceVerdi === "string"
-          ? namespaceVerdi
-          : Array.isArray(namespaceVerdi)
-            ? namespaceVerdi[0]
-            : "unknown";
-
-      const [baseNamespace] = namespace.split("/");
-      const seksjonPath = namespaceTilSeksjonPath[baseNamespace] ?? baseNamespace;
-
-      const språkVerdi = options?.lng;
-      const språk =
-        typeof språkVerdi === "string"
-          ? språkVerdi
-          : Array.isArray(språkVerdi)
-            ? språkVerdi.join(",")
-            : (i18n.resolvedLanguage ?? "unknown");
-
-      if (loggManglendeOversettelserLokalt) {
-        console.info(
-          `[i18n] Mangler oversettelse: side=${seksjonPath}, namespace=${namespace}, språk=${språk}, nøkkel=${key}`
-        );
-      }
-
+    parseMissingKeyHandler: (key) => {
       return key;
     },
   });

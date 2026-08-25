@@ -1,13 +1,13 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { lagUtdanningKomponenter } from "~/seksjon/utdanning/v1/utdanning.komponenter";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
 export function UtdanningOppsummeringV1({ seksjonSvarene, seksjonsUrl, redigerbar }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("utdanning", 1);
+  const { t } = useTranslation("utdanning/v1");
 
   if (!seksjonSvarene) return null;
 

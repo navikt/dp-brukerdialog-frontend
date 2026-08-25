@@ -11,7 +11,7 @@ interface SøknadFooterProps {
 
 export function SøknadFooter({ onFortsettSenere }: SøknadFooterProps) {
   const [visMelding, setVisMelding] = useState(false);
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("felles");
   const { søknadId } = useTypedRouteLoaderData("routes/$soknadId");
 
   function onClick() {

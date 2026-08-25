@@ -4,14 +4,14 @@ import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 
 export function DinSituasjonOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("din-situasjon", 1);
+  const { t } = useTranslation("din-situasjon/v1");
 
   if (!seksjonSvarene) return null;
 

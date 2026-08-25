@@ -5,7 +5,7 @@ import { formaterNorskDatoMedKlokkeslett } from "~/utils/formatering.utils";
 
 export function SistOppdatert() {
   const { sistOppdatert } = useTypedRouteLoaderData("routes/$soknadId");
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("felles");
 
   if (!sistOppdatert) {
     return null;

@@ -7,7 +7,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader } from "~/routes/$soknadId.personalia";
 import { personaliaSchema } from "~/seksjon/personalia/v1/personalia.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
@@ -38,7 +38,7 @@ import {
 export function PersonaliaViewV1() {
   const { state } = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { t } = useVersjonertTranslation("personalia", 1);
+  const { t } = useTranslation("personalia/v1");
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const { seksjon, personalia } = loaderData;
   const actionData = useActionData<typeof action>();

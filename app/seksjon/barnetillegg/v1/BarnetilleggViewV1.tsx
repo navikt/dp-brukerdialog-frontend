@@ -8,7 +8,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader, SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   ModalOperasjon,
@@ -42,7 +42,7 @@ export function BarnetilleggViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { state } = useNavigation();
-  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const { t } = useTranslation("barnetillegg/v1");
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
   const [visLeggTilBarnFeilmelding, setVisLeggTilBarnFeilmelding] = useState(false);
   const {

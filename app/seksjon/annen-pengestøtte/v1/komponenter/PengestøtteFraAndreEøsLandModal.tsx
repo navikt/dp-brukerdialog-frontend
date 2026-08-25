@@ -24,7 +24,7 @@ import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -54,7 +54,7 @@ export function PengestøtteFraAndreEøsLandModal({ ref, spørsmålId, seksjonId
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
   const pengestøtteFraAndreEøsLandModalKomponenter =
     lagPengestøtteFraAndreEøsLandModalKomponenter(t);
 

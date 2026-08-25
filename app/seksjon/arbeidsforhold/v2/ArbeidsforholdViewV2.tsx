@@ -8,7 +8,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import {
   ModalOperasjon,
@@ -61,7 +61,7 @@ export function ArbeidsforholdViewV2() {
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useVersjonertTranslation("arbeidsforhold", 2);
+  const { t } = useTranslation("arbeidsforhold/v2");
 
   const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(t);
   const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);

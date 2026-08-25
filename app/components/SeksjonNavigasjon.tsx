@@ -10,7 +10,7 @@ interface IProps {
 }
 
 export function SeksjonNavigasjon({ onForrigeSteg, onNesteSteg, lagrer }: IProps) {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("felles");
 
   return (
     <VStack className="seksjon-navigasjon" gap="space-16">

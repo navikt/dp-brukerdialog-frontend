@@ -6,7 +6,7 @@ import { SeksjonNavigasjon } from "~/components/SeksjonNavigasjon";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { action, loader } from "~/routes/$soknadId.din-situasjon";
 import { dinSituasjonSchema } from "~/seksjon/din-situasjon/v1/din-situasjon.schema";
 import { useSoknad } from "~/seksjon/soknad.context";
@@ -21,7 +21,7 @@ export function DinSituasjonViewV1() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useVersjonertTranslation("din-situasjon", 1);
+  const { t } = useTranslation("din-situasjon/v1");
   const dinSituasjonKomponenter = lagDinSituasjonKomponenter(t);
 
   const form = useForm({
