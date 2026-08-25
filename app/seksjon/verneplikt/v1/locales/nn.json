@@ -1,1 +1,28 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpenger: Verneplikt",
+		"overskrift": "Verneplikt"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"avtjentVerneplikt": {
+		"label": "Har du avtent verneplikt i minst 3 månadar dei siste 12 månadane?",
+		"description": "Du kan ha rett til dagpengar viss du har avtent militærteneste eller obligatorisk teneste i militæret i minst 3 av dei siste 12 månadane."
+	},
+	"avtjentVernepliktDokumentasjonskravindikator": {
+		"label": "Tenestebevis"
+	},
+	"dokumentasjonskrav": {
+		"tjenestebevis": "Tenestebevis"
+	},
+	"oppsummering": {
+		"ingenSvar": "Du har ikkje svart på nokon spørsmål i denne seksjonen"
+	}
+}
