@@ -1,79 +1,79 @@
 {
-  "side": {
-    "tittel": "Søknad om dagpenger",
-    "overskrift": "Søknad om dagpenger"
-  },
-  "intro": {
-    "tekst": "Dagpenger er økonomisk støtte på veien tilbake til arbeid. For å ha rett til dagpenger, må du fylle noen krav.",
-    "lenke": "Her kan du lese om du har rett til dagpenger."
-  },
-  "krav": {
-    "overskrift": "Når du søker dagpenger må du:",
-    "registrertArbeidssøker": {
-      "tittel": "Være registrert som arbeidssøker og sende meldekort hver 14. dag",
-      "avsnitt1": "Du må være registrert som arbeidssøker og sende meldekort i hele perioden du mottar dagpenger, også mens du venter på svar på søknaden.",
-      "avsnitt2": "På hvert meldekort bekrefter du at du fortsatt vil være registrert som arbeidssøker, og du gir informasjon til Nav for at vi skal kunne beregne hvor mye du skal få i dagpenger."
-    },
-    "endretSituasjon": {
-      "tittel": "Gi beskjed hvis situasjonen din endrer seg",
-      "tekst": "I tillegg til å sende meldekort er det viktig at du gir oss beskjed hvis situasjonen din endrer seg, for eksempel hvis du er tilbake i jobb, er syk eller oppholder deg i utlandet."
-    },
-    "reellJobbsøker": {
-      "tittel": "Være reell jobbsøker",
-      "tekst": "I søknaden må du svare på spørsmål om du er frisk nok til å jobbe og om du kan ta alle typer arbeid hvor som helst i Norge. Du må i tillegg være aktiv jobbsøker og takke ja til arbeidsmarkedstiltak."
-    }
-  },
-  "slikSøkerDu": {
-    "overskrift": "Slik søker du",
-    "avsnitt1": "I søknaden stiller vi kun spørsmål som er relevante i din situasjon. Antall spørsmål og tiden det tar å søke vil derfor kunne variere. De fleste bruker 20-30 minutter.",
-    "avsnitt2": "Noen av opplysningene du gir i søknaden må du dokumentere. Du får beskjed underveis i søknaden om hvilken dokumentasjon du må sende inn.",
-    "avsnitt3": "Du kan ta pauser når du fyller ut søknaden. Vi lagrer søknaden i opptil sju dager mens du fyller ut."
-  },
-  "informasjonOmDeg": {
-    "overskrift": "Vi vil hente og bruke informasjon om deg",
-    "intro": "I tillegg til informasjonen du oppgir i søknaden, henter vi inn informasjon om deg for å avgjøre om du har rett til dagpenger. Vi deler også noe av informasjonen din med andre offentlige virksomheter.",
-    "lesMer": {
-      "tittel": "Les mer om hvordan vi henter og deler informasjon om deg",
-      "intro": "For å vurdere om du har rett til dagpenger etter folketrygdloven kapittel 4, må vi hente inn informasjon om deg.",
-      "henterOverskrift": "Vi henter:",
-      "henter": {
-        "personinformasjon": "personinformasjon, opplysninger om bosted og familieforhold fra folkeregisteret",
-        "inntekt": "inntektsinformasjon og skattekort fra Skatteetaten",
-        "arbeidsforhold": "opplysninger om arbeidsforhold fra arbeidsgiver- og arbeidstakerregisteret. Vi kan også hente informasjon om arbeidsforhold og trygdeperioder fra myndighetene i andre EØS-land",
-        "egenNæring": "informasjon om egen næring fra Brønnøysundregisteret"
-      },
-      "andreOpplysninger": "Vi kan også hente inn tidligere opplysninger du har gitt oss, eller opplysninger du gir oss i andre sammenhenger, hvis det er relevant og nødvendig.",
-      "delerOverskrift": "Vi deler:",
-      "deler": {
-        "dagpenger": "beløpet du får i dagpenger med Skatteetaten og Statistisk sentralbyrå gjennom A-ordningen",
-        "lanekassen": "informasjon med Statens lånekasse for utdanning",
-        "pensjonskasser": "utbetalinger fra NAV til offentlige pensjonskasser"
-      },
-      "annenBruk": "Vi kan også bruke opplysningene dine i andre sammenhenger i NAV, hvis det er relevant og nødvendig.",
-      "personvernLenke": "Les mer om hvordan Nav behandler personopplysninger"
-    }
-  },
-  "automatiskBehandling": {
-    "overskrift": "Automatisk behandling",
-    "tekst": "Noen søknader vil bli behandlet automatisk. Det betyr at du får svar på søknaden uten at en saksbehandler har sett på saken din. Hvis du er uenig i svaret du får, kan du klage.",
-    "rettigheterLenke": "Les mer om automatisk behandling og dine rettigheter",
-    "inntekt": "Vi henter inntekten din automatisk fra Skatteetaten. Hvis du har jobbet for en utenlandsk arbeidsgiver eller ved en ambassade, kan det være lurt å sjekke at inntekten din er riktig på Skatteetaten.no."
-  },
-  "riktigeOpplysninger": {
-    "overskrift": "Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger",
-    "tekst": "Det er viktig at du gir oss riktige opplysninger slik at vi kan behandle saken din.",
-    "lenke": "Les mer om viktigheten av å gi riktige opplysninger."
-  },
-  "vilkår": {
-    "bekreftelse": "Jeg bekrefter at jeg vil svare så riktig som jeg kan",
-    "validering": "Du må godta vilkårene",
-    "ja": "Ja",
-    "nei": "Nei"
-  },
-  "knapper": {
-    "startSøknad": "Start søknad"
-  },
-  "tekniskFeil": {
-    "melding": "Det har oppstått en teknisk feil"
-  }
+	"side": {
+		"tittel": "Søknad om dagpenger",
+		"overskrift": "Søknad om dagpenger"
+	},
+	"intro": {
+		"tekst": "Dagpenger er økonomisk støtte på veien tilbake til arbeid. For å ha rett til dagpenger, må du fylle noen krav.",
+		"lenke": "Her kan du lese om du har rett til dagpenger."
+	},
+	"krav": {
+		"overskrift": "Når du søker dagpenger må du:",
+		"registrertArbeidssøker": {
+			"tittel": "Være registrert som arbeidssøker og sende meldekort hver 14. dag",
+			"avsnitt1": "Du må være registrert som arbeidssøker og sende meldekort i hele perioden du mottar dagpenger, også mens du venter på svar på søknaden.",
+			"avsnitt2": "På hvert meldekort bekrefter du at du fortsatt vil være registrert som arbeidssøker, og du gir informasjon til Nav for at vi skal kunne beregne hvor mye du skal få i dagpenger."
+		},
+		"endretSituasjon": {
+			"tittel": "Gi beskjed hvis situasjonen din endrer seg",
+			"tekst": "I tillegg til å sende meldekort er det viktig at du gir oss beskjed hvis situasjonen din endrer seg, for eksempel hvis du er tilbake i jobb, er syk eller oppholder deg i utlandet."
+		},
+		"reellJobbsøker": {
+			"tittel": "Være reell jobbsøker",
+			"tekst": "I søknaden må du svare på spørsmål om du er frisk nok til å jobbe og om du kan ta alle typer arbeid hvor som helst i Norge. Du må i tillegg være aktiv jobbsøker og takke ja til arbeidsmarkedstiltak."
+		}
+	},
+	"slikSøkerDu": {
+		"overskrift": "Slik søker du",
+		"avsnitt1": "I søknaden stiller vi kun spørsmål som er relevante i din situasjon. Antall spørsmål og tiden det tar å søke vil derfor kunne variere. De fleste bruker 20-30 minutter.",
+		"avsnitt2": "Noen av opplysningene du gir i søknaden må du dokumentere. Du får beskjed underveis i søknaden om hvilken dokumentasjon du må sende inn.",
+		"avsnitt3": "Du kan ta pauser når du fyller ut søknaden. Vi lagrer søknaden i opptil sju dager mens du fyller ut."
+	},
+	"informasjonOmDeg": {
+		"overskrift": "Vi vil hente og bruke informasjon om deg",
+		"intro": "I tillegg til informasjonen du oppgir i søknaden, henter vi inn informasjon om deg for å avgjøre om du har rett til dagpenger. Vi deler også noe av informasjonen din med andre offentlige virksomheter.",
+		"lesMer": {
+			"tittel": "Les mer om hvordan vi henter og deler informasjon om deg",
+			"intro": "For å vurdere om du har rett til dagpenger etter folketrygdloven kapittel 4, må vi hente inn informasjon om deg.",
+			"henterOverskrift": "Vi henter:",
+			"henter": {
+				"personinformasjon": "personinformasjon, opplysninger om bosted og familieforhold fra folkeregisteret",
+				"inntekt": "inntektsinformasjon og skattekort fra Skatteetaten",
+				"arbeidsforhold": "opplysninger om arbeidsforhold fra arbeidsgiver- og arbeidstakerregisteret. Vi kan også hente informasjon om arbeidsforhold og trygdeperioder fra myndighetene i andre EØS-land",
+				"egenNæring": "informasjon om egen næring fra Brønnøysundregisteret"
+			},
+			"andreOpplysninger": "Vi kan også hente inn tidligere opplysninger du har gitt oss, eller opplysninger du gir oss i andre sammenhenger, hvis det er relevant og nødvendig.",
+			"delerOverskrift": "Vi deler:",
+			"deler": {
+				"dagpenger": "beløpet du får i dagpenger med Skatteetaten og Statistisk sentralbyrå gjennom A-ordningen",
+				"lanekassen": "informasjon med Statens lånekasse for utdanning",
+				"pensjonskasser": "utbetalinger fra NAV til offentlige pensjonskasser"
+			},
+			"annenBruk": "Vi kan også bruke opplysningene dine i andre sammenhenger i NAV, hvis det er relevant og nødvendig.",
+			"personvernLenke": "Les mer om hvordan Nav behandler personopplysninger"
+		}
+	},
+	"automatiskBehandling": {
+		"overskrift": "Automatisk behandling",
+		"tekst": "Noen søknader vil bli behandlet automatisk. Det betyr at du får svar på søknaden uten at en saksbehandler har sett på saken din. Hvis du er uenig i svaret du får, kan du klage.",
+		"rettigheterLenke": "Les mer om automatisk behandling og dine rettigheter",
+		"inntekt": "Vi henter inntekten din automatisk fra Skatteetaten. Hvis du har jobbet for en utenlandsk arbeidsgiver eller ved en ambassade, kan det være lurt å sjekke at inntekten din er riktig på Skatteetaten.no."
+	},
+	"riktigeOpplysninger": {
+		"overskrift": "Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger",
+		"tekst": "Det er viktig at du gir oss riktige opplysninger slik at vi kan behandle saken din.",
+		"lenke": "Les mer om viktigheten av å gi riktige opplysninger."
+	},
+	"vilkår": {
+		"bekreftelse": "Jeg bekrefter at jeg vil svare så riktig som jeg kan",
+		"validering": "Du må godta vilkårene",
+		"ja": "Ja",
+		"nei": "Nei"
+	},
+	"knapper": {
+		"startSøknad": "Start søknad"
+	},
+	"tekniskFeil": {
+		"melding": "Det har oppstått en teknisk feil"
+	}
 }
