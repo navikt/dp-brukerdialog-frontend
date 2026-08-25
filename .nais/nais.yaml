@@ -46,8 +46,6 @@ spec:
       value: "{{dekorator.env}}"
     - name: APP_ENV
       value: "{{app_env}}"
-    - name: SANITY_DATASET
-      value: "{{sanity_dataset}}"
     - name: UNLEASH_SERVER_API_URL
       value: "{{unleash.server_api_url}}"
     - name: FARO_URL
@@ -72,7 +70,6 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: rt6o382n.apicdn.sanity.io
         - host: www.nav.no
         - host: dekoratoren.dev.nav.no
         - host: dagpenger-unleash-api.nav.cloud.nais.io

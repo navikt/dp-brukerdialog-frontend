@@ -14,11 +14,10 @@ import {
 } from "~/seksjon/egen-næring/v1/egen-næring.komponenter";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
-export const NYESTE_VERSJON = 1;
-export const SEKSJON_ID = "egen-naring";
-export const NESTE_SEKSJON_ID = "verneplikt";
-export const FORRIGE_SEKSJON_ID = "annen-pengestotte";
+const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
+  hentSeksjonKonfig("egen-naring");
 
 export type SeksjonSvar = EgenNæringSvar & {
   [næringsvirksomheter]?: Næringsvirksomhet[] | null;
@@ -37,7 +36,7 @@ export type EgenNæringSeksjon = {
 export async function loader({ request, params }: LoaderFunctionArgs): Promise<EgenNæringSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const response = await hentSeksjon(request, params.soknadId, seksjonId);
 
   if (response.ok) {
     return await response.json();
@@ -45,8 +44,8 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<E
 
   return {
     seksjon: {
-      seksjonId: SEKSJON_ID,
-      versjon: NYESTE_VERSJON,
+      seksjonId: seksjonId,
+      versjon: nyesteVersjon,
     },
     dokumentasjonskrav: null,
   };
@@ -63,7 +62,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      seksjonId: SEKSJON_ID,
+      seksjonId: seksjonId,
       seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
@@ -71,7 +70,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return {
@@ -79,7 +78,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
+  invariant(forrigeSeksjonId, `Mangler forrige seksjon for ${seksjonId}`);
+
+  return navigerEtterLagring(params.soknadId, handling, nesteSeksjonId, forrigeSeksjonId);
 }
 
 export default function EgenNæringSeksjon() {
@@ -87,7 +89,7 @@ export default function EgenNæringSeksjon() {
   const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjon.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon.versjon ?? nyesteVersjon) {
     case 1:
       return (
         <EgenNæringProvider

@@ -32,10 +32,9 @@ import {
 import { PersonaliaViewV1 } from "~/seksjon/personalia/v1/PersonaliaViewV1";
 import { filtrerSeksjonsvar, normaliserFormData } from "~/utils/action.utils.server";
 import { Seksjonshandling, seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
-export const NYESTE_VERSJON = 1;
-export const SEKSJON_ID = "personalia";
-export const NESTE_SEKSJON_ID = "din-situasjon";
+const { seksjonId, nyesteVersjon, nesteSeksjonId } = hentSeksjonKonfig("personalia");
 
 export type Personalia = {
   person: Person;
@@ -77,13 +76,13 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<P
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const personaliaResponse = await hentPersonalia(request);
-  const seksjonResponse = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const seksjonResponse = await hentSeksjon(request, params.soknadId, seksjonId);
 
   if (!personaliaResponse.ok) {
     return {
       seksjon: {
-        seksjonId: SEKSJON_ID,
-        versjon: NYESTE_VERSJON,
+        seksjonId: seksjonId,
+        versjon: nyesteVersjon,
       },
       personalia: null,
       dokumentasjonskrav: null,
@@ -93,8 +92,8 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<P
   if (!seksjonResponse.ok) {
     return {
       seksjon: {
-        seksjonId: SEKSJON_ID,
-        versjon: NYESTE_VERSJON,
+        seksjonId: seksjonId,
+        versjon: nyesteVersjon,
       },
       personalia: await personaliaResponse.json(),
       dokumentasjonskrav: null,
@@ -121,7 +120,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      seksjonId: SEKSJON_ID,
+      seksjonId: seksjonId,
       seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
@@ -132,7 +131,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const lagreSeksjonResponse = await lagreSeksjon(
     request,
     params.soknadId,
-    SEKSJON_ID,
+    seksjonId,
     putSeksjonRequestBody
   );
 
@@ -173,7 +172,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return null;
   }
 
-  return redirect(`/${params.soknadId}/${NESTE_SEKSJON_ID}`);
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
+
+  return redirect(`/${params.soknadId}/${nesteSeksjonId}`);
 }
 
 export default function PersonaliaSeksjon() {
@@ -181,7 +182,7 @@ export default function PersonaliaSeksjon() {
   const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? nyesteVersjon) {
     case 1:
       return <PersonaliaViewV1 />;
     default:

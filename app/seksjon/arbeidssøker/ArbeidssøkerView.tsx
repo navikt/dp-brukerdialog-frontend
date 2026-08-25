@@ -5,7 +5,7 @@ import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { getEnv } from "~/utils/env.utils";
 
-export function Arbeidssøker() {
+export function ArbeidssøkerView() {
   const { t } = useTranslation("arbeidssøker");
   const { status } = useTypedRouteLoaderData("routes/arbeidssoker");
 

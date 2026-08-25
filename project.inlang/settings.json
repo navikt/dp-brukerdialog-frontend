@@ -15,7 +15,7 @@
     "pathPattern": {
       "#Oversikt": "./app/seksjon/oversikt/locales/{languageTag}.json",
       "#Arbeidssøker": "./app/seksjon/arbeidssøker/locales/{languageTag}.json",
-      "#Opprett søknad": "./app/seksjon/opprett-soknad/locales/{languageTag}.json",
+      "#Opprett søknad": "./app/seksjon/opprett-søknad/locales/{languageTag}.json",
       "#Personalia": "./app/seksjon/personalia/v1/locales/{languageTag}.json",
       "#Din situasjon": "./app/seksjon/din-situasjon/v1/locales/{languageTag}.json",
       "#Arbeidsforhold": "./app/seksjon/arbeidsforhold/v2/locales/{languageTag}.json",

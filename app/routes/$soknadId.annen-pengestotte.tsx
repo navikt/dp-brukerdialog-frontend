@@ -11,11 +11,10 @@ import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøt
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
-export const NYESTE_VERSJON = 1;
-export const SEKSJON_ID = "annen-pengestotte";
-export const NESTE_SEKSJON_ID = "egen-naring";
-export const FORRIGE_SEKSJON_ID = "arbeidsforhold";
+const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
+  hentSeksjonKonfig("annen-pengestotte");
 
 export type SeksjonSvar = AnnenPengestøtteSvar & {
   pengestøtteFraTidligereArbeidsgiver?: PengestøtteFraTidligereArbeidsgiver[];
@@ -38,13 +37,13 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<AnnenPengestøtteSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const response = await hentSeksjon(request, params.soknadId, seksjonId);
 
   if (!response.ok) {
     return {
       seksjon: {
-        seksjonId: SEKSJON_ID,
-        versjon: NYESTE_VERSJON,
+        seksjonId,
+        versjon: nyesteVersjon,
       },
       dokumentasjonskrav: null,
     };
@@ -65,7 +64,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      seksjonId: SEKSJON_ID,
+      seksjonId,
       seksjonsvar: normaliserFormData(JSON.parse(seksjonsvar as string)),
       versjon: Number(versjon),
     }),
@@ -73,7 +72,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return {
@@ -81,7 +80,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
+  invariant(forrigeSeksjonId, `Mangler forrige seksjon for ${seksjonId}`);
+
+  return navigerEtterLagring(params.soknadId, handling, nesteSeksjonId, forrigeSeksjonId);
 }
 
 export default function AnnenPengestøtteSeksjon() {
@@ -89,7 +91,7 @@ export default function AnnenPengestøtteSeksjon() {
   const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? nyesteVersjon) {
     case 1:
       return (
         <AnnenPengestøtteProvider

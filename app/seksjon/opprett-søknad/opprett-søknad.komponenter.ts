@@ -4,7 +4,7 @@ import type { KomponentType } from "~/components/Komponent.types";
 export const pdfGrunnlag = "pdfGrunnlag";
 export const bekreftVilkår = "bekreftVilkår";
 
-export function lagOpprettSoknadKomponenter(t: TFunction): KomponentType[] {
+export function lagOpprettSøknadKomponenter(t: TFunction): KomponentType[] {
   return [
     {
       id: "intro",
@@ -25,22 +25,22 @@ export function lagOpprettSoknadKomponenter(t: TFunction): KomponentType[] {
       type: "forklarendeTekst",
       description:
         "<ol>" +
-        `<li><strong>${t("krav.registrertArbeidssoker.tittel")}</strong>` +
-        `<p>${t("krav.registrertArbeidssoker.avsnitt1")}</p>` +
-        `<p>${t("krav.registrertArbeidssoker.avsnitt2")}</p>` +
+        `<li><strong>${t("krav.registrertArbeidssøker.tittel")}</strong>` +
+        `<p>${t("krav.registrertArbeidssøker.avsnitt1")}</p>` +
+        `<p>${t("krav.registrertArbeidssøker.avsnitt2")}</p>` +
         "</li>" +
         `<li><strong>${t("krav.endretSituasjon.tittel")}</strong>` +
         `<p>${t("krav.endretSituasjon.tekst")}</p>` +
         "</li>" +
-        `<li><strong>${t("krav.reellJobbsoker.tittel")}</strong>` +
-        `<p>${t("krav.reellJobbsoker.tekst")}</p>` +
+        `<li><strong>${t("krav.reellJobbsøker.tittel")}</strong>` +
+        `<p>${t("krav.reellJobbsøker.tekst")}</p>` +
         "</li>" +
         "</ol>",
     },
     {
       id: "slikSokerDuOverskrift",
       type: "headingTekst",
-      label: t("slikSokerDu.overskrift"),
+      label: t("slikSøkerDu.overskrift"),
       størrelse: "medium",
       nivå: "2",
     },
@@ -48,9 +48,9 @@ export function lagOpprettSoknadKomponenter(t: TFunction): KomponentType[] {
       id: "slikSokerDu",
       type: "forklarendeTekst",
       description:
-        `<p>${t("slikSokerDu.avsnitt1")}</p>` +
-        `<p>${t("slikSokerDu.avsnitt2")}</p>` +
-        `<p>${t("slikSokerDu.avsnitt3")}</p>`,
+        `<p>${t("slikSøkerDu.avsnitt1")}</p>` +
+        `<p>${t("slikSøkerDu.avsnitt2")}</p>` +
+        `<p>${t("slikSøkerDu.avsnitt3")}</p>`,
     },
     {
       id: "informasjonOmDegOverskrift",
@@ -75,7 +75,7 @@ export function lagOpprettSoknadKomponenter(t: TFunction): KomponentType[] {
         `<li>${t("informasjonOmDeg.lesMer.henter.personinformasjon")}</li>` +
         `<li>${t("informasjonOmDeg.lesMer.henter.inntekt")}</li>` +
         `<li>${t("informasjonOmDeg.lesMer.henter.arbeidsforhold")}</li>` +
-        `<li>${t("informasjonOmDeg.lesMer.henter.egenNaring")}</li>` +
+        `<li>${t("informasjonOmDeg.lesMer.henter.egenNæring")}</li>` +
         "</ul>" +
         `<p>${t("informasjonOmDeg.lesMer.andreOpplysninger")}</p>` +
         `<p>${t("informasjonOmDeg.lesMer.delerOverskrift")}</p>` +
@@ -123,10 +123,10 @@ export function lagOpprettSoknadKomponenter(t: TFunction): KomponentType[] {
     {
       id: bekreftVilkår,
       type: "envalg",
-      label: t("vilkar.bekreftelse"),
+      label: t("vilkår.bekreftelse"),
       options: [
-        { value: "ja", label: t("vilkar.ja") },
-        { value: "nei", label: t("vilkar.nei") },
+        { value: "ja", label: t("vilkår.ja") },
+        { value: "nei", label: t("vilkår.nei") },
       ],
     },
   ];

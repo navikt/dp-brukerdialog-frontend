@@ -11,11 +11,10 @@ import {
   normaliserFormData,
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
-export const NYESTE_VERSJON = 1;
-export const SEKSJON_ID = "verneplikt";
-export const NESTE_SEKSJON_ID = "utdanning";
-export const FORRIGE_SEKSJON_ID = "egen-naring";
+const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
+  hentSeksjonKonfig("verneplikt");
 
 export type VernepliktSeksjon = {
   seksjon: {
@@ -29,7 +28,7 @@ export type VernepliktSeksjon = {
 export async function loader({ request, params }: LoaderFunctionArgs): Promise<VernepliktSeksjon> {
   invariant(params.soknadId, "SøknadID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, SEKSJON_ID);
+  const response = await hentSeksjon(request, params.soknadId, seksjonId);
 
   if (response.ok) {
     return await response.json();
@@ -37,8 +36,8 @@ export async function loader({ request, params }: LoaderFunctionArgs): Promise<V
 
   return {
     seksjon: {
-      seksjonId: SEKSJON_ID,
-      versjon: NYESTE_VERSJON,
+      seksjonId,
+      versjon: nyesteVersjon,
     },
     dokumentasjonskrav: null,
   };
@@ -56,7 +55,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   const putSeksjonRequestBody = {
     seksjon: JSON.stringify({
-      seksjonId: SEKSJON_ID,
+      seksjonId,
       seksjonsvar: normaliserFormData(seksjonsvar),
       versjon: Number(versjon),
     }),
@@ -64,7 +63,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     pdfGrunnlag: pdfGrunnlag,
   };
 
-  const response = await lagreSeksjon(request, params.soknadId, SEKSJON_ID, putSeksjonRequestBody);
+  const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 
   if (response.status !== 200) {
     return {
@@ -72,7 +71,10 @@ export async function action({ request, params }: ActionFunctionArgs) {
     };
   }
 
-  return navigerEtterLagring(params.soknadId, handling, NESTE_SEKSJON_ID, FORRIGE_SEKSJON_ID);
+  invariant(nesteSeksjonId, `Mangler neste seksjon for ${seksjonId}`);
+  invariant(forrigeSeksjonId, `Mangler forrige seksjon for ${seksjonId}`);
+
+  return navigerEtterLagring(params.soknadId, handling, nesteSeksjonId, forrigeSeksjonId);
 }
 
 export default function VernepliktSeksjon() {
@@ -80,7 +82,7 @@ export default function VernepliktSeksjon() {
   const { seksjon } = loaderData;
   const { soknadId } = useParams();
 
-  switch (seksjon?.versjon ?? NYESTE_VERSJON) {
+  switch (seksjon?.versjon ?? nyesteVersjon) {
     case 1:
       return <VernepliktViewV1 />;
     default:

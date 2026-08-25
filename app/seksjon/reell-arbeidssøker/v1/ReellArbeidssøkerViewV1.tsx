@@ -7,7 +7,8 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
-import { action, loader, SEKSJON_ID } from "~/routes/$soknadId.reell-arbeidssoker";
+import { action, loader } from "~/routes/$soknadId.reell-arbeidssoker";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -36,6 +37,8 @@ import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { validerSvar } from "~/utils/validering.utils";
+
+const { seksjonId } = hentSeksjonKonfig("reell-arbeidssoker");
 
 export function ReellArbeidssøkerViewV1() {
   const loaderData = useLoaderData<typeof loader>();
@@ -134,7 +137,7 @@ export function ReellArbeidssøkerViewV1() {
     if (dokumentasjonskravTrigges) {
       const dokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
-        seksjonId: SEKSJON_ID,
+        seksjonId,
         spørsmålId: kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg,
         skjemakode: "T9",
         tittel: t("kanIkkeJobbeHeltidOgDeltidDokumentasjonskravindikator.label"),
@@ -166,7 +169,7 @@ export function ReellArbeidssøkerViewV1() {
     if (dokumentasjonskravTrigges) {
       const dokumentasjonskrav: Dokumentasjonskrav = {
         id: crypto.randomUUID(),
-        seksjonId: SEKSJON_ID,
+        seksjonId,
         spørsmålId: kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg,
         skjemakode: "T9",
         tittel: t("kanIkkeJobbeIHeleNorgeDokumentasjonskravindikator.label"),
