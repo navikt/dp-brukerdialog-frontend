@@ -1,1 +1,86 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpenger: Barnetillegg",
+		"overskrift": "Barnetillegg"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil"
+	},
+	"forklarendeTekst": {
+		"avsnitt1": "Viss du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.",
+		"avsnitt2": "Barnet må vere busatt i Noreg, eit anna EØS-land, Sveits eller Storbritannia. Du får ikkje barnetillegg viss barnet oppheld seg utanfor desse områda i meir enn 90 dagar i løpet av 12 månadar.",
+		"avsnitt3": "Viss vi har opplysningar om at du er forelder til noen barn, så blir dei vist nedanfor."
+	},
+	"forsørgerDuBarnSomIkkeVisesHer": {
+		"label": "Forsørger du barn som ikkje blir vist her?",
+		"description": "Om du har forsørgjaransvar for barn under 18 år som ikkje blir vist her, kan du leggja dei til."
+	},
+	"barnFraPdl": {
+		"fornavnOgMellomnavn": {
+			"label": "Førenamn og mellomnamn"
+		},
+		"etternavn": {
+			"label": "Etternamn"
+		},
+		"fødselsdato": {
+			"label": "Fødselsdato"
+		},
+		"bostedsland": {
+			"label": "Bustadland"
+		},
+		"forsørgerDuBarnet": {
+			"label": "Forsørgjer du barnet?"
+		},
+		"født": "Fødd {{dato}}",
+		"borI": "Bur i {{land}}"
+	},
+	"leggTilBarnManuelt": {
+		"fornavnOgMellomnavn": {
+			"label": "Førenamn og mellomnamn"
+		},
+		"etternavn": {
+			"label": "Etternamn"
+		},
+		"fødselsdato": {
+			"label": "Fødselsdato"
+		},
+		"bostedsland": {
+			"label": "Kva land bur barnet i?"
+		},
+		"lesMer": {
+			"label": "Les mer om bustaden til barnet",
+			"description": "Bustaden du oppgir må vere det landet barnet oppheld seg i til vanleg."
+		},
+		"dokumentasjonskravindikator": {
+			"label": "Fødselsattest/bustadbevis"
+		}
+	},
+	"leggTilBarn": {
+		"knapp": "Legg til barn du forsørgjer",
+		"feil": "Du må leggja til barn du forsørgjer"
+	},
+	"barnLagtManuelt": {
+		"endreSvar": "Endre svar",
+		"fjern": "Fjern"
+	},
+	"modal": {
+		"leggTil": "Legg til",
+		"rediger": "Rediger",
+		"tittel": "{{operasjon}} barn du forsørgjer",
+		"lagreOgLukk": "Lagre og lukk"
+	},
+	"dokumentasjonskrav": {
+		"leggTilBarn": "Fødselsattest/bustadbevis for {{navn}}",
+		"redigerBarn": "Dokumentasjon for {{navn}}"
+	},
+	"oppsummering": {
+		"ingenSvar": "Du har ikkje svart på nokon spørsmål i denne seksjonen",
+		"barn": "Barn {{nummer}}"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	}
+}
