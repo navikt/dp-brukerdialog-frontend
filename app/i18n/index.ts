@@ -9,17 +9,19 @@ import {
   namespaceTilVisningsnavn,
 } from "./index.utils";
 
+export const fallbackT = ((key: string) => key) as unknown as TFunction;
+type OversettelseCallback = (error: unknown, data: unknown) => void;
 type Oversettelse = Record<string, unknown>;
-type OversettelseModul = { default: Oversettelse } | Oversettelse;
+type Oversettelsesmodul = { default: Oversettelse };
 
-const oversettelsesfiler = import.meta.glob<OversettelseModul>([
+const oversettelsesfiler = import.meta.glob<Oversettelsesmodul>([
   "../seksjon/**/locales/*.json",
   "./locales/*.json",
 ]);
 
 const defaultLanguage = "nb";
 const supportedLanguages = ["nb", "en", "nn"];
-export const fallbackT = ((key: string) => key) as unknown as TFunction;
+const postProcess = ["visTNøkkel"];
 
 const oversettelseNamespaces = [
   "felles",
@@ -42,9 +44,9 @@ const oversettelseNamespaces = [
   "ettersending",
 ];
 
-export const visTNøkkel = {
+const visTNøkkel = {
   type: "postProcessor" as const,
-  name: "visNøkkel",
+  name: "visTNøkkel",
   process(value: string, key: string | string[], options?: { ns?: string | string[] }) {
     if (!erVisTNøklerAktivert()) {
       return value;
@@ -61,7 +63,18 @@ export const visTNøkkel = {
   },
 };
 
-function hentOversettelseJson(namespace: string, language: string) {
+async function lastOversettelsesfil(filsti: string): Promise<Oversettelse> {
+  const oversettelseFil = oversettelsesfiler[filsti];
+
+  if (!oversettelseFil) {
+    throw new Error(`Fant ikke oversettelsesfil for: ${filsti}`);
+  }
+
+  const modul = await oversettelseFil();
+  return modul.default;
+}
+
+function hentOversettelseFilsti(namespace: string, language: string) {
   const [baseNamespace, versjon] = namespace.split("/");
 
   if (!oversettelseNamespaces.includes(baseNamespace)) {
@@ -79,21 +92,15 @@ function hentOversettelseJson(namespace: string, language: string) {
   return `../seksjon/${baseNamespace}/locales/${language}.json`;
 }
 
-const i18nOversettelseBackend = {
+const oversettelsesfilLaster = {
   type: "backend" as const,
   init() {},
-  read(language: string, namespace: string, callback: (error: unknown, data: unknown) => void) {
-    const filPath = hentOversettelseJson(namespace, language);
-    const hentFil = oversettelsesfiler[filPath];
+  read(language: string, namespace: string, callback: OversettelseCallback) {
+    const filsti = hentOversettelseFilsti(namespace, language);
 
-    if (!hentFil) {
-      callback(new Error(`Fant ikke oversettelsesfil: ${filPath}`), null);
-      return;
-    }
-
-    void hentFil()
-      .then((modul) => {
-        callback(null, "default" in modul ? modul.default : modul);
+    void lastOversettelsesfil(filsti)
+      .then((oversettelse) => {
+        callback(null, oversettelse);
       })
       .catch((error) => {
         callback(error, null);
@@ -104,12 +111,12 @@ const i18nOversettelseBackend = {
 void i18n
   .use(initReactI18next)
   .use(LanguageDetector)
-  .use(i18nOversettelseBackend)
+  .use(oversettelsesfilLaster)
   .use(visTNøkkel)
   .init({
     fallbackLng: defaultLanguage,
     supportedLngs: supportedLanguages,
-    postProcess: ["visNøkkel"],
+    postProcess: postProcess,
     ns: oversettelseNamespaces,
     defaultNS: "felles",
     detection: {
