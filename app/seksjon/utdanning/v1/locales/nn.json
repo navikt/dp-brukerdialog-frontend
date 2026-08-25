@@ -21,7 +21,7 @@
 	},
 	"avsluttetUtdanningSiste6MånederInformasjonskort": {
 		"label": "Informasjon",
-		"description": "Du må dokumentere sluttdatoen. Du kan legge ved bekrefting på når du avla den siste eksamenen eller avslutta aktiviteten. Vis du har avbrote skulegangen, kan du legga ved bekrefting fra skolen på dette."
+		"description": "Du må dokumentere sluttdatoen. Du kan legge ved bekrefting på når du avla den siste eksamenen eller avslutta aktiviteten. Viss du har avbrote skulegangen, kan du legga ved bekrefting fra skolen på dette."
 	},
 	"avsluttetUtdanningSiste6MånederDokumentkravindikator": {
 		"label": "Dokumentasjon av sluttdato for utdanninga"
