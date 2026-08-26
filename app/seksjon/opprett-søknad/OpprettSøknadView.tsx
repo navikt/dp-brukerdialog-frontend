@@ -19,11 +19,11 @@ import { SøknadIkon } from "~/components/SøknadIkon";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
   bekreftVilkår,
+  lagArbeidssøkerKomponenter,
   lagOpprettSøknadKomponenter,
   pdfGrunnlag,
 } from "./opprett-søknad.komponenter";
-import { KomponentType } from "~/components/Komponent.types";
-import { getEnv } from "~/utils/env.utils";
+import type { KomponentType } from "~/components/Komponent.types";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
 export function OpprettSøknadView() {
@@ -54,35 +54,7 @@ export function OpprettSøknadView() {
       return [];
     }
 
-    const arbeidssøkerKomponenter: KomponentType[] = [
-      {
-        id: "informasjon.overskrift",
-        type: "forklarendeTekst",
-        description: `<strong>${arbeidssøkerT("informasjon.overskrift")}</strong>`,
-      },
-      {
-        id: "informasjon.beskrivelse",
-        type: "forklarendeTekst",
-        description: arbeidssøkerT("informasjon.beskrivelse"),
-      },
-      {
-        id: "handlinger.registrer",
-        type: "forklarendeTekst",
-        description: `<a href="${getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/"}">${arbeidssøkerT("handlinger.registrer")}</a>`,
-      },
-      {
-        id: "handlinger.avbryt",
-        type: "forklarendeTekst",
-        description: `<a href="https://www.nav.no/minside">${arbeidssøkerT("handlinger.avbryt")}</a>`,
-      },
-      {
-        id: "soknad.lenketekst",
-        type: "forklarendeTekst",
-        description: `<a href="/opprett-soknad">${arbeidssøkerT("soknad.lenketekst")}</a>`,
-      },
-    ];
-
-    return lagSeksjonPayload(arbeidssøkerKomponenter, null);
+    return lagSeksjonPayload(lagArbeidssøkerKomponenter(arbeidssøkerT), null);
   }
 
   function genererPdfGrunnlag() {

@@ -1,5 +1,6 @@
 import type { TFunction } from "i18next";
 import type { KomponentType } from "~/components/Komponent.types";
+import { getEnv } from "~/utils/env.utils";
 
 export const pdfGrunnlag = "pdfGrunnlag";
 export const bekreftVilkår = "bekreftVilkår";
@@ -128,6 +129,36 @@ export function lagOpprettSøknadKomponenter(t: TFunction): KomponentType[] {
         { value: "ja", label: t("vilkår.ja") },
         { value: "nei", label: t("vilkår.nei") },
       ],
+    },
+  ];
+}
+
+export function lagArbeidssøkerKomponenter(t: TFunction): KomponentType[] {
+  return [
+    {
+      id: "informasjon.overskrift",
+      type: "forklarendeTekst",
+      description: `<strong>${t("informasjon.overskrift")}</strong>`,
+    },
+    {
+      id: "informasjon.beskrivelse",
+      type: "forklarendeTekst",
+      description: t("informasjon.beskrivelse"),
+    },
+    {
+      id: "handlinger.registrer",
+      type: "forklarendeTekst",
+      description: `<a href="${getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/"}">${t("handlinger.registrer")}</a>`,
+    },
+    {
+      id: "handlinger.avbryt",
+      type: "forklarendeTekst",
+      description: `<a href="https://www.nav.no/minside">${t("handlinger.avbryt")}</a>`,
+    },
+    {
+      id: "soknad.lenketekst",
+      type: "forklarendeTekst",
+      description: `<a href="/opprett-soknad">${t("soknad.lenketekst")}</a>`,
     },
   ];
 }
