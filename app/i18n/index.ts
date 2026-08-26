@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
+import { getEnv } from "~/utils/env.utils";
 import {
   erVisTNøklerAktivert,
   lagTekstnøkkelMarkør,
@@ -129,7 +130,12 @@ void i18n
     load: "languageOnly",
     returnNull: false,
     returnEmptyString: false,
-    parseMissingKeyHandler: (key) => {
+    parseMissingKeyHandler: (key, _defaultValue, options) => {
+      if (getEnv("IS_LOCALHOST") === "true") {
+        const namespace = Array.isArray(options?.ns) ? options.ns[0] : options?.ns;
+        console.warn("Mangler oversettelse for nøkkel:", { namespace, key });
+      }
+
       return key;
     },
   });
