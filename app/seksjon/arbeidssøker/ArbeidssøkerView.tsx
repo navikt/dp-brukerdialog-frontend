@@ -7,7 +7,7 @@ import { getEnv } from "~/utils/env.utils";
 
 export function ArbeidssøkerView() {
   const { t } = useTranslation("arbeidssøker");
-  const { status } = useTypedRouteLoaderData("routes/arbeidssoker");
+  const { arbeidssøkerStatus } = useTypedRouteLoaderData("routes/arbeidssoker");
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -20,7 +20,7 @@ export function ArbeidssøkerView() {
       </div>
 
       <div className="innhold">
-        {status === "ERROR" && (
+        {arbeidssøkerStatus === "FEIL" && (
           <Alert variant="warning" className="mb-8">
             {t("tekniskFeil.beskjed")}
           </Alert>

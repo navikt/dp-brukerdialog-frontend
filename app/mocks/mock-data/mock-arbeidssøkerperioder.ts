@@ -1,6 +1,6 @@
-import { IArbeidssokerperioder } from "~/models/hent-arbeidssøkerperioder.server";
+import { Arbeidssøkerperioder } from "~/models/hent-arbeidssøkerStatus.server";
 
-export const mockArbeidssøkerperioder: IArbeidssokerperioder[] = [
+export const mockArbeidssøkerperioder: Arbeidssøkerperioder[] = [
   {
     periodeId: "mock-periode-id",
     startet: {

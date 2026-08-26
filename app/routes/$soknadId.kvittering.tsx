@@ -5,31 +5,21 @@ import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server"
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import KvitteringView from "~/seksjon/kvittering/KvitteringView";
 import {
-  hentArbeidssøkerperioder,
-  IArbeidssokerperioder,
-} from "~/models/hent-arbeidssøkerperioder.server";
+  ArbeidssøkerStatus,
+  hentArbeidssøkerStatus,
+} from "~/models/hent-arbeidssøkerStatus.server";
 
 export type KvitteringSeksjon = {
   seksjoner: [] | null;
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
-  erRegistrertArbeidssøker: boolean | null | "ERROR";
+  arbeidssøkerStatus: ArbeidssøkerStatus;
 };
-
-async function hentArbeidssøkerStatus(request: Request) {
-  const arbeidssøkerregisterResponse = await hentArbeidssøkerperioder(request);
-
-  if (arbeidssøkerregisterResponse.ok) {
-    const data: IArbeidssokerperioder[] = await arbeidssøkerregisterResponse.json();
-    return data.some((periode) => periode.avsluttet === null);
-  } else {
-    return "ERROR";
-  }
-}
 
 export async function loader({ request, params }: LoaderFunctionArgs<KvitteringSeksjon>) {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
   const alleSeksjonerResponse = await hentAlleSeksjoner(request, params.soknadId);
+  const arbeidssøkerStatus = await hentArbeidssøkerStatus(request);
 
   if (alleSeksjonerResponse.ok) {
     const dokumentasjonskravResponse = await hentDokumentasjonskrav(request, params.soknadId);
@@ -38,7 +28,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
       return {
         seksjoner: await alleSeksjonerResponse.json(),
         dokumentasjonskrav: null,
-        erRegistrertArbeidssøker: await hentArbeidssøkerStatus(request),
+        arbeidssøkerStatus: arbeidssøkerStatus,
       };
     }
 
@@ -49,7 +39,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
 
     return {
       seksjoner: await alleSeksjonerResponse.json(),
-      erRegistrertArbeidssøker: await hentArbeidssøkerStatus(request),
+      arbeidssøkerStatus: arbeidssøkerStatus,
       dokumentasjonskrav: dokumentasjonskrav,
     };
   }
@@ -57,7 +47,7 @@ export async function loader({ request, params }: LoaderFunctionArgs<KvitteringS
   return {
     seksjoner: null,
     dokumentasjonskrav: null,
-    erRegistrertArbeidssøker: null,
+    arbeidssøkerStatus,
   };
 }
 

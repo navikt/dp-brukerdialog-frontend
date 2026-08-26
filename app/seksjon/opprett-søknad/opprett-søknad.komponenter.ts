@@ -81,7 +81,7 @@ export function lagOpprettSøknadKomponenter(t: TFunction): KomponentType[] {
         `<p>${t("informasjonOmDeg.lesMer.delerOverskrift")}</p>` +
         "<ul>" +
         `<li>${t("informasjonOmDeg.lesMer.deler.dagpenger")}</li>` +
-        `<li>${t("informasjonOmDeg.lesMer.deler.lanekassen")}</li>` +
+        `<li>${t("informasjonOmDeg.lesMer.deler.lånekassen")}</li>` +
         `<li>${t("informasjonOmDeg.lesMer.deler.pensjonskasser")}</li>` +
         "</ul>" +
         `<p>${t("informasjonOmDeg.lesMer.annenBruk")}</p>` +

@@ -22,9 +22,14 @@ import {
   lagOpprettSøknadKomponenter,
   pdfGrunnlag,
 } from "./opprett-søknad.komponenter";
+import { KomponentType } from "~/components/Komponent.types";
+import { getEnv } from "~/utils/env.utils";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
 export function OpprettSøknadView() {
   const { t } = useTranslation("opprett-søknad");
+  const { t: arbeidssøkerT } = useTranslation("arbeidssøker");
+  const { arbeidssøkerStatus } = useTypedRouteLoaderData("routes/opprett-soknad");
   const { state } = useNavigation();
   const actionData = useActionData();
 
@@ -44,12 +49,52 @@ export function OpprettSøknadView() {
     },
   });
 
+  function genererArbeidssøkerPdfGrunnlag(): KomponentType[] {
+    if (arbeidssøkerStatus !== "REGISTRERT") {
+      return [];
+    }
+
+    const arbeidssøkerKomponenter: KomponentType[] = [
+      {
+        id: "informasjon.overskrift",
+        type: "forklarendeTekst",
+        description: `<strong>${arbeidssøkerT("informasjon.overskrift")}</strong>`,
+      },
+      {
+        id: "informasjon.beskrivelse",
+        type: "forklarendeTekst",
+        description: arbeidssøkerT("informasjon.beskrivelse"),
+      },
+      {
+        id: "handlinger.registrer",
+        type: "forklarendeTekst",
+        description: `<a href="${getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/"}">${arbeidssøkerT("handlinger.registrer")}</a>`,
+      },
+      {
+        id: "handlinger.avbryt",
+        type: "forklarendeTekst",
+        description: `<a href="https://www.nav.no/minside">${arbeidssøkerT("handlinger.avbryt")}</a>`,
+      },
+      {
+        id: "soknad.lenketekst",
+        type: "forklarendeTekst",
+        description: `<a href="/opprett-soknad">${arbeidssøkerT("soknad.lenketekst")}</a>`,
+      },
+    ];
+
+    return lagSeksjonPayload(arbeidssøkerKomponenter, null);
+  }
+
   function genererPdfGrunnlag() {
+    const arbeidssøkerPdfGrunnlag = genererArbeidssøkerPdfGrunnlag();
+
+    const infoSideKomponenter = lagSeksjonPayload(opprettSøknadKomponenter, {
+      [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
+    });
+
     return JSON.stringify({
       navn: t("side.overskrift"),
-      spørsmål: lagSeksjonPayload(opprettSøknadKomponenter, {
-        [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
-      }),
+      spørsmål: [...arbeidssøkerPdfGrunnlag, ...infoSideKomponenter],
     });
   }
 
@@ -141,7 +186,7 @@ export function OpprettSøknadView() {
 
                   <List>
                     <List.Item>{t("informasjonOmDeg.lesMer.deler.dagpenger")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.deler.lanekassen")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.deler.lånekassen")}</List.Item>
                     <List.Item>{t("informasjonOmDeg.lesMer.deler.pensjonskasser")}</List.Item>
                   </List>
                 </div>

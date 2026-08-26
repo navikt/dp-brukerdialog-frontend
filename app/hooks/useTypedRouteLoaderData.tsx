@@ -4,12 +4,14 @@ import type { loader as rootLoader } from "~/root";
 import type { loader as soknadIdLoader } from "~/routes/$soknadId";
 import type { loader as indexLoader } from "~/routes/_index";
 import type { loader as arbeidssokerLoader } from "~/routes/arbeidssoker";
+import type { loader as opprettSoknadLoader } from "~/routes/opprett-soknad";
 
 type Loaders = {
   root: typeof rootLoader;
   "routes/_index": typeof indexLoader;
   "routes/$soknadId": typeof soknadIdLoader;
   "routes/arbeidssoker": typeof arbeidssokerLoader;
+  "routes/opprett-soknad": typeof opprettSoknadLoader;
 };
 
 export function useTypedRouteLoaderData<T extends keyof Loaders>(route: T) {

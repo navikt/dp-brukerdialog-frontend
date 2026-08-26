@@ -1,32 +1,23 @@
 import { redirect } from "react-router";
 import {
-  hentArbeidssøkerperioder,
-  IArbeidssokerperioder,
-} from "~/models/hent-arbeidssøkerperioder.server";
+  ArbeidssøkerStatus,
+  hentArbeidssøkerStatus,
+} from "~/models/hent-arbeidssøkerStatus.server";
 import { ArbeidssøkerView } from "~/seksjon/arbeidssøker/ArbeidssøkerView";
 import { Route } from "./+types/arbeidssoker";
 
 type LoaderData = {
-  status: "UNREGISTERED" | "ERROR";
+  arbeidssøkerStatus: ArbeidssøkerStatus;
 };
 
-export const SEKSJON_TITTEL = "Søknad om dagpenger: Arbeidssøker";
-
 export async function loader({ request }: Route.LoaderArgs): Promise<LoaderData | Response> {
-  const response = await hentArbeidssøkerperioder(request);
+  const arbeidssøkerStatus = await hentArbeidssøkerStatus(request);
 
-  if (!response.ok) {
-    return { status: "ERROR" };
-  }
-
-  const perioder: IArbeidssokerperioder[] = await response.json();
-  const erRegistrert = perioder.some((periode) => periode.avsluttet === null);
-
-  if (erRegistrert) {
+  if (arbeidssøkerStatus === "REGISTRERT") {
     return redirect("/opprett-soknad");
   }
 
-  return { status: "UNREGISTERED" };
+  return { arbeidssøkerStatus };
 }
 
 export default function ArbeidssokerSide() {
