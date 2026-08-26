@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { Komponent } from "~/components/Komponent";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
@@ -42,7 +42,7 @@ export function BarnModal({ ref, spørsmålId, seksjonId }: IProps) {
     setDokumentasjonskrav,
   } = useBarnetilleggContext();
 
-  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const { t } = useTranslation("barnetillegg/v1");
   const leggTilBarnManueltSpørsmål = lagLeggTilBarnManueltModalKomponenter(t);
 
   const form = useForm({

@@ -18,7 +18,7 @@ import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v1/anne
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -48,7 +48,7 @@ export function PengestøtteFraNorgeModal({ ref, spørsmålId, seksjonId }: IPro
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
   const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
 
   const form = useForm({

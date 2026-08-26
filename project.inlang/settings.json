@@ -1,7 +1,5 @@
 {
   "$schema": "https://inlang.com/schema/project-settings",
-  "baseLocale": "nb",
-  "locales": ["nb", "en", "nn"],
   "sourceLanguageTag": "nb",
   "languageTags": ["nb", "en", "nn"],
   "modules": [
@@ -11,8 +9,15 @@
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-without-source@latest/dist/index.js",
     "https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-identical-pattern@latest/dist/index.js"
   ],
+  "messageLintRuleLevels": {
+    "messageLintRule.inlang.missingTranslation": "error",
+    "messageLintRule.inlang.emptyPattern": "error",
+    "messageLintRule.inlang.messageWithoutSource": "warning",
+    "messageLintRule.inlang.identicalPattern": "warning"
+  },
   "plugin.inlang.i18next": {
     "pathPattern": {
+      "#Felles": "./app/i18n/locales/{languageTag}.json",
       "#Oversikt": "./app/seksjon/oversikt/locales/{languageTag}.json",
       "#Arbeidssøker": "./app/seksjon/arbeidssøker/locales/{languageTag}.json",
       "#Opprett søknad": "./app/seksjon/opprett-søknad/locales/{languageTag}.json",
@@ -29,15 +34,8 @@
       "#Dokumentasjon": "./app/seksjon/dokumentasjon/locales/{languageTag}.json",
       "#Oppsummering": "./app/seksjon/oppsummering/locales/{languageTag}.json",
       "#Kvittering": "./app/seksjon/kvittering/locales/{languageTag}.json",
-      "#Ettersending": "./app/seksjon/ettersending/locales/{languageTag}.json",
-      "#Common": "./app/i18n/locales/{languageTag}.json"
+      "#Ettersending": "./app/seksjon/ettersending/locales/{languageTag}.json"
     },
     "variableReferencePattern": ["{{", "}}"]
-  },
-  "messageLintRuleLevels": {
-    "messageLintRule.inlang.missingTranslation": "error",
-    "messageLintRule.inlang.emptyPattern": "error",
-    "messageLintRule.inlang.messageWithoutSource": "warning",
-    "messageLintRule.inlang.identicalPattern": "warning"
   }
 }

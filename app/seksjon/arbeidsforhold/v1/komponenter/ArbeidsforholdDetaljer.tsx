@@ -1,6 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { ModalOperasjon } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.context";
 import { useArbeidsforholdContext } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.context";
 import {
@@ -48,7 +48,7 @@ interface IProps {
 }
 
 export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
-  const { t } = useVersjonertTranslation("arbeidsforhold", 1);
+  const { t } = useTranslation("arbeidsforhold/v1");
   const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(t);
   const {
     registrerteArbeidsforhold,

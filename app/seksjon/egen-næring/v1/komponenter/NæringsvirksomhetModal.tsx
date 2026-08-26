@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { Komponent } from "~/components/Komponent";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { ModalOperasjon } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { useEgenNæringContext } from "~/seksjon/egen-næring/v1/egen-næring.context";
 import {
@@ -29,7 +29,7 @@ export function NæringsvirksomhetModal({ ref }: IProps) {
     næringsvirksomhetModalData,
     setNæringsvirksomhetModalData,
   } = useEgenNæringContext();
-  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const { t } = useTranslation("egen-næring/v1");
   const leggTilNæringsvirksomhetKomponenter = lagLeggTilNæringsvirksomhetKomponenter(t);
 
   const form = useForm({

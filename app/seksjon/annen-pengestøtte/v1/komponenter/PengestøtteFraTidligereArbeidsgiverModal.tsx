@@ -21,7 +21,7 @@ import {
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   ref: React.RefObject<HTMLDialogElement | null>;
@@ -47,7 +47,7 @@ export function PengestøtteFraTidligereArbeidsgiverModal({ ref, spørsmålId, s
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
 
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
   const pengestøtteFraTidligereArbeidsgiverModalKomponenter =
     lagPengestøtteFraTidligereArbeidsgiverModalKomponenter(t);
   const pengestøtteFraAndreEøsLandModalKomponenter =

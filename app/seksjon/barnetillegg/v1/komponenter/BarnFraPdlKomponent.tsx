@@ -2,7 +2,7 @@ import { BodyShort, Box, Heading } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect } from "react";
 import { Form } from "react-router";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { useBarnetilleggContext } from "~/seksjon/barnetillegg/v1/barnetillegg.context";
 import { barnFraPdlSchema } from "~/seksjon/barnetillegg/v1/barnetillegg.schema";
 import {
@@ -24,7 +24,7 @@ interface IProps {
 
 export function BarnFraPdlKomponent({ barn: barnProps }: IProps) {
   const { barnFraPdl, setbarnFraPdl, validerBarnFraPdl } = useBarnetilleggContext();
-  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const { t } = useTranslation("barnetillegg/v1");
   const barnFraPdlSpørsmål = lagBarnFraPdlKomponenter(t);
 
   const form = useForm({

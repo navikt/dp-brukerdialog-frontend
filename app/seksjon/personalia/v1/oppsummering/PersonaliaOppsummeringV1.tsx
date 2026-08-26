@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import {
@@ -25,7 +25,7 @@ export function PersonaliaOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("personalia", 1);
+  const { t } = useTranslation("personalia/v1");
   const seksjonSvar = Object.entries(seksjonSvarene);
   const personaliaBostedslandKomponenter = lagPersonaliaBostedslandKomponenter(t);
 

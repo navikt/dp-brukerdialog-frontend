@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { lagVernepliktKomponenter } from "~/seksjon/verneplikt/v1/verneplikt.komponenter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
@@ -11,7 +11,7 @@ export function VernepliktOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("verneplikt", 1);
+  const { t } = useTranslation("verneplikt/v1");
 
   if (!seksjonSvarene) return null;
 

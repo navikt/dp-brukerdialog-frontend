@@ -1,6 +1,6 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import {
   ModalOperasjon,
   useBarnetilleggContext,
@@ -20,7 +20,7 @@ interface IProps {
 }
 
 export function BarnLagtManueltKomponent({ barn: barnProps }: IProps) {
-  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const { t } = useTranslation("barnetillegg/v1");
   const {
     barnLagtManuelt,
     setBarnLagtManuelt,

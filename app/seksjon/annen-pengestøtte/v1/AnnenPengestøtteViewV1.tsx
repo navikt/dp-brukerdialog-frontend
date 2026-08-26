@@ -2,6 +2,7 @@ import { PlusIcon } from "@navikt/aksel-icons";
 import { Button, Heading, HStack, InlineMessage, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { KomponentType } from "~/components/Komponent.types";
@@ -19,9 +20,9 @@ import {
   mottarDuPengestøtteFraAndreEnnNav,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte-norge.komponenter";
 import {
-  lagAnnenPengestøtteKomponenter,
   AnnenPengestøtteResponse,
   AnnenPengestøtteSvar,
+  lagAnnenPengestøtteKomponenter,
   pdfGrunnlag,
   seksjonsvar,
 } from "~/seksjon/annen-pengestøtte/v1/annen-pengestøtte.komponent";
@@ -52,7 +53,6 @@ import {
   lagPengestøtteFraAndreEøsLandModalKomponenter,
 } from "./annen-pengestøtte-eøs.komponenter";
 import { ModalOperasjon, useAnnenPengestøtteContext } from "./annen-pengestøtte.context";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
 
 export function AnnenPengestøtteViewV1() {
   const pengestøtteFraTidligereArbeidsgiverModalRef = useRef<HTMLDialogElement>(null);
@@ -60,7 +60,7 @@ export function AnnenPengestøtteViewV1() {
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
 
   const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter =
     lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t);

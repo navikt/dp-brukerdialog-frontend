@@ -14,14 +14,14 @@ import { SeksjonSvar as EgenNæringSeksjon } from "~/routes/$soknadId.egen-narin
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 
 export function EgenNæringOppsummeringV1({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("egen-næring", 1);
+  const { t } = useTranslation("egen-næring/v1");
 
   if (!seksjonSvarene) return null;
 

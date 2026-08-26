@@ -14,7 +14,7 @@ import {
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { PengestøtteFraNorge } from "./PengestøtteFraNorgeModal";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   pengestøtteFraNorge: PengestøtteFraNorge;
@@ -30,7 +30,7 @@ export function PengestøtteFraNorgeDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
-  const { t } = useVersjonertTranslation("annen-pengestøtte", 1);
+  const { t } = useTranslation("annen-pengestøtte/v1");
   const pengestøtteFraNorgeModalKomponenter = lagPengestøtteFraNorgeModalKomponenter(t);
 
   function fjernPengestøtteFraNorge() {

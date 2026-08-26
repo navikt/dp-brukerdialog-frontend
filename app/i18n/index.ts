@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
+import { getEnv } from "~/utils/env.utils";
 import {
   erVisTNøklerAktivert,
   lagTekstnøkkelMarkør,
@@ -9,36 +10,44 @@ import {
   namespaceTilVisningsnavn,
 } from "./index.utils";
 
-export const defaultLanguage = "nb" as const;
-export const supportedLanguages = ["nb", "en", "nn"] as const;
 export const fallbackT = ((key: string) => key) as unknown as TFunction;
-const loggManglendeOversettelserLokalt = import.meta.env.DEV && typeof window === "undefined";
-const oversettelser = import.meta.glob(["../seksjon/**/locales/*.json", "./locales/*.json"]);
+type OversettelseCallback = (error: unknown, data: unknown) => void;
+type Oversettelse = Record<string, unknown>;
+type Oversettelsesmodul = { default: Oversettelse };
 
-export const namespaceTilSeksjonPath: Record<string, string> = {
-  oversikt: "oversikt",
-  arbeidssøker: "arbeidssøker",
-  "opprett-søknad": "opprett-søknad",
-  personalia: "personalia",
-  "din-situasjon": "din-situasjon",
-  arbeidsforhold: "arbeidsforhold",
-  "annen-pengestøtte": "annen-pengestøtte",
-  "egen-næring": "egen-næring",
-  verneplikt: "verneplikt",
-  utdanning: "utdanning",
-  barnetillegg: "barnetillegg",
-  "reell-arbeidssøker": "reell-arbeidssøker",
-  tilleggsopplysninger: "tilleggsopplysninger",
-  dokumentasjon: "dokumentasjon",
-  oppsummering: "oppsummering",
-  kvittering: "kvittering",
-  ettersending: "ettersending",
-  common: "common",
-};
+const oversettelsesfiler = import.meta.glob<Oversettelsesmodul>([
+  "../seksjon/**/locales/*.json",
+  "./locales/*.json",
+]);
 
-export const visTNøkkel = {
+const defaultLanguage = "nb";
+const supportedLanguages = ["nb", "en", "nn"];
+const postProcess = ["visTNøkkel"];
+
+const oversettelseNamespaces = [
+  "felles",
+  "oversikt",
+  "arbeidssøker",
+  "opprett-søknad",
+  "personalia",
+  "din-situasjon",
+  "arbeidsforhold",
+  "annen-pengestøtte",
+  "egen-næring",
+  "verneplikt",
+  "utdanning",
+  "barnetillegg",
+  "reell-arbeidssøker",
+  "tilleggsopplysninger",
+  "dokumentasjon",
+  "oppsummering",
+  "kvittering",
+  "ettersending",
+];
+
+const visTNøkkel = {
   type: "postProcessor" as const,
-  name: "visNøkkel",
+  name: "visTNøkkel",
   process(value: string, key: string | string[], options?: { ns?: string | string[] }) {
     if (!erVisTNøklerAktivert()) {
       return value;
@@ -47,50 +56,52 @@ export const visTNøkkel = {
     const namespaceVerdi = options?.ns;
     const namespace = Array.isArray(namespaceVerdi) ? namespaceVerdi[0] : namespaceVerdi;
     const [baseNamespace] = (namespace ?? "").split("/");
-    const seksjonPath = namespaceTilSeksjonPath[baseNamespace];
-    const visningsnavn = seksjonPath ? namespaceTilVisningsnavn(seksjonPath) : undefined;
+    const visningsnavn = oversettelseNamespaces.includes(baseNamespace)
+      ? namespaceTilVisningsnavn(baseNamespace)
+      : undefined;
     const fullNøkkel = visningsnavn ? `${visningsnavn}:${nøkkel}` : nøkkel;
     return `${value}${lagTekstnøkkelMarkør(fullNøkkel)}`;
   },
 };
 
-const appSeksjonBackend = {
+async function lastOversettelsesfil(filsti: string): Promise<Oversettelse> {
+  const oversettelseFil = oversettelsesfiler[filsti];
+
+  if (!oversettelseFil) {
+    throw new Error(`Fant ikke oversettelsesfil for: ${filsti}`);
+  }
+
+  const modul = await oversettelseFil();
+  return modul.default;
+}
+
+function hentOversettelseFilsti(namespace: string, language: string) {
+  const [baseNamespace, versjon] = namespace.split("/");
+
+  if (!oversettelseNamespaces.includes(baseNamespace)) {
+    throw new Error(`Ukjent namespace: ${namespace}`);
+  }
+
+  if (baseNamespace === "felles") {
+    return `./locales/${language}.json`;
+  }
+
+  if (versjon) {
+    return `../seksjon/${baseNamespace}/${versjon}/locales/${language}.json`;
+  }
+
+  return `../seksjon/${baseNamespace}/locales/${language}.json`;
+}
+
+const oversettelsesfilLaster = {
   type: "backend" as const,
   init() {},
-  read(language: string, namespace: string, callback: (error: unknown, data: unknown) => void) {
-    const [baseNamespace, versjon] = namespace.split("/");
-    const seksjonPath = namespaceTilSeksjonPath[baseNamespace];
+  read(language: string, namespace: string, callback: OversettelseCallback) {
+    const filsti = hentOversettelseFilsti(namespace, language);
 
-    if (!seksjonPath) {
-      callback(null, {});
-      return;
-    }
-
-    let filPath: string;
-    if (baseNamespace === "common") {
-      filPath = `./locales/${language}.json`;
-    } else if (versjon) {
-      filPath = `../seksjon/${seksjonPath}/${versjon}/locales/${language}.json`;
-    } else {
-      filPath = `../seksjon/${seksjonPath}/locales/${language}.json`;
-    }
-
-    if (!(filPath in oversettelser)) {
-      callback(null, {});
-      return;
-    }
-
-    const hentOversettelse = oversettelser[filPath] as
-      undefined | (() => Promise<{ default: Record<string, unknown> } | Record<string, unknown>>);
-
-    if (!hentOversettelse) {
-      callback(null, {});
-      return;
-    }
-
-    void hentOversettelse()
-      .then((modul) => {
-        callback(null, "default" in modul ? modul.default : modul);
+    void lastOversettelsesfil(filsti)
+      .then((oversettelse) => {
+        callback(null, oversettelse);
       })
       .catch((error) => {
         callback(error, null);
@@ -99,35 +110,16 @@ const appSeksjonBackend = {
 };
 
 void i18n
-  .use(appSeksjonBackend)
-  .use(LanguageDetector)
   .use(initReactI18next)
+  .use(LanguageDetector)
+  .use(oversettelsesfilLaster)
   .use(visTNøkkel)
   .init({
     fallbackLng: defaultLanguage,
-    supportedLngs: [...supportedLanguages],
-    postProcess: ["visNøkkel"],
-    ns: [
-      "oversikt",
-      "arbeidssøker",
-      "opprett-søknad",
-      "personalia",
-      "din-situasjon",
-      "arbeidsforhold",
-      "annen-pengestøtte",
-      "egen-næring",
-      "verneplikt",
-      "utdanning",
-      "barnetillegg",
-      "reell-arbeidssøker",
-      "tilleggsopplysninger",
-      "dokumentasjon",
-      "oppsummering",
-      "kvittering",
-      "ettersending",
-      "common",
-    ],
-    defaultNS: "common",
+    supportedLngs: supportedLanguages,
+    postProcess: postProcess,
+    ns: oversettelseNamespaces,
+    defaultNS: "felles",
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
@@ -139,29 +131,9 @@ void i18n
     returnNull: false,
     returnEmptyString: false,
     parseMissingKeyHandler: (key, _defaultValue, options) => {
-      const namespaceVerdi = options?.ns;
-      const namespace =
-        typeof namespaceVerdi === "string"
-          ? namespaceVerdi
-          : Array.isArray(namespaceVerdi)
-            ? namespaceVerdi[0]
-            : "unknown";
-
-      const [baseNamespace] = namespace.split("/");
-      const seksjonPath = namespaceTilSeksjonPath[baseNamespace] ?? baseNamespace;
-
-      const språkVerdi = options?.lng;
-      const språk =
-        typeof språkVerdi === "string"
-          ? språkVerdi
-          : Array.isArray(språkVerdi)
-            ? språkVerdi.join(",")
-            : (i18n.resolvedLanguage ?? "unknown");
-
-      if (loggManglendeOversettelserLokalt) {
-        console.info(
-          `[i18n] Mangler oversettelse: side=${seksjonPath}, namespace=${namespace}, språk=${språk}, nøkkel=${key}`
-        );
+      if (getEnv("IS_LOCALHOST") === "true") {
+        const namespace = Array.isArray(options?.ns) ? options.ns[0] : options?.ns;
+        console.warn("Mangler oversettelse for nøkkel:", { namespace, key });
       }
 
       return key;

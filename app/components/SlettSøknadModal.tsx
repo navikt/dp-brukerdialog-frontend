@@ -13,7 +13,7 @@ export function SlettSøknadModal({ søknadId }: IProps) {
   const sletteSøknadSpørsmålModal = useRef<HTMLDialogElement>(null);
   const slettetSøknadBekreftelseModal = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation("felles");
   const [laster, setLaster] = useState(false);
 
   async function slettSøknad() {

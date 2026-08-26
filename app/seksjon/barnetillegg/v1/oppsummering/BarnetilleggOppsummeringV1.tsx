@@ -1,6 +1,6 @@
 import { FormSummary } from "@navikt/ds-react";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
-import { useVersjonertTranslation } from "~/hooks/useVersjonertTranslation";
+import { useTranslation } from "react-i18next";
 import { SeksjonSvar } from "~/routes/$soknadId.barnetillegg";
 import {
   lagBarnetilleggKomponenter,
@@ -21,7 +21,7 @@ export function BarnetilleggOppsummeringV1({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useVersjonertTranslation("barnetillegg", 1);
+  const { t } = useTranslation("barnetillegg/v1");
 
   if (!seksjonSvarene) return null;
 
