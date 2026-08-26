@@ -88,13 +88,13 @@ export function OpprettSøknadView() {
   function genererPdfGrunnlag() {
     const arbeidssøkerPdfGrunnlag = genererArbeidssøkerPdfGrunnlag();
 
-    const infoSideKomponenter = lagSeksjonPayload(opprettSøknadKomponenter, {
+    const infoSidePdfGrunnlag = lagSeksjonPayload(opprettSøknadKomponenter, {
       [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
     });
 
     return JSON.stringify({
       navn: t("side.overskrift"),
-      spørsmål: [...arbeidssøkerPdfGrunnlag, ...infoSideKomponenter],
+      spørsmål: [...arbeidssøkerPdfGrunnlag, ...infoSidePdfGrunnlag],
     });
   }
 
