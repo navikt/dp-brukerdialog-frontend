@@ -6,11 +6,11 @@ export type ArbeidssøkerStatus = "IKKE_REGISTRERT" | "REGISTRERT" | "FEIL";
 
 export type Arbeidssøkerperioder = {
   periodeId: string;
-  startet: IArbeidssøkkerMetaResponse;
-  avsluttet: IArbeidssøkkerMetaResponse | null;
+  startet: ArbeidssøkkerMetaResponse;
+  avsluttet: ArbeidssøkkerMetaResponse | null;
 };
 
-type IArbeidssøkkerMetaResponse = {
+type ArbeidssøkkerMetaResponse = {
   tidspunkt: string;
   utfoertAv: { type: BrukerTypeResponse };
   kilde: string;
