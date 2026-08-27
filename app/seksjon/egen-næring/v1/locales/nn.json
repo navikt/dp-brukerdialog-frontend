@@ -1,1 +1,135 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpenger: Eiga næring",
+		"overskrift": "Eiga næring"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"modal": {
+		"lagreOgLukk": "Lagre og lukk"
+	},
+	"detaljer": {
+		"endreSvar": "Endre svar",
+		"fjern": "Fjern"
+	},
+	"næringsvirksomhet": {
+		"driverDuEgenNæringsvirksomhet": {
+			"label": "Driv du eiga næringsverksemd?"
+		},
+		"lesMer": {
+			"label": "For deg som driv eige aksjeselskap",
+			"description": "Viss du er ansatt i ditt eige aksjeselskap, må du legge til arbeidsforholdet i førre steg. På dette spørsmålet skal du kun legge til eiga næring som enkeltpersonforetak."
+		},
+		"informasjonskort": {
+			"label": "Informasjon",
+			"description": "<p>Sjølv om du driv eiga næring må du være villig til å ta anna arbeid.</p>"
+		},
+		"leggTilKnapp": "Legg til næringsverksemd",
+		"manglerFeilmelding": "Du må leggja til ei næringsverksemd",
+		"modal": {
+			"leggTilTittel": "Legg til næringsverksemd",
+			"redigerTittel": "Rediger næringsverksemd"
+		},
+		"felt": {
+			"virksomhetensNavn": {
+				"label": "Navnet på verksemda di"
+			},
+			"organisasjonsnummer": {
+				"label": "Organisasjonsnummer for verksemda di"
+			},
+			"nårBleArbeidstidenRedusert": {
+				"label": "Når blei arbeidstida di redusert?"
+			},
+			"timerFørReduksjon": {
+				"label": "Skriv inn kor mange timar du jobba per veke i eiga næring før arbeidstida blei redusert"
+			},
+			"timerNå": {
+				"label": "Skriv inn kor mange timar du jobbar per veke i eiga næring nå",
+				"description": "<p>For å vurdere om du har rett til dagpengar, må vi kva som er di nåverande vekentlege arbeidstid. Viss du jobbar meir enn 50 prosent av den totale arbeidstida du hadde før, har du ikkje rett til dagpengar.</p><p>Viss arbeidstida di i eiga næring ikkje er redusert, kan du skrive det same antalet timar som i spørsmålet over.</p>"
+			}
+		},
+		"detaljer": {
+			"timerFør": "{{timer}} timar arbeidstid per veke før reduksjon",
+			"timerNå": "{{timer}} timar arbeidstid per veke no"
+		},
+		"oppsummering": {
+			"nr": "Eiga næringsverksemd {{nr}}"
+		}
+	},
+	"gårdsbruk": {
+		"driverDuEgetGårdsbruk": {
+			"label": "Driv du eige gardsbruk?"
+		},
+		"informasjonskort": {
+			"label": "Informasjon",
+			"description": "<p>Sjølv om du driv eige gardsbruk må du være villig til å ta anna arbeid.</p><p>Viss du jobbar meir enn 50 prosent av den totale arbeidstida du hadde før, har du ikkje rett til dagpengar.</p><p>Når du driv gardsbruk tek Nav utgangspunkt i størrelsen på bruket, omfanget av arbeidet, graden av mekanisering og beliggenheit.</p>"
+		},
+		"leggTilKnapp": "Legg til gardsbruk",
+		"manglerFeilmelding": "Du må leggja til eit gardsbruk",
+		"modal": {
+			"leggTilTittel": "Legg til gardsbruk",
+			"redigerTittel": "Rediger gardsbruk"
+		},
+		"felt": {
+			"gårdsbruketsNavn": {
+				"label": "Navnet på gardsbruket ditt"
+			},
+			"organisasjonsnummer": {
+				"label": "Organisasjonsnummer for gardsbruket ditt"
+			},
+			"hvilkeTypeGårdsbruk": {
+				"label": "Kva type gardsbruk driv du?",
+				"description": "Du kan krysse av fleire",
+				"options": {
+					"dyr": "dyr",
+					"jord": "jord",
+					"annet": "anna"
+				}
+			},
+			"hvemEier": {
+				"label": "Kven eig gardsbruket?",
+				"description": "Du kan krysse av fleire",
+				"options": {
+					"jeg": "eg",
+					"samboerEktefelle": "sambuar/ektefelle",
+					"andre": "andre"
+				}
+			},
+			"prosentTilDeg": {
+				"label": "Kor mange prosent av inntektene går til deg?"
+			},
+			"prosentTilSamboerEktefelle": {
+				"label": "Kor mange prosent av inntektene går til sambuar/ektefelle?"
+			},
+			"prosentTilAndre": {
+				"label": "Kor mange prosent av inntektene går til andre?"
+			},
+			"arbeidstimerValgtÅr": {
+				"label": "Kor mange arbeidstimar blir brukt på gardsbruket totalt i løpet av eit år? Velg kva år du oppgir timar for først. du jobbar per veke i eiga næring nå"
+			},
+			"arbeidstimerAntallTimer": {
+				"label": "Skriv kor mange arbeidstimar som blei brukt"
+			},
+			"hvordanBeregnet": {
+				"label": "Forklar kort korleis du har beregna antalet arbeidstimar totalt"
+			}
+		},
+		"detaljer": {
+			"prosentTilMeg": "{{prosent}}% av inntekta går til meg",
+			"arbeidstimer": "{{antall}}arbeidstimar brukte i {{år}}"
+		},
+		"oppsummering": {
+			"nr": "Eige gardsbruk {{nr}}"
+		}
+	},
+	"oppsummering": {
+		"ikkeBesvart": "Ikkje svart på"
+	}
+}
