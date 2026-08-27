@@ -21,10 +21,6 @@ main().catch((error) => {
 async function main() {
   const currentBranch = git(["branch", "--show-current"]);
 
-  //   if (currentBranch !== "main") {
-  //     throw new Error(`Scriptet må startes fra main. Du er på ${currentBranch || "ingen branch"}.`);
-  //   }
-
   const branch = await input({
     message: "Hvilken oversetting branch skal verifiseres?",
     default: currentBranch,
