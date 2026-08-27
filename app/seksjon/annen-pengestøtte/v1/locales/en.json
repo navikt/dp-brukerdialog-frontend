@@ -1,1 +1,12 @@
-{}
+{
+  "detaljer": {
+    "mottattFraOgMed": "cd"
+  },
+  "tidligereArbeidsgiver": {
+    "mottar": {
+      "lesMer": {
+        "label": "lkjlkj"
+      }
+    }
+  }
+}

@@ -1,1 +1,13 @@
-{}
+{
+  "detaljer": {
+    "fjern": "",
+    "mottattFraOgMed": "dsa"
+  },
+  "tidligereArbeidsgiver": {
+    "mottar": {
+      "lesMer": {
+        "label": "kljlkj"
+      }
+    }
+  }
+}
