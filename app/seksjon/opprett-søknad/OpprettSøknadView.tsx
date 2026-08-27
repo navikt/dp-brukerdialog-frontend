@@ -59,7 +59,7 @@ export function OpprettSøknadView() {
     if (arbeidssøkerStatus === "FEIL") {
       return [
         {
-          id: "informasjon.overskrift",
+          id: "tekniskFeil.beskjed",
           type: "forklarendeTekst",
           description: `<strong>${arbeidssøkerT("tekniskFeil.beskjed")}</strong>`,
         },
