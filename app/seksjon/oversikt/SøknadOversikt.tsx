@@ -13,6 +13,7 @@ export function SøknadOversikt() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
+  const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
 
   const sletterSøknad =
     (navigation.state === "submitting" || navigation.state === "loading") &&
@@ -72,7 +73,7 @@ export function SøknadOversikt() {
 
           <VStack>
             {!påbegyntSøknad && (
-              <Link to="/arbeidssoker">
+              <Link to={arbeidssøkerStatus === "REGISTRERT" ? "/opprett-soknad" : "/arbeidssoker"}>
                 <Button variant="primary">{t("nySoknad.startNySoknadKnapp")}</Button>
               </Link>
             )}

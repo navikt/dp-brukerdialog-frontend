@@ -19,12 +19,17 @@ import { SøknadIkon } from "~/components/SøknadIkon";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
   bekreftVilkår,
+  lagArbeidssøkerKomponenter,
   lagOpprettSøknadKomponenter,
   pdfGrunnlag,
 } from "./opprett-søknad.komponenter";
+import type { KomponentType } from "~/components/Komponent.types";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
 export function OpprettSøknadView() {
   const { t } = useTranslation("opprett-søknad");
+  const { t: arbeidssøkerT } = useTranslation("arbeidssøker");
+  const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
   const { state } = useNavigation();
   const actionData = useActionData();
 
@@ -44,12 +49,37 @@ export function OpprettSøknadView() {
     },
   });
 
+  function genererArbeidssøkerPdfGrunnlag(): KomponentType[] {
+    if (arbeidssøkerStatus === "REGISTRERT") {
+      return [];
+    }
+
+    const pdfgrunnlag = lagSeksjonPayload(lagArbeidssøkerKomponenter(arbeidssøkerT), null);
+
+    if (arbeidssøkerStatus === "FEIL") {
+      return [
+        {
+          id: "tekniskFeil.beskjed",
+          type: "forklarendeTekst",
+          description: `<strong>${arbeidssøkerT("tekniskFeil.beskjed")}</strong>`,
+        },
+        ...pdfgrunnlag,
+      ];
+    }
+
+    return pdfgrunnlag;
+  }
+
   function genererPdfGrunnlag() {
+    const arbeidssøkerPdfGrunnlag = genererArbeidssøkerPdfGrunnlag();
+
+    const infoSidePdfGrunnlag = lagSeksjonPayload(opprettSøknadKomponenter, {
+      [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
+    });
+
     return JSON.stringify({
       navn: t("side.overskrift"),
-      spørsmål: lagSeksjonPayload(opprettSøknadKomponenter, {
-        [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
-      }),
+      spørsmål: [...arbeidssøkerPdfGrunnlag, ...infoSidePdfGrunnlag],
     });
   }
 
@@ -141,7 +171,7 @@ export function OpprettSøknadView() {
 
                   <List>
                     <List.Item>{t("informasjonOmDeg.lesMer.deler.dagpenger")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.deler.lanekassen")}</List.Item>
+                    <List.Item>{t("informasjonOmDeg.lesMer.deler.lånekassen")}</List.Item>
                     <List.Item>{t("informasjonOmDeg.lesMer.deler.pensjonskasser")}</List.Item>
                   </List>
                 </div>

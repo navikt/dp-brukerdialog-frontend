@@ -105,7 +105,7 @@ export default function KvitteringView() {
               {t("innhold.saksbehandlingstid")}
             </BodyLong>
           )}
-          {loaderData.erRegistrertArbeidssøker === true && (
+          {loaderData.arbeidssøkerStatus === "REGISTRERT" && (
             <InfoCard data-color="info">
               <InfoCard.Header icon={<InformationSquareIcon aria-hidden />}>
                 <InfoCard.Title>{t("arbeidssøker.registrert.tittel")}</InfoCard.Title>
@@ -115,7 +115,7 @@ export default function KvitteringView() {
               </InfoCard.Content>
             </InfoCard>
           )}
-          {loaderData.erRegistrertArbeidssøker === false && (
+          {loaderData.arbeidssøkerStatus === "IKKE_REGISTRERT" && (
             <InfoCard data-color="warning">
               <InfoCard.Header icon={<ExclamationmarkTriangleIcon aria-hidden />}>
                 <InfoCard.Title>{t("arbeidssøker.ikkeRegistrert.tittel")}</InfoCard.Title>
@@ -132,7 +132,7 @@ export default function KvitteringView() {
               </InfoCard.Content>
             </InfoCard>
           )}
-          {loaderData.erRegistrertArbeidssøker === "ERROR" && (
+          {loaderData.arbeidssøkerStatus === "FEIL" && (
             <LocalAlert status="error">
               <LocalAlert.Header>
                 <LocalAlert.Title>{t("arbeidssøker.feil.tittel")}</LocalAlert.Title>
