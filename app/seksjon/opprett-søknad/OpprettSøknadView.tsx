@@ -29,7 +29,7 @@ import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 export function OpprettSøknadView() {
   const { t } = useTranslation("opprett-søknad");
   const { t: arbeidssøkerT } = useTranslation("arbeidssøker");
-  const { arbeidssøkerStatus } = useTypedRouteLoaderData("routes/opprett-soknad");
+  const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
   const { state } = useNavigation();
   const actionData = useActionData();
 
@@ -50,11 +50,24 @@ export function OpprettSøknadView() {
   });
 
   function genererArbeidssøkerPdfGrunnlag(): KomponentType[] {
-    if (arbeidssøkerStatus !== "REGISTRERT") {
+    if (arbeidssøkerStatus === "REGISTRERT") {
       return [];
     }
 
-    return lagSeksjonPayload(lagArbeidssøkerKomponenter(arbeidssøkerT), null);
+    const pdfgrunnlag = lagSeksjonPayload(lagArbeidssøkerKomponenter(arbeidssøkerT), null);
+
+    if (arbeidssøkerStatus === "FEIL") {
+      return [
+        {
+          id: "informasjon.overskrift",
+          type: "forklarendeTekst",
+          description: `<strong>${arbeidssøkerT("tekniskFeil.beskjed")}</strong>`,
+        },
+        ...pdfgrunnlag,
+      ];
+    }
+
+    return pdfgrunnlag;
   }
 
   function genererPdfGrunnlag() {

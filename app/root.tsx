@@ -22,6 +22,7 @@ import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { OversettingNøklerKnapp } from "./components/OversettingNøklerKnapp";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
+import { hentArbeidssøkerStatus } from "./models/hent-arbeidssøkerStatus.server";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
 import i18n from "./i18n";
@@ -36,8 +37,8 @@ export const links: LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const dekoratorLanguage = await getDekoratorLanguage(request);
-
   const decoratorFragments = await getDekoratorHTML(dekoratorLanguage);
+  const arbeidssøkerStatus = await hentArbeidssøkerStatus(request);
 
   if (!decoratorFragments) {
     logger.error("Kunne ikke hente dekoratør");
@@ -60,6 +61,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ARBEIDSSOKERREGISTRERING_URL: getEnv("ARBEIDSSOKERREGISTRERING_URL"),
       FARO_URL: getEnv("FARO_URL"),
     },
+    arbeidssøkerStatus,
   });
 }
 

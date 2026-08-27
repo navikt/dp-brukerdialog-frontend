@@ -7,7 +7,7 @@ import { getEnv } from "~/utils/env.utils";
 
 export function ArbeidssøkerView() {
   const { t } = useTranslation("arbeidssøker");
-  const { arbeidssøkerStatus } = useTypedRouteLoaderData("routes/arbeidssoker");
+  const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
 
   return (
     <main id="maincontent" tabIndex={-1}>
