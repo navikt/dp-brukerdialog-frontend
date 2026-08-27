@@ -12,7 +12,6 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "token": "node ./scripts/token-generator.cjs",
-    "oversetting-verify-commit": "node ./scripts/oversetting-verify-commit.cjs",
     "prepare": "husky",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",

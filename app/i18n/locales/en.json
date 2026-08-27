@@ -1,1 +1,7 @@
-{}
+{
+	"lagre": "save",
+	"tilbake": "back",
+	"footer": {
+		"fortsettSenereKnapp": "later"
+	}
+}
