@@ -88,19 +88,19 @@
 				"label": "Hvilken type gårdsbruk driver du?",
 				"description": "Du kan krysse av for flere",
 				"options": {
-					"dyr": "Dyr",
-					"jord": "Jord",
-					"skog": "Skog",
-					"annet": "Annet"
+					"dyr": "dyr",
+					"jord": "jord",
+					"skog": "skog",
+					"annet": "annet"
 				}
 			},
 			"hvemEier": {
 				"label": "Hvem eier gårdsbruket?",
 				"description": "Du kan krysse av for flere",
 				"options": {
-					"jeg": "Jeg",
-					"samboerEktefelle": "Samboer/ektefelle",
-					"andre": "Andre"
+					"jeg": "jeg",
+					"samboerEktefelle": "samboer/ektefelle",
+					"andre": "andre"
 				}
 			},
 			"prosentTilDeg": {
