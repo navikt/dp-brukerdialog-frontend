@@ -143,7 +143,7 @@
 		"varighetPåArbeidsforholdet": "Varighet på arbeidsforholdet",
 		"fraDato": "Fra dato",
 		"tilDato": "Til dato",
-		"fraOgMedDato": "Fra og med dato",
+		"fraOgMedDato": "",
 		"tilOgMedDato": "Til og med dato",
 		"informasjon": "Informasjon",
 		"arbeidsavtale": "Arbeidsavtale",
@@ -173,7 +173,7 @@
 		"fraDatoDescription": "Når startet du i dette arbeidsforholdet?",
 		"tilDatoDescription": "Når ble arbeidstiden din redusert?",
 		"informasjonskort": "Hvis arbeidstiden din er redusert med minst 50 prosent, kan du søke om dagpenger for den reduserte arbeidstiden.",
-		"dokumentasjonskravindikator": "Dokumentasjon av redusert arbeidstid",
+		"dokumentasjonskravindikator": "Dokumentasdasjon av redusert arbeidstid",
 		"hvaErÅrsaken": "Hva er årsaken til at arbeidstiden din ble redusert?"
 	},
 	"konkurs": {
