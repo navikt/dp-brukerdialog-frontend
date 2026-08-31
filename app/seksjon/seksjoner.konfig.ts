@@ -1,11 +1,12 @@
-export type SeksjonKonfig = {
+export type SeksjonMetadata = {
   seksjonId: seksjonId;
+  tittel: string;
   nyesteVersjon: number;
   forrigeSeksjonId: seksjonId | null;
   nesteSeksjonId: seksjonId | null;
 };
 
-type SeksjonGrunnlag = Pick<SeksjonKonfig, "seksjonId" | "nyesteVersjon">;
+export type SeksjonKonfig = Pick<SeksjonMetadata, "seksjonId" | "tittel" | "nyesteVersjon">;
 
 type seksjonId =
   | "personalia"
@@ -22,23 +23,23 @@ type seksjonId =
   | "oppsummering"
   | "kvittering";
 
-export const seksjonKonfig: SeksjonGrunnlag[] = [
-  { seksjonId: "personalia", nyesteVersjon: 1 },
-  { seksjonId: "din-situasjon", nyesteVersjon: 1 },
-  { seksjonId: "arbeidsforhold", nyesteVersjon: 2 },
-  { seksjonId: "annen-pengestotte", nyesteVersjon: 1 },
-  { seksjonId: "egen-naring", nyesteVersjon: 1 },
-  { seksjonId: "verneplikt", nyesteVersjon: 1 },
-  { seksjonId: "utdanning", nyesteVersjon: 1 },
-  { seksjonId: "barnetillegg", nyesteVersjon: 1 },
-  { seksjonId: "reell-arbeidssoker", nyesteVersjon: 1 },
-  { seksjonId: "tilleggsopplysninger", nyesteVersjon: 1 },
-  { seksjonId: "dokumentasjon", nyesteVersjon: 1 },
-  { seksjonId: "oppsummering", nyesteVersjon: 1 },
-  { seksjonId: "kvittering", nyesteVersjon: 1 },
+export const seksjonKonfig: SeksjonKonfig[] = [
+  { seksjonId: "personalia", tittel: "steg.personalia", nyesteVersjon: 1 },
+  { seksjonId: "din-situasjon", tittel: "steg.dinSituasjon", nyesteVersjon: 1 },
+  { seksjonId: "arbeidsforhold", tittel: "steg.arbeidsforhold", nyesteVersjon: 2 },
+  { seksjonId: "annen-pengestotte", tittel: "steg.annenPengestotte", nyesteVersjon: 1 },
+  { seksjonId: "egen-naring", tittel: "steg.egenNaering", nyesteVersjon: 1 },
+  { seksjonId: "verneplikt", tittel: "steg.verneplikt", nyesteVersjon: 1 },
+  { seksjonId: "utdanning", tittel: "steg.utdanning", nyesteVersjon: 1 },
+  { seksjonId: "barnetillegg", tittel: "steg.barnetillegg", nyesteVersjon: 1 },
+  { seksjonId: "reell-arbeidssoker", tittel: "steg.reellArbeidssoker", nyesteVersjon: 1 },
+  { seksjonId: "tilleggsopplysninger", tittel: "steg.tilleggsopplysninger", nyesteVersjon: 1 },
+  { seksjonId: "dokumentasjon", tittel: "steg.dokumentasjon", nyesteVersjon: 1 },
+  { seksjonId: "oppsummering", tittel: "steg.oppsummering", nyesteVersjon: 1 },
+  { seksjonId: "kvittering", tittel: "steg.kvittering", nyesteVersjon: 1 },
 ];
 
-export function hentSeksjonKonfig(seksjonId: seksjonId): SeksjonKonfig {
+export function hentSeksjonKonfig(seksjonId: seksjonId): SeksjonMetadata {
   const indeks = seksjonKonfig.findIndex((seksjon) => seksjon.seksjonId === seksjonId);
 
   if (indeks === -1) {

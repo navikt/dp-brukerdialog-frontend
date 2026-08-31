@@ -3,6 +3,21 @@
 	"avbryt": "Avbryt",
 	"tilbake": "Tilbake",
 	"søknadTittel": "Søknad om dagpenger",
+	"steg": {
+		"personalia": "Personalia",
+		"dinSituasjon": "Din situasjon",
+		"arbeidsforhold": "Arbeidsforhold",
+		"annenPengestotte": "Annen pengestøtte",
+		"egenNaering": "Egen næring",
+		"verneplikt": "Verneplikt",
+		"utdanning": "Utdanning",
+		"barnetillegg": "Barnetillegg",
+		"reellArbeidssoker": "Reell arbeidssøker",
+		"tilleggsopplysninger": "Tilleggsopplysninger",
+		"dokumentasjon": "Dokumentasjon",
+		"oppsummering": "Oppsummering",
+		"kvittering": "Kvittering"
+	},
 	"sistOppdatert": "Sist lagret: {{dato}}",
 	"navigasjon": {
 		"forrigeSteg": "Forrige steg",

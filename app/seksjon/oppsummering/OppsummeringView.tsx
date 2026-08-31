@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { Form, useActionData, useLoaderData, useNavigate, useNavigation } from "react-router";
 import { z } from "zod";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
-import { stegISøknaden } from "~/routes/$soknadId";
+import { hentStegISøknaden } from "~/routes/$soknadId";
 import { action, loader } from "~/routes/$soknadId.oppsummering";
 import { DokumentasjonOppsummering } from "~/seksjon/dokumentasjon/v1/DokumentasjonOppsummering";
 import { Oppsummering } from "~/seksjon/oppsummering/Oppsummering";
@@ -64,15 +64,17 @@ export function OppsummeringView() {
             {t("innhold.dineSvarOverskrift")}
           </Heading>
 
-          {stegISøknaden.map((seksjon) => {
-            const seksjonsData = loaderData.seksjoner.find((s) => s.seksjonId === seksjon.path);
+          {hentStegISøknaden().map((seksjon) => {
+            const seksjonsData = loaderData.seksjoner.find(
+              (s) => s.seksjonId === seksjon.seksjonId
+            );
             if (!seksjonsData) return null;
-            const seksjonUrl = `${getEnv("BASE_PATH")}/${søknadId}/${seksjon.path}`;
+            const seksjonUrl = `${getEnv("BASE_PATH")}/${søknadId}/${seksjon.seksjonId}`;
 
             return (
               <Oppsummering
-                key={seksjon.path}
-                seksjonsId={seksjon.path}
+                key={seksjon.seksjonId}
+                seksjonsId={seksjon.seksjonId}
                 seksjonsUrl={seksjonUrl}
                 seksjonsData={seksjonsData.data}
               />

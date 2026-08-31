@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLoaderData, useParams, useSearchParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
-import { stegISøknaden } from "~/routes/$soknadId";
+import { hentStegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
 import { DokumentasjonskravSomErSendtAvDeg } from "~/seksjon/kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "~/seksjon/kvittering/DokumentasjonSomIkkeSkalSendes";
@@ -219,13 +219,15 @@ export default function KvitteringView() {
               </ExpansionCard.Header>
               <ExpansionCard.Content>
                 <VStack gap="space-24">
-                  {stegISøknaden.map((seksjon) => {
-                    const seksjonsData = seksjoner?.find((s: any) => s.seksjonId === seksjon.path);
+                  {hentStegISøknaden().map((seksjon) => {
+                    const seksjonsData = seksjoner?.find(
+                      (s: any) => s.seksjonId === seksjon.seksjonId
+                    );
                     if (!seksjonsData) return null;
                     return (
                       <Oppsummering
                         key={seksjonsData.seksjonId}
-                        seksjonsId={seksjon.path}
+                        seksjonsId={seksjon.seksjonId}
                         seksjonsUrl={`/${soknadId}/${seksjonsData.seksjonId}`}
                         seksjonsData={seksjonsData.data}
                         redigerbar={false}

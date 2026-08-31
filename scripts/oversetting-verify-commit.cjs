@@ -30,6 +30,7 @@ async function main() {
   git(["fetch", "origin", "main", branch]);
 
   if (currentBranch !== branch) {
+    console.info(`Switched to branch ${branch}`);
     try {
       git(["switch", branch]);
     } catch {
@@ -47,12 +48,11 @@ async function main() {
 
   console.info("Følgende kommandoer vil bli kjørt:");
   console.info(`
-    git switch ${branch}
     git reset --soft origin/main
     git add .
     git commit -m "Verified oversetting" -m "Co-authored-by: ${coAuthor.name} <${coAuthor.email}>"
     git push --force-with-lease origin ${branch}
-    `);
+  `);
 
   const shouldContinue = await confirm({
     message: "Ønsker du å fortsette?",

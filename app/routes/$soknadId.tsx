@@ -7,56 +7,16 @@ import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.se
 import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
 import { hentSøknader } from "~/models/hent-søknader";
 import { Søknad } from "~/models/hent-søknader-for-ident";
+import { SeksjonKonfig, seksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import { SoknadProvider } from "~/seksjon/soknad.context";
-import { validerSøknadId } from "~/utils/seksjon.utils";
 
-type Steg = {
-  tittel: string;
-  path: string;
-};
-
-type FremgangSteg = Steg & {
+type FremgangSteg = SeksjonKonfig & {
   fullført?: boolean;
 };
 
 type StegResponse = {
   seksjoner: string[];
 };
-
-export const stegISøknaden: Steg[] = [
-  { tittel: "Personalia", path: "personalia" },
-  { tittel: "Din situasjon", path: "din-situasjon" },
-  { tittel: "Arbeidsforhold", path: "arbeidsforhold" },
-  { tittel: "Annen pengestøtte", path: "annen-pengestotte" },
-  { tittel: "Egen næring", path: "egen-naring" },
-  { tittel: "Verneplikt", path: "verneplikt" },
-  { tittel: "Utdanning", path: "utdanning" },
-  { tittel: "Barnetillegg", path: "barnetillegg" },
-  { tittel: "Reell arbeidssøker", path: "reell-arbeidssoker" },
-  { tittel: "Tilleggsopplysninger", path: "tilleggsopplysninger" },
-  { tittel: "Dokumentasjon", path: "dokumentasjon" },
-  { tittel: "Oppsummering", path: "oppsummering" },
-  { tittel: "Kvittering", path: "kvittering" },
-];
-
-function fyllTommeSteger(): FremgangSteg[] {
-  return stegISøknaden.map((step) => {
-    return { ...step, fullført: false };
-  });
-}
-
-function finnAktivSteg(seksjoner: FremgangSteg[], urlPath: string) {
-  const url = new URL(urlPath);
-  const pathParts = url.pathname.split("/");
-  const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
-
-  const seksjonIndeks = seksjoner.findIndex((seksjon) => seksjon.path === seksjonsIdFraUrl);
-
-  if (seksjonIndeks === -1) {
-    return seksjoner.findIndex((data) => data.fullført === false);
-  }
-  return seksjonIndeks;
-}
 
 export type SoknadIdRoute = {
   søknadProgress: FremgangSteg[];
@@ -67,12 +27,15 @@ export type SoknadIdRoute = {
 
 const SIDER_TILGJENGELIG_ETTER_INNSENDING = ["kvittering", "ettersending"];
 
+export function hentStegISøknaden(): FremgangSteg[] {
+  return seksjonKonfig.map((seksjon) => ({ ...seksjon, fullført: false }));
+}
+
 export async function loader({
   request,
   params,
 }: LoaderFunctionArgs): Promise<SoknadIdRoute | Response> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
-  validerSøknadId(params.soknadId);
 
   const seksjonId = new URL(request.url).pathname.split("/").at(-1)!;
 
@@ -97,13 +60,26 @@ export async function loader({
     }
   }
 
+  function finnAktivSteg(seksjoner: FremgangSteg[], urlPath: string) {
+    const url = new URL(urlPath);
+    const pathParts = url.pathname.split("/");
+    const seksjonsIdFraUrl = pathParts[pathParts.length - 1];
+
+    const seksjonIndeks = seksjoner.findIndex((seksjon) => seksjon.seksjonId === seksjonsIdFraUrl);
+
+    if (seksjonIndeks === -1) {
+      return seksjoner.findIndex((data) => data.fullført === false);
+    }
+    return seksjonIndeks;
+  }
+
   const sistOppdatert = sistOppdatertResponse.ok
     ? new Date(await sistOppdatertResponse.json())
     : undefined;
 
   if (!progressResponse.ok) {
     return {
-      søknadProgress: fyllTommeSteger(),
+      søknadProgress: hentStegISøknaden(),
       aktivSteg: 1,
       sistOppdatert: sistOppdatert,
       søknadId: params.soknadId,
@@ -117,11 +93,11 @@ export async function loader({
     return redirect(`/${params.soknadId}/kvittering`);
   }
 
-  const søknadSeksjoner: FremgangSteg[] = stegISøknaden.map((step) => ({
+  const søknadSeksjoner: FremgangSteg[] = hentStegISøknaden().map((step) => ({
     ...step,
     fullført:
-      seksjoner.includes(step.path) ||
-      (step.path == "dokumentasjon" && seksjonId == "oppsummering"),
+      seksjoner.includes(step.seksjonId) ||
+      (step.seksjonId == "dokumentasjon" && seksjonId == "oppsummering"),
   }));
 
   return {
@@ -150,10 +126,14 @@ export default function SoknadIdLayoutSide() {
         </div>
         {!erEttersending && (
           <div className="progressbar">
-            <FormProgress totalSteps={stegISøknaden.length} activeStep={loaderData?.aktivSteg || 1}>
+            <FormProgress totalSteps={seksjonKonfig.length} activeStep={loaderData.aktivSteg}>
               {progressData.map((steg) => (
-                <FormProgress.Step href={steg.path} completed={steg.fullført} interactive={false}>
-                  {steg.tittel}
+                <FormProgress.Step
+                  href={steg.seksjonId}
+                  completed={steg.fullført}
+                  interactive={false}
+                >
+                  {t(steg.tittel)}
                 </FormProgress.Step>
               ))}
             </FormProgress>

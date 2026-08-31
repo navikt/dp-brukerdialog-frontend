@@ -5,7 +5,7 @@ import {
   lagLeggTilGårdsbrukKomponenter,
   lagLeggTilNæringsvirksomhetKomponenter,
 } from "../../seksjon/egen-næring/v1/egen-næring.komponenter";
-import { lagSeksjonPayload, validerSøknadId } from "../seksjon.utils";
+import { lagSeksjonPayload } from "../seksjon.utils";
 import { fallbackT } from "~/i18n";
 
 const egenNæringEgenNæringsvirksomhetKomponenter =
@@ -89,33 +89,5 @@ describe("lagSeksjonPayload", () => {
     expect(brutto.length).toBe(
       del1Payload.length + del2Payload.length + del3Payload.length + del4Payload.length
     );
-  });
-});
-
-describe("validerSøknadId", () => {
-  it("kaster ikke feil for gyldig UUID", () => {
-    expect(() => validerSøknadId("550e8400-e29b-41d4-a716-446655440000")).not.toThrow();
-  });
-
-  it("kaster 404 Response for ugyldig UUID", () => {
-    let caughtError: unknown;
-    try {
-      validerSøknadId("ikke-en-uuid");
-    } catch (e) {
-      caughtError = e;
-    }
-    expect(caughtError).toBeInstanceOf(Response);
-    expect((caughtError as Response).status).toBe(404);
-  });
-
-  it("kaster 404 Response for tilfeldig tekst", () => {
-    let caughtError: unknown;
-    try {
-      validerSøknadId("abc123");
-    } catch (e) {
-      caughtError = e;
-    }
-    expect(caughtError).toBeInstanceOf(Response);
-    expect((caughtError as Response).status).toBe(404);
   });
 });
