@@ -7,9 +7,13 @@ export default defineConfig(({ command }) => ({
   base:
     command === "build"
       ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
-      : "/dagpenger/dialog/soknad",
+      : "/dagpenger/dialog/",
 
   plugins: [reactRouter(), devtoolsJson()],
+
+  server: {
+    open: "/dagpenger/dialog/soknad",
+  },
 
   build: {
     manifest: true,
