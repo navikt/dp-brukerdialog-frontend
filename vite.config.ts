@@ -5,7 +5,9 @@ import path from "path";
 
 export default defineConfig(({ command }) => ({
   base:
-    command === "build" ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/" : "/",
+    command === "build"
+      ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
+      : "/dagpenger/dialog/soknad",
 
   plugins: [reactRouter(), devtoolsJson()],
 
