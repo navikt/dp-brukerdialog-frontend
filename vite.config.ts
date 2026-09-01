@@ -5,9 +5,15 @@ import path from "path";
 
 export default defineConfig(({ command }) => ({
   base:
-    command === "build" ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/" : "/",
+    command === "build"
+      ? "https://cdn.nav.no/teamdagpenger/dp-brukerdialog-frontend/client/"
+      : "/dagpenger/dialog/",
 
   plugins: [reactRouter(), devtoolsJson()],
+
+  server: {
+    open: "/dagpenger/dialog/soknad",
+  },
 
   build: {
     manifest: true,
@@ -16,7 +22,7 @@ export default defineConfig(({ command }) => ({
 
   resolve: {
     alias: {
-      "~": path.resolve(__dirname, "./app"),
+      "~": path.resolve(import.meta.dirname, "./app"),
     },
     tsconfigPaths: true,
   },
