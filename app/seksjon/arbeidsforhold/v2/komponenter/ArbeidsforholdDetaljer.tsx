@@ -209,23 +209,26 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
             </span>
           )}
           {arbeidsforhold[permittertNårErDuPermittertFraOgMedDato] && (
-            <span>
-              {t("detaljer.permittertFra", {
-                prosent: arbeidsforhold[permittertHvorMangeProsentErDuPermittert],
-                dato: formaterNorskDato(
-                  new Date(arbeidsforhold[permittertNårErDuPermittertFraOgMedDato])
-                ),
-              })}{" "}
-              {arbeidsforhold[permittertNårErDuPermittertTilOgMedDato] && (
-                <span>
-                  {t("detaljer.permittertTil", {
-                    dato: formaterNorskDato(
-                      new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato])
-                    ),
-                  })}
-                </span>
-              )}
-            </span>
+            <>
+              <br />
+              <span>
+                {t("detaljer.permittertFra", {
+                  prosent: arbeidsforhold[permittertHvorMangeProsentErDuPermittert],
+                  dato: formaterNorskDato(
+                    new Date(arbeidsforhold[permittertNårErDuPermittertFraOgMedDato])
+                  ),
+                })}{" "}
+                {arbeidsforhold[permittertNårErDuPermittertTilOgMedDato] && (
+                  <span>
+                    {t("detaljer.permittertTil", {
+                      dato: formaterNorskDato(
+                        new Date(arbeidsforhold[permittertNårErDuPermittertTilOgMedDato])
+                      ),
+                    })}
+                  </span>
+                )}
+              </span>
+            </>
           )}
 
           {arbeidsforhold[ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato] && (
