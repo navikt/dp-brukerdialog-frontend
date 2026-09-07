@@ -1,6 +1,6 @@
 import { Checkbox, CheckboxGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import parse from "html-react-parser";
+import { DescriptionRender } from "~/components/DescriptionRender";
 import { FlervalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
@@ -18,7 +18,7 @@ export function Flervalg({ props, formScope, ref }: IProps) {
       {...field.getInputProps()}
       ref={ref}
       legend={props.label}
-      description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={DescriptionRender(props.description)}
       key={props.id}
       error={field.error()}
       value={value}

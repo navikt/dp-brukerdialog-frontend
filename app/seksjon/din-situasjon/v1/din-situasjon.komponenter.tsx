@@ -1,3 +1,4 @@
+import { BodyLong as BodyShort } from "@navikt/ds-react";
 import { addMonths, endOfDay, startOfDay, subMonths } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
@@ -52,7 +53,7 @@ export function lagDinSituasjonKomponenter(t: TFunction): KomponentType[] {
       id: "hvilkenDatoSøkerDuGjenopptakFraLesMer",
       type: "lesMer",
       label: t("gjenopptakFraDato.lesMer.label"),
-      description: t("gjenopptakFraDato.lesMer.description"),
+      description: <BodyShort spacing>{t("gjenopptakFraDato.lesMer.description")}</BodyShort>,
       visHvis: (svar: DinSituasjonSvar) =>
         svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "ja",
     },
@@ -71,12 +72,17 @@ export function lagDinSituasjonKomponenter(t: TFunction): KomponentType[] {
       id: "hvilkenDatoSøkerDuDagpengerFraLesMer",
       type: "lesMer",
       label: t("dagpengerFraDato.lesMer.label"),
-      description:
-        `<p>${t("dagpengerFraDato.lesMer.description.beregning")}</p>` +
-        `<p><strong>${t("dagpengerFraDato.lesMer.description.eksempelTittel")}</strong><br/>${t(
-          "dagpengerFraDato.lesMer.description.eksempel"
-        )}</p>` +
-        `<p>${t("dagpengerFraDato.lesMer.description.helg")}</p>`,
+      description: (
+        <>
+          <BodyShort spacing>{t("dagpengerFraDato.lesMer.description.beregning")}</BodyShort>
+          <BodyShort spacing>
+            <strong>{t("dagpengerFraDato.lesMer.description.eksempelTittel")}</strong>
+            <br />
+            {t("dagpengerFraDato.lesMer.description.eksempel")}
+          </BodyShort>
+          <BodyShort>{t("dagpengerFraDato.lesMer.description.helg")}</BodyShort>
+        </>
+      ),
       visHvis: (svar: DinSituasjonSvar) =>
         svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "nei" ||
         svar[harDuMottattDagpengerFraNavILøpetAvDeSiste52Ukene] === "vetikke",

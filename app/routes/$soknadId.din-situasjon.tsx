@@ -5,13 +5,13 @@ import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { DinSituasjonSvar } from "~/seksjon/din-situasjon/v1/din-situasjon.komponenter";
 import { DinSituasjonViewV1 } from "~/seksjon/din-situasjon/v1/DinSituasjonViewV1";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import {
   filtrerSeksjonsvar,
   navigerEtterLagring,
   normaliserFormData,
 } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
   hentSeksjonKonfig("din-situasjon");
@@ -64,6 +64,8 @@ export async function action({ request, params }: ActionFunctionArgs) {
     dokumentasjonskrav: null,
     pdfGrunnlag: pdfGrunnlag,
   };
+
+  console.log(putSeksjonRequestBody);
 
   const response = await lagreSeksjon(request, params.soknadId, seksjonId, putSeksjonRequestBody);
 

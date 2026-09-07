@@ -1,7 +1,7 @@
 import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import parse from "html-react-parser";
 import { Ref } from "react";
+import { DescriptionRender } from "~/components/DescriptionRender";
 import { EØS_LAND, FLERE_LAND, OFTE_VALGTE_LAND } from "~/utils/land.utils";
 import { LandSpørsmål } from "../Komponent.types";
 
@@ -20,7 +20,7 @@ export function Land({ props, formScope, ref }: IProps) {
       ref={ref}
       defaultValue={field.value() ?? undefined}
       label={props.label}
-      description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={DescriptionRender(props.description)}
       error={field.error()}
       key={props.id}
       autoComplete="off"

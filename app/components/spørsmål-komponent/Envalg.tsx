@@ -1,7 +1,7 @@
 import { HStack, Radio, RadioGroup } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import parse from "html-react-parser";
 import { Ref } from "react";
+import { DescriptionRender } from "~/components/DescriptionRender";
 import { EnvalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
@@ -21,7 +21,7 @@ export function Envalg({ props, formScope, horisontal, ref }: IProps) {
       legend={props.label}
       key={props.id}
       defaultValue={(field.value() as string) ?? undefined}
-      description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={DescriptionRender(props.description)}
       error={field.error()}
     >
       {horisontal && (

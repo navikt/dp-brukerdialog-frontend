@@ -1,6 +1,6 @@
 import { Select } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import parse from "html-react-parser";
+import { DescriptionRender } from "~/components/DescriptionRender";
 import { NedtrekkslisteSpørsmål } from "../Komponent.types";
 
 interface IProps {
@@ -20,7 +20,7 @@ export function Nedtrekksliste({ props, formScope, ref }: IProps) {
       defaultValue={field.value() ?? undefined}
       label={props.label}
       key={props.id}
-      description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={DescriptionRender(props.description)}
       error={field.error()}
       autoComplete="off"
     >

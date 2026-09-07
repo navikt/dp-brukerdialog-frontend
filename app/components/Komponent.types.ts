@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type KomponentType =
   | EnvalgSpørsmål
   | FlervalgSpørsmål
@@ -46,7 +48,7 @@ export const INFO_KOMPONENTER: InfoType[] = [
 export type KomponentBase = {
   id: string;
   label?: string;
-  description?: string;
+  description?: ReactNode;
   type: SpørsmålType | InfoType;
   visHvis?: (svar: Record<string, any>) => boolean;
 };
