@@ -6,12 +6,12 @@ import { LangTekstSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: LangTekstSpørsmål;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   ref: Ref<HTMLTextAreaElement>;
 }
 
 export function LangTekst({ props, formScope, ref }: IProps) {
-  const field = useField(formScope!);
+  const field = useField(formScope);
 
   return (
     <Textarea

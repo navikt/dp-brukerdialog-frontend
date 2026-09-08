@@ -3,7 +3,6 @@ import { hentPersonalia } from "~/models/hent-personalia.server";
 import { lagreSeksjon } from "~/models/lagre-seksjon.server";
 import { opprettSoknad } from "~/models/opprett-soknad.server";
 import { OpprettSøknadView } from "~/seksjon/opprett-søknad/OpprettSøknadView";
-import { SoknadProvider } from "~/seksjon/soknad.context";
 import { pdfGrunnlag } from "../seksjon/opprett-søknad/opprett-søknad.komponenter";
 import { Personalia } from "./$soknadId.personalia";
 import { Route } from "./+types/opprett-soknad";
@@ -59,9 +58,5 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function OpprettSoknadSide() {
-  return (
-    <SoknadProvider>
-      <OpprettSøknadView />
-    </SoknadProvider>
-  );
+  return <OpprettSøknadView />;
 }

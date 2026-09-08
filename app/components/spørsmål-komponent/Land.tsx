@@ -7,12 +7,12 @@ import { LandSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: LandSpørsmål;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   ref: Ref<HTMLSelectElement>;
 }
 
 export function Land({ props, formScope, ref }: IProps) {
-  const field = useField(formScope!);
+  const field = useField(formScope);
 
   return (
     <Select

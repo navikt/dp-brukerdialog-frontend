@@ -6,13 +6,13 @@ import { EnvalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: EnvalgSpørsmål;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   horisontal?: boolean;
   ref: Ref<HTMLFieldSetElement>;
 }
 
 export function Envalg({ props, formScope, horisontal, ref }: IProps) {
-  const field = useField(formScope!);
+  const field = useField(formScope);
 
   return (
     <RadioGroup

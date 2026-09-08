@@ -7,12 +7,12 @@ import { DatoSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: DatoSpørsmål;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   ref: Ref<HTMLInputElement>;
 }
 
 export function Dato({ props, formScope, ref }: IProps) {
-  const field = useField(formScope!);
+  const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const { datepickerProps, inputProps } = useDatepicker({

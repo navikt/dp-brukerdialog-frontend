@@ -7,7 +7,6 @@ import { hentSøknadFremgangInfo } from "~/models/hent-søknad-fremgrang-info.se
 import { hentSøknadSistOppdatert } from "~/models/hent-søknad-sist-oppdatert";
 import { hentSøknader } from "~/models/hent-søknader";
 import { Søknad } from "~/models/hent-søknader-for-ident";
-import { SoknadProvider } from "~/seksjon/soknad.context";
 import { validerSøknadId } from "~/utils/seksjon.utils";
 
 type Steg = {
@@ -140,27 +139,25 @@ export default function SoknadIdLayoutSide() {
   const erEttersending = location.pathname.includes("/ettersending");
 
   return (
-    <SoknadProvider>
-      <main id="maincontent" tabIndex={-1}>
-        <div className="søknad-header">
-          <SøknadIkon />
-          <Heading size="large" level="1">
-            {t("søknadTittel")}
-          </Heading>
+    <main id="maincontent" tabIndex={-1}>
+      <div className="søknad-header">
+        <SøknadIkon />
+        <Heading size="large" level="1">
+          {t("søknadTittel")}
+        </Heading>
+      </div>
+      {!erEttersending && (
+        <div className="progressbar">
+          <FormProgress totalSteps={stegISøknaden.length} activeStep={loaderData?.aktivSteg || 1}>
+            {progressData.map((steg) => (
+              <FormProgress.Step href={steg.path} completed={steg.fullført} interactive={false}>
+                {steg.tittel}
+              </FormProgress.Step>
+            ))}
+          </FormProgress>
         </div>
-        {!erEttersending && (
-          <div className="progressbar">
-            <FormProgress totalSteps={stegISøknaden.length} activeStep={loaderData?.aktivSteg || 1}>
-              {progressData.map((steg) => (
-                <FormProgress.Step href={steg.path} completed={steg.fullført} interactive={false}>
-                  {steg.tittel}
-                </FormProgress.Step>
-              ))}
-            </FormProgress>
-          </div>
-        )}
-        <Outlet />
-      </main>
-    </SoknadProvider>
+      )}
+      <Outlet />
+    </main>
   );
 }

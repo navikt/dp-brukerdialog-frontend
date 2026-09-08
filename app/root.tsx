@@ -29,6 +29,7 @@ import { logger } from "./utils/logger.utils";
 
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
 import indexStyles from "./index.css?url";
+import { SoknadProvider } from "./seksjon/soknad.context";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -95,17 +96,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {getEnv("APP_ENV") === "dev" && <OversettingNøklerKnapp />}
-        <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
-        {children}
-        <ScrollRestoration />
-        <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`,
-          }}
-        />
-        <Scripts />
+        <SoknadProvider>
+          {getEnv("APP_ENV") === "dev" && <OversettingNøklerKnapp />}
+          <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
+          {children}
+          <ScrollRestoration />
+          <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.env = ${JSON.stringify(env)}`,
+            }}
+          />
+          <Scripts />
+        </SoknadProvider>
       </body>
     </html>
   );

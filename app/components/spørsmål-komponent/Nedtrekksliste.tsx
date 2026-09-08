@@ -5,13 +5,13 @@ import { NedtrekkslisteSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: NedtrekkslisteSpørsmål;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   horisontal?: boolean;
   ref: React.Ref<HTMLSelectElement>;
 }
 
 export function Nedtrekksliste({ props, formScope, ref }: IProps) {
-  const field = useField(formScope!);
+  const field = useField(formScope);
 
   return (
     <Select

@@ -10,13 +10,13 @@ import { formaterNorskDatoMedTall } from "~/utils/formatering.utils";
 
 interface IProps {
   props: PeriodeSpørsmål;
-  formScope?: FormScope<string | Array<string> | undefined>;
+  formScope: FormScope<string | Array<string> | undefined>;
   formValues?: Record<string, any>;
   ref: React.Ref<HTMLDivElement>;
 }
 
 export function Periode({ props, formScope, formValues, ref }: IProps) {
-  const field = useField(formScope!);
+  const field = useField(formScope);
   const [error, setError] = useState<string | undefined>(undefined);
   const { referanseId, type } = props;
 
