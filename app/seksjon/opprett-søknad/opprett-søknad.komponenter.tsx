@@ -1,4 +1,4 @@
-import { BodyLong, Box, Heading, Link, List } from "@navikt/ds-react";
+import { BodyLong, GuidePanel, Heading, Link, List } from "@navikt/ds-react";
 import type { TFunction } from "i18next";
 import type { KomponentType } from "~/components/Komponent.types";
 import type { Person } from "~/routes/$soknadId.personalia";
@@ -22,7 +22,7 @@ export function lagPersonaliaKomponenter(
       id: "personalia.overskrift",
       type: "forklarendeTekst",
       description: (
-        <Box padding="space-16" borderColor="info" borderWidth="2" borderRadius="12">
+        <GuidePanel poster>
           <BodyLong>
             <Heading size="medium" level="2" spacing>
               {t("personalia.hilsen", {
@@ -32,7 +32,7 @@ export function lagPersonaliaKomponenter(
             {t("personalia.tekst")}{" "}
             <Link href={t("personalia.lenkeUrl")}>{t("personalia.lenkeTekst")}</Link>
           </BodyLong>
-        </Box>
+        </GuidePanel>
       ),
     },
   ];

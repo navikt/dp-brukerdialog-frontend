@@ -37,7 +37,6 @@ import {
 
 export function PersonaliaViewV1() {
   const { state } = useNavigation();
-
   const loaderData = useLoaderData<typeof loader>();
   const { t } = useTranslation("personalia/v1");
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
