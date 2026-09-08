@@ -20,7 +20,7 @@ import { Periode } from "./spørsmål-komponent/Periode";
 
 interface IProps {
   props: KomponentType;
-  formScope: FormScope<string | Array<string> | undefined>;
+  formScope?: FormScope<string | Array<string> | undefined>;
   formValues?: Record<string, any>;
 }
 
@@ -34,6 +34,33 @@ export function Komponent({ props, formScope, formValues }: IProps) {
       settFokus(ref);
     }
   }, [komponentIdTilFokus, submitTeller]);
+
+  switch (props.type) {
+    case "informasjonskort":
+      return <Informasjonskort props={props} />;
+
+    case "lesMer":
+      return <LesMer props={props} />;
+
+    case "dokumentasjonskravindikator":
+      return <Dokumentasjonskravindikator props={props} />;
+
+    case "forklarendeTekst":
+      return <ForklarendeTekst props={props} />;
+
+    case "headingTekst":
+      return <HeadingTekst props={props} />;
+
+    case "registeropplysning":
+      return null;
+
+    default:
+      break;
+  }
+
+  if (formScope === undefined) {
+    throw new Error(`Komponent med type ${props.type} må ha formScope`);
+  }
 
   switch (props.type) {
     case "dato":
@@ -63,24 +90,6 @@ export function Komponent({ props, formScope, formValues }: IProps) {
 
     case "nedtrekksliste":
       return <Nedtrekksliste ref={ref} props={props} formScope={formScope} />;
-
-    case "informasjonskort":
-      return <Informasjonskort props={props} />;
-
-    case "lesMer":
-      return <LesMer props={props} />;
-
-    case "dokumentasjonskravindikator":
-      return <Dokumentasjonskravindikator props={props} />;
-
-    case "forklarendeTekst":
-      return <ForklarendeTekst props={props} />;
-
-    case "headingTekst":
-      return <HeadingTekst props={props} />;
-
-    case "registeropplysning":
-      return null;
 
     default:
       console.warn(`Ukjent spørsmålstype: ${props}`);

@@ -1,39 +1,44 @@
 import { ArrowRightIcon } from "@navikt/aksel-icons";
-import {
-  BodyLong,
-  Box,
-  Button,
-  Checkbox,
-  Heading,
-  Link,
-  List,
-  LocalAlert,
-  ReadMore,
-  VStack,
-} from "@navikt/ds-react";
+import { Button, Checkbox, Heading, LocalAlert, VStack } from "@navikt/ds-react";
 import { useForm } from "@rvf/react-router";
 import { useTranslation } from "react-i18next";
-import { Form, useActionData, useNavigation } from "react-router";
+import { Form, useActionData, useLoaderData, useNavigation } from "react-router";
 import { z } from "zod";
+import { Komponent } from "~/components/Komponent";
+import type { KomponentType } from "~/components/Komponent.types";
 import { SøknadIkon } from "~/components/SøknadIkon";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
+import { loader } from "~/routes/opprett-soknad";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import {
-  bekreftVilkår,
+  lagArbeidssøkerFeilmelding,
   lagArbeidssøkerKomponenter,
+} from "../arbeidssøker/arbeidssøker.komponenter";
+import {
+  bekreftVilkår,
+  lagBekreftVilkårKomponenter,
+  lagLesmerKomponenter,
   lagOpprettSøknadKomponenter,
+  lagPersonaliaKomponenter,
+  lagRiktigeOpplysningerKomponenter,
   pdfGrunnlag,
 } from "./opprett-søknad.komponenter";
-import type { KomponentType } from "~/components/Komponent.types";
-import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 
 export function OpprettSøknadView() {
   const { t } = useTranslation("opprett-søknad");
   const { t: arbeidssøkerT } = useTranslation("arbeidssøker");
+  const { personalia } = useLoaderData<typeof loader>();
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
   const { state } = useNavigation();
   const actionData = useActionData();
 
+  const personaliaKomponenter = lagPersonaliaKomponenter(t, personalia?.person);
   const opprettSøknadKomponenter = lagOpprettSøknadKomponenter(t);
+  const lesMerKomponenter = lagLesmerKomponenter(t);
+  const riktigOpplysningerKomponenter = lagRiktigeOpplysningerKomponenter(t);
+  const bekreftVilkårKomponenter = lagBekreftVilkårKomponenter(t);
+  const arbeidssøkerKomponenter = lagArbeidssøkerKomponenter(arbeidssøkerT);
+  const arbeidssøkerFeilmeldingKomponenter = lagArbeidssøkerFeilmelding(arbeidssøkerT);
 
   const form = useForm({
     method: "POST",
@@ -54,32 +59,35 @@ export function OpprettSøknadView() {
       return [];
     }
 
-    const pdfgrunnlag = lagSeksjonPayload(lagArbeidssøkerKomponenter(arbeidssøkerT), null);
+    const arbeidssøkerPdfGrunnlag = lagSeksjonPayload(arbeidssøkerKomponenter, null);
 
     if (arbeidssøkerStatus === "FEIL") {
-      return [
-        {
-          id: "tekniskFeil.beskjed",
-          type: "forklarendeTekst",
-          description: `<strong>${arbeidssøkerT("tekniskFeil.beskjed")}</strong>`,
-        },
-        ...pdfgrunnlag,
-      ];
+      const feilmelding = lagSeksjonPayload(arbeidssøkerFeilmeldingKomponenter, null);
+      return [...feilmelding, ...arbeidssøkerPdfGrunnlag];
     }
 
-    return pdfgrunnlag;
+    return arbeidssøkerPdfGrunnlag;
   }
 
   function genererPdfGrunnlag() {
     const arbeidssøkerPdfGrunnlag = genererArbeidssøkerPdfGrunnlag();
 
-    const infoSidePdfGrunnlag = lagSeksjonPayload(opprettSøknadKomponenter, {
+    const infosideKomponenter = [
+      ...(personalia?.person ? personaliaKomponenter : []),
+      ...opprettSøknadKomponenter,
+      ...lesMerKomponenter,
+      ...riktigOpplysningerKomponenter,
+    ];
+
+    const infoSidePdfGrunnlag = lagSeksjonPayload(infosideKomponenter, null);
+
+    const bekreftVilkårPdfGrunnlag = lagSeksjonPayload(bekreftVilkårKomponenter, {
       [bekreftVilkår]: form.transient.value().bekreftVilkår ? "ja" : "nei",
     });
 
     return JSON.stringify({
       navn: t("side.overskrift"),
-      spørsmål: [...arbeidssøkerPdfGrunnlag, ...infoSidePdfGrunnlag],
+      spørsmål: [...arbeidssøkerPdfGrunnlag, ...infoSidePdfGrunnlag, ...bekreftVilkårPdfGrunnlag],
     });
   }
 
@@ -100,132 +108,35 @@ export function OpprettSøknadView() {
       </div>
 
       <div className="innhold">
-        <VStack gap="space-32">
-          <BodyLong>
-            {t("intro.tekst")} <Link href="https://www.nav.no/dagpenger">{t("intro.lenke")}</Link>
-          </BodyLong>
-
-          <section>
-            <Heading size="medium" level="2" spacing>
-              {t("krav.overskrift")}
-            </Heading>
-
-            <List as="ol">
-              <List.Item>
-                <strong>{t("krav.registrertArbeidssøker.tittel")}</strong>
-
-                <BodyLong>{t("krav.registrertArbeidssøker.avsnitt1")}</BodyLong>
-                <BodyLong>{t("krav.registrertArbeidssøker.avsnitt2")}</BodyLong>
-              </List.Item>
-
-              <List.Item>
-                <strong>{t("krav.endretSituasjon.tittel")}</strong>
-                <BodyLong>{t("krav.endretSituasjon.tekst")}</BodyLong>
-              </List.Item>
-
-              <List.Item>
-                <strong>{t("krav.reellJobbsøker.tittel")}</strong>
-                <BodyLong>{t("krav.reellJobbsøker.tekst")}</BodyLong>
-              </List.Item>
-            </List>
-          </section>
-
-          <section>
-            <Heading size="medium" level="2" spacing>
-              {t("slikSøkerDu.overskrift")}
-            </Heading>
-
-            <VStack gap="space-16">
-              <BodyLong>{t("slikSøkerDu.avsnitt1")}</BodyLong>
-              <BodyLong>{t("slikSøkerDu.avsnitt2")}</BodyLong>
-              <BodyLong>{t("slikSøkerDu.avsnitt3")}</BodyLong>
-            </VStack>
-          </section>
-
-          <section>
-            <Heading size="medium" level="2" spacing>
-              {t("informasjonOmDeg.overskrift")}
-            </Heading>
-
-            <BodyLong spacing>{t("informasjonOmDeg.intro")}</BodyLong>
-
-            <ReadMore header={t("informasjonOmDeg.lesMer.tittel")} variant="ghost">
-              <VStack gap="space-16">
-                <BodyLong>{t("informasjonOmDeg.lesMer.intro")}</BodyLong>
-
-                <div>
-                  <BodyLong>{t("informasjonOmDeg.lesMer.henterOverskrift")}</BodyLong>
-
-                  <List>
-                    <List.Item>{t("informasjonOmDeg.lesMer.henter.personinformasjon")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.henter.inntekt")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.henter.arbeidsforhold")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.henter.egenNæring")}</List.Item>
-                  </List>
-                </div>
-
-                <BodyLong>{t("informasjonOmDeg.lesMer.andreOpplysninger")}</BodyLong>
-
-                <div>
-                  <BodyLong>{t("informasjonOmDeg.lesMer.delerOverskrift")}</BodyLong>
-
-                  <List>
-                    <List.Item>{t("informasjonOmDeg.lesMer.deler.dagpenger")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.deler.lånekassen")}</List.Item>
-                    <List.Item>{t("informasjonOmDeg.lesMer.deler.pensjonskasser")}</List.Item>
-                  </List>
-                </div>
-
-                <BodyLong>{t("informasjonOmDeg.lesMer.annenBruk")}</BodyLong>
-
-                <BodyLong>
-                  <Link href="https://www.nav.no/personvernerklaering">
-                    {t("informasjonOmDeg.lesMer.personvernLenke")}
-                  </Link>
-                </BodyLong>
-              </VStack>
-            </ReadMore>
-          </section>
-
-          <section>
-            <Heading size="medium" level="2" spacing>
-              {t("automatiskBehandling.overskrift")}
-            </Heading>
-
-            <BodyLong spacing>
-              {t("automatiskBehandling.tekst")}{" "}
-              <Link href="https://www.nav.no/personvernerklaering#dine-rettigheter">
-                {t("automatiskBehandling.rettigheterLenke")}
-              </Link>
-            </BodyLong>
-
-            <BodyLong>{t("automatiskBehandling.inntekt")}</BodyLong>
-          </section>
-
-          <section>
-            <Heading size="medium" level="2" spacing>
-              {t("riktigeOpplysninger.overskrift")}
-            </Heading>
-
-            <BodyLong>
-              {t("riktigeOpplysninger.tekst")}{" "}
-              <Link href="https://www.nav.no/endringer">{t("riktigeOpplysninger.lenke")}</Link>
-            </BodyLong>
-          </section>
+        <VStack className="mt-32">
+          {personaliaKomponenter.map((komponent) => {
+            return <Komponent key={komponent.id} props={komponent} />;
+          })}
         </VStack>
 
-        <VStack gap="space-32" className="mt-56">
-          <Form {...form.getFormProps()}>
-            <Box
-              padding="space-16"
-              background={form.value(bekreftVilkår) ? "success-moderate" : "sunken"}
-              borderRadius="8"
-            >
-              <Checkbox name={bekreftVilkår} error={!!form.error(bekreftVilkår)}>
-                {t("vilkår.bekreftelse")}
-              </Checkbox>
-            </Box>
+        <VStack className="mt-32">
+          {opprettSøknadKomponenter.map((komponent) => {
+            return <Komponent key={komponent.id} props={komponent} />;
+          })}
+        </VStack>
 
+        <VStack className="mt-32" gap="space-12">
+          {lesMerKomponenter.map((komponent) => {
+            return <Komponent key={komponent.id} props={komponent} />;
+          })}
+        </VStack>
+
+        <VStack className="mt-32">
+          {riktigOpplysningerKomponenter.map((komponent) => {
+            return <Komponent key={komponent.id} props={komponent} />;
+          })}
+        </VStack>
+
+        <VStack gap="space-32" className="mt-32">
+          <Form {...form.getFormProps()}>
+            <Checkbox name={bekreftVilkår} error={!!form.error(bekreftVilkår)}>
+              {t("vilkår.bekreftelse")}
+            </Checkbox>
             {actionData?.error && (
               <LocalAlert status="error" className="mt-16">
                 <LocalAlert.Header>

@@ -41,7 +41,7 @@ export type Personalia = {
   kontonummer: string | null;
 };
 
-type Person = {
+export type Person = {
   fornavn: string;
   mellomnavn: string;
   etternavn: string;
@@ -52,7 +52,7 @@ type Person = {
   folkeregistrertAdresse: Adresse;
 };
 
-type Adresse = {
+export type Adresse = {
   adresselinje1: string;
   adresselinje2: string;
   adresselinje3: string;

@@ -1,6 +1,6 @@
 import { redirect } from "react-router";
 import { hentSøknader, parseSøknaderResponse } from "~/models/hent-søknader";
-import { Søknad, PåBegynteSøknad } from "~/models/hent-søknader-for-ident";
+import { PåBegynteSøknad, Søknad } from "~/models/hent-søknader-for-ident";
 import { SøknadOversikt } from "~/seksjon/oversikt/SøknadOversikt";
 import { hentSoknadOrkestratorOboToken } from "~/utils/auth.utils.server";
 import { getEnv } from "~/utils/env.utils";

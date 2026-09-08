@@ -21,14 +21,15 @@ import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { OversettingNøklerKnapp } from "./components/OversettingNøklerKnapp";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
+import i18n from "./i18n";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { hentArbeidssøkerStatus } from "./models/hent-arbeidssøkerStatus.server";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
-import i18n from "./i18n";
 
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
 import indexStyles from "./index.css?url";
+import { SoknadProvider } from "./seksjon/soknad.context";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -95,17 +96,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {getEnv("APP_ENV") === "dev" && <OversettingNøklerKnapp />}
-        <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
-        {children}
-        <ScrollRestoration />
-        <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`,
-          }}
-        />
-        <Scripts />
+        <SoknadProvider>
+          {getEnv("APP_ENV") === "dev" && <OversettingNøklerKnapp />}
+          <div dangerouslySetInnerHTML={{ __html: DECORATOR_HEADER }} />
+          {children}
+          <ScrollRestoration />
+          <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.env = ${JSON.stringify(env)}`,
+            }}
+          />
+          <Scripts />
+        </SoknadProvider>
       </body>
     </html>
   );
