@@ -5,12 +5,12 @@ import { FlervalgSpørsmål } from "../Komponent.types";
 
 interface IProps {
   props: FlervalgSpørsmål;
-  formScope: FormScope<string | Array<string> | undefined>;
+  formScope?: FormScope<string | Array<string> | undefined>;
   ref: React.Ref<HTMLFieldSetElement>;
 }
 
 export function Flervalg({ props, formScope, ref }: IProps) {
-  const field = useField(formScope);
+  const field = useField(formScope!);
   const value = (field.value() as string[]) ?? undefined;
 
   return (

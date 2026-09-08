@@ -21,11 +21,11 @@ import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { OversettingNøklerKnapp } from "./components/OversettingNøklerKnapp";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
+import i18n from "./i18n";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { hentArbeidssøkerStatus } from "./models/hent-arbeidssøkerStatus.server";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
-import i18n from "./i18n";
 
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
 import indexStyles from "./index.css?url";

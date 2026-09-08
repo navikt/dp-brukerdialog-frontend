@@ -12,10 +12,13 @@
 	},
 	"handlinger": {
 		"registrer": "Registrer deg som arbeidssøker",
-		"avbryt": "Avbryt"
+		"registrerUrl": "https://arbeidssokerregistrering.nav.no/",
+		"avbryt": "Avbryt",
+		"avbrytUrl": "https://www.nav.no/minside"
 	},
 	"soknad": {
-		"lenketekst": "Jeg vil søke om dagpenger likevel",
-		"beskrivelse": "og er klar over at jeg mest sannsynlig vil få avslag på søknaden"
+		"lenketekst": "Jeg vil søke om dagpenger likevel,",
+		"lenkeUrl": "/opprett-soknad",
+		"beskrivelse": " og er klar over at jeg mest sannsynlig vil få avslag på søknaden"
 	}
 }

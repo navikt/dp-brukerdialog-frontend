@@ -5,12 +5,12 @@ import { DescriptionRender } from "~/components/DescriptionRender";
 
 interface IProps {
   props: TallSpørsmål;
-  formScope: FormScope<string | Array<string> | undefined>;
+  formScope?: FormScope<string | Array<string> | undefined>;
   ref: React.Ref<HTMLInputElement>;
 }
 
 export function Tall({ props, formScope, ref }: IProps) {
-  const field = useField(formScope);
+  const field = useField(formScope!);
 
   return (
     <TextField

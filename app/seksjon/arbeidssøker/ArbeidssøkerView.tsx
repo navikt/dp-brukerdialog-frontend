@@ -1,13 +1,15 @@
-import { Alert, BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
+import { Heading } from "@navikt/ds-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
-import { getEnv } from "~/utils/env.utils";
+import { lagArbeidssøkerFeilmelding, lagArbeidssøkerKomponenter } from "./arbeidssøker.komponenter";
+import { Komponent } from "~/components/Komponent";
 
 export function ArbeidssøkerView() {
   const { t } = useTranslation("arbeidssøker");
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
+  const arbeidssøkerKomponenter = lagArbeidssøkerKomponenter(t);
+  const arbeidssøkerFeilmelding = lagArbeidssøkerFeilmelding(t);
 
   return (
     <main id="maincontent" tabIndex={-1}>
@@ -21,40 +23,16 @@ export function ArbeidssøkerView() {
 
       <div className="innhold">
         {arbeidssøkerStatus === "FEIL" && (
-          <Alert variant="warning" className="mb-8">
-            {t("tekniskFeil.beskjed")}
-          </Alert>
+          <>
+            {arbeidssøkerFeilmelding.map((komponent) => {
+              return <Komponent key={komponent.id} props={komponent} />;
+            })}
+          </>
         )}
 
-        <VStack gap="space-16" className="mt-32">
-          <BodyLong>
-            <strong>{t("informasjon.overskrift")}</strong>
-            <br />
-            {t("informasjon.beskrivelse")}
-          </BodyLong>
-          <HStack gap="space-16" align="center">
-            <Button
-              as="a"
-              href={
-                getEnv("ARBEIDSSOKERREGISTRERING_URL") || "https://arbeidssokerregistrering.nav.no/"
-              }
-              variant="primary"
-              onClick={() => {
-                sessionStorage.setItem("kommerFraDagpenger", "true");
-              }}
-            >
-              {t("handlinger.registrer")}
-            </Button>
-
-            <Button as="a" href="https://www.nav.no/minside" variant="secondary">
-              {t("handlinger.avbryt")}
-            </Button>
-          </HStack>
-
-          <BodyLong>
-            <Link to="/opprett-soknad">{t("soknad.lenketekst")}</Link>, {t("soknad.beskrivelse")}
-          </BodyLong>
-        </VStack>
+        {arbeidssøkerKomponenter.map((komponent) => {
+          return <Komponent key={komponent.id} props={komponent} />;
+        })}
       </div>
     </main>
   );

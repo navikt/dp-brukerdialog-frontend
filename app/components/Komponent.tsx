@@ -20,7 +20,7 @@ import { Periode } from "./spørsmål-komponent/Periode";
 
 interface IProps {
   props: KomponentType;
-  formScope: FormScope<string | Array<string> | undefined>;
+  formScope?: FormScope<string | Array<string> | undefined>;
   formValues?: Record<string, any>;
 }
 
