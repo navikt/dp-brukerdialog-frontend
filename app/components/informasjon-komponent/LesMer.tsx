@@ -1,14 +1,11 @@
 import { ReadMore } from "@navikt/ds-react";
 import { KomponentBase } from "~/components/Komponent.types";
-import parse from "html-react-parser";
+import { DescriptionRender } from "~/components/DescriptionRender";
 
 interface IProps {
   props: KomponentBase;
 }
 
 export function LesMer({ props }: IProps) {
-  // TODO: Få denne til å parse react-komponenter?
-  return (
-    <ReadMore header={props.label}>{parse(props?.description || "", { trim: true })}</ReadMore>
-  );
+  return <ReadMore header={props.label}>{DescriptionRender(props.description)}</ReadMore>;
 }

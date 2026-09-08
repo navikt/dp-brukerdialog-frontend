@@ -1,3 +1,4 @@
+import { renderToStaticMarkup } from "react-dom/server";
 import { z } from "zod";
 import {
   FlervalgSpørsmål,
@@ -35,7 +36,7 @@ export function lagSeksjonPayload(
           id: spørsmål?.id,
           type: spørsmål?.type,
           label: getLabel(spørsmål),
-          description: spørsmål?.description,
+          description: getDescription(spørsmål.description),
           options: getOptions(spørsmål),
           svar: formaterDatoSvar(spørsmål, svar?.[1] as string),
           nivå: (spørsmål as HeadingTekst)?.nivå,
@@ -52,6 +53,10 @@ function getLabel(spørsmål: KomponentType): string | undefined {
   return spørsmål?.label && (spørsmål as SpørsmålBase).optional
     ? `${spørsmål.label} (valgfritt)`
     : spørsmål.label;
+}
+
+function getDescription(description: React.ReactNode): string {
+  return typeof description === "string" ? description : renderToStaticMarkup(description);
 }
 
 function getOptions(spørsmål: KomponentType): Option[] {

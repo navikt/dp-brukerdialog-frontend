@@ -1,4 +1,6 @@
+import { createElement } from "react";
 import { describe, expect, it } from "vitest";
+import { KomponentType } from "~/components/Komponent.types";
 import {
   lagEgenNæringEgenNæringsvirksomhetKomponenter,
   lagEgenNæringEgetGårdsbrukKomponenter,
@@ -89,6 +91,20 @@ describe("lagSeksjonPayload", () => {
     expect(brutto.length).toBe(
       del1Payload.length + del2Payload.length + del3Payload.length + del4Payload.length
     );
+  });
+
+  it("serialiserer TSX-description til en streng", () => {
+    const komponenter: KomponentType[] = [
+      {
+        id: "beskrivelse",
+        type: "lesMer",
+        description: createElement("strong", undefined, "Eksempel"),
+      },
+    ];
+
+    const payload = lagSeksjonPayload(komponenter, {});
+
+    expect(payload[0]?.description).toBe("<strong>Eksempel</strong>");
   });
 });
 

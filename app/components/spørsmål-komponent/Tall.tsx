@@ -1,7 +1,7 @@
 import { TextField } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import parse from "html-react-parser";
 import { TallSpørsmål } from "~/components/Komponent.types";
+import { DescriptionRender } from "~/components/DescriptionRender";
 
 interface IProps {
   props: TallSpørsmål;
@@ -19,7 +19,7 @@ export function Tall({ props, formScope, ref }: IProps) {
       inputMode="decimal"
       defaultValue={(field.value() as string) ?? undefined}
       label={props.label}
-      description={parse(props?.description || "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={DescriptionRender(props.description)}
       key={props.id}
       onInput={(event) => {
         field.setValue(event.currentTarget.value?.replace(".", ","));

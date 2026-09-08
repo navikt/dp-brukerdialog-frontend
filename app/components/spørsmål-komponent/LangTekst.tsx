@@ -1,7 +1,7 @@
 import { Textarea } from "@navikt/ds-react";
 import { FormScope, useField } from "@rvf/react-router";
-import parse from "html-react-parser";
 import { Ref } from "react";
+import { DescriptionRender } from "~/components/DescriptionRender";
 import { LangTekstSpørsmål } from "../Komponent.types";
 
 interface IProps {
@@ -19,7 +19,7 @@ export function LangTekst({ props, formScope, ref }: IProps) {
       ref={ref}
       label={props.label}
       defaultValue={(field.value() as string) ?? undefined}
-      description={parse(props?.description ?? "", { trim: true })} // TODO: Få denne til å parse react-komponenter?
+      description={DescriptionRender(props.description)}
       key={props.id}
       maxLength={props.maksLengde}
       error={field.error()}

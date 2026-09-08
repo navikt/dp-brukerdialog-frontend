@@ -1,7 +1,7 @@
 import { BodyLong, InfoCard } from "@navikt/ds-react";
 import { Informasjonskort } from "~/components/Komponent.types";
-import parse from "html-react-parser";
 import { ExclamationmarkTriangleIcon, InformationSquareIcon } from "@navikt/aksel-icons";
+import { DescriptionRender } from "~/components/DescriptionRender";
 
 interface IProps {
   props: Informasjonskort;
@@ -32,9 +32,7 @@ export function Informasjonskort({ props }: Readonly<IProps>) {
         <InfoCard.Title>{props.label}</InfoCard.Title>
       </InfoCard.Header>
       <InfoCard.Content>
-        <BodyLong>
-          {<BodyLong spacing>{parse(props.description || "", { trim: true })}</BodyLong>}
-        </BodyLong>
+        <BodyLong spacing>{DescriptionRender(props.description)}</BodyLong>
       </InfoCard.Content>
     </InfoCard>
   );
