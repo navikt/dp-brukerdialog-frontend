@@ -13,7 +13,7 @@
 	},
 	"forsørgerDuBarnSomIkkeVisesHer": {
 		"label": "Forsørger du barn som ikkje blir vist her?",
-		"description": "Om du har forsørgjaransvar for barn under 18 år som ikkje blir vist her, kan du leggja dei til."
+		"description": "Om du har forsørgaransvar for barn under 18 år som ikkje blir vist her, kan du legge dei til."
 	},
 	"barnFraPdl": {
 		"fornavnOgMellomnavn": {
@@ -56,8 +56,8 @@
 		}
 	},
 	"leggTilBarn": {
-		"knapp": "Legg til barn du forsørgjer",
-		"feil": "Du må leggja til barn du forsørgjer"
+		"knapp": "Legg til barn du forsørger",
+		"feil": "Du må legge til barn du forsørger"
 	},
 	"barnLagtManuelt": {
 		"endreSvar": "Endre svar",
@@ -66,7 +66,7 @@
 	"modal": {
 		"leggTil": "Legg til",
 		"rediger": "Rediger",
-		"tittel": "{{operasjon}} barn du forsørgjer",
+		"tittel": "{{operasjon}} barn du forsørger",
 		"lagreOgLukk": "Lagre og lukk"
 	},
 	"dokumentasjonskrav": {

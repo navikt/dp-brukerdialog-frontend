@@ -32,7 +32,7 @@
 			"description": "<p>Sjølv om du driv eiga næring må du være villig til å ta anna arbeid.</p>"
 		},
 		"leggTilKnapp": "Legg til næringsverksemd",
-		"manglerFeilmelding": "Du må leggja til ei næringsverksemd",
+		"manglerFeilmelding": "Du må legge til ei næringsverksemd",
 		"modal": {
 			"leggTilTittel": "Legg til næringsverksemd",
 			"redigerTittel": "Rediger næringsverksemd"
@@ -72,7 +72,7 @@
 			"description": "<p>Sjølv om du driv eige gardsbruk må du være villig til å ta anna arbeid.</p><p>Viss du jobbar meir enn 50 prosent av den totale arbeidstida du hadde før, har du ikkje rett til dagpengar.</p><p>Når du driv gardsbruk tek Nav utgangspunkt i størrelsen på bruket, omfanget av arbeidet, graden av mekanisering og beliggenheit.</p>"
 		},
 		"leggTilKnapp": "Legg til gardsbruk",
-		"manglerFeilmelding": "Du må leggja til eit gardsbruk",
+		"manglerFeilmelding": "Du må legge til eit gardsbruk",
 		"modal": {
 			"leggTilTittel": "Legg til gardsbruk",
 			"redigerTittel": "Rediger gardsbruk"
@@ -123,7 +123,7 @@
 		},
 		"detaljer": {
 			"prosentTilMeg": "{{prosent}}% av inntekta går til meg",
-			"arbeidstimer": "{{antall}}arbeidstimar brukte i {{år}}"
+			"arbeidstimer": "{{antall}} arbeidstimar brukte i {{år}}"
 		},
 		"oppsummering": {
 			"nr": "Eige gardsbruk {{nr}}"

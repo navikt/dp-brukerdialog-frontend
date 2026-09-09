@@ -25,7 +25,7 @@
 		"description": "Viss du har jobba sidan sist skal du oppgje den første dagen du vart heilt eller delvis arbeidsledig.",
 		"lesMer": {
 			"label": "Les om den tidlegaste datoen du kan få dagpengar frå",
-			"description": "Du kan tidlegast få dagpengar frå den dagen du sender inn søknaden om gjenopptak om dagpengar."
+			"description": "Du kan tidlegast få dagpengar frå den dagen du sender inn søknaden om gjenopptak av dagpengar."
 		}
 	},
 	"dagpengerFraDato": {

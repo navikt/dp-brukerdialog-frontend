@@ -25,7 +25,7 @@
 		"description": "Hvis du har jobbet siden sist skal du oppgi den første dagen du ble helt eller delvis arbeidsledig.",
 		"lesMer": {
 			"label": "Les om når du tidligst kan få dagpenger fra",
-			"description": "Du kan tidligst få dagpenger fra den dagen du sender inn søknaden om gjenopptak om dagpenger."
+			"description": "Du kan tidligst få dagpenger fra den dagen du sender inn søknaden om gjenopptak av dagpenger."
 		}
 	},
 	"dagpengerFraDato": {
