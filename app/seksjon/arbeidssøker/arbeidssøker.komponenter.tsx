@@ -47,10 +47,10 @@ export function lagArbeidssøkerKomponenter(t: TFunction): KomponentType[] {
           </HStack>
 
           <BodyLong>
-            <Link href={`${getEnv("BASE_PATH")}${t("soknad.lenkeUrl")}`}>
-              {t("soknad.lenketekst")}
+            <Link href={`${getEnv("BASE_PATH")}/opprett-soknad`}>
+              {t("søkDagpengerLikevel.lenketekst")}
             </Link>
-            {t("soknad.beskrivelse")}
+            {t("søkDagpengerLikevel.beskrivelse")}
           </BodyLong>
         </VStack>
       ),
