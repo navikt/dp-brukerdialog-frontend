@@ -24,7 +24,7 @@
 		},
 		"feil": {
 			"tittel": "Oppslag mot Arbeidssøkerregisteret feilet",
-			"beskrivelse": "For å ha rett på dagpenger må du være registrert som arbeidssøker. Vi prøvde å sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi dessverre ikke.",
+			"beskrivelse": "For å ha rett til dagpenger må du være registrert som arbeidssøker. Vi prøvde å sjekke om du er registrert som arbeidssøker automatisk, men det klarte vi dessverre ikke.",
 			"lenke": "Hvis du er usikker på om du er registrert som arbeidssøker, må du",
 			"lenkeTekst": "registrere deg som arbeidssøker"
 		}
