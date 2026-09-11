@@ -1,1 +1,21 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpengar: Søknadsoversikt",
+		"overskrift": "Søknad om dagpengar"
+	},
+	"innsendtSoknad": {
+		"beskrivelse": "Du har nyleg sendt inn ein søknad. Vil du ettersende vedlegg til ein innsendt søknad, eller vil du sende inn ein ny?",
+		"vedleggsKnapp": "Send inn vedlegg til søknad sendt {{date}}"
+	},
+	"pabegyntSoknad": {
+		"beskrivelse": "Du har starta på ein søknad som du sist endra {{date}}. Vil du fortsette på den søknaden, eller vil du starte ein ny?",
+		"fortsettKnapp": "Hald fram med søknaden",
+		"slettOgStartPaNyttKnapp": "Slett og start ny søknad"
+	},
+	"nySoknad": {
+		"startNySoknadKnapp": "Start ny søknad"
+	},
+	"tekniskFeil": {
+		"melding": "Det har oppstått ein teknisk feil"
+	}
+}
