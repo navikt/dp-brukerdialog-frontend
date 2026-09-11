@@ -1,1 +1,27 @@
-{}
+{
+	"lagre": "Lagre",
+	"avbryt": "Avbryt",
+	"tilbake": "Tilbake",
+	"søknadTittel": "Søknad om dagpengar",
+	"sistOppdatert": "Sist lagra: {{dato}}",
+	"navigasjon": {
+		"forrigeSteg": "Førre steg",
+		"nesteSteg": "Neste steg"
+	},
+	"footer": {
+		"fortsettSenereKnapp": "Fortsett seinare",
+		"lagretMelding": "Vi har lagra søknaden din. Du kan lukke sida og halde fram seinare. Søknaden blir automatisk sletta dersom du ikkje gjer noko innan 7 dagar.",
+		"slettSøknadKnapp": "Slett søknaden"
+	},
+	"slettSøknadModal": {
+		"feil": "Feil ved sletting av søknad",
+		"bekreftelseTittel": "Er du sikker på at du vil slette søknaden?",
+		"bekreftelseBeskrivelse": "Alle svara dine blir sletta og du må begynne på nytt viss du skal søke om dagpengar.",
+		"slettKnapp": "Slett søknaden",
+		"avbrytKnapp": "Nei, ikkje slett søknaden",
+		"slettetTittel": "Søknaden din er sletta",
+		"slettetBeskrivelse": "Søknaden og alle svara dine er sletta.",
+		"lukkKnapp": "Lukk",
+		"startNySøknadKnapp": "Start ny søknad"
+	}
+}
