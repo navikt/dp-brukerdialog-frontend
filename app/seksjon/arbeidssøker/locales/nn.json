@@ -1,1 +1,24 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpengar: Arbeidssøkar",
+		"overskrift": "Søknad om dagpengar"
+	},
+	"tekniskFeil": {
+		"beskjed": "Vi kunne ikkje sjekke om du er registrert som arbeidssøkar. Du kan forsøke å registrere deg eller gå vidare til søknaden."
+	},
+	"informasjon": {
+		"overskrift": "Du må vere registrert som arbeidssøkar for å ha rett til dagpengar",
+		"beskrivelse": "Du kan tidlegast få dagpengar frå datoen du både har registrert deg som arbeidssøkar og sendt søknad om dagpengar."
+	},
+	"handlinger": {
+		"registrer": "Registrer deg som arbeidssøkar",
+		"registrerUrl": "https://arbeidssokerregistrering.nav.no/",
+		"avbryt": "Avbryt",
+		"avbrytUrl": "https://www.nav.no/minside"
+	},
+	"soknad": {
+		"lenketekst": "Eg vil søke om dagpengar likevel,",
+		"lenkeUrl": "/opprett-soknad",
+		"beskrivelse": " og er klar over at eg truleg vil få avslag på søknaden."
+	}
+}

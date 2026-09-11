@@ -8,7 +8,7 @@
 	},
 	"informasjon": {
 		"overskrift": "Du må være registrert som arbeidssøker for å ha rett til dagpenger",
-		"beskrivelse": "Du kan tidligst få dagpenger fra datoen du både har registrert deg som arbeidssøker og sendt søknad om dagpenger"
+		"beskrivelse": "Du kan tidligst få dagpenger fra datoen du både har registrert deg som arbeidssøker og sendt søknad om dagpenger."
 	},
 	"handlinger": {
 		"registrer": "Registrer deg som arbeidssøker",
@@ -16,8 +16,9 @@
 		"avbryt": "Avbryt",
 		"avbrytUrl": "https://www.nav.no/minside"
 	},
-	"søkDagpengerLikevel": {
+	"soknad": {
 		"lenketekst": "Jeg vil søke om dagpenger likevel,",
-		"beskrivelse": " og er klar over at jeg mest sannsynlig vil få avslag på søknaden"
+		"lenkeUrl": "/opprett-soknad",
+		"beskrivelse": " og er klar over at jeg mest sannsynlig vil få avslag på søknaden."
 	}
 }
