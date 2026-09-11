@@ -16,9 +16,8 @@
 		"avbryt": "Avbryt",
 		"avbrytUrl": "https://www.nav.no/minside"
 	},
-	"soknad": {
+	"søkDagpengerLikevel": {
 		"lenketekst": "Jeg vil søke om dagpenger likevel,",
-		"lenkeUrl": "/opprett-soknad",
 		"beskrivelse": " og er klar over at jeg mest sannsynlig vil få avslag på søknaden."
 	}
 }
