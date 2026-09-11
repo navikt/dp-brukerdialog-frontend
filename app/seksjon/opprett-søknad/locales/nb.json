@@ -19,19 +19,6 @@
 			"dokumentasjon": "Noen av opplysningene du gir i søknaden må du dokumentere. Du får beskjed underveis i søknaden om hvilken dokumentasjon du må sende inn",
 			"tidsbruk": "Det tar omtrent 20-30 minutter å fylle ut søknaden",
 			"saksbehandlingstid": "Det tar ca. 7 uker å behandle søknaden din hvis vi har mottatt all informasjonen vi trenger fra deg"
-		},
-		"registrertArbeidssøker": {
-			"tittel": "Være registrert som arbeidssøker og sende meldekort hver 14. dag",
-			"avsnitt1": "Du må være registrert som arbeidssøker og sende meldekort i hele perioden du mottar dagpenger, også mens du venter på svar på søknaden.",
-			"avsnitt2": "På hvert meldekort bekrefter du at du fortsatt vil være registrert som arbeidssøker, og du gir informasjon til Nav for at vi skal kunne beregne hvor mye du skal få i dagpenger."
-		},
-		"endretSituasjon": {
-			"tittel": "Gi beskjed hvis situasjonen din endrer seg",
-			"tekst": "I tillegg til å sende meldekort er det viktig at du gir oss beskjed hvis situasjonen din endrer seg, for eksempel hvis du er tilbake i jobb, er syk eller oppholder deg i utlandet."
-		},
-		"reellJobbsøker": {
-			"tittel": "Være reell jobbsøker",
-			"tekst": "I søknaden må du svare på spørsmål om du er frisk nok til å jobbe og om du kan ta alle typer arbeid hvor som helst i Norge. Du må i tillegg være aktiv jobbsøker og takke ja til arbeidsmarkedstiltak."
 		}
 	},
 	"lesMer": {
@@ -79,9 +66,7 @@
 	},
 	"vilkår": {
 		"bekreftelse": "Jeg vil svare så godt jeg kan på spørsmålene i søknaden.",
-		"validering": "Du må godta vilkårene",
-		"ja": "Ja",
-		"nei": "Nei"
+		"validering": "Du må godta vilkårene"
 	},
 	"knapper": {
 		"startSøknad": "Start søknad"
