@@ -1,1 +1,86 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpenger: Personalia",
+		"overskrift": "Personalia"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil"
+	},
+	"personaliaIkkeHentet": {
+		"beskrivelse": "Vi klarte ikkje å hente personopplysningane dine. Prøv igjen seinare."
+	},
+	"intro": {
+		"forLenke": "Viss opplysningane vi har om deg ikkje stemmer, må du endre dei hos Folkeregisteret. Kontonummer kan du legge til eller endre på",
+		"minSideLenke": "Min side"
+	},
+	"opplysninger": {
+		"navn": "Namn",
+		"fødselsnummer": "Fødselsnummer",
+		"alder": "Alder",
+		"folkeregistrertAdresse": "Folkeregistrert adresse",
+		"kontonummer": "Kontonummer",
+		"manglerKontonummer": {
+			"forLenke": "Vi har ikkje registrert kontonummeret ditt, og anbefaler at du legg det inn på Min side.",
+			"minSideLenke": "Min side"
+		}
+	},
+	"oppsummering": {
+		"navn": "Namn",
+		"fødselsnummer": "Fødselsnummer",
+		"alder": "Alder",
+		"folkeregistrertAdresse": "Folkeregistrert adresse",
+		"kontonummer": "Kontonummer",
+		"manglerKontonummer": "Vi har ikkje registrert kontonummeret ditt, og anbefaler at du legg det inn på Min side.",
+		"ingenSvar": "Du har ikkje svart på nokon spørsmål i denne seksjonen"
+	},
+	"over67": {
+		"label": "Vi har registrert at du er over 67 år",
+		"description": "<p>Du har ikkje rett til dagpengar lenger enn ut månaden du fyller 67 år. Viss du ikkje har søkt om alderspensjon, kan du <a href=\"https://www.nav.no/soknader#alderspensjon\" target=\"_blank\" rel=\"noopener noreferrer\">søke om alderspensjon her</a>.</p>"
+	},
+	"folkeregistrertAdresseErNorgeStemmerDet": {
+		"label": "Du er folkeregistrert i Noreg. Er Noreg bustadslandet ditt?",
+		"description": "Bustadslandet ditt er det landet du eig eller leiger bustad og er i mesteparten av tida di, og når du ikkje jobber.",
+		"options": {
+			"ja": "Ja, Noreg er bustadslandet mitt",
+			"nei": "Nei, Noreg er ikkje bustadslandet mitt"
+		}
+	},
+	"bostedsland": {
+		"heading": "Bustadsland",
+		"spørsmål": {
+			"label": "Kva land bur du i?",
+			"description": "Med bustadsland meiner vi den vanlege opphaldsstaden din, som er der du eig eller leiger bustad og er mesteparten av tida. Du må som hovudregel opphalde deg i Noreg for å ha rett på dagpengar frå Noreg."
+		},
+		"lesMer": {
+			"label": "For deg som har pendla mellom EØS-land og Sveits",
+			"description": "Viss du bur i eit EØS-land og jobbar i eit anna, er du ein EØS-pendlar. Det er eigne reglar for korleis du skal søke om pengar viss du vert arbeidsledig eller permittert og du har tilknytning til fleire EØS-land<br/><br/>Kva land du skal søke om dagpengar frå er avhengig av<ul><li>kva land du jobba i sist</li><li>kva land du bur i</li><li>om du er permittert eller delvis arbeidsledig, eller om du er heilt arbeidsledig</li></ul>Er du usikker på kva du skal svare, kan du lese<a href=\"https://nav.no/dagpenger#eos\" target=\"_blank\" rel=\"noopener noreferrer\">meir om kvar du skal søke pengar frå</a>."
+		}
+	},
+	"reistTilbakeTilBostedslandet": {
+		"label": "Har du reist tilbake til bustadslandet ditt etter at du blei arbeidsledig eller permittert?"
+	},
+	"avreiseDato": {
+		"periodeLabel": "Avreisedato"
+	},
+	"hvorforReistDuFraNorge": {
+		"label": "Kvifor reiste du frå Noreg?"
+	},
+	"reisteDuHjemTilLandetDuBorI": {
+		"label": "Reiste du heim til landet du bur i ein gong i veka eller meir medan du budde i Noreg?"
+	},
+	"reisteDuITaktMedRotasjon": {
+		"label": "Reiste du i takt med rotasjonen?"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"felles": {
+		"dato": {
+			"fraDato": "Frå dato",
+			"tilDato": "Til dato"
+		}
+	}
+}
