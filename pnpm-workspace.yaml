@@ -5,10 +5,14 @@ allowBuilds:
 ignoredBuiltDependencies:
   - protobufjs
 minimumReleaseAgeExclude:
-  - zod@4.6.1
+  - zod@4.6.1 || 4.6.5
   - '@types/node@25.9.6'
 overrides:
+  esbuild@>=0.27.3 <0.28.1: ^0.28.1
   js-cookie@<=3.0.5: ">=3.0.7"
   protobufjs@>=8.0.0 <8.2.0: ">=8.2.0"
   protobufjs@>=8.0.0 <=8.0.1: ">=8.0.2"
+  qs@>=2.2.5 <6.16.0: ^6.16.0
+  qs@>=6.14.2 <=6.15.3: ^6.16.0
+  react-router@>=7.12.0 <7.18.2: ^7.18.2
   uuid@<14.0.0: ">=14.0.0"
