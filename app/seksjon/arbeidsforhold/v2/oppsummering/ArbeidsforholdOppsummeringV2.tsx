@@ -90,7 +90,7 @@ export function ArbeidsforholdOppsummeringV2({
         )}
 
         {data.registrerteArbeidsforhold?.map((arbeidsforholdModalSvar, index) => (
-          <FormSummary.Answer>
+          <FormSummary.Answer key={index}>
             <FormSummary.Label>
               {" "}
               {t("oppsummering.arbeidsforhold", { nummer: index + 1 })}

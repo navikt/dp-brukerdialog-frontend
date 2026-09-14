@@ -79,9 +79,8 @@ export function AnnenPengestøtteOppsummeringV1({
         </FormSummary.Answer>
         {data[mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver] === "ja" &&
           data.pengestøtteFraTidligereArbeidsgiver?.map((pengestøtte, index) => (
-            <FormSummary.Answer>
+            <FormSummary.Answer key={index}>
               <FormSummary.Label>
-                {" "}
                 {t("oppsummering.tidligereArbeidsgiverNr", { nr: index + 1 })}
               </FormSummary.Label>
               <FormSummary.Value>
