@@ -21,19 +21,19 @@ main().catch((error) => {
 });
 
 async function main() {
-  const mainBranch = oppdaterMainBranch();
+  const mainBranch = sjekkOgOppdaterMainBranch();
 
   if (!mainBranch) {
     return;
   }
 
-  const branch = await input({
+  const oversettingBranch = await input({
     message: "Hvilken oversetting branch skal verifiseres?",
     default: mainBranch,
     validate: (value) => value.startsWith("oversetting-") || "Branchen må starte med oversetting-",
   });
 
-  hentOgByttTilBranch(mainBranch, branch);
+  hentOgByttTilOversettingBranch(oversettingBranch);
 
   const coAuthor = await rawlist({
     message: "Hvem skal være co-author?",
@@ -43,7 +43,7 @@ async function main() {
     })),
   });
 
-  visKommandoerSomSkalKjøres(branch, coAuthor);
+  visKommandoerSomSkalKjøres(oversettingBranch, coAuthor);
 
   const fortsett = await confirm({
     message: "Ønsker du å fortsette?",
@@ -54,13 +54,13 @@ async function main() {
     return;
   }
 
-  verifiserOversettingBranch(branch, coAuthor);
+  utførVerifyCommitOgForcePush(oversettingBranch, coAuthor);
 }
 
-function oppdaterMainBranch() {
-  const currentBranch = git(["branch", "--show-current"]);
+function sjekkOgOppdaterMainBranch() {
+  const mainBranch = git(["branch", "--show-current"]);
 
-  if (currentBranch !== "main") {
+  if (mainBranch !== "main") {
     console.warn("Scriptet kan bare kjøres fra main-branchen.");
     return;
   }
@@ -74,19 +74,17 @@ function oppdaterMainBranch() {
   console.info("Puller siste endringer fra origin/main med rebase");
   git(["pull", "--rebase"]);
 
-  return currentBranch;
+  return mainBranch;
 }
 
-function hentOgByttTilBranch(currentBranch, branch) {
-  console.info(`Henter siste endringer fra origin/main og origin/${branch}`);
-  git(["fetch", "origin", "main", branch]);
+function hentOgByttTilOversettingBranch(branch) {
+  console.info(`Henter siste endringer fra origin/${branch}`);
+  git(["fetch", "origin", branch]);
 
-  if (currentBranch !== branch) {
-    try {
-      git(["switch", branch]);
-    } catch {
-      git(["switch", "--create", "--track", branch, `origin/${branch}`]);
-    }
+  try {
+    git(["switch", branch]);
+  } catch {
+    git(["switch", "--create", "--track", branch, `origin/${branch}`]);
   }
 }
 
@@ -99,10 +97,10 @@ function visKommandoerSomSkalKjøres(branch, coAuthor) {
     git add .
     git commit -m "Verified oversetting" -m "Co-authored-by: ${coAuthor.name} <${coAuthor.email}>"
     git push --force-with-lease origin ${branch}
-    `);
+  `);
 }
 
-function verifiserOversettingBranch(branch, coAuthor) {
+function utførVerifyCommitOgForcePush(branch, coAuthor) {
   console.info("Starter verifisering av oversetting...");
   git(["pull", "--rebase", "origin", branch]);
   git(["rebase", "main"]);
@@ -117,7 +115,7 @@ function verifiserOversettingBranch(branch, coAuthor) {
   ]);
   git(["push", "--force-with-lease", "origin", branch]);
 
-  console.info("Verifisering av oversetting fullført ✅");
+  console.info("Oversetting med verify commit fullført ✅");
 }
 
 function git(args) {
