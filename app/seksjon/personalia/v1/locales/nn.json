@@ -1,6 +1,6 @@
 {
 	"side": {
-		"tittel": "Søknad om dagpenger: Personalia",
+		"tittel": "Søknad om dagpengar: Personalia",
 		"overskrift": "Personalia"
 	},
 	"tekniskFeil": {
@@ -20,7 +20,7 @@
 		"folkeregistrertAdresse": "Folkeregistrert adresse",
 		"kontonummer": "Kontonummer",
 		"manglerKontonummer": {
-			"forLenke": "Vi har ikkje registrert kontonummeret ditt, og anbefaler at du legg det inn på Min side.",
+			"forLenke": "Vi har ikkje registrert kontonummeret ditt, og anbefaler at du legg det inn på",
 			"minSideLenke": "Min side"
 		}
 	},

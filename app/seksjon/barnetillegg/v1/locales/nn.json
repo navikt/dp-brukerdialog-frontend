@@ -1,6 +1,6 @@
 {
 	"side": {
-		"tittel": "Søknad om dagpenger: Barnetillegg",
+		"tittel": "Søknad om dagpengar: Barnetillegg",
 		"overskrift": "Barnetillegg"
 	},
 	"tekniskFeil": {
@@ -9,7 +9,7 @@
 	"forklarendeTekst": {
 		"avsnitt1": "Viss du forsørger barn under 18 år, eller er bidragspliktig, kan du få barnetillegg uavhengig av om barnet bor hos deg.",
 		"avsnitt2": "Barnet må vere busatt i Noreg, eit anna EØS-land, Sveits eller Storbritannia. Du får ikkje barnetillegg viss barnet oppheld seg utanfor desse områda i meir enn 90 dagar i løpet av 12 månadar.",
-		"avsnitt3": "Viss vi har opplysningar om at du er forelder til noen barn, så blir dei vist nedanfor."
+		"avsnitt3": "Viss vi har opplysningar om at du er forelder til nokon barn, så blir dei vist nedanfor."
 	},
 	"forsørgerDuBarnSomIkkeVisesHer": {
 		"label": "Forsørger du barn som ikkje blir vist her?",

@@ -198,7 +198,7 @@
 		},
 		"ønskerDuÅSøkeOmDagpengerITillegg": {
 			"label": "Ønsker du å søke om dagpenger i tillegg til forskudd om lønnsgarantimidler?",
-			"description": "<p>Forskudd på lønnsgarantimidler blir utbetalt i inntil én måned.</p><p>Hvis du er uten arbeid etter at perioden med forskudd på lønnsgarantimidler er ferdig, kan du ha rett på dagpenger. Det kan du søke om ved å svare ja på dette spørsmålet.</p>"
+			"description": "<p>Forskudd på lønnsgarantimidler blir utbetalt i inntil én måned.</p><p>Hvis du er uten arbeid etter at perioden med forskudd på lønnsgarantimidler er ferdig, kan du ha rett til dagpenger. Det kan du søke om ved å svare ja på dette spørsmålet.</p>"
 		},
 		"godtarDuTrekkFraKonkursboet": {
 			"label": "Godtar du at Nav trekker penger direkte fra konkursboet?",
