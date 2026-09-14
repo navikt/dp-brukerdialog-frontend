@@ -1,7 +1,7 @@
-import { BodyShort, Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
+import { Box, Heading, HStack, ReadMore, Tag, VStack } from "@navikt/ds-react";
 import { useTranslation } from "react-i18next";
-import { DokumentasjonskravInnhold } from "../dokumentasjon/v1/DokumentasjonskravInnhold";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
+import { DokumentasjonskravInnhold } from "../dokumentasjon/v1/DokumentasjonskravInnhold";
 
 interface IProps {
   dokumentasjonskrav: Dokumentasjonskrav;
@@ -20,8 +20,6 @@ export function DokumentasjonSomSkalSendesAvDeg({ dokumentasjonskrav }: IProps) 
             {t("dokumentkort.mangler")}
           </Tag>
         </HStack>
-
-        <BodyShort>{t("dokumentkort.skalSendesAvDeg")}</BodyShort>
 
         <ReadMore header={t("dokumentkort.innhold")}>
           <DokumentasjonskravInnhold type={dokumentasjonskrav.type} />
