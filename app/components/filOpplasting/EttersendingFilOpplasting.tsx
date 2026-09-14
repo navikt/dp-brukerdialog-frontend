@@ -195,7 +195,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
   return (
     <Box borderRadius="12" background="sunken">
       <VStack gap="space-16">
-        <HStack justify="space-between">
+        <HStack gap="space-12" justify="space-between" wrap={false} align="start">
           <Heading size="small" level="3">
             {ettersending.tittel || t("opplasting.dokumentasjon")}
           </Heading>
