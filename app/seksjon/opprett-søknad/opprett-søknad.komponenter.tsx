@@ -111,9 +111,9 @@ export function lagLesmerKomponenter(t: TFunction): KomponentType[] {
       label: t("lesMer.slikBehandlerViPersonopplysningeneDine.tittel"),
       description: (
         <VStack gap="space-16">
-          <BodyLong>
+          <BodyShort>
             <strong>{t("lesMer.slikBehandlerViPersonopplysningeneDine.delerMed")}</strong>
-          </BodyLong>
+          </BodyShort>
           <List as="ul">
             <List.Item>
               {t("lesMer.slikBehandlerViPersonopplysningeneDine.deler.skatteetaten")}
