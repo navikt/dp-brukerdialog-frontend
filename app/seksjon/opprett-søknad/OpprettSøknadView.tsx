@@ -45,7 +45,7 @@ export function OpprettSøknadView() {
     submitSource: "state",
     schema: z.object({
       [bekreftVilkår]: z.boolean().refine((val) => val, {
-        message: "Du må godta vilkårene",
+        message: t("vilkår.validering"),
       }),
       [pdfGrunnlag]: z.string().optional(),
     }),

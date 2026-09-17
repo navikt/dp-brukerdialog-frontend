@@ -66,6 +66,7 @@
 	},
 	"vilkår": {
 		"bekreftelse": "Jeg vil svare så godt jeg kan på spørsmålene i søknaden.",
+		"validering": "Du må godta vilkårene",
 		"ja": "Ja",
 		"nei": "Nei"
 	},
