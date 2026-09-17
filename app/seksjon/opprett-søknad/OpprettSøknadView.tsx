@@ -120,19 +120,19 @@ export function OpprettSøknadView() {
           })}
         </VStack>
 
-        <VStack className="mt-32" gap="space-12">
+        <VStack className="mt-32" gap="space-16">
           {lesMerKomponenter.map((komponent) => {
             return <Komponent key={komponent.id} props={komponent} />;
           })}
         </VStack>
 
-        <VStack className="mt-32">
+        <VStack className="mt-16">
           {riktigOpplysningerKomponenter.map((komponent) => {
             return <Komponent key={komponent.id} props={komponent} />;
           })}
         </VStack>
 
-        <VStack gap="space-32" className="mt-32">
+        <VStack gap="space-32" className="mt-16">
           <Form {...form.getFormProps()}>
             <Checkbox name={bekreftVilkår} error={!!form.error(bekreftVilkår)}>
               {t("vilkår.bekreftelse")}
@@ -155,7 +155,7 @@ export function OpprettSøknadView() {
               onClick={opprettSøknad}
               loading={state === "submitting" || state === "loading"}
             >
-              {t("knapper.startSøknad")}
+              {t("startSøknadKnapp")}
             </Button>
           </Form>
         </VStack>

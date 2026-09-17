@@ -1,4 +1,4 @@
-import { BodyLong, GuidePanel, Heading, Link, List } from "@navikt/ds-react";
+import { BodyLong, BodyShort, GuidePanel, Heading, Link, List, VStack } from "@navikt/ds-react";
 import type { TFunction } from "i18next";
 import type { KomponentType } from "~/components/Komponent.types";
 import type { Person } from "~/routes/$soknadId.personalia";
@@ -80,23 +80,29 @@ export function lagLesmerKomponenter(t: TFunction): KomponentType[] {
       type: "lesMer",
       label: t("lesMer.informasjonenViHenterOgDelerOmDeg.tittel"),
       description: (
-        <div>
-          <BodyLong>{t("lesMer.informasjonenViHenterOgDelerOmDeg.tekst")}</BodyLong>
-          <BodyLong>{t("lesMer.informasjonenViHenterOgDelerOmDeg.henterFra")}</BodyLong>
+        <VStack gap="space-16">
+          <BodyShort>{t("lesMer.informasjonenViHenterOgDelerOmDeg.tekst")}</BodyShort>
+          <BodyShort>
+            <strong>{t("lesMer.informasjonenViHenterOgDelerOmDeg.henterFraOverskrift")}</strong>
+          </BodyShort>
           <List as="ul">
             <List.Item>
-              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henter.folkeregisteret")}
+              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henterFra.folkeregisteret")}
             </List.Item>
             <List.Item>
-              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henter.skatteetaten")}
+              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henterFra.skatteetaten")}
             </List.Item>
             <List.Item>
-              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henter.arbeidsforhold")}
+              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henterFra.arbeidsforhold")}
             </List.Item>
-            <List.Item>{t("lesMer.informasjonenViHenterOgDelerOmDeg.henter.eøs")}</List.Item>
-            <List.Item>{t("lesMer.informasjonenViHenterOgDelerOmDeg.henter.egenNæring")}</List.Item>
+            <List.Item>
+              {t("lesMer.informasjonenViHenterOgDelerOmDeg.henterFra.egenNæring")}
+            </List.Item>
           </List>
-        </div>
+          <BodyShort>
+            {t("lesMer.informasjonenViHenterOgDelerOmDeg.viKanOgsåHenteOpplysninger")}
+          </BodyShort>
+        </VStack>
       ),
     },
     {
@@ -104,8 +110,10 @@ export function lagLesmerKomponenter(t: TFunction): KomponentType[] {
       type: "lesMer",
       label: t("lesMer.slikBehandlerViPersonopplysningeneDine.tittel"),
       description: (
-        <div>
-          <BodyLong>{t("lesMer.slikBehandlerViPersonopplysningeneDine.delerMed")}</BodyLong>
+        <VStack gap="space-16">
+          <BodyShort>
+            <strong>{t("lesMer.slikBehandlerViPersonopplysningeneDine.delerMed")}</strong>
+          </BodyShort>
           <List as="ul">
             <List.Item>
               {t("lesMer.slikBehandlerViPersonopplysningeneDine.deler.skatteetaten")}
@@ -124,7 +132,7 @@ export function lagLesmerKomponenter(t: TFunction): KomponentType[] {
               {t("lesMer.slikBehandlerViPersonopplysningeneDine.personvernLenkeTekst")}
             </Link>
           </BodyLong>
-        </div>
+        </VStack>
       ),
     },
     {
