@@ -28,15 +28,15 @@
 		},
 		"informasjonenViHenterOgDelerOmDeg": {
 			"tittel": "Informasjonen vi henter og deler om deg",
-			"tekst": "Hvis du blir avbrutt mens du fyller ut søknaden kan du fortsette senere. Vi lagrer den påbegynte søknaden i 7 dager.",
-			"henterFra": "Vi henter informasjon fra",
-			"henter": {
+			"tekst": "For å vurdere om du har rett til dagpenger etter folketrygdloven kapittel 4, må vi hente informasjon om deg.",
+			"henterFraOverskrift": "Vi henter informasjon fra",
+			"henterFra": {
 				"folkeregisteret": "Folkeregisteret om bosted og familieforhold",
 				"skatteetaten": "Skatteetaten om inntekt og skattekort",
-				"arbeidsforhold": "Arbeidsgiver- og arbeidstakerregisteret om arbeidsforhold",
-				"eøs": "Myndighetene i andre EØS-land om arbeidsforhold og trygdeperioder",
+				"arbeidsforhold": "Arbeidsgiver- og arbeidstakerregisteret om arbeidsforhold. Vi kan også hente informasjon om arbeidsforhold og trygdeperioder fra myndighetene i andre EØS-land",
 				"egenNæring": "Brønnøysundregistrene om egen næring"
-			}
+			},
+			"viKanOgsåHenteOpplysninger": "Vi kan også hente inn opplysninger du har gitt oss tidligere, eller opplysninger du gir oss i andre sammenhenger, hvis det er relevant og nødvendig."
 		},
 		"slikBehandlerViPersonopplysningeneDine": {
 			"tittel": "Slik behandler vi personopplysningene dine",
@@ -61,18 +61,15 @@
 	"riktigeOpplysninger": {
 		"overskrift": "Vi trenger riktige opplysninger for å vurdere om du har rett til dagpenger",
 		"tekst": "Det er viktig at du gir oss riktige opplysninger slik at vi kan behandle saken din.",
-		"lenkeTekst": "Les mer om viktigheten av å gi riktige opplysninger.",
-		"lenkeUrl": "https://www.nav.no/endringer"
+		"lenkeUrl": "https://www.nav.no/endringer",
+		"lenkeTekst": "Les mer om viktigheten av å gi riktige opplysninger."
 	},
 	"vilkår": {
 		"bekreftelse": "Jeg vil svare så godt jeg kan på spørsmålene i søknaden.",
-		"validering": "Du må godta vilkårene",
 		"ja": "Ja",
 		"nei": "Nei"
 	},
-	"knapper": {
-		"startSøknad": "Start søknad"
-	},
+	"startSøknadKnapp": "Start søknad",
 	"tekniskFeil": {
 		"melding": "Det har oppstått en teknisk feil"
 	}
