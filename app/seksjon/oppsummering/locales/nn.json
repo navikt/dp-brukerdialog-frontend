@@ -17,6 +17,6 @@
 		"sendSøknad": "Send søknad"
 	},
 	"feil": {
-		"kunneIkkeHenteSeksjoner": "Kunne ikkje hente seksjonar"
+		"kunneIkkeHenteSeksjoner": "På grunn av ein teknisk feil får du ikkje sendt inn søknaden din. Vi anbefaler at du lukkar søknaden heilt og forsøker å fortsette på søknaden om nokre minutt. Viss dette ikkje hjelper så tek du kontakt med Nav på telefon 55 55 33 33."
 	}
 }
