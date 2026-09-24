@@ -27,7 +27,7 @@
 	},
 	"tidligereArbeidsgiver": {
 		"mottar": {
-			"label": "Mottar du andre utbetalinger eller økonomiske gode fra din tidligere arbeidsgiver enn din vanlige lønn?",
+			"label": "Mottar du andre utbetalinger eller økonomiske goder fra din tidligere arbeidsgiver enn din vanlige lønn?",
 			"description": "Du må gi oss beskjed hvis du får lønn, etterlønn, sluttvederlag eller tilsvarende økonomiske goder fra arbeidsgiver. Du trenger ikke å opplyse om lønn i oppsigelsestiden eller feriepenger.",
 			"lesMer": {
 				"label": "Grunnen til at vi spør om dette",
