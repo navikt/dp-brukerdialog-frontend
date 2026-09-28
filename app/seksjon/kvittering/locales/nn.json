@@ -1,1 +1,65 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpengar: Søknad mottatt",
+		"overskrift": "Søknad mottatt"
+	},
+	"status": {
+		"manglerDokumentasjon": "Manglar dokumentasjon"
+	},
+	"innhold": {
+		"manglerDokumentasjon": "Vi har fått søknaden din, men vi manglar dokument for å kunne behandle søknaden. Når du har sendt alle dokumenta, vil vi behandle søknaden, og du vil få beskjed når svaret er klart. Sjå kor lang tid",
+		"søknadMottatt": "Vi har fått søknaden din. Du vil få beskjed når svaret er klart. Sjå kor lang tid",
+		"saksbehandlingstid": "for dagpengar er nå. Viss vi treng fleire dokumenter vil du få beskjed. Saksbehandlingstida kan da bli lengre enn det som er opplyst.",
+		"saksbehandlingstidLenke": "saksbehandlingstida"
+	},
+	"arbeidssøker": {
+		"registrert": {
+			"tittel": "Du er registrert som arbeidssøkar",
+			"beskrivelse": "For å ha rett til dagpengar, må du vere registrert som arbeidssøkar. Du er allereie registrert som arbeidssøkar."
+		},
+		"ikkeRegistrert": {
+			"tittel": "Du er ikkje registrert som arbeidssøkar",
+			"beskrivelse": "Du er ikkje registrert som arbeidssøkar, og du risikerer å få avslag på søknaden din. Du må vere registrert som arbeidssøkar for å ha rett til dagpengar.",
+			"lenke": "Registrer deg som arbeidssøkar"
+		},
+		"feil": {
+			"tittel": "Oppslag mot Arbeidssøkarregisteret feila",
+			"beskrivelse": "For å ha rett til dagpengar må du vere registrert som arbeidssøkar. Vi prøvde å sjekke om du er registrert som arbeidssøkar automatisk, men det klarte vi dessverre ikkje.",
+			"lenke": "Viss du er usikker på om du er registrert som arbeidssøkar, må du",
+			"lenkeTekst": "registrere deg som arbeidssøkar"
+		}
+	},
+	"dokumentasjon": {
+		"overskrift": "Dokumentasjon",
+		"infoTittel": "Sende inn dokumentasjon",
+		"frist": "Frist for ettersending av dokumenter er 14 dagar etter at du sendte inn søknaden.",
+		"beskrivelse": "Vi treng dokumentasjonen for å vurdere om du har rett til dagpengar. Du er ansvarleg for at dokumentasjonen blir sendt til oss. Viss du ikkje sender alle dokumenta innan fristen kan du få avslag på søknaden, fordi Nav manglar viktige opplysningar i saka di. Ta kontakt viss du ikkje rekk å ettersende alle dokumenta.",
+		"brevTittel": "Har du fått brev om manglande opplysningar?",
+		"brev": "Viss du har fått brev om manglande opplysningar vil det stå i brevet kva du skal sende og kva fristen er for å sende dokumentasjonen. Brev du ha fått ligg i",
+		"dokumentlisteLenke": "dokumentasjonslista på Mine dagpenger",
+		"brevEtterDokumentliste": ". Når du har dokumenta klare kan du ",
+		"sendInnLenke": "sende dei inn her",
+		"brevEtterInnsending": "."
+	},
+	"dokumenter": {
+		"sendt": "Dokument du har sendt inn",
+		"skalSendes": "Dokument du skal sende inn",
+		"skalIkkeSendes": "Dokument du ikkje skal sende inn"
+	},
+	"dokumentkort": {
+		"mottatt": "Mottatt",
+		"mangler": "Manglar",
+		"skalSendesAvDeg": "Skal sendast av deg",
+		"lastNed": "Last ned opplasta dokument",
+		"innhold": "Dette må dokumentasjonen innehalde",
+		"sendtTidligere": "Du har opplyst at du har sendt dette tidlegare:",
+		"senderIkke": "Du har opplyst at du ikkje sender dette:"
+	},
+	"oppsummering": {
+		"overskrift": "Dine svar"
+	},
+	"navigasjon": {
+		"sendInnDokumenter": "Send inn dokument",
+		"gåTilMineDagpenger": "Gå til Mine dagpenger"
+	}
+}
