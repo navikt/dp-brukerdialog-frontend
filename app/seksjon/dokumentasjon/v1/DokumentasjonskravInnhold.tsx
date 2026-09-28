@@ -42,6 +42,7 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
                 <List.Item>{t("krav.arbeidsavtale.punkt1")}</List.Item>
                 <List.Item>{t("krav.arbeidsavtale.punkt2")}</List.Item>
                 <List.Item>{t("krav.arbeidsavtale.punkt3")}</List.Item>
+                <List.Item>{t("krav.arbeidsavtale.punkt4")}</List.Item>
               </List>
               <BodyLong>
                 {t("krav.arbeidsavtale.utdypningFør")}{" "}
