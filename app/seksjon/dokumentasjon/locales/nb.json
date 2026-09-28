@@ -77,7 +77,8 @@
 			"innledning": "Arbeidsavtalen må inneholde",
 			"punkt1": "datoen du startet i jobben din",
 			"punkt2": "stillingsprosent eller avtalt arbeidstid",
-			"punkt3": "sluttdato, hvis du har en midlertidig arbeidsavtale",
+			"punkt3": "avtalt oppsigelsestid",
+			"punkt4": "sluttdato, hvis du har en midlertidig arbeidsavtale",
 			"utdypningFør": "Arbeidsavtalen må inneholde datoen du startet i jobben din stillingsprosent eller avtalt arbeidstid avt endt oppsigelsestid sluttdato, hvis du har en midlertidig arbeidsavtale Hvis du ikke har arbeidsavtalen din, kan arbeidsgiveren din fylle ut skjemaet",
 			"lenke": "Bekreftelse på sluttårsak eller nedsatt arbeidstid (04-08.03)",
 			"utdypningEtter": ". Du kan også be arbeidsgiveren din bekrefte opplysningene på en annen måte."
