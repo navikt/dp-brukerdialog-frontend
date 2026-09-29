@@ -1,1 +1,66 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpengar: Dokumentasjon",
+		"overskrift": "Dokumentasjon"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil",
+		"beskrivelse": "Vi klarte ikkje å sende inn dokumentasjonen. Prøv på nytt"
+	},
+	"navigasjon": {
+		"forrigeSteg": "Førre steg",
+		"tilOppsummering": "Til oppsummering"
+	},
+	"info": {
+		"forklarendeTekst": "<p>Du må laste opp dokumentasjonen som bekrefter opplysningane i søknaden. Du får raskare svare på søknaden din viss vi har alle dokumenta når vi starter behandlinga. Du kan bruke filformata PDF, JPG og PNG.</p><p>Slik bruker du bilde som dokumentasjon i søknaden:</p><ol><li>Ta bilde av dokumentet med smarttelefon eller nettbrett</li><li>Sjekk at dokumentet er lett å lese</li><li>Last opp bildene her</li></ol>",
+		"manglerDokumenterTittel": "Mangler du nokre dokument?",
+		"manglerDokumenter": "<p>Du kan sende det du har nå, og sende resten av dokumenta innan 14 dagar. Viss du ikkje sender alle dokumenta innan fristen kan du få avslag på søknaden din, fordi Nav manglar viktige opplysningar i saka di. Ta kontakt viss du ikkje rekk å sende alle dokumenta innan fristen.</p>",
+		"sendtTidligereTittel": "Har du sendt dokumenta til Nav tidlegare?",
+		"sendtTidligere": "<p>Viss du har sendt dokumenta saman med ein tidlegare søknad om dagpengar, treng du ikkje å sende dei på nytt.</p>",
+		"dokumenterDuSkalSendeInn": "Dokument du skal sende inn"
+	},
+	"skjema": {
+		"velgHvaDuVilGjøre": {
+			"label": "Vel kva du vil gjere"
+		},
+		"svar": {
+			"sendNå": "Eg vil laste opp nå",
+			"senderSenere": "Eg sender det seinare",
+			"sendtTidligere": "Eg har sendt det i ein tidlegare søknad om dagpengar",
+			"senderIkke": "Eg sendar det ikkje"
+		},
+		"hvaErGrunnenTilAtDuSenderDokumentetSenere": {
+			"label": "Kva er grunnen til at du sender dokumentet seinare?",
+			"description": "Frist for ettersending er 14 dagar etter at du sendte søknaden."
+		},
+		"nårSendteDuDokumentet": {
+			"label": "Når sendte du dokumentet?",
+			"description": "Er du usikker på om du har sendt dokumentet i ein tidlegare søknad om dagpengar, bør du sende det på nytt."
+		},
+		"jegSenderIkkeInformasjonskort": {
+			"label": "Du kan få avslag på søknaden",
+			"description": "Du vil mest sannsynleg få avslag på søknaden din hvis du ikkje sender inn dokumenta vi treng for å behandle saka di. Ta kontakt med Nav viss du ikkje får tak i dokumentet."
+		},
+		"hvaErGrunnenTilAtDuIkkeSenderDokumentet": {
+			"label": "Kva er grunnen til at du ikkje sender dokumentet?"
+		}
+	},
+	"opplasting": {
+		"lastOpp": "Last opp dokument",
+		"beskrivelse": "Maks størrelse på fila er {{maks}} MB. Du kan sende inn desse filtypane: {{typer}}. ",
+		"lasterOpp": "Lastar opp..."
+	},
+	"feil": {
+		"filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendast inn.",
+		"filerMedFeilFlertall": "Du må rette feila over før dokumentasjon kan sendast inn.",
+		"manglerFil": "Du må laste opp minst ei fil før dokumentasjonen kan sendast inn."
+	},
+	"oppsummering": {
+		"overskrift": "Dokumentasjon",
+		"lastNed": "Last ned opplasta dokument"
+	},
+	"krav": {
+		"innhold": "Dette må dokumentasjonen innehalde",
+		"ukjent": "Ukjent dokumentasjonskrav."
+	}
+}
