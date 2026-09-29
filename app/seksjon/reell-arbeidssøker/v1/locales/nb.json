@@ -39,7 +39,7 @@
 	},
 	"erDuVilligTilÅBytteYrkeEllerGåNedILønnInformasjonskort": {
 		"label": "Du kan få avslag på søknaden",
-		"description": "<p>For å ha rett til dagpenger må du være villig til å bytte yrke eller gå ned i lønn. Hvis du svarer \"Nei\" på spørsmålet vil du mest sannsynlig få avslag på søknaden din om dagpenger.</p>"
+		"description": "<p>For å ha rett til dagpenger må du være villig til å bytte yrke eller gå ned i lønn. Hvis du svarer «nei» på spørsmålet vil du mest sannsynlig få avslag på søknaden din om dagpenger.</p>"
 	},
 	"kanDuJobbeBådeHeltidOgDeltid": {
 		"label": "Kan du jobbe både heltid og deltid?",
@@ -50,13 +50,13 @@
 		"description": "Du kan krysse av for flere alternativer. Med mindre Nav har opplysningene allerede, så må du dokumentere årsaken.",
 		"svar": {
 			"redusertHelse": "Redusert helse, fysisk eller psykisk",
-			"omsorgForBarnUnderEttÅr": "Omsorg for barn under ett år",
+			"omsorgForBarnUnderEttÅr": "Omsorg for barn under 1 år",
 			"omsorgForPleietrengendeINærFamilie": "Omsorgsansvar for pleietrengende i nær familie, for eksempel barn, foreldre eller ektefelle",
 			"eneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse": "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn til og med 7. klasse",
 			"eneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov": "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn under 18 år med spesielle behov",
 			"denAndreForeldrenJobberSkiftEllerLignende": "Den andre forelderen jobber skift, turnus eller utenfor nærområdet. Og dere har ansvar for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
 			"jegErPermittert": "Jeg er permittert",
-			"harFylt60": "Har fylt 60 år",
+			"harFylt60": "Jeg har fylt 60 år",
 			"annenSituasjon": "Annen situasjon"
 		}
 	},
@@ -66,7 +66,7 @@
 	},
 	"kanIkkeJobbeHeltidOgDeltidHarFylt60Informasjonskort": {
 		"label": "Informasjon",
-		"description": "<p>Siden du er over 60 år, kan du søke om dagpenger selv om du bare ønsker å jobbe deltid. Du trenger ikke begrunne valget ditt, men du må føre opp hvor mange timer du vil arbeide per uke. Dette antallet vil anses som full arbeidstid for deg, og vil bli lagt til grunn ved beregning av dagpengene.</p>"
+		"description": "<p>Siden du er over 60 år, kan du søke om dagpenger selv om du bare ønsker å jobbe deltid. Du trenger ikke begrunne valget ditt, men du må føre opp hvor mange timer du vil arbeide per uke. Antallet timer du oppgir vil være full arbeidstid for deg, og vil bli lagt grunn når vi beregner dagpengene dine.</p>"
 	},
 	"kanIkkeJobbeHeltidOgDeltidAnnenSituasjonInformasjonskort": {
 		"label": "Du kan få avslag på søknaden",
@@ -95,13 +95,13 @@
 		"description": "Du kan krysse av for flere alternativer. Med mindre Nav har opplysningene allerede, så må du dokumentere årsaken.",
 		"svar": {
 			"redusertHelse": "Redusert helse, fysisk eller psykisk",
-			"omsorgForBarnUnderEttÅr": "Omsorg for barn under ett år",
+			"omsorgForBarnUnderEttÅr": "Omsorg for barn under 1 år",
 			"omsorgForPleietrengendeINærFamilie": "Omsorgsansvar for pleietrengende i nær familie, for eksempel barn, foreldre eller ektefelle",
 			"eneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse": "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn til og med 7. klasse",
 			"eneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov": "Eneansvar eller delt ansvar med en annen forelder som du ikke bor sammen med, for barn under 18 år med spesielle behov",
 			"denAndreForeldrenJobberSkiftEllerLignende": "Den andre forelderen jobber skift, turnus eller utenfor nærområdet, og dere har ansvar for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
 			"jegErPermittert": "Jeg er permittert",
-			"harFylt60": "Har fylt 60 år",
+			"harFylt60": "Jeg har fylt 60 år",
 			"annenSituasjon": "Annen situasjon"
 		}
 	},

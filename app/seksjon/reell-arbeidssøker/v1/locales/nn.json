@@ -1,1 +1,133 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpengar: Reell arbeidssøkar",
+		"overskrift": "Reell arbeidssøkar"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"reellArbeidssøkerForklarendeTekst": {
+		"description": "<p>For å få dagpengar må du vere reell arbeidssøkar. Det betyr at du må vere<ul><li>registrert som arbeidssøkar</li><li>frisk nok til å jobbe i minst 50 prosent stilling</li><li>villig til å delta i arbeidsmarkedstiltak</li><li>villig til å ta alle typar jobbar som du har helse til og som er lønna etter tariff eller sedvane</li></ul></p><p>Som hovudregel må du og vere villig til å<ul><li>ta arbeid kor som helst i Noreg</li><li>ta arbeid på heiltid og deltid</li></ul></p><p>I denne delen av søknaden må du svare på spørsmål om kvar og kor mykje du kan jobbe. Det er nokre få unntak frå hovudreglane, som du kan lese meir om dersom du svarer «nei» på spørsmåla under.</p>"
+	},
+	"kanDuTaAlleTyperArbeid": {
+		"label": "Kan du ta alle typar arbeid?",
+		"description": "Viss du har redusert helse og ikkje kan ta alle typar arbeid, kan vi ta hensyn til det."
+	},
+	"kanDuTaAlleTyperArbeidLesMer": {
+		"label": "Dette er rekna som redusert helse",
+		"description": "Med redusert helse meiner vi for eksempel funksjonshemming, sjukdom, allergiar, eller liknande som gjer at du ikkje kan ta alle typar arbeid. Du må dokumentere kva typar arbeid du ikkje kan ta på grunn av helsa di."
+	},
+	"kanDuTaAlleTyperArbeidInformasjonskort": {
+		"label": "Du kan få avslag på søknaden",
+		"description": "<p>For å ha rett til dagpengar, må du vere villig til å seie ja til alle slags jobbar som du er i fysisk og psykisk stand til å ta. Du må då dokumentere at du har redusert helse.</p><p>Viss du ikkje legg ved dokumentasjon på helsesituasjonen din, vil du mest sannsynleg få avslag på søknaden om dagpengar.</p>"
+	},
+	"kanDuTaAlleTyperArbeidHvilkeTyperArbeidKanDuIkkeTa": {
+		"label": "Kva typar arbeid kan du ikkje ta?"
+	},
+	"kanDuTaAlleTyperArbeidHvilkeTyperArbeidKanDuIkkeTaDokumentasjonskravindikator": {
+		"label": "Bekrefting frå lege eller annan behandlar fordi du ikkje kan ta alle typar arbeid"
+	},
+	"erDuVilligTilÅBytteYrkeEllerGåNedILønn": {
+		"label": "Er du villig til å bytte yrke eller gå ned i løn?",
+		"description": "For å ha rett til dagpengar må du vere villig til å ta alle typar jobbar du kan utføre. Det gjeld og jobbar du ikkje er utdanna til eller har arbeidserfaring frå. Det betyr at du må vere villig til å gå ned i løn, hvis jobben er løna etter tariff eller sedvane."
+	},
+	"erDuVilligTilÅBytteYrkeEllerGåNedILønnInformasjonskort": {
+		"label": "Du kan få avslag på søknaden",
+		"description": "<p>For å ha rett til dagpengar, må du vere villig til å byte yrke eller gå ned i løn. Viss du svarer «nei» på spørsmålet vil du mest sannsynleg få avslag på søknaden din om dagpengar.</p>"
+	},
+	"kanDuJobbeBådeHeltidOgDeltid": {
+		"label": "Kan du jobbe både heiltid og deltid?",
+		"description": "Som hovudregel må du kunne ta både heil- og deltidsjobbar for å ha rett til dagpengar. Det er nokre få unntak frå hovudreglen. Svarer du «nei» på dette spørsmålet må du oppgi grunnen og kor mykje du kan jobbe."
+	},
+	"kanIkkeJobbeHeltidOgDeltidSituasjonenSomGjelderDeg": {
+		"label": "Velg grunnen som gjeld for deg",
+		"description": "Du kan krysse av for fleire alternativ. Med mindre Nav har opplysningane allereie, så må du dokumentera årsaka.",
+		"svar": {
+			"redusertHelse": "Redusert helse, fysisk eller psykisk",
+			"omsorgForBarnUnderEttÅr": "Omsorg for barn under 1 år",
+			"omsorgForPleietrengendeINærFamilie": "Omsorgsansvar for pleietrengande i nær familie, til dømes barn, foreldre eller ektefelle",
+			"eneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse": "Eineansvar eller delt ansvar med ein annan forelder som du ikkje bur saman med, for barn til og med 7. klasse",
+			"eneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov": "Eineansvar eller delt ansvar med ein annan forelder som du ikkje bur saman med, for barn under 18 år med spesielle behov",
+			"denAndreForeldrenJobberSkiftEllerLignende": "Den andre forelderen jobbar skift, turnus eller utanfor nærområdet. Og dykk har ansvaret for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
+			"jegErPermittert": "Eg er permittert",
+			"harFylt60": "Eg har fylt 60 år",
+			"annenSituasjon": "Annan situasjon"
+		}
+	},
+	"kanIkkeJobbeHeltidOgDeltidJegErPermittertInformasjonskort": {
+		"label": "Informasjon",
+		"description": "<p>Når du er permittert er du kanskje mindre tilgjengeleg for arbeid på deltid eller fulltid. Permitteringsgraden din og kor lenge du er permittert kan begrense kor mykje du kan jobbe.</p><p>Skriv kort om situasjonen din og forklar kvifor du ikkje kan ta anna arbeid på deltid eller fulltid. Du må seie ja til jobb som kan kombinerast med permitteringa di.</p><p>Viss det skjer endringar i situasjonen din, må du gi beskjed til oss, slik at vi kan gjere ei ny vurdering.</p>"
+	},
+	"kanIkkeJobbeHeltidOgDeltidHarFylt60Informasjonskort": {
+		"label": "Informasjon",
+		"description": "<p>Sidan du er over 60 år, kan du søke om dagpengar sjølv om du berre ynskjer å jobbe deltid. Du treng ikkje å grunngi valet ditt, men du må føre opp kor mange timar du vil arbeide per veke. Antallet timer du oppgir vil være full arbeidstid for deg, og vil bli lagt til grunn når vi beregner dagpengen dine.</p>"
+	},
+	"kanIkkeJobbeHeltidOgDeltidAnnenSituasjonInformasjonskort": {
+		"label": "Du kan få avslag på søknaden",
+		"description": "<p>Viss du svarer \"Annan situasjon\" og du ikkje kan dokumentere svært gode grunnar til at du ikkje kan jobbe heiltid, vil du sannsynlegvis få avslag på søknaden din om dagpengar.</p>"
+	},
+	"kanIkkeJobbeHeltidOgDeltidDokumentasjonskravindikator": {
+		"label": "Bekrefting frå relevant fagpersonell fordi du berre kan jobbe deltid"
+	},
+	"kanIkkeJobbeHeltidOgDeltidKortOmSituasjonen": {
+		"label": "Skriv kort om situasjonen din"
+	},
+	"kanIkkeJobbeBådeHeltidOgDeltidAntallTimer": {
+		"label": "Skriv inn antal timar du kan jobbe per veke",
+		"description": "For å få rett til dagpengar må du normalt kunne jobbe minst 18,75 timar per veke"
+	},
+	"kanIkkeJobbeBådeHeltidOgDeltidAntallTimerLesMer": {
+		"label": "Viss du har uføretrygd",
+		"description": "Viss du har uføretrygd må du kunne jobbe minst 11,25 timar per veke."
+	},
+	"kanDuJobbeIHeleNorge": {
+		"label": "Kan du jobbe i heile Noreg?",
+		"description": "Som hovudregel må du være villig til å ta arbeid i heile Noreg for å ha rett til dagpengar. Det er nokre få unntak frå hovudregelen. Svarer du «nei» på dette spørsmålet må du oppgi grunnen til at du ikkje kan jobbe i heile Noreg."
+	},
+	"kanIkkeJobbeIHeleNorgeSituasjonenSomGjelderDeg": {
+		"label": "Velg årsaken som gjelder deg",
+		"description": "Du kan krysse av for fleire alternativ. Med mindre Nav har opplysningane allereie, så må du dokumentera årsaka.",
+		"svar": {
+			"redusertHelse": "Redusert helse, fysisk eller psykisk",
+			"omsorgForBarnUnderEttÅr": "Omsorg for barn under 1 år",
+			"omsorgForPleietrengendeINærFamilie": "Omsorgsansvar for pleietrengande i nær familie, til dømes barn, foreldre eller ektefelle",
+			"eneansvarEllerDeltAnsvarForBarnTilOgMed7Klasse": "Eineansvar eller delt ansvar med ein annan forelder som du ikkje bur saman med, for barn til og med 7. klasse",
+			"eneansvarEllerDeltAnsvarForBarnUnder18ÅrMedSpesielleBehov": "Eineansvar eller delt ansvar med ein annan forelder som du ikkje bur saman med, for barn under 18 år med spesielle behov",
+			"denAndreForeldrenJobberSkiftEllerLignende": "Den andre forelderen jobbar skift, turnus eller utanfor nærområdet. Og dykk har ansvaret for barn til og med 7. klasse eller barn under 18 år med spesielle behov",
+			"jegErPermittert": "Eg er permittert",
+			"harFylt60": "Eg har fylt 60 år",
+			"annenSituasjon": "Annan situasjon"
+		}
+	},
+	"kanIkkeJobbeIHeleNorgeSitasjonenSomGjelderDegLesMer": {
+		"label": "Viss ingen av desse situasjonane passar deg",
+		"description": "Viss du har svart nei og ingen av desse situasjonane passar for deg, kan du få avslag på søknaden din om dagpengar. Du kan likevel velje ein annan situasjon og få dagpengesøknaden din behandla."
+	},
+	"kanIkkeJobbeIHeleNorgeJegErPermittertInformasjonskort": {
+		"label": "Informasjon",
+		"description": "<p>Når du er permittert er du kanskje mindre tilgjengeleg for å jobbe i heile Noreg. Permitteringsgraden din og kor lenge du er permittert, kan begrense kor i landet du kan jobbe.</p><p>Skriv kort om situasjonen din og forklar kvifor du ikkje kan ta anna arbeid i heile Noreg. Du må seie ja til jobb som kan kombinerast med permitteringa di.</p><p>Viss det skjer endringar i situasjonen din, må du gi beskjed til oss, slik at vi kan gjere ei ny vurdering.</p>"
+	},
+	"kanIkkeJobbeIHeleNorgeHarFylt60Informasjonskort": {
+		"label": "Informasjon",
+		"description": "<p>Sidan du er over 60 år, kan du ha rett til dagpengar sjølv om du ikkje ønskjer å ta jobb i heile landet. Du treng heller ikkje vere villig til å ta arbeid på heiltid. Du treng ikkje begrunne valet ditt.</p>"
+	},
+	"kanIkkeJobbeIHeleNorgeAnnenSituasjonInformasjonskort": {
+		"label": "Du kan få avslag på søknaden",
+		"description": "<p>Viss du svarer \"Annan situasjon\" og du ikkje kan dokumentere svært gode grunnar til at du ikkje kan jobbe heiltid, vil du sannsynlegvis få avslag på søknaden din om dagpengar.</p>"
+	},
+	"kanIkkeJobbeIHeleNorgeDokumentasjonskravindikator": {
+		"label": "Bekrefting frå relevant fagpersonell fordi du ikkje kan jobbe i heile Noreg"
+	},
+	"kanIkkeJobbeIHeleNorgeKortOmSituasjonen": {
+		"label": "Skriv kort om situasjonen din"
+	},
+	"oppsummering": {
+		"ingenSvar": "Du har ikkje svart på nokon spørsmål i denne seksjonen"
+	}
+}
