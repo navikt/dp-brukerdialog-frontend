@@ -60,7 +60,7 @@ export function SøknadOversikt() {
                   <Button>{t("pabegyntSoknad.fortsettKnapp")}</Button>
                 </Link>
                 <HStack gap="space-16">
-                  <Form method="delete">
+                  <Form method="DELETE">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
                     <Button type="submit" variant="secondary" loading={sletterSøknad}>
                       {t("pabegyntSoknad.slettOgStartPaNyttKnapp")}
