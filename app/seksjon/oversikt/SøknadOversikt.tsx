@@ -1,8 +1,6 @@
 import { BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import { useForm } from "@rvf/react-router";
 import { useTranslation } from "react-i18next";
 import { Form, Link, useActionData, useNavigation } from "react-router";
-import { z } from "zod";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
@@ -13,13 +11,6 @@ import { formaterNorskDato } from "~/utils/formatering.utils";
 export function SøknadOversikt() {
   const { t } = useTranslation("oversikt");
   const actionData = useActionData<typeof action>();
-  const form = useForm({
-    submitSource: "state",
-    schema: z.object({}),
-    defaultValues: {},
-  });
-
-  const { formId, action: formAction } = form.formOptions;
   const navigation = useNavigation();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
@@ -69,7 +60,7 @@ export function SøknadOversikt() {
                   <Button>{t("pabegyntSoknad.fortsettKnapp")}</Button>
                 </Link>
                 <HStack gap="space-16">
-                  <Form id={formId} action={formAction} method="delete">
+                  <Form method="delete">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
                     <Button type="submit" variant="secondary" loading={sletterSøknad}>
                       {t("pabegyntSoknad.slettOgStartPaNyttKnapp")}
