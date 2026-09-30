@@ -1,16 +1,17 @@
 import { BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useTranslation } from "react-i18next";
-import { Form, Link, useNavigation, useSearchParams } from "react-router";
+import { Form, Link, useActionData, useNavigation } from "react-router";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { mapInnsendteSøknader } from "~/models/hent-søknader-for-ident";
+import { action } from "~/routes/opprett-soknad";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
   const { t } = useTranslation("oversikt");
+  const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
-  const [searchParams] = useSearchParams();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
   const innsendteSøknader = mapInnsendteSøknader(søknader);
@@ -77,11 +78,8 @@ export function SøknadOversikt() {
             )}
           </VStack>
 
-          {searchParams.has("slettingFeilet") && (
-            <SeksjonTekniskFeil
-              tittel={t("tekniskFeil.melding")}
-              beskrivelse="Vi klarte ikke å slette din søknad. Vennligst prøv igjen."
-            />
+          {actionData && (
+            <SeksjonTekniskFeil tittel={t("tekniskFeil.melding")} beskrivelse={actionData.error} />
           )}
         </VStack>
       </div>
