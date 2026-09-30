@@ -13,10 +13,6 @@ export function SøknadOversikt() {
   const [searchParams] = useSearchParams();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
-
-  const sletterSøknad =
-    navigation.state !== "idle" && navigation.formAction === "/api/slett-pabegynt-soknad";
-
   const innsendteSøknader = mapInnsendteSøknader(søknader);
 
   return (
@@ -60,7 +56,11 @@ export function SøknadOversikt() {
                 <HStack gap="space-16">
                   <Form method="DELETE" action="/api/slett-pabegynt-soknad">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
-                    <Button type="submit" variant="secondary" loading={sletterSøknad}>
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      loading={navigation.state === "submitting"}
+                    >
                       {t("pabegyntSoknad.slettOgStartPaNyttKnapp")}
                     </Button>
                   </Form>
