@@ -5,7 +5,7 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { mapInnsendteSøknader } from "~/models/hent-søknader-for-ident";
-import { action } from "~/routes/opprett-soknad";
+import { action } from "~/routes/api.slett-pabegynt-soknad";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
