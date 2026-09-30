@@ -27,7 +27,7 @@ export function SøknadOversikt() {
       </div>
       <div className="innhold">
         <VStack gap="space-32">
-          {søknader.length > 0 && (
+          {innsendteSøknader.length > 0 && (
             <VStack gap="space-16">
               <BodyLong>{t("innsendtSoknad.beskrivelse")}</BodyLong>
               <VStack gap="space-8">
