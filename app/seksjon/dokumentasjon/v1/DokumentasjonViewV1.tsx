@@ -54,7 +54,7 @@ export function DokumentasjonViewV1() {
     const heading: ForklarendeTekst = {
       id: "tittel",
       type: "forklarendeTekst",
-      label: dokumentasjonskrav.tittel || "",
+      label: dokumentasjonskrav.tittel,
     };
 
     const beskrivelse: ForklarendeTekst = {
