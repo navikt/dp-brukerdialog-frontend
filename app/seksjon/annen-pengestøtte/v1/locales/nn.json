@@ -1,1 +1,25 @@
-{}
+{
+	"side": {
+		"tittel": "Søknad om dagpengar: Annan pengestøtte",
+		"overskrift": "Annan pengestøtte"
+	},
+	"tekniskFeil": {
+		"tittel": "Det har oppstått ein teknisk feil"
+	},
+	"envalg": {
+		"svar": {
+			"ja": "Ja",
+			"nei": "Nei"
+		}
+	},
+	"modal": {
+		"leggTil": "Legg til",
+		"rediger": "Rediger",
+		"lagreOgLukk": "Lagre og lukk"
+	},
+	"detaljer": {
+		"endreSvar": "Endre svar",
+		"fjern": "Fjern",
+		"fraOgMed": "Frå og med"
+	}
+}
