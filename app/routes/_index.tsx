@@ -9,6 +9,10 @@ export type SøknadOversiktType = {
   påbegyntSøknad: PåBegynteSøknad | null;
 };
 
+// Ikke legg inn en action her. Bruk heller en separat API-rute for skjemainnsending.
+// Det er ikke mulig å kalle en action fra _index.tsx direkte.
+// Dette gjelder fra og med React Router v8.
+
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<Response | SøknadOversiktType> {
