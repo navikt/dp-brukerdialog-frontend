@@ -1,23 +1,21 @@
 import { BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
 import { useTranslation } from "react-i18next";
-import { Form, Link, useActionData, useNavigation } from "react-router";
+import { Form, Link, useNavigation, useSearchParams } from "react-router";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { mapInnsendteSøknader } from "~/models/hent-søknader-for-ident";
-import { action } from "~/routes/_index";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
   const { t } = useTranslation("oversikt");
-  const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
+  const [searchParams] = useSearchParams();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
 
   const sletterSøknad =
-    (navigation.state === "submitting" || navigation.state === "loading") &&
-    navigation.formData != null;
+    navigation.state !== "idle" && navigation.formAction === "/api/slett-pabegynt-soknad";
 
   const innsendteSøknader = mapInnsendteSøknader(søknader);
 
@@ -60,7 +58,7 @@ export function SøknadOversikt() {
                   <Button>{t("pabegyntSoknad.fortsettKnapp")}</Button>
                 </Link>
                 <HStack gap="space-16">
-                  <Form method="DELETE">
+                  <Form method="DELETE" action="/api/slett-pabegynt-soknad">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
                     <Button type="submit" variant="secondary" loading={sletterSøknad}>
                       {t("pabegyntSoknad.slettOgStartPaNyttKnapp")}
@@ -79,8 +77,11 @@ export function SøknadOversikt() {
             )}
           </VStack>
 
-          {actionData && (
-            <SeksjonTekniskFeil tittel={t("tekniskFeil.melding")} beskrivelse={actionData.error} />
+          {searchParams.has("slettingFeilet") && (
+            <SeksjonTekniskFeil
+              tittel={t("tekniskFeil.melding")}
+              beskrivelse="Vi klarte ikke å slette din søknad. Vennligst prøv igjen."
+            />
           )}
         </VStack>
       </div>
