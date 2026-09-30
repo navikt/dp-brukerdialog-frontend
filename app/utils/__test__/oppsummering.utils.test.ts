@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import type { KomponentType } from "~/components/Komponent.types";
 import { erInformasjonsFelt } from "../oppsummering.utils";
 
@@ -46,17 +46,6 @@ describe("oppsummering.utils", () => {
         id: "spm1",
         type: "kortTekst",
         label: "Hva heter du?",
-      } satisfies KomponentType;
-
-      expect(erInformasjonsFelt(spørsmål)).toBe(false);
-    });
-
-    it("skal returnere false for headingTekst", () => {
-      const spørsmål = {
-        id: "heading1",
-        type: "headingTekst",
-        størrelse: "medium",
-        nivå: "2",
       } satisfies KomponentType;
 
       expect(erInformasjonsFelt(spørsmål)).toBe(false);

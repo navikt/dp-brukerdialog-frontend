@@ -1,3 +1,4 @@
+import { Heading } from "@navikt/ds-react";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 
@@ -46,10 +47,12 @@ export function lagDokumentasjonKomponenter(t: TFunction): KomponentType[] {
     },
     {
       id: "dokumentasjonDokumenterDuSkalSendeInnForklarendeTekst",
-      type: "headingTekst",
-      nivå: "3",
-      størrelse: "small",
-      label: t("info.dokumenterDuSkalSendeInn"),
+      type: "forklarendeTekst",
+      description: (
+        <Heading level="3" size="small">
+          {t("info.dokumenterDuSkalSendeInn")}
+        </Heading>
+      ),
     },
   ];
 }
