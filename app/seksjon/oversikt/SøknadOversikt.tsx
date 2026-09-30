@@ -1,11 +1,11 @@
 import { BodyLong, Button, Heading, HStack, VStack } from "@navikt/ds-react";
-import { Form, Link, useActionData, useNavigation } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Form, Link, useActionData, useNavigation } from "react-router";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadIkon } from "~/components/SøknadIkon";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { mapInnsendteSøknader } from "~/models/hent-søknader-for-ident";
-import { action } from "~/routes/_index";
+import { action } from "~/routes/api.slett-pabegynt-soknad";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 
 export function SøknadOversikt() {
@@ -14,11 +14,6 @@ export function SøknadOversikt() {
   const navigation = useNavigation();
   const { søknader, påbegyntSøknad } = useTypedRouteLoaderData("routes/_index");
   const { arbeidssøkerStatus } = useTypedRouteLoaderData("root");
-
-  const sletterSøknad =
-    (navigation.state === "submitting" || navigation.state === "loading") &&
-    navigation.formData != null;
-
   const innsendteSøknader = mapInnsendteSøknader(søknader);
 
   return (
@@ -60,9 +55,13 @@ export function SøknadOversikt() {
                   <Button>{t("pabegyntSoknad.fortsettKnapp")}</Button>
                 </Link>
                 <HStack gap="space-16">
-                  <Form method="post">
+                  <Form method="DELETE" action="/api/slett-pabegynt-soknad">
                     <input type="hidden" name="soknadUuid" value={påbegyntSøknad.soknadUuid} />
-                    <Button type="submit" variant="secondary" loading={sletterSøknad}>
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      loading={navigation.state === "submitting"}
+                    >
                       {t("pabegyntSoknad.slettOgStartPaNyttKnapp")}
                     </Button>
                   </Form>
