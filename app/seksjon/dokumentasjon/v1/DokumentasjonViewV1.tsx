@@ -4,7 +4,7 @@ import { FormScope } from "@rvf/react-router";
 import { renderToStaticMarkup } from "react-dom/server";
 import { useTranslation } from "react-i18next";
 import { Komponent } from "~/components/Komponent";
-import { ForklarendeTekst, HeadingTekst, KomponentType } from "~/components/Komponent.types";
+import { ForklarendeTekst, KomponentType } from "~/components/Komponent.types";
 import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SistOppdatert } from "~/components/SistOppdatert";
 import {
@@ -51,11 +51,9 @@ export function DokumentasjonViewV1() {
   }
 
   function genererPdfGrunnlag(dokumentasjonskrav: Dokumentasjonskrav): KomponentType[] {
-    const heading: HeadingTekst = {
+    const heading: ForklarendeTekst = {
       id: "tittel",
-      type: "headingTekst",
-      nivå: "3",
-      størrelse: "small",
+      type: "forklarendeTekst",
       label: dokumentasjonskrav.tittel,
     };
 
