@@ -6,7 +6,6 @@ import { Nedtrekksliste } from "~/components/spørsmål-komponent/Nedtrekksliste
 import { Tall } from "~/components/spørsmål-komponent/Tall";
 import { useFokus } from "~/hooks/useFokus";
 import { useSoknad } from "~/seksjon/soknad.context";
-import { HeadingTekst } from "./informasjon-komponent/HeadingTekst";
 import { Informasjonskort } from "./informasjon-komponent/Informasjonskort";
 import { LesMer } from "./informasjon-komponent/LesMer";
 import { KomponentType } from "./Komponent.types";
@@ -47,9 +46,6 @@ export function Komponent({ props, formScope, formValues }: IProps) {
 
     case "forklarendeTekst":
       return <ForklarendeTekst props={props} />;
-
-    case "headingTekst":
-      return <HeadingTekst props={props} />;
 
     case "registeropplysning":
       return null;

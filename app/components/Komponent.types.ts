@@ -14,15 +14,9 @@ export type KomponentType =
   | LesMer
   | Dokumentasjonskravindikator
   | Registeropplysning
-  | ForklarendeTekst
-  | HeadingTekst;
+  | ForklarendeTekst;
 
-type InfoType =
-  | "informasjonskort"
-  | "lesMer"
-  | "dokumentasjonskravindikator"
-  | "forklarendeTekst"
-  | "headingTekst";
+type InfoType = "informasjonskort" | "lesMer" | "dokumentasjonskravindikator" | "forklarendeTekst";
 
 export type SpørsmålType =
   | "envalg"
@@ -42,7 +36,6 @@ export const INFO_KOMPONENTER: InfoType[] = [
   "lesMer",
   "dokumentasjonskravindikator",
   "forklarendeTekst",
-  "headingTekst",
 ];
 
 export type KomponentBase = {
@@ -125,10 +118,4 @@ export type Dokumentasjonskravindikator = KomponentBase & {
 
 export type ForklarendeTekst = KomponentBase & {
   type: "forklarendeTekst";
-};
-
-export type HeadingTekst = KomponentBase & {
-  type: "headingTekst";
-  størrelse: "small" | "medium" | "large";
-  nivå: "1" | "2" | "3";
 };

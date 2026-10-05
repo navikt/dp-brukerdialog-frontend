@@ -13,8 +13,7 @@ export function valider(
     komponent.type === "informasjonskort" ||
     komponent.type === "dokumentasjonskravindikator" ||
     komponent.type === "registeropplysning" ||
-    komponent.type === "forklarendeTekst" ||
-    komponent.type === "headingTekst";
+    komponent.type === "forklarendeTekst";
 
   if (erInformasjonKomponent || !synlig) {
     return;
