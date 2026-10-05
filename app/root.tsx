@@ -12,8 +12,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
   useNavigate,
+  useRouteLoaderData,
 } from "react-router";
 import { Route } from "./+types/root";
 import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
@@ -21,15 +21,15 @@ import { TekniskFeil } from "./components/errorBoundary/TekniskFeil";
 import { UkjentFeil } from "./components/errorBoundary/UkjentFeil";
 import { OversettingNøklerKnapp } from "./components/OversettingNøklerKnapp";
 import { useInjectDecoratorScript } from "./hooks/useInjectDecoratorScript";
-import i18n from "./i18n";
 import { getDekoratorHTML, getDekoratorLanguage } from "./models/dekorator.server";
 import { hentArbeidssøkerStatus } from "./models/hent-arbeidssøkerStatus.server";
+import { SoknadProvider } from "./seksjon/soknad.context";
 import { getEnv } from "./utils/env.utils";
 import { logger } from "./utils/logger.utils";
 
 import akselStyles from "@navikt/ds-css/dist/index.css?url";
+import i18n from "./i18n";
 import indexStyles from "./index.css?url";
-import { SoknadProvider } from "./seksjon/soknad.context";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: akselStyles },
@@ -68,13 +68,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const { decoratorFragments, env, language } = useLoaderData();
-  const { DECORATOR_HEAD_ASSETS, DECORATOR_SCRIPTS, DECORATOR_HEADER, DECORATOR_FOOTER } =
-    decoratorFragments;
+  const loaderData = useRouteLoaderData<typeof loader>("root");
+  const { decoratorFragments, env, language } = loaderData ?? {};
+  const {
+    DECORATOR_HEAD_ASSETS = "",
+    DECORATOR_SCRIPTS,
+    DECORATOR_HEADER = "",
+    DECORATOR_FOOTER = "",
+  } = decoratorFragments ?? {};
 
   useInjectDecoratorScript(DECORATOR_SCRIPTS);
 
   useEffect(() => {
+    if (!language) return;
+
     void i18n.changeLanguage(language);
 
     onLanguageSelect(({ locale }) => {
@@ -84,7 +91,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [language, navigate]);
 
   return (
-    <html lang={language}>
+    <html lang={language ?? "nb"}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -102,11 +109,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
           <ScrollRestoration />
           <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `window.env = ${JSON.stringify(env)}`,
-            }}
-          />
+          {env && (
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.env = ${JSON.stringify(env)}`,
+              }}
+            />
+          )}
           <Scripts />
         </SoknadProvider>
       </body>
