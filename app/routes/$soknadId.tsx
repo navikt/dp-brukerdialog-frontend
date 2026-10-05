@@ -68,12 +68,13 @@ const SIDER_TILGJENGELIG_ETTER_INNSENDING = ["kvittering", "ettersending"];
 
 export async function loader({
   request,
+  url,
   params,
 }: LoaderFunctionArgs): Promise<SoknadIdRoute | Response> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
   validerSøknadId(params.soknadId);
 
-  const seksjonId = new URL(request.url).pathname.split("/").at(-1)!;
+  const seksjonId = url.pathname.split("/").at(-1)!;
 
   const [progressResponse, sistOppdatertResponse, søknaderResponse] = await Promise.all([
     hentSøknadFremgangInfo(request, params.soknadId),
@@ -125,7 +126,7 @@ export async function loader({
 
   return {
     søknadProgress: søknadSeksjoner,
-    aktivSteg: finnAktivSteg(søknadSeksjoner, request.url) + 1,
+    aktivSteg: finnAktivSteg(søknadSeksjoner, url.href) + 1,
     sistOppdatert: sistOppdatert,
     søknadId: params.soknadId,
   };
