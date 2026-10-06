@@ -12,8 +12,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useNavigate,
-  useRouteLoaderData,
 } from "react-router";
 import { Route } from "./+types/root";
 import { IkkeFunnetFeil } from "./components/errorBoundary/IkkeFunnetFeil";
@@ -68,14 +68,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const loaderData = useRouteLoaderData<typeof loader>("root");
-  const { decoratorFragments, env, language } = loaderData ?? {};
-  const {
-    DECORATOR_HEAD_ASSETS = "",
-    DECORATOR_SCRIPTS,
-    DECORATOR_HEADER = "",
-    DECORATOR_FOOTER = "",
-  } = decoratorFragments ?? {};
+  const { decoratorFragments, env, language } = useLoaderData();
+  const { DECORATOR_HEAD_ASSETS, DECORATOR_SCRIPTS, DECORATOR_HEADER, DECORATOR_FOOTER } =
+    decoratorFragments;
 
   useInjectDecoratorScript(DECORATOR_SCRIPTS);
 
@@ -109,13 +104,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
           <ScrollRestoration />
           <div dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }} />
-          {env && (
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.env = ${JSON.stringify(env)}`,
-              }}
-            />
-          )}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.env = ${JSON.stringify(env)}`,
+            }}
+          />
           <Scripts />
         </SoknadProvider>
       </body>
