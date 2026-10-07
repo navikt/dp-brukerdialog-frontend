@@ -2,6 +2,7 @@ import { FormApi } from "@rvf/react-router";
 import React, { createContext, useContext, useState } from "react";
 import { Arbeidsforhold } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { ForhåndsfyltArbeidsforhold } from "~/routes/$soknadId.arbeidsforhold";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",
@@ -21,12 +22,14 @@ type ArbeidsforholdContextType = {
   setModalData: (modalData?: ModalData) => void;
   dokumentasjonskrav: Dokumentasjonskrav[];
   setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
+  forhåndsfyltArbeidsforhold?: ForhåndsfyltArbeidsforhold[] | [];
 };
 
 type ArbeidsforholdProviderProps = {
   registrerteArbeidsforhold: Arbeidsforhold[];
   dokumentasjonskrav: Dokumentasjonskrav[];
   children: React.ReactNode;
+  forhåndsfyltArbeidsforhold?: ForhåndsfyltArbeidsforhold[] | [];
 };
 
 const ArbeidsforholdContext = createContext<ArbeidsforholdContextType | undefined>(undefined);
@@ -45,10 +48,11 @@ function useArbeidsforholdContext() {
   return context;
 }
 
-function ArbeidsforholdProviderV2({
+function ArbeidsforholdProviderV3({
   registrerteArbeidsforhold: registrerteArbeidsforholdProps,
   dokumentasjonskrav: dokumentasjonskravProps,
   children,
+  forhåndsfyltArbeidsforhold,
 }: ArbeidsforholdProviderProps) {
   const [registrerteArbeidsforhold, setRegistrerteArbeidsforhold] = useState(
     registrerteArbeidsforholdProps
@@ -65,6 +69,7 @@ function ArbeidsforholdProviderV2({
         setModalData,
         dokumentasjonskrav,
         setDokumentasjonskrav,
+        forhåndsfyltArbeidsforhold,
       }}
     >
       {children}
@@ -72,4 +77,4 @@ function ArbeidsforholdProviderV2({
   );
 }
 
-export { ArbeidsforholdProviderV2, useArbeidsforholdContext };
+export { ArbeidsforholdProviderV3, useArbeidsforholdContext };
