@@ -14,9 +14,20 @@ import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/ArbeidsforholdViewV2";
 import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
 import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
+import { hentArbeidsforhold } from "~/models/hent-arbeidsforhold";
+import { ArbeidsforholdProviderV3 } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+import { ArbeidsforholdViewV3 } from "~/seksjon/arbeidsforhold/v3/ArbeidsforholdViewV3";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
+};
+
+export type ForhåndsfyltArbeidsforhold = {
+  organisasjonsnummer: string;
+  startdato: Date;
+  sluttdato?: Date;
+  sluttårsak?: string;
+  arbeidstidsordning?: string;
 };
 
 export type ArbeidsforholdSeksjon = {
@@ -26,6 +37,7 @@ export type ArbeidsforholdSeksjon = {
     seksjonsvar?: SeksjonSvar;
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
+  tidligereArbeidsforhold?: ForhåndsfyltArbeidsforhold[] | [];
 };
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
@@ -37,20 +49,32 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<ArbeidsforholdSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, seksjonId);
+  const [response, tidligereArbeidsforholdResponse] = await Promise.all([
+    hentSeksjon(request, params.soknadId, seksjonId),
+    hentArbeidsforhold(request),
+  ]);
 
-  if (!response.ok) {
-    return {
-      seksjon: {
-        seksjonId,
-        versjon: nyesteVersjon,
-        seksjonsvar: undefined,
-      },
-      dokumentasjonskrav: null,
-    };
+  const failedResponse = {
+    seksjon: {
+      seksjonId,
+      versjon: nyesteVersjon,
+      seksjonsvar: undefined,
+    },
+    dokumentasjonskrav: null,
+    tidligereArbeidsforhold: [],
+  };
+
+  if (!response.ok && !tidligereArbeidsforholdResponse.ok) {
+    return failedResponse;
   }
-
-  return await response.json();
+  const seksjonData = response.ok ? await response.json() : failedResponse;
+  const tidligereArbeidsforholdData = tidligereArbeidsforholdResponse.ok
+    ? await tidligereArbeidsforholdResponse.json()
+    : [];
+  return {
+    ...seksjonData,
+    tidligereArbeidsforhold: tidligereArbeidsforholdData,
+  };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -89,7 +113,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function ArbeidsforholdSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
-  const { seksjon } = loaderData;
+  const { seksjon, tidligereArbeidsforhold } = loaderData;
   const { soknadId } = useParams();
 
   switch (seksjon?.versjon ?? nyesteVersjon) {
@@ -111,17 +135,28 @@ export default function ArbeidsforholdSeksjon() {
           <ArbeidsforholdViewV2 />
         </ArbeidsforholdProviderV2>
       );
+    case 3:
+      return (
+        <ArbeidsforholdProviderV3
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+          forhåndsfyltArbeidsforhold={tidligereArbeidsforhold}
+        >
+          <ArbeidsforholdViewV3 />
+        </ArbeidsforholdProviderV3>
+      );
     default:
       console.error(
         `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
-        <ArbeidsforholdProviderV2
+        <ArbeidsforholdProviderV3
           registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+          forhåndsfyltArbeidsforhold={tidligereArbeidsforhold}
         >
-          <ArbeidsforholdViewV2 />
-        </ArbeidsforholdProviderV2>
+          <ArbeidsforholdViewV3 />
+        </ArbeidsforholdProviderV3>
       );
   }
 }
