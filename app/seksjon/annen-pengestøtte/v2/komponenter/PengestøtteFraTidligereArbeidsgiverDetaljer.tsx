@@ -22,7 +22,7 @@ export function PengestøtteFraTidligereArbeidsgiverDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
-  const { t } = useTranslation("annen-pengestøtte/v1");
+  const { t } = useTranslation("annen-pengestøtte/v2");
 
   function fjernPengestøtteFraTidligereArbeidsgiver() {
     setPengestøtteFraTidligereArbeidsgiver(

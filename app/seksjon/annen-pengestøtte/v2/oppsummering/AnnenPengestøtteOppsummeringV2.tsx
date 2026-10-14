@@ -25,7 +25,7 @@ export function AnnenPengestøtteOppsummeringV2({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("annen-pengestøtte/v1");
+  const { t } = useTranslation("annen-pengestøtte/v2");
 
   if (!seksjonSvarene) return null;
 

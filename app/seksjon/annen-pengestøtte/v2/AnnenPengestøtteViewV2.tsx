@@ -22,6 +22,7 @@ import {
 import {
   AnnenPengestøtteResponse,
   AnnenPengestøtteSvar,
+  handling,
   lagAnnenPengestøtteKomponenter,
   pdfGrunnlag,
   seksjonsvar,
@@ -42,7 +43,6 @@ import {
   PengestøtteFraTidligereArbeidsgiver,
   PengestøtteFraTidligereArbeidsgiverModal,
 } from "./komponenter/PengestøtteFraTidligereArbeidsgiverModal";
-import { handling } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
@@ -60,7 +60,7 @@ export function AnnenPengestøtteViewV2() {
   const pengestøtteFraNorgeModalRef = useRef<HTMLDialogElement>(null);
   const { state } = useNavigation();
   const { setKomponentIdTilFokus, økeSubmitTeller } = useSoknad();
-  const { t } = useTranslation("annen-pengestøtte/v1");
+  const { t } = useTranslation("annen-pengestøtte/v2");
 
   const mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter =
     lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter(t);

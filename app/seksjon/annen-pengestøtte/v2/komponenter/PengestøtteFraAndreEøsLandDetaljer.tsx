@@ -29,7 +29,7 @@ export function PengestøtteFraAndreEøsLandDetaljer({
     dokumentasjonskrav,
     setDokumentasjonskrav,
   } = useAnnenPengestøtteContext();
-  const { t } = useTranslation("annen-pengestøtte/v1");
+  const { t } = useTranslation("annen-pengestøtte/v2");
   const pengestøtteFraAndreEøsLandModalKomponenter =
     lagPengestøtteFraAndreEøsLandModalKomponenter(t);
 
