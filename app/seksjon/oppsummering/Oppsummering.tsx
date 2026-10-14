@@ -10,6 +10,7 @@ import { ReellArbeidssøkerOppsummeringV1 } from "~/seksjon/reell-arbeidssøker/
 import { TilleggsopplysningerOppsummeringV1 } from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggsopplysningerOppsummeringV1";
 import { ArbeidsforholdOppsummeringV2 } from "~/seksjon/arbeidsforhold/v2/oppsummering/ArbeidsforholdOppsummeringV2";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
+import { AnnenPengestøtteOppsummeringV2 } from "../annen-pengestøtte/v2/oppsummering/AnnenPengestøtteOppsummeringV2";
 
 type OppsummeringProps = {
   seksjonsId: string;
@@ -108,6 +109,14 @@ export function Oppsummering({
         case 1:
           return (
             <AnnenPengestøtteOppsummeringV1
+              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
+            />
+          );
+        case 2:
+          return (
+            <AnnenPengestøtteOppsummeringV2
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
