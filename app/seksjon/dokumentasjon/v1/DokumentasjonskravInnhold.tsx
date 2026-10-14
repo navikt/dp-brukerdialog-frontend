@@ -190,6 +190,27 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdRotasjon:
         return <BodyLong>{t("krav.rotasjon.beskrivelse")}</BodyLong>;
 
+      case DokumentasjonskravType.ArbeidsforholdAnnetEØSLand:
+        return (
+          <VStack gap="space-16">
+            <BodyLong>
+              Du har krysset av for at du har mottatt arbeidsinntekt fra et annet EØS-land.
+              <br />
+              <br />
+              Du må legge ved dokumentasjon som viser både brutto og netto arbeidsinntekt du har
+              mottatt fordelt på de siste 36 månedene. Dette vil du normalt finne på din
+              lønnsslipper.
+            </BodyLong>
+            <List as="ul">
+              <List.Item>hvilken arbeidsinntekt dette er</List.Item>
+              <List.Item>hvem som utbetaler arbeidsinntekten</List.Item>
+              <List.Item>hvor mye du har fått utbetalt</List.Item>
+              <List.Item>perioden den utbetales for</List.Item>
+              <List.Item>antall timer du har jobbet pr måned hos denne arbeidsgiveren</List.Item>
+            </List>
+          </VStack>
+        );
+
       case DokumentasjonskravType.Tjenestebevis:
         return <BodyLong>{t("krav.tjenestebevis.beskrivelse")}</BodyLong>;
 

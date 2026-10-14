@@ -22,10 +22,10 @@ import {
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
-  lagArbeidsforholdForklarendeTekstKomponenter,
   lagArbeidsforholdKomponenter,
   lagArbeidsforholdModalKomponenter,
   lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
+  lagArbeidsforholdForklarendeTekstKomponenter,
   pdfGrunnlag,
   seksjonsvar,
 } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
@@ -40,6 +40,7 @@ import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbe
 import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.schema";
 import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v3/komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v3/komponenter/ArbeidsforholdModal";
+import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
@@ -65,25 +66,6 @@ export function ArbeidsforholdViewV3() {
 
   const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(t);
   const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);
-  const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(t);
-  const arbeidsforholdModalSkiftTurnusRotasjonKomponenter =
-    lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t);
-  const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter =
-    lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t);
-  const arbeidsforholdModalJegHarSagtOppSelvKomponenter =
-    lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t);
-  const arbeidsforholdModalJegHarFåttAvskjedKomponenter =
-    lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t);
-  const arbeidsforholdModalKontraktenErUtgåttKomponenter =
-    lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t);
-  const arbeidsforholdModalArbeidstidenErRedusertKomponenter =
-    lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t);
-  const arbeidsforholdModalArbeidsgiverErKonkursKomponenter =
-    lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t);
-  const arbeidsforholdModalJegErPermittertKomponenter =
-    lagArbeidsforholdModalJegErPermittertKomponenter(t);
-  const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter =
-    lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -94,8 +76,25 @@ export function ArbeidsforholdViewV3() {
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
+  const harJobbetIEøsLand = form.transient.value(
+    harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
+  );
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
+
+  useEffect(() => {
+    if (harJobbetIEøsLand !== "nei") {
+      return;
+    }
+
+    const oppdaterteDokumentasjonskrav = dokumentasjonskrav.filter(
+      (krav) => krav.type !== DokumentasjonskravType.ArbeidsforholdAnnetEØSLand
+    );
+
+    if (oppdaterteDokumentasjonskrav.length !== dokumentasjonskrav.length) {
+      setDokumentasjonskrav(oppdaterteDokumentasjonskrav);
+    }
+  }, [dokumentasjonskrav, harJobbetIEøsLand, setDokumentasjonskrav]);
 
   useEffect(() => {
     if (modalData) {
@@ -126,30 +125,30 @@ export function ArbeidsforholdViewV3() {
   }
 
   function genererPdfGrunnlag() {
-    const pdfPayload = {
+    const pdfgrunnlag = {
       navn: t("side.overskrift"),
       spørsmål: [
         ...lagSeksjonPayload(arbeidsforholdKomponenter, form.transient.value()),
         ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
         ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
           lagSeksjonPayload(
-            arbeidsforholdModalKomponenter
-              .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
-              .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
-              .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-              .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
-              .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
-              .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
-              .concat(arbeidsforholdModalJegErPermittertKomponenter)
-              .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-              .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter),
+            lagArbeidsforholdModalKomponenter(t)
+              .concat(lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t))
+              .concat(lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t))
+              .concat(lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t))
+              .concat(lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t))
+              .concat(lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t))
+              .concat(lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t))
+              .concat(lagArbeidsforholdModalJegErPermittertKomponenter(t))
+              .concat(lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t))
+              .concat(lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t)),
             etArbeidsforhold
           )
         ),
       ],
     };
 
-    return JSON.stringify(pdfPayload);
+    return JSON.stringify(pdfgrunnlag);
   }
 
   function hentDokumentasjonskrav() {

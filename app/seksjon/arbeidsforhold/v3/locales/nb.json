@@ -40,6 +40,7 @@
 	},
 	"dokumentasjonskrav": {
 		"arbeidsavtale": "Arbeidsavtale - {{bedrift}}",
+		"arbeidsavtaleAnnetEØSLand": "Arbeidsinntekt og arbeidstimer fra et annet EØS-land - {{land}}",
 		"oppsigelse": "Oppsigelse - {{bedrift}}",
 		"avskjedigelse": "Avskjedigelse - {{bedrift}}",
 		"redusertArbeidstid": "Redusert arbeidstid - {{bedrift}}",
