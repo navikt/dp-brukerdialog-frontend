@@ -57,7 +57,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     setDokumentasjonskrav,
     dokumentasjonskrav,
   } = useArbeidsforholdContext();
-  const { t } = useTranslation("arbeidsforhold/v2");
+  const { t } = useTranslation("arbeidsforhold/v3");
 
   const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);
 

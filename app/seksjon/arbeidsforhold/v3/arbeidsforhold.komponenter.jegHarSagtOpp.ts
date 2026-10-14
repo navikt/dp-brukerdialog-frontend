@@ -4,7 +4,7 @@ import {
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegHarSagtOppSelv,
-} from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter";
+} from "./arbeidsforhold.komponenter";
 import { startOfDay, subYears } from "date-fns";
 
 export const jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato =

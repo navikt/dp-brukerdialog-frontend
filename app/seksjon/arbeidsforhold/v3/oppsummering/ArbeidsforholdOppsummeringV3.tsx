@@ -28,7 +28,7 @@ export function ArbeidsforholdOppsummeringV3({
   seksjonsUrl,
   redigerbar,
 }: SeksjonProps) {
-  const { t } = useTranslation("arbeidsforhold/v2");
+  const { t } = useTranslation("arbeidsforhold/v3");
 
   if (!seksjonSvarene) return null;
 
