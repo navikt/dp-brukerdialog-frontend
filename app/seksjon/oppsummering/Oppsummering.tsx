@@ -136,7 +136,7 @@ export function Oppsummering({
             `Ukjent versjon for seksjon annen-pengestotte: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
           );
           return (
-            <AnnenPengestøtteOppsummeringV1
+            <AnnenPengestøtteOppsummeringV2
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}

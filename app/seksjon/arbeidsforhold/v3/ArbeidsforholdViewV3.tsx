@@ -187,6 +187,10 @@ export function ArbeidsforholdViewV3() {
     }
   }
 
+  const harJobbet =
+    form.value(hvordanHarDuJobbet) &&
+    form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene;
+
   return (
     <div className="innhold">
       <title>{t("side.tittel")}</title>
@@ -212,55 +216,51 @@ export function ArbeidsforholdViewV3() {
               );
             })}
 
-            {form.value(hvordanHarDuJobbet) &&
-              form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
-              form.value(
-                harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-              ) && (
-                <VStack className="mt-16" gap="space-24">
-                  {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-                    if (komponent.visHvis && !komponent.visHvis(formValues)) {
-                      return null;
-                    }
+            {harJobbet && (
+              <VStack className="mt-16" gap="space-24">
+                {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+                  if (komponent.visHvis && !komponent.visHvis(formValues)) {
+                    return null;
+                  }
 
-                    return (
-                      <Komponent
-                        key={komponent.id}
-                        props={komponent}
-                        formValues={formValues}
-                        formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
-                      />
-                    );
-                  })}
-                  {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
-                    <ArbeidsforholdDetaljer
-                      key={arbeidsforhold.id}
-                      arbeidsforhold={arbeidsforhold}
-                      form={form}
+                  return (
+                    <Komponent
+                      key={komponent.id}
+                      props={komponent}
+                      formValues={formValues}
+                      formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                     />
-                  ))}
-                  <HStack>
-                    <Button
-                      variant="secondary"
-                      type="button"
-                      icon={<BriefcaseIcon aria-hidden />}
-                      onClick={() => {
-                        setModalData({
-                          operasjon: ModalOperasjon.LeggTil,
-                          form: form,
-                        });
-                      }}
-                    >
-                      {t("navigasjon.leggTilArbeidsforhold")}
-                    </Button>
-                  </HStack>
-                  {visManglerArbeidsforholdFeilmelding && (
-                    <InlineMessage status="error">
-                      {t("navigasjon.manglerArbeidsforhold")}
-                    </InlineMessage>
-                  )}
-                </VStack>
-              )}
+                  );
+                })}
+                {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
+                  <ArbeidsforholdDetaljer
+                    key={arbeidsforhold.id}
+                    arbeidsforhold={arbeidsforhold}
+                    form={form}
+                  />
+                ))}
+                <HStack>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    icon={<BriefcaseIcon aria-hidden />}
+                    onClick={() => {
+                      setModalData({
+                        operasjon: ModalOperasjon.LeggTil,
+                        form: form,
+                      });
+                    }}
+                  >
+                    {t("navigasjon.leggTilArbeidsforhold")}
+                  </Button>
+                </HStack>
+                {visManglerArbeidsforholdFeilmelding && (
+                  <InlineMessage status="error">
+                    {t("navigasjon.manglerArbeidsforhold")}
+                  </InlineMessage>
+                )}
+              </VStack>
+            )}
 
             {actionData && (
               <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />
