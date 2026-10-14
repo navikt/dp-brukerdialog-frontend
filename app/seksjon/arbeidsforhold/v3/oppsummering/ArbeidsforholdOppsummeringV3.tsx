@@ -23,7 +23,7 @@ import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
 
-export function ArbeidsforholdOppsummeringV2({
+export function ArbeidsforholdOppsummeringV3({
   seksjonSvarene,
   seksjonsUrl,
   redigerbar,

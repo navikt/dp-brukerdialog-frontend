@@ -10,6 +10,8 @@ import { ReellArbeidssøkerOppsummeringV1 } from "~/seksjon/reell-arbeidssøker/
 import { TilleggsopplysningerOppsummeringV1 } from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggsopplysningerOppsummeringV1";
 import { ArbeidsforholdOppsummeringV2 } from "~/seksjon/arbeidsforhold/v2/oppsummering/ArbeidsforholdOppsummeringV2";
 import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
+import { ArbeidsforholdOppsummeringV3 } from "../arbeidsforhold/v3/oppsummering/ArbeidsforholdOppsummeringV3";
+import { AnnenPengestøtteOppsummeringV2 } from "../annen-pengestøtte/v2/oppsummering/AnnenPengestøtteOppsummeringV2";
 
 type OppsummeringProps = {
   seksjonsId: string;
@@ -90,12 +92,20 @@ export function Oppsummering({
               redigerbar={redigerbar}
             />
           );
+        case 3:
+          return (
+            <ArbeidsforholdOppsummeringV3
+              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
+            />
+          );
         default:
           console.error(
             `Ukjent versjon for seksjon arbeidsforhold: ${seksjonSvarene.versjon} for søknadId: ${søknadId}`
           );
           return (
-            <ArbeidsforholdOppsummeringV2
+            <ArbeidsforholdOppsummeringV3
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
@@ -108,6 +118,14 @@ export function Oppsummering({
         case 1:
           return (
             <AnnenPengestøtteOppsummeringV1
+              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
+            />
+          );
+        case 2:
+          return (
+            <AnnenPengestøtteOppsummeringV2
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}

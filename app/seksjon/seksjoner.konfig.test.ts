@@ -23,7 +23,7 @@ describe("hentSeksjonKonfig", () => {
     });
     expect(hentSeksjonKonfig("annen-pengestotte")).toEqual({
       seksjonId: "annen-pengestotte",
-      nyesteVersjon: 1,
+      nyesteVersjon: 2,
       forrigeSeksjonId: "arbeidsforhold",
       nesteSeksjonId: "egen-naring",
     });
