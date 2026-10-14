@@ -17,7 +17,7 @@ describe("hentSeksjonKonfig", () => {
     });
     expect(hentSeksjonKonfig("arbeidsforhold")).toEqual({
       seksjonId: "arbeidsforhold",
-      nyesteVersjon: 2,
+      nyesteVersjon: 3,
       forrigeSeksjonId: "din-situasjon",
       nesteSeksjonId: "annen-pengestotte",
     });

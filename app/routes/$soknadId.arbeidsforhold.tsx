@@ -8,12 +8,14 @@ import {
   ArbeidsforholdSvar,
 } from "~/seksjon/arbeidsforhold/v1/arbeidsforhold.komponenter";
 import { ArbeidsforholdViewV1 } from "~/seksjon/arbeidsforhold/v1/ArbeidsforholdViewV1";
+import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
+import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/ArbeidsforholdViewV2";
+import { ArbeidsforholdProviderV3 } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+import { ArbeidsforholdViewV3 } from "~/seksjon/arbeidsforhold/v3/ArbeidsforholdViewV3";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/ArbeidsforholdViewV2";
-import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
-import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
@@ -111,17 +113,26 @@ export default function ArbeidsforholdSeksjon() {
           <ArbeidsforholdViewV2 />
         </ArbeidsforholdProviderV2>
       );
+    case 3:
+      return (
+        <ArbeidsforholdProviderV3
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+        >
+          <ArbeidsforholdViewV3 />
+        </ArbeidsforholdProviderV3>
+      );
     default:
       console.error(
         `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
-        <ArbeidsforholdProviderV2
+        <ArbeidsforholdProviderV3
           registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
-          <ArbeidsforholdViewV2 />
-        </ArbeidsforholdProviderV2>
+          <ArbeidsforholdViewV3 />
+        </ArbeidsforholdProviderV3>
       );
   }
 }
