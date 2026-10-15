@@ -11,6 +11,7 @@ import { TilleggsopplysningerOppsummeringV1 } from "~/seksjon/tilleggsopplysning
 import { UtdanningOppsummeringV1 } from "~/seksjon/utdanning/v1/oppsummering/UtdanningOppsummeringV1";
 import { VernepliktOppsummeringV1 } from "~/seksjon/verneplikt/v1/oppsummering/VernepliktOppsummeringV1";
 import { ArbeidsforholdOppsummeringV3 } from "../arbeidsforhold/v3/oppsummering/ArbeidsforholdOppsummeringV3";
+import { AnnenPengestøtteOppsummeringV2 } from "../annen-pengestøtte/v2/oppsummering/AnnenPengestøtteOppsummeringV2";
 
 type OppsummeringProps = {
   seksjonsId: string;
@@ -117,6 +118,14 @@ export function Oppsummering({
         case 1:
           return (
             <AnnenPengestøtteOppsummeringV1
+              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
+            />
+          );
+        case 2:
+          return (
+            <AnnenPengestøtteOppsummeringV2
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}

@@ -12,6 +12,8 @@ import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types"
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
+import { AnnenPengestøtteProviderV2 } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
+import { AnnenPengestøtteViewV2 } from "~/seksjon/annen-pengestøtte/v2/AnnenPengestøtteViewV2";
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
   hentSeksjonKonfig("annen-pengestotte");
@@ -104,6 +106,20 @@ export default function AnnenPengestøtteSeksjon() {
         >
           <AnnenPengestøtteViewV1 />
         </AnnenPengestøtteProvider>
+      );
+
+    case 2:
+      return (
+        <AnnenPengestøtteProviderV2
+          pengestøtteFraTidligereArbeidsgiver={
+            seksjon?.seksjonsvar?.pengestøtteFraTidligereArbeidsgiver ?? []
+          }
+          pengestøtteFraAndreEøsLand={seksjon?.seksjonsvar?.pengestøtteFraAndreEøsLand ?? []}
+          pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+        >
+          <AnnenPengestøtteViewV2 />
+        </AnnenPengestøtteProviderV2>
       );
     default:
       console.error(
