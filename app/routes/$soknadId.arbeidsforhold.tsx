@@ -14,6 +14,8 @@ import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
 import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/ArbeidsforholdViewV2";
 import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
 import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
+import { ArbeidsforholdProviderV3 } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+import { ArbeidsforholdViewV3 } from "~/seksjon/arbeidsforhold/v3/ArbeidsforholdViewV3";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
@@ -110,6 +112,15 @@ export default function ArbeidsforholdSeksjon() {
         >
           <ArbeidsforholdViewV2 />
         </ArbeidsforholdProviderV2>
+      );
+    case 3:
+      return (
+        <ArbeidsforholdProviderV3
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+        >
+          <ArbeidsforholdViewV3 />
+        </ArbeidsforholdProviderV3>
       );
     default:
       console.error(

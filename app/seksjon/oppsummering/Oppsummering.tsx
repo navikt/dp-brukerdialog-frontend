@@ -1,15 +1,16 @@
-import { DinSituasjonOppsummeringV1 } from "~/seksjon/din-situasjon/v1/oppsummering/DinSituasjonOppsummeringV1";
-import { PersonaliaOppsummeringV1 } from "~/seksjon/personalia/v1/oppsummering/PersonaliaOppsummeringV1";
-import { ArbeidsforholdOppsummeringV1 } from "~/seksjon/arbeidsforhold/v1/oppsummering/ArbeidsforholdOppsummeringV1";
+import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
 import { AnnenPengestøtteOppsummeringV1 } from "~/seksjon/annen-pengestøtte/v1/oppsummering/AnnenPengestøtteOppsummeringV1";
-import { EgenNæringOppsummeringV1 } from "~/seksjon/egen-næring/v1/oppsummering/EgenNæringOppsummeringV1";
-import { VernepliktOppsummeringV1 } from "~/seksjon/verneplikt/v1/oppsummering/VernepliktOppsummeringV1";
-import { UtdanningOppsummeringV1 } from "~/seksjon/utdanning/v1/oppsummering/UtdanningOppsummeringV1";
+import { ArbeidsforholdOppsummeringV1 } from "~/seksjon/arbeidsforhold/v1/oppsummering/ArbeidsforholdOppsummeringV1";
+import { ArbeidsforholdOppsummeringV2 } from "~/seksjon/arbeidsforhold/v2/oppsummering/ArbeidsforholdOppsummeringV2";
 import { BarnetilleggOppsummeringV1 } from "~/seksjon/barnetillegg/v1/oppsummering/BarnetilleggOppsummeringV1";
+import { DinSituasjonOppsummeringV1 } from "~/seksjon/din-situasjon/v1/oppsummering/DinSituasjonOppsummeringV1";
+import { EgenNæringOppsummeringV1 } from "~/seksjon/egen-næring/v1/oppsummering/EgenNæringOppsummeringV1";
+import { PersonaliaOppsummeringV1 } from "~/seksjon/personalia/v1/oppsummering/PersonaliaOppsummeringV1";
 import { ReellArbeidssøkerOppsummeringV1 } from "~/seksjon/reell-arbeidssøker/v1/oppsummering/ReellArbeidssøkerOppsummeringV1";
 import { TilleggsopplysningerOppsummeringV1 } from "~/seksjon/tilleggsopplysninger/v1/oppsummering/TilleggsopplysningerOppsummeringV1";
-import { ArbeidsforholdOppsummeringV2 } from "~/seksjon/arbeidsforhold/v2/oppsummering/ArbeidsforholdOppsummeringV2";
-import { useTypedRouteLoaderData } from "~/hooks/useTypedRouteLoaderData";
+import { UtdanningOppsummeringV1 } from "~/seksjon/utdanning/v1/oppsummering/UtdanningOppsummeringV1";
+import { VernepliktOppsummeringV1 } from "~/seksjon/verneplikt/v1/oppsummering/VernepliktOppsummeringV1";
+import { ArbeidsforholdOppsummeringV3 } from "../arbeidsforhold/v3/oppsummering/ArbeidsforholdOppsummeringV3";
 import { AnnenPengestøtteOppsummeringV2 } from "../annen-pengestøtte/v2/oppsummering/AnnenPengestøtteOppsummeringV2";
 
 type OppsummeringProps = {
@@ -86,6 +87,14 @@ export function Oppsummering({
         case 2:
           return (
             <ArbeidsforholdOppsummeringV2
+              seksjonSvarene={seksjonSvarene.seksjonsvar}
+              seksjonsUrl={seksjonsUrl}
+              redigerbar={redigerbar}
+            />
+          );
+        case 3:
+          return (
+            <ArbeidsforholdOppsummeringV3
               seksjonSvarene={seksjonSvarene.seksjonsvar}
               seksjonsUrl={seksjonsUrl}
               redigerbar={redigerbar}
