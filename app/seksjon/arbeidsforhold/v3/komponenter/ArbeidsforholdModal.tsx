@@ -235,7 +235,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   onClick={() => form.submit()}
                   icon={<FloppydiskIcon aria-hidden />}
                 >
-                  {t("navigasjon.lagreOgLukk")}
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>

@@ -245,13 +245,11 @@ export function ArbeidsforholdViewV3() {
                       });
                     }}
                   >
-                    {t("navigasjon.leggTilArbeidsforhold")}
+                    {t("arbeidsforhold.leggTilArbeidsforholdKnapp")}
                   </Button>
                 </HStack>
                 {visManglerArbeidsforholdFeilmelding && (
-                  <InlineMessage status="error">
-                    {t("navigasjon.manglerArbeidsforhold")}
-                  </InlineMessage>
+                  <InlineMessage status="error">{t("varsel.manglerArbeidsforhold")}</InlineMessage>
                 )}
               </VStack>
             )}

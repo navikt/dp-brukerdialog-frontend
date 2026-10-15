@@ -14,16 +14,18 @@
 			"harIkkeSvart": "Har ikke svart"
 		}
 	},
-	"navigasjon": {
-		"leggTilArbeidsforhold": "Legg til arbeidsforhold",
-		"manglerArbeidsforhold": "Du må legge til et arbeidsforhold",
+	"varsel": {
+		"manglerArbeidsforhold": "Du må legge til et arbeidsforhold"
+	},
+	"arbeidsforhold": {
+		"leggTilArbeidsforholdKnapp": "Legg til arbeidsforhold",
 		"endreSvar": "Endre svar",
-		"fjern": "Fjern",
-		"lagreOgLukk": "Lagre og lukk"
+		"fjern": "Fjern"
 	},
 	"modal": {
 		"leggTil": "Legg til arbeidsforhold",
-		"rediger": "Rediger arbeidsforhold"
+		"rediger": "Rediger arbeidsforhold",
+		"lagreOgLukk": "Lagre og lukk"
 	},
 	"detaljer": {
 		"varteFra": "Arbeidsforholdet varte fra {{dato}}",
@@ -40,7 +42,7 @@
 	},
 	"dokumentasjonskrav": {
 		"arbeidsavtale": "Arbeidsavtale - {{bedrift}}",
-		"arbeidsavtaleAnnetEØSLand": "Arbeidsinntekt og arbeidstimer fra et annet EØS-land ({{land}})",
+		"arbeidsavtaleAnnetEØSLand": "Arbeidsinntekt og arbeidstimer fra et annet EØS-land - {{land}}",
 		"oppsigelse": "Oppsigelse - {{bedrift}}",
 		"avskjedigelse": "Avskjedigelse - {{bedrift}}",
 		"redusertArbeidstid": "Redusert arbeidstid - {{bedrift}}",

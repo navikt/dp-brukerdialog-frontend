@@ -252,7 +252,7 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
             });
           }}
         >
-          {t("navigasjon.endreSvar")}
+          {t("arbeidsforhold.endreSvar")}
         </Button>
         <Button
           variant="tertiary"
@@ -260,7 +260,7 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
           onClick={fjernArbeidsforhold}
           icon={<TrashIcon aria-hidden />}
         >
-          {t("navigasjon.fjern")}
+          {t("arbeidsforhold.fjern")}
         </Button>
       </HStack>
     </Box>
