@@ -194,19 +194,17 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
         return (
           <VStack gap="space-16">
             <BodyLong>
-              Du har krysset av for at du har mottatt arbeidsinntekt fra et annet EØS-land.
+              {t("krav.arbeidsinntektFraAnnetEØSLand.beskrivelse")}
               <br />
               <br />
-              Du må legge ved dokumentasjon som viser både brutto og netto arbeidsinntekt du har
-              mottatt fordelt på de siste 36 månedene. Dette vil du normalt finne på din
-              lønnsslipper.
+              {t("krav.arbeidsinntektFraAnnetEØSLand.utdypning")}
             </BodyLong>
             <List as="ul">
-              <List.Item>hvilken arbeidsinntekt dette er</List.Item>
-              <List.Item>hvem som utbetaler arbeidsinntekten</List.Item>
-              <List.Item>hvor mye du har fått utbetalt</List.Item>
-              <List.Item>perioden den utbetales for</List.Item>
-              <List.Item>antall timer du har jobbet pr måned hos denne arbeidsgiveren</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt1")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt2")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt3")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt4")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt5")}</List.Item>
             </List>
           </VStack>
         );
