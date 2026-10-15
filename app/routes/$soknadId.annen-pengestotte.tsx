@@ -8,12 +8,12 @@ import { AnnenPengestøtteViewV1 } from "~/seksjon/annen-pengestøtte/v1/AnnenPe
 import { PengestøtteFraAndreEøsLand } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorge } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraNorgeModal";
 import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøtte/v1/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
+import { AnnenPengestøtteProviderV2 } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
+import { AnnenPengestøtteViewV2 } from "~/seksjon/annen-pengestøtte/v2/AnnenPengestøtteViewV2";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import { navigerEtterLagring, normaliserFormData } from "~/utils/action.utils.server";
 import { seksjonshandlingSchema } from "~/utils/Seksjonshandling";
-import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
-import { AnnenPengestøtteViewV2 } from "~/seksjon/annen-pengestøtte/v2/AnnenPengestøtteViewV2";
-import { AnnenPengestøtteProviderV2 } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
   hentSeksjonKonfig("annen-pengestotte");
