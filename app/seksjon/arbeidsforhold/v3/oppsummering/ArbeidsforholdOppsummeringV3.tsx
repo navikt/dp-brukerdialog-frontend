@@ -1,7 +1,10 @@
 import { FormSummary } from "@navikt/ds-react";
-import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
-import { KomponentType } from "~/components/Komponent.types";
 import { useTranslation } from "react-i18next";
+import { KomponentType } from "~/components/Komponent.types";
+import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
+import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
+import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
+import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import {
   ArbeidsforholdResponse,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
@@ -10,18 +13,15 @@ import {
   lagArbeidsforholdKomponenter,
   lagArbeidsforholdModalKomponenter,
   lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
-import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
-import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
-import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
-import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
-import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
-import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
-import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
-import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
+} from "../arbeidsforhold.komponenter";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "../arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "../arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "../arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "../arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "../arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "../arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "../arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "../arbeidsforhold.komponenter.permittert";
 
 export function ArbeidsforholdOppsummeringV3({
   seksjonSvarene,

@@ -1,57 +1,52 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, HStack } from "@navikt/ds-react";
-import { FormApi } from "@rvf/react-router";
 import { useTranslation } from "react-i18next";
-import {
-  ModalOperasjon,
-  useArbeidsforholdContext,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+import { formaterNorskDato } from "~/utils/formatering.utils";
+import { finnOptionLabel } from "~/utils/seksjon.utils";
+import { ModalOperasjon, useArbeidsforholdContext } from "../arbeidsforhold.context";
 import {
   Arbeidsforhold,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   lagArbeidsforholdModalKomponenter,
   navnetPåBedriften,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "../arbeidsforhold.komponenter";
 import {
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+} from "../arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import {
   jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
   jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
-import { ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
+} from "../arbeidsforhold.komponenter.avskjediget";
+import { ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato } from "../arbeidsforhold.komponenter.ikkeEndret";
 import {
   jegErOppsagtVarighetPåArbeidsforholdetFraDato,
   jegErOppsagtVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
+} from "../arbeidsforhold.komponenter.jegErOppsagt";
 import {
   jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
+} from "../arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   konkursVarighetPåArbeidsforholdetFraDato,
   konkursVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
+} from "../arbeidsforhold.komponenter.konkurs";
 import {
   kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
   kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
+} from "../arbeidsforhold.komponenter.kontraktenErUtgått";
 import {
   permittertHvorMangeProsentErDuPermittert,
   permittertNårErDuPermittertFraOgMedDato,
   permittertNårErDuPermittertTilOgMedDato,
   permittertVarighetPåArbeidsforholdetFraOgMedDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
-import { formaterNorskDato } from "~/utils/formatering.utils";
-import { finnOptionLabel } from "~/utils/seksjon.utils";
+} from "../arbeidsforhold.komponenter.permittert";
 
 interface IProps {
   arbeidsforhold: Arbeidsforhold;
-  form: FormApi<any>;
 }
 
-export function ArbeidsforholdDetaljer({ arbeidsforhold, form }: IProps) {
+export function ArbeidsforholdDetaljer({ arbeidsforhold }: IProps) {
   const { t } = useTranslation("arbeidsforhold/v3");
   const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(t);
   const {
@@ -254,7 +249,6 @@ export function ArbeidsforholdDetaljer({ arbeidsforhold, form }: IProps) {
             setModalData({
               operasjon: ModalOperasjon.Rediger,
               arbeidsforhold,
-              form,
             });
           }}
         >

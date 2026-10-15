@@ -1,5 +1,5 @@
 import { KomponentType } from "~/components/Komponent.types";
-import { AnnenPengestøtteSvar } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.komponent";
+import { AnnenPengestøtteSvar } from "./annen-pengestøtte.komponent";
 import { endOfDay, startOfDay, subYears } from "date-fns";
 import { TFunction } from "i18next";
 

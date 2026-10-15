@@ -14,12 +14,9 @@ import {
   lagPengestøtteFraAndreEøsLandModalKomponenter,
   mottarDuFortsattPengestøttenFraAndreEøsLand,
   PengestøtteFraAndreEøsLandModalSvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-eøs.komponenter";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
-import { pengestøtteFraAndreEøsLandSchema } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.schema";
+} from "../annen-pengestøtte-eøs.komponenter";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "../annen-pengestøtte.context";
+import { pengestøtteFraAndreEøsLandSchema } from "../annen-pengestøtte.schema";
 
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";

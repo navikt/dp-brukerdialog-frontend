@@ -3,21 +3,21 @@ import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   lagPengestøtteFraAndreEøsLandKomponenter,
   lagPengestøtteFraAndreEøsLandModalKomponenter,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-eøs.komponenter";
+} from "../annen-pengestøtte-eøs.komponenter";
 import {
   lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   lagPengestøtteFraNorgeKomponenter,
   lagPengestøtteFraNorgeModalKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   mottarDuPengestøtteFraAndreEnnNav,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-norge.komponenter";
+} from "../annen-pengestøtte-norge.komponenter";
 import { OppsummeringsSvar } from "~/components/OppsummeringsSvar";
 import { KomponentType } from "~/components/Komponent.types";
-import { AnnenPengestøtteResponse } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.komponent";
+import { AnnenPengestøtteResponse } from "../annen-pengestøtte.komponent";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
-import { lagPengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { lagPengestøtteFraTidligereArbeidsgiverModalKomponenter } from "../annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { useTranslation } from "react-i18next";
 
 export function AnnenPengestøtteOppsummeringV2({

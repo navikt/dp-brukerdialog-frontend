@@ -10,10 +10,11 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
-import {
-  ModalOperasjon,
-  useArbeidsforholdContext,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+import { useSoknad } from "~/seksjon/soknad.context";
+import { Seksjonshandling } from "~/utils/Seksjonshandling";
+import { lagSeksjonPayload } from "~/utils/seksjon.utils";
+import { validerSvar } from "~/utils/validering.utils";
+import { ModalOperasjon, useArbeidsforholdContext } from "./arbeidsforhold.context";
 import {
   Arbeidsforhold,
   ArbeidsforholdResponse,
@@ -22,29 +23,25 @@ import {
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harIkkeJobbetDeSiste36Månedene,
   hvordanHarDuJobbet,
+  lagArbeidsforholdForklarendeTekstKomponenter,
   lagArbeidsforholdKomponenter,
   lagArbeidsforholdModalKomponenter,
   lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
-  lagArbeidsforholdForklarendeTekstKomponenter,
   pdfGrunnlag,
   seksjonsvar,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
-import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
-import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
-import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
-import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
-import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
-import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.schema";
-import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v3/komponenter/ArbeidsforholdDetaljer";
-import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v3/komponenter/ArbeidsforholdModal";
+} from "./arbeidsforhold.komponenter";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "./arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "./arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "./arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "./arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "./arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "./arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "./arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "./arbeidsforhold.komponenter.permittert";
+import { arbeidsforholdSchema } from "./arbeidsforhold.schema";
+import { ArbeidsforholdDetaljer } from "./komponenter/ArbeidsforholdDetaljer";
+import { ArbeidsforholdModal } from "./komponenter/ArbeidsforholdModal";
 import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/dokumentasjon.types";
-import { useSoknad } from "~/seksjon/soknad.context";
-import { Seksjonshandling } from "~/utils/Seksjonshandling";
-import { lagSeksjonPayload } from "~/utils/seksjon.utils";
-import { validerSvar } from "~/utils/validering.utils";
 
 export function ArbeidsforholdViewV3() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -233,11 +230,7 @@ export function ArbeidsforholdViewV3() {
                   );
                 })}
                 {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
-                  <ArbeidsforholdDetaljer
-                    key={arbeidsforhold.id}
-                    arbeidsforhold={arbeidsforhold}
-                    form={form}
-                  />
+                  <ArbeidsforholdDetaljer key={arbeidsforhold.id} arbeidsforhold={arbeidsforhold} />
                 ))}
                 <HStack>
                   <Button

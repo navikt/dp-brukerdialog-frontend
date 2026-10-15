@@ -5,7 +5,7 @@ import {
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegHarFåttAvskjed,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "./arbeidsforhold.komponenter";
 import { startOfDay, subYears } from "date-fns";
 
 export const jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato =

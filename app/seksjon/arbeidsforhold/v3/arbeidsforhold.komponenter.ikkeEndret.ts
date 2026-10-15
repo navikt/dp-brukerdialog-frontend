@@ -1,4 +1,3 @@
-import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
@@ -6,7 +5,8 @@ import {
   ArbeidsforholdModalSvar,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "./arbeidsforhold.komponenter";
+import { startOfDay, subYears } from "date-fns";
 
 export const ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato =
   "ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato";

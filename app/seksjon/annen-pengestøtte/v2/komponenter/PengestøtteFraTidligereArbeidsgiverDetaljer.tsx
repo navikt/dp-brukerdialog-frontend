@@ -1,14 +1,11 @@
 import { PencilIcon, TrashIcon } from "@navikt/aksel-icons";
 import { BodyShort, Box, Button, Heading, HStack } from "@navikt/ds-react";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "../annen-pengestøtte.context";
 import { PengestøtteFraTidligereArbeidsgiver } from "./PengestøtteFraTidligereArbeidsgiverModal";
 import {
   hvaFårEllerBeholderDu,
   hvemMottarDuUtbetalingerEllerGoderFra,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+} from "../annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { useTranslation } from "react-i18next";
 
 interface IProps {

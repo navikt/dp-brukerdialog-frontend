@@ -6,7 +6,7 @@ import {
   handling,
   pdfGrunnlag,
   seksjonsvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.komponent";
+} from "./annen-pengestøtte.komponent";
 import {
   dagpengerEllerArbeidsledighetstrygd,
   foreldrepengerEllerSvangerskapspenger,
@@ -22,7 +22,7 @@ import {
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   sykepenger,
   varSykepengeneSvangerskapsrelatert,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-eøs.komponenter";
+} from "./annen-pengestøtte-eøs.komponenter";
 import {
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   hvemUtbetalerPengestøtten,
@@ -34,14 +34,14 @@ import {
   pensjonFraAndreEnnNav,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-norge.komponenter";
+} from "./annen-pengestøtte-norge.komponenter";
 import { valider } from "~/utils/validering.utils";
 import {
   hvaFårEllerBeholderDu,
   hvemMottarDuUtbetalingerEllerGoderFra,
   lagPengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+} from "./annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 
 export const annenPengestøtteSchema = z

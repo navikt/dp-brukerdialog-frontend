@@ -1,3 +1,4 @@
+import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
@@ -5,8 +6,7 @@ import {
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   kontraktenErUtgått,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
+} from "./arbeidsforhold.komponenter";
 
 export const kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato =
   "kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato";

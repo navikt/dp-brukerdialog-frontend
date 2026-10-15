@@ -11,38 +11,38 @@ import { SeksjonTekniskFeil } from "~/components/SeksjonTekniskFeil";
 import { SøknadFooter } from "~/components/SøknadFooter";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
 import { action, loader } from "~/routes/$soknadId.annen-pengestotte";
-import { lagPengestøtteFraTidligereArbeidsgiverModalKomponenter } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+import { lagPengestøtteFraTidligereArbeidsgiverModalKomponenter } from "./annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import {
   lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   lagPengestøtteFraNorgeKomponenter,
   lagPengestøtteFraNorgeModalKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   mottarDuPengestøtteFraAndreEnnNav,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-norge.komponenter";
+} from "./annen-pengestøtte-norge.komponenter";
 import {
   AnnenPengestøtteResponse,
   AnnenPengestøtteSvar,
+  handling,
   lagAnnenPengestøtteKomponenter,
   pdfGrunnlag,
   seksjonsvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.komponent";
-import { annenPengestøtteSchema } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.schema";
-import { PengestøtteFraAndreEøsLandDetaljer } from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraAndreEøsLandDetaljer";
+} from "./annen-pengestøtte.komponent";
+import { annenPengestøtteSchema } from "./annen-pengestøtte.schema";
+import { PengestøtteFraAndreEøsLandDetaljer } from "./komponenter/PengestøtteFraAndreEøsLandDetaljer";
 import {
   PengestøtteFraAndreEøsLand,
   PengestøtteFraAndreEøsLandModal,
-} from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraAndreEøsLandModal";
-import { PengestøtteFraNorgeDetaljer } from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraNorgeDetaljer";
+} from "./komponenter/PengestøtteFraAndreEøsLandModal";
+import { PengestøtteFraNorgeDetaljer } from "./komponenter/PengestøtteFraNorgeDetaljer";
 import {
   PengestøtteFraNorge,
   PengestøtteFraNorgeModal,
-} from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraNorgeModal";
-import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
+} from "./komponenter/PengestøtteFraNorgeModal";
+import { PengestøtteFraTidligereArbeidsgiverDetaljer } from "./komponenter/PengestøtteFraTidligereArbeidsgiverDetaljer";
 import {
   PengestøtteFraTidligereArbeidsgiver,
   PengestøtteFraTidligereArbeidsgiverModal,
-} from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
-import { handling } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.komponenter";
+} from "./komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";

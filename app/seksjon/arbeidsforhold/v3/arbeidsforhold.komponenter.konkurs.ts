@@ -1,3 +1,4 @@
+import { addYears, endOfDay, startOfDay, subMonths, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
 import {
@@ -5,8 +6,7 @@ import {
   arbeidsgiverErKonkurs,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
-import { addYears, endOfDay, startOfDay, subMonths, subYears } from "date-fns";
+} from "./arbeidsforhold.komponenter";
 
 export const konkursVarighetPåArbeidsforholdetFraDato = "konkursVarighetPåArbeidsforholdetFraDato";
 export const konkursVarighetPåArbeidsforholdetTilDato = "konkursVarighetPåArbeidsforholdetTilDato";

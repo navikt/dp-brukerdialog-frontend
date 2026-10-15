@@ -8,11 +8,8 @@ import {
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato,
   iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato,
   lagPengestøtteFraAndreEøsLandModalKomponenter,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-eøs.komponenter";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
+} from "../annen-pengestøtte-eøs.komponenter";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "../annen-pengestøtte.context";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnLandnavnMedLocale } from "~/utils/land.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";

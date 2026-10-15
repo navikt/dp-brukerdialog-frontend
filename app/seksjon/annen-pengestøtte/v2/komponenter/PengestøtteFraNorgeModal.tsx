@@ -9,12 +9,9 @@ import {
   hvilkenPengestøtteFraAndreEnnNavMottarDu,
   lagPengestøtteFraNorgeModalKomponenter,
   PengestøtteFraNorgeModalSvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-norge.komponenter";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
-import { pengestøtteFraNorgeSchema } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.schema";
+} from "../annen-pengestøtte-norge.komponenter";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "../annen-pengestøtte.context";
+import { pengestøtteFraNorgeSchema } from "../annen-pengestøtte.schema";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";

@@ -6,7 +6,7 @@ import {
   arbeidsgiverenMinHarSagtMegOpp,
   harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "./arbeidsforhold.komponenter";
 import { startOfDay, subYears } from "date-fns";
 
 export const jegErOppsagtVarighetPåArbeidsforholdetFraDato =

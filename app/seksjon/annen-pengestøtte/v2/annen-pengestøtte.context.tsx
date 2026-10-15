@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { PengestøtteFraAndreEøsLand } from "./komponenter/PengestøtteFraAndreEøsLandModal";
 import { PengestøtteFraNorge } from "./komponenter/PengestøtteFraNorgeModal";
-import { PengestøtteFraTidligereArbeidsgiver } from "~/seksjon/annen-pengestøtte/v2/komponenter/PengestøtteFraTidligereArbeidsgiverModal";
+import { PengestøtteFraTidligereArbeidsgiver } from "./komponenter/PengestøtteFraTidligereArbeidsgiverModal";
 
 export enum ModalOperasjon {
   LeggTil = "leggTil",

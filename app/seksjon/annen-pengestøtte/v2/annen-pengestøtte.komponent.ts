@@ -4,15 +4,15 @@ import {
   harMottattEllerSøktOmPengestøtteFraAndreEøsLand,
   lagPengestøtteFraAndreEøsLandKomponenter,
   PengestøtteFraAndreEøsLandModalSvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-eøs.komponenter";
+} from "./annen-pengestøtte-eøs.komponenter";
 import {
   lagMottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiverKomponenter,
   lagPengestøtteFraNorgeKomponenter,
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
   mottarDuPengestøtteFraAndreEnnNav,
   PengestøtteFraNorgeModalSvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-norge.komponenter";
-import { PengestøtteFraTidligereArbeidsgiverModalSvar } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+} from "./annen-pengestøtte-norge.komponenter";
+import { PengestøtteFraTidligereArbeidsgiverModalSvar } from "./annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 
 export const seksjonsvar = "seksjonsvar";
 export const pdfGrunnlag = "pdfGrunnlag";

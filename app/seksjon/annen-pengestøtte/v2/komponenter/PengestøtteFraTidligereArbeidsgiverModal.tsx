@@ -4,12 +4,9 @@ import { useForm } from "@rvf/react-router";
 import { Form } from "react-router";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import { lagPengestøtteFraAndreEøsLandModalKomponenter } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-eøs.komponenter";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
-import { pengestøtteFraTidligereArbeidsgiverSchema } from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.schema";
+import { lagPengestøtteFraAndreEøsLandModalKomponenter } from "../annen-pengestøtte-eøs.komponenter";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "../annen-pengestøtte.context";
+import { pengestøtteFraTidligereArbeidsgiverSchema } from "../annen-pengestøtte.schema";
 import {
   Dokumentasjonskrav,
   DokumentasjonskravType,
@@ -18,7 +15,7 @@ import {
   hvemMottarDuUtbetalingerEllerGoderFra,
   lagPengestøtteFraTidligereArbeidsgiverModalKomponenter,
   PengestøtteFraTidligereArbeidsgiverModalSvar,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
+} from "../annen-pengestøtte-fra-tidligere-arbeidsgiver.komponenter";
 import { useEffect, useRef, useState } from "react";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { useTranslation } from "react-i18next";

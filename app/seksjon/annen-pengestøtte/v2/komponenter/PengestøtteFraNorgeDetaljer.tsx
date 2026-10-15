@@ -6,11 +6,8 @@ import {
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavFraDato,
   iHvilkenPeriodeHarDuMottattPengestøtteFraAndreEnnNavTilDato,
   lagPengestøtteFraNorgeModalKomponenter,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte-norge.komponenter";
-import {
-  ModalOperasjon,
-  useAnnenPengestøtteContext,
-} from "~/seksjon/annen-pengestøtte/v2/annen-pengestøtte.context";
+} from "../annen-pengestøtte-norge.komponenter";
+import { ModalOperasjon, useAnnenPengestøtteContext } from "../annen-pengestøtte.context";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 import { PengestøtteFraNorge } from "./PengestøtteFraNorgeModal";
