@@ -186,7 +186,8 @@ export function ArbeidsforholdViewV3() {
 
   const harJobbet =
     form.value(hvordanHarDuJobbet) &&
-    form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene;
+    form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
+    form.value(harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene);
 
   return (
     <div className="innhold">
