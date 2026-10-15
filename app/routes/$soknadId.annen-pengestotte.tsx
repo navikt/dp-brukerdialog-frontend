@@ -125,7 +125,7 @@ export default function AnnenPengestøtteSeksjon() {
         `Ukjent versjonsnummer: ${seksjon?.versjon} for søknadId: ${soknadId} i seksjonId: ${seksjon?.seksjonId}`
       );
       return (
-        <AnnenPengestøtteProvider
+        <AnnenPengestøtteProviderV2
           pengestøtteFraTidligereArbeidsgiver={
             seksjon?.seksjonsvar?.pengestøtteFraTidligereArbeidsgiver ?? []
           }
@@ -133,8 +133,8 @@ export default function AnnenPengestøtteSeksjon() {
           pengestøtteFraNorge={seksjon?.seksjonsvar?.pengestøtteFraNorge ?? []}
           dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
         >
-          <AnnenPengestøtteViewV1 />
-        </AnnenPengestøtteProvider>
+          <AnnenPengestøtteViewV2 />
+        </AnnenPengestøtteProviderV2>
       );
   }
 }
