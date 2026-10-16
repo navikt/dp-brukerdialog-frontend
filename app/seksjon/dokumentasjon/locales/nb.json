@@ -146,7 +146,7 @@
 		},
 		"arbeidsinntektFraAnnetEØSLand": {
 			"beskrivelse": "Du har krysset av for at du har mottatt arbeidsinntekt fra et annet EØS-land.",
-			"utdypning": "Du må legge ved dokumentasjon som viser både brutto og netto arbeidsinntekt du har mottatt fordelt på de siste 36 månedene. Dette vil du normalt finne på din lønnsslipper.",
+			"utdypning": "Du må legge ved dokumentasjon som viser både brutto og netto arbeidsinntekten du har mottatt fordelt på de siste 36 månedene. Dette vil du normalt finne på dine lønnslipper.",
 			"punkt1": "hvilken arbeidsinntekt dette er",
 			"punkt2": "hvem som utbetaler arbeidsinntekten",
 			"punkt3": "hvor mye du har fått utbetalt",
