@@ -220,9 +220,6 @@ export const arbeidsforholdModalSchema = z
     [annenRotasjonBeskrivelse]: z.string().optional(),
     [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto]: z.string().optional(),
     [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato]: z.string().optional(),
-    [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]: z
-      .string()
-      .optional(),
   })
   .superRefine((data, context) => {
     arbeidsforholdModalKomponenter

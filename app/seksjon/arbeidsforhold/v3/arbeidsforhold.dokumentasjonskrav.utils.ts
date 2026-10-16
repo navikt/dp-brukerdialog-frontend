@@ -24,8 +24,7 @@ export function lagDokumentasjonskrav(
   jobbetSkiftTurnusEllerRotasjon: string,
   arbeidsforholdSituasjon: string,
   bedriftNavn: string,
-  harJobbetEØSLand?: boolean,
-  eøsLand?: string
+  landJobbetDuI?: string
 ): Dokumentasjonskrav[] {
   const dokumentasjonskrav = new Array<Dokumentasjonskrav>();
 
@@ -163,8 +162,8 @@ export function lagDokumentasjonskrav(
       break;
   }
 
-  if (harJobbetEØSLand && eøsLand) {
-    const eøsLandNavn = finnLandnavnMedLocale(eøsLand);
+  if (landJobbetDuI) {
+    const eøsLandNavn = finnLandnavnMedLocale(landJobbetDuI);
 
     const eøsArbeidsforholdDokumentasjonskrav = {
       id: crypto.randomUUID(),

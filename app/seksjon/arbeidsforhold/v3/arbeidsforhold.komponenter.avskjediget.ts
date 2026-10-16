@@ -1,12 +1,13 @@
+import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
+import { EØS_LANDKODER } from "~/utils/land.utils";
 import {
   ArbeidsforholdModalSvar,
-  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegHarFåttAvskjed,
 } from "./arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
 
 export const jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato =
   "jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato";
@@ -51,19 +52,19 @@ export function lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t: TFunction
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
     },
     {
-      id: "jegHarFåttAvskjedArbeidsinntektFraAnnetEØSLand",
-      type: "dokumentasjonskravindikator",
-      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
-      visHvis: (svar: ArbeidsforholdModalSvar) =>
-        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed &&
-        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja",
-    },
-    {
       id: "jegHarFåttAvskjedDokumentasjonskravindikator",
       type: "dokumentasjonskravindikator",
       label: t("jegHarFåttAvskjed.avskjedigelse"),
       visHvis: (svar: ArbeidsforholdModalSvar) =>
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed,
+    },
+    {
+      id: "jegHarFåttAvskjedArbeidsinntektFraAnnetEØSLand",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegHarFåttAvskjed &&
+        EØS_LANDKODER.includes(svar[hvilketLandJobbetDuI] ?? ""),
     },
     {
       id: jegHarFåttAvskjedHvaVarÅrsaken,

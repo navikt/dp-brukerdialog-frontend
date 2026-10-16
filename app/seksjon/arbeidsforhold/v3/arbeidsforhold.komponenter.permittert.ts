@@ -1,12 +1,13 @@
+import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
+import { EØS_LANDKODER } from "~/utils/land.utils";
 import {
   ArbeidsforholdModalSvar,
-  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   jegErPermittert,
 } from "./arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
 
 export const permittertVarighetPåArbeidsforholdetFraOgMedDato =
   "permittertVarighetPåArbeidsforholdetFraOgMedDato";
@@ -70,19 +71,19 @@ export function lagArbeidsforholdModalJegErPermittertKomponenter(t: TFunction): 
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
     },
     {
-      id: "permittertArbeidsinntektFraAnnetEØSLand",
-      type: "dokumentasjonskravindikator",
-      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
-      visHvis: (svar: ArbeidsforholdModalSvar) =>
-        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert &&
-        svar[harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene] === "ja",
-    },
-    {
       id: "permittertPermitteringsvarselDokumentasjonskravindikator",
       type: "dokumentasjonskravindikator",
       label: t("permittert.permitteringsvarsel"),
       visHvis: (svar: ArbeidsforholdModalSvar) =>
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert,
+    },
+    {
+      id: "permittertArbeidsinntektFraAnnetEØSLand",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === jegErPermittert &&
+        EØS_LANDKODER.includes(svar[hvilketLandJobbetDuI] ?? ""),
     },
     {
       id: permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,

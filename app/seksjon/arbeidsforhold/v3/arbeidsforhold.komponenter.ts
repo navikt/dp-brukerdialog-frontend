@@ -166,7 +166,6 @@ export type ArbeidsforholdModalSvar = {
   [annenRotasjonBeskrivelse]?: string;
   [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinFraDto]?: string;
   [oppgiSisteArbeidsperiodeIDenSisteRotasjonenDinTilDato]?: string;
-  [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]?: string;
 };
 
 export type ArbeidsforholdSvar = {

@@ -41,7 +41,6 @@ import { lagArbeidsforholdModalJegErPermittertKomponenter } from "./arbeidsforho
 import { arbeidsforholdSchema } from "./arbeidsforhold.schema";
 import { ArbeidsforholdDetaljer } from "./komponenter/ArbeidsforholdDetaljer";
 import { ArbeidsforholdModal } from "./komponenter/ArbeidsforholdModal";
-import { DokumentasjonskravType } from "~/seksjon/dokumentasjon/dokumentasjon.types";
 
 export function ArbeidsforholdViewV3() {
   const ref = useRef<HTMLDialogElement>(null);
@@ -73,25 +72,8 @@ export function ArbeidsforholdViewV3() {
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
-  const harJobbetIEøsLand = form.transient.value(
-    harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-  );
 
   useNullstillSkjulteFelter<ArbeidsforholdSvar>(form, arbeidsforholdKomponenter);
-
-  useEffect(() => {
-    if (harJobbetIEøsLand !== "nei") {
-      return;
-    }
-
-    const oppdaterteDokumentasjonskrav = dokumentasjonskrav.filter(
-      (krav) => krav.type !== DokumentasjonskravType.ArbeidsforholdAnnetEØSLand
-    );
-
-    if (oppdaterteDokumentasjonskrav.length !== dokumentasjonskrav.length) {
-      setDokumentasjonskrav(oppdaterteDokumentasjonskrav);
-    }
-  }, [dokumentasjonskrav, harJobbetIEøsLand, setDokumentasjonskrav]);
 
   useEffect(() => {
     if (modalData) {

@@ -124,8 +124,8 @@
 			"varSykepengeneSvangerskapsrelatert": {
 				"label": "Var sykepengene svangerskaps-relaterte?",
 				"options": {
-					"ja": "ja, jeg mottok svangerskaps-relaterte sykepenger",
-					"nei": "sykepengene var ikke svangerskaps-relaterte"
+					"ja": "Ja, jeg mottok svangerskaps-relaterte sykepenger",
+					"nei": "Nei, sykepengene var ikke svangerskaps-relaterte"
 				}
 			},
 			"informasjonskort": {

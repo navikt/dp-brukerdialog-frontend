@@ -12,7 +12,6 @@ import { lagDokumentasjonskrav } from "../arbeidsforhold.dokumentasjonskrav.util
 import {
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
-  harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
   harDuJobbetSkiftTurnusEllerRotasjon,
   hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
@@ -89,15 +88,6 @@ export function ArbeidsforholdModal({ ref }: IProps) {
 
   const { formId, action: formAction } = form.formOptions;
   const formValues = form.value();
-  const harJobbetIEøsLand = modalData?.form?.value(
-    harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-  );
-
-  const seksjonOgModalSvar: ArbeidsforholdSvar & ArbeidsforholdModalSvar = {
-    ...formValues,
-    [harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene]:
-      harJobbetIEøsLand,
-  };
 
   useNullstillSkjulteFelter<ArbeidsforholdModalSvar>(form, alleModalKomponenter);
 
@@ -111,15 +101,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
     const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
     const bedriftNavn = skjemaData[navnetPåBedriften] || "";
-    const eøsLand = skjemaData[hvilketLandJobbetDuI];
+    const landJobbetDuI = skjemaData[hvilketLandJobbetDuI] || "";
 
     const nyttDokumentkrav = lagDokumentasjonskrav(
       t,
       jobbetSkiftTurnusEllerRotasjon,
       arbeidsforholdSituasjon,
       bedriftNavn,
-      harJobbetIEøsLand === "ja",
-      eøsLand
+      landJobbetDuI
     );
 
     const nyttArbeidsforhold = {
@@ -142,7 +131,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
     const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
     const bedriftNavn = skjemaData[navnetPåBedriften] || "";
-    const eøsLand = skjemaData[hvilketLandJobbetDuI];
+    const landJobbetDuI = skjemaData[hvilketLandJobbetDuI] || "";
 
     const oppdaterteDokumentasjonskrav = dokumentasjonskrav.filter(
       (krav) => !gammeltArbeidsforhold.dokumentasjonskrav?.includes(krav.id)
@@ -153,8 +142,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
       jobbetSkiftTurnusEllerRotasjon,
       arbeidsforholdSituasjon,
       bedriftNavn,
-      harJobbetIEøsLand === "ja",
-      eøsLand
+      landJobbetDuI
     );
 
     const oppdatertArbeidsforhold = {
@@ -215,7 +203,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           <Form id={formId} action={formAction}>
             <VStack gap="space-24" className="mt-16">
               {alleModalKomponenter.map((komponent) => {
-                if (komponent.visHvis && !komponent.visHvis(seksjonOgModalSvar)) {
+                if (komponent.visHvis && !komponent.visHvis(formValues)) {
                   return null;
                 }
 
