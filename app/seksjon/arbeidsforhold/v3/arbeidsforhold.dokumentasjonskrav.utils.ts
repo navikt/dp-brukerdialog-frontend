@@ -163,14 +163,14 @@ export function lagDokumentasjonskrav(
   }
 
   if (landJobbetDuI) {
-    const eøsLandNavn = finnLandnavnMedLocale(landJobbetDuI);
+    const landNavn = finnLandnavnMedLocale(landJobbetDuI);
 
     const eøsArbeidsforholdDokumentasjonskrav = {
       id: crypto.randomUUID(),
       seksjonId: "arbeidsforhold",
       spørsmålId: harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene,
-      skjemakode: "O2",
-      tittel: t("dokumentasjonskrav.arbeidsavtaleAnnetEØSLand", { land: eøsLandNavn }),
+      skjemakode: "T7",
+      tittel: t("dokumentasjonskrav.arbeidsavtaleAnnetEØSLand", { land: landNavn }),
       type: DokumentasjonskravType.ArbeidsforholdAnnetEØSLand,
     };
 

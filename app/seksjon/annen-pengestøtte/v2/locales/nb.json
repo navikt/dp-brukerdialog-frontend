@@ -130,7 +130,7 @@
 			},
 			"informasjonskort": {
 				"label": "Informasjon",
-				"description": "Du må dokumentere hvilken periode du har hatt eller mottatt en pengestøtte fra et EØS-land, Sveits eller Storebritannia. <br /> <br /> Har du søkt om en pengestøtte, men ikke fått søknaden ferdig behandlet, må du informere oss så snart du har fått svar fra utenlandsk myndigheter."
+				"description": "Du må dokumentere hvilken periode du har hatt eller mottatt en pengestøtte fra et EØS-land, Sveits eller Storbritannia.<br/><br/> Har du søkt om en pengestøtte fra et annet EØS-land, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar fra utenlandske myndigheter."
 			},
 			"dokumentasjonskrav": {
 				"label": "Dokumentasjon av pengestøtte fra et annet EØS-land"
