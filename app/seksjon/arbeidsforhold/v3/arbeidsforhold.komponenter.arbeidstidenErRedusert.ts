@@ -1,11 +1,13 @@
+import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
+import { EØS_LANDKODER } from "~/utils/land.utils";
 import {
   ArbeidsforholdModalSvar,
   arbeidstidenErRedusert,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "./arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
 
 export const arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet =
   "arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet";
@@ -65,6 +67,14 @@ export function lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(
       label: t("arbeidstidenErRedusert.dokumentasjonskravindikator"),
       visHvis: (svar: ArbeidsforholdModalSvar) =>
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert,
+    },
+    {
+      id: "arbeidstidenErRedusertArbeidsinntektFraAnnetEØSLand",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidstidenErRedusert &&
+        EØS_LANDKODER.includes(svar[hvilketLandJobbetDuI] ?? ""),
     },
     {
       id: arbeidstidenErRedusertHvaErÅrsaken,

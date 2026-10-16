@@ -22,6 +22,7 @@ export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLand
   "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandFraDato";
 export const iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato =
   "iHvilkenPeriodeHarDuMottattEllerSøktOmPengestøtteFraAndreEøsLandTilDato";
+export const varSykepengeneSvangerskapsrelatert = "varSykepengeneSvangerskapsrelatert";
 
 export type PengestøtteFraAndreEøsLandModalSvar = {
   [hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand]?:
@@ -85,6 +86,17 @@ export function lagPengestøtteFraAndreEøsLandModalKomponenter(t: TFunction): K
           label: t("eøs.modal.hvilken.options.pleiepenger"),
         },
       ],
+    },
+    {
+      id: varSykepengeneSvangerskapsrelatert,
+      type: "envalg",
+      label: t("eøs.modal.varSykepengeneSvangerskapsrelatert.label"),
+      options: [
+        { value: "ja", label: t("eøs.modal.varSykepengeneSvangerskapsrelatert.options.ja") },
+        { value: "nei", label: t("eøs.modal.varSykepengeneSvangerskapsrelatert.options.nei") },
+      ],
+      visHvis: (svar: PengestøtteFraAndreEøsLandModalSvar) =>
+        svar[hvilkenPengestøtteHarDuMottattEllerSøktOmFraAndreEøsLand] === sykepenger,
     },
     {
       id: "hvilkenPengestøtteFraAndreEnnNavMottarDuInformasjonskort",

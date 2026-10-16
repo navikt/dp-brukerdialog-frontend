@@ -144,6 +144,15 @@
 		"rotasjon": {
 			"beskrivelse": "Du har krysset av for at du jobbet rotasjon. Du må dokumentere hvilken rotasjonsordning du har hatt. Den siste rotasjonen må dokumenteres med timeliste eller lignende, som viser når du var på jobb og når du hadde avspasering."
 		},
+		"arbeidsinntektFraAnnetEØSLand": {
+			"beskrivelse": "Du har krysset av for at du har mottatt arbeidsinntekt fra et annet EØS-land.",
+			"utdypning": "Du må legge ved dokumentasjon som viser både brutto og netto arbeidsinntekten du har mottatt fordelt på de siste 36 månedene. Dette vil du normalt finne på dine lønnslipper.",
+			"punkt1": "hvilken arbeidsinntekt dette er",
+			"punkt2": "hvem som utbetaler arbeidsinntekten",
+			"punkt3": "hvor mye du har fått utbetalt",
+			"punkt4": "perioden den utbetales for",
+			"punkt5": "antall timer du har jobbet pr måned hos denne arbeidsgiveren"
+		},
 		"tjenestebevis": {
 			"beskrivelse": "Du har krysset av for at du har avtjent verneplikt i minst tre av de siste tolv månedene. Du må sende inn tjenestebevis fra forsvaret der start- og sluttdato for tjenesteperioden kommer tydelig frem."
 		},
@@ -164,7 +173,7 @@
 			"beskrivelse": "Du har krysset av for at du mottar sluttvederlag, etterlønn eller andre økonomiske goder fra arbeidsgiver."
 		},
 		"pengestøtteEøs": {
-			"beskrivelse": "Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet EØS-land."
+			"beskrivelse": "Du har krysset av for at du mottar eller har søkt om pengestøtte fra et annet EØS-land. Du må legge ved dokumentasjon som viser både brutto og netto pengestøtten du har mottatt de siste 36 månedene. Dette kan du gjøre ved å laste opp utbetalingsslipper fra landet."
 		},
 		"pensjonFraAndre": {
 			"beskrivelse": "Du har krysset av for at du mottar eller har søkt om pensjon fra andre enn Nav."

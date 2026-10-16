@@ -45,6 +45,7 @@ export enum DokumentasjonskravType {
   ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter = "ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter",
   ArbeidsforholdPermitteringsvarsel = "ArbeidsforholdPermitteringsvarsel",
   ArbeidsforholdRotasjon = "ArbeidsforholdRotasjon",
+  ArbeidsforholdAnnetEØSLand = "ArbeidsforholdAnnetEØSLand",
   Tjenestebevis = "Tjenestebevis",
   Utdanning = "Utdanning",
   ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid = "ReellArbeidssøkerKanIkkeJobbeHeltidOgDeltid",

@@ -1,9 +1,11 @@
 import { addYears, endOfDay, startOfDay, subMonths, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
+import { EØS_LANDKODER } from "~/utils/land.utils";
 import {
   ArbeidsforholdModalSvar,
   arbeidsgiverErKonkurs,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "./arbeidsforhold.komponenter";
 
@@ -64,6 +66,14 @@ export function lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(
       label: t("konkurs.oppsigelseDokumentasjonskravindikator"),
       visHvis: (svar: ArbeidsforholdModalSvar) =>
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs,
+    },
+    {
+      id: "konkursArbeidsinntektFraAnnetEØSLand",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverErKonkurs &&
+        EØS_LANDKODER.includes(svar[hvilketLandJobbetDuI] ?? ""),
     },
     {
       id: konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,

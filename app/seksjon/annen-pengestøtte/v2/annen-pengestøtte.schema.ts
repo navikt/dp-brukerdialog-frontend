@@ -21,6 +21,7 @@ import {
   PengestøtteFraAndreEøsLandModalSvar,
   pleiepengerOmsorgspengerEllerOpplæringspenger,
   sykepenger,
+  varSykepengeneSvangerskapsrelatert,
 } from "./annen-pengestøtte-eøs.komponenter";
 import {
   mottarDuAndreUtbetalingerEllerØkonomiskeGoderFraTidligereArbeidsgiver,
@@ -94,6 +95,7 @@ export const pengestøtteFraAndreEøsLandSchema = z
         pleiepengerOmsorgspengerEllerOpplæringspenger,
       ])
       .optional(),
+    [varSykepengeneSvangerskapsrelatert]: z.enum(["ja", "nei"]).optional(),
     [fraHvilketEøsLandHarDuMottattEllerSøktOmPengestøtte]: z.string().optional(),
     [mottarDuFortsattPengestøttenFraAndreEøsLand]: z.string().optional(),
     [fraNårHarDuMottattPengestøtteFraAndreEøsLandFraDato]: z.string().optional(),

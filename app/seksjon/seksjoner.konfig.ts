@@ -25,8 +25,8 @@ type seksjonId =
 export const seksjonKonfig: SeksjonGrunnlag[] = [
   { seksjonId: "personalia", nyesteVersjon: 1 },
   { seksjonId: "din-situasjon", nyesteVersjon: 1 },
-  { seksjonId: "arbeidsforhold", nyesteVersjon: 2 },
-  { seksjonId: "annen-pengestotte", nyesteVersjon: 1 },
+  { seksjonId: "arbeidsforhold", nyesteVersjon: 3 },
+  { seksjonId: "annen-pengestotte", nyesteVersjon: 2 },
   { seksjonId: "egen-naring", nyesteVersjon: 1 },
   { seksjonId: "verneplikt", nyesteVersjon: 1 },
   { seksjonId: "utdanning", nyesteVersjon: 1 },

@@ -1,11 +1,13 @@
+import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
+import { EØS_LANDKODER } from "~/utils/land.utils";
 import {
   arbeidsforholdetErIkkeEndret,
   ArbeidsforholdModalSvar,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "./arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
 
 export const ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato =
   "ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato";
@@ -32,6 +34,14 @@ export function lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(
       label: t("felles.arbeidsavtale"),
       visHvis: (svar: ArbeidsforholdModalSvar) =>
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret,
+    },
+    {
+      id: "ikkeEndretArbeidsinntektFraAnnetEØSLand",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
+      visHvis: (svar: ArbeidsforholdModalSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsforholdetErIkkeEndret &&
+        EØS_LANDKODER.includes(svar[hvilketLandJobbetDuI] ?? ""),
     },
     {
       id: ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,

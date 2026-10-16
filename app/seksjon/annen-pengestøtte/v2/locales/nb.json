@@ -121,9 +121,16 @@
 					"pleiepenger": "Pleiepenger, omsorgspenger eller opplæringspenger"
 				}
 			},
+			"varSykepengeneSvangerskapsrelatert": {
+				"label": "Var sykepengene svangerskaps-relaterte?",
+				"options": {
+					"ja": "Ja, jeg mottok svangerskaps-relaterte sykepenger",
+					"nei": "Nei, sykepengene var ikke svangerskaps-relaterte"
+				}
+			},
 			"informasjonskort": {
 				"label": "Informasjon",
-				"description": "Har du søkt om en pengestøtte, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar."
+				"description": "Du må dokumentere hvilken periode du har hatt eller mottatt en pengestøtte fra et EØS-land, Sveits eller Storbritannia.<br/><br/> Har du søkt om en pengestøtte fra et annet EØS-land, men ikke fått søknaden behandlet ferdig, må du informere oss så snart du har fått svar fra utenlandske myndigheter."
 			},
 			"dokumentasjonskrav": {
 				"label": "Dokumentasjon av pengestøtte fra et annet EØS-land"

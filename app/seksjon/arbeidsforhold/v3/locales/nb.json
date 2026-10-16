@@ -14,16 +14,18 @@
 			"harIkkeSvart": "Har ikke svart"
 		}
 	},
-	"navigasjon": {
-		"leggTilArbeidsforhold": "Legg til arbeidsforhold",
-		"manglerArbeidsforhold": "Du må legge til et arbeidsforhold",
+	"varsel": {
+		"manglerArbeidsforhold": "Du må legge til et arbeidsforhold"
+	},
+	"arbeidsforhold": {
+		"leggTilArbeidsforholdKnapp": "Legg til arbeidsforhold",
 		"endreSvar": "Endre svar",
-		"fjern": "Fjern",
-		"lagreOgLukk": "Lagre og lukk"
+		"fjern": "Fjern"
 	},
 	"modal": {
 		"leggTil": "Legg til arbeidsforhold",
-		"rediger": "Rediger arbeidsforhold"
+		"rediger": "Rediger arbeidsforhold",
+		"lagreOgLukk": "Lagre og lukk"
 	},
 	"detaljer": {
 		"varteFra": "Arbeidsforholdet varte fra {{dato}}",
@@ -40,6 +42,7 @@
 	},
 	"dokumentasjonskrav": {
 		"arbeidsavtale": "Arbeidsavtale - {{bedrift}}",
+		"arbeidsavtaleAnnetEØSLand": "Arbeidsinntekt og arbeidstimer fra et annet EØS-land - {{land}}",
 		"oppsigelse": "Oppsigelse - {{bedrift}}",
 		"avskjedigelse": "Avskjedigelse - {{bedrift}}",
 		"redusertArbeidstid": "Redusert arbeidstid - {{bedrift}}",
@@ -66,8 +69,8 @@
 		"description": "<p>Hvis du bare har jobbet i Norge, skal du svare <b>Nei</b> på dette spørsmålet.</p><p>Andre land i EØS: Belgia, Bulgaria, Danmark, Estland, Finland, Frankrike, Hellas, Irland, Island, Italia, Kroatia, Kypros, Latvia, Liechtenstein, Litauen, Luxembourg, Malta, Nederland, Polen, Portugal, Romania, Slovakia, Slovenia, Spania, Sverige, Tsjekkia, Tyskland, Ungarn og Østerrike.</p>"
 	},
 	"harDuJobbetIEøsLesMer": {
-		"label": "Grunnen til at vi spør om dette og andre EØS land",
-		"description": "Hvis du har jobbet i et annet EØS-land, Sveits eller Storbritannia kan du ha rett til å få overført arbeidsperioder du har hatt der. Da vil de regnes med i vurderingen av retten til dagpenger i Norge."
+		"label": "Grunnen til at vi spør om dette",
+		"description": "Hvis du har jobbet i et annet EØS-land, Sveits eller Storbritannia kan du ha rett til å få overført arbeidsinntekt du har hatt der. Da vil de regnes med i vurderingen av retten til dagpenger i Norge."
 	},
 	"harIkkeJobbetDeSiste36MånedeneInformasjonskort": {
 		"label": "Du kan få avslag på søknaden",
@@ -147,6 +150,7 @@
 		"tilOgMedDato": "Til og med dato",
 		"informasjon": "Informasjon",
 		"arbeidsavtale": "Arbeidsavtale",
+		"arbeidsinntektFraAnnetEØSLand": "Dokumentasjon på arbeidsinntekt og arbeidstimer fra et annet EØS land",
 		"oppsigelse": "Oppsigelse",
 		"hvaHarDuSvartPåTilbudet": "Hva har du svart på tilbudet?",
 		"hvaErÅrsakenTilAtDuIkkeHarTattImotTilbudet": "Hva er årsaken til at du ikke har tatt imot tilbudet?",
