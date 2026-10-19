@@ -1,0 +1,80 @@
+import { FormApi } from "@rvf/react-router";
+import React, { createContext, useContext, useState } from "react";
+import { Dokumentasjonskrav } from "~/seksjon/dokumentasjon/dokumentasjon.types";
+import { Arbeidsforhold } from "./arbeidsforhold.komponenter";
+import { ForhåndsfyltArbeidsforhold } from "~/routes/$soknadId.arbeidsforhold";
+
+export enum ModalOperasjon {
+  LeggTil = "leggTil",
+  Rediger = "rediger",
+}
+
+type ModalData = {
+  form?: FormApi<any>;
+  operasjon: ModalOperasjon;
+  arbeidsforhold?: Arbeidsforhold;
+};
+
+type ArbeidsforholdContextType = {
+  registrerteArbeidsforhold: Arbeidsforhold[];
+  setRegistrerteArbeidsforhold: (registrerteArbeidsforhold: Arbeidsforhold[]) => void;
+  modalData?: ModalData;
+  setModalData: (modalData?: ModalData) => void;
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  setDokumentasjonskrav: (dokumentasjonskrav: Dokumentasjonskrav[]) => void;
+  forhåndsfyltArbeidsforhold?: ForhåndsfyltArbeidsforhold[] | [];
+};
+
+type ArbeidsforholdProviderProps = {
+  registrerteArbeidsforhold: Arbeidsforhold[];
+  dokumentasjonskrav: Dokumentasjonskrav[];
+  children: React.ReactNode;
+  forhåndsfyltArbeidsforhold?: ForhåndsfyltArbeidsforhold[] | [];
+};
+
+const ArbeidsforholdContext = createContext<ArbeidsforholdContextType | undefined>(undefined);
+
+function useArbeidsforholdContext() {
+  const context = useContext(ArbeidsforholdContext);
+
+  if (!context) {
+    const feilmelding =
+      "useArbeidsforholdContext må brukes innenfor en ArbeidsforholdProvider. Sjekk om <ArbeidsforholdView> ligger inni <ArbeidsforholdProvider>.";
+
+    console.error(feilmelding);
+    throw new Error(feilmelding);
+  }
+
+  return context;
+}
+
+function ArbeidsforholdProviderV4({
+  registrerteArbeidsforhold: registrerteArbeidsforholdProps,
+  dokumentasjonskrav: dokumentasjonskravProps,
+  children,
+  forhåndsfyltArbeidsforhold,
+}: ArbeidsforholdProviderProps) {
+  const [registrerteArbeidsforhold, setRegistrerteArbeidsforhold] = useState(
+    registrerteArbeidsforholdProps
+  );
+  const [dokumentasjonskrav, setDokumentasjonskrav] = useState(dokumentasjonskravProps);
+  const [modalData, setModalData] = useState<ModalData | undefined>(undefined);
+
+  return (
+    <ArbeidsforholdContext.Provider
+      value={{
+        registrerteArbeidsforhold,
+        setRegistrerteArbeidsforhold,
+        modalData,
+        setModalData,
+        dokumentasjonskrav,
+        setDokumentasjonskrav,
+        forhåndsfyltArbeidsforhold,
+      }}
+    >
+      {children}
+    </ArbeidsforholdContext.Provider>
+  );
+}
+
+export { ArbeidsforholdProviderV4, useArbeidsforholdContext };

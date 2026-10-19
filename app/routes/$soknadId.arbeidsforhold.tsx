@@ -16,9 +16,22 @@ import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsfor
 import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import { ArbeidsforholdProviderV3 } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
 import { ArbeidsforholdViewV3 } from "~/seksjon/arbeidsforhold/v3/ArbeidsforholdViewV3";
+import { hentArbeidsforhold } from "~/models/hent-arbeidsforhold";
+import { ArbeidsforholdProviderV4 } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.context";
+import { ArbeidsforholdViewV4 } from "~/seksjon/arbeidsforhold/v4/ArbeidsforholdViewV4";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];
+};
+
+export type ForhåndsfyltArbeidsforhold = {
+  id: string;
+  organisasjonsnummer: string;
+  organisasjonsnavn: string;
+  startdato: Date;
+  sluttdato?: Date;
+  sluttårsak?: string;
+  arbeidstidsordning?: string;
 };
 
 export type ArbeidsforholdSeksjon = {
@@ -28,6 +41,7 @@ export type ArbeidsforholdSeksjon = {
     seksjonsvar?: SeksjonSvar;
   };
   dokumentasjonskrav: Dokumentasjonskrav[] | null;
+  tidligereArbeidsforhold?: ForhåndsfyltArbeidsforhold[] | [];
 };
 
 const { seksjonId, nyesteVersjon, nesteSeksjonId, forrigeSeksjonId } =
@@ -39,20 +53,32 @@ export async function loader({
 }: LoaderFunctionArgs): Promise<ArbeidsforholdSeksjon> {
   invariant(params.soknadId, "Søknad ID er påkrevd");
 
-  const response = await hentSeksjon(request, params.soknadId, seksjonId);
+  const [response, tidligereArbeidsforholdResponse] = await Promise.all([
+    hentSeksjon(request, params.soknadId, seksjonId),
+    hentArbeidsforhold(request),
+  ]);
 
-  if (!response.ok) {
-    return {
-      seksjon: {
-        seksjonId,
-        versjon: nyesteVersjon,
-        seksjonsvar: undefined,
-      },
-      dokumentasjonskrav: null,
-    };
+  const failedResponse = {
+    seksjon: {
+      seksjonId,
+      versjon: nyesteVersjon,
+      seksjonsvar: undefined,
+    },
+    dokumentasjonskrav: null,
+    tidligereArbeidsforhold: [],
+  };
+
+  if (!response.ok && !tidligereArbeidsforholdResponse.ok) {
+    return failedResponse;
   }
-
-  return await response.json();
+  const seksjonData = response.ok ? await response.json() : failedResponse;
+  const tidligereArbeidsforholdData = tidligereArbeidsforholdResponse.ok
+    ? await tidligereArbeidsforholdResponse.json()
+    : [];
+  return {
+    ...seksjonData,
+    tidligereArbeidsforhold: tidligereArbeidsforholdData,
+  };
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -91,7 +117,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export default function ArbeidsforholdSeksjon() {
   const loaderData = useLoaderData<typeof loader>();
-  const { seksjon } = loaderData;
+  const { seksjon, tidligereArbeidsforhold } = loaderData;
   const { soknadId } = useParams();
 
   switch (seksjon?.versjon ?? nyesteVersjon) {
@@ -121,6 +147,16 @@ export default function ArbeidsforholdSeksjon() {
         >
           <ArbeidsforholdViewV3 />
         </ArbeidsforholdProviderV3>
+      );
+    case 4:
+      return (
+        <ArbeidsforholdProviderV4
+          registrerteArbeidsforhold={seksjon?.seksjonsvar?.registrerteArbeidsforhold ?? []}
+          dokumentasjonskrav={loaderData.dokumentasjonskrav ?? []}
+          forhåndsfyltArbeidsforhold={tidligereArbeidsforhold}
+        >
+          <ArbeidsforholdViewV4 />
+        </ArbeidsforholdProviderV4>
       );
     default:
       console.error(
