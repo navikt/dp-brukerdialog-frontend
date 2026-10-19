@@ -13,7 +13,7 @@ import { action, loader } from "~/routes/$soknadId.arbeidsforhold";
 import {
   ModalOperasjon,
   useArbeidsforholdContext,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.context";
 import {
   Arbeidsforhold,
   ArbeidsforholdResponse,
@@ -28,18 +28,18 @@ import {
   lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   pdfGrunnlag,
   seksjonsvar,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
-import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
-import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
-import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
-import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
-import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
-import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.schema";
-import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v3/komponenter/ArbeidsforholdDetaljer";
-import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v3/komponenter/ArbeidsforholdModal";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.ikkeEndret";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.permittert";
+import { arbeidsforholdSchema } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.schema";
+import { ArbeidsforholdDetaljer } from "~/seksjon/arbeidsforhold/v4/komponenter/ArbeidsforholdDetaljer";
+import { ArbeidsforholdModal } from "~/seksjon/arbeidsforhold/v4/komponenter/ArbeidsforholdModal";
 import { useSoknad } from "~/seksjon/soknad.context";
 import { Seksjonshandling } from "~/utils/Seksjonshandling";
 import { lagSeksjonPayload } from "~/utils/seksjon.utils";

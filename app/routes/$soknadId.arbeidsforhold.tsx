@@ -15,8 +15,8 @@ import { ArbeidsforholdViewV2 } from "~/seksjon/arbeidsforhold/v2/Arbeidsforhold
 import { ArbeidsforholdProviderV2 } from "~/seksjon/arbeidsforhold/v2/arbeidsforhold.context";
 import { hentSeksjonKonfig } from "~/seksjon/seksjoner.konfig";
 import { hentArbeidsforhold } from "~/models/hent-arbeidsforhold";
-import { ArbeidsforholdProviderV3 } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
-import { ArbeidsforholdViewV3 } from "~/seksjon/arbeidsforhold/v3/ArbeidsforholdViewV3";
+import { ArbeidsforholdProviderV3 } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.context";
+import { ArbeidsforholdViewV3 } from "~/seksjon/arbeidsforhold/v4/ArbeidsforholdViewV3";
 
 export type SeksjonSvar = ArbeidsforholdSvar & {
   registrerteArbeidsforhold?: Arbeidsforhold[];

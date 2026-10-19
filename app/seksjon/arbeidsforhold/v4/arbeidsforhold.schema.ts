@@ -8,19 +8,19 @@ import {
   arbeidstidenErRedusertHvaHarDuSvartPåTilbudet,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
   lagArbeidsforholdModalArbeidstidenErRedusertKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import {
   jegHarFåttAvskjedHvaVarÅrsaken,
   jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
   jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
   lagArbeidsforholdModalJegHarFåttAvskjedKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.avskjediget";
 import {
   ikkeEndretHarDuTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretTilleggsopplysningerTilDetteArbeidsforholdet,
   ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato,
   lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.ikkeEndret";
 import {
   jegErOppsagtHarDuFåttTilbudOmÅFortsetteHosArbeidsgiverenDinIAnnenStillingEllerEtAnnetStedINorge,
   jegErOppsagtHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
@@ -29,13 +29,13 @@ import {
   jegErOppsagtVarighetPåArbeidsforholdetFraDato,
   jegErOppsagtVarighetPåArbeidsforholdetTilDato,
   lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegErOppsagt";
 import {
   jegHarSagtOppHvaVarÅrsaken,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
   lagArbeidsforholdModalJegHarSagtOppSelvKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   konkursDekkerLønnsgarantiordningenKravetDitt,
   konkursErDetteEtMidlertidigArbeidsforholdMedKontraktsfestetSluttdato,
@@ -50,7 +50,7 @@ import {
   konkursØnskerDuÅSøkeOmDagpengerITilleggForskuddPåLønnsgarantimidler,
   konkursØnskerDuÅSøkeOmForskuddPåLønnsgarantimidler,
   lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.konkurs";
 import {
   kontraktenErUtgåttHvaErGrunnenTilAtDuIkkeHarTattImotTilbudet,
   kontraktenErUtgåttHvaHarDuSvartPåTilbudet,
@@ -58,7 +58,7 @@ import {
   kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
   kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
   lagArbeidsforholdModalKontraktenErUtgåttKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.kontraktenErUtgått";
 import {
   permittertErDetteEtMidlertidigArbeidsforholdMedEnKontraktfestetSluttdato,
   permittertErDuPermittertFraFiskeforedlingsEllerFiskeoljeindustrien,
@@ -71,7 +71,7 @@ import {
   permittertVarighetPåArbeidsforholdetFraOgMedDato,
   permittertVetDuNårLønnspliktperiodenTilArbeidsgiverenDinEr,
   lagArbeidsforholdModalJegErPermittertKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.permittert";
 import { valider } from "~/utils/validering.utils";
 import {
   annenRotasjonBeskrivelse,

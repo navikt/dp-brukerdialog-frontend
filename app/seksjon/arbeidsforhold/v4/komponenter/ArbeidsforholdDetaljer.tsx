@@ -4,44 +4,44 @@ import { useTranslation } from "react-i18next";
 import {
   ModalOperasjon,
   useArbeidsforholdContext,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.context";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.context";
 import {
   Arbeidsforhold,
   hvordanHarDetteArbeidsforholdetEndretSeg,
   lagArbeidsforholdModalKomponenter,
   navnetPåBedriften,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter";
 import {
   arbeidstidenErRedusertFraHvilkenDatoErArbeidstidenRedusert,
   arbeidstidenErRedusertHvilkenDatoStartetArbeidsforholdet,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import {
   jegHarFåttAvskjedVarighetPåArbeidsforholdetFraDato,
   jegHarFåttAvskjedVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
-import { ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.avskjediget";
+import { ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.ikkeEndret";
 import {
   jegErOppsagtVarighetPåArbeidsforholdetFraDato,
   jegErOppsagtVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegErOppsagt";
 import {
   jegHarSagtOppSelvVarighetPåArbeidsforholdetFraDato,
   jegHarSagtOppSelvVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegHarSagtOpp";
 import {
   konkursVarighetPåArbeidsforholdetFraDato,
   konkursVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.konkurs";
 import {
   kontraktenErUtgåttVarighetPåArbeidsforholdetFraDato,
   kontraktenErUtgåttVarighetPåArbeidsforholdetTilDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.kontraktenErUtgått";
 import {
   permittertHvorMangeProsentErDuPermittert,
   permittertNårErDuPermittertFraOgMedDato,
   permittertNårErDuPermittertTilOgMedDato,
   permittertVarighetPåArbeidsforholdetFraOgMedDato,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.permittert";
 import { formaterNorskDato } from "~/utils/formatering.utils";
 import { finnOptionLabel } from "~/utils/seksjon.utils";
 

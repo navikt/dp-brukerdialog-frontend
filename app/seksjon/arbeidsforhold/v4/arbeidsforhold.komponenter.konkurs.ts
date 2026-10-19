@@ -4,7 +4,7 @@ import {
   ArbeidsforholdModalSvar,
   arbeidsgiverErKonkurs,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter";
 import { addYears, endOfDay, startOfDay, subMonths, subYears } from "date-fns";
 
 export const konkursVarighetPåArbeidsforholdetFraDato = "konkursVarighetPåArbeidsforholdetFraDato";

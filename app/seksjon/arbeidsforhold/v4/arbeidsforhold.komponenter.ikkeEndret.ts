@@ -4,7 +4,7 @@ import {
   arbeidsforholdetErIkkeEndret,
   ArbeidsforholdModalSvar,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter";
 import { startOfDay, subYears } from "date-fns";
 
 export const ikkeEndretVarighetPåArbeidsforholdetFraOgMedDato =

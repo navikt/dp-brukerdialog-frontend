@@ -10,15 +10,15 @@ import {
   lagArbeidsforholdKomponenter,
   lagArbeidsforholdModalKomponenter,
   lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
-} from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter";
-import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegErOppsagt";
-import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.jegHarSagtOpp";
-import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.avskjediget";
-import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.kontraktenErUtgått";
-import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.arbeidstidenErRedusert";
-import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.konkurs";
-import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.permittert";
-import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v3/arbeidsforhold.komponenter.ikkeEndret";
+} from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter";
+import { lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegErOppsagt";
+import { lagArbeidsforholdModalJegHarSagtOppSelvKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.jegHarSagtOpp";
+import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.avskjediget";
+import { lagArbeidsforholdModalKontraktenErUtgåttKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.kontraktenErUtgått";
+import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.arbeidstidenErRedusert";
+import { lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.konkurs";
+import { lagArbeidsforholdModalJegErPermittertKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.permittert";
+import { lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter } from "~/seksjon/arbeidsforhold/v4/arbeidsforhold.komponenter.ikkeEndret";
 import { erInformasjonsFelt } from "~/utils/oppsummering.utils";
 import { SeksjonProps } from "~/seksjon/oppsummering/oppsummering.types";
 import { FormSummaryFooter } from "~/seksjon/oppsummering/FormSummaryFooter";
