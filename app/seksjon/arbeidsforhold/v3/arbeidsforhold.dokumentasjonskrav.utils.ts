@@ -17,7 +17,7 @@ import {
   kontraktenErUtgått,
   rotasjon,
 } from "./arbeidsforhold.komponenter";
-import { finnLandnavnMedLocale } from "~/utils/land.utils";
+import { EØS_LANDKODER, finnLandnavnMedLocale } from "~/utils/land.utils";
 
 export function lagDokumentasjonskrav(
   t: TFunction,
@@ -162,7 +162,7 @@ export function lagDokumentasjonskrav(
       break;
   }
 
-  if (landJobbetDuI) {
+  if (landJobbetDuI && EØS_LANDKODER.includes(landJobbetDuI)) {
     const landNavn = finnLandnavnMedLocale(landJobbetDuI);
 
     const eøsArbeidsforholdDokumentasjonskrav = {
