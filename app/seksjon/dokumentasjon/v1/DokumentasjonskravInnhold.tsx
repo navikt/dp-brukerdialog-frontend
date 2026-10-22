@@ -190,6 +190,25 @@ export function DokumentasjonskravInnhold({ type }: IProps) {
       case DokumentasjonskravType.ArbeidsforholdRotasjon:
         return <BodyLong>{t("krav.rotasjon.beskrivelse")}</BodyLong>;
 
+      case DokumentasjonskravType.ArbeidsforholdAnnetEØSLand:
+        return (
+          <VStack gap="space-16">
+            <BodyLong>
+              {t("krav.arbeidsinntektFraAnnetEØSLand.beskrivelse")}
+              <br />
+              <br />
+              {t("krav.arbeidsinntektFraAnnetEØSLand.utdypning")}
+            </BodyLong>
+            <List as="ul">
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt1")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt2")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt3")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt4")}</List.Item>
+              <List.Item>{t("krav.arbeidsinntektFraAnnetEØSLand.punkt5")}</List.Item>
+            </List>
+          </VStack>
+        );
+
       case DokumentasjonskravType.Tjenestebevis:
         return <BodyLong>{t("krav.tjenestebevis.beskrivelse")}</BodyLong>;
 

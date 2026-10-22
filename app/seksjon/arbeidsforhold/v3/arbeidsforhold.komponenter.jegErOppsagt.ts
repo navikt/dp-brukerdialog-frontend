@@ -1,11 +1,14 @@
+import { startOfDay, subYears } from "date-fns";
 import type { TFunction } from "i18next";
 import { KomponentType } from "~/components/Komponent.types";
+import { EØS_LANDKODER } from "~/utils/land.utils";
 import {
   ArbeidsforholdModalSvar,
+  ArbeidsforholdSvar,
   arbeidsgiverenMinHarSagtMegOpp,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
 } from "./arbeidsforhold.komponenter";
-import { startOfDay, subYears } from "date-fns";
 
 export const jegErOppsagtVarighetPåArbeidsforholdetFraDato =
   "jegErOppsagtVarighetPåArbeidsforholdetFraDato";
@@ -62,6 +65,14 @@ export function lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(
       label: t("felles.oppsigelse"),
       visHvis: (svar: ArbeidsforholdModalSvar) =>
         svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp,
+    },
+    {
+      id: "jegErOppsagtArbeidsinntektFraAnnetEØSLand",
+      type: "dokumentasjonskravindikator",
+      label: t("felles.arbeidsinntektFraAnnetEØSLand"),
+      visHvis: (svar: ArbeidsforholdModalSvar & ArbeidsforholdSvar) =>
+        svar[hvordanHarDetteArbeidsforholdetEndretSeg] === arbeidsgiverenMinHarSagtMegOpp &&
+        EØS_LANDKODER.includes(svar[hvilketLandJobbetDuI] ?? ""),
     },
     {
       id: jegErOppsagtHvaVarÅrsaken,

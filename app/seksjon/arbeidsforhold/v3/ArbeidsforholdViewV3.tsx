@@ -62,25 +62,6 @@ export function ArbeidsforholdViewV3() {
 
   const arbeidsforholdKomponenter = lagArbeidsforholdKomponenter(t);
   const arbeidsforholdForklarendeTekstKomponenter = lagArbeidsforholdForklarendeTekstKomponenter(t);
-  const arbeidsforholdModalKomponenter = lagArbeidsforholdModalKomponenter(t);
-  const arbeidsforholdModalSkiftTurnusRotasjonKomponenter =
-    lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t);
-  const arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter =
-    lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t);
-  const arbeidsforholdModalJegHarSagtOppSelvKomponenter =
-    lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t);
-  const arbeidsforholdModalJegHarFåttAvskjedKomponenter =
-    lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t);
-  const arbeidsforholdModalKontraktenErUtgåttKomponenter =
-    lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t);
-  const arbeidsforholdModalArbeidstidenErRedusertKomponenter =
-    lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t);
-  const arbeidsforholdModalArbeidsgiverErKonkursKomponenter =
-    lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t);
-  const arbeidsforholdModalJegErPermittertKomponenter =
-    lagArbeidsforholdModalJegErPermittertKomponenter(t);
-  const arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter =
-    lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t);
 
   const form = useForm({
     method: "PUT",
@@ -123,30 +104,30 @@ export function ArbeidsforholdViewV3() {
   }
 
   function genererPdfGrunnlag() {
-    const pdfPayload = {
+    const pdfgrunnlag = {
       navn: t("side.overskrift"),
       spørsmål: [
         ...lagSeksjonPayload(arbeidsforholdKomponenter, form.transient.value()),
         ...lagSeksjonPayload(arbeidsforholdForklarendeTekstKomponenter, form.transient.value()),
         ...registrerteArbeidsforhold.map((etArbeidsforhold) =>
           lagSeksjonPayload(
-            arbeidsforholdModalKomponenter
-              .concat(arbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter)
-              .concat(arbeidsforholdModalJegHarSagtOppSelvKomponenter)
-              .concat(arbeidsforholdModalJegHarFåttAvskjedKomponenter)
-              .concat(arbeidsforholdModalKontraktenErUtgåttKomponenter)
-              .concat(arbeidsforholdModalArbeidstidenErRedusertKomponenter)
-              .concat(arbeidsforholdModalArbeidsgiverErKonkursKomponenter)
-              .concat(arbeidsforholdModalJegErPermittertKomponenter)
-              .concat(arbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter)
-              .concat(arbeidsforholdModalSkiftTurnusRotasjonKomponenter),
+            lagArbeidsforholdModalKomponenter(t)
+              .concat(lagArbeidsforholdModalArbeidsgiverenMinHarSagtMegOppKomponenter(t))
+              .concat(lagArbeidsforholdModalJegHarSagtOppSelvKomponenter(t))
+              .concat(lagArbeidsforholdModalJegHarFåttAvskjedKomponenter(t))
+              .concat(lagArbeidsforholdModalKontraktenErUtgåttKomponenter(t))
+              .concat(lagArbeidsforholdModalArbeidstidenErRedusertKomponenter(t))
+              .concat(lagArbeidsforholdModalArbeidsgiverErKonkursKomponenter(t))
+              .concat(lagArbeidsforholdModalJegErPermittertKomponenter(t))
+              .concat(lagArbeidsforholdModalArbeidsforholdetErIkkeEndretKomponenter(t))
+              .concat(lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter(t)),
             etArbeidsforhold
           )
         ),
       ],
     };
 
-    return JSON.stringify(pdfPayload);
+    return JSON.stringify(pdfgrunnlag);
   }
 
   function hentDokumentasjonskrav() {
@@ -185,6 +166,11 @@ export function ArbeidsforholdViewV3() {
     }
   }
 
+  const harJobbet =
+    form.value(hvordanHarDuJobbet) &&
+    form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
+    form.value(harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene);
+
   return (
     <div className="innhold">
       <title>{t("side.tittel")}</title>
@@ -210,54 +196,45 @@ export function ArbeidsforholdViewV3() {
               );
             })}
 
-            {form.value(hvordanHarDuJobbet) &&
-              form.value(hvordanHarDuJobbet) !== harIkkeJobbetDeSiste36Månedene &&
-              form.value(
-                harDuJobbetIEtAnnetEøsLandSveitsEllerStorbritanniaILøpetAvDeSiste36Månedene
-              ) && (
-                <VStack className="mt-16" gap="space-24">
-                  {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
-                    if (komponent.visHvis && !komponent.visHvis(formValues)) {
-                      return null;
-                    }
+            {harJobbet && (
+              <VStack className="mt-16" gap="space-24">
+                {arbeidsforholdForklarendeTekstKomponenter.map((komponent) => {
+                  if (komponent.visHvis && !komponent.visHvis(formValues)) {
+                    return null;
+                  }
 
-                    return (
-                      <Komponent
-                        key={komponent.id}
-                        props={komponent}
-                        formValues={formValues}
-                        formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
-                      />
-                    );
-                  })}
-                  {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
-                    <ArbeidsforholdDetaljer
-                      key={arbeidsforhold.id}
-                      arbeidsforhold={arbeidsforhold}
+                  return (
+                    <Komponent
+                      key={komponent.id}
+                      props={komponent}
+                      formValues={formValues}
+                      formScope={form.scope(komponent.id as keyof ArbeidsforholdSvar)}
                     />
-                  ))}
-                  <HStack>
-                    <Button
-                      variant="secondary"
-                      type="button"
-                      icon={<BriefcaseIcon aria-hidden />}
-                      onClick={() => {
-                        setModalData({
-                          operasjon: ModalOperasjon.LeggTil,
-                          form: form,
-                        });
-                      }}
-                    >
-                      {t("navigasjon.leggTilArbeidsforhold")}
-                    </Button>
-                  </HStack>
-                  {visManglerArbeidsforholdFeilmelding && (
-                    <InlineMessage status="error">
-                      {t("navigasjon.manglerArbeidsforhold")}
-                    </InlineMessage>
-                  )}
-                </VStack>
-              )}
+                  );
+                })}
+                {registrerteArbeidsforhold?.map((arbeidsforhold: Arbeidsforhold) => (
+                  <ArbeidsforholdDetaljer key={arbeidsforhold.id} arbeidsforhold={arbeidsforhold} />
+                ))}
+                <HStack>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    icon={<BriefcaseIcon aria-hidden />}
+                    onClick={() => {
+                      setModalData({
+                        operasjon: ModalOperasjon.LeggTil,
+                        form: form,
+                      });
+                    }}
+                  >
+                    {t("arbeidsforhold.leggTilArbeidsforholdKnapp")}
+                  </Button>
+                </HStack>
+                {visManglerArbeidsforholdFeilmelding && (
+                  <InlineMessage status="error">{t("varsel.manglerArbeidsforhold")}</InlineMessage>
+                )}
+              </VStack>
+            )}
 
             {actionData && (
               <SeksjonTekniskFeil tittel={t("tekniskFeil.tittel")} beskrivelse={actionData.error} />

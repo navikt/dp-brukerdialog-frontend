@@ -7,29 +7,18 @@ import { Form } from "react-router";
 import { EndringerErIkkeLagretModal } from "~/components/EndringerErIkkeLagretModal";
 import { Komponent } from "~/components/Komponent";
 import { useNullstillSkjulteFelter } from "~/hooks/useNullstillSkjulteFelter";
-import {
-  Dokumentasjonskrav,
-  DokumentasjonskravType,
-} from "~/seksjon/dokumentasjon/dokumentasjon.types";
 import { ModalOperasjon, useArbeidsforholdContext } from "../arbeidsforhold.context";
+import { lagDokumentasjonskrav } from "../arbeidsforhold.dokumentasjonskrav.utils";
 import {
-  arbeidsforholdetErIkkeEndret,
   ArbeidsforholdModalSvar,
   ArbeidsforholdSvar,
-  arbeidsgiverenMinHarSagtMegOpp,
-  arbeidsgiverErKonkurs,
-  arbeidstidenErRedusert,
   harDuJobbetSkiftTurnusEllerRotasjon,
+  hvilketLandJobbetDuI,
   hvordanHarDetteArbeidsforholdetEndretSeg,
-  jegErPermittert,
-  jegHarFåttAvskjed,
-  jegHarSagtOppSelv,
-  kontraktenErUtgått,
   lagArbeidsforholdForklarendeTekstKomponenter,
   lagArbeidsforholdModalKomponenter,
   lagArbeidsforholdModalSkiftTurnusRotasjonKomponenter,
   navnetPåBedriften,
-  rotasjon,
 } from "../arbeidsforhold.komponenter";
 import { lagArbeidsforholdModalArbeidstidenErRedusertKomponenter } from "../arbeidsforhold.komponenter.arbeidstidenErRedusert";
 import { lagArbeidsforholdModalJegHarFåttAvskjedKomponenter } from "../arbeidsforhold.komponenter.avskjediget";
@@ -112,11 +101,14 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
     const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
     const bedriftNavn = skjemaData[navnetPåBedriften] || "";
+    const landJobbetDuI = skjemaData[hvilketLandJobbetDuI] || "";
 
     const nyttDokumentkrav = lagDokumentasjonskrav(
+      t,
       jobbetSkiftTurnusEllerRotasjon,
       arbeidsforholdSituasjon,
-      bedriftNavn
+      bedriftNavn,
+      landJobbetDuI
     );
 
     const nyttArbeidsforhold = {
@@ -139,15 +131,18 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     const jobbetSkiftTurnusEllerRotasjon = skjemaData[harDuJobbetSkiftTurnusEllerRotasjon] || "";
     const arbeidsforholdSituasjon = skjemaData[hvordanHarDetteArbeidsforholdetEndretSeg] || "";
     const bedriftNavn = skjemaData[navnetPåBedriften] || "";
+    const landJobbetDuI = skjemaData[hvilketLandJobbetDuI] || "";
 
     const oppdaterteDokumentasjonskrav = dokumentasjonskrav.filter(
       (krav) => !gammeltArbeidsforhold.dokumentasjonskrav?.includes(krav.id)
     );
 
     const nyeDokumentkrav = lagDokumentasjonskrav(
+      t,
       jobbetSkiftTurnusEllerRotasjon,
       arbeidsforholdSituasjon,
-      bedriftNavn
+      bedriftNavn,
+      landJobbetDuI
     );
 
     const oppdatertArbeidsforhold = {
@@ -164,163 +159,6 @@ export function ArbeidsforholdModal({ ref }: IProps) {
     setRegistrerteArbeidsforhold(oppdatertArbeidsforholdListe);
   }
 
-  function lagDokumentasjonskrav(
-    jobbetSkiftTurnusEllerRotasjon: string,
-    arbeidsforholdSituasjon: string,
-    bedriftNavn: string
-  ): Dokumentasjonskrav[] {
-    const dokumentasjonskrav = new Array<Dokumentasjonskrav>();
-
-    switch (arbeidsforholdSituasjon) {
-      case arbeidsgiverenMinHarSagtMegOpp:
-        dokumentasjonskrav.push(
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "T8",
-            tittel: t("dokumentasjonskrav.oppsigelse", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsgiverenMinHarSagtMegOpp,
-          }
-        );
-        break;
-      case jegHarSagtOppSelv:
-        dokumentasjonskrav.push(
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "T8",
-            tittel: t("dokumentasjonskrav.oppsigelse", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdJegHarSagtOppSelv,
-          }
-        );
-        break;
-      case jegHarFåttAvskjed:
-        dokumentasjonskrav.push(
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "T8",
-            tittel: t("dokumentasjonskrav.avskjedigelse", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdAvskjedigelse,
-          }
-        );
-        break;
-      case kontraktenErUtgått:
-      case arbeidsforholdetErIkkeEndret:
-        dokumentasjonskrav.push({
-          id: crypto.randomUUID(),
-          seksjonId: "arbeidsforhold",
-          spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-          skjemakode: "O2",
-          tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-          type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-        });
-        break;
-      case arbeidstidenErRedusert:
-        dokumentasjonskrav.push(
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "T8",
-            tittel: t("dokumentasjonskrav.redusertArbeidstid", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdRedusertArbeidstid,
-          }
-        );
-        break;
-      case arbeidsgiverErKonkurs:
-        dokumentasjonskrav.push(
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "M7",
-            tittel: t("dokumentasjonskrav.oppsigelseFraBostyrer", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdOppsigelseFraBostyrerEllerKonkursforvalter,
-          }
-        );
-        break;
-      case jegErPermittert:
-        dokumentasjonskrav.push(
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "O2",
-            tittel: t("dokumentasjonskrav.arbeidsavtale", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdArbeidsavtale,
-          },
-          {
-            id: crypto.randomUUID(),
-            seksjonId: "arbeidsforhold",
-            spørsmålId: hvordanHarDetteArbeidsforholdetEndretSeg,
-            skjemakode: "T6",
-            tittel: t("dokumentasjonskrav.permitteringsvarsel", { bedrift: bedriftNavn }),
-            type: DokumentasjonskravType.ArbeidsforholdPermitteringsvarsel,
-          }
-        );
-        break;
-    }
-
-    if (jobbetSkiftTurnusEllerRotasjon === rotasjon) {
-      dokumentasjonskrav.push({
-        id: crypto.randomUUID(),
-        seksjonId: "arbeidsforhold",
-        spørsmålId: harDuJobbetSkiftTurnusEllerRotasjon,
-        skjemakode: "M6",
-        tittel: t("dokumentasjonskrav.rotasjonsordning", { bedrift: bedriftNavn }),
-        type: DokumentasjonskravType.ArbeidsforholdRotasjon,
-      });
-    }
-
-    return dokumentasjonskrav;
-  }
-
-  const modalTittel =
-    modalData?.operasjon === ModalOperasjon.LeggTil ? t("modal.leggTil") : t("modal.rediger");
   return (
     <>
       <Modal
@@ -331,15 +169,17 @@ export function ArbeidsforholdModal({ ref }: IProps) {
           if (form.transient.formState.isDirty) {
             endringerErIkkeLagretModalRef.current?.showModal();
             return false;
-          } else {
-            return true;
           }
+
+          return true;
         }}
         onClose={() => setModalData(undefined)}
       >
         <Modal.Header>
           <Heading level="1" size="medium" id="modal-heading">
-            {modalTittel}
+            {modalData?.operasjon === ModalOperasjon.LeggTil
+              ? t("modal.leggTil")
+              : t("modal.rediger")}
           </Heading>
         </Modal.Header>
         <Modal.Body>
@@ -383,7 +223,7 @@ export function ArbeidsforholdModal({ ref }: IProps) {
                   onClick={() => form.submit()}
                   icon={<FloppydiskIcon aria-hidden />}
                 >
-                  {t("navigasjon.lagreOgLukk")}
+                  {t("modal.lagreOgLukk")}
                 </Button>
               </HStack>
             </VStack>
