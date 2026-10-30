@@ -1,6 +1,6 @@
 # Copilot-instruksjoner for dp-brukerdialog-frontend
 
-Dette er søknadsdialogen for dagpenger, inkludert dokumentasjon og ettersending. Les `AGENTS.md` for kommandoer, filstruktur og detaljerte arbeidsmønstre. Bruk `package.json` som kilde for installerte versjoner.
+Dette er søknadsdialogen for dagpenger, inkludert dokumentasjon og ettersending. Les `AGENTS.md` for kommandoer, filstruktur og detaljerte arbeidsmønstre. Bruk `package.json` for deklarerte avhengighetskrav og `pnpm-lock.yaml` for låste versjoner.
 
 ## Mønstre i repoet
 
