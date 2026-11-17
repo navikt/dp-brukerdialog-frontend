@@ -6,6 +6,7 @@ import { OpprettSøknadView } from "~/seksjon/opprett-søknad/OpprettSøknadView
 import { pdfGrunnlag } from "../seksjon/opprett-søknad/opprett-søknad.komponenter";
 import { Personalia } from "./$soknadId.personalia";
 import { Route } from "./+types/opprett-soknad";
+import { hentSøknader, parseSøknaderResponse } from "~/models/hent-søknader";
 
 const SEKSJON_ID = "startside";
 const NESTE_SEKSJON_ID = "personalia";
@@ -14,8 +15,19 @@ export type OpprettSøknadSide = {
   personalia: Personalia | null;
 };
 
-export async function loader({ request }: LoaderFunctionArgs): Promise<OpprettSøknadSide> {
-  const personaliaResponse = await hentPersonalia(request);
+export async function loader({
+  request,
+}: LoaderFunctionArgs): Promise<OpprettSøknadSide | Response> {
+  const [personaliaResponse, søknaderResponse] = await Promise.all([
+    hentPersonalia(request),
+    hentSøknader(request),
+  ]);
+
+  const { påbegyntSøknad } = await parseSøknaderResponse(søknaderResponse);
+
+  if (påbegyntSøknad) {
+    return redirect(`/`);
+  }
 
   return {
     personalia: personaliaResponse.ok ? await personaliaResponse.json() : null,

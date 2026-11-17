@@ -16,9 +16,8 @@ export type SøknadOversiktType = {
 export async function loader({
   request,
 }: Route.LoaderArgs): Promise<Response | SøknadOversiktType> {
-  const [orkestratorSøknaderResponse] = await Promise.all([hentSøknader(request)]);
-
-  const { søknader, påbegyntSøknad } = await parseSøknaderResponse(orkestratorSøknaderResponse);
+  const søknaderResponse = await hentSøknader(request);
+  const { søknader, påbegyntSøknad } = await parseSøknaderResponse(søknaderResponse);
 
   if (påbegyntSøknad === null && søknader?.length === 0) {
     return redirect("/arbeidssoker");
