@@ -40,7 +40,7 @@
     "date-fns": "4.4.0",
     "html-react-parser": "6.1.7",
     "i18n-iso-countries": "7.14.0",
-    "i18next": "^26.7.2",
+    "i18next": "27.2.2",
     "i18next-browser-languagedetector": "^8.3.1",
     "i18next-http-backend": "^4.1.0",
     "isbot": "5.2.2",
