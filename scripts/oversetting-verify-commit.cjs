@@ -8,6 +8,7 @@ const CO_AUTHORS = [
   { name: "Tina Solicki", email: "tina.solicki@nav.no" },
   { name: "Henriette Levang Kårfald", email: "henriette.levang.karfald@nav.no" },
   { name: "Henriette Hjorthen Støren", email: "henriette.hjorthen.storen@nav.no" },
+  { name: "Joachim Wallem Rasmussen", email: "joachim.wallem.rasmussen@nav.no" },
 ];
 
 main().catch((error) => {
