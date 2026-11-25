@@ -1,21 +1,23 @@
 import { RouterContextProvider, type LoaderFunctionArgs } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { hentDokumentasjonskrav } from "~/models/hent-dokumentasjonskrav.server";
-import { loader } from "~/routes/api.dokumentasjonskrav.$soknadId.$dokumentkravId.vis-fil";
+import { loader } from "~/routes/api.dokumentasjonskrav.vis-fil";
 import { hentMellomlagringOboToken } from "../auth.utils.server";
 import { getEnv } from "../env.utils";
 
-vi.mock("~/models/hent-dokumentasjonskrav.server");
 vi.mock("../auth.utils.server");
 vi.mock("../env.utils");
 
 describe("vis dokument", () => {
-  const request = new Request("https://example.com/api/dokumentasjonskrav/soknad/krav/vis-fil");
+  const request = new Request(
+    `https://example.com/api/dokumentasjonskrav/vis-fil?${new URLSearchParams({
+      filsti: "lagret/dokument",
+    })}`
+  );
   const args: LoaderFunctionArgs = {
     request,
     url: new URL(request.url),
-    pattern: "/api/dokumentasjonskrav/:soknadId/:dokumentkravId/vis-fil",
-    params: { soknadId: "soknad", dokumentkravId: "krav" },
+    pattern: "/api/dokumentasjonskrav/vis-fil",
+    params: {},
     context: new RouterContextProvider(),
   };
 
@@ -25,10 +27,7 @@ describe("vis dokument", () => {
     vi.mocked(hentMellomlagringOboToken).mockResolvedValue("test-token");
   });
 
-  it("returnerer PDF-en inline med filstien fra brukerens dokumentasjonskrav", async () => {
-    vi.mocked(hentDokumentasjonskrav).mockResolvedValue(
-      Response.json([JSON.stringify([{ id: "krav", bundle: { filsti: "lagret/dokument" } }])])
-    );
+  it("returnerer PDF-en inline med filstien fra query-parameteren uten ID-er", async () => {
     const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response("pdf-innhold", {
         headers: { "Content-Disposition": "attachment" },
@@ -38,7 +37,6 @@ describe("vis dokument", () => {
     try {
       const response = await loader(args);
 
-      expect(hentDokumentasjonskrav).toHaveBeenCalledWith(request, "soknad");
       expect(hentMellomlagringOboToken).toHaveBeenCalledWith(request);
       expect(fetchMock).toHaveBeenCalledWith(
         "https://mellomlagring.example.com/vedlegg/lagret/dokument",
@@ -47,42 +45,37 @@ describe("vis dokument", () => {
       expect(response.headers.get("Content-Type")).toBe("application/pdf");
       expect(response.headers.get("Content-Disposition")).toBe('inline; filename="dokument.pdf"');
       expect(response.headers.get("Cache-Control")).toBe("no-store");
+      expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
       expect(await response.text()).toBe("pdf-innhold");
     } finally {
       fetchMock.mockRestore();
     }
   });
 
-  it.each([
-    [],
-    [{ id: "annet-krav", bundle: { filsti: "annet/dokument" } }],
-    [{ id: "krav", bundle: null }],
-  ])("avviser dokumenter uten tilgjengelig bundle på brukerens krav: %j", async (...krav) => {
-    vi.mocked(hentDokumentasjonskrav).mockResolvedValue(Response.json([JSON.stringify(krav)]));
-
-    await expect(loader(args)).rejects.toMatchObject({ status: 404 });
-    expect(hentMellomlagringOboToken).not.toHaveBeenCalled();
-  });
-
-  it("stopper når tilgang til søknadens dokumentasjonskrav avvises", async () => {
-    vi.mocked(hentDokumentasjonskrav).mockResolvedValue(new Response(null, { status: 403 }));
-
-    await expect(loader(args)).rejects.toMatchObject({ status: 403 });
-    expect(hentMellomlagringOboToken).not.toHaveBeenCalled();
-  });
-
-  it("viderefører feilstatus når dokumentet ikke kan hentes", async () => {
-    vi.mocked(hentDokumentasjonskrav).mockResolvedValue(
-      Response.json([JSON.stringify([{ id: "krav", bundle: { filsti: "lagret/dokument" } }])])
-    );
-    const fetchMock = vi
-      .spyOn(globalThis, "fetch")
-      .mockResolvedValue(new Response(null, { status: 502 }));
-
-    try {
-      await expect(loader(args)).rejects.toMatchObject({ status: 502 });
-    } finally {
-      fetchMock.mockRestore();
+  it.each([undefined, "", "   "])("avviser manglende eller tom filsti: %j", async (filsti) => {
+    const url = new URL("https://example.com/api/dokumentasjonskrav/vis-fil");
+    if (filsti !== undefined) {
+      url.searchParams.set("filsti", filsti);
     }
+
+    await expect(loader({ ...args, request: new Request(url), url })).rejects.toMatchObject({
+      status: 400,
+    });
+    expect(hentMellomlagringOboToken).not.toHaveBeenCalled();
   });
+
+  it.each([403, 404, 502])(
+    "viderefører feilstatus %i når dokumentet ikke kan hentes",
+    async (status) => {
+      const fetchMock = vi
+        .spyOn(globalThis, "fetch")
+        .mockResolvedValue(new Response(null, { status }));
+
+      try {
+        await expect(loader(args)).rejects.toMatchObject({ status });
+      } finally {
+        fetchMock.mockRestore();
+      }
+    }
+  );
 });

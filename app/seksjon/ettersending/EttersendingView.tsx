@@ -124,9 +124,11 @@ export function EttersendingView() {
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <LinkCard key={krav.id}>
                   <LinkCard.Title>
-                    {krav.bundle && soknadId ? (
+                    {krav.bundle?.filsti ? (
                       <LinkCard.Anchor
-                        href={`${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${encodeURIComponent(soknadId)}/${encodeURIComponent(krav.id)}/vis-fil`}
+                        href={`${getEnv("BASE_PATH")}/api/dokumentasjonskrav/vis-fil?${new URLSearchParams(
+                          { filsti: krav.bundle.filsti }
+                        )}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
