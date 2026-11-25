@@ -22,7 +22,7 @@
 		"filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn."
 	},
 	"dokumenter": {
-		"sendt": "Dokumenter du har sendt inn",
+		"sendt": "Dokumentasjon vi har mottatt fra deg",
 		"skalIkkeSendes": "Dokumenter du ikke skal sende inn"
 	},
 	"opplasting": {

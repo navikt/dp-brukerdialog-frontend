@@ -6,14 +6,16 @@ import {
   ErrorMessage,
   Heading,
   HStack,
+  LinkCard,
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
-import { Link, useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/filOpplasting/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
+import { formaterNorskDato } from "~/utils/formatering.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import {
   dokumentkravEttersendt,
@@ -21,7 +23,6 @@ import {
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
-import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
 import { useEttersending } from "./ettersending.context";
 import { ArrowLeftIcon } from "@navikt/aksel-icons";
@@ -116,12 +117,31 @@ export function EttersendingView() {
           </>
         )}
 
-        <VStack gap="space-16">
+        <VStack gap="space-16" className="mt-32">
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
             <VStack gap="space-16">
               <Heading size="small">{t("dokumenter.sendt")}</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
-                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
+                <LinkCard key={krav.id}>
+                  <LinkCard.Title>
+                    {krav.bundle && soknadId ? (
+                      <LinkCard.Anchor
+                        href={`${getEnv("BASE_PATH")}/api/dokumentasjonskrav/${encodeURIComponent(soknadId)}/${encodeURIComponent(krav.id)}/vis-fil`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {krav.tittel}
+                      </LinkCard.Anchor>
+                    ) : (
+                      krav.tittel
+                    )}
+                  </LinkCard.Title>
+                  <LinkCard.Description>
+                    {krav.bundle?.tidspunkt && (
+                      <>Sendt av deg {formaterNorskDato(new Date(krav.bundle.tidspunkt))}</>
+                    )}
+                  </LinkCard.Description>
+                </LinkCard>
               ))}
             </VStack>
           )}
