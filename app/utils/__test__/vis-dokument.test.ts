@@ -52,7 +52,7 @@ describe("vis dokument", () => {
     }
   });
 
-  it.each([undefined, "", "   "])("avviser manglende eller tom filsti: %j", async (filsti) => {
+  it.each([undefined, ""])("avviser manglende eller tom filsti: %j", async (filsti) => {
     const url = new URL("https://example.com/api/dokumentasjonskrav/vis-fil");
     if (filsti !== undefined) {
       url.searchParams.set("filsti", filsti);

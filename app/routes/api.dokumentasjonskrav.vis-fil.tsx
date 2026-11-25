@@ -5,7 +5,7 @@ import { getEnv } from "~/utils/env.utils";
 export async function loader({ request }: LoaderFunctionArgs) {
   const filsti = new URL(request.url).searchParams.get("filsti");
 
-  if (!filsti?.trim()) {
+  if (!filsti) {
     throw new Response("Filsti er påkrevd", {
       status: 400,
       headers: { "Cache-Control": "no-store" },

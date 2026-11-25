@@ -120,7 +120,7 @@ export function EttersendingView() {
         <VStack gap="space-16" className="mt-32">
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">{t("dokumenter.sendt")}</Heading>
+              <Heading size="small">{t("dokumenter.dokumentasjonViHarMottattFraDeg")}</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <LinkCard key={krav.id}>
                   <LinkCard.Title>
@@ -139,9 +139,10 @@ export function EttersendingView() {
                     )}
                   </LinkCard.Title>
                   <LinkCard.Description>
-                    {krav.bundle?.tidspunkt && (
-                      <>Sendt av deg {formaterNorskDato(new Date(krav.bundle.tidspunkt))}</>
-                    )}
+                    {krav.bundle?.tidspunkt &&
+                      t("dokumenter.sendtAvDeg", {
+                        dato: formaterNorskDato(new Date(krav.bundle.tidspunkt)),
+                      })}
                   </LinkCard.Description>
                 </LinkCard>
               ))}
