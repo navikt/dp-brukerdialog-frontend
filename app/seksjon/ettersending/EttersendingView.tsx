@@ -1,4 +1,4 @@
-import { Accordion, BodyLong, BodyShort, Heading, ReadMore, VStack } from "@navikt/ds-react";
+import { Accordion, BodyLong, Heading, ReadMore, VStack } from "@navikt/ds-react";
 import { useTranslation } from "react-i18next";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/filOpplasting/EttersendingFilOpplasting";
@@ -40,7 +40,6 @@ export function EttersendingView() {
         {ettersendingene.length > 0 && (
           <>
             <VStack gap="space-16">
-              <BodyShort weight="semibold">{t("innhold.frist")}</BodyShort>
               <BodyLong>{t("innhold.beskrivelse")}</BodyLong>
 
               <ReadMore header={t("innhold.brevTittel")}>
