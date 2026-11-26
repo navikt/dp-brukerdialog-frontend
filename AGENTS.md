@@ -153,7 +153,9 @@ describe("myFunction", () => {
 
 ## Code style
 
-- **Formatting:** Prettier — double quotes, semicolons, trailing commas (es5), 100 char width
+- **Formatting:** Prettier — 2 spaces by default; locale JSON overrides use tabs with
+  `tabWidth: 4` as defined in `.prettierrc`. Double quotes, semicolons, trailing commas (es5),
+  100 char width
 - **Linting:** ESLint with React, React Hooks, jsx-a11y, TypeScript, and import plugins
 - **Naming:** Norwegian for domain concepts (søknad, seksjon, opplysning, barn, etc.),
   English for generic programming constructs
