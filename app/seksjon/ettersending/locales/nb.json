@@ -1,7 +1,8 @@
 {
 	"side": {
 		"tittel": "Søknad om dagpenger: Ettersending",
-		"overskrift": "Ettersending"
+		"overskrift": "Ettersending",
+		"ettersendHeader": " Dokumenter vi trenger"
 	},
 	"innhold": {
 		"frist": "Frist for innsendinger er 14 dager etter at du sendte søknaden.",
@@ -33,7 +34,7 @@
 		"lasterOpp": "Laster opp..."
 	},
 	"navigasjon": {
-		"sendInnDokumenter": "Send inn dokumenter",
+		"sendDokument": "Send dokument",
 		"avbryt": "Avbryt",
 		"kvittering": "Kvittering",
 		"gåTilMineDagpenger": "Gå til mine dagpenger"

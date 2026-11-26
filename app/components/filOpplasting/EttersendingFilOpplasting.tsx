@@ -1,5 +1,6 @@
-import { Box, ErrorMessage, FileObject, Heading, HStack, Tag, VStack } from "@navikt/ds-react";
+import { Box, Button, ErrorMessage, FileObject, VStack } from "@navikt/ds-react";
 import { FileUploadDropzone, FileUploadItem } from "@navikt/ds-react/FileUpload";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import {
@@ -28,10 +29,20 @@ interface IProps {
 export function EttersendingFilOpplasting({ ettersending }: IProps) {
   const { t } = useTranslation("ettersending");
   const { soknadId } = useParams();
-  const { oppdaterEttersending, valideringStartet } = useEttersending();
+  const {
+    oppdaterEttersending,
+    validerteKrav,
+    tekniskeFeilKrav,
+    lagrer,
+    lagrerKravId,
+    validerOgLagre,
+  } = useEttersending();
+  const valideringStartet = validerteKrav.includes(ettersending.id);
+  const [sletterFil, setSletterFil] = useState(false);
 
   const ettersendingFiler = ettersending.filer || [];
   const antallFeil = ettersendingFiler.filter((fil) => fil.feil).length;
+  const lasterOpp = ettersendingFiler.some((fil) => fil.lasterOpp);
 
   async function lastOppfiler(filer: FileObject[]) {
     const filerMedFeil: DokumentkravFil[] = [];
@@ -139,6 +150,7 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
     }
 
     try {
+      setSletterFil(true);
       const formData = new FormData();
       formData.append("filsti", fil.filsti);
 
@@ -189,25 +201,19 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
         filer: oppdaterteFiler,
         feil: DokumentasjonskravFeilType.FIL_OPPLASTING_FEIL,
       });
+    } finally {
+      setSletterFil(false);
     }
   }
 
   return (
-    <Box borderRadius="12" background="sunken">
+    <Box>
       <VStack gap="space-16">
-        <HStack gap="space-12" justify="space-between" wrap={false} align="start">
-          <Heading size="small" level="3">
-            {ettersending.tittel || t("opplasting.dokumentasjon")}
-          </Heading>
-          <Tag variant="warning" size="xsmall">
-            {t("opplasting.mangler")}
-          </Tag>
-        </HStack>
-
         {ettersending.type && <DokumentasjonskravInnhold type={ettersending.type} />}
 
         <form method="post" encType="multipart/form-data">
           <FileUploadDropzone
+            disabled={lagrer || lasterOpp || sletterFil}
             className="mt-16 fileUpload"
             label={t("opplasting.lastOpp")}
             description={t("opplasting.beskrivelse", {
@@ -231,10 +237,14 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
               status={fil.lasterOpp ? "uploading" : "idle"}
               translations={{ uploading: t("opplasting.lasterOpp") }}
               error={fil.feil ? hentFilFeilmelding(fil.feil) : undefined}
-              button={{
-                action: "delete",
-                onClick: () => slettEnFil(fil),
-              }}
+              button={
+                !lagrer &&
+                !lasterOpp &&
+                !sletterFil && {
+                  action: "delete",
+                  onClick: () => slettEnFil(fil),
+                }
+              }
             />
           ))}
         </VStack>
@@ -244,6 +254,21 @@ export function EttersendingFilOpplasting({ ettersending }: IProps) {
           {t(antallFeil > 1 ? "feil.filerMedFeilFlertall" : "feil.filerMedFeil")}
         </ErrorMessage>
       )}
+      {valideringStartet && ettersendingFiler.length === 0 && (
+        <ErrorMessage className="mt-16">{t("feil.manglerFil")}</ErrorMessage>
+      )}
+      {tekniskeFeilKrav.includes(ettersending.id) && (
+        <ErrorMessage className="mt-16">{t("feil.teknisk")}</ErrorMessage>
+      )}
+      <Button
+        className="mt-16"
+        type="button"
+        loading={lagrerKravId === ettersending.id}
+        disabled={lagrer || lasterOpp || sletterFil}
+        onClick={() => validerOgLagre(ettersending.id)}
+      >
+        {t("navigasjon.sendDokument")}
+      </Button>
     </Box>
   );
 }
