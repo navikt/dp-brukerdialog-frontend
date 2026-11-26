@@ -16,9 +16,8 @@ import {
   Tag,
   VStack,
 } from "@navikt/ds-react";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLoaderData, useParams, useSearchParams } from "react-router";
+import { Link, useLoaderData, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { stegISøknaden } from "~/routes/$soknadId";
 import { loader } from "~/routes/$soknadId.kvittering";
@@ -39,7 +38,6 @@ import { DokumentasjonSomSkalSendesAvDeg } from "./DokumentasjonSomSkalSendesAvD
 export default function KvitteringView() {
   const { t } = useTranslation("kvittering");
   const { soknadId } = useParams();
-  const [searchParams] = useSearchParams();
   const seksjonnavn = t("side.overskrift");
   const seksjonHeadTitle = t("side.tittel");
   const loaderData = useLoaderData<typeof loader>();
@@ -48,12 +46,6 @@ export default function KvitteringView() {
     loaderData?.seksjoner.filter(
       (s: any) => s.seksjonId !== "dokumentasjon" && s.seksjonId !== "startside"
     ) || [];
-
-  useEffect(() => {
-    if (searchParams.get("reload") === "true") {
-      window.location.href = `${getEnv("BASE_PATH")}/${soknadId}/kvittering`;
-    }
-  }, [searchParams, soknadId]);
 
   const dokumentasjonSomErSendtAvDeg: Dokumentasjonskrav[] = dokumentasjonskrav.filter(
     (krav: Dokumentasjonskrav) =>

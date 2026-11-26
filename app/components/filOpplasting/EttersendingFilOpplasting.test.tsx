@@ -29,6 +29,8 @@ import {
 const mocks = vi.hoisted(() => ({
   oppdaterEttersending: vi.fn(),
   valideringStartet: false,
+  validerOgLagre: vi.fn(),
+  lagrerKravId: null as string | null,
 }));
 
 vi.mock("react-router", () => ({
@@ -41,11 +43,10 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) =>
       ({
-        "opplasting.dokumentasjon": "Dokumentasjon",
-        "opplasting.mangler": "Mangler",
         "opplasting.lastOpp": "Last opp dokument",
         "opplasting.beskrivelse": `Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`,
         "opplasting.lasterOpp": "Laster opp...",
+        "navigasjon.sendDokument": "Send inn dokumenter",
         "feil.filerMedFeil": "Du må rette feilen over før dokumentasjon kan sendes inn.",
         "feil.filerMedFeilFlertall": "Du må rette feilene over før dokumentasjon kan sendes inn.",
       })[key] ?? key,
@@ -55,7 +56,11 @@ vi.mock("react-i18next", () => ({
 vi.mock("~/seksjon/ettersending/ettersending.context", () => ({
   useEttersending: () => ({
     oppdaterEttersending: mocks.oppdaterEttersending,
-    valideringStartet: mocks.valideringStartet,
+    validerteKrav: mocks.valideringStartet ? ["ettersending-123"] : [],
+    tekniskeFeilKrav: [],
+    validerOgLagre: mocks.validerOgLagre,
+    lagrer: mocks.lagrerKravId !== null,
+    lagrerKravId: mocks.lagrerKravId,
   }),
 }));
 
@@ -70,11 +75,21 @@ vi.mock("~/seksjon/dokumentasjon/v1/DokumentasjonskravInnhold", () => ({
 }));
 
 vi.mock("@navikt/ds-react", () => ({
+  Button: ({
+    children,
+    onClick,
+    disabled,
+  }: {
+    children: ReactNode;
+    onClick: () => void;
+    disabled?: boolean;
+  }) => (
+    <button type="button" onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  ),
   Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   VStack: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  HStack: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Heading: ({ children }: { children: ReactNode }) => <h3>{children}</h3>,
-  Tag: ({ children }: { children: ReactNode }) => <span>{children}</span>,
   ErrorMessage: ({ children }: { children: ReactNode }) => <div role="alert">{children}</div>,
   FileObject: class FileObject {},
 }));
@@ -174,6 +189,8 @@ function mockFetchOk() {
 beforeEach(() => {
   mocks.oppdaterEttersending.mockClear();
   mocks.valideringStartet = false;
+  mocks.validerOgLagre.mockClear();
+  mocks.lagrerKravId = null;
   mockFetchOk();
 });
 
@@ -183,13 +200,28 @@ afterEach(() => {
 });
 
 describe("EttersendingFilOpplasting", () => {
-  it("viser tittel, status og opplastingsfelt med beskrivelse", () => {
+  it("sender inn bare det valgte dokumentasjonskravet", async () => {
+    render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
+    await userEvent.click(screen.getByRole("button", { name: "Send inn dokumenter" }));
+    expect(mocks.validerOgLagre).toHaveBeenCalledWith("ettersending-123");
+  });
+
+  it("venter på at filene er ferdig lastet opp før innsending", () => {
+    render(
+      <EttersendingFilOpplasting
+        ettersending={lagEttersending({
+          filer: [{ id: "fil-1", filnavn: "test.pdf", lasterOpp: true }],
+        })}
+      />
+    );
+    expect(screen.getByRole("button", { name: "Send inn dokumenter" })).toBeDisabled();
+  });
+
+  it("viser dokumentasjonsinnhold og opplastingsfelt med beskrivelse", () => {
     render(<EttersendingFilOpplasting ettersending={lagEttersending()} />);
 
     const input = screen.getByLabelText("Last opp dokument");
 
-    expect(screen.getByRole("heading", { name: "Ettersending test" })).toBeInTheDocument();
-    expect(screen.getByText("Mangler")).toBeInTheDocument();
     expect(screen.getByTestId("dokumentasjonskrav-innhold")).toHaveTextContent(
       DokumentasjonskravType.Barn
     );
@@ -204,18 +236,6 @@ describe("EttersendingFilOpplasting", () => {
         `Maks filstørrelse er ${hentMaksFilStørrelseMB()} MB, og tillatte filtyper er ${hentTillatteFiltyperTekst()}.`
       )
     ).toBeInTheDocument();
-  });
-
-  it("bruker fallback-tittel når tittel mangler", () => {
-    render(
-      <EttersendingFilOpplasting
-        ettersending={lagEttersending({
-          tittel: undefined,
-        })}
-      />
-    );
-
-    expect(screen.getByRole("heading", { name: "Dokumentasjon" })).toBeInTheDocument();
   });
 
   it("laster opp gyldig fil og oppdaterer ettersending", async () => {

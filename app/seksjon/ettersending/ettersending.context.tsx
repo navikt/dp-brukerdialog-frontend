@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import React, { createContext, useContext, useRef, useState } from "react";
 import {
   Dokumentasjonskrav,
   GyldigDokumentkravSvar,
@@ -7,26 +6,20 @@ import {
 import { dokumentkravEttersendt } from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import {
   bundleFiler,
-  hentOppdaterteDokumentasjonskravSeksjoner,
   harMinstEnFilOgIngenFeil,
-  hentGyldigeEttersendingeneTilBundling,
   hentOppdaterteDokumentasjonskravene,
   lagreEttersending,
 } from "./ettersending.utils";
 
 type EttersendingContextType = {
   dokumentasjonskravene: Dokumentasjonskrav[];
-  setDokumentasjonskravene: (dokumentasjonskravene: Dokumentasjonskrav[]) => void;
   ettersendingene: Dokumentasjonskrav[];
-  setEttersendingene: (ettersendingene: Dokumentasjonskrav[]) => void;
   oppdaterEttersending: (ettersending: Dokumentasjonskrav) => void;
   lagrer: boolean;
-  setLagrer: (lagrer: boolean) => void;
-  validerOgLagre: () => Promise<void>;
-  harTekniskFeil: boolean;
-  setHarTekniskFeil: (harTekniskFeil: boolean) => void;
-  valideringStartet: boolean;
-  setValideringStartet: (valideringStartet: boolean) => void;
+  lagrerKravId: string | null;
+  validerOgLagre: (dokumentasjonskravId: string) => Promise<void>;
+  tekniskeFeilKrav: string[];
+  validerteKrav: string[];
 };
 
 type EttersendingProviderProps = {
@@ -58,12 +51,13 @@ function EttersendingProvider({
   ettersendingene: ettersendingeneProps,
   children,
 }: EttersendingProviderProps) {
-  const navigate = useNavigate();
   const [dokumentasjonskravene, setDokumentasjonskravene] = useState(dokumentasjonskraveneProps);
   const [ettersendingene, setEttersendingene] = useState(ettersendingeneProps);
-  const [lagrer, setLagrer] = useState(false);
-  const [valideringStartet, setValideringStartet] = useState(false);
-  const [harTekniskFeil, setHarTekniskFeil] = useState(false);
+  const [lagrerKravId, setLagrerKravId] = useState<string | null>(null);
+  const [validerteKrav, setValiderteKrav] = useState<string[]>([]);
+  const [tekniskeFeilKrav, setTekniskeFeilKrav] = useState<string[]>([]);
+  const innsendingPågår = useRef(false);
+  const lagrer = lagrerKravId !== null;
 
   function oppdaterEttersending(ettersending: Dokumentasjonskrav) {
     setEttersendingene((current) =>
@@ -73,84 +67,86 @@ function EttersendingProvider({
     );
   }
 
-  async function validerOgLagre(): Promise<void> {
-    setValideringStartet(true);
-
-    const klarForBundlingOgLagring = harMinstEnFilOgIngenFeil(ettersendingene);
-    const ettersendingeneTilBundling = hentGyldigeEttersendingeneTilBundling(ettersendingene);
-
-    if (!klarForBundlingOgLagring || ettersendingeneTilBundling.length === 0) {
+  async function validerOgLagre(dokumentasjonskravId: string): Promise<void> {
+    if (innsendingPågår.current) {
       return;
     }
 
-    await bundleOgLagre(ettersendingeneTilBundling);
+    const ettersending = ettersendingene.find((krav) => krav.id === dokumentasjonskravId);
+    if (!ettersending) {
+      console.error("Fant ikke dokumentasjonskrav for ettersending:", dokumentasjonskravId);
+      return;
+    }
+
+    setValiderteKrav((current) =>
+      current.includes(dokumentasjonskravId) ? current : [...current, dokumentasjonskravId]
+    );
+    setTekniskeFeilKrav((current) => current.filter((id) => id !== dokumentasjonskravId));
+
+    if (
+      !harMinstEnFilOgIngenFeil([ettersending]) ||
+      ettersending.filer?.some((fil) => fil.lasterOpp)
+    ) {
+      return;
+    }
+
+    await bundleOgLagre(ettersending);
   }
 
-  async function bundleOgLagre(ettersendingeneTilBundling: Dokumentasjonskrav[]): Promise<void> {
-    setLagrer(true);
-    setHarTekniskFeil(false);
+  async function bundleOgLagre(ettersending: Dokumentasjonskrav): Promise<void> {
+    innsendingPågår.current = true;
+    setLagrerKravId(ettersending.id);
 
-    const ettersendingeneFerdigBundlet: Dokumentasjonskrav[] = [];
-
-    for (const ettersending of ettersendingeneTilBundling) {
+    try {
       const bundle = await bundleFiler(ettersending, søknadId);
 
-      if (bundle) {
-        const oppdatertDokumentasjonskrav: Dokumentasjonskrav = {
-          ...ettersending,
-          svar: dokumentkravEttersendt as GyldigDokumentkravSvar,
-          bundle,
-          begrunnelse: undefined,
-        };
-
-        ettersendingeneFerdigBundlet.push(oppdatertDokumentasjonskrav);
-      } else {
-        setLagrer(false);
-        setHarTekniskFeil(true);
-        console.error("Bundling feilet for dokumentkrav:", ettersending.id);
-      }
-    }
-
-    const oppdaterteDokumentasjonskravene = hentOppdaterteDokumentasjonskravene(
-      dokumentasjonskravene,
-      ettersendingeneFerdigBundlet
-    );
-
-    const oppdaterteDokumentasjonskravSeksjoner = hentOppdaterteDokumentasjonskravSeksjoner(
-      ettersendingeneFerdigBundlet,
-      oppdaterteDokumentasjonskravene
-    );
-
-    for (const seksjon of oppdaterteDokumentasjonskravSeksjoner) {
-      const { seksjonId, dokumentasjonskravene } = seksjon;
-      const lagringOk = await lagreEttersending(søknadId, seksjonId, dokumentasjonskravene);
-
-      if (!lagringOk) {
-        setLagrer(false);
-        setHarTekniskFeil(true);
+      if (!bundle) {
+        setTekniskeFeilKrav((current) => [...current, ettersending.id]);
         return;
       }
-    }
 
-    setLagrer(false);
-    navigate(`../kvittering?reload=true`);
+      const oppdatertDokumentasjonskrav: Dokumentasjonskrav = {
+        ...ettersending,
+        svar: dokumentkravEttersendt as GyldigDokumentkravSvar,
+        bundle,
+        begrunnelse: undefined,
+      };
+
+      const oppdaterteDokumentasjonskravene = hentOppdaterteDokumentasjonskravene(
+        dokumentasjonskravene,
+        [oppdatertDokumentasjonskrav]
+      );
+
+      const lagringOk = await lagreEttersending(
+        søknadId,
+        ettersending.seksjonId,
+        oppdaterteDokumentasjonskravene.filter((krav) => krav.seksjonId === ettersending.seksjonId)
+      );
+
+      if (!lagringOk) {
+        setTekniskeFeilKrav((current) => [...current, ettersending.id]);
+        return;
+      }
+
+      setDokumentasjonskravene(oppdaterteDokumentasjonskravene);
+      setEttersendingene((current) => current.filter((krav) => krav.id !== ettersending.id));
+    } finally {
+      innsendingPågår.current = false;
+      setLagrerKravId(null);
+    }
   }
 
   return (
     <EttersendingContext.Provider
       value={{
         dokumentasjonskravene,
-        setDokumentasjonskravene,
         oppdaterEttersending,
         lagrer,
-        setLagrer,
+        lagrerKravId,
         validerOgLagre,
         ettersendingene,
-        setEttersendingene,
-        harTekniskFeil,
-        setHarTekniskFeil,
-        valideringStartet,
-        setValideringStartet,
+        tekniskeFeilKrav,
+        validerteKrav,
       }}
     >
       {children}
