@@ -6,7 +6,6 @@ import {
   ErrorMessage,
   Heading,
   HStack,
-  LinkCard,
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
@@ -15,7 +14,6 @@ import { Link, useNavigate, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/filOpplasting/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
-import { formaterNorskDato } from "~/utils/formatering.utils";
 import { Dokumentasjonskrav } from "../dokumentasjon/dokumentasjon.types";
 import {
   dokumentkravEttersendt,
@@ -24,6 +22,7 @@ import {
   dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
+import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { useEttersending } from "./ettersending.context";
 import { ArrowLeftIcon } from "@navikt/aksel-icons";
 
@@ -122,29 +121,7 @@ export function EttersendingView() {
             <VStack gap="space-16">
               <Heading size="small">{t("dokumenter.dokumentasjonViHarMottattFraDeg")}</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
-                <LinkCard key={krav.id}>
-                  <LinkCard.Title>
-                    {krav.bundle?.filsti ? (
-                      <LinkCard.Anchor
-                        href={`${getEnv("BASE_PATH")}/api/dokumentasjonskrav/vis-fil?${new URLSearchParams(
-                          { filsti: krav.bundle.filsti }
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {krav.tittel}
-                      </LinkCard.Anchor>
-                    ) : (
-                      krav.tittel
-                    )}
-                  </LinkCard.Title>
-                  <LinkCard.Description>
-                    {krav.bundle?.tidspunkt &&
-                      t("dokumenter.sendtAvDeg", {
-                        dato: formaterNorskDato(new Date(krav.bundle.tidspunkt)),
-                      })}
-                  </LinkCard.Description>
-                </LinkCard>
+                <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}
             </VStack>
           )}
