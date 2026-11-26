@@ -43,6 +43,7 @@
 	},
 	"dokumenter": {
 		"sendt": "Dokumenter du har sendt inn",
+		"sendtAvDeg": "Sendt av deg {{dato}}",
 		"skalSendes": "Dokumenter du skal sende inn",
 		"skalIkkeSendes": "Dokumenter du ikke skal sende inn"
 	},

@@ -7,6 +7,7 @@ import {
   hentTillatteFiltyperString,
   hentTillatteFiltyperTekst,
   lastnedDokument,
+  åpneDokument,
 } from "../dokument.utils";
 
 vi.mock("../env.utils", () => ({
@@ -141,6 +142,89 @@ describe("dokument.utils", () => {
       expect(documentMock.body.removeChild).toHaveBeenCalledWith(anchorMock);
 
       expect(revokeObjectURLMock).toHaveBeenCalledWith("blob:test-url");
+    });
+  });
+
+  describe("åpneDokument", () => {
+    it("skal logge feil dersom filsti mangler", async () => {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+      await åpneDokument(undefined);
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Mangler filsti tilgjengelig for åpning av dokument"
+      );
+    });
+
+    it("skal åpne fanen før dokumentet hentes og vise PDF-en uten tvungen nedlasting", async () => {
+      const blob = new Blob(["test"], { type: "application/pdf" });
+      const dokumentFane = {
+        opener: {},
+        location: { replace: vi.fn() },
+        close: vi.fn(),
+      };
+      const openMock = vi.fn().mockReturnValue(dokumentFane);
+      const revokeObjectURLMock = vi.fn();
+      const fetchMock = vi.fn().mockImplementation(async () => {
+        expect(openMock).toHaveBeenCalledWith("about:blank", "_blank");
+        expect(dokumentFane.opener).toBeNull();
+        return { ok: true, blob: async () => blob };
+      });
+
+      vi.stubGlobal("fetch", fetchMock);
+      vi.stubGlobal("window", {
+        open: openMock,
+        URL: {
+          createObjectURL: vi.fn().mockReturnValue("blob:test-url"),
+          revokeObjectURL: revokeObjectURLMock,
+        },
+      });
+
+      await åpneDokument("/filsti/test.pdf");
+
+      expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
+        "/base-path/api/dokumentasjonskrav/lastned",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ filsti: "/filsti/test.pdf" }),
+        }
+      );
+      expect(dokumentFane.location.replace).toHaveBeenCalledWith("blob:test-url");
+      expect(dokumentFane.close).not.toHaveBeenCalled();
+      expect(revokeObjectURLMock).not.toHaveBeenCalled();
+    });
+
+    it("skal logge feil og ikke hente dokumentet når den nye fanen blokkeres", async () => {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const fetchMock = vi.fn();
+      vi.stubGlobal("fetch", fetchMock);
+      vi.stubGlobal("window", { open: vi.fn().mockReturnValue(null) });
+
+      await åpneDokument("/filsti/test.pdf");
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Kunne ikke åpne dokumentet i en ny fane. Tillat sprettoppvinduer og prøv igjen."
+      );
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it.each(["http", "nettverk"])("skal lukke den nye fanen ved %s-feil", async (feiltype) => {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const dokumentFane = { opener: {}, close: vi.fn() };
+      const fetchMock = vi.fn();
+      if (feiltype === "http") {
+        fetchMock.mockResolvedValue({ ok: false });
+      } else {
+        fetchMock.mockRejectedValue(new Error("Nettverksfeil"));
+      }
+      vi.stubGlobal("fetch", fetchMock);
+      vi.stubGlobal("window", { open: vi.fn().mockReturnValue(dokumentFane) });
+
+      await åpneDokument("/filsti/test.pdf");
+
+      expect(dokumentFane.close).toHaveBeenCalledOnce();
+      expect(consoleErrorSpy).toHaveBeenCalled();
     });
   });
 

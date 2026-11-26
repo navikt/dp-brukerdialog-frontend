@@ -59,6 +59,49 @@ export async function lastnedDokument(filsti?: string, tittel?: string) {
   window.URL.revokeObjectURL(blobUrl);
 }
 
+export async function åpneDokument(filsti?: string) {
+  if (!filsti) {
+    console.error("Mangler filsti tilgjengelig for åpning av dokument");
+    return;
+  }
+
+  const dokumentFane = window.open("about:blank", "_blank");
+
+  if (!dokumentFane) {
+    console.error(
+      "Kunne ikke åpne dokumentet i en ny fane. Tillat sprettoppvinduer og prøv igjen."
+    );
+    return;
+  }
+
+  dokumentFane.opener = null;
+
+  try {
+    const url = `${getEnv("BASE_PATH")}/api/dokumentasjonskrav/lastned`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ filsti }),
+    });
+
+    if (!response.ok) {
+      dokumentFane.close();
+      console.error("Noe gikk galt ved åpning av dokument");
+      return;
+    }
+
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+
+    dokumentFane.location.replace(blobUrl);
+  } catch (error) {
+    dokumentFane.close();
+    console.error("Noe gikk galt ved åpning av dokument", error);
+  }
+}
+
 export function hentFilFeilmelding(feilType: FilOpplastingFeilType) {
   switch (feilType) {
     case FilOpplastingFeilType.FIL_FOR_STOR:

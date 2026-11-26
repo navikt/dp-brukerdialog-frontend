@@ -9,8 +9,8 @@ import {
   ReadMore,
   VStack,
 } from "@navikt/ds-react";
-import { Link, useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate, useParams } from "react-router";
 import { EksterneLenke } from "~/components/EksterneLenke";
 import { EttersendingFilOpplasting } from "~/components/filOpplasting/EttersendingFilOpplasting";
 import { getEnv } from "~/utils/env.utils";
@@ -21,8 +21,8 @@ import {
   dokumentkravSvarSendNå,
   dokumentkravSvarSendtTidligere,
 } from "../dokumentasjon/v1/dokumentasjonskrav.komponenter";
-import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { DokumentasjonSomIkkeSkalSendes } from "../kvittering/DokumentasjonSomIkkeSkalSendes";
+import { DokumentasjonskravSomErSendtAvDeg } from "../kvittering/DokumentasjonSomErSendtAvDeg";
 import { useEttersending } from "./ettersending.context";
 import { ArrowLeftIcon } from "@navikt/aksel-icons";
 
@@ -116,10 +116,10 @@ export function EttersendingView() {
           </>
         )}
 
-        <VStack gap="space-16">
+        <VStack gap="space-16" className="mt-32">
           {dokumentasjonSomErSendtAvDeg.length > 0 && (
             <VStack gap="space-16">
-              <Heading size="small">{t("dokumenter.sendt")}</Heading>
+              <Heading size="small">{t("dokumenter.dokumentasjonViHarMottattFraDeg")}</Heading>
               {dokumentasjonSomErSendtAvDeg.map((krav: Dokumentasjonskrav) => (
                 <DokumentasjonskravSomErSendtAvDeg key={krav.id} dokumentasjonskrav={krav} />
               ))}

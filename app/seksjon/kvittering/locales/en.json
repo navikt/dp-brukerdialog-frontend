@@ -1,1 +1,5 @@
-{}
+{
+	"dokumenter": {
+		"sendtAvDeg": "Sent by you {{dato}}"
+	}
+}
